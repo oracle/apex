@@ -1,0 +1,769 @@
+page 20 (
+    name: Question
+    alias: QUESTION
+    title: Question
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            :root {
+                --ut-pillbutton-checkbox-offset: 20px;
+                --a-checkbox-label-spacing-x: 1rem;
+            }
+            .t-Button--large {
+                --a-button-font-size: 1rem;
+            }
+            
+            .apex-item-group--rc .apex-item-option {
+                width: 100% !important;
+                --ut-pillbutton-padding-y: 1rem;
+                font-weight: 700;
+                --ut-pillbutton-font-size: 1.25rem;
+                max-width: 320px;
+                margin: 8px auto 8px auto;
+            }
+            
+            .t-Alert--horizontal {
+                margin-inline-start: auto;
+                margin-inline-end: auto;
+                margin-bottom: 0;
+                max-width: 47.5rem;
+            }
+            
+            #P20_ANSWER_CONTAINER .t-Form-inputContainer {
+                display: flex;
+                flex-direction: column-reverse;
+            }
+            
+            #P20_ANSWER_MANY_CONTAINER .t-Form-itemWrapper {
+                display: block;
+            }
+            
+            .t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc.apex-item-checkbox input+label {
+                line-height: 24px;
+            }
+            
+            #P20_ANSWER_MANY_CONTAINER .apex-item-checkbox .apex-item-option input:checked+label {
+                --a-checkbox-background-color: white;
+                --a-checkbox-text-color: black;
+            }
+            
+            
+            #P20_ANSWER_MANY_CONTAINER .apex-item-checkbox .apex-item-option input+label:after,
+            #P20_ANSWER_MANY_CONTAINER .apex-item-checkbox .apex-item-option input+label:before {
+                transform: scale(1.5)
+            }
+            
+            #P20_ANSWER_MANY_CONTAINER.t-Form-fieldContainer--radioButtonGroup .apex-item-group--rc.apex-item-checkbox input+label {
+                padding-inline-start: 48px;
+            }
+            
+            span.t-Form-error {
+                --ut-field-error-font-size: 1rem;
+                margin-bottom: 8px;
+                font-weight: 700;
+            }
+            
+            
+            ```
+    }
+    security {
+        authentication: public
+        formAutoComplete: false
+    }
+
+    region answered (
+        name: Answered!
+        type: staticContent
+        source {
+            htmlCode: <b>Answered!</b>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @p20-question
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: u-tC
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'Y'
+                ```
+        }
+    )
+
+    region p20-question (
+        name: &P20_QUESTION.
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--warning
+            ]
+            cssClasses: u-tC
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: QUESTION_ID
+        }
+    )
+
+    region session-session-code (
+        name: Session &SESSION_CODE.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: SESSION_CODE
+        }
+    )
+
+    pageItem P20_ANSWER_FREEFORM (
+        type: textField
+        label {
+            label: Answer
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @p20-question
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ANSWER_TYPE = 'FREEFORM' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    pageItem P20_ANSWER_ID (
+        type: radioGroup
+        label {
+            label: Answer (choose one)
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select answer_text d, id r
+                  from qask_sess_question_answers 
+                 where question_id = :QUESTION_ID
+                 order by answer_number
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @p20-question
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ANSWER_TYPE = 'SINGLE' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    pageItem P20_ANSWER_TYPE (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @p20-question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_ASK_FOR_COMMENTS_YN (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @p20-question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_COMMENTS (
+        type: textField
+        label {
+            label: Comments
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @p20-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ASK_FOR_COMMENTS_YN = 'Y' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    pageItem P20_MULTI_ANSWER (
+        type: checkboxGroup
+        label {
+            label: Answer (choose all that apply)
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select answer_text d, id r
+                  from qask_sess_question_answers 
+                 where question_id = :QUESTION_ID
+                 order by answer_number
+                
+                ```
+        }
+        layout {
+            sequence: 100
+            region: @p20-question
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ANSWER_TYPE = 'MULTI' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    pageItem P20_QUESTION (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @p20-question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_QUESTION_EXPLANATION (
+        type: displayOnly
+        label {
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @p20-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_QUESTION_EXPLANATION
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_QUESTION_FILE (
+        type: displayImage
+        label {
+            alignment: left
+        }
+        settings {
+            basedOn: blobColSql
+            sqlQuery:
+                ```sql
+                select question_file
+                  from qask_session_questions
+                 where id = :QUESTION_ID
+                ```
+        }
+        layout {
+            sequence: 60
+            region: @p20-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_session_questions
+                 where id = :QUESTION_ID
+                   and question_filename is not null
+                ```
+        }
+    )
+
+    pageItem P20_QUESTION_NUMBER (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @p20-question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next-question (
+        buttonName: next_question
+        label: Continue
+        layout {
+            sequence: 140
+            region: @p20-question
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--iconRight
+            ]
+            cssClasses: [
+                margin-auto
+                mxw320
+                w100p
+                padding-md
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'Y'
+                ```
+        }
+    )
+
+    button submit-answer (
+        buttonName: submit_answer
+        label: Submit Answer
+        layout {
+            sequence: 130
+            region: @p20-question
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--simple
+            ]
+            cssClasses: [
+                margin-auto
+                mxw320
+                w100p
+                padding-md
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    validation must-answer-freeform (
+        name: must answer - FREEFORM
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P20_ANSWER_FREEFORM
+        }
+        error {
+            errorMessage: You must provide an answer!
+            displayLocation: inlineWithField
+            associatedItem: @P20_ANSWER_FREEFORM
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ANSWER_TYPE = 'FREEFORM' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    validation must-answer-multi (
+        name: must answer - MULTI
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P20_MULTI_ANSWER
+        }
+        error {
+            errorMessage: You must select an answer!
+            displayLocation: inlineWithField
+            associatedItem: @P20_MULTI_ANSWER
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ANSWER_TYPE = 'MULTI' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    validation must-answer-single (
+        name: must answer - SINGLE
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P20_ANSWER_ID
+        }
+        error {
+            errorMessage: You must select an answer!
+            displayLocation: inlineWithField
+            associatedItem: @P20_ANSWER_ID
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P20_ANSWER_TYPE = 'SINGLE' and
+                qask_util.is_question_answered_yn (
+                    p_response_id => :RESPONSE_ID,
+                    p_question_id => :QUESTION_ID ) = 'N'
+                ```
+        }
+    )
+
+    computation question-id (
+        itemName: QUESTION_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_next_question_id (
+                          p_session_id  => :SESSION_ID,
+                          p_question_id => :QUESTION_ID );
+                ```
+        }
+    )
+
+    process get-question-details (
+        name: get question details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_dont_need  varchar2(4000);
+                begin
+                
+                :P20_QUESTION_NUMBER      := null;
+                :P20_QUESTION             := null;
+                :P20_ANSWER_TYPE          := null;
+                :P20_ASK_FOR_COMMENTS_YN  := null;
+                :P20_QUESTION_EXPLANATION := null;
+                
+                qask_util.get_question_details (
+                    p_question_id          => :QUESTION_ID,
+                    p_question_number      => :P20_QUESTION_NUMBER,
+                    p_question_status      => l_dont_need,
+                    p_question             => :P20_QUESTION,
+                    p_answer_type          => :P20_ANSWER_TYPE,
+                    p_ask_for_comments_yn  => :P20_ASK_FOR_COMMENTS_YN,
+                    p_question_explanation => :P20_QUESTION_EXPLANATION );
+                
+                    end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 63879907796161505303
+        }
+    )
+
+    process submit-answer (
+        name: submit_answer
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :SESSION_ID is null then
+                     raise_application_error(-20111,'Session ID is null, value is required');
+                end if;
+                if :QUESTION_ID is null then
+                     raise_application_error(-20111,'Question ID is null, value is required');
+                end if;
+                if :APP_SESSION is null then
+                    raise_application_error(-20111,'App session is null');
+                end if;
+                
+                :RESPONSE_ID := qask_util.answer_question (
+                    p_session_id       => :SESSION_ID,
+                    p_question_id      => :QUESTION_ID,
+                    p_apex_session_id  => :APP_SESSION,
+                    p_answer_id        => :P20_ANSWER_ID,
+                    p_answer_freeform  => :P20_ANSWER_FREEFORM,
+                    p_multi_answer     => :P20_MULTI_ANSWER,
+                    p_comment_text     => :P20_COMMENTS,
+                    p_response_id      => :RESPONSE_ID,
+                    p_respondent_name  => :P11_NAME,
+                    p_respondent_email => :P11_EMAIL );
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 63745386618181109905
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit-answer
+        }
+    )
+
+    branch (
+        name: go home if no SESSION_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 1
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :SESSION_ID is null
+        }
+    )
+
+    branch (
+        name: question no longer open
+        execution {
+            sequence: 20
+            point: validating
+        }
+        behavior {
+            target: {
+                page: 21
+                clearCache: 21
+                action: resetRegions
+                request: QCLOSED
+            }
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if qask_util.get_question_status (
+                       p_question_id => :QUESTION_ID) = 'OPEN' then
+                   return false;
+                else
+                   return true;
+                end if;
+                ```
+        }
+    )
+
+    branch (
+        name: Show Confirmation
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 21
+                action: resetRegions
+            }
+        }
+    )
+
+    branch (
+        name: session no longer open
+        execution {
+            sequence: 10
+            point: validating
+        }
+        behavior {
+            target: {
+                page: 12
+                items: {
+                    P12_SESSION_CODE: &SESSION_CODE.
+                }
+                clearCache: 12
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: qask_util.get_session_status(:SESSION_ID) = 'CLOSED'
+        }
+    )
+
+    branch (
+        name: Session Closed
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 12
+                clearCache: [
+                    1
+                    20
+                ]
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: qask_util.get_session_status (p_session_id => :SESSION_ID) = 'CLOSED'
+        }
+    )
+
+)
+

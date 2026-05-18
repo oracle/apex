@@ -1,0 +1,457 @@
+page 19 (
+    name: CASE Statement
+    alias: CASE-STATEMENT
+    title: CASE Statement
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The Oracle CASE statement is used to perform IF-THEN-ELSE logic in queries. It evaluates a single expression and compares it against several potential values, or evaluates multiple Boolean expressions and chooses the first one that is TRUE.  The interactive report below contains 2 CASE statements.  The first include an edit link only for projects that are not Closed.  Interactive Reports contain the ability to provide an edit link but when used, the link displays for all the records.  To conditionally display, you need to use a method like this.  To include a link, which contains html, you must change the column display type to 'Standard Report Columns'.  It is also advisable to remove all the IR options so that the column cannot be hidden, filtered on, used in a an aggregate, etc. as those functions are not appropriate for a link.  Note that when a link is not provided, '&#38;nbsp;' is returned so that the "Show Null Values as" value, set in the Report Attributes, will not display.</p>
+                
+                <p>The second CASE statement provide the Current Estimate for each project.  If the project is On-Hold, the estimate is 0.  If the project is Closed, the COST is used (instead of the budgeted value).  For all other project statuses, the budgeted value is used.  The report then contains a sum on Budget, Cost and Current Estimate (which display after the last record) using the interactive report aggregate function.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region case-statements (
+        name: Case Statements
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select	
+                       case when status != 'Closed'
+                            then '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':2:'||:APP_SESSION||':::2:P2_ROWID:'||ROWID) || '"><img src="#IMAGE_PREFIX#menu/pencil2_16x16.gif" alt="edit"></a>' 
+                            else '&nbsp;'
+                            end edit_link,
+                       PROJECT,
+                       TASK_NAME,
+                       STATUS,
+                       ASSIGNED_TO,
+                       BUDGET,
+                       COST,
+                       case when status = 'On-Hold' then 0
+                            when status = 'Closed'  then cost
+                            else budget
+                            end estimated_cost
+                from EBA_DEMO_IR_PROJECTS
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: QUERY
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 657280230068700481
+        }
+
+        column ASSIGNED_TO (
+            type: plainText
+            heading {
+                heading: Assigned To
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column BUDGET (
+            type: plainText
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column COST (
+            type: plainText
+            heading {
+                heading: Cost
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column EDIT_LINK (
+            type: plainText
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ESTIMATED_COST (
+            type: plainText
+            heading {
+                heading: Current Estimate
+                alignment: end
+            }
+            layout {
+                sequence: 11
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column PROJECT (
+            type: plainText
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column TASK_NAME (
+            type: plainText
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        savedReport 6572814 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 10
+            }
+
+            displayColumn ASSIGNED_TO (
+                sequence: 5
+            )
+
+            displayColumn BUDGET (
+                sequence: 6
+            )
+
+            displayColumn COST (
+                sequence: 7
+            )
+
+            displayColumn EDIT_LINK (
+                sequence: 1
+            )
+
+            displayColumn ESTIMATED_COST (
+                sequence: 8
+            )
+
+            displayColumn PROJECT (
+                sequence: 2
+            )
+
+            displayColumn STATUS (
+                sequence: 4
+            )
+
+            displayColumn TASK_NAME (
+                sequence: 3
+            )
+
+            sort (
+                column: PROJECT
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: TASK_NAME
+                sort {
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                column: ESTIMATED_COST
+            )
+
+            aggregate (
+                column: BUDGET
+            )
+
+            aggregate (
+                column: COST
+            )
+
+        )
+
+    )
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 20
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: QUERY
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @case-statements
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 19
+                clearCache: [
+                    19
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on Edit
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @case-statements
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @case-statements
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,191 @@
+restDataSource eba_rest_stores (
+    name: EBA_REST_STORES
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /stores/
+    }
+
+    operation delete (
+        label: DELETE - :store_id
+        operation {
+            urlPattern: :store_id
+            httpMethod: delete
+            databaseOperation: delete
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation get-2 (
+        label: GET - :store_id
+        operation {
+            urlPattern: :store_id
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    operation post (
+        label: POST
+        operation {
+            urlPattern: .
+            httpMethod: post
+            databaseOperation: insert
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    operation put (
+        label: PUT - :store_id
+        operation {
+            urlPattern: :store_id
+            httpMethod: put
+            databaseOperation: update
+        }
+        requestBody {
+            versionNumber: 1
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_STORES
+        rowSelector: items
+    }
+
+    dataProfileColumn latitude (
+        columnName: LATITUDE
+        source {
+            sequence: 5
+            dataType: number
+        }
+        parsing {
+            pathExpression: latitude
+        }
+    )
+
+    dataProfileColumn logo (
+        columnName: LOGO
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: logo
+        }
+    )
+
+    dataProfileColumn logo-charset (
+        columnName: LOGO_CHARSET
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: logo_charset
+        }
+    )
+
+    dataProfileColumn logo-filename (
+        columnName: LOGO_FILENAME
+        source {
+            sequence: 9
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: logo_filename
+        }
+    )
+
+    dataProfileColumn logo-last-updated (
+        columnName: LOGO_LAST_UPDATED
+        source {
+            sequence: 11
+            dataType: date
+        }
+        parsing {
+            pathExpression: logo_last_updated
+        }
+    )
+
+    dataProfileColumn logo-mime-type (
+        columnName: LOGO_MIME_TYPE
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: logo_mime_type
+        }
+    )
+
+    dataProfileColumn longitude (
+        columnName: LONGITUDE
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            pathExpression: longitude
+        }
+    )
+
+    dataProfileColumn physical-address (
+        columnName: PHYSICAL_ADDRESS
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: physical_address
+        }
+    )
+
+    dataProfileColumn store-id (
+        columnName: STORE_ID
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: store_id
+        }
+    )
+
+    dataProfileColumn store-name (
+        columnName: STORE_NAME
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: store_name
+        }
+    )
+
+    dataProfileColumn web-address (
+        columnName: WEB_ADDRESS
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: web_address
+        }
+    )
+
+)
+

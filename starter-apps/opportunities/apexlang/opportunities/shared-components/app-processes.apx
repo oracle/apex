@@ -1,0 +1,298 @@
+appProcess breadcrumb-for-account (
+    name: Breadcrumb for Account
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+            
+              l_id number;
+            
+            begin
+            
+              l_id := 
+                case :APP_PAGE_ID
+                  when '94' then nv('P94_ID')
+                end;
+            
+              select apex_escape.html(customer_name)
+              into :BREADCRUMB_DISPLAY
+              from eba_sales_customers
+              where id = l_id;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: 94
+    }
+)
+
+appProcess breadcrumb-for-contact (
+    name: Breadcrumb for Contact
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+            
+              l_id number;
+            
+            begin
+            
+              l_id := 
+                case :APP_PAGE_ID
+                  when '24' then nv('P24_ID')
+                end;
+            
+              select apex_escape.html(contact_name)
+              into :BREADCRUMB_DISPLAY
+              from eba_sales_customer_contacts
+              where id = l_id;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: 24
+    }
+)
+
+appProcess breadcrumb-for-lead (
+    name: Breadcrumb for Lead
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+            
+              l_id number;
+            
+            begin
+            
+              l_id := 
+                case :APP_PAGE_ID
+                  when '133' then nv('P133_ID')
+                end;
+            
+              select apex_escape.html(lead_name_01)
+              into :BREADCRUMB_DISPLAY
+              from eba_sales_leads
+              where id = l_id;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: 133
+    }
+)
+
+appProcess breadcrumb-for-opportunity (
+    name: Breadcrumb for Opportunity
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+            
+              l_id number;
+            
+            begin
+            
+              l_id := 
+                case :APP_PAGE_ID
+                  when '80' then nv('P80_ID')
+                  when '85' then nv('P85_ID')
+                end;
+            
+              select apex_escape.html(deal_name)
+              into :BREADCRUMB_DISPLAY
+              from eba_sales_deals
+              where id = l_id;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: [
+            80
+            85
+        ]
+    }
+)
+
+appProcess breadcrumb-for-product (
+    name: Breadcrumb for Product
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+            
+              l_id number;
+            
+            begin
+            
+              l_id := 
+                case :APP_PAGE_ID
+                  when '61' then nv('P61_ID')
+                end;
+            
+              select apex_escape.html(product_name)
+              into :BREADCRUMB_DISPLAY
+              from eba_sales_products
+              where id = l_id;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: 61
+    }
+)
+
+appProcess breadcrumb-for-territory (
+    name: Breadcrumb for Territory
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+            
+              l_id number;
+            
+            begin
+            
+              l_id := 
+                case :APP_PAGE_ID
+                  when '93' then nv('P93_ID')
+                  when '123' then nv('P123_TERRITORY_ID')
+                  when '125' then nv('P125_TERRITORY_ID')
+                end;
+            
+              select apex_escape.html(territory_name)
+              into :BREADCRUMB_DISPLAY
+              from eba_sales_territories
+              where id = l_id;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: [
+            93
+            123
+            125
+        ]
+    }
+)
+
+appProcess set-counts (
+    name: set counts
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :PRODUCTS
+            from eba_sales_products;
+            
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :CUSTOMERS
+            from eba_sales_customers;
+            
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :DEALS
+            from eba_sales_deals;
+            
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :TERRITORIES
+            from eba_sales_territories;
+            
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :LEADS
+            from eba_sales_leads;
+            
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :CONTACTS
+            from eba_sales_customer_contacts;
+            
+            select trim(to_char(count(*),'999G999G999G990'))
+            into :COMPETITION
+            from eba_sales_deal_competition;
+            ```
+    }
+    execution {
+        sequence: 3
+    }
+)
+
+appProcess set-time-zone (
+    name: set Time Zone
+    type: executeCode
+    source {
+        plsqlCode: eba_sales_tz_init;
+    }
+    execution {
+        sequence: 2
+        point: afterAuthentication
+    }
+    error {
+        errorMessage: Unable to set timezone
+    }
+)
+
+appProcess trim-all-page-items (
+    name: Trim All Page Items
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            begin
+                for c1 in (select item_name
+                           from apex_application_page_items
+                           where application_id = :APP_ID
+                               and page_id = :APP_PAGE_ID
+                               and display_as_code in ('NATIVE_TEXT_FIELD',
+                                                       'NATIVE_TEXTAREA',
+                                                       'NATIVE_NUMBER_FIELD') ) loop
+                    apex_util.set_session_state( c1.item_name,
+                        regexp_replace(apex_util.get_session_state( c1.item_name ),
+                            '^[[:space:]]*(.*?)[[:space:]]*$', '\1'
+                        )
+                    );
+                end loop;
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: afterSubmit
+    }
+)
+

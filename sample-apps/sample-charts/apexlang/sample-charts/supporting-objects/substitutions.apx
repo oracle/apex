@@ -1,0 +1,21 @@
+substitution APP_NAME (
+)
+
+substitution GETTING_STARTED_URL (
+)
+
+substitution JET_COOKBOOK_URL (
+)
+
+substitution JET_GET_STARTED_URL (
+)
+
+substitution OJCHART_API_URL (
+)
+
+substitution OJCHART_ITEM_API_URL (
+)
+
+substitution PRODUCT_NAME (
+)
+

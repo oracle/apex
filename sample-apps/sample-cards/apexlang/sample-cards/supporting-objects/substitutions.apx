@@ -1,0 +1,15 @@
+substitution APP_NAME (
+)
+
+substitution GOOGLE_API (
+)
+
+substitution JET_VISUALIZATION_URL (
+)
+
+substitution MOVIEDB_API (
+)
+
+substitution PRODUCT_NAME (
+)
+

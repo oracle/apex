@@ -1,0 +1,171 @@
+page 25 (
+    name: Preferences
+    alias: PREFERENCES
+    title: Preferences
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region preferences (
+        name: Preferences
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P25_ENABLE_FEEDBACK (
+        type: radioGroup
+        label {
+            label: Enable Feedback
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes;YES,No;NO
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @preferences
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: staticValue
+            staticValue: &ENABLE_FEEDBACK.
+            used: always
+        }
+        default {
+            type: static
+            staticValue: NO
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Set Preferences
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 24
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process set-feedback (
+        name: Set Feedback
+        type: executeCode
+        source {
+            plsqlCode: :ENABLE_FEEDBACK := :P25_ENABLE_FEEDBACK;
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Feedback Preference Set.
+        }
+        advanced {
+            executionMappingIdentifier: 4549859055315154341
+        }
+        serverSideCondition {
+            whenButtonPressed: @apply-changes
+        }
+    )
+
+    branch (
+        name: Go To Page 24
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 24
+            }
+        }
+        comments {
+            comments: Created 12-APR-2012 16:01 by MIKE
+        }
+    )
+
+)
+

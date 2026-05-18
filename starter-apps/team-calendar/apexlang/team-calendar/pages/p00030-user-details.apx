@@ -1,0 +1,532 @@
+page 30 (
+    name: User Details
+    alias: USER-DETAILS
+    title: User Details
+    pageGroup: @acl
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region form-items (
+        name: Form Items
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @user-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region user-details (
+        name: User Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P30_ACCESS_LEVEL_ID (
+        type: radioGroup
+        label {
+            label: Access Level
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-level
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @user-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCESS_LEVEL_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+    )
+
+    pageItem P30_ACCOUNT_LOCKED (
+        type: switch
+        label {
+            label: Account Locked
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @user-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_LOCKED
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P30_ID
+        }
+    )
+
+    pageItem P30_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @user-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P30_RESTRICTED_TO (
+        type: checkboxGroup
+        label {
+            label: Restricted To
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select short_name || ' - ' ||calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d,
+                       calendar_id r
+                  from eba_ca_calendars c
+                 where is_active_yn = 'Y'
+                    or exists (select 1 from eba_ca_users
+                                where :P30_ID = id
+                                  and instr(':'||restricted_to||':', ':'||c.calendar_id||':') > 0)
+                 order by d
+                ```
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 40
+            region: @user-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: RESTRICTED_TO
+            used: always
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from eba_ca_calendars c
+                 where is_active_yn = 'Y'
+                    or exists (select 1 from eba_ca_users
+                                where :P30_ID = id
+                                  and instr(':'||restricted_to||':', ':'||c.calendar_id||':') > 0)
+                ```
+        }
+        help {
+            helpText:
+                ```html
+                <p>Restrict access to selected Calendars.</p>
+                <p>If calendars are defined as private (Public Can View = No) then only those users with the calendar selected can access the events on the calendar.</p>
+                ```
+        }
+        config {
+            buildOption: @include-multiple-calendars
+        }
+    )
+
+    pageItem P30_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @user-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USERNAME
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add User
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P30_ID
+        }
+    )
+
+    button create-again (
+        buttonName: CREATE_AGAIN
+        label: Add and Add Another
+        layout {
+            sequence: 35
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P30_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P30_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P30_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-update-yourself (
+        name: cannot update yourself
+        execution {
+            sequence: 100
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_CA_USERS
+                 where upper(username) = :APP_USER
+                   and id = :P30_ID
+                ```
+        }
+        error {
+            errorMessage: You cannot update your own record.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: never
+        }
+    )
+
+    validation p30-username-email-is-valid (
+        name: P30_USERNAME Email is Valid
+        execution {
+            sequence: 110
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P30_USERNAME
+            regexp: "^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$"
+        }
+        error {
+            errorMessage: Username is not in a valid email address format. Please note the application's username format below.
+            associatedItem: @P30_USERNAME
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_ca_fw.get_preference_value ('USERNAME_FORMAT') = 'EMAIL'
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    computation p30-username (
+        itemName: P30_USERNAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: trim(:P30_USERNAME)
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 1697233399220463853
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: CREATE_AGAIN
+        }
+    )
+
+    process fetch-row-from-eba-ca-users (
+        name: Fetch Row from EBA_CA_USERS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CA_USERS
+            pkColumn: ID
+            pkItem: P30_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3236283384470762704
+        }
+    )
+
+    process process-row-of-eba-ca-users (
+        name: Process Row of EBA_CA_USERS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CA_USERS
+            pkColumn: ID
+            pkItem: P30_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 3236283590463762706
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 3236283785769762706
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

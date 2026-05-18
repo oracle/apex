@@ -1,0 +1,36 @@
+installScript "Sample Data" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: sample-data.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+
+installScript Tables (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: tables.sql
+    }
+)
+
+installScript Triggers (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: triggers.sql
+    }
+)
+

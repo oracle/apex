@@ -1,0 +1,739 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry access-request-details (
+        name: Access Request Details
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @access-requests
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry access-requests (
+        name: Access Requests
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry activity-calendar (
+        name: Activity Calendar
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry add-community-members (
+        name: Add Community / Members
+        pageNumber: 70
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry advanced-search (
+        name: Advanced Search
+        pageNumber: 200
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry application-error-log (
+        name: Application Error Log
+        pageNumber: 175
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 175
+            }
+        }
+    )
+
+    entry application-log (
+        name: Application Log
+        pageNumber: 61
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 61
+            }
+        }
+    )
+
+    entry application-page-views (
+        name: Application Page Views
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry application-user-log (
+        name: Application User Log
+        pageNumber: 60
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry build-options (
+        name: Build Options
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry communities (
+        name: Communities
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry community (
+        name: Community
+        pageNumber: 71
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+    )
+
+    entry create-poll (
+        name: Create Poll
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry default-email-addresses (
+        name: Default Email Addresses
+        pageNumber: 58
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+    )
+
+    entry delete-poll (
+        name: Delete Poll
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry delete-test-data (
+        name: Delete Test Data
+        pageNumber: 82
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @poll-name
+        }
+        link {
+            target: {
+                page: 82
+            }
+        }
+    )
+
+    entry detailed-results (
+        name: Detailed Results
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry edit-poll (
+        name: Edit Poll
+        pageNumber: 48
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry email-history (
+        name: Email History
+        pageNumber: 59
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 59
+            }
+        }
+    )
+
+    entry email-results (
+        name: Email Results
+        pageNumber: 90
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @poll-name-2
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry invitation-details (
+        name: Invitation Details
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @invitations
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry invitations (
+        name: Invitations
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry invitations-sent (
+        name: Invitations Sent
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry manual-invitations-recorded (
+        name: Manual Invitations Recorded
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @poll-name
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry members (
+        name: Members
+        pageNumber: 74
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @communities
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+    )
+
+    entry notification (
+        name: Notification
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry notifications (
+        name: Notifications
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry opt-out-user-details (
+        name: Opt Out User Details
+        pageNumber: 46
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry opt-out-user-list (
+        name: Opt Out User List
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry p67-poll-name (
+        name: &P67_POLL_NAME.
+        pageNumber: 67
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 67
+            }
+        }
+    )
+
+    entry page-privileges (
+        name: Page Privileges
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry poll-name (
+        name: &POLL_NAME.
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry poll-name-2 (
+        name: &POLL_NAME.
+        pageNumber: 66
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 66
+            }
+        }
+    )
+
+    entry poll-name-3 (
+        name: &POLL_NAME.
+        pageNumber: 68
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 68
+            }
+        }
+    )
+
+    entry poll-name-4 (
+        name: &POLL_NAME.
+        pageNumber: 50
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry purge-access-requests (
+        name: Purge Access Requests
+        pageNumber: 49
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+    )
+
+    entry remove-extraneous-characters (
+        name: Remove Extraneous Characters
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry rename-application (
+        name: Rename Application
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry respondent-details (
+        name: Respondent Details
+        pageNumber: 86
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+    )
+
+    entry results-across-polls (
+        name: Results Across Polls
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry results-emailed (
+        name: Results Emailed
+        pageNumber: 91
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @poll-name-2
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry section (
+        name: Section
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry top-users (
+        name: Top Users
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry username-format (
+        name: Username Format
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry your-response (
+        name: Your Response
+        pageNumber: 69
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 69
+            }
+        }
+    )
+
+)
+

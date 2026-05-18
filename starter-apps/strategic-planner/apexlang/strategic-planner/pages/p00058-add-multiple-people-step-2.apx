@@ -1,0 +1,479 @@
+page 58 (
+    name: Add Multiple &NOMENCLATURE_USERS - Step 2
+    alias: ADD-MULTIPLE-PEOPLE-STEP-2
+    title: Add Multiple &NOMENCLATURE_USERS. - Step 2
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .a-ListView-item .fa {
+              color: var(--ut-component-text-muted-color);
+            }
+            
+            .a-ListView-item .u-success-text {
+              color: var(--ut-palette-success) !important;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @access-control
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region exceptions (
+        name: Exceptions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 username, c002 reason
+                  from apex_collections
+                 where collection_name = 'BULK_USER_INVALID'
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @wizard-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'BULK_USER_INVALID'
+                ```
+        }
+        reportLayout {
+            numberOfRows: 10000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column REASON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Reason
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Username
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region no-valid-users-exist-page-info (
+        name: No Valid Users Exist - Page Info
+        type: staticContent
+        source {
+            htmlCode: <p>No valid new users found</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-sm
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                ```
+        }
+    )
+
+    region p58-valid-count-users-to-add (
+        name: &P58_VALID_COUNT. Users to Add
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select distinct c001 username
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @wizard-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                ```
+        }
+        settings {
+            features: advancedFormatting
+            textFormatting: <span class="fa fa-check-circle u-success-text" aria-hidden="true"></span> <span style="line-height:36px;text-transform:lowercase;">&USERNAME!HTML.</span>
+        }
+        reportLayout {
+            numberOfRows: 10000
+        }
+    )
+
+    region valid-users-exist-page-info (
+        name: Valid Users Exist - Page Info
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                sys.htp.prn('<p>Add the following:</p>');
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-sm
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                ```
+        }
+    )
+
+    region wizard-container (
+        name: Wizard Container
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    pageItem P58_INVALID_COUNT (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                ```
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P58_VALID_COUNT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                ```
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:history.back();
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button submit (
+        buttonName: SUBMIT
+        label: Add Users
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'BULK_USER_VALID'
+                ```
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process add-users-to-access-control-list (
+        name: Add Users to Access Control List
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_first_name  varchar2(255) := null;
+                    l_last_name   varchar2(255) := null;
+                    l_temp        varchar2(255) := null;
+                begin
+                    --
+                    -- loop over collection of valid email address to be added to the system
+                    --
+                    for c in (  select distinct c001 as username
+                                from   apex_collections
+                                where  collection_name = 'BULK_USER_VALID' )
+                    loop
+                        l_temp       := null;
+                        l_first_name := null;
+                        l_last_name  := null;
+                         --
+                         -- determine first and last name based on email
+                         --
+                         l_temp := substr(c.username,1,instr(c.username,'@') - 1); -- remove domain and at sign
+                         if instr(l_temp,'.') > 0 then 
+                            -- assume text before first dot is first name
+                            l_first_name := substr(l_temp,1,instr(l_temp,'.')-1);
+                            l_temp := substr(l_temp,instr(l_temp,'.')+1);  
+                         end if;
+                         if instr(l_temp,'.') > 0 then
+                            -- more then one dot remains
+                            l_temp := substr(l_temp,instr(l_temp,'.')+1);
+                            l_last_name := l_temp;
+                         end if;
+                         if l_last_name is null then
+                            -- determine last name
+                            l_last_name := l_temp;
+                         end if;
+                         --
+                         -- Add a new team member to the application 
+                         --
+                         insert into SP_TEAM_MEMBERS 
+                             (FIRST_NAME, LAST_NAME, EMAIL, IS_CURRENT_YN)
+                         values
+                             (initcap(l_first_name), initcap(l_last_name), c.username, 'Y');
+                    end loop;
+                
+                    apex_collection.delete_collection('BULK_USER_INVALID');
+                    apex_collection.delete_collection('BULK_USER_VALID');
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: User(s) added.
+        }
+        advanced {
+            executionMappingIdentifier: 982302135293031132
+        }
+        serverSideCondition {
+            whenButtonPressed: @submit
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 982302538845031132
+        }
+    )
+
+)
+

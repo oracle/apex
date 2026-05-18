@@ -1,0 +1,329 @@
+page 29 (
+    name: Appraisal History
+    alias: APPRAISAL-HISTORY
+    title: Appraisal History
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page shows employee appraisal history for the logged-in user. If the current user
+                    is a manager, they can flip the switch to see the employee appraisal history of their
+                    subordinates.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region appraisal-history (
+        name: Appraisal History
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with reports as (
+                    select empno
+                        from (
+                            select empno, ename
+                              from eba_demo_appr_emp
+                              start with empno = :CURRENT_USER_EMPNO
+                              connect by prior empno = mgr
+                        )
+                    where empno != :CURRENT_USER_EMPNO
+                )
+                select a.id,
+                       e.ename,
+                       eba_demo_appr.appraisal_period(a.period_start,a.period_end) as appraisal_period,
+                       a.appraisal_date,
+                       a.input_completed,
+                       a.manager_completed,
+                       a.vp_review_date,
+                       case a.status
+                          when 'ORIGINATED'    then 'Awaiting employee self-evaluation'
+                          when 'SUBMITTED'     then 'Awaiting manager evaluation'
+                          when 'MGR_SUBMITTED' then 'Awaiting VP review'
+                          when 'VP_REVIEWED'   then 'VP Reviewed'
+                          when 'COMPLETED'     then 'Completed'
+                       end as status
+                from eba_demo_appr_appraisals a
+                left join eba_demo_appr_emp e on e.empno = a.empno
+                where (nvl(:P29_SHOW_FOR_SUBORDINATES,'N') = 'N' and a.empno = :CURRENT_USER_EMPNO)
+                      or
+                      (nvl(:P29_SHOW_FOR_SUBORDINATES,'N') = 'Y' and a.empno in (select empno from reports))
+                order by date_originated desc
+                ```
+            pageItemsToSubmit: P29_SHOW_FOR_SUBORDINATES
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No appraisals yet.
+        }
+
+        column APPRAISAL_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Appraisal Date
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column APPRAISAL_PERIOD (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Period
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        P17_ID: #ID#
+                    }
+                }
+                linkText: #APPRAISAL_PERIOD#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Employee
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: P29_SHOW_FOR_SUBORDINATES
+                value: Y
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column INPUT_COMPLETED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Input Completed
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MANAGER_COMPLETED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Manager Completed
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column VP_REVIEW_DATE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: VP Reviewed
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P29_SHOW_FOR_SUBORDINATES (
+        type: switch
+        label {
+            label: Show for Subordinates?
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            slot: body
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select empno
+                from eba_demo_appr_emp
+                where mgr = :CURRENT_USER_EMPNO
+                fetch first row only
+                ```
+        }
+    )
+
+    dynamicAction when-subordinates-switched (
+        name: When Subordinates Switched
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P29_SHOW_FOR_SUBORDINATES
+        }
+
+        action refresh-appraisal-history (
+            name: Refresh Appraisal History
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @appraisal-history
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

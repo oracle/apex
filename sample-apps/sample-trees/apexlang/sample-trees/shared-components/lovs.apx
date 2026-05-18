@@ -1,0 +1,77 @@
+lov priority (
+    name: PRIORITY
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 1
+        display: 1
+        return: 1
+    )
+
+    entry lov_data-2 (
+        sequence: 2
+        display: 2
+        return: 2
+    )
+
+    entry lov_data-3 (
+        sequence: 3
+        display: 3
+        return: 3
+    )
+
+    entry lov_data-4 (
+        sequence: 4
+        display: 4
+        return: 4
+    )
+
+    entry lov_data-5 (
+        sequence: 5
+        display: 5
+        return: 5
+    )
+
+)
+
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select project_name d, proj_id r
+            from   eba_demo_tree_projects
+            order by 1
+            ```
+    }
+)
+
+lov status (
+    name: STATUS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select status_name ||' - '||pct_complete||'%' d, pct_complete r
+            from eba_demo_tree_def_st_codes
+            order by pct_complete
+            ```
+    }
+)
+
+lov tasks (
+    name: TASKS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select TASK_NAME d, task_id r
+            from   eba_demo_tree_task
+            order by 1
+            ```
+    }
+)
+

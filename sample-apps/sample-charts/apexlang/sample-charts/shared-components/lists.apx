@@ -1,0 +1,2386 @@
+list 3d-effect (
+    name: 3D Effect
+
+    entry funnel-chart-3d-effect-page (
+        label: Funnel Chart (3D Effect) - Page 22
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a 3D Funnel chart, by setting the threeDEffect attribute of the ojChart API via custom JavaScript code
+        }
+    )
+
+    entry pie-chart-master-detail-chart-links-page (
+        label: Pie Chart (Master Detail Chart Links) - Page 4
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a 3D Pie chart, by setting the threeDEffect attribute of the ojChart API via custom JavaScript code
+        }
+    )
+
+)
+
+list administration (
+    name: Administration
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data.  You can remove or recreate sample data using this administrative page.
+        }
+    )
+
+    entry theme-styles (
+        label: Theme Styles
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+
+list chart-links (
+    name: Chart Links
+
+    entry linking-to-interactive-grid-bar-chart-series-name-column-mapping-pg (
+        label: Linking to Interactive Grid - Bar Chart (Series Name Column Mapping), pg 9
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates linking from a chart to an Interactive Grid, using the Interactive Grid URL Filtering support introduced in APEX 20.1.
+        }
+    )
+
+    entry linking-to-interactive-grid-pie-pg (
+        label: Linking to Interactive Grid - Pie, pg 4
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates linking from a chart to an Interactive Grid, using the Interactive Grid URL Filtering support introduced in APEX 20.1.
+        }
+    )
+
+    entry master-detail-chart-links-page (
+        label: Master Detail Chart Links - Page 4
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates linking from one chart to another chart, using the chart Link attribute.
+        }
+    )
+
+)
+
+list charts (
+    name: Charts
+
+    entry area (
+        label: Area
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry bar (
+        label: Bar
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 9
+        }
+        link {
+            target: {
+                page: 9
+                clearCache: 9
+            }
+        }
+    )
+
+    entry box-plot (
+        label: Box Plot
+        icon {
+            imageIconCssClasses: fa-box-plot-chart
+        }
+        layout {
+            sequence: 13
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry bubble (
+        label: Bubble
+        icon {
+            imageIconCssClasses: fa-bubble-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry combination (
+        label: Combination
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry dashboard-pie-charts (
+        label: Dashboard - Pie Charts
+        icon {
+            imageIconCssClasses: fa-columns
+        }
+        layout {
+            sequence: 27
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-densification (
+        label: Data Densification
+        icon {
+            imageIconCssClasses: fa-code-group
+        }
+        layout {
+            sequence: 21
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry event-drops (
+        label: Event Drops
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry funnel (
+        label: Funnel
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry gantt (
+        label: Gantt
+        icon {
+            imageIconCssClasses: fa-gantt-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry legend-plug-in (
+        label: Legend Plug-in
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 42
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry line (
+        label: Line
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 45
+        }
+        isCurrent {
+            type: pages
+            pages: 15
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+    )
+
+    entry line-with-area (
+        label: Line with Area
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry pareto-chart (
+        label: Pareto Chart
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry pie (
+        label: Pie
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry polar (
+        label: Polar
+        icon {
+            imageIconCssClasses: fa-polar-chart
+        }
+        layout {
+            sequence: 65
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry pyramid (
+        label: Pyramid
+        icon {
+            imageIconCssClasses: fa-pyramid-chart
+        }
+        layout {
+            sequence: 67
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry radar (
+        label: Radar
+        icon {
+            imageIconCssClasses: fa-radar-chart
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry range (
+        label: Range
+        icon {
+            imageIconCssClasses: fa-range-chart-bar
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry reference (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 105
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry scatter (
+        label: Scatter
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry status-meter-gauge (
+        label: Status Meter Gauge
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 82
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry stock (
+        label: Stock
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 85
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+)
+
+list das (
+    name: DAs
+
+    entry area-chart-line-types-page (
+        label: Area Chart (Line Types) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart with dynamic actions to change the type of line used to render the chart elements
+        }
+    )
+
+    entry bar-chart-dual-y-axis-with-custom-labels-page (
+        label: Bar Chart (Dual Y Axis with custom Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: "This example demonstrates a Bar chart with dynamic actions to change the orientation of the chart, or render the chart elements as stacked or unstacked "
+        }
+    )
+
+    entry combination-chart-data-label-positions-page (
+        label: Combination Chart (Data Label Positions) - Page 25
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Combination chart with dynamic actions to change the type of line used to represent a series
+        }
+    )
+
+    entry line-chart-data-labels-line-styles-page (
+        label: Line Chart (Data Labels & Line Styles) -  Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart with dynamic actions to change the chart type and orientation
+        }
+    )
+
+    entry line-chart-show-hide-labels-via-dynamic-action-page (
+        label: Line Chart ( Show/Hide Labels via Dynamic Action ) -  Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart with dynamic actions to show/hide the data labels on the chart
+        }
+    )
+
+    entry pie-chart-page (
+        label: Pie Chart - Page 4
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Pie chart with dynamic actions to increase or decrease the Legend Size
+        }
+    )
+
+    entry range-page (
+        label: Range - Page 23
+        icon {
+            imageIconCssClasses: fa-range-chart-bar
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Range chart with dynamic actions to change the chart orientation
+        }
+    )
+
+)
+
+list data-densify (
+    name: Data Densify
+
+    entry bar-chart-series-colors-page (
+        label: Bar Chart (Series Colors) - Page 9
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a single-series Bar chart, with the ordering controlled via the series SQL query
+        }
+    )
+
+    entry bar-chart-series-name-column-mapping-page (
+        label: Bar Chart (Series Name Column Mapping)  - Page 9
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a multi-series Bar chart, with differing numbers of data points per series, using <strong>Fill Gaps in Chart Data</strong> chart-level attribute.
+        }
+    )
+
+    entry data-densification-page (
+        label: Data Densification - Page 14
+        icon {
+            imageIconCssClasses: fa-code-group
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: This page demonstrates the behaviour of the new <strong>Fill Gaps in Chart Data</strong> and associated <strong>Sort Order</strong> attributes, in the densification of a multi-series chart.  There are also examples of opting out of the densification logic, to base the chart data and ordering solely on the chart query provided.
+        }
+    )
+
+    entry line-chart-mixed-series-length-quantity-40-page (
+        label: Line Chart (Mixed Series Length - Quantity > 40) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a multi-series Line with Area chart, with series of differing lengths
+        }
+    )
+
+)
+
+list declarative-font-formatting (
+    name: Declarative Font Formatting
+
+    entry bar-chart-dual-y-axis-with-formatted-labels-page (
+        label: Bar Chart (Dual Y Axis with formatted Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the styling of the series-level labels
+        }
+    )
+
+    entry combination-chart-information-y-axis-value-formatting-page (
+        label: Combination Chart  Information (Y-Axis Value Formatting) - Page 25
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the styling of the y-axis title
+        }
+    )
+
+    entry line-chart-declarative-font-formatting-page (
+        label: Line Chart ( Declarative Font Formatting ) - Page 15
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the new axes, legend, and value declarative font formatting attributes, to style the text rendered on a chart.
+        }
+    )
+
+)
+
+list formatting-values (
+    name: Formatting Values
+
+    entry area-chart-y-axis-value-formatting-page (
+        label: Area Chart (Y-Axis Value Formatting) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart with numeric formatting of the y-axis values, using the y-axis Format attribute
+        }
+    )
+
+    entry bar-chart-stacked-percent-page (
+        label: Bar Chart (Stacked Percent) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Bar chart with percent formatting applied to the y-axis values, via the y-axis Format attribute
+        }
+    )
+
+    entry bubble-page (
+        label: Bubble - Page 11
+        icon {
+            imageIconCssClasses: fa-bubble-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Bubble chart with percent formatting of the x and y axis values, using their respective axis-level Format attribute
+        }
+    )
+
+    entry donut-chart-sorting-page (
+        label: Donut Chart (Sorting) - Page 4
+        icon {
+            imageIconCssClasses: fa-donut-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Donut chart with decimal formatting of the values, using the chart attribute Format
+        }
+    )
+
+    entry line-chart-time-axis-page (
+        label: Line Chart (Time Axis) - Page 15
+        icon {
+            imageIconCssClasses: fa-eur
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart with currency formatting of the y-axis values, and Date formatting of the x-axis values, using their respective axis-level attribute Format
+        }
+    )
+
+    entry range-page (
+        label: Range - Page 23
+        icon {
+            imageIconCssClasses: fa-range-chart-bar
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Range chart with decimal formatting of the y-axis values, using the y-axis attribute Format
+        }
+    )
+
+    entry stock-page (
+        label: Stock - Page 7
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Stock chart with currency formatting of the y-axis values, and Date formatting of the x-axis values, using their respective axis-level attribute Format
+        }
+    )
+
+)
+
+list jet-plug-in-components (
+    name: JET Plug-in Components
+
+    entry oracle-jet-legend-component-as-a-plug-in-page (
+        label: Oracle JET Legend Component as a Plug-in - Page 26
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the Oracle JET Legend, as an APEX plug-in
+        }
+    )
+
+)
+
+list js-customizations (
+    name: JS Customizations
+
+    entry area-chart-legend-javascript-code-customization-page (
+        label: Area Chart ( Legend JavaScript Code Customization ) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart with custom icons used in the legend, based on Static Application Files.
+        }
+    )
+
+    entry combination-chart-regular-v-mixed-frequency-time-axis-page (
+        label: Combination Chart (Regular v Mixed Frequency Time Axis) - Page 25
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Combination chart rendering DateTime information on the x-axis, using the Time Axis Type attribute
+        }
+    )
+
+    entry funnel-chart-3d-effect-page (
+        label: Funnel Chart (3D Effect) - Page 22
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 45
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a 3D Funnel chart, setting the threeDEffect attribute of the ojChart API via custom JavaScript code.
+        }
+    )
+
+    entry funnel-chart-multi-select-selection-mode-page (
+        label: Funnel Chart ( Multi-select Selection Mode) - Page 22
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Funnel chart with an optionChange listener added to the initialization of the chart.
+        }
+    )
+
+    entry gantt-chart-reference-object-via-javascript-code-page (
+        label: Gantt Chart (Reference Object via JavaScript Code) - Page 3
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Gantt chart rendering a Reference Object line for the current date, via some custom JavaScript code
+        }
+    )
+
+    entry line-chart-reference-object-via-javascript-customizations-page (
+        label: Line Chart (Reference Object via JavaScript Customizations) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 65
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart rendering a Reference Object line, via some custom JavaScript code
+        }
+    )
+
+    entry line-chart-time-axis-page (
+        label: Line Chart (Time Axis) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart rendering DateTime information on the x-axis, using the Time Axis Type attribute
+        }
+    )
+
+    entry pie-chart-dashboard-page-page (
+        label: Pie Chart ( Dashboard Page ) - Page 24
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 85
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a dashboard of Pie & Donut charts, using custom JavaScript code to style the chart title during chart initialization.
+        }
+    )
+
+    entry pie-chart-master-detail-chart-links-page (
+        label: Pie Chart ( Master Detail Chart Links ) - Page 4
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a 3D Pie chart, using custom JavaScript code to set the 3D effect during chart initialization.
+        }
+    )
+
+    entry scatter-dynamic-y-axis-min-max-via-javascript-code-page (
+        label: Scatter (Dynamic Y-Axis Min/Max via JavaScript Code) -  Page 8
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to dynamically change the y-axis minimum and maximum values, based upon values selected by the end user
+        }
+    )
+
+    entry stock-page (
+        label: Stock - Page 7
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Donut chart with custom labels defined
+        }
+    )
+
+)
+
+list navigation-bar-top (
+    name: Navigation Bar (Top)
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry area (
+        label: Area
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry bar (
+        label: Bar
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                9
+                29
+            ]
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry box-plot (
+        label: Box Plot
+        icon {
+            imageIconCssClasses: fa-box-plot-chart
+        }
+        layout {
+            sequence: 17
+        }
+        isCurrent {
+            type: pages
+            pages: 41
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry bubble (
+        label: Bubble
+        icon {
+            imageIconCssClasses: fa-bubble-chart
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry combination (
+        label: Combination
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 25
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry dashboard-pies (
+        label: Dashboard - Pies
+        icon {
+            imageIconCssClasses: fa-columns
+        }
+        layout {
+            sequence: 32
+        }
+        isCurrent {
+            type: pages
+            pages: 24
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-densification (
+        label: Data Densification
+        icon {
+            imageIconCssClasses: fa-code-group
+        }
+        layout {
+            sequence: 27
+        }
+        isCurrent {
+            type: pages
+            pages: 14
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry event-drops (
+        label: Event Drops
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 35
+        }
+        isCurrent {
+            type: pages
+            pages: 46
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry funnel (
+        label: Funnel
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 22
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry gantt (
+        label: Gantt
+        icon {
+            imageIconCssClasses: fa-gantt-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 3
+                clearCache: 3
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                12
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry legend-plug-in (
+        label: Legend Plug-in
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 52
+        }
+        isCurrent {
+            type: pages
+            pages: 26
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry line (
+        label: Line
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry line-with-area (
+        label: Line with Area
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        layout {
+            sequence: 115
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry pareto-chart (
+        label: Pareto Chart
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 65
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry pie (
+        label: Pie
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry polar (
+        label: Polar
+        icon {
+            imageIconCssClasses: fa-polar-chart
+        }
+        layout {
+            sequence: 75
+        }
+        isCurrent {
+            type: pages
+            pages: 19
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry pyramid (
+        label: Pyramid
+        icon {
+            imageIconCssClasses: fa-pyramid-chart
+        }
+        layout {
+            sequence: 77
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry radar (
+        label: Radar
+        icon {
+            imageIconCssClasses: fa-radar-chart
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: 21
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry range (
+        label: Range
+        icon {
+            imageIconCssClasses: fa-range-chart-bar
+        }
+        layout {
+            sequence: 85
+        }
+        isCurrent {
+            type: pages
+            pages: 23
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry reference (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 130
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                28
+                31
+                32
+                33
+                34
+                35
+                36
+                37
+                38
+                40
+                16
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry scatter (
+        label: Scatter
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry status-meter-gauge (
+        label: Status Meter Gauge
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 92
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry stock (
+        label: Stock
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 95
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry theme-styles (
+        label: Theme Styles
+        layout {
+            sequence: 120
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+)
+
+list new-in (
+    name: New in 20.2
+
+    entry pareto-chart-pg (
+        label: Pareto Chart, pg 20
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Pareto Chart, based on a declaratively defined Combination Chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line.
+        }
+    )
+
+)
+
+list reference-js (
+    name: Reference - JS
+
+    entry 3d-effect (
+        label: 3D Effect
+        icon {
+            imageIconCssClasses: fa-cube
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to apply the 3D effect on your chart
+        }
+    )
+
+    entry chart-links (
+        label: Chart Links
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to link from chart to reports and charts
+        }
+    )
+
+    entry customizing-data-labels (
+        label: Customizing Data Labels
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating how to declaratively style chart data labels using CSS, or customize the labels using JavaScript
+        }
+    )
+
+    entry customizing-tooltip-labels (
+        label: Customizing Tooltip Labels
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating how to customise the labels displayed in a tooltip, both declaratively and via JavaScript customization
+        }
+    )
+
+    entry data-densification (
+        label: Data Densification
+        icon {
+            imageIconCssClasses: fa-plus
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how a multi-series chart with differing series lengths, use new data densification handling to render the data points correctly on your chart
+        }
+    )
+
+    entry datetime-x-axis (
+        label: Datetime x-axis
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of the Time Axis Type attribute, to render DATETIME information on the x-axis of a chart
+        }
+    )
+
+    entry dynamic-actions (
+        label: Dynamic Actions
+        icon {
+            imageIconCssClasses: fa-bolt
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of Dynamic Actions
+        }
+    )
+
+    entry font-formatting (
+        label: Font Formatting
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of examples demonstrating the declarative styling of text rendered on a chart
+        }
+    )
+
+    entry formatting-values (
+        label: Formatting Values
+        icon {
+            imageIconCssClasses: fa-eur
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to format the values on your chart
+        }
+    )
+
+    entry javascript-code-customizations (
+        label: JavaScript Code Customizations
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of JavaScript Code to customize the chart at initialization
+        }
+    )
+
+    entry jet-plug-in-component (
+        label: JET Plug-in Component
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of an APEX plug-in, to incorporate other Oracle JET components in your application
+        }
+    )
+
+    entry series-color (
+        label: Series Color
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating how to set the color of chart series
+        }
+    )
+
+    entry sorting (
+        label: Sorting
+        icon {
+            imageIconCssClasses: fa-sort-alpha-asc
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to sort chart values and labels, using the new <strong>Fill Gaps in Chart Data</strong> and <strong>Sort Order</strong> chart-level attributes.
+        }
+    )
+
+    entry stack-grouping (
+        label: Stack Grouping
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of examples demonstrating the declarative grouping and labeling of stacked charts.
+        }
+    )
+
+    entry style-chart-title (
+        label: Style Chart Title
+        icon {
+            imageIconCssClasses: fa-font-size
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: See chart examples demonstrating the use of JavaScript Code to customize the chart title at initialization
+        }
+    )
+
+    entry y2-axis (
+        label: Y2 Axis
+        icon {
+            imageIconCssClasses: fa-y2-axis
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of an extra, y2 axis
+        }
+    )
+
+    entry zoom-scroll (
+        label: Zoom & Scroll
+        icon {
+            imageIconCssClasses: fa-search-plus
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of Zoom and Scroll, making it easier to view charts rendering large volumes of data
+        }
+    )
+
+)
+
+list series-color (
+    name: Series Color
+
+    entry bar-chart-series-colors-page (
+        label: Bar Chart (Series Colors) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the various options available to define a color on a chart series
+        }
+    )
+
+    entry pie-chart-series-colors-page (
+        label: Pie Chart (Series Colors) - Page 4
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the various options available to define a color on a chart series
+        }
+    )
+
+)
+
+list sorting (
+    name: Sorting
+
+    entry area-chart-stacked-page (
+        label: Area Chart (Stacked) - Page 2
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates sorting the chart by the x-axis labels, descending.
+        }
+    )
+
+    entry bar-chart-series-colors-page (
+        label: Bar Chart (Series Colors) - Page 9
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Four Bar charts demonstrate the various methods of defining colors on a chart, and each of the charts demonstrates a different style of sorting.
+        }
+    )
+
+    entry donut-chart-sorting-page (
+        label: Donut Chart (Sorting) - Page 9
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates sorting the chart by the values, ascending.
+        }
+    )
+
+)
+
+list stack-grouping (
+    name: Stack Grouping
+
+    entry bar-chart-stack-label-stack-category-page (
+        label: Bar Chart (Stack Label & Stack Category) - Page 9
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the new Stack Category and Stack Label attributes on a Bar chart, to render multiple stacks on a given chart and display the stack total value as a label above each stack.
+        }
+    )
+
+)
+
+list styling-data-labels (
+    name: Styling Data Labels
+
+    entry bar-chart-dual-y-axis-with-custom-labels-page (
+        label: Bar Chart (Dual Y Axis with custom Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Bar chart rendering data labels customized to use different font sizes and colors, via the CSS Classes declarative attribute
+        }
+    )
+
+    entry pareto-chart-pg (
+        label: Pareto Chart, pg 20
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Pareto Chart, based on a declaratively defined Combination Chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line.
+        }
+    )
+
+)
+
+list styling-tooltip-labels (
+    name: Styling Tooltip Labels
+
+    entry area-chart-legend-javascript-code-customization-page (
+        label: Area Chart (Legend JavaScript Code Customization) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart, rendering a customised tooltip on the Acme series of the multi-series chart, via the SQL query and use of the declarative Custom Tooltip attribute
+        }
+    )
+
+    entry line-with-area-chart-custom-tooltip-labels-page (
+        label: Line with Area Chart ( Custom Tooltip Labels ) - Page 18
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line with Area chart, rendering customised tooltip labels using JavaScript, via the JavaScript Initialization Code attribute
+        }
+    )
+
+)
+
+list time-axis (
+    name: Time Axis
+
+    entry combination-chart-regular-v-mixed-frequency-time-axis-page (
+        label: Combination Chart (Regular v Mixed Frequency Time Axis) - Page 25
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the use of the Time Axis Type attribute, to render DATETIME information on a multi-series Combination chart
+        }
+    )
+
+    entry line-chart-time-axis-page (
+        label: Line Chart (Time Axis) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the use of the Time Axis Type attribute, to render DATETIME information on a Line chart
+        }
+    )
+
+)
+
+list y2-axis (
+    name: Y2 Axis
+
+    entry bar-chart-dual-y-axis-with-custom-labels-page (
+        label: Bar Chart (Dual Y Axis with custom Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Bar Chart with a y2 Axis, and dual-axis setting
+        }
+    )
+
+    entry line-with-area-chart-data-labels-line-styles-page (
+        label: Line with Area Chart (Data Labels & Line Styles) - Page 18
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line with Area Chart with a y2 Axis
+        }
+    )
+
+)
+
+list zoom-scroll (
+    name: Zoom & Scroll
+
+    entry line-chart-time-axis-page (
+        label: Line Chart (Time Axis) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This example demonstrates:
+                a) a Line chart rendering DateTime information on the x-axis, using the Time Axis Type attribute
+                b) reset Zoom option - resetting the viewport settings of the chart xAxis
+                ```
+        }
+    )
+
+    entry stock-page (
+        label: Stock - Page 7
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Donut chart with custom labels defined
+        }
+    )
+
+)
+

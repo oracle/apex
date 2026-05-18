@@ -1,0 +1,43 @@
+page 0 (
+    name: Global Page
+
+    region css (
+        name: CSS
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                .display-hidden {
+                    background-color: var(--ut-report-header-background-color, var(--a-gv-header-background-color)) !important;
+                    color: var(--ut-report-header-text-color, var(--a-gv-header-text-color)) !important;
+                }
+                
+                .display-visible {
+                    background-color: var(--a-palette-success-shade)!important;
+                }
+                
+                .display-not {
+                    background-color: var(--a-palette-danger-shade)!important;
+                }
+                
+                .display-partial {
+                    background-color: var(--a-palette-warning-shade)!important;
+                }
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: banner
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            headerText: <style>
+            footerText: </style>
+        }
+    )
+
+)
+

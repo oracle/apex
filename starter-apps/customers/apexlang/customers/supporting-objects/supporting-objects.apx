@@ -1,0 +1,98 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 1856
+        systemPrivileges: [
+            createProcedure
+            createSequence
+            createTrigger
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_CUST_ACCESS_LEVELS
+            EBA_CUST_ADMINISTRATORS
+            EBA_CUST_CATEGORIES
+            EBA_CUST_CONTACT_TYPES
+            EBA_CUST_CONTACTS
+            EBA_CUST_COUNTRIES
+            EBA_CUST_CUSTOMERS
+            EBA_CUST_ERROR_LOOKUP
+            EBA_CUST_FILES
+            EBA_CUST_GEOGRAPHIES
+            EBA_CUST_HISTORY
+            EBA_CUST_INDUSTRIES
+            EBA_CUST_LINKS
+            EBA_CUST_NOTES
+            EBA_CUST_NOTIFICATIONS
+            EBA_CUST_PREFERENCES
+            EBA_CUST_PRODUCT_USES
+            EBA_CUST_PRODUCTS
+            EBA_CUST_STATUS
+            EBA_CUST_TAGS
+            EBA_CUST_TAGS_SUM
+            EBA_CUST_TAGS_TYPE_SUM
+            EBA_CUST_TZ_PREF
+            EBA_CUST_USERS
+            EBA_CUST_VIEWS_LOG
+            EBA_CUST
+            EBA_CUST_SAMPLE_DATA
+            EBA_CUST_TZ_INIT
+            EBA_CUST_CUSTOMERS_V
+            EBA_CUST_SEQ
+            EBA_CUST_FW
+            EBA_CUST_CLICKS
+            EBA_CUST_VERIFICATIONS
+            EBA_CUST_TYPE
+            EBA_CUST_USE_CASE
+            EBA_CUST_COMPETITORS
+            EBA_CUST_CUST_COMPETITOR_REF
+            EBA_CUST_CUST_PARTNER_REF
+            EBA_CUST_IMPL_PARTNERS
+            EBA_CUST_PRODUCT_FAMILIES
+            EBA_CUST_ACTIVITIES
+            EBA_CUST_ACTIVITY_FILES
+            EBA_CUST_ACTIVITY_REF
+            EBA_CUST_ACTIVITY_TYPES
+            EBA_CUST_FEEDBACK_TYPES
+            EBA_CUST_FEEDBACK
+            EBA_CUST_EMAIL_LOG
+            EBA_CUST_EMAIL
+            EBA_CUST_ISSUE_STATUSES
+            EBA_CUST_ISSUES
+        ]
+    }
+    installationMessages {
+        welcome: This is a basic customer tracking application. Use the application to manage manage your Customers, their Contacts and related information.
+        confirmation: Customers Installation. Please confirm that you would like to install this application's supporting objects.
+    }
+    upgrade {
+        upgradeWhenSqlQuery:
+            ```sql
+            select null
+              from user_tables
+             where table_name like 'EBA_CUST_%'
+            ```
+    }
+    upgradeMessages {
+        welcome: The application installer has detected that this application's supporting objects were previously installed.  This wizard will guide you through the process of upgrading these supporting objects.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        success: Your application's supporting objects have been installed.
+        failure: Installation of database objects and seed data has failed.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        confirmation: This operation will completely remove this application from your workspace.
+        postDeinstall: Customers deinstallation complete.
+    }
+    messages {
+        validations: Customers Installation. The following validations will be performed to ensure your system is compatible with this application.
+        appSubstitutions: Customers Installation. You can configure the following attributes of your application.
+        buildOptions: Customers Installation. You can choose to include the following build options.
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

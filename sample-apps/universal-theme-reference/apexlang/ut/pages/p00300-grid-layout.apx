@@ -1,0 +1,1493 @@
+page 300 (
+    name: Grid Layout
+    alias: GRID-LAYOUT
+    title: Grid Layout - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .display-hidden {
+                color: var(--ut-component-text-muted-color)!important;
+            }
+            
+            .display-visible {
+                color: var(--ut-component-text-subtitle-color) !important;
+                background-color: rgba(59, 170, 44, .1) !important;
+            }
+            
+            .region-grid {
+                text-align: center;
+                padding: 16px 8px;
+                border-radius: 4px;
+                box-shadow: var(--ut-alert-box-shadow);
+                font-size: 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                background-color: var(--ut-component-badge-background-color);
+                color: var(--ut-component-badge-text-color);
+                font-weight: 500;
+                margin: 8px 0;
+                line-height: 1.25;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="u-textLeft">Every region below uses the following responsive CSS Classes: <code>col-xxs-12 col-xs-6 col-sm-4 col-md-3 col-lg-2 col-xl-2 col-xxl-1</code></p>
+                <p class="u-textLeft">Resize this window to experience the responsiveness of this page.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @responsive-design
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            cssClasses: "u-textCenter	"
+        }
+    )
+
+    region demo-2 (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            cssClasses: "u-textCenter	"
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Universal Theme uses a 12 columns grid layout system for arranging components on a page.</p>
+                <p>Understanding this grid system will allow you to create thoughful designs and personalize the responsive experience of your applications.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region (
+        name: Region 2
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 80
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-10 (
+        name: Region 9
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 150
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-11 (
+        name: Region 11
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 170
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-12 (
+        name: Region 12
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 180
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-13 (
+        name: Region 1
+        type: staticContent
+        source {
+            htmlCode: 2 Columns
+        }
+        layout {
+            sequence: 190
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-14 (
+        name: Region 2
+        type: staticContent
+        source {
+            htmlCode: 2 Columns
+        }
+        layout {
+            sequence: 200
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-15 (
+        name: Region 3
+        type: staticContent
+        source {
+            htmlCode: 2 Columns
+        }
+        layout {
+            sequence: 210
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-16 (
+        name: Region 4
+        type: staticContent
+        source {
+            htmlCode: 2 Columns
+        }
+        layout {
+            sequence: 220
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-17 (
+        name: Region 5
+        type: staticContent
+        source {
+            htmlCode: 2 Columns
+        }
+        layout {
+            sequence: 230
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-18 (
+        name: Region 6
+        type: staticContent
+        source {
+            htmlCode: 2 Columns
+        }
+        layout {
+            sequence: 240
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-19 (
+        name: Region 1
+        type: staticContent
+        source {
+            htmlCode: 3 Columns
+        }
+        layout {
+            sequence: 250
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-2 (
+        name: Region 4
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 100
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-20 (
+        name: Region 2
+        type: staticContent
+        source {
+            htmlCode: 3 Columns
+        }
+        layout {
+            sequence: 260
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-21 (
+        name: Region 3
+        type: staticContent
+        source {
+            htmlCode: 3 Columns
+        }
+        layout {
+            sequence: 270
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-22 (
+        name: Region 4
+        type: staticContent
+        source {
+            htmlCode: 3 Columns
+        }
+        layout {
+            sequence: 280
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-23 (
+        name: Region 1
+        type: staticContent
+        source {
+            htmlCode: 4 Columns
+        }
+        layout {
+            sequence: 290
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-24 (
+        name: Region 2
+        type: staticContent
+        source {
+            htmlCode: 4 Columns
+        }
+        layout {
+            sequence: 300
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-25 (
+        name: Region 3
+        type: staticContent
+        source {
+            htmlCode: 4 Columns
+        }
+        layout {
+            sequence: 310
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-26 (
+        name: Region 1
+        type: staticContent
+        source {
+            htmlCode: 6 Columns
+        }
+        layout {
+            sequence: 320
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-27 (
+        name: Region 2
+        type: staticContent
+        source {
+            htmlCode: 6 Columns
+        }
+        layout {
+            sequence: 330
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-3 (
+        name: Region 6
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 120
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-4 (
+        name: Region 8
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 140
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-5 (
+        name: Region 10
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 160
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-6 (
+        name: Region 1
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 70
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-7 (
+        name: Region 3
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 90
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-8 (
+        name: Region 5
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 110
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-9 (
+        name: Region 7
+        type: staticContent
+        source {
+            htmlCode: 1 Column
+        }
+        layout {
+            sequence: 130
+            parentRegion: @demo-2
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region responsive-classes (
+        name: Responsive Classes
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'Range' grid_property,
+                       'All' grid_all,
+                       '479px and below' grid_extra_extra_small,
+                       '480px to 639px' grid_extra_small,
+                       '640px to 767px' grid_small,
+                       '768px to 991px' grid_medium,
+                       '992px to 1199px' grid_large,
+                       '1200px to 1399px' grid_extra_large,
+                       '1400px and above' grid_extra_extra_large
+                  from dual union all
+                
+                select 'CSS Class Prefix' grid_property,
+                       '.col-' grid_all,
+                       '.col-xxs-' grid_extra_extra_small,
+                       '.col-xs-' grid_extra_small,
+                       '.col-sm-' grid_small,
+                       '.col-md-' grid_medium,
+                       '.col-lg-' grid_large,
+                       '.col-xl-' grid_extra_large,
+                       '.col-xxl-' grid_extra_extra_large
+                  from dual union all
+                
+                select 'Number of Columns' grid_property,
+                       '12' grid_all,
+                       '' grid_extra_extra_small,
+                       '' grid_extra_small,
+                       '' grid_small,
+                       '' grid_medium,
+                       '' grid_large,
+                       '' grid_extra_large,
+                       '' grid_extra_extra_large
+                  from dual union all
+                
+                select 'Gutter' grid_property,
+                       '1rem (0.5rem each side)' grid_all,
+                       '' grid_extra_extra_small,
+                       '' grid_extra_small,
+                       '' grid_small,
+                       '' grid_medium,
+                       '' grid_large,
+                       '' grid_extra_large,
+                       '' grid_extra_extra_large
+                  from dual
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @responsive-design
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            cssClasses: margin-top-xl
+        }
+        headerAndFooter {
+            headerText: <p>You can fine tune the responsive behavior of the components on your page by modifying the <strong>Column CSS Classes</strong> property of your components.</p>
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column GRID_ALL (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: All
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_EXTRA_EXTRA_LARGE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: XX Large
+            }
+            layout {
+                sequence: 90
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_EXTRA_EXTRA_SMALL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: XX Small
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_EXTRA_LARGE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: X Large
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_EXTRA_SMALL (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: X Small
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_LARGE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Large
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_MEDIUM (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Medium
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_PROPERTY (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                htmlExpression: <strong>#GRID_PROPERTY#</strong>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRID_SMALL (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Small
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region responsive-design (
+        name: Responsive Design
+        type: staticContent
+        source {
+            htmlCode: <p>Universal Theme is responsive out of the box. For more control on your application responsive behavior, read on the additional Universal Theme responsive options.</p>
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            htmlDomId: responsive_design
+            regionDisplaySelector: true
+        }
+    )
+
+    region responsive-region (
+        name: Responsive Region 2
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 80
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-10 (
+        name: Responsive Region 9
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 150
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-11 (
+        name: Responsive Region 11
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 170
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-12 (
+        name: Responsive Region 12
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 180
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-2 (
+        name: Responsive Region 4
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 100
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-3 (
+        name: Responsive Region 6
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 120
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-4 (
+        name: Responsive Region 8
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 140
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-5 (
+        name: Responsive Region 10
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 160
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-6 (
+        name: Responsive Region 1
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 70
+            parentRegion: @demo
+            slot: subRegions
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-7 (
+        name: Responsive Region 3
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 90
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-8 (
+        name: Responsive Region 5
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 110
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region responsive-region-9 (
+        name: Responsive Region 7
+        type: staticContent
+        source {
+            htmlCode: Column
+        }
+        layout {
+            sequence: 130
+            parentRegion: @demo
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                col-xxs-12
+                col-xs-6
+                col-sm-4
+                col-md-3
+                col-lg-2
+                col-xl-2
+                col-xxl-1
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: region-grid
+        }
+    )
+
+    region toggle-layout-columns (
+        name: Toggle Layout Columns
+        type: staticContent
+        source {
+            htmlCode: <p>Click the <b>Toggle Layout Columns</b> button to overlay the grid behind this page.</p>
+        }
+        layout {
+            sequence: 20
+            parentRegion: @overview
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+            ]
+            cssClasses: margin-bottom-xl
+        }
+    )
+
+    region visibility-classes (
+        name: Visibility Classes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use the following classes to hide a given component when the viewport size is at the specified breakpoint.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc  dm-Report--grid">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>XXS <small>479px and below</small></th>
+                      <th>XS <small>480px to 639px</small></th>
+                      <th>Small <small>640px to 767px</small></th>
+                      <th>Medium <small>768px to 991px</small></th>
+                      <th>Large <small>992px and above</small></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">xxs</span>-down</span></th>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">xs</span>-down</span></th>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">sm</span>-down</span></th>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">md</span>-down</span></th>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-visible">Visible</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">lg</span>-down</span></th>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">xxs</span>-up</span></th>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">xs</span>-up</span></th>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">sm</span>-up</span></th>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">md</span>-up</span></th>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-hidden">Hidden</td>
+                      <td class="display-hidden">Hidden</td>
+                    </tr>
+                    <tr>
+                      <th scope="row"><span class="class">hidden-<span class="class-var">lg</span>-up</span></th>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-visible">Visible</td>
+                      <td class="display-hidden">Hidden</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><small>Note: These helper utilities are available in Oracle APEX 18.2 and later.</small></p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @responsive-design
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    button toggle-grid-layout (
+        buttonName: TOGGLE_GRID_LAYOUT
+        label: Toggle Layout Columns
+        layout {
+            sequence: 10
+            region: @toggle-layout-columns
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction toggle-grid-layout (
+        name: Toggle Grid Layout
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @toggle-grid-layout
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: apex.jQuery('body').hasClass('grid-debug-on')
+        }
+
+        action native-add-class (
+            action: addClass
+            settings {
+                class: is-active
+            }
+            affectedElements {
+                selectionType: button
+                button: @toggle-grid-layout
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-add-class-2 (
+            action: addClass
+            settings {
+                class: grid-debug-on
+            }
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: body
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-remove-class (
+            action: removeClass
+            settings {
+                class: grid-debug-on
+            }
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: body
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-remove-class-2 (
+            action: removeClass
+            settings {
+                class: is-active
+            }
+            affectedElements {
+                selectionType: button
+                button: @toggle-grid-layout
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

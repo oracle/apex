@@ -1,0 +1,361 @@
+page 124 (
+    name: Change History
+    alias: HISTORY
+    title: Change History
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region changes (
+        name: Changes
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select null attributes,
+                       project_id,
+                       changed_on ATTRIBUTE_CHANGE_DATE,
+                       to_char(changed_on,'YYYY.MM') ATTRIBUTE_CHANGE_Month,
+                       --
+                       initcap(replace(attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       case change_type when 'CREATE' then 'Addition'
+                                        when 'UPDATE' then 'Update'
+                                        when 'DELETE' then 'Delete'
+                                        else change_type
+                            end change_type,
+                       substr(decode(old_value,'Y','Yes','N','No',old_value),1,255)||(decode(greatest(nvl(length(old_value),255),0),255,null,'...')) OLD_VALUE,
+                       substr(decode(new_value,'Y','Yes','N','No',new_value),1,255)||(decode(greatest(length(new_value),255),255,null,'...')) NEW_VALUE,
+                       changed_by
+                  from SP_PROJECT_HISTORY
+                where  project_id = :P124_ID and
+                       attribute_column != 'TAGS' and
+                       nvl(trim(old_value),'.') != nvl(trim(new_value),'-')
+                ```
+            pageItemsToSubmit: P124_ID
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        heading {
+            type: none
+        }
+
+        column ATTRIBUTES (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Attributes
+            }
+            layout {
+                sequence: 57
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <strong>#ATTRIBUTE_COLUMN#</strong><br><br>
+                    Change Type: #CHANGE_TYPE#<br><br>
+                    Old: #OLD_VALUE#<br><br>
+                    New: #NEW_VALUE#<br><br>
+                    #CHANGED_BY# - #ATTRIBUTE_CHANGE_DATE#<br><br>
+                    ```
+            }
+        )
+
+        column ATTRIBUTE_CHANGE_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 27
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column ATTRIBUTE_CHANGE_MONTH (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 37
+            }
+        )
+
+        column ATTRIBUTE_COLUMN (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column CHANGED_BY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 17
+            }
+        )
+
+        column CHANGE_TYPE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 67
+            }
+        )
+
+        column NEW_VALUE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column OLD_VALUE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+    )
+
+    region history (
+        name: History
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       project,
+                       lower(p.CREATED_BY)||' '||apex_util.get_since(p.CREATED) created,
+                       lower(p.UPDATED_BY)||' '||apex_util.get_since(p.updated) updated
+                  from SP_PROJECTS p
+                where 
+                      p.archived_yn = 'N' and
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.id = :P124_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column CREATED (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+    )
+
+    pageItem P124_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @history
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button close (
+        buttonName: Close
+        label: Close
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button view-project (
+        buttonName: view_project
+        label: View &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 36
+                items: {
+                    P36_ID: &P124_ID.
+                }
+                clearCache: 36
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: close dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @close
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

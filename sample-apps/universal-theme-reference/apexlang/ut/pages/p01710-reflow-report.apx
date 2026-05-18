@@ -1,0 +1,362 @@
+page 1710 (
+    name: Reflow Report
+    alias: REFLOW-REPORT
+    title: Reflow Report - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: reflowReport
+        source {
+            location: localDatabase
+            tableName: EBA_UT_CHART_TASKS
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            htmlDomId: DemoA
+        }
+        settings {
+            layoutOptions: [
+                stripes
+                stroke
+            ]
+        }
+
+        column ASSIGNED_TO (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Assigned To
+            }
+            layout {
+                sequence: 130
+            }
+        )
+
+        column BUDGET (
+            source {
+                dataType: NUMBER
+            }
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column COST (
+            source {
+                dataType: NUMBER
+            }
+            heading {
+                heading: Cost
+                alignment: end
+            }
+            layout {
+                sequence: 140
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column CREATED (
+            show: false
+            source {
+                dataType: TIMESTAMP_LTZ
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column CREATED_BY (
+            show: false
+            source {
+                dataType: VARCHAR2
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column END_DATE (
+            source {
+                dataType: DATE
+            }
+            heading {
+                heading: End Date
+                alignment: center
+            }
+            layout {
+                sequence: 110
+                columnAlignment: center
+            }
+        )
+
+        column ID (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PARENT_TASK (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 90
+            }
+        )
+
+        column PROJECT (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column ROW_VERSION_NUMBER (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column START_DATE (
+            source {
+                dataType: DATE
+            }
+            heading {
+                heading: Start Date
+                alignment: center
+            }
+            layout {
+                sequence: 100
+                columnAlignment: center
+            }
+        )
+
+        column STATUS (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 120
+            }
+        )
+
+        column TASK_NAME (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column UPDATED (
+            show: false
+            source {
+                dataType: TIMESTAMP_LTZ
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column UPDATED_BY (
+            show: false
+            source {
+                dataType: VARCHAR2
+            }
+            layout {
+                sequence: 80
+            }
+        )
+
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: DemoA
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The Reflow Report provides another responsive table-based report where on small screens, the table columns become stacked and each row becomes a block of data.
+                This is an alternative display to the Column Toggle Report and can be useful when you want to display all columns of a tabular report in a way that works well for small screens.</p>
+                <p class="dm-Hero-steps">Choose <strong>Reflow Report</strong> as Region type.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: DemoA
+        }
+    )
+
+)
+

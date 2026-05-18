@@ -1,0 +1,256 @@
+page 32 (
+    name: Manage Sample Data
+    alias: MANAGE-SAMPLE-DATA
+    title: Manage Sample Data
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region manage-sample-data (
+        name: Manage Sample Data
+        type: staticContent
+        source {
+            htmlCode: <p>This application ships with sample data.  You can remove and recreate sample data using this page.  If the sample data is old recreating the data makes the dates more current.  Removing or adding sample data will not affect any decisions you created.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: t-Alert--accessibleHeading
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button load-sample-data (
+        buttonName: load_sample_data
+        label: Load Sample Data
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select
+                    null
+                from
+                    eba_qpoll_polls
+                where
+                    id = 1;
+                ```
+        }
+    )
+
+    button remove-sample-data (
+        buttonName: remove_sample_data
+        label: Remove Sample Data
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select
+                    null
+                from
+                    eba_qpoll_polls
+                where
+                    id = 1;
+                ```
+        }
+    )
+
+    button reset-data (
+        buttonName: reset_data
+        label: Reset Data
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process load-sample-data (
+        name: Load Sample Data
+        type: executeCode
+        source {
+            plsqlCode: eba_qpoll.eba_qpoll_data_load;
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Sample Data Loaded.
+        }
+        advanced {
+            executionMappingIdentifier: 14955663020434873996
+        }
+        serverSideCondition {
+            whenButtonPressed: @load-sample-data
+        }
+    )
+
+    process remove-sample-data (
+        name: remove sample data
+        type: executeCode
+        source {
+            plsqlCode: eba_qpoll.eba_qpoll_remove_data;
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Sample Data Removed
+        }
+        advanced {
+            executionMappingIdentifier: 14955662660857873996
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-sample-data
+        }
+    )
+
+    process reset-data (
+        name: reset data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_qpoll.eba_qpoll_remove_data;
+                eba_qpoll.eba_qpoll_data_load;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample data reset.
+        }
+        advanced {
+            executionMappingIdentifier: 14955662248428873994
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-data
+        }
+    )
+
+    branch (
+        name: Go To Administration
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: settings
+            }
+        }
+        comments {
+            comments: Created 06-JAN-2012 15:08 by MIKE
+        }
+    )
+
+)
+

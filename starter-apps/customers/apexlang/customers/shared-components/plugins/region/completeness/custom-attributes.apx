@@ -1,0 +1,187 @@
+customAttribute attribute_01 (
+    apexlangName: threshold1Percentage
+    attribute: 1
+    name: Threshold 1 Percentage
+    type: integer
+    validation {
+        maxLength: 2
+    }
+    appearance {
+        sequence: 10
+    }
+    builder {
+        unit: %
+        displayWidth: 2
+    }
+    help {
+        helpText: Enter the first threshold percentage that should be met to be considered complete or almost complete.  The default value is 66, which represents above 66% complete.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: threshold1Label
+    attribute: 2
+    name: Threshold 1 Label
+    validation {
+        maxLength: 100
+    }
+    appearance {
+        sequence: 20
+    }
+    builder {
+        translatable: true
+        displayWidth: 30
+    }
+    help {
+        helpText: Enter the text displayed when completeness percentage meets or exceeds the first threshold percentage.  The default value is "Strong".
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: threshold2Percentage
+    attribute: 3
+    name: Threshold 2 Percentage
+    type: integer
+    validation {
+        maxLength: 2
+    }
+    appearance {
+        sequence: 30
+    }
+    builder {
+        unit: %
+        displayWidth: 2
+    }
+    help {
+        helpText: Enter the second threshold percentage that should be met to be considered moderately complete. He default value is 33,  which represents above 33% complete and less than 66%, or the setting for Threshold 1 percentage.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: threshold2Label
+    attribute: 4
+    name: Threshold 2 Label
+    validation {
+        maxLength: 100
+    }
+    appearance {
+        sequence: 40
+    }
+    builder {
+        translatable: true
+        displayWidth: 30
+    }
+    help {
+        helpText: Enter the text displayed when completeness percentage meets or exceeds the second threshold percentage. The default value is "Moderate".
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: threshold3Percentage
+    attribute: 5
+    name: Threshold 3 Percentage
+    type: integer
+    validation {
+        maxLength: 2
+    }
+    appearance {
+        sequence: 50
+    }
+    builder {
+        unit: %
+        displayWidth: 2
+    }
+    help {
+        helpText: Enter the third threshold percentage that should be met to be considered barely complete. He default value is 0,  which represents above 0% complete and less than 33%, or the setting for Threshold 2 percentage.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: threshold3Label
+    attribute: 6
+    name: Threshold 3 Label
+    validation {
+        maxLength: 100
+    }
+    appearance {
+        sequence: 60
+    }
+    builder {
+        translatable: true
+        displayWidth: 30
+    }
+    help {
+        helpText: Enter the text displayed when completeness percentage meets or exceeds the third threshold percentage.  The default value is "Weak".
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: underThreshold3Label
+    attribute: 7
+    name: Under Threshold 3 Label
+    validation {
+        maxLength: 100
+    }
+    appearance {
+        sequence: 70
+    }
+    builder {
+        translatable: true
+        displayWidth: 30
+    }
+    help {
+        helpText: Enter the text displayed when completeness percentage is below the third threshold percentage. The default value is "Very Weak".
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: titleForResultsModal
+    attribute: 8
+    name: Title for Results Modal
+    validation {
+        maxLength: 255
+    }
+    appearance {
+        sequence: 80
+    }
+    builder {
+        translatable: true
+        displayWidth: 30
+    }
+    help {
+        helpText: Enter the title for the modal region that is displayed when the end-user clicks the completeness status link. The default value is "Completeness Score Details".
+    }
+)
+
+customAttribute attribute_09 (
+    apexlangName: headerTextForResultsModal
+    attribute: 9
+    name: Header Text for Results Modal
+    type: textarea
+    validation {
+        maxLength: 4000
+    }
+    appearance {
+        sequence: 90
+    }
+    help {
+        helpText: Enter informational text displayed above the table of scores in the modal region that is displayed when the end-user clicks the completeness status link.
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: footerTextForResultsModal
+    attribute: 10
+    name: Footer Text for Results Modal
+    type: textarea
+    validation {
+        maxLength: 4000
+    }
+    appearance {
+        sequence: 100
+    }
+    help {
+        helpText: Enter informational text below the table of scores in the modal region that is displayed when the end-user clicks the completeness status link.
+    }
+)
+

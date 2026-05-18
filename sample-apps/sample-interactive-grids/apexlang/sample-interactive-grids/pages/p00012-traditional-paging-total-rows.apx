@@ -1,0 +1,639 @@
+page 12 (
+    name: Traditional Paging (Total Rows)
+    alias: TRADITIONAL-PAGING-TOTAL-ROWS
+    title: Traditional Paging (Total Rows)
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        fileUrls: #APP_FILES#sample-interactive-grid#MIN#.css
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-traditional-paging-total-rows (
+        name: Overview: Traditional Paging (Total Rows)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The only difference between this example and the previous one is that Show Total Row Count is set to Yes. When the total number of rows is known extra capabilities are available. The range of rows includes the total number of rows (For example 1 - 50 of 5000) and in addition to Next and Previous buttons there are buttons to go to the first and last page. By default there is a sliding list of links to go to specific pages. Advanced configuration can be used to control some of the pagination controls as shown in the next two examples.
+                </p>
+                <p>In general it is a good idea to define a primary key (or keys) even for a read only Interactive Grid. One thing that it helps with is making sure that duplicate rows are not added to the model when more data is fetched due to pagination. Without a primary key defined duplicates can show up in the Interactive Grid when the set of records on the server changes (for example new records are inserted) because rows are fetched using an offset into the result set.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region traditional-paging-total-rows (
+        name: Traditional Paging (Total Rows)
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID, RATING, NAME, COUNTRY, TO_CHAR(FROM_YR) as FROM_YR,
+                        TO_YR,
+                        LINK, CATEGORY,
+                        coalesce( to_yr, extract(year from sysdate) ) - FROM_YR as AGE,
+                        case CATEGORY
+                            when 'S_T' then 'fa fa-rocket'
+                            when 'P' then 'fa fa-university'
+                            when 'A' then 'fa fa-paint-brush'
+                            when 'S' then 'fa fa-bicycle'
+                            when 'B_L' then 'fa fa-money'
+                            else 'fa fa-question'
+                        end as ICON,
+                        case CATEGORY
+                            when 'S_T' then 'Science & Technology'
+                            when 'P' then 'Politics'
+                            when 'A' then 'Art'
+                            when 'S' then 'Sports'
+                            when 'B_L' then 'Business & Law'
+                            else 'Undefined'
+                        end as DISPLAY_CATEGORY,
+                        GENDER
+                        from EBA_DEMO_IG_PEOPLE
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: people
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        heading {
+            fixedTo: region
+            fixedReportHeight: 518
+        }
+        iconView {
+            show: true
+            custom: true
+            customIcon:
+                ```html
+                <li class="t-Cards-item" data-id='&APEX$ROW_ID.'>
+                    <div class="t-Card">
+                        <div class="t-Card-wrap">
+                            <div class="t-Card-icon u-color"><span class="t-Icon &ICON."></span></div>
+                            <div class="t-Card-titleWrap"><h3 class="t-Card-title">&NAME.</h3></div>
+                            <div class="t-Card-body">
+                                <div class="t-Card-desc">Country: &COUNTRY.<br>Age: &AGE.</div>
+                                <div class="t-Card-info">&DISPLAY_CATEGORY.</div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                ```
+        }
+        detailView {
+            show: true
+            beforeRows: <ul class="t-MediaList t-MediaList--showDesc t-MediaList--showIcons t-MediaList--showBadges">
+            forEachRow:
+                ```html
+                <li class="t-MediaList-item  ">
+                    <div class="t-MediaList-itemWrap">
+                        <div class="t-MediaList-iconWrap">
+                            <span class="t-MediaList-icon"><span class="t-Icon fa &ICON."></span></span>
+                        </div>
+                        <div class="t-MediaList-body">
+                            <h3 class="t-MediaList-title">&NAME.</h3>
+                            <p class="t-MediaList-desc">
+                                Country: &COUNTRY.<br>
+                                Born: &FROM_YR.<br>
+                                Age: &AGE.
+                            </p>
+                        </div>
+                        <div class="t-MediaList-badgeWrap">
+                            <span class="t-MediaList-badge">&DISPLAY_CATEGORY.</span>
+                        </div>
+                    </div>
+                </li>
+                ```
+            afterRows: </ul>
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    config.defaultGridViewOptions = {
+                        rowHeader: "sequence"
+                    };
+                    config.defaultIconViewOptions = {
+                        collectionClasses: "t-Cards t-Cards--5cols t-Cards--animColorFill t-Cards--basic t-Cards--displayIcons u-colors"
+                    };
+                    return config;
+                }
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 4684334042860311474
+        }
+
+        savedReport 14452 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @RATING
+                layout {
+                    width: 91
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    width: 190
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @COUNTRY
+                layout {
+                    width: 131
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @FROM_YR
+                layout {
+                    width: 82
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @TO_YR
+                layout {
+                    width: 76
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @AGE
+                layout {
+                    width: 67
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @LINK
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @CATEGORY
+                layout {
+                    width: 185
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ICON
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @GENDER
+                layout {
+                    width: 64
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @DISPLAY_CATEGORY
+                layout {
+                    sequence: 12
+                }
+            )
+
+            sort (
+                column: @RATING
+                sort {
+                    direction: desc
+                    nulls: first
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column AGE (
+            type: textField
+            heading {
+                heading: Age
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: AGE
+                dataType: number
+            }
+        )
+
+        column CATEGORY (
+            type: displayOnly
+            heading {
+                heading: Category
+            }
+            settings {
+                basedOn: lov
+            }
+            lov {
+                type: sharedComponent
+                lov: @people-categories
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: CATEGORY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column COUNTRY (
+            type: textField
+            heading {
+                heading: Country
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                maxLength: 50
+            }
+            source {
+                databaseColumn: COUNTRY
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column DISPLAY_CATEGORY (
+            type: hidden
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: DISPLAY_CATEGORY
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column FROM_YR (
+            type: textField
+            heading {
+                heading: Born
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            validation {
+                maxLength: 40
+            }
+            source {
+                databaseColumn: FROM_YR
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column GENDER (
+            type: displayOnly
+            heading {
+                heading: Gender
+            }
+            settings {
+                basedOn: lov
+            }
+            lov {
+                type: sharedComponent
+                lov: @people-gender
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: GENDER
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column ICON (
+            type: hidden
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column LINK (
+            type: hidden
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: LINK
+                dataType: varchar2
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column RATING (
+            type: textField
+            heading {
+                heading: Popularity
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: RATING
+                dataType: number
+            }
+        )
+
+        column "Row Header" (
+            type: rowSelector
+            settings {
+                enableMultiSelect: false
+                hideControl: true
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column TO_YR (
+            type: textField
+            heading {
+                heading: Died
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            validation {
+                maxLength: 40
+            }
+            source {
+                databaseColumn: TO_YR
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 17
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 11
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

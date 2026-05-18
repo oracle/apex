@@ -1,0 +1,90 @@
+templateOptionGroup preserve-label-spacing (
+    templateType: item
+    name: Preserve Label Spacing
+    sequence: 1
+    settings {
+        nullText: Yes
+    }
+    help {
+        helpText: Preserves the label space and enables use of the Label Column Span property.
+    }
+    advanced {
+        identifier: PRESERVE_LABEL_SPACING
+    }
+)
+
+templateOptionGroup color-accents (
+    templateType: list
+    name: Color Accents
+    sequence: 50
+    settings {
+        nullText: Default
+    }
+    advanced {
+        identifier: COLOR_ACCENTS
+    }
+)
+
+templateOptionGroup icon-style (
+    templateType: list
+    name: Icon Style
+    sequence: 35
+    advanced {
+        identifier: ICON_STYLE
+    }
+)
+
+templateOptionGroup display-mode (
+    templateType: page
+    name: Display Mode
+    sequence: 30
+    settings {
+        nullText: Default
+    }
+    help {
+        helpText: Determines the default display appearance and positioning of the dialog. The default opens a floating dialog position at the center of the screen.
+    }
+    advanced {
+        identifier: DISPLAY_MODE
+    }
+)
+
+templateOptionGroup display-mode (
+    templateType: region
+    name: Display Mode
+    sequence: 1
+    settings {
+        nullText: Default
+    }
+    help {
+        helpText: Determines the default display appearance and positioning of the dialog. The default opens a floating dialog position at the center of the screen.
+    }
+    advanced {
+        identifier: DISPLAY_MODE
+    }
+)
+
+templateOptionGroup result-separator (
+    templateType: region
+    name: Result Separator
+    sequence: 2
+    settings {
+        nullText: Show
+    }
+    advanced {
+        identifier: RESULT_SEPARATOR
+    }
+)
+
+templateOptionGroup color-accents (
+    templateType: report
+    name: Color Accents
+    sequence: 50
+    settings {
+        nullText: Default
+    }
+    advanced {
+        identifier: COLOR_ACCENTS
+    }
+)
+

@@ -1,0 +1,5489 @@
+page 117 (
+    name: Release
+    alias: RELEASE2
+    title: Release &P117_RELEASE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            
+            .a-CardView-iconWrap,
+            .a-CardView-badge { align-self: flex-start; }
+            
+            .project-rds-region {
+                background-color: rgb(219 204 175 / 20%);
+            }
+            .t-Body-title {
+                --ut-palette-warning-shade: rgba(var(--oj-palette-neutral-rgb-160));
+                --ut-component-background-color: rgba(var(--oj-palette-neutral-rgb-170)); 
+                --ut-alert-horizontal-border-radius: 0;
+            }
+            
+            /* Percent Chart Styles */
+            :root {
+              --a-percent-chart-border-radius: 0.125rem;
+              --a-percent-chart-bar-border-radius: 0.125rem;
+              --a-percent-chart-bar-background-color: var(--rw-palette-slate-100);
+              --ut-report-cell-hover-background-color: rgba(0, 0, 0, 0.025);
+            }
+            
+            /* Report Overrides */
+            .a-IRR-header {
+              box-shadow: inset 0 -1px 0 var(--a-gv-header-cell-border-color);
+            }
+            
+            .t-Report {
+              background-color: var(--rw-palette-neutral-0);
+            }
+            
+            .t-Report th {
+              font-size: .6875rem;
+            }
+            
+            .t-Report th,
+            .t-Report td {
+              border-inline-width: 0;
+              transition: none;
+            }
+            
+            /* Group borders */
+            th#PCT_10,
+            td[headers="PCT_10"],
+            th#EFFORT_DAYS,
+            td[headers="EFFORT_DAYS"],
+            th#MOST_RECENT_COMMENT,
+            td[headers="MOST_RECENT_COMMENT"],
+            th#SPECS_COMPLETED,
+            td[headers="SPECS_COMPLETED"],
+            th#P1,
+            td[headers="P1"] {
+              border-inline-start-width: 0.25rem;
+            }
+            
+            th#P1,
+            th#P2,
+            th#P3,
+            th#P4,
+            th#P5,
+            [headers="P1"],
+            [headers="P2"],
+            [headers="P3"],
+            [headers="P4"],
+            [headers="P5"] {
+              background-color: var(--rw-palette-red-10);
+            }
+            
+            tr:hover th#P1,
+            tr:hover th#P2,
+            tr:hover th#P3,
+            tr:hover th#P4,
+            tr:hover th#P5,
+            tr:hover [headers="P1"],
+            tr:hover [headers="P2"],
+            tr:hover [headers="P3"],
+            tr:hover [headers="P4"],
+            tr:hover [headers="P5"] {
+              background-color: var(--rw-palette-red-20);
+            }
+            
+            th#PCT_0,
+            th#PCT_10,
+            th#PCT_20,
+            th#PCT_30,
+            th#PCT_40,
+            th#PCT_50,
+            th#PCT_60,
+            th#PCT_70,
+            th#PCT_80,
+            th#PCT_90,
+            th#PCT_100,
+            th#PCT_COMPLETE,
+            [headers="PCT_0"],
+            [headers="PCT_10"],
+            [headers="PCT_20"],
+            [headers="PCT_30"],
+            [headers="PCT_40"],
+            [headers="PCT_50"],
+            [headers="PCT_60"],
+            [headers="PCT_70"],
+            [headers="PCT_80"],
+            [headers="PCT_90"],
+            [headers="PCT_100"],
+            [headers="PCT_COMPLETE"] {
+              background-color: var(--rw-palette-green-10);
+            }
+            
+            tr:hover th#PCT_0,
+            tr:hover th#PCT_10,
+            tr:hover th#PCT_20,
+            tr:hover th#PCT_30,
+            tr:hover th#PCT_40,
+            tr:hover th#PCT_50,
+            tr:hover th#PCT_60,
+            tr:hover th#PCT_70,
+            tr:hover th#PCT_80,
+            tr:hover th#PCT_90,
+            tr:hover th#PCT_100,
+            tr:hover th#PCT_COMPLETE,
+            tr:hover [headers="PCT_0"],
+            tr:hover [headers="PCT_10"],
+            tr:hover [headers="PCT_20"],
+            tr:hover [headers="PCT_30"],
+            tr:hover [headers="PCT_40"],
+            tr:hover [headers="PCT_50"],
+            tr:hover [headers="PCT_60"],
+            tr:hover [headers="PCT_70"],
+            tr:hover [headers="PCT_80"],
+            tr:hover [headers="PCT_90"],
+            tr:hover [headers="PCT_100"],
+            tr:hover [headers="PCT_COMPLETE"] {
+              background-color: var(--rw-palette-green-20);
+            }
+            
+            th#EFFORT_DAYS,
+            th#DAYS_COMPLETED,
+            th#DAYS_OUTSTANDING,
+            [headers="EFFORT_DAYS"],
+            [headers="DAYS_COMPLETED"],
+            [headers="DAYS_OUTSTANDING"] {
+              background-color: var(--rw-palette-blue-10);
+            }
+            
+            tr:hover th#EFFORT_DAYS,
+            tr:hover th#DAYS_COMPLETED,
+            tr:hover th#DAYS_OUTSTANDING,
+            tr:hover [headers="EFFORT_DAYS"],
+            tr:hover [headers="DAYS_COMPLETED"],
+            tr:hover [headers="DAYS_OUTSTANDING"] {
+              background-color: var(--rw-palette-blue-20);
+            }
+            
+            th#MOST_RECENT_COMMENT,
+            th#CURRENTLY_ACTIVE_PROJECTS,
+            [headers="MOST_RECENT_COMMENT"],
+            [headers="CURRENTLY_ACTIVE_PROJECTS"] {
+              background-color: var(--rw-palette-plum-10);
+            }
+            
+            tr:hover th#MOST_RECENT_COMMENT,
+            tr:hover th#CURRENTLY_ACTIVE_PROJECTS,
+            tr:hover [headers="MOST_RECENT_COMMENT"],
+            tr:hover [headers="CURRENTLY_ACTIVE_PROJECTS"] {
+              background-color: var(--rw-palette-plum-20);
+            }
+            
+            h3:first-of-type { margin-top: 0; }
+            ```
+    }
+    security {
+        formAutoComplete: false
+    }
+
+    region add-comment (
+        name: Add Comment
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @comments
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region comments (
+        name: Comments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select rc.ID,
+                       -- Display Columns
+                       tm.initials user_icon,
+                       to_char(rc.created,'fmDay, fmDD fmMonth, YYYY') date_full,
+                       null comment_date,
+                       tm.first_name || ' ' || tm.last_name user_name,
+                       --
+                       rc.body_html comment_text,
+                       case when lower(rc.created_by) = lower(:app_user)
+                            then '<a href="'||apex_util.prepare_URL(
+                                              p_url => 'f?p='||:APP_ID||':83:'||:APP_SESSION||'::NO::P83_ID:'||rc.id,
+                                              p_checksum_type => '3')||'">edit</a>'
+                            end actions,
+                       decode(rc.private_yn,null,null,'N',null,'Y',' Private Comment') private_comment_label,
+                       ' ' attribute_1,
+                       ' ' attribute_2,
+                       ' ' attribute_3,
+                       ' ' attribute_4,
+                       'u-color-'||ora_hash(rc.created_by,45) icon_modifier,
+                
+                       -- Data Columns
+                       rc.BODY,
+                       rc.BODY_HTML,
+                       rc.AUTHOR_ID,
+                       --
+                       rc.CREATED,
+                       rc.CREATED_BY,
+                       rc.UPDATED,
+                       rc.UPDATED_BY,
+                       tm.id team_member_id
+                  from sp_release_comments_v rc, 
+                       sp_team_members tm
+                where rc.author_id = tm.id and
+                      rc.release_id = :P117_RELEASE_ID and
+                      (nvl(rc.private_yn,'N') = 'N' or lower(rc.created_by) = lower(:app_user) )
+                order by rc.created desc
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: COMMENTS
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No Comments
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 190
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                authorizationScheme: @contribution-rights
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+                alignment: center
+            }
+            layout {
+                sequence: 200
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+                alignment: center
+            }
+            layout {
+                sequence: 210
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+                alignment: center
+            }
+            layout {
+                sequence: 220
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+                alignment: center
+            }
+            layout {
+                sequence: 230
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AUTHOR_ID (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Author Id
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Body
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY_HTML (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Body Html
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+                alignment: center
+            }
+            layout {
+                sequence: 160
+            }
+            columnFormatting {
+                htmlExpression: <span title="added #DATE_FULL#">#CREATED#</span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+                alignment: center
+            }
+            layout {
+                sequence: 180
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
+                    #COMMENT_TEXT#
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: Created By
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DATE_FULL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Date Full
+            }
+            layout {
+                sequence: 270
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+                alignment: center
+            }
+            layout {
+                sequence: 240
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIVATE_COMMENT_LABEL (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Private Comment Label
+            }
+            layout {
+                sequence: 260
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: User ID
+            }
+            layout {
+                sequence: 250
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: Updated By
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Icon
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: User Name
+                alignment: center
+            }
+            layout {
+                sequence: 170
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region contributors (
+        name: Contributors
+        type: appTemplateComponent/contentRowSimple
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select team_member_id,
+                       name,
+                       email,
+                       person_tags,
+                       is_contributor,
+                       has_tasks,
+                       has_milestones,
+                       has_reviews,
+                       project_activivity_contributor,
+                       project_owner_count,
+                       --
+                       -- photo
+                       --
+                       photo,
+                       photo_mimetype
+                from
+                (
+                select tm.id                             team_member_id,
+                       tm.first_name||' '||tm.last_name  name,
+                       tm.email                          email,
+                       tm.tags                           person_tags,
+                       --
+                       -- contributor
+                       --
+                       (select count(distinct p.id) 
+                        from  sp_project_contributors c,
+                              sp_projects p
+                        where c.PROJECT_ID = p.id and 
+                              c.team_member_id = tm.id and
+                              p.release_id = rt.ID and 
+                              p.ARCHIVED_YN = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null and
+                              p.release_id = :P117_RELEASE_ID
+                       ) is_contributor,
+                       --
+                       -- has_tasks
+                       --
+                       (select count(distinct p.id) 
+                        from  SP_tasks pc, 
+                              sp_task_types tt,
+                              sp_projects p
+                        where pc.PROJECT_ID = p.id and 
+                              pc.owner_ID = tm.id and
+                              p.release_id = rt.ID and 
+                              p.ARCHIVED_YN = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null and
+                              p.release_id = :P117_RELEASE_ID and
+                              nvl(pc.task_sub_type_id,pc.task_type_id) = tt.id and
+                              tt.static_id not like 'REVIEW%' and
+                              tt.static_id not like 'MILESTONE%'
+                       ) has_tasks,
+                       --
+                       -- milestones
+                       --
+                       (select count(distinct p.id) 
+                        from  SP_tasks pc, 
+                              sp_task_types tt,
+                              sp_projects p
+                        where pc.PROJECT_ID = p.id and 
+                              pc.owner_ID = tm.id and
+                              p.release_id = rt.ID and 
+                              p.ARCHIVED_YN = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null and
+                              p.release_id = :P117_RELEASE_ID and
+                              nvl(pc.task_sub_type_id,pc.task_type_id) = tt.id and
+                              tt.static_id like 'MILESTONE%'
+                       ) has_milestones,
+                       --
+                       -- reviewer
+                       --
+                       (select count(distinct p.id) 
+                        from  SP_tasks pc, 
+                              sp_task_types tt,
+                              sp_projects p
+                        where pc.PROJECT_ID = p.id and 
+                              pc.owner_ID = tm.id and
+                              p.release_id = rt.ID and 
+                              p.ARCHIVED_YN = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null and
+                              p.release_id = :P117_RELEASE_ID and
+                              nvl(pc.task_sub_type_id,pc.task_type_id) = tt.id and
+                              tt.static_id like 'REVIEW%'
+                       ) has_reviews,
+                        --
+                        -- activity contributor
+                        --
+                        (select count(distinct p.id)
+                         from  SP_ACTIVITIES dap, 
+                               sp_projects p 
+                         where p.release_id = rt.id and
+                               p.ARCHIVED_YN = 'N' and 
+                               p.DUPLICATE_OF_PROJECT_ID is null and 
+                               dap.project_id = p.id and
+                               dap.TEAM_MEMBER_ID = tm.id and
+                              p.release_id = :P117_RELEASE_ID 
+                               ) project_activivity_contributor,
+                        --
+                        -- project owner
+                        --
+                        (select count(*) 
+                         from sp_projects p 
+                         where p.release_id = rt.id and
+                               p.owner_id = tm.id and
+                               p.ARCHIVED_YN = 'N' and 
+                               p.DUPLICATE_OF_PROJECT_ID is null and
+                               p.release_id = :P117_RELEASE_ID 
+                        ) project_owner_count,
+                        --
+                        -- team member photo
+                        --
+                        tm.photo,
+                        tm.photo_mimetype
+                  from SP_RELEASE_TRAINS rt,
+                       SP_TEAM_MEMBERS tm
+                where rt.id = :P117_RELEASE_ID and 
+                      --
+                      -- search
+                      --
+                      (:P117_CONTRIBUTOR_SEARCH is null or instr(upper(tm.first_name||' '||last_name||' '||email), upper(:P117_CONTRIBUTOR_SEARCH)) > 0)
+                ) x
+                where (
+                            has_tasks > 0 or 
+                            has_milestones > 0 or
+                            has_reviews > 0 or
+                            project_activivity_contributor > 0 or 
+                            project_owner_count > 0
+                       )
+                ```
+            pageItemsToSubmit: [
+                P117_RELEASE_ID
+                P117_CONTRIBUTOR_SEARCH
+            ]
+        }
+        layout {
+            sequence: 110
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: <p>This list of contributors includes anyone who is identified as a &NOMENCLATURE_PROJECT. owner, contributor, reviewer, or who has activity logged against a &NOMENCLATURE_PROJECT. identified for this release.
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME.
+            description: &NOMENCLATURE_PROJECT. Owner: <strong>&PROJECT_OWNER_COUNT.</strong>, Contributor: <strong>&IS_CONTRIBUTOR.</strong>, Milestones: <strong>&HAS_MILESTONES.</strong>, Reviews: <strong>&HAS_REVIEWS.</strong>, Tasks: <strong>&HAS_TASKS.</strong>, Activity: <strong>&PROJECT_ACTIVIVITY_CONTRIBUTOR.</strong>
+            miscellaneous: &EMAIL.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: blobColumn
+                blobColumn: PHOTO
+                filenameColumn: PHOTO_MIMETYPE
+            }
+        }
+
+        column EMAIL (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMAIL
+                dataType: varchar2
+            }
+        )
+
+        column HAS_MILESTONES (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: HAS_MILESTONES
+                dataType: number
+            }
+        )
+
+        column HAS_REVIEWS (
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: HAS_REVIEWS
+                dataType: number
+            }
+        )
+
+        column HAS_TASKS (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: HAS_TASKS
+                dataType: number
+            }
+        )
+
+        column IS_CONTRIBUTOR (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: IS_CONTRIBUTOR
+                dataType: number
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column PERSON_TAGS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PERSON_TAGS
+                dataType: varchar2
+            }
+        )
+
+        column PHOTO (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: PHOTO
+                dataType: blob
+            }
+        )
+
+        column PHOTO_MIMETYPE (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: PHOTO_MIMETYPE
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_ACTIVIVITY_CONTRIBUTOR (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: PROJECT_ACTIVIVITY_CONTRIBUTOR
+                dataType: number
+            }
+        )
+
+        column PROJECT_OWNER_COUNT (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: PROJECT_OWNER_COUNT
+                dataType: number
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: TEAM_MEMBER_ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 10
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu nomenclature-user-details (
+                label: &NOMENCLATURE_USER. Details
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    target: {
+                        page: 5
+                        items: {
+                            P5_ID: &TEAM_MEMBER_ID.
+                        }
+                        clearCache: 5
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-user
+                }
+            )
+
+            menu nomenclature-user-quick-look (
+                label: &NOMENCLATURE_USER. Quick Look
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 73
+                        items: {
+                            P73_TEAM_MEMBER_ID: &TEAM_MEMBER_ID.
+                        }
+                        clearCache: 73
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-user
+                }
+            )
+
+        )
+
+    )
+
+    region documents (
+        name: Documents
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       d.DOCUMENT_FILENAME,
+                       d.UPDATED,
+                       d.created,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.tags,
+                       lower(created_by) created_by,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       created date_created,
+                       substr(DOCUMENT_FILENAME,instr(DOCUMENT_FILENAME,'.',-1)+1,length(DOCUMENT_FILENAME)-instr(DOCUMENT_FILENAME,'.',-1)) file_extension,
+                       decode(important_yn,'Y','Yes','No') important,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) document
+                  from SP_RELEASE_DOCUMENTS d
+                 where release_id = :P117_RELEASE_ID
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 160
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: DOCUMENTS
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 120
+                items: {
+                    P120_ID: #ID#
+                }
+                clearCache: 120
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 32878633667415084257
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column DATE_CREATED (
+            type: plainText
+            heading {
+                heading: Created On
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column DOCUMENT (
+            type: downloadBlob
+            heading {
+                heading: Document
+            }
+            layout {
+                sequence: 150
+            }
+            appearance {
+                downloadText: Download
+            }
+            blobAttributes {
+                tableName: SP_RELEASE_DOCUMENTS
+                blobColumn: DOCUMENT_BLOB
+                primaryKeyColumn1: ID
+                mimeTypeColumn: DOCUMENT_MIMETYPE
+                filenameColumn: DOCUMENT_FILENAME
+                lastUpdatedColumn: DOCUMENT_LASTUPD
+                charSetColumn: DOCUMENT_CHARSET
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column DOCUMENT_FILENAME (
+            type: link
+            heading {
+                heading: Filename
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 42
+                    items: {
+                        P42_ID: #ID#
+                        P42_PREV_PAGE: 117
+                    }
+                    clearCache: 42
+                }
+                linkText: #DOCUMENT_FILENAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column DOC_DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column DOC_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column FILE_EXTENSION (
+            type: plainText
+            heading {
+                heading: File Extension
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IMPORTANT (
+            type: plainText
+            heading {
+                heading: Important
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Documents
+        }
+
+        savedReport 8109551 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED_BY (
+                sequence: 3
+            )
+
+            displayColumn DOCUMENT (
+                sequence: 5
+            )
+
+            displayColumn DOCUMENT_FILENAME (
+                sequence: 1
+            )
+
+            displayColumn DOC_DESCRIPTION (
+                sequence: 2
+            )
+
+            displayColumn DOC_SIZE (
+                sequence: 6
+            )
+
+            displayColumn IMPORTANT (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            sort (
+                column: IMPORTANT
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                column: DOC_SIZE
+            )
+
+        )
+
+    )
+
+    region exception-buttons (
+        name: exception buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @exceptions
+            slot: regionBody
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    region exceptions (
+        name: Exceptions
+        type: staticContent
+        layout {
+            sequence: 140
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_release_trains
+                 where id = :P117_RELEASE_ID
+                   and nvl(release_completed,'N') = 'N'
+                ```
+        }
+    )
+
+    region exceptions-body (
+        name: Exceptions body
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return sp_release_timeline.release_exceptions (
+                    p_release_id              => :P117_RELEASE_ID,
+                    p_links                   => 'APP',
+                    p_apex_session            => :APP_SESSION );
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 30
+            parentRegion: @exceptions
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region links (
+        name: Links
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       RELEASE_ID,
+                       LINK_NAME,
+                       --LINK_URL,
+                       decode(greatest(length(l.link_url),80),80,
+                           l.link_url,
+                           substr(l.link_url,1,39)||'...'||substr(l.link_url,length(l.link_url)-39,39)
+                           ) link_url,
+                       decode(IMPORTANT_YN,'Y','Yes','N','No',IMPORTANT_YN) IMPORTANT,
+                       CREATED,
+                       lower(CREATED_BY) created_by,
+                       UPDATED,
+                       UPDATED_BY
+                  from SP_RELEASE_LINKS l
+                where release_id = :P117_RELEASE_ID
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 150
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 38
+                items: {
+                    P38_ID: #ID#
+                }
+                clearCache: 38
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 4722242012226485306
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IMPORTANT (
+            type: plainText
+            heading {
+                heading: Important
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column LINK_NAME (
+            type: plainText
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: <a href="#LINK_URL#" target="_blank">#LINK_NAME#</a>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column LINK_URL (
+            type: plainText
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column RELEASE_ID (
+            type: hidden
+            heading {
+                heading: Release Id
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Links
+        }
+
+        savedReport 47246263 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED_BY (
+                sequence: 5
+            )
+
+            displayColumn IMPORTANT (
+                sequence: 3
+            )
+
+            displayColumn LINK_NAME (
+                sequence: 1
+            )
+
+            displayColumn LINK_URL (
+                sequence: 2
+            )
+
+            displayColumn UPDATED (
+                sequence: 4
+            )
+
+            sort (
+                column: IMPORTANT
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 30
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu ai-summaries (
+                label: AI Summaries
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 165
+                        items: {
+                            P165_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 165
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-ai-sparkle-generate-text
+                }
+                config {
+                    buildOption: @ai-release-summaries
+                }
+            )
+
+            menu calendar (
+                label: Calendar
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 203
+                        items: {
+                            P203_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 203
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-calendar-o
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 70
+                }
+            )
+
+            menu comp_menu_entry-2 (
+                type: separator
+                layout {
+                    sequence: 100
+                }
+            )
+
+            menu copy-release (
+                label: Copy Release
+                layout {
+                    sequence: 80
+                }
+                behavior {
+                    target: {
+                        page: 63
+                        items: {
+                            P63_COPY_FROM_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 63
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-copy
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu dashboard (
+                label: Dashboard
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 202
+                        items: {
+                            P202_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 202
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-area-chart
+                }
+            )
+
+            menu delete-release (
+                label: Delete Release
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 76
+                        items: {
+                            P76_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 76
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-trash-o
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu nomenclature-project-search (
+                label: &NOMENCLATURE_PROJECT. Search
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 300
+                        items: {
+                            P300_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: [
+                            300
+                            CIR
+                            RIR
+                        ]
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-search
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 110
+                }
+                behavior {
+                    target: {
+                        page: 117
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 120
+                }
+                behavior {
+                    target: {
+                        page: 117
+                        items: {
+                            P117_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 117
+                        action: resetRegions
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+            menu view-history (
+                label: View History
+                layout {
+                    sequence: 60
+                }
+                behavior {
+                    target: {
+                        page: 14
+                        items: {
+                            P14_RELEASE_ID: &P117_RELEASE_ID.
+                        }
+                        clearCache: 14
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+        )
+
+        action edit (
+            position: primaryActions
+            template: button
+            label: Edit
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 27
+                    items: {
+                        P27_ID: &P117_RELEASE_ID.
+                    }
+                    clearCache: 27
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-edit
+                hot: true
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+    )
+
+    region milestones (
+        name: Milestones
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select m.ID,
+                       --
+                       -- milestone attributes
+                       --
+                       m.RELEASE_ID,
+                       (select milestone_type from sp_release_milestone_types where m.milestone_type_id = id) milestone_type,
+                       m.MILESTONE_NAME,
+                       m.UPPER_MILESTONE_NAME,
+                       m.milestone_start_date,
+                       m.MILESTONE_DATE,
+                       m.ORIGINAL_MILESTONE_DATE,
+                       decode(m.MILESTONE_COMPLETED_YN,'N','No','Y','Yes') MILESTONE_COMPLETED_YN,
+                       m.MILESTONE_DESCRIPTION,
+                       m.tags,
+                       --
+                       -- milestones audit columns
+                       --
+                       m.CREATED,
+                       m.CREATED_BY,
+                       m.UPDATED,
+                       m.UPDATED_BY,
+                       --
+                       --
+                       --
+                       round(m.MILESTONE_DATE  - sysdate) days,
+                       --
+                       -- Milestone status based on milestone date
+                       --
+                       decode(
+                           greatest(round(m.MILESTONE_DATE  - sysdate),0),
+                           0,
+                           decode(m.MILESTONE_COMPLETED_YN,'Y','Completed','Past Due'),
+                           decode(m.MILESTONE_COMPLETED_YN,'Y','Completed','On Track')
+                       ) status,
+                       --
+                       -- Days since release open
+                       --
+                       round(m.MILESTONE_DATE - (select r.RELEASE_OPEN_DATE from SP_RELEASE_TRAINS r where r.id = :P117_RELEASE_ID)) days_since_open,
+                       --
+                       -- Days remaining in the release
+                       --
+                       round( (select r.RELEASE_TARGET_DATE from SP_RELEASE_TRAINS r where r.id = :P117_RELEASE_ID)-  m.MILESTONE_DATE) days_until_release
+                  from SP_RELEASE_MILESTONES m
+                  where release_Id = :P117_RELEASE_ID
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: MILESTONES
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 92
+                items: {
+                    P92_ID: \#ID#\
+                }
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 16989075285032243694
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column DAYS (
+            type: plainText
+            heading {
+                heading: Days
+                alignment: end
+            }
+            layout {
+                sequence: 140
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column DAYS_SINCE_OPEN (
+            type: plainText
+            heading {
+                heading: Days Since Open
+                alignment: end
+            }
+            layout {
+                sequence: 160
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column DAYS_UNTIL_RELEASE (
+            type: plainText
+            heading {
+                heading: Days Until Release
+                alignment: end
+            }
+            layout {
+                sequence: 170
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column MILESTONE_COMPLETED_YN (
+            type: plainText
+            heading {
+                heading: "Completed "
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column MILESTONE_DATE (
+            type: plainText
+            heading {
+                heading: Date
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column MILESTONE_DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column MILESTONE_NAME (
+            type: plainText
+            heading {
+                heading: Milestone
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column MILESTONE_START_DATE (
+            type: plainText
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column MILESTONE_TYPE (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column ORIGINAL_MILESTONE_DATE (
+            type: hidden
+            heading {
+                heading: Original Milestone Date
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column RELEASE_ID (
+            type: plainText
+            heading {
+                heading: Release Id
+                alignment: end
+            }
+            layout {
+                sequence: 130
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column UPPER_MILESTONE_NAME (
+            type: hidden
+            heading {
+                heading: Upper Milestone Name
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Milestones
+        }
+
+        savedReport 122904977 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DAYS (
+                sequence: 5
+            )
+
+            displayColumn MILESTONE_COMPLETED_YN (
+                sequence: 6
+            )
+
+            displayColumn MILESTONE_DATE (
+                sequence: 4
+            )
+
+            displayColumn MILESTONE_NAME (
+                sequence: 2
+            )
+
+            displayColumn MILESTONE_START_DATE (
+                sequence: 3
+            )
+
+            displayColumn MILESTONE_TYPE (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 7
+            )
+
+            displayColumn UPDATED (
+                sequence: 8
+            )
+
+            sort (
+                column: MILESTONE_DATE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            highlight ir-condition (
+                condition {
+                    column: STATUS
+                    value: Past Due
+                }
+                colors {
+                    background: #ffd6d2
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+        )
+
+    )
+
+    region nomenclature-projects (
+        name: &NOMENCLATURE_PROJECTS.
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       case when p.pct_complete >= s.min_pc_for_status 
+                             and p.pct_complete != 100
+                            then nvl((select status from sp_project_statuses
+                                       where id = p.status_id),'Not Set')
+                            else 'NA'
+                            end status,
+                       p.target_complete,
+                       (select decode(greatest(length(initiative),15),15,initiative,substr(initiative,1,12)||'...') initiative 
+                        from sp_initiatives i 
+                        where i.id = p.initiative_id) initiative,
+                       decode(p.release_id,
+                          null, decode(p.TARGET_COMPLETE,null,'No Target',to_char(p.TARGET_COMPLETE,'DD-MON-YYYY')),
+                          (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.RELEASE_ID)) release,
+                       p.PROJECT_SIZE,
+                       (select focus_area from sp_initiative_focus_areas
+                         where id = p.focus_area_id) focus_area,
+                       case when p.requires_reviews_yn = 'Y' then 'Yes' else 'No' end requires_reviews,
+                       case when p.doc_impact_yn = 'Y' then 'Yes' else 'No' end doc_impact,
+                       p.UPDATED,
+                       p.owner_id,
+                       p.friendly_identifier,
+                       p.project_url_name,
+                       nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.updated_by)),lower(p.updated_by)) updated_by,
+                       replace(lower(p.tags),',',', ') as tags,
+                       --
+                       -- activities
+                       --
+                       (select count(*) from SP_ACTIVITIES a where a.project_id = p.id and sysdate between a.START_DATE and a.end_date) Current_activities,
+                       (select count(*) from SP_ACTIVITIES a where a.project_id = p.id) activities,
+                       -- completed milestones
+                       (select listagg(tt.task_type ||
+                                        case when instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') > 0
+                                             then ' '||s.status||' '
+                                             when t.target_complete is null
+                                             then ' no date'
+                                             else ' targeted for '
+                                             end || to_char(t.target_complete,'DD-MON') ,', ')
+                                        within group (order by t.target_complete nulls first, tt.display_seq)
+                          from sp_tasks t,
+                               sp_task_types tt,
+                               sp_task_statuses s
+                         where t.project_id = p.id
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                           and tt.static_id like 'MILESTONE%'
+                           and instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') > 0
+                           and t.status_id = s.id) completed_milestones,
+                       -- open milestones
+                       (select listagg(tt.task_type ||
+                                        case when t.target_complete is null
+                                             then ' no date'
+                                             else ' targeted for '
+                                             end || to_char(t.target_complete,'DD-MON') ,', ')
+                                        within group (order by t.target_complete nulls first, tt.display_seq)
+                          from sp_tasks t,
+                               sp_task_types tt
+                         where t.project_id = p.id
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                           and tt.static_id like 'MILESTONE%'
+                           and instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') = 0) open_milestones,
+                       -- completed reviews
+                       (select listagg(tt.task_type ||
+                                        case when instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') > 0
+                                             then ' completed '
+                                             when t.target_complete is null
+                                             then ' no date'
+                                             else ' targeted for '
+                                             end || to_char(t.target_complete,'DD-MON') ,', ')
+                                        within group (order by t.target_complete nulls first, tt.display_seq)
+                          from sp_tasks t,
+                               sp_task_types tt
+                         where t.project_id = p.id
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                           and tt.static_id like 'REVIEW%'
+                           and instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') > 0) completed_reviews,
+                       -- open reviews
+                       (select listagg(tt.task_type ||
+                                        case when instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') > 0
+                                             then ' completed '
+                                             when t.target_complete is null
+                                             then ' no date'
+                                             else ' targeted for '
+                                             end || to_char(t.target_complete,'DD-MON') ,', ')
+                                        within group (order by t.target_complete nulls first, tt.display_seq)
+                          from sp_tasks t,
+                               sp_task_types tt
+                         where t.project_id = p.id
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id
+                           and tt.static_id like 'REVIEW%'
+                           and instr(:COMPLETE_TASK_STATUS_IDS,':'||t.status_id||':') = 0) open_reviews,
+                       --
+                       -- description
+                       --
+                       decode(nvl(dbms_lob.getlength(p.description),0),0,'Not Provided',
+                           dbms_lob.substr(p.description,300,1)||
+                           decode(greatest(dbms_lob.getlength(p.description),300),300,null,'...')) description,
+                       --
+                       -- task_contributors
+                       --
+                       (select listagg(distinct tm.first_name||' '||tm.last_name,', ')
+                                   within group (order by tm.first_name||' '||tm.last_name) name
+                          from sp_tasks t,
+                               SP_TEAM_MEMBERS tm 
+                         where tm.id = t.owner_id
+                           and t.project_id = p.id) task_contributors,
+                       --
+                       -- contributors
+                       --
+                       (select listagg(distinct tm.first_name||' '||tm.last_name,', ')
+                                   within group (order by tm.first_name||' '||tm.last_name) name
+                          from sp_tasks t,
+                               SP_TEAM_MEMBERS tm 
+                         where tm.id = t.owner_id
+                           and t.project_id = p.id) contributors,
+                       --
+                       -- last comment
+                       --
+                       (select max(dbms_lob.substr(c.body_no_images,255,1)||
+                               decode(greatest(dbms_lob.getlength(c.body_no_images),255),255,null,'...')) last_comment 
+                        from   SP_PROJECT_COMMENTS c 
+                        where c.project_id = p.id and 
+                              c.private_yn = 'N' and 
+                              c.created = (select max(c2.created) from sp_project_comments c2 where c2.project_id = p.id and c2.private_yn = 'N'))
+                        as last_comment,
+                       (select first_name||' '||last_name 
+                        from SP_TEAM_MEMBERS t 
+                        where t.id = (select max(c.author_id) from sp_project_comments c where c.project_id = p.id and c.created = (select max(c.created) from sp_project_comments c where c.project_id = p.id and c.private_yn = 'N'))) last_comment_by,
+                       --
+                       (select max(c.created) from sp_project_comments c where c.project_id = p.id and c.private_yn = 'N') last_comment_on,
+                       --
+                       nvl((select 'Yes' from sp_favorites f where f.project_id = p.id and f.team_member_id = :APP_USER_ID),'No') favorite,
+                       nvl((select 'fa-heart u-danger-text' from sp_favorites f where f.project_id = p.id and f.team_member_id = :APP_USER_ID),'fa-heart-o') favorite_icon,
+                       null actions
+                 from  SP_PROJECTS p,
+                       sp_initiatives i,
+                       sp_project_scales s
+                where p.initiative_id = i.id and
+                      i.status_scale = s.scale_letter and
+                      nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.release_id = :P117_RELEASE_ID
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+            icon: " "
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: Click &NOMENCLATURE_PROJECT. name for detail view.
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 24
+                items: {
+                    P24_ID: #ID#
+                }
+                clearCache: 24
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No &NOMENCLATURE_PROJECTS. Found
+        }
+        advanced {
+            savedReportMappingIdentifier: 9365323496807187296
+        }
+
+        column ACTIONS (
+            type: link
+            heading {
+                heading: Quick Look
+                alignment: center
+            }
+            layout {
+                sequence: 200
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 36
+                    items: {
+                        P36_ID: #ID#
+                    }
+                    clearCache: 36
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-align-justify" aria-hidden="true"></span>
+                linkAttributes: title="&NOMENCLATURE_PROJECT. Quick Look"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column ACTIVITIES (
+            type: link
+            heading {
+                heading: Activities
+                alignment: end
+            }
+            layout {
+                sequence: 170
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 130
+                    items: {
+                        P130_PROJECT_ID: #ID#
+                    }
+                    clearCache: 130
+                    action: resetPagination
+                }
+                linkText: #ACTIVITIES#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column COMPLETED_MILESTONES (
+            type: plainText
+            heading {
+                heading: Completed Milestones
+            }
+            layout {
+                sequence: 280
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BD
+            }
+        )
+
+        column COMPLETED_REVIEWS (
+            type: plainText
+            heading {
+                heading: Completed Reviews
+            }
+            layout {
+                sequence: 300
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BF
+            }
+            config {
+                buildOption: @reviews
+            }
+        )
+
+        column CONTRIBUTORS (
+            type: plainText
+            heading {
+                heading: Contributors
+            }
+            layout {
+                sequence: 270
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BC
+            }
+        )
+
+        column CURRENT_ACTIVITIES (
+            type: plainText
+            heading {
+                heading: Current Activities
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 210
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AT
+            }
+        )
+
+        column DOC_IMPACT (
+            type: plainText
+            heading {
+                heading: Doc Impact
+            }
+            layout {
+                sequence: 320
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BH
+            }
+        )
+
+        column FAVORITE (
+            type: plainText
+            heading {
+                heading: Favorite
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AE
+            }
+        )
+
+        column FAVORITE_ICON (
+            type: hidden
+            heading {
+                heading: Favorite Icon
+            }
+            layout {
+                sequence: 190
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column FOCUS_AREA (
+            type: plainText
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 330
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BI
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_initiative_focus_areas
+                    ```
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            type: hidden
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INITIATIVE (
+            type: hidden
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column LAST_COMMENT (
+            type: plainText
+            heading {
+                heading: Last Comment
+            }
+            layout {
+                sequence: 220
+            }
+            columnFormatting {
+                htmlExpression: #LAST_COMMENT# - #LAST_COMMENT_BY# - #LAST_COMMENT_ON#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AV
+            }
+        )
+
+        column LAST_COMMENT_BY (
+            type: plainText
+            heading {
+                heading: Last Comment By
+            }
+            layout {
+                sequence: 240
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AX
+            }
+        )
+
+        column LAST_COMMENT_ON (
+            type: plainText
+            heading {
+                heading: Last Comment On
+            }
+            layout {
+                sequence: 230
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AW
+            }
+        )
+
+        column OPEN_MILESTONES (
+            type: plainText
+            heading {
+                heading: Open Milestones
+            }
+            layout {
+                sequence: 290
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BE
+            }
+        )
+
+        column OPEN_REVIEWS (
+            type: plainText
+            heading {
+                heading: Open Reviews
+            }
+            layout {
+                sequence: 310
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BG
+            }
+            config {
+                buildOption: @reviews
+            }
+        )
+
+        column OWNER_ID (
+            type: hidden
+            heading {
+                heading: Owner Id
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: &NOMENCLATURE_PROJECT.
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            type: hidden
+            heading {
+                heading: Project Url Name
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column REQUIRES_REVIEWS (
+            type: plainText
+            heading {
+                heading: Requires Reviews
+            }
+            layout {
+                sequence: 260
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AZ
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BK
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 250
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AY
+            }
+        )
+
+        column TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 350
+            }
+            appearance {
+                formatMask: DD-Mon-RR
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: BL
+            }
+        )
+
+        column TASK_CONTRIBUTORS (
+            type: plainText
+            heading {
+                heading: Task Contributors
+            }
+            layout {
+                sequence: 340
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BJ
+            }
+        )
+
+        column THE_OWNER (
+            type: link
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #OWNER_ID#
+                    }
+                    clearCache: 73
+                    action: resetPagination
+                }
+                linkText: #THE_OWNER#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: &NOMENCLATURE_PROJECTS.
+        }
+
+        savedReport 46976301 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIONS (
+                sequence: 13
+            )
+
+            displayColumn ACTIVITIES (
+                sequence: 3
+            )
+
+            displayColumn CONTRIBUTORS (
+                sequence: 11
+            )
+
+            displayColumn OPEN_MILESTONES (
+                sequence: 9
+            )
+
+            displayColumn OPEN_REVIEWS (
+                sequence: 10
+            )
+
+            displayColumn PCT_COMPLETE (
+                sequence: 7
+            )
+
+            displayColumn PRIORITY (
+                sequence: 4
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn PROJECT_SIZE (
+                sequence: 5
+            )
+
+            displayColumn STATUS (
+                sequence: 8
+            )
+
+            displayColumn TARGET_COMPLETE (
+                sequence: 6
+            )
+
+            displayColumn THE_OWNER (
+                sequence: 2
+            )
+
+            displayColumn UPDATED (
+                sequence: 12
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: PCT_COMPLETE
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: fullWidthContent
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-padding-inline-dynamic
+                project-rds-region
+            ]
+        }
+        settings {
+            includeShowAll: false
+            rememberSelection: bySession
+        }
+    )
+
+    region release (
+        name: Release
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID,
+                       r.RELEASE_TRAIN||' '||r.RELEASE release,
+                       decode(r.RELEASE_TARGET_DATE,null,    'No Date',to_char(r.RELEASE_TARGET_DATE,   'DD-MON-YY')) RELEASE_TARGET_DATE,
+                       decode(r.RELEASE_OPEN_DATE,null,      'No Date',to_char(r.RELEASE_OPEN_DATE,     'DD-MON-YY')) RELEASE_OPEN_DATE,
+                       greatest(round(r.RELEASE_TARGET_DATE - sysdate),0) days_remaining,
+                       --
+                       -- projects
+                       --
+                       (select count(*) 
+                       from sp_projects p 
+                       where p.release_id = r.id and 
+                             p.ARCHIVED_YN = 'N' and 
+                             p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       --
+                       --
+                       round(r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE) release_length,
+                       --
+                       -- owner
+                       --
+                       t.first_name||' '||t.last_name owner,
+                       --
+                       -- release open and close
+                       --
+                       decode(r.RELEASE_OPEN_COMPLETED,'Y','Yes','N','No','Unknown') release_opened,
+                       decode(r.RELEASE_COMPLETED,'Y','Yes','N','No','Unknown') release_completed
+                  from SP_RELEASE_TRAINS r,
+                       SP_TEAM_MEMBERS t
+                 where r.id = :P117_RELEASE_ID and 
+                       r.RELEASE_OWNER_ID = t.id(+)
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                t-Region-orderBy--end
+                margin-left-md
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column DAYS_REMAINING (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 99999
+            }
+            columnFormatting {
+                htmlExpression: #DAYS_REMAINING# days
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECTS.
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column RELEASE_COMPLETED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Release Completed
+            }
+            layout {
+                sequence: 150
+            }
+        )
+
+        column RELEASE_LENGTH (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Length
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #RELEASE_LENGTH# days
+            }
+        )
+
+        column RELEASE_OPENED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Release Opened
+            }
+            layout {
+                sequence: 160
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Open
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YY
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+    )
+
+    region reviewers (
+        name: Reviewers
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.id project_id,
+                       p.project,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       p.project_size,
+                       t.id team_member_id,
+                       t.first_name||' '||last_name reviewer,
+                       t.email reviewer_email,
+                       tt.task_type type,
+                       ts.status,
+                       r.impact,
+                       r.target_complete,
+                       r.tags review_tags,
+                       substr(r.description,1,255) comments,
+                       r.updated,
+                       p.FRIENDLY_IDENTIFIER,
+                       p.PROJECT_URL_NAME,
+                       null quick_view
+                  from SP_PROJECTS p,
+                       sp_tasks r,
+                       sp_task_types tt,
+                       sp_task_statuses ts,
+                       sp_team_members t
+                where p.id = r.project_id and
+                      t.id = r.owner_id and
+                      nvl(r.task_sub_type_id,r.task_type_id) = tt.id and
+                      tt.static_id like 'REVIEW%' and
+                      r.status_id = ts.id and
+                      nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.release_id = :P117_RELEASE_ID
+                ```
+            pageItemsToSubmit: P117_RELEASE_ID
+        }
+        layout {
+            sequence: 120
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @reviews
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 24549143979272372832
+        }
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            type: hidden
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column IMPACT (
+            type: plainText
+            heading {
+                heading: Impact
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Pct Complete
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+                linkAttributes: title="&NOMENCLATURE_PROJECT. Details"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PROJECT_ID (
+            type: hidden
+            heading {
+                heading: Project Id
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Project Size
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            type: hidden
+            heading {
+                heading: Project Url Name
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column QUICK_VIEW (
+            type: link
+            heading {
+                heading: Quick View
+                alignment: center
+            }
+            layout {
+                sequence: 170
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 36
+                    items: {
+                        P36_ID: #PROJECT_ID#
+                    }
+                    clearCache: 36
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-bars" aria-hidden="true"></span>
+                linkAttributes: Quick View
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column REVIEWER (
+            type: link
+            heading {
+                heading: Reviewer
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #TEAM_MEMBER_ID#
+                    }
+                    clearCache: 73
+                }
+                linkText: #REVIEWER#
+                linkAttributes: title="Reviewer Details"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column REVIEWER_EMAIL (
+            type: plainText
+            heading {
+                heading: Reviewer Email
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column REVIEW_TAGS (
+            type: plainText
+            heading {
+                heading: Review Tags
+            }
+            layout {
+                sequence: 190
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            type: hidden
+            heading {
+                heading: Team Member
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column TYPE (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: reviews content
+        }
+
+        savedReport 123483344 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn IMPACT (
+                sequence: 5
+            )
+
+            displayColumn PROJECT (
+                sequence: 2
+            )
+
+            displayColumn QUICK_VIEW (
+                sequence: 8
+            )
+
+            displayColumn REVIEWER (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 4
+            )
+
+            displayColumn TARGET_COMPLETE (
+                sequence: 6
+            )
+
+            displayColumn TYPE (
+                sequence: 3
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            sort (
+                column: REVIEWER
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: TYPE
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: STATUS
+                sort {
+                    sequence: 3
+                }
+            )
+
+            filter ir-condition (
+                column: STATUS
+                operator: !=
+                value: Completed
+            )
+
+        )
+
+    )
+
+    region timeline (
+        name: Timeline
+        type: staticContent
+        layout {
+            sequence: 130
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region timeline-buttons (
+        name: timeline buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @timeline
+            slot: regionBody
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region timeline-contents (
+        name: Timeline contents
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                return sp_release_timeline.show_week (
+                    p_release_id          => :P117_RELEASE_ID,
+                    p_show_past_yn        => nvl(:P117_INCLUDE_PAST_YN,'N'),
+                    p_exclude_complete_yn => :P117_EXCLUDE_COMPLETE_YN
+                    );
+                ```
+            pageItemsToSubmit: [
+                P117_RELEASE_ID
+                P117_INCLUDE_PAST_YN
+                P117_EXCLUDE_COMPLETE_YN
+            ]
+        }
+        layout {
+            sequence: 40
+            parentRegion: @timeline
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    pageItem P117_COMMENT (
+        type: richTextEditor
+        label {
+            label: " "
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+            allowCustomHtml: true
+        }
+        layout {
+            sequence: 80
+            region: @add-comment
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+        }
+        advanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                    return spCommentImageSupport.markdown.configEditor(options, {
+                        apexUpload: {
+                            // Application process name that that will handle the POST request when an image is dropped into
+                            // text box
+                            uploadApplicationProcess: 'POST_COMMENT_IMAGE',
+                            // Pass in any data that you want in the POST process 
+                            // Will be passed in as a JSON object and available in apex_application.g_x01
+                            data: {
+                                imageRefId: apex.item('P117_IMAGE_REF_ID').getValue()
+                            }
+                        }
+                    });
+                }
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P117_CONTRIBUTOR_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @contributors
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-search
+            width: 30
+        }
+    )
+
+    pageItem P117_EXCLUDE_COMPLETE_YN (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @timeline
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P117_IMAGE_REF_ID (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @add-comment
+            slot: regionBody
+        }
+        default {
+            type: expression
+            plsqlExpression: to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
+        }
+    )
+
+    pageItem P117_INCLUDE_PAST_YN (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @timeline
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P117_LINK (
+        type: textField
+        label {
+            label: Link URL
+            alignment: left
+        }
+        settings {
+            subtype: url
+        }
+        layout {
+            sequence: 20
+            region: @links
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P117_LINK_NAME (
+        type: textField
+        label {
+            label: Link Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @links
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P117_PRIVATE_YN (
+        type: checkbox
+        label {
+            label: This is a private comment
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @add-comment
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+            ]
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P117_RELEASE (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P117_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button add-document (
+        buttonName: add_document
+        label: Add Document
+        layout {
+            sequence: 30
+            region: @documents
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 120
+                items: {
+                    P120_RELEASE_ID: &P117_RELEASE_ID.
+                }
+                clearCache: 120
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button add-link (
+        buttonName: add_link
+        label: Add Link
+        layout {
+            sequence: 40
+            region: @links
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--gapTop
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button add-milestone (
+        buttonName: add_milestone
+        label: Add Milestone
+        layout {
+            sequence: 20
+            region: @milestones
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 85
+                items: {
+                    P85_RELEASE_ID: &P117_RELEASE_ID.
+                }
+                clearCache: 85
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-project (
+        buttonName: add_project
+        label: Add &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 10
+            region: @nomenclature-projects
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 104
+                items: {
+                    P104_RELEASE_ID: &P117_RELEASE_ID.
+                }
+                clearCache: [
+                    104
+                    24
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button calendar (
+        buttonName: Calendar
+        label: Calendar View
+        layout {
+            sequence: 10
+            region: @milestones
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-calendar-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 203
+                items: {
+                    P203_RELEASE_ID: &P117_RELEASE_ID.
+                }
+                clearCache: 203
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button contributor-search-button (
+        buttonName: contributor_search_button
+        label: Search
+        layout {
+            sequence: 20
+            region: @contributors
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapTop
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button email-exceptions-to-me (
+        buttonName: EMAIL_EXCEPTIONS_TO_ME
+        label: Email to me
+        layout {
+            sequence: 30
+            region: @exception-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button email-to-me (
+        buttonName: EMAIL_TO_ME
+        label: Email to me
+        layout {
+            sequence: 50
+            region: @timeline-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    button exclude-completed (
+        buttonName: EXCLUDE_COMPLETED
+        label: Exclude Completed
+        layout {
+            sequence: 40
+            region: @timeline-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 117
+                items: {
+                    P117_EXCLUDE_COMPLETE_YN: Y
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: nvl(:P117_EXCLUDE_COMPLETE_YN,'N') = 'N'
+        }
+    )
+
+    button exclude-past (
+        buttonName: EXCLUDE_PAST
+        label: Exclude Past
+        layout {
+            sequence: 20
+            region: @timeline-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 117
+                items: {
+                    P117_INCLUDE_PAST_YN: N
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P117_INCLUDE_PAST_YN
+            value: Y
+        }
+    )
+
+    button include-completed (
+        buttonName: INCLUDE_COMPLETED
+        label: Include Completed
+        layout {
+            sequence: 30
+            region: @timeline-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 117
+                items: {
+                    P117_EXCLUDE_COMPLETE_YN: N
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P117_EXCLUDE_COMPLETE_YN
+            value: Y
+        }
+    )
+
+    button include-past (
+        buttonName: INCLUDE_PAST
+        label: Include Past
+        layout {
+            sequence: 10
+            region: @timeline-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 117
+                items: {
+                    P117_INCLUDE_PAST_YN: Y
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P117_INCLUDE_PAST_YN
+            value: N
+        }
+    )
+
+    button post-comment (
+        buttonName: POST_COMMENT
+        label: Post Comment
+        layout {
+            sequence: 90
+            region: @add-comment
+            slot: regionBody
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button subscribe-to-exceptions (
+        buttonName: SUBSCRIBE_TO_EXCEPTIONS
+        label: Subscribe me
+        layout {
+            sequence: 10
+            region: @exception-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sp_notifications n
+                 where static_id = 'RELEASE_EXCEPTIONS'
+                   and is_active_yn = 'Y'
+                   and not exists (select 1
+                                     from sp_notification_subscriptions
+                                    where team_member_id = :APP_USER_ID
+                                      and notification_id = n.id
+                                      and release_id = :P117_RELEASE_ID
+                                      and opted_in_yn = 'Y')
+                   and :APP_USER_ID is not null
+                ```
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+    button unsubscribe-exceptions (
+        buttonName: UNSUBSCRIBE_EXCEPTIONS
+        label: Unsubscribe
+        layout {
+            sequence: 20
+            region: @exception-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sp_notifications n
+                 where static_id = 'RELEASE_EXCEPTIONS'
+                   and is_active_yn = 'Y'
+                   and :APP_USER_ID is not null
+                   and exists (select 1
+                                 from sp_notification_subscriptions
+                                where team_member_id = :APP_USER_ID
+                                  and notification_id = n.id
+                                  and release_id = :P117_RELEASE_ID
+                                  and opted_in_yn = 'Y')
+                ```
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-all-bugs (
+        buttonName: view_all_bugs
+        label: View All
+        layout {
+            sequence: 10
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-bug
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                clearCache: [
+                    4
+                    CIR
+                    RIR
+                ]
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-images (
+        buttonName: view_images
+        label: Image Gallery
+        layout {
+            sequence: 10
+            region: @documents
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 69
+                items: {
+                    P69_RELEASE_ID: &P117_RELEASE_ID.
+                }
+                clearCache: 69
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from SP_RELEASE_DOCUMENTS d
+                 where release_id = :P117_RELEASE_ID and 
+                       (
+                           lower(DOCUMENT_FILENAME) like '%.png' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                ```
+        }
+    )
+
+    dynamicAction after-release-edit (
+        name: after release edit
+        execution {
+            sequence: 110
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action refresh-exceptions (
+            name: refresh Exceptions
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @exceptions
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action refresh-release (
+            name: refresh Release
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @release
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh-timeline (
+            name: refresh Timeline
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @timeline
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction links-in-comments-in-new-tab (
+        name: links in comments in new tab
+        execution {
+            sequence: 120
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction on-add-link-click (
+        name: on add link click
+        execution {
+            sequence: 90
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add-link
+        }
+
+        action native-alert (
+            action: alert
+            settings {
+                title: Missing Link Details
+                message: Please supply a Link URL and a Link Name.
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: $v('P117_LINK') === '' || $v('P117_LINK_NAME') === ''
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    if :P117_LINK_NAME is not null and :P117_LINK is not null then
+                        insert into SP_RELEASE_LINKS (release_id, link_name, link_url) 
+                            values (:P117_RELEASE_ID, :P117_LINK_NAME, :P117_LINK);
+                    :P117_LINK_NAME := null;
+                    :P117_LINK := null;
+                    end if;
+                    ```
+                itemsToSubmit: [
+                    P117_LINK_NAME
+                    P117_LINK
+                    P117_RELEASE_ID
+                ]
+                itemsToReturn: [
+                    P117_LINK
+                    P117_LINK_NAME
+                ]
+                showProcessing: true
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @links
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-cont-button-click (
+        name: on cont button click
+        execution {
+            sequence: 100
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @contributor-search-button
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P117_CONTRIBUTOR_SEARCH
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @contributors
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction post-comment (
+        name: post comment
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @post-comment
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: button
+                button: @post-comment
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-enable (
+            action: enable
+            affectedElements {
+                selectionType: button
+                button: @post-comment
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.ariaAlertMessage("Comment Added Successfully");
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action post-comment-on-server (
+            name: post comment on server
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_comment_util.add_release_comment (
+                        p_app_user_id     => :APP_USER_ID,
+                        p_comment         => :P117_COMMENT,
+                        p_release_id      => :P117_RELEASE_ID,
+                        p_private_yn      => :P117_PRIVATE_YN,
+                        p_image_ref_id    => :P117_IMAGE_REF_ID );
+                    
+                    :P117_COMMENT      := null;
+                    :P117_IMAGE_REF_ID := to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+                    ```
+                itemsToSubmit: [
+                    P117_COMMENT
+                    P117_RELEASE_ID
+                    P117_PRIVATE_YN
+                    P117_IMAGE_REF_ID
+                ]
+                itemsToReturn: [
+                    P117_COMMENT
+                    P117_IMAGE_REF_ID
+                ]
+                showProcessing: true
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-milestones-on-dc (
+        name: refresh milestones on dc
+        execution {
+            sequence: 70
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @milestones
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @milestones
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-projects-on-dc (
+        name: refresh projects on dc
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @nomenclature-projects
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reload-comments-on-dialog-close (
+        name: reload comments on dialog close
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @comments
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reload-documents (
+        name: reload documents
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @documents
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @documents
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reload-links-on-dialog-close (
+        name: reload links on dialog close
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @links
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @links
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p117-exclude-complete-yn (
+        itemName: P117_EXCLUDE_COMPLETE_YN
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: N
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P117_EXCLUDE_COMPLETE_YN
+        }
+    )
+
+    computation p117-include-past-yn (
+        itemName: P117_INCLUDE_PAST_YN
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: N
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P117_INCLUDE_PAST_YN
+        }
+    )
+
+    computation p117-release (
+        itemName: P117_RELEASE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select release_train||' '||release d from sp_release_trains where id = :P117_RELEASE_ID
+        }
+    )
+
+    process email-exceptions-to-me (
+        name: Email exceptions to me
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_summary      clob;
+                begin
+                
+                    l_summary := sp_release_timeline.release_exceptions (
+                                     p_release_id              => :P117_RELEASE_ID,
+                                     p_links                   => 'EMAIL' );
+                
+                    apex_mail.send ( 
+                            p_to                 => :APP_USER,   
+                            p_from               => :APP_USER,  
+                            p_application_id     => :APP_ID,  
+                            p_template_static_id => 'EMAIL_ME',  
+                            p_placeholders       => '{' || '"APPLICATION_LINK": "' || sp_util.get_setting(p_static_id => 'APP_HOME_URL') ||'", '|| 
+                                                           '"APP_NAME": '   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||', '||
+                                                           '"SUBJECT": '    || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER || ' ' || :P117_RELEASE ||' Release Exceptions' ) ||', '||
+                                                           '"SUMMARY": '    || apex_json.stringify( l_summary ) ||
+                                                     '}' ); 
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Release Exceptions email sent.
+        }
+        advanced {
+            executionMappingIdentifier: 11121216298102701745
+        }
+        serverSideCondition {
+            whenButtonPressed: @email-exceptions-to-me
+        }
+    )
+
+    process email-timeline-to-me (
+        name: Email timeline to me
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_summary      clob;
+                begin
+                
+                    l_summary := sp_release_timeline.show_week (
+                                     p_release_id          => :P117_RELEASE_ID,
+                                     p_exclude_complete_yn => nvl(:P117_EXCLUDE_COMPLETE_YN,'N'));
+                
+                    apex_mail.send ( 
+                            p_to                 => :APP_USER,   
+                            p_from               => :APP_USER,  
+                            p_application_id     => :APP_ID,  
+                            p_template_static_id => 'EMAIL_ME',  
+                            p_placeholders       => '{' || '"APPLICATION_LINK": "' || sp_util.get_setting(p_static_id => 'APP_HOME_URL') ||'", '|| 
+                                                           '"APP_NAME": '   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||', '||
+                                                           '"SUBJECT": '    || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER || ' ' || :P117_RELEASE ||' Release Timeline' ) ||', '||
+                                                           '"SUMMARY": '    || apex_json.stringify( l_summary ) ||
+                                                     '}' ); 
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Timeline email sent.
+        }
+        advanced {
+            executionMappingIdentifier: 11308913649559009265
+        }
+        serverSideCondition {
+            whenButtonPressed: @email-to-me
+        }
+    )
+
+    process subscribe-to-exceptions (
+        name: Subscribe to Exceptions
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.notification_opt_in (
+                    p_team_member_id => :APP_USER_ID,
+                    p_notification_id => sp_util.get_notification_id('RELEASE_EXCEPTIONS'),
+                    p_release_id      => :P117_RELEASE_ID );
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Subscribed to Release Exceptions.
+        }
+        advanced {
+            executionMappingIdentifier: 11501710570630050902
+        }
+        serverSideCondition {
+            whenButtonPressed: @subscribe-to-exceptions
+        }
+    )
+
+    process unsubscribe-exceptions (
+        name: Unsubscribe Exceptions
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.notification_opt_out (
+                    p_team_member_id  => :APP_USER_ID,
+                    p_notification_id => sp_util.get_notification_id('RELEASE_EXCEPTIONS'),
+                    p_release_id      => :P117_RELEASE_ID );
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Unsubscribed from Release Exceptions.
+        }
+        advanced {
+            executionMappingIdentifier: 12115774052939393421
+        }
+        serverSideCondition {
+            whenButtonPressed: @unsubscribe-exceptions
+        }
+    )
+
+)
+

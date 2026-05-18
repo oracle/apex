@@ -1,0 +1,137 @@
+restDataSource eba_rest_employee_data (
+    name: EBA_REST_EMPLOYEE_DATA
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /data/emp
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_EMPLOYEE_DATA
+        rowSelector: items
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: comm
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: deptno
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 5
+            dataType: number
+        }
+        parsing {
+            pathExpression: empno
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: ename
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 8
+            dataType: timestampWithTimeZone
+        }
+        parsing {
+            pathExpression: hiredate
+            formatMask: YYYY"-"MM"-"DD"T"HH24":"MI:SS.FF9TZR
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 1
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: job
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: mgr
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 3
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

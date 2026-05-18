@@ -1,0 +1,178 @@
+customAttribute attribute_01 (
+    apexlangName: renderDataAs
+    attribute: 1
+    name: Render Data As ...
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: JSON
+    }
+
+    entry json (
+        sequence: 10
+        display: JSON
+        return: JSON
+    )
+
+    entry xml (
+        sequence: 20
+        display: XML
+        return: XML
+    )
+
+)
+
+customAttribute attribute_02 (
+    apexlangName: coordinateSystem
+    attribute: 2
+    name: Coordinate System
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    default {
+        value: WGS84
+    }
+
+    entry currentMapProjection (
+        sequence: 20
+        display: Current map projection
+        return: MAP
+    )
+
+    entry longitiudeLatitudeWgs84 (
+        sequence: 10
+        display: Longitiude / Latitude (WGS84)
+        return: WGS84
+    )
+
+)
+
+customAttribute attribute_03 (
+    apexlangName: itemForMapBboxXmin
+    attribute: 3
+    name: "Item for Map BBOX XMIN "
+    type: pageItem
+    appearance {
+        sequence: 30
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: itemForMapBboxYmin
+    attribute: 4
+    name: Item for Map BBOX YMIN
+    type: pageItem
+    appearance {
+        sequence: 40
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: itemForMapBboxXmax
+    attribute: 5
+    name: Item for Map BBOX XMAX
+    type: pageItem
+    appearance {
+        sequence: 50
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: itemForMapBboxYmax
+    attribute: 6
+    name: Item for Map BBOX YMAX
+    type: pageItem
+    appearance {
+        sequence: 60
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: itemForMapCenterX
+    attribute: 7
+    name: Item for Map Center X
+    type: pageItem
+    appearance {
+        sequence: 70
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: itemForMapCenterY
+    attribute: 8
+    name: Item for Map Center Y
+    type: pageItem
+    appearance {
+        sequence: 80
+    }
+)
+
+customAttribute attribute_09 (
+    apexlangName: itemForMouseLocationX
+    attribute: 9
+    name: Item for Mouse Location X
+    type: pageItem
+    appearance {
+        sequence: 90
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: itemForMouseLocationY
+    attribute: 10
+    name: Item for Mouse Location Y
+    type: pageItem
+    appearance {
+        sequence: 100
+    }
+)
+
+customAttribute attribute_11 (
+    apexlangName: itemForCurrentZoomlevel
+    attribute: 11
+    name: Item for current Zoomlevel
+    type: pageItem
+    appearance {
+        sequence: 110
+    }
+)
+
+customAttribute attribute_12 (
+    apexlangName: itemForMaxZoomlevel
+    attribute: 12
+    name: Item for max. Zoomlevel
+    type: pageItem
+    appearance {
+        sequence: 120
+    }
+)
+
+customAttribute attribute_13 (
+    apexlangName: itemForMapSridValue
+    attribute: 13
+    name: Item for MAP SRID value
+    type: pageItem
+    appearance {
+        sequence: 130
+    }
+)
+
+customAttribute attribute_14 (
+    apexlangName: itemForWholeMapDataContentJsonXml
+    attribute: 14
+    name: Item for whole "Map Data" content (JSON / XML)
+    type: pageItem
+    appearance {
+        sequence: 140
+    }
+)
+

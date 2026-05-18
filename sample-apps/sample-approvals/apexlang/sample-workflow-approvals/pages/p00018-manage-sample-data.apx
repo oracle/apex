@@ -1,0 +1,111 @@
+page 18 (
+    name: Manage Sample Data
+    alias: MANAGE-SAMPLE-DATA
+    title: Manage Sample Data
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page allows you to reset the sample employee, approver, salary history, 
+                    laptop request, and appraisal data. It also deletes the workflows created in
+                    development mode and any tasks created by those workflows. However, it does
+                    not affect the <em>Job Change</em> and <em>Salary Change</em> approval task
+                    instances created. The latter two kinds were created as standalone tasks
+                    and <em>will</em> be deleted when the sample application is deleted.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region manage-sample-data (
+        name: Manage Sample Data
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button reset-sample-data (
+        buttonName: Reset_Sample_Data
+        label: Reset Sample Data
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process reset-sample-data (
+        name: Reset_Sample_Data
+        type: executeCode
+        source {
+            plsqlCode: eba_demo_appr_data.install_sample_data;
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample Data Reset.
+        }
+        advanced {
+            executionMappingIdentifier: 268648326815404250
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-sample-data
+        }
+    )
+
+)
+

@@ -1,0 +1,2841 @@
+page 59 (
+    name: Customers
+    alias: CUSTOMERS
+    title: Customers
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            // standard, cacheable elements
+            var timeout = 0; // used for debounce on search
+            var CONTAINER_SEL = '.t-Form-fieldContainer';
+            var pagePrefix = 'P' + $('#pFlowStepId').val();
+            var displayAsId = pagePrefix + '_DISPLAY_AS';
+            var $displayAs = $('#' + displayAsId);
+            var $body = $('.t-PageBody');
+            var $search = $('#' + pagePrefix + '_SEARCH');
+            var $sort = $('#' + pagePrefix + '_SORT');
+            var $reset = $('#reset_button');
+            var $cardsReg = $('#cards_region');
+            var $reportReg = $('#report_region');
+            var $logoReg = $('#logo_region');
+            
+            // custom items (will vary by page)
+            var $geo             = $('#' + pagePrefix + '_GEO');
+            var $industry        = $('#' + pagePrefix + '_INDUSTRY');
+            var $category        = $('#' + pagePrefix + '_CATEGORY');
+            var $product         = $('#' + pagePrefix + '_PRODUCT');
+            var $status          = $('#' + pagePrefix + '_STATUS');
+            var $max_rows        = $('#' + pagePrefix + '_MAX_ROWS');
+            var $reference_types = $('#' + pagePrefix + '_REFERENCE_TYPES');
+            var $marquee_cust    = $('#' + pagePrefix + '_MARQUEE_CUST');
+            var $scp_cust        = $('#' + pagePrefix + '_SCP_CUST');
+            var $type            = $('#' + pagePrefix + '_TYPE');
+            var $use_case        = $('#' + pagePrefix + '_USE_CASE');
+            var $referenceable   = $('#' + pagePrefix + '_REFERENCEABLE');
+            var $imp_partner     = $('#' + pagePrefix + '_IMP_PARTNER');
+            var $competitor      = $('#' + pagePrefix + '_COMPETITOR');
+            var $logo_size       = $('#' + pagePrefix + '_LOGO_SIZE');
+            
+            function showLeftColumn() {
+                $body
+                    .removeClass('t-PageBody--hideLeft')
+                    .addClass('t-PageBody--showLeft');
+            
+                // Takes 200ms to hide column
+                setTimeout(function() {
+                    // Ensure column headers align correctly
+                    $(window).trigger('apexwindowresized');
+                }, 250);
+            }
+            
+            function hideLeftColumn() {
+                $body
+                    .removeClass('t-PageBody--showLeft')
+                    .addClass('t-PageBody--hideLeft');
+            
+                // Takes 200ms to hide column
+                setTimeout(function() {
+                    // Ensure column headers align correctly
+                    $(window).trigger('apexwindowresized');
+                }, 250);
+            }
+            
+            // applyFilters triggers the refresh event on the correct region
+            function applyFilters() {
+                var display = $v(displayAsId);
+            
+                if (display === 'CARDS') {
+                    $cardsReg.trigger('apexrefresh');
+                } else if (display === 'REPORT') {
+                    $reportReg.trigger('apexrefresh');
+                } else if (display === 'LOGOS') {
+                    $logoReg.trigger('apexrefresh');
+                }
+            }
+            
+            // toggleRegionDisplay is similar to applyFilters except that it also
+            // takes into account what regions or items need to be displayed or hidden
+            function toggleRegionDisplay(refresh) {
+                var display = $v(displayAsId);
+            
+                refresh = (refresh === false) ? false : true;
+            
+                if (display === 'CARDS') {
+                    $reportReg.hide();
+                    $logoReg.hide();
+                    $logo_size.closest(CONTAINER_SEL).hide();
+                    showLeftColumn();
+            
+                    if (refresh) {
+                        $cardsReg.trigger('apexrefresh');
+                    }
+            
+                    $cardsReg.show();
+                } else if (display === 'REPORT') {
+                    $cardsReg.hide();
+                    $logoReg.hide();
+                    $logo_size.closest(CONTAINER_SEL).hide();
+                    hideLeftColumn();
+                    if (refresh) {
+                        $reportReg.trigger('apexrefresh');
+                    }
+            
+                    $reportReg.show();
+                } else if (display === 'LOGOS') {
+                    $cardsReg.hide();
+                    $reportReg.hide();
+                    $logo_size.closest(CONTAINER_SEL).show();
+                    showLeftColumn();
+                    if (refresh) {
+                        $logoReg.trigger('apexrefresh');
+                    }
+                    $logoReg.show();
+                }
+            }
+            
+            function debounceSearch(e) {
+                /* 
+                 * Prevent search for following keys:
+                 * TAB:     9
+                 * SHIFT:   16
+                 * LEFT:    37
+                 * RIGHT:   39
+                 */
+                if ( e.which === 9 || e.which === 16 || e.which === 37 || e.which === 39 ) {
+                    return false;
+                }
+            
+                clearTimeout(timeout);
+                timeout = setTimeout(applyFilters, 250);
+            }
+            
+            function preventSubmitOnEnter(e) {
+                if (e.which === 13) {
+                    return false;
+                }
+            }
+            
+            function resetFilters() {
+                $search.val(null);
+            
+                $sort.val(null);
+                $geo.val(null);
+                $industry.val(null);
+                $category.val(null);
+                $product.val(null);
+                $status.val(null);
+                $max_rows.val(null);
+                $reference_types.val(null);
+                $marquee_cust.val(null);
+                $scp_cust.val(null);
+                $type.val(null);
+                $use_case.val(null);
+                $referenceable.val(null);
+                $imp_partner.val(null);
+                $competitor.val(null);
+                $logo_size.val('S');
+            
+                applyFilters();
+            }
+            
+            // standard search event bindings
+            $search.keydown(preventSubmitOnEnter);
+            $search.keyup(debounceSearch);
+            
+            // dynamic event bindings (will vary by filter page)
+            $sort.change(applyFilters);
+            $geo.change(applyFilters);
+            $industry.change(applyFilters);
+            $category.change(applyFilters);
+            $product.change(applyFilters);
+            $status.change(applyFilters);
+            $max_rows.change(applyFilters);
+            $reference_types.change(applyFilters);
+            $marquee_cust.change(applyFilters);
+            $scp_cust.change(applyFilters);
+            $type.change(applyFilters);
+            $use_case.change(applyFilters);
+            $referenceable.change(applyFilters);
+            $imp_partner.change(applyFilters);
+            $competitor.change(applyFilters);
+            
+            // standard display, sort, reset event bindings
+            $displayAs.change(toggleRegionDisplay);
+            $reset.click(resetFilters);
+            
+            toggleRegionDisplay(false);
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .logo-cards .t-Card-icon, .logo-cards .t-Card-titleWrap, .logo-cards .t-Card-info { display: none !important }
+            .logo-cards .t-Card .t-Card-body { padding: 0; border: none; margin: 0 }
+            .logo-cards .t-Card .t-Card-desc {position: relative;}
+            .logo-cards .t-Card img { width: 100%; vertical-align: middle; max-height: ; }
+            span.no-image { display: block; text-align: center; color: #909090; font-weight: 200; white-space: nowrap; padding: 0 12px; }
+            .t-Cards--float .t-Cards-item { max-width: 100% }
+            .t-Cards--float.large-logos .t-Cards-item { width: 480px }
+            .t-Cards--float.large-logos.logo-cards .t-Card .t-Card-desc { line-height: 300px; height: 300px}
+            .t-Cards--float.large-logos span.no-image {font-size: 24px;}
+            .t-Cards--float.medium-logos .t-Cards-item { width: 320px }
+            .t-Cards--float.medium-logos.logo-cards .t-Card .t-Card-desc { line-height: 180px; height: 180px}
+            .t-Cards--float.medium-logos span.no-image {font-size: 20px;}
+            .t-Cards--float.small-logos .t-Cards-item { width: 180px }
+            .t-Cards--float.small-logos.logo-cards .t-Card .t-Card-desc { line-height: 120px; height: 120px}
+            .t-Cards--float.small-logos span.no-image {font-size: 14px;}
+            
+            span.customer-logo {
+                display: block;
+                background-repeat: no-repeat;
+                background-position: 50%;
+                background-size: contain;
+                margin: 10px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <h2>About this Application</h2>
+            <p>Customers helps you improve your customer interactions by offering a centralized repository of information.</p>
+            <p>Each customer can have multiple contacts and be associated with multiple products.  Each contact has a variety of standard attributes, such as category, geography, industry and status, as well as the ability to add tags to a customer for further ad hoc classification.  You can indicate the reference status for a customer and enter free form text as a customer profile.</p>
+            <p>You can create activity records to log interactions with each customer.  Customers includes a variety of reports which let you view recent activities, status changes and tags.  You can also use interactive reports to give your users the ability to filter and shape customer, contact, activity and interaction data.</p>
+            <p>Customers gives you the ability to define your own standards for attributes such as categories, statuses, customer and activity types, and products, allowing you to create a customized version of Customers to meet your own needs.</p>
+            ```
+    }
+
+    region acl-warning (
+        name: ACL Warning
+        type: plugin/aclWarning
+        layout {
+            sequence: 2
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--defaultIcons
+                t-Alert--warning
+                t-Alert--horizontal
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'N'
+        }
+        settings {
+            administrationPageLink: {
+                page: SETTINGS
+                action: resetPagination
+            }
+        }
+    )
+
+    region application-title (
+        name: &APPLICATION_TITLE.
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare 
+                  t varchar2(4000) := null;
+                begin
+                  begin
+                      t := EBA_CUST_FW.get_preference_value('WELCOME_TEXT');
+                  exception
+                      when others then 
+                      t := null;
+                  end;
+                  if t is null or t = '&nbsp;' or t = 'Preference does not exist' then
+                     sys.htp.p('<p>Track and Manage Customers</p>');
+                  else
+                     sys.htp.p('<p>'||apex_escape.html(t)||'</p>');
+                  end if;
+                end;
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-192.png
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region customer-cards (
+        name: Customer Cards
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||a.id) card_link,
+                       a.customer_name card_title,
+                       NVL(substr(a.summary,1,255), DBMS_LOB.substr(a.customer_profile,255,1))      card_text,
+                       --nvl(c.status,'Unknown Status')||', '||
+                       nvl((select INDUSTRY_NAME from EBA_CUST_INDUSTRIES i where i.id = a.INDUSTRY_ID),'')||decode(geography_name,null,null,', '|| geography_name) card_subtext,
+                        upper(
+                          decode(instr(a.customer_name,' '),
+                                 0, 
+                                 substr(a.customer_name,1,2),
+                                 substr(a.customer_name,1,1)||substr(a.customer_name,instr(a.customer_name,' ')+1,1)
+                           )) card_initials
+                from eba_cust_customers a,
+                    eba_cust_categories b,
+                    eba_cust_status c,
+                    eba_cust_geographies d,
+                    eba_cust_type e,
+                    eba_cust_use_case f
+                where a.category_id = b.id(+)
+                    and a.status_id = c.id(+)
+                    and a.geography_id = d.id(+)
+                    and a.type_id = e.id(+)
+                    and a.use_case_id = f.id(+)
+                    and (:P59_SEARCH is null or
+                            instr(upper(a.customer_name),upper(:P59_SEARCH)) > 0 or
+                                       instr(upper(a.summary),upper(:P59_SEARCH)) > 0 )
+                    and (NVL(:P59_GEO,0) = 0 or :P59_GEO = a.geography_id)
+                    and (NVL(:P59_COUNTRY,0) = 0 or :P59_COUNTRY = a.country_id)
+                    and (NVL(:P59_INDUSTRY,0) = 0 or  :P59_INDUSTRY = a.industry_id)
+                    and (NVL(:P59_CATEGORY,0) = 0 or :P59_CATEGORY = a.category_id)
+                    and (NVL(:P59_STATUS,0) = 0 or :P59_STATUS = a.status_id)
+                    and (NVL(:P59_TYPE,0) = 0 or :P59_TYPE = a.type_id)
+                    and (NVL(:P59_USE_CASE,0) = 0 or :P59_USE_CASE = a.use_case_id)
+                    and (:P59_MARQUEE_CUST is null or :P59_MARQUEE_CUST = a.marquee_customer_yn)
+                    and (:P59_IMP_PARTNER is null
+                        or exists ( select null
+                                    from eba_cust_cust_partner_ref rf
+                                    where rf.customer_id = a.id
+                                        and rf.partner_id = :P59_IMP_PARTNER ))
+                    and (:P59_COMPETITOR is null
+                        or exists ( select null
+                                    from eba_cust_cust_competitor_ref rf
+                                    where rf.customer_id = a.id
+                                        and rf.competitor_id = :P59_COMPETITOR ))
+                    and (:P59_REFERENCEABLE is null or :P59_REFERENCEABLE = a.referencable)
+                    and (:P59_SCP_CUST is null or :P59_SCP_CUST = a.strategic_customer_program_yn)
+                    and (
+                        exists (select 1 from eba_cust_customer_reftype_ref r
+                        where r.customer_id = a.id and
+                              instr(':'||:P59_REFERENCE_TYPES||':',':'||reference_type_id||':') > 0)
+                        or 
+                        :P59_REFERENCE_TYPES is null
+                        )
+                    and  NVL(:P59_DISPLAY_AS,'X') = 'CARDS'
+                    and (NVL(:P59_PRODUCT,0) = 0 or exists (select 1 from eba_cust_product_uses u where u.CUSTOMER_ID = a.id and u.PRODUCT_ID = :P59_PRODUCT))
+                order by
+                    case :P59_SORT
+                        when 'NAME' then lower(a.customer_name)
+                        else null
+                    end,
+                    case :P59_SORT
+                        when 'UPDATED' then current_timestamp - a.updated
+                        when 'OLDFIRST' then a.created - current_timestamp
+                        when 'NEWFIRST' then current_timestamp - a.created
+                        else null
+                    end,
+                    case :P59_SORT
+                        when 'NAME' then current_timestamp - a.updated
+                        else null
+                    end,
+                    case :P59_SORT
+                        when 'UPDATED' then lower(a.customer_name)
+                        when 'OLDFIRST' then lower(a.customer_name)
+                        when 'NEWFIRST' then lower(a.customer_name)
+                        else null
+                    end
+                ```
+            pageItemsToSubmit: [
+                P59_SEARCH
+                P59_SORT
+                P59_GEO
+                P59_INDUSTRY
+                P59_CATEGORY
+                P59_STATUS
+                P59_MAX_ROWS
+                P59_REFERENCE_TYPES
+                P59_MARQUEE_CUST
+                P59_SCP_CUST
+                P59_TYPE
+                P59_USE_CASE
+                P59_REFERENCEABLE
+                P59_IMP_PARTNER
+                P59_COMPETITOR
+                P59_DISPLAY_AS
+                P59_PRODUCT
+            ]
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: cards_region
+        }
+        comments {
+            comments:
+                ```
+                    --and (NVL(:P59_PRODUCT,0) = 0 or instr((select listagg(p.id,',') within group (order by p.id) from eba_cust_products p, eba_cust_product_uses u where u.customer_id = a._id and u.product_id = p.id), :P59_PRODUCT) > 0)
+                
+                ```
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--desc-2ln
+                u-colors
+                t-Cards--displayInitials
+                t-Cards--3cols
+                t-Cards--basic
+                t-Cards--animColorFill
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+        }
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region customer-logos (
+        name: Customer Logos
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:P50_ID:'||a.id) card_link,
+                       a.customer_name card_title,
+                       case
+                         when logo_blob is null
+                         then '<span class="no-image">'||apex_escape.html(a.customer_name)||'</span>'
+                         else '<span class="customer-logo" style="background-image: url(''' || apex_util.prepare_url('f?p=' || :APP_ID
+                             || ':IMAGE::APPLICATION_PROCESS=GET_IMAGE:::GET_ID:' || a.id) || ''');" title="'
+                             ||apex_escape.html(a.customer_name)||'"></span>'
+                       end card_text,
+                       null card_subtext,
+                       null card_initials,
+                        a.id
+                from eba_cust_customers a,
+                    eba_cust_categories b,
+                    eba_cust_status c,
+                    eba_cust_geographies d,
+                    eba_cust_type e,
+                    eba_cust_use_case f
+                where a.category_id = b.id(+)
+                    and a.status_id = c.id(+)
+                    and a.geography_id = d.id(+)
+                    and a.type_id = e.id(+)
+                    and a.use_case_id = f.id(+)
+                    and (:P59_SEARCH is null or
+                            instr(upper(a.customer_name),upper(:P59_SEARCH)) > 0 or
+                                       instr(upper(a.summary),upper(:P59_SEARCH)) > 0 )
+                    and (NVL(:P59_GEO,0) = 0 or :P59_GEO = a.geography_id)
+                    and (NVL(:P59_COUNTRY,0) = 0 or :P59_COUNTRY = a.country_id)
+                    and (NVL(:P59_INDUSTRY,0) = 0 or  :P59_INDUSTRY = a.industry_id)
+                    and (NVL(:P59_CATEGORY,0) = 0 or :P59_CATEGORY = a.category_id)
+                    and (NVL(:P59_STATUS,0) = 0 or :P59_STATUS = a.status_id)
+                    and (NVL(:P59_TYPE,0) = 0 or :P59_TYPE = a.type_id)
+                    and (NVL(:P59_USE_CASE,0) = 0 or :P59_USE_CASE = a.use_case_id)
+                    and (:P59_MARQUEE_CUST is null or :P59_MARQUEE_CUST = a.marquee_customer_yn)
+                    and (:P59_IMP_PARTNER is null
+                        or exists ( select null
+                                    from eba_cust_cust_partner_ref rf
+                                    where rf.customer_id = a.id
+                                        and rf.partner_id = :P59_IMP_PARTNER ))
+                    and (:P59_COMPETITOR is null
+                        or exists ( select null
+                                    from eba_cust_cust_competitor_ref rf
+                                    where rf.customer_id = a.id
+                                        and rf.competitor_id = :P59_COMPETITOR ))
+                    and (:P59_REFERENCEABLE is null or :P59_REFERENCEABLE = a.referencable)
+                    and (:P59_SCP_CUST is null or :P59_SCP_CUST = a.strategic_customer_program_yn)
+                    and (
+                        exists (select 1 from eba_cust_customer_reftype_ref r
+                        where r.customer_id = a.id and
+                              instr(':'||:P59_REFERENCE_TYPES||':',':'||reference_type_id||':') > 0)
+                        or 
+                        :P59_REFERENCE_TYPES is null
+                        )
+                    and  NVL(:P59_DISPLAY_AS,'X') = 'LOGOS'
+                    and (NVL(:P59_PRODUCT,0) = 0 or exists (select 1 from eba_cust_product_uses u where u.CUSTOMER_ID = a.id and u.PRODUCT_ID = :P59_PRODUCT))
+                order by
+                    case :P59_SORT
+                        when 'NAME' then lower(a.customer_name)
+                        else null
+                    end,
+                    case :P59_SORT
+                        when 'UPDATED' then current_timestamp - a.updated
+                        when 'OLDFIRST' then a.created - current_timestamp
+                        when 'NEWFIRST' then current_timestamp - a.created
+                        else null
+                    end,
+                    case :P59_SORT
+                        when 'NAME' then current_timestamp - a.updated
+                        else null
+                    end,
+                    case :P59_SORT
+                        when 'UPDATED' then lower(a.customer_name)
+                        when 'OLDFIRST' then lower(a.customer_name)
+                        when 'NEWFIRST' then lower(a.customer_name)
+                        else null
+                    end
+                ```
+            pageItemsToSubmit: [
+                P59_SEARCH
+                P59_SORT
+                P59_GEO
+                P59_INDUSTRY
+                P59_CATEGORY
+                P59_STATUS
+                P59_MAX_ROWS
+                P59_REFERENCE_TYPES
+                P59_MARQUEE_CUST
+                P59_SCP_CUST
+                P59_TYPE
+                P59_USE_CASE
+                P59_LOGO_SIZE
+                P59_REFERENCEABLE
+                P59_IMP_PARTNER
+                P59_COMPETITOR
+                P59_DISPLAY_AS
+                P59_PRODUCT
+            ]
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: logo_region
+            customAttributes: style="display: none;"
+            regionDisplaySelector: true
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        reportLayout {
+            numberOfRows: 5000
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--featured force-fa-lg
+                t-Cards--float
+                t-Cards--animRaiseCard
+            ]
+            cssClasses: logo-cards
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+        messages {
+            whenNoDataFound: No customers found
+        }
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region customers-report (
+        name: Customers Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.row_key,
+                    a.id,
+                    a.parent_customer_id,
+                    a.customer_account_number,
+                    to_char(nvl(a.DISCOUNT_LEVEL,0),'999G999G999G999G999G999G990') || '%' discount_level,
+                    '$' || to_char(nvl(a.TOTAL_CONTRACT_VALUE,0),'999G999G999G999G999G999G990') total_contract_value,
+                    (select count('x') from eba_cust_activity_ref r where a.id = r.customer_id) activities,
+                    customer_name,
+                    a.STRATEGIC_CUSTOMER_PROGRAM_YN,
+                    (select country_name from eba_cust_countries c where id = a.country_id) as country,
+                    c.status,
+                    e.type,
+                    f.use_case,
+                    category,
+                    nvl(geography_name,'Not Defined') geography_name,
+                    decode(referencable, null, 'No', referencable) referencable,
+                    (select status from EBA_CUST_REF_PHASE p where p.id = a.reference_phase_id) ref_phase,
+                    a.REF_RECRUITMENT_OWNER,
+                    (select channel from EBA_CUST_SALES_CHANNEL sc where sc.id = a.SALES_CHANNEL_ID) sales_channel,
+                    number_of_users,
+                    decode(marquee_customer_yn, null, 'No', 'N', 'No', 'Y', 'Yes') marquee_customer,
+                    decode(greatest(length(nvl(summary,' ')),50),50,summary,substr(summary,1,50)||'...') summary,
+                    web_site,
+                    (   select listagg(p.product_name, ', ') within group (order by p.product_name) product_uses
+                        from eba_cust_customers c, eba_cust_product_uses u, eba_cust_products p
+                        where c.id = u.customer_id
+                            and u.product_id = p.id
+                            and c.id = a.id
+                        group by c.customer_name
+                    ) product_uses,
+                    tags,
+                    nvl((select INDUSTRY_NAME from EBA_CUST_INDUSTRIES i where i.id = a.INDUSTRY_ID),'Not Defined') industry,
+                    a.industry_id,
+                    a.created,
+                    a.created_by,
+                    a.updated,
+                    a.updated_by,
+                    (   select listagg(rt.reference_type, ', ') within group (order by rt.reference_type) reference_types
+                        from eba_cust_reference_types rt, eba_cust_customer_reftype_ref ref
+                        where ref.customer_id = a.id
+                            and rt.id = ref.reference_type_id
+                    ) referencability
+                from eba_cust_customers a,
+                    eba_cust_categories b,
+                    eba_cust_status c,
+                    eba_cust_geographies d,
+                    eba_cust_type e,
+                    eba_cust_use_case f
+                where a.category_id = b.id(+)
+                    and a.status_id = c.id(+)
+                    and a.geography_id = d.id(+)
+                    and a.type_id = e.id(+)
+                    and a.use_case_id = f.id(+)
+                --
+                --    and (:P59_SEARCH is null or
+                --            instr(upper(a.customer_name),upper(:P59_SEARCH)) > 0 or
+                --                       instr(upper(a.summary),upper(:P59_SEARCH)) > 0 )
+                --    and (NVL(:P59_GEO,0) = 0 or :P59_GEO = a.geography_id)
+                --    and (NVL(:P59_COUNTRY,0) = 0 or :P59_COUNTRY = a.country_id)
+                --    and (NVL(:P59_INDUSTRY,0) = 0 or  :P59_INDUSTRY = a.industry_id)
+                --    and (NVL(:P59_CATEGORY,0) = 0 or :P59_CATEGORY = a.category_id)
+                --    and (NVL(:P59_STATUS,0) = 0 or :P59_STATUS = a.status_id)
+                --    and (NVL(:P59_TYPE,0) = 0 or :P59_TYPE = a.type_id)
+                --    and (NVL(:P59_USE_CASE,0) = 0 or :P59_USE_CASE = a.use_case_id)
+                --    and (:P59_MARQUEE_CUST is null or :P59_MARQUEE_CUST = a.marquee_customer_yn)
+                --    and (:P59_IMP_PARTNER is null
+                --        or exists ( select null
+                --                    from eba_cust_cust_partner_ref rf
+                --                    where rf.customer_id = a.id
+                --                        and rf.partner_id = :P59_IMP_PARTNER ))
+                --    and (:P59_COMPETITOR is null
+                --        or exists ( select null
+                --                    from eba_cust_cust_competitor_ref rf
+                --                    where rf.customer_id = a.id
+                --                        and rf.competitor_id = :P59_COMPETITOR ))
+                --    and (:P59_REFERENCEABLE is null or :P59_REFERENCEABLE = a.referencable)
+                --    and (:P59_SCP_CUST is null or :P59_SCP_CUST = a.strategic_customer_program_yn)
+                --    and (
+                --        exists (select 1 from eba_cust_customer_reftype_ref r
+                --        where r.customer_id = a.id and
+                --              instr(':'||:P59_REFERENCE_TYPES||':',':'||reference_type_id||':') > 0)
+                --        or 
+                --        :P59_REFERENCE_TYPES is null
+                --        )
+                    and NVL(:P59_DISPLAY_AS,'X') = 'REPORT'
+                --    and (NVL(:P59_PRODUCT,0) = 0 or exists (select 1 from eba_cust_product_uses u where u.CUSTOMER_ID = a.id and u.PRODUCT_ID = :P59_PRODUCT))
+                ```
+            pageItemsToSubmit: P59_DISPLAY_AS
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        advanced {
+            htmlDomId: report_region
+            customAttributes: style="display: none;"
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        searchBar {
+            reportsSelectList: false
+        }
+        actionsMenu {
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 2328071018446133994
+        }
+
+        column ACTIVITIES (
+            type: plainText
+            heading {
+                heading: Activities
+                alignment: center
+            }
+            layout {
+                sequence: 141
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: BH
+            }
+        )
+
+        column CATEGORY (
+            type: plainText
+            heading {
+                heading: Category
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column COUNTRY (
+            type: plainText
+            heading {
+                heading: Country
+            }
+            layout {
+                sequence: 61
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AZ
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column CREATED_BY (
+            type: hidden
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CUSTOMER_ACCOUNT_NUMBER (
+            type: plainText
+            heading {
+                heading: Customer account number
+            }
+            layout {
+                sequence: 111
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BE
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: link
+            heading {
+                heading: Customer
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 50
+                    items: {
+                        P50_ID: #ID#
+                    }
+                    clearCache: 50
+                    action: resetPagination
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column DISCOUNT_LEVEL (
+            type: plainText
+            heading {
+                heading: Discount Level
+                alignment: center
+            }
+            layout {
+                sequence: 121
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BF
+            }
+        )
+
+        column GEOGRAPHY_NAME (
+            type: plainText
+            heading {
+                heading: Geography
+            }
+            layout {
+                sequence: 22
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: wwv_flow_utilities.is_build_option_enabled('Geography')
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Selected Customer
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column INDUSTRY (
+            type: plainText
+            heading {
+                heading: Industry
+            }
+            layout {
+                sequence: 25
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column INDUSTRY_ID (
+            type: hidden
+            heading {
+                heading: Selected Industry
+            }
+            layout {
+                sequence: 26
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Z
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column MARQUEE_CUSTOMER (
+            type: plainText
+            heading {
+                heading: Marquee Customer
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column NUMBER_OF_USERS (
+            type: plainText
+            heading {
+                heading: # of Users
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            serverSideCondition {
+                type: functionBody
+                plsqlFunctionBody: return wwv_flow_utilities.is_build_option_enabled('Number_of_users');
+            }
+        )
+
+        column PARENT_CUSTOMER_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Parent
+                alignment: end
+            }
+            lov {
+                lov: @customers
+            }
+            layout {
+                sequence: 101
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: BD
+            }
+        )
+
+        column PRODUCT_USES (
+            type: plainText
+            heading {
+                heading: Products
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: wwv_flow_utilities.is_build_option_enabled('Products and Services')
+            }
+        )
+
+        column REFERENCABILITY (
+            type: plainText
+            heading {
+                heading: Referencability
+            }
+            layout {
+                sequence: 51
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AY
+            }
+        )
+
+        column REFERENCABLE (
+            type: plainText
+            heading {
+                heading: Publicly Referenceable
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    APEX_UTIL.GET_BUILD_OPTION_STATUS(
+                        P_APPLICATION_ID => :APP_ID,
+                        P_BUILD_OPTION_NAME => 'Customer Referencability') = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column REF_PHASE (
+            type: plainText
+            heading {
+                heading: Ref Phase
+            }
+            layout {
+                sequence: 48
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AV
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    APEX_UTIL.GET_BUILD_OPTION_STATUS(
+                        P_APPLICATION_ID => :APP_ID,
+                        P_BUILD_OPTION_NAME => 'Customer Referencability') = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column REF_RECRUITMENT_OWNER (
+            type: plainText
+            heading {
+                heading: Ref Recruitment Owner
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AX
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    APEX_UTIL.GET_BUILD_OPTION_STATUS(
+                        P_APPLICATION_ID => :APP_ID,
+                        P_BUILD_OPTION_NAME => 'Customer Referencability') = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column ROW_KEY (
+            type: link
+            heading {
+                heading: View
+            }
+            layout {
+                sequence: 19
+            }
+            link {
+                target: {
+                    page: 50
+                    items: {
+                        P50_ID: #ID#
+                    }
+                    clearCache: 50
+                }
+                linkText: <span>#ROW_KEY#</span>
+                linkAttributes: class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column SALES_CHANNEL (
+            type: plainText
+            heading {
+                heading: Sales Channel
+            }
+            layout {
+                sequence: 49
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AW
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column STRATEGIC_CUSTOMER_PROGRAM_YN (
+            type: plainTextBasedOnLov
+            heading {
+                heading: SCP Customer
+            }
+            lov {
+                lov: @y-or-n
+            }
+            layout {
+                sequence: 91
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BC
+            }
+        )
+
+        column SUMMARY (
+            type: plainText
+            heading {
+                heading: Summary
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: STRING
+            }
+            columnFilter {
+                type: definedLovWordContains
+                sqlQuery:
+                    ```sql
+                    select tag
+                      from eba_cust_tags_type_sum
+                     where content_type = 'CUSTOMER'
+                       and tag_count > 0
+                    ```
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column TOTAL_CONTRACT_VALUE (
+            type: plainText
+            heading {
+                heading: Total Contract Value
+                alignment: center
+            }
+            layout {
+                sequence: 131
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BG
+            }
+        )
+
+        column TYPE (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 71
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BA
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 21
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column UPDATED_BY (
+            type: hidden
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column USE_CASE (
+            type: plainText
+            heading {
+                heading: Use Case
+            }
+            layout {
+                sequence: 81
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BB
+            }
+        )
+
+        column WEB_SITE (
+            type: plainText
+            heading {
+                heading: Web Site
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 20424235 (
+            visibility: alternativeDefault
+            name: SORT_BY_UPD
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVITIES (
+                sequence: 9
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 1
+            )
+
+            displayColumn DISCOUNT_LEVEL (
+                sequence: 7
+            )
+
+            displayColumn GEOGRAPHY_NAME (
+                sequence: 5
+            )
+
+            displayColumn REFERENCABILITY (
+                sequence: 4
+            )
+
+            displayColumn REFERENCABLE (
+                sequence: 3
+            )
+
+            displayColumn SUMMARY (
+                sequence: 2
+            )
+
+            displayColumn TOTAL_CONTRACT_VALUE (
+                sequence: 8
+            )
+
+            displayColumn UPDATED (
+                sequence: 6
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: CUSTOMER_NAME
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+        savedReport 23280856 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVITIES (
+                sequence: 9
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 1
+            )
+
+            displayColumn DISCOUNT_LEVEL (
+                sequence: 7
+            )
+
+            displayColumn GEOGRAPHY_NAME (
+                sequence: 5
+            )
+
+            displayColumn REFERENCABILITY (
+                sequence: 4
+            )
+
+            displayColumn REFERENCABLE (
+                sequence: 3
+            )
+
+            displayColumn SUMMARY (
+                sequence: 2
+            )
+
+            displayColumn TOTAL_CONTRACT_VALUE (
+                sequence: 8
+            )
+
+            displayColumn UPDATED (
+                sequence: 6
+            )
+
+            sort (
+                column: CUSTOMER_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region more-filters (
+        name: More Filters
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    id,
+                    decode(lower(NOTIFICATION_TYPE),'yellow','warning','red','danger',lower(NOTIFICATION_TYPE)) as ALERT_TYPE,
+                    NOTIFICATION_NAME as ALERT_TITLE,
+                    NOTIFICATION_DESCRIPTION as ALERT_DESC,
+                    '' alert_action
+                  from EBA_CUST_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                 order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_CUST_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                ```
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/alerts
+            templateOptions: #DEFAULT#
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ALERT_ACTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Alert action
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_DESC (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Alert desc
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Alert title
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Alert type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 170
+            parentRegion: @application-title
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                #DEFAULT#
+            ]
+            cssClasses: t-Form--search
+        }
+    )
+
+    region timezone (
+        name: Timezone
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                "TIMEZONE" 
+                 
+                ```
+        }
+        layout {
+            sequence: 180
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: style="clear: both;"
+        }
+        settings {
+            expandShortcuts: true
+        }
+    )
+
+    region welcome-to-customers (
+        name: Welcome to Customers
+        type: list
+        source {
+            list: @welome-actions
+        }
+        layout {
+            sequence: 3
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--noIcon
+                t-Alert--info
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery: select 1 from eba_cust_customers
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--cols t-MediaList--2cols
+            ]
+        }
+    )
+
+    pageItem P59_CATEGORY (
+        type: selectList
+        label {
+            label: Category
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @cat
+            displayExtraValues: false
+            nullDisplayValue: "- All - "
+        }
+        layout {
+            sequence: 100
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P59_COMPETITOR (
+        type: selectList
+        label {
+            label: Competitor
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select name d, id r
+                from eba_cust_competitors
+                order by lower(name)
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 50
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P59_COUNTRY (
+        type: selectList
+        label {
+            label: Country
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @countries-p-2
+            displayExtraValues: false
+            nullDisplayValue: - All -
+            nullReturnValue: 0
+        }
+        cascadingLov {
+            parentItems: P59_GEO
+            parentRequired: false
+        }
+        layout {
+            sequence: 80
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @countries
+        }
+    )
+
+    pageItem P59_DISPLAY_AS (
+        type: radioGroup
+        label {
+            label: Display as
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: sharedComponent
+            lov: @homepage-display-as
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: CARDS
+        }
+        security {
+            escapeSpecialChars: false
+        }
+    )
+
+    pageItem P59_GEO (
+        type: selectList
+        label {
+            label: Geography
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @geography
+            displayExtraValues: false
+            nullDisplayValue: "- All - "
+        }
+        layout {
+            sequence: 50
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P59_IMP_PARTNER (
+        type: selectList
+        label {
+            label: Partner
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select name d, id r
+                from eba_cust_impl_partners
+                order by lower(name)
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 40
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P59_INDUSTRY (
+        type: selectList
+        label {
+            label: Industry
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p2-industry-id-lookup
+            displayExtraValues: false
+            nullDisplayValue: "- All - "
+        }
+        layout {
+            sequence: 90
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P59_LOGO_SIZE (
+        type: selectList
+        label {
+            label: Logo Sizes
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @logo-sizes
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 100
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: S
+        }
+    )
+
+    pageItem P59_MARQUEE_CUST (
+        type: selectList
+        label {
+            label: Marquee Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @marquee
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 30
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P59_MAX_ROWS (
+        type: selectList
+        label {
+            label: Rows
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @max-rows
+            displayNullValue: false
+        }
+        layout {
+            sequence: 110
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 20
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    pageItem P59_PRODUCT (
+        type: selectList
+        label {
+            label: Product
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @products
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 40
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P59_REFERENCEABLE (
+        type: selectList
+        label {
+            label: Publicly Referenceable
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @referencable
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 60
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P59_REFERENCE_TYPES (
+        type: checkboxGroup
+        label {
+            label: Reference Types (any)
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @reference-types
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 70
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            cssClasses: reference_types_checkbox
+        }
+        help {
+            inlineHelpText: <button class="t-Button t-Button--small" id="reference_check_box" type="button">Check All</button>
+            helpText: Check all the boxes you would like to see.  If any customers have any of the reference types selected you will see the customer.
+        }
+    )
+
+    pageItem P59_SCP_CUST (
+        type: selectList
+        label {
+            label: SCP Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @y-or-n
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 60
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @strategic-customer-program
+        }
+    )
+
+    pageItem P59_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 64
+            valuePlaceholder: Search Customers
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P59_SORT (
+        type: selectList
+        label {
+            label: Sort By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Name;NAME,Last Updated;UPDATED,Oldest to Newest;OLDFIRST,Newest to Oldest;NEWFIRST
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: UPDATED
+        }
+        sessionState {
+            storage: user
+        }
+    )
+
+    pageItem P59_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @status
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 80
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @customer-status
+        }
+    )
+
+    pageItem P59_TYPE (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @type
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 10
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P59_USE_CASE (
+        type: selectList
+        label {
+            label: Use Case
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @use-case
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 20
+            region: @more-filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @customer-use-case
+        }
+    )
+
+    button add-customer (
+        buttonName: ADD_CUSTOMER
+        label: Add Customer
+        layout {
+            sequence: 10
+            region: @application-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+                clearCache: 2
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button config-acl (
+        buttonName: CONFIG_ACL
+        label: Configure ACL
+        layout {
+            sequence: 10
+            region: @acl-warning
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 35
+                clearCache: 35
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @customers-report
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 50
+            region: @filters
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: reset_button
+        }
+    )
+
+    dynamicAction perform-search-on-enter (
+        name: Perform Search on Enter
+        execution {
+            sequence: 60
+        }
+        when {
+            event: keydown
+            selectionType: items
+            items: P59_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.browserEvent.which === 13
+        }
+        serverSideCondition {
+            type: never
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-cards
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-logos
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reset-search-filters (
+        name: Reset Search Filters
+        execution {
+            sequence: 234
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @reset-report
+        }
+
+        action native-clear (
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: [
+                    P59_SEARCH
+                    P59_GEO
+                    P59_INDUSTRY
+                    P59_CATEGORY
+                    P59_STATUS
+                    P59_MAX_ROWS
+                    P59_REFERENCE_TYPES
+                    P59_LOGO_SIZE
+                    P59_PRODUCT
+                    P59_MARQUEE_CUST
+                    P59_SCP_CUST
+                    P59_TYPE
+                    P59_USE_CASE
+                    P59_REFERENCEABLE
+                    P59_COUNTRY
+                    P59_IMP_PARTNER
+                    P59_COMPETITOR
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-logo-sizes (
+        name: Set Logo Sizes
+        execution {
+            sequence: 254
+        }
+        when {
+            selectionType: items
+            items: P59_LOGO_SIZE
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var logo_cards$ = $("#logo_region_cards");
+                    var logo_select_val = $v('P59_LOGO_SIZE');
+                    
+                    if (logo_select_val === 'S') {
+                      logo_cards$.addClass("small-logos");
+                      logo_cards$.removeClass("medium-logos large-logos"); 
+                    } else if (logo_select_val === 'M') {
+                      logo_cards$.addClass("medium-logos");
+                      logo_cards$.removeClass("small-logos large-logos");
+                    } else {
+                      logo_cards$.addClass("large-logos");
+                      logo_cards$.removeClass("small-logos medium-logos");
+                    }
+                    ```
+            }
+            affectedElements {
+                selectionType: items
+                items: P59_LOGO_SIZE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction set-logo-sizes-on-region-refresh (
+        name: Set Logo Sizes on Region Refresh
+        execution {
+            sequence: 264
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @customer-logos
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var logo_cards$ = $("#logo_region_cards");
+                    var logo_select_val = $v('P59_LOGO_SIZE');
+                    
+                    if (logo_select_val === 'S') {
+                      logo_cards$.addClass("small-logos");
+                      logo_cards$.removeClass("medium-logos large-logos"); 
+                    } else if (logo_select_val === 'M') {
+                      logo_cards$.addClass("medium-logos");
+                      logo_cards$.removeClass("small-logos large-logos");
+                    } else {
+                      logo_cards$.addClass("large-logos");
+                      logo_cards$.removeClass("small-logos medium-logos");
+                    }
+                    ```
+            }
+            affectedElements {
+                selectionType: items
+                items: P59_LOGO_SIZE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction toggle-reference-type-checkboxes (
+        name: Toggle Reference Type Checkboxes
+        execution {
+            sequence: 224
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: #reference_check_box
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: $(this.triggeringElement).text() === "Check All"
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $(".reference_types_checkbox input[type=checkbox]").prop('checked',true);
+                    $(this.triggeringElement).text('Uncheck All');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $(".reference_types_checkbox input[type=checkbox]").prop('checked',false);
+                    $(this.triggeringElement).text('Check All');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: #CARDS, #LOGOS, #CUSTOMERS
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: #CARDS, #LOGOS, #CUSTOMERS
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    branch (
+        name: Go to Getting Started Page
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 1000
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+)
+

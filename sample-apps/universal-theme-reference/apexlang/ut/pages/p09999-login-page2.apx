@@ -1,0 +1,250 @@
+page 9999 (
+    name: Login Page
+    alias: LOGIN-PAGE2
+    title: Login Page
+    appearance {
+        pageTemplate: @/login
+        templateOptions: [
+            #DEFAULT#
+            t-LoginPage--split
+            t-LoginPage--bg3
+        ]
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region language-selector (
+        name: Language Selector
+        type: plSqlDynamicContent
+        source {
+            plsqlCode: apex_lang.emit_language_selector_list;
+        }
+        layout {
+            sequence: 20
+            parentRegion: @ut-login-test
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region ut-login-test (
+        name: UT - Login Test
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/login
+            templateOptions: #DEFAULT#
+            icon: app-sample-universal-theme
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P9999_PASSWORD (
+        type: password
+        label {
+            label: password
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @ut-login-test
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-key
+            width: 40
+            valuePlaceholder: Password
+        }
+        validation {
+            maxLength: 100
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            encryptSessionState: false
+        }
+    )
+
+    pageItem P9999_REMEMBER (
+        type: checkboxGroup
+        label {
+            label: Remember Username
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Remember username;Y
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @ut-login-test
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            encryptSessionState: false
+        }
+        help {
+            helpText:
+                ```html
+                <p>
+                If you select this checkbox, the application will save your username in a persistent browser cookie named "LOGIN_USERNAME_COOKIE".
+                When you go to the login page the next time,
+                the username field will be automatically populated with this value.
+                </p>
+                <p>
+                If you deselect this checkbox and your username is already saved in the cookie,
+                the application will overwrite it with an empty value.
+                You can also use your browser's developer tools to completely remove the cookie.
+                </p>
+                ```
+        }
+    )
+
+    pageItem P9999_USERNAME (
+        type: textField
+        label {
+            label: username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @ut-login-test
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-user
+            width: 40
+            valuePlaceholder: Username
+        }
+        validation {
+            maxLength: 100
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            encryptSessionState: false
+        }
+    )
+
+    button login (
+        buttonName: LOGIN
+        label: Sign In
+        layout {
+            sequence: 40
+            region: @ut-login-test
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process clear-page-s-cache (
+        name: Clear Page(s) Cache
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 736555074761228465
+        }
+    )
+
+    process get-username-cookie (
+        name: Get Username Cookie
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P9999_USERNAME := apex_authentication.get_login_username_cookie;
+                :P9999_REMEMBER := case when :P9999_USERNAME is not null then 'Y' end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 736554636428228465
+        }
+    )
+
+    process login (
+        name: Login
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_authentication.login(
+                    p_username => :P9999_USERNAME,
+                    p_password => :P9999_PASSWORD );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 736553859833228463
+        }
+    )
+
+    process set-username-cookie (
+        name: Set Username Cookie
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_authentication.send_login_username_cookie (
+                    p_username => lower(:P9999_USERNAME),
+                    p_consent  => :P9999_REMEMBER = 'Y' );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 736554270494228465
+        }
+    )
+
+)
+

@@ -1,0 +1,288 @@
+page 1923 (
+    name: Region Display Selector
+    alias: REGION-DISPLAY-SELECTOR
+    title: Region Display Selector
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads: apex.theme42demo.jump('&REQUEST.');
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+            additionalText:
+                ```
+                <p>Then in <strong>Page Designer</strong>, select the regions that should appear on the <strong>Region Display Selector</strong> and set the <em>Region Display Selector</em> property to <strong>Yes</strong>.</p>
+                
+                <p>It is recommended to place a <strong>Region Display Selector</strong> region in the <strong>Breadcrumb</strong> position on your page.</p>
+                ```
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The <strong>Region Display Selector</strong> is a Region component that provides a page level navigation control for other regions on the page with the <em>Region Display Selector</em> property set to <strong>Yes</strong>.  It can be configured to work in two modes:</p>
+                <ul>
+                  <li><strong>View Single Region</strong> Show regions as tabs. Selecting a tab will make the corresponding region visible and hide the other selections.</li>
+                  <li><strong>Scroll Window</strong> Always display all the regions on the page. Selecting a tab will scroll your window to the corresponding region.</li>
+                </ul>
+                <p>
+                   The <em>Remember Selection</em> attribute of a Region Display Selector can be set to control which tab is selected on page load:
+                </p>
+                <ul>
+                    <li><strong>By User</strong> Tab selection will always be remembered across all sessions unless intentionally reset.</li>
+                    <li><strong>By Session</strong> Tab selection will be remembered for the duration of a single session. Once a session ends, tab selection will be reset.</li>
+                    <li><strong>No</strong> Tab selection will be set to the first tab in the Region Display Selector every time the page loads.</li>
+                </ul>
+                <p>
+                    Region Display Selector also supports displaying icons in each tab with the <strong>Display Icon</strong> attribute. Any region that is included in the Region Display Selector and has the <em>Icon</em> property set will have that icon displayed.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region (
+        name: Region 1
+        type: staticContent
+        source {
+            htmlCode: Region 1 content
+        }
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+            icon: fa-apex
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-2 (
+        name: Region 2
+        type: staticContent
+        source {
+            htmlCode: Region 2 content
+        }
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+            icon: fa-apex
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-3 (
+        name: Region 3
+        type: staticContent
+        source {
+            htmlCode: Region 3 content
+        }
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+            icon: fa-apex
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-4 (
+        name: Region 4
+        type: staticContent
+        source {
+            htmlCode: Region 4 content
+        }
+        layout {
+            sequence: 90
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+            icon: fa-apex
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-5 (
+        name: Region 5
+        type: staticContent
+        source {
+            htmlCode: Region 5 content
+        }
+        layout {
+            sequence: 100
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+            icon: fa-apex
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+        settings {
+            mode: scrollWindow
+            displayRegionIcons: true
+            rememberSelection: false
+        }
+    )
+
+)
+

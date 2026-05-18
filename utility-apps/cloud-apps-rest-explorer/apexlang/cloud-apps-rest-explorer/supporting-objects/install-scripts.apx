@@ -1,0 +1,117 @@
+installScript "Drop Tables Quietly" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: drop-tables-quietly.sql
+    }
+)
+
+installScript Package (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: package.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_UTIL_FAREST_EXPLORER
+    )
+
+)
+
+installScript Tables (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: tables.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FACAT_SERVER_PREFIXES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FACAT_RELEASES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FACAT_PILLARS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FACAT_ENDPOINTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FACAT_ENDPOINT_ATTRS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FACAT_CATALOGS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FAREST_CAT_BASEURL
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FAREST_CATALOG
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FAREST_ENDPOINTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FAREST_ENDPOINT_ATTRS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_UTIL_FAREST_ENDPOINT_CHOBJ
+    )
+
+)
+
+installScript Views (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: views.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: view
+        name: EBA_UTIL_FACAT_MANIFEST
+    )
+
+)
+

@@ -1,0 +1,98 @@
+app SAMPLE-REPORTING (
+    name: Sample Reporting
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: Sample Reporting
+    }
+    navigation {
+        homeUrl: {
+            page: 10
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-auth
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 42E50F302367D1E2E016C8B34E273DF9FD76F2CF944B1C5720CF66E1B7A610BC
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments:
+            ```
+            1.0.7 -> 1.0.8: Added "SQL Source" show/hide region to all pages.
+            1.0.9 -> 1.0.10: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie
+            1.0.11 -> 1.0.12: Added page 27 "Use Cases - String Functions" and associated list entry to use cases list on page 9.
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Reporting
+        }
+    )
+
+    substitution GETTING_STARTED_URL (
+        value {
+            staticValue: http://www.oracle.com/technetwork/developer-tools/apex/index.html
+        }
+    )
+
+)
+

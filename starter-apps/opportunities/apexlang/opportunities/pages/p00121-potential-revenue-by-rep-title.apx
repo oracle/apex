@@ -1,0 +1,266 @@
+page 121 (
+    name: Potential Revenue by &REP_TITLE.
+    alias: POTENTIAL-REVENUE-BY-REP-TITLE
+    title: Potential Revenue by &REP_TITLE_RAW.
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This page shows a donut pie chart depicting potential revenue by &REP_TITLE.. Change the "Quarter" and/or "Territory" filter values to vary the pie chart's results.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region potential-revenue-by-rep-title (
+        name: Potential Revenue by &REP_TITLE.
+        type: chart
+        layout {
+            sequence: 1210
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: donut
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series potential-revenue-by-rep-title (
+            name: Potential Revenue by &REP_TITLE.
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select '' link,
+                      :REP_TITLE series_name,
+                      sr.rep_first_name || ' ' || sr.rep_last_name label,
+                       case when apex_util.get_build_option_status(
+                                     p_application_id    => :APP_ID,
+                                     p_build_option_name => 'Opportunity Amount Set at Product Level'
+                                 ) = 'EXCLUDE' then
+                           sum(d.deal_amount)
+                       else
+                           sum(nvl((select sum(nvl(dp.quote_price, 0.00)) from EBA_SALES_DEAL_PRODUCTS dp where dp.deal_id = d.id), 0))
+                       end as value,
+                      sr.id sales_rep_id
+                    from eba_sales_salesreps sr
+                    join eba_sales_deals d
+                      on d.salesrep_id_01 = sr.id
+                    join eba_sales_customers c
+                      on c.id = d.customer_id
+                    where (:P121_QUARTER is null or d.qtr = :P121_QUARTER)
+                      and (:P121_TERRITORY is null or c.customer_territory_id = :P121_TERRITORY)
+                      and nvl(deal_probability,0) < 100
+                    group by sr.rep_first_name || ' ' || sr.rep_last_name, 
+                      sr.id
+                    order by 3 desc
+                    ```
+                pageItemsToSubmit: [
+                    P121_QUARTER
+                    P121_TERRITORY
+                ]
+            }
+            columnMapping {
+                seriesName: SERIES_NAME
+                label: LABEL
+                value: VALUE
+                customTooltip: LABEL
+            }
+            label {
+                show: true
+                displayAs: percentage
+            }
+        )
+
+    )
+
+    pageItem P121_QUARTER (
+        type: selectList
+        label {
+            label: Quarter
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @quarter-past-and-current
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select PERIOD_NAME from eba_sales_sales_periods
+                 where sysdate between first_day and last_day
+                ```
+        }
+        help {
+            helpText: Restrict report to opportunities that have close date that fall into the identified quarter.  Only the current and past quarters are displayed.
+        }
+    )
+
+    pageItem P121_TERRITORY (
+        type: selectList
+        label {
+            label: Territory
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @territory
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    button reset-chart (
+        buttonName: RESET_CHART
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 121
+                clearCache: 121
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction p121-quarter-or-p121-territory-changed (
+        name: P121_QUARTER or P121_TERRITORY changed
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                P121_QUARTER
+                P121_TERRITORY
+            ]
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @potential-revenue-by-rep-title
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

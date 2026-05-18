@@ -1,0 +1,35 @@
+customAttribute attribute_01 (
+    apexlangName: renderDataAs
+    attribute: 1
+    name: Render Data as
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: XML
+    }
+
+    entry json (
+        sequence: 10
+        display: JSON
+        return: JSON
+    )
+
+    entry wellKnownTextWkt (
+        sequence: 30
+        display: Well Known Text (WKT)
+        return: WKT
+    )
+
+    entry xml (
+        sequence: 20
+        display: XML
+        return: XML
+    )
+
+)
+

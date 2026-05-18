@@ -1,0 +1,148 @@
+page 6200 (
+    name: JavaScript Events
+    alias: JAVASCRIPT-EVENTS
+    title: JavaScript Events - &APP_TITLE.
+    pageGroup: @tools-and-utilities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: dm-Page
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            code.event-name {
+                background: rgba(147, 180, 197, 0.25);
+                padding: 6px 8px;
+                border-radius: 3px;
+                text-shadow: 1px 1px #fff;
+            }
+            
+            code.event-name:hover {
+                color: #000;
+                background:#eee
+            }
+            
+            .dm-Code {
+                border-radius: var(--ut-component-border-radius);
+                border: var(--ut-component-border-width) solid var(--ut-component-border-color);
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region api-list (
+        name: API List
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol class="event-list">
+                    <li>
+                        <p><code class="event-name">theme42ready</code> is triggered after the initialization of Universal Theme:</p>
+                <pre class="dm-Code lang-js"><code>apex.jQuery(window).on('<strong>theme42ready</strong>', function() {
+                    console.log('Do something after UI elements are rendered on the page.');
+                });</code></pre>
+                        
+                    </li>
+                    <li>
+                        <p>
+                <code class="event-name">theme42layoutchanged</code> is triggered when left navigation menu is expanded or collapsed.</p>
+                <pre class="dm-Code lang-js"><code>apex.jQuery("#t_TreeNav").on('<strong>theme42layoutchanged</strong>', function(event, obj) {
+                    console.log('Left menu action: ' + obj.action);   // obj.action will return expand or collapse
+                });</code></pre>
+                    </li>
+                    <li>
+                        <p><code class="event-name">apexwindowresized</code> is triggered by the browser window resize or the maximize/restore action of a region.</p>
+                <pre class="dm-Code lang-js"><code>apex.jQuery(window).on('<strong>apexwindowresized</strong>', function() {
+                    console.log('Window resized.');
+                });</code></pre>
+                    </li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region introduction (
+        name: Introduction
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    You can extending Universal Theme by attaching handlers to its events.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

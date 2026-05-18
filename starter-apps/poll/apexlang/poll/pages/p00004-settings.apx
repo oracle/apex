@@ -1,0 +1,902 @@
+page 4 (
+    name: Administration
+    alias: SETTINGS
+    title: Administration
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .acl-Info {
+              display: block;
+              overflow: hidden;
+            }
+            .acl-Info-statusBox,
+            .acl-Info-usersBox {
+              display: block;
+              float: left;
+              width: 50%;
+            }
+            .acl-Info-statusBox {
+              text-align: center;
+            }
+            .acl-Info-heading {
+              display: block;
+              font-size: 16px;
+              margin: 16px 16px 8px 16px;
+              font-weight: bold;
+              color: #404040;
+            }
+            .acl-Info-heading span {
+              color: #707070;
+              font-weight: normal;
+            }
+            .acl-Info-status {
+              display: block;
+              width: 50%;
+              margin: 0 auto 8px auto;
+              padding: 12px 0;
+              border: 1px solid #D0D0D0;
+              border-radius: 2px;
+              font-size: 20px;
+              line-height: 20px;
+              color: #404040;
+              font-weight: bold;
+              background-color: #F0F0F0;
+            }
+            .authScheme .acl-Info-status {
+              font-size: 16px;
+              width: 70%
+            }
+            .acl-Info-status.is-enabled {
+              background-color: #40C230;
+              border-color: #37A62A;
+              color: #FFF;
+              text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+            }
+            .acl-Info-status.is-disabled {
+              background-color: #DE3038;
+              border-color: #A0242A;
+              color: #FFF;
+              text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+            }
+            .acl-Info-changeStatusLink {
+              display: inline-block;
+              padding: 8px 0;
+              color: #404040;
+              text-decoration: none;
+              font-size: 11px;
+              background-color: #F0F0F0;
+              border: 1px solid #D0D0D0;
+              margin: 0 16px 16px 16px;
+              border-radius: 2px;
+              width: 50%;
+            }
+            .acl-Info-changeStatusLink:hover {
+              background-color: #fff;
+              border-color: #C0C0C0;
+              box-shadow: 0 1px 1px rgba(0,0,0,.15);
+            }
+            .acl-Info-changeStatusLink:active {
+              background-color: #E0E0E0;
+              border-color: #C0C0C0;
+              box-shadow: 0 1px 1px rgba(0,0,0,.25) inset;
+            }
+            .acl-Info-users {
+              margin: 0;
+              list-style: none;
+              padding: 0;
+              margin: 0;
+              border-left: 1px solid #F0F0F0;
+            }
+            .acl-Info-user {
+              border-top: 1px solid #F0F0F0;
+            }
+            .acl-Info-userLink {
+              text-decoration: none;
+              display: block;
+              padding: 8px;
+            }
+            .acl-Info-userLink:hover {
+              background-color: #689AD8;
+            }
+            .acl-Info-user:first-child {
+              border-top: none;
+            }
+            .acl-Info-userType,
+            .acl-Info-userCount {
+              display: block;
+              font-size: 14px;
+            }
+            .acl-Info-userType {
+              font-weight: bold;
+              float: left;
+              margin-right: 8px;
+              line-height: 32px;
+            }
+            .acl-Info-userLink:hover .acl-Info-userType {
+              color: #FFF;
+            }
+            .acl-Info-userCount {
+              display: block;
+              overflow: hidden;
+              text-align: right;
+            }
+            .acl-Info-userCount span {
+              display: inline-block;
+              padding: 8px;
+              background-color: #F8F8F8;
+              color: #404040;
+              line-height: 16px;
+              min-width: 36px;
+              text-decoration: none;
+              text-align: right;
+              border-radius: 2px;
+            }
+            .acl-Info-desc {
+                padding: 16px;
+                border-top: 1px solid #E0E0E0;
+                border-bottom: 1px solid #E0E0E0;
+                background: #F8F8F8;
+                font-size: 14px;
+                clear: both;
+            }
+            .acl-Info-desc>p:last-child {
+              margin-bottom: 0;
+            }
+            
+            /* Styles for Updated List */
+            body ul.largeLinkList li a span {
+                margin: 8px;
+                padding: 8px 16px;
+                border-radius: 2px;
+                background: #F8F8F8;
+                font-size: 14px;
+                color: #404040;
+            }
+            body ul.largeLinkList li a span:empty {
+            display: none;
+            }
+            body ul.largeLinkList li a:hover span {
+                background: #F8F8F8;
+                color: #404040;
+            }
+            body ul.largeLinkList li a span.green,
+            body ul.largeLinkList li a:hover span.green{
+                background-color: #40C230;
+                color: #FFF;
+            }
+            body ul.largeLinkList li a span.red,
+            body ul.largeLinkList li a:hover span.red{
+                background-color: #DE3038;
+                color: #FFF;
+            }
+            body ul.largeLinkList li a span.yellow,
+            body ul.largeLinkList li a:hover span.yellow{
+                background-color: #FFCC1B;
+                color: #404040;
+            }
+            
+            body ul.largeLinkList li a {
+            padding-right: 48px;}
+            
+            body .end-user-admin ul.largeLinkList li a {
+            padding-right: 120px;}
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>This page allows users with application administrator privileges to perform the following actions:
+                <ul>
+                    <li>Enable or disable access control</li>
+                    <li>Add, edit, and/or remove users</li>
+                    <li>Change the application's username format (email address or non-email address)</li>
+                    <li>Monitor application errors</li>
+                    <li>Manage the application's appearance</li>
+                    <li>Add, edit, and/or remove application notifications</li>
+                    <li>Rename the application</li>
+                    <li>Manage all other application settings and preferences</li>
+                </ul>
+            </p>
+            ```
+    }
+
+    region access-control (
+        name: Access Control
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @feature-access-control
+        }
+    )
+
+    region access-control-actions (
+        name: Access Control Actions
+        type: list
+        source {
+            list: @access-control
+        }
+        layout {
+            sequence: 130
+            parentRegion: @access-control
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region acl-information (
+        name: ACL Information
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_acl_enabled varchar2(45);
+                    l_acl_scope   varchar2(45);
+                begin
+                    l_acl_enabled := eba_qpoll_fw.get_preference_value('ACCESS_CONTROL_ENABLED');
+                    l_acl_scope   := eba_qpoll_fw.get_preference_value('ACCESS_CONTROL_SCOPE');
+                
+                    if l_acl_enabled = 'N' then
+                        sys.htp.p(apex_lang.message('ACL_DISABLED'));
+                    else
+                        case l_acl_scope
+                            when 'ACL_ONLY' then sys.htp.p(apex_lang.message('ACL_ENABLED'));
+                            when 'PUBLIC_CONTRIBUTE' then sys.htp.p(apex_lang.message('ACL_PUBLIC_CONTRIBUTE'));
+                            when 'PUBLIC_READONLY' then sys.htp.p(apex_lang.message('ACL_PUBLIC_READONLY'));
+                        end case;
+                    end if;
+                end;
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @access-control
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--noIcon
+                t-Alert--warning
+                t-Alert--accessibleHeading
+            ]
+            cssClasses: margin-sm
+        }
+    )
+
+    region administration (
+        name: Administration
+        type: list
+        source {
+            list: @code-tables
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+                u-colors
+            ]
+        }
+    )
+
+    region administrative-reports (
+        name: Administrative Reports
+        type: list
+        source {
+            list: @activity-reports
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region authorization-and-authentication (
+        name: Authorization and Authentication
+        type: plugin/authorizationAdministration
+        layout {
+            sequence: 70
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            pageReportPage: 7
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 100
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--showBreadcrumb
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region confirm-enabling-access-control (
+        name: Confirm Enabling Access Control
+        type: staticContent
+        source {
+            htmlCode: <p>Enabling Access Control allows access to the application and its features to be controlled by an Access Control List (ACL).  Until access control is enabled all authenticated users are administrators.</p>
+        }
+        layout {
+            sequence: 40
+            slot: dialogsDrawersAndPopups
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size600x400
+            ]
+        }
+        advanced {
+            htmlDomId: confirmEnableACL
+        }
+    )
+
+    region email-address-not-set (
+        name: Email Address Not Set
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                You have not defined the EMAIL FROM address.
+                
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--defaultIcons
+                t-Alert--danger
+                t-Alert--horizontal
+            ]
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare x varchar2(4000) := null;
+                begin
+                  x := trim(replace(eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'),'N/A',null));
+                  if x is null or instr(x,'@') = 0  or instr(x,'.') = 0 then 
+                     return true; 
+                  else 
+                     return false; 
+                  end if;
+                end;
+                ```
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region email-administration (
+        name: Email Administration
+        type: list
+        source {
+            list: @email-preferences
+        }
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region hidden-items (
+        name: hidden items
+        type: staticContent
+        layout {
+            sequence: 100
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region user-counts-report (
+        name: User Counts Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.role_name, (select count(*) from apex_appl_acl_user_roles ur where r.role_id = ur.role_id) user_count, r.role_id
+                from  APEX_APPL_ACL_ROLES r
+                where r.application_id = :APP_ID
+                group by r.role_name, r.role_id
+                order by 2 desc, 1
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @access-control
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+                t-Region--noPadding
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ROLE_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Role Id
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROLE_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Role Name
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_COUNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Count
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P4_APP_ERROR_LOG_CNT (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_APP_LOG_CNT (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_APP_USER_LOG_CNT (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_BUILD_OPTION_CNT (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_NOTIFICATION_CNT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_SELF_SRVC_REQ_CNT (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-user (
+        buttonName: ADD_USER
+        label: Add
+        layout {
+            sequence: 10
+            region: @access-control
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-user-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10022
+                clearCache: 10022
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @confirm-enabling-access-control
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:closeModal();
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button enable-access-control (
+        buttonName: ENABLE_ACCESS_CONTROL
+        label: Enable Access Control
+        layout {
+            sequence: 20
+            region: @confirm-enabling-access-control
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-dialog-close (
+        name: Refresh on Dialog Close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @add-user
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @user-counts-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 4
+        }
+    )
+
+    process enable-access-control (
+        name: ENABLE_ACCESS_CONTROL
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                -- Set AC flag
+                eba_qpoll_fw.set_preference_value('ACCESS_CONTROL_ENABLED','Y');
+                
+                -- Seed user table with current user as an administrator or set the current user as administrator
+                declare
+                   l_count number;
+                begin
+                    select count(*) 
+                      into l_count 
+                      from apex_appl_acl_users
+                     where application_id = :APP_ID
+                       and user_name_lc = lower(:APP_USER);
+                    if l_count = 0 then
+                       apex_acl.add_user_role(
+                          p_application_id => :APP_ID, 
+                          p_user_name      => :APP_USER, 
+                          p_role_static_id => 'ADMINISTRATOR');  
+                    else
+                       apex_acl.replace_user_roles (
+                          p_application_id  => :APP_ID,
+                          p_user_name       => :APP_USER,
+                          p_role_static_ids => wwv_flow_t_varchar2('ADMINISTRATOR') );
+                    end if;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: "Access Control enabled and the current user '&APP_USER.' has been set to be an Administrator. "
+        }
+        error {
+            errorMessage: Error
+        }
+        advanced {
+            executionMappingIdentifier: 16384098714677414874
+        }
+        serverSideCondition {
+            type: request=Value
+            value: ENABLE_ACCESS_CONTROL
+        }
+    )
+
+    process populate-counts (
+        name: populate counts
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P4_BUILD_OPTION_CNT  := null;
+                :P4_NOTIFICATION_CNT  := null;
+                :P4_APP_LOG_CNT       := null;
+                :P4_APP_USER_LOG_CNT  := null;
+                :P4_APP_ERROR_LOG_CNT := null;
+                :P4_SELF_SRVC_REQ_CNT := null;
+                
+                for c1 in (select count(*) c from apex_application_build_options
+                            where application_id = :APP_ID)
+                loop
+                  :P4_BUILD_OPTION_CNT := c1.c;
+                end loop;
+                
+                for c1 in (select count(*) c from EBA_QPOLL_NOTIFICATIONS)
+                loop
+                  :P4_NOTIFICATION_CNT := c1.c;
+                end loop;
+                
+                for c1 in (select count(*) c from eba_qpoll_application_log)
+                loop
+                  :P4_APP_LOG_CNT := c1.c;
+                end loop;
+                
+                for c1 in (select count(*) c from eba_qpoll_user_log)
+                loop
+                  :P4_APP_USER_LOG_CNT := c1.c;
+                end loop;
+                
+                for c1 in (select count(*) c from EBA_QPOLL_ERRORS)
+                loop
+                  :P4_APP_ERROR_LOG_CNT := c1.c;
+                end loop;
+                
+                for c1 in (select count(*) c from EBA_QPOLL_ACCESS_REQUESTS where status = 'pending')
+                loop
+                  :P4_SELF_SRVC_REQ_CNT := c1.c;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13860267263780858884
+        }
+    )
+
+)
+

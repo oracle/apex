@@ -1,0 +1,1123 @@
+page 122 (
+    name: "Map Circle Search "
+    alias: AIRPORTS-MAP-CIRCLE-SEARCH
+    title: "&APP_NAME. - Map Circle Search "
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function showFeature( pId, pScale ) {
+                var lMapRegion = apex.region("airport-map-region"), lLayerId, lFeature;
+                // important: Use the layer name exactly as specified in the "name" attribute in Page Designer
+                if (pScale === 2){
+                    lLayerId = lMapRegion.call("getLayerIdByName", "Large Airports");
+                } else {
+                    lLayerId = lMapRegion.call("getLayerIdByName", "Small Airports");
+                }
+                lFeature = lMapRegion.call("getFeature", lLayerId, pId );
+            
+                if ( lFeature.geometry ) {
+                    lMapRegion.call( "getMapObject" ).flyTo({ 
+                        center: lFeature.geometry.coordinates,
+                        screenSpeed: 0.8
+                    });
+                    lMapRegion.call( "closeAllInfoWindows" );
+                    lMapRegion.call( "displayPopup", "infoWindow", lLayerId, pId.toString(), false );
+                }
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page visualizes large US airports as 
+                 a <em>Point Layer</em>. Each airport is visualized with a <em>Map Marker</em>. Clicking the map marker reveals detailed information about the airport. Red markers are used for large airports.
+                <p>Use the <em>Circle</em> tool <span aria-hidden="true" class="a-Icon icon-draw-circle"></span> to additionally find and visualize small airports. Once the circle is drawn, the application will reveal the small airports within the circle's circumference and update the report results.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 5
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region selected-airports (
+        name: Selected Airports
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                
+                       -- data columns
+                       IATA_CODE,
+                       initcap(AIRPORT_NAME) airport_name,
+                       initcap(CITY) city,
+                       initcap(STATE_NAME) state_name,
+                       nvl(commercial_ops,0) as commercial_ops,
+                       air_taxi_ops,
+                       activation_date,
+                       case when commercial_ops > 100000 then 2 else 1 end as scale,
+                
+                       -- display columns
+                       null item_classes,
+                       null selection,
+                       case when commercial_ops > 100000 then 'fa fa-lg fa-map-marker-s u-danger-text' else 'fa fa-lg fa-flag-pennant' end as icon_class,
+                       null icon_html,
+                       null title,
+                       null description,
+                       null misc,
+                       null actions
+                       
+                  from EBA_SAMPLE_MAP_AIRPORTS
+                 where :P122_CIRCLE_GEOJSON is not null
+                   and sdo_anyinteract( geometry, mdsys.sdo_util.from_geojson( :P122_CIRCLE_GEOJSON)) = 'TRUE'
+                   and commercial_ops > 0
+                   and (
+                        case when nvl(commercial_ops,0) > 100000                then 'Y' end = :P122_LARGE_VISIBLE
+                        or 
+                        case when nvl(commercial_ops,0) between 1000 and 100000 then 'Y' end = :P122_SMALL_VISIBLE
+                       )
+                order by nvl(commercial_ops,0) desc, airport_name
+                ```
+            pageItemsToSubmit: [
+                P122_CIRCLE_GEOJSON
+                P122_LARGE_VISIBLE
+                P122_SMALL_VISIBLE
+            ]
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 8
+        }
+        componentAppearance {
+            template: @/content-row
+            templateOptions: [
+                #DEFAULT#
+                t-ContentRow--styleCompact
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound:
+                ```
+                <p>
+                This page visualizes large US airports as 
+                 a <em>Point Layer</em>. Each airport is visualized with a <em>Map Marker</em>. Clicking the map marker reveals detailed information about the airport. Red markers are used for large airports.
+                <p>Use the <em>Circle</em> tool <span aria-hidden="true" class="a-Icon icon-draw-circle"></span> to additionally find and visualize small airports. Once the circle is drawn, the application will reveal the small airports within the circle's circumference and update the report results.
+                </p>
+                ```
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 160
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ACTIVATION_DATE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Activation Date
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AIRPORT_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Airport Name
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AIR_TAXI_OPS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Air Taxi Ops
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CITY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: City
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMERCIAL_OPS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Commercial Ops
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Description
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+            columnFormatting {
+                htmlExpression: #COMMERCIAL_OPS# Operations
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column IATA_CODE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Iata Code
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_CLASS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 110
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_HTML (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Icon Html
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_CLASSES (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Item Classes
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MISC (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Misc
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SCALE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Scale
+                alignment: center
+            }
+            layout {
+                sequence: 170
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SELECTION (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Selection
+                alignment: center
+            }
+            layout {
+                sequence: 100
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATE_NAME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: State Name
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TITLE (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Title
+                alignment: center
+            }
+            layout {
+                sequence: 130
+            }
+            link {
+                target: {
+                    type: url
+                    url: javascript: showFeature('#ID#', #SCALE#);
+                }
+                linkText: #AIRPORT_NAME# (#IATA_CODE#)
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region selected-airports-irr (
+        name: Selected Airports IRR
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       IATA_CODE,
+                       initcap(AIRPORT_NAME) airport_name,
+                       initcap(CITY) city,
+                       initcap(STATE_NAME) state_name,
+                       commercial_ops,
+                       air_taxi_ops,
+                       activation_date
+                  from EBA_SAMPLE_MAP_AIRPORTS
+                 where COMMERCIAL_OPS between 0 and 100000 
+                   and :P122_CIRCLE_GEOJSON is not null
+                   and sdo_anyinteract( geometry, mdsys.sdo_util.from_geojson( :P122_CIRCLE_GEOJSON)) = 'TRUE'
+                ```
+            pageItemsToSubmit: P122_CIRCLE_GEOJSON
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 4
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: never
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No small airports found.
+        }
+        searchBar {
+            finderDropDown: false
+            reportsSelectList: false
+        }
+        actionsMenu {
+            rowsPerPage: false
+            controlBreak: false
+            compute: false
+            aggregate: false
+            chart: false
+            groupBy: false
+            pivot: false
+            flashback: false
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 2621768598440925
+        }
+
+        column ACTIVATION_DATE (
+            type: plainText
+            heading {
+                heading: Opened
+                alignment: center
+            }
+            layout {
+                sequence: 80
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column AIRPORT_NAME (
+            type: hidden
+            heading {
+                heading: Airport Name
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column AIR_TAXI_OPS (
+            type: plainText
+            heading {
+                heading: Air Taxi Operations
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column CITY (
+            type: plainText
+            heading {
+                heading: City
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column COMMERCIAL_OPS (
+            type: plainText
+            heading {
+                heading: Commercial Operations
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column IATA_CODE (
+            type: plainText
+            heading {
+                heading: Airport
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                htmlExpression: #AIRPORT_NAME# (#IATA_CODE#)
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column STATE_NAME (
+            type: plainText
+            heading {
+                heading: State
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Selected Airports IRR
+        }
+
+        savedReport 26958 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVATION_DATE (
+                sequence: 3
+            )
+
+            displayColumn IATA_CODE (
+                sequence: 1
+            )
+
+            displayColumn STATE_NAME (
+                sequence: 2
+            )
+
+        )
+
+    )
+
+    region us-airports (
+        name: US Airports
+        type: map
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: airport-map-region
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                rectangleZoom
+                scaleBar
+                infiniteMap
+                circleTool
+                distanceTool
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -90
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+        componentAdvanced {
+            customSvgStyles:
+                ```
+                [
+                    {
+                        "name": "Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M12.942,5.942,11.783,7.1l.655,2.836a.5.5,0,0,1-.317.583.509.509,0,0,1-.171.03.5.5,0,0,1-.445-.273l-.978-1.92-.986.986.123,1.1a.5.5,0,0,1-.972.213L8.354,9.646,7.342,9.308a.5.5,0,0,1-.33-.582.509.509,0,0,1,.543-.39l1.1.123.986-.986L7.723,6.5a.5.5,0,0,1,.34-.933l2.836.655,1.159-1.159a.625.625,0,0,1,.884.884Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Small Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,19a1.5,1.5,0,0,1-1.106-.487C8.291,17.855,3,11.967,3,8A7,7,0,0,1,17,8c0,3.967-5.291,9.855-5.894,10.514A1.506,1.506,0,0,1,10,19Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M11.94,7.375h-.963L9.435,4.906a.5.5,0,0,0-.9.42L9.2,7.375H8.307l-.693-.866a.508.508,0,0,0-.66-.109.5.5,0,0,0-.177.645L7.29,8.072a1,1,0,0,0,.894.553H9.2l-.666,2.049a.5.5,0,0,0,.122.508.5.5,0,0,0,.778-.088l1.542-2.469h.963a.625.625,0,0,0,0-1.25Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M13.076,9a.2.2,0,0,1-.2-.2V7.2a.2.2,0,1,1,.4,0V8.8A.2.2,0,0,1,13.076,9Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    }
+                ]
+                
+                ```
+        }
+
+        layer large-airports (
+            name: Large Airports
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                           IATA_CODE,
+                           CITY,
+                           AIRPORT_NAME,
+                           AIRPORT_TYPE,
+                           STATE_NAME,
+                           ELEVATION,
+                           DIST_CITY_TO_AIRPORT,
+                           LAND_AREA_COVERED,
+                           to_char(ACTIVATION_DATE_DT,'fmDDfm-MON-YYYY') as ACTIVATION_DATE,
+                           COMMERCIAL_OPS,
+                           to_char(COMMERCIAL_OPS,'999G999G999G999') as com_ops_fmtd,
+                           AIR_TAXI_OPS,
+                           to_char(AIR_TAXI_OPS,'999G999G999G999') as air_ops_fmtd,
+                           GEOMETRY,
+                           2 as scale
+                      from EBA_SAMPLE_MAP_AIRPORTS
+                     where COMMERCIAL_OPS > 100000
+                    ```
+                pageItemsToSubmit: P122_CIRCLE_GEOJSON
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Airport
+                shapeScale: 2
+            }
+            appearance {
+                fillColor: #ff0000
+                strokeColor: #ffffff
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: <strong>&AIRPORT_NAME. (&IATA_CODE.)</strong>
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <h3>&AIRPORT_NAME. (&IATA_CODE.)</h3>
+                    <p>
+                    &AIRPORT_TYPE.<br>
+                    <strong>&CITY., &STATE_NAME.</strong><br>
+                    {if ACTIVATION_DATE/}
+                    Activation Date: &ACTIVATION_DATE.<br>
+                    {endif/}
+                    {if COMMERCIAL_OPS/}
+                    Commercial Operations: &COM_OPS_FMTD.<br>
+                    {endif/}
+                    {if AIR_TAXI_OPS/}
+                    Taxi Operations: &AIR_OPS_FMTD.<br>
+                    {endif/}
+                    ```
+            }
+        )
+
+        layer search-circle (
+            name: Search Circle
+            layerType: polygons
+            layout {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 0 as id,
+                           mdsys.sdo_util.from_geojson( to_clob( :P122_CIRCLE_GEOJSON )) as geometry
+                      from sys.dual
+                     where :P122_CIRCLE_GEOJSON is not null
+                    ```
+                pageItemsToSubmit: P122_CIRCLE_GEOJSON
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+            }
+            appearance {
+                fillColor: #d8aa12
+                fillOpacity: .2
+                strokeColor: #101010
+            }
+        )
+
+        layer small-airports (
+            name: Small Airports
+            layout {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                           IATA_CODE,
+                           CITY,
+                           AIRPORT_NAME,
+                           AIRPORT_TYPE,
+                           STATE_NAME,
+                           ELEVATION,
+                           DIST_CITY_TO_AIRPORT,
+                           LAND_AREA_COVERED,
+                           ACTIVATION_DATE,
+                           COMMERCIAL_OPS,
+                           AIR_TAXI_OPS,
+                           GEOMETRY,
+                           1 as scale
+                      from EBA_SAMPLE_MAP_AIRPORTS
+                     where COMMERCIAL_OPS between 0 and 100000 and :P122_CIRCLE_GEOJSON is not null
+                       and sdo_anyinteract( geometry, mdsys.sdo_util.from_geojson( :P122_CIRCLE_GEOJSON)) = 'TRUE'
+                    ```
+                pageItemsToSubmit: P122_CIRCLE_GEOJSON
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Small Airport
+            }
+            appearance {
+                fillColor: #392423
+                fillOpacity: .8
+                strokeColor: #ffffff
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: &AIRPORT_NAME. (&IATA_CODE.)
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <strong>&AIRPORT_NAME. (&IATA_CODE.)</strong><br>
+                    &CITY., &STATE_NAME.
+                    ```
+            }
+        )
+
+    )
+
+    pageItem P122_CIRCLE_GEOJSON (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @us-airports
+            slot: regionBody
+        }
+    )
+
+    pageItem P122_LARGE_VISIBLE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @us-airports
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    pageItem P122_SMALL_VISIBLE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            region: @us-airports
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    dynamicAction circle-finished (
+        name: Circle Finished
+        execution {
+            sequence: 10
+            eventScope: dynamic
+        }
+        when {
+            event: region/map/spatialmapchanged
+            selectionType: region
+            region: @us-airports
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.changeType === "circle-drawn"
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    apex.region( "airport-map-region" ).call ( "clearCircle" );
+                    
+                    ```
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @selected-airports
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @us-airports
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: ( this.data.circle ? JSON.stringify( this.data.circle.data.geometry ) : "" )
+            }
+            affectedElements {
+                selectionType: items
+                items: P122_CIRCLE_GEOJSON
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction on-click-point (
+        name: On Click Point
+        execution {
+            sequence: 30
+        }
+        when {
+            event: region/map/spatialmapobjectclick
+            selectionType: region
+            region: @us-airports
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    const { lng, lat } = this.data;
+                    
+                    apex.region("airport-map-region").call( "getMapObject" ).flyTo({ 
+                        center: [ lng, lat ],
+                        screenSpeed: 0.8
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-selected-airports-classic-report (
+        name: Refresh Selected Airports Classic Report
+        execution {
+            sequence: 20
+        }
+        when {
+            event: region/map/spatialmapchanged
+            selectionType: region
+            region: @us-airports
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.changeType === "toggle-layer"
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // the "map-changed" event sends the type of change as the "changeType" attribute. "toggle-layer" indicates
+                    // that the layer visibility has been toggled by clicking the layer entry in the legend.
+                    // so "copy" the layer visibility information from the dynamic action "payload" object to the
+                    // P122_LARGE_VISIBLE and P122_SMALL_VISIBLE page items, which are then picked up by the
+                    // report query.
+                    for ( l = 0; l < this.data.layers.length; l++) {
+                        if ( this.data.layers[ l ].name === "Small Airports" ) {
+                            apex.item( "P122_SMALL_VISIBLE" ).setValue( ( this.data.layers[ l ].visible ? 'Y' : 'N' ) );
+                        } else if ( this.data.layers[ l ].name === "Large Airports" ) {
+                            apex.item( "P122_LARGE_VISIBLE" ).setValue( ( this.data.layers[ l ].visible ? 'Y' : 'N' ) );
+                        }
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @selected-airports
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

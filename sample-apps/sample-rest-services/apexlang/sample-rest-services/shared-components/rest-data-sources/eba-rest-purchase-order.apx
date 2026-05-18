@@ -1,0 +1,353 @@
+restDataSource eba_rest_purchase_order (
+    name: EBA_REST_PURCHASE_ORDER
+    source {
+        type: http
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /orders/purchaseorders/
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_PURCHASE_ORDER
+        rowSelector: items
+    }
+
+    dataProfileColumn itemnumber (
+        columnName: ITEMNUMBER
+        source {
+            sequence: 21
+            parentColumn: @po-lineitems
+            dataType: number
+        }
+        parsing {
+            pathExpression: ItemNumber
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn number (
+        columnName: NUMBER_
+        source {
+            sequence: 23
+            parentColumn: @po-shippinginstructions-phone
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: number
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn part-description (
+        columnName: PART_DESCRIPTION
+        source {
+            sequence: 19
+            parentColumn: @po-lineitems
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: Part.Description
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn part-unitprice (
+        columnName: PART_UNITPRICE
+        source {
+            sequence: 18
+            parentColumn: @po-lineitems
+            dataType: number
+        }
+        parsing {
+            pathExpression: Part.UnitPrice
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn part-upccode (
+        columnName: PART_UPCCODE
+        source {
+            sequence: 17
+            parentColumn: @po-lineitems
+            dataType: number
+        }
+        parsing {
+            pathExpression: Part.UPCCode
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn po-costcenter (
+        columnName: PO_COSTCENTER
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.CostCenter
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-lineitems (
+        columnName: PO_LINEITEMS
+        source {
+            sequence: 3
+            dataType: array
+        }
+        parsing {
+            pathExpression: po.LineItems
+        }
+        advanced {
+            sourceDataType: array
+        }
+    )
+
+    dataProfileColumn po-ponumber (
+        columnName: PO_PONUMBER
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: po.PONumber
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn po-reference (
+        columnName: PO_REFERENCE
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.Reference
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-requestor (
+        columnName: PO_REQUESTOR
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.Requestor
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-city (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_CITY
+        source {
+            sequence: 9
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.city
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-country (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_COUNTRY
+        source {
+            sequence: 13
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.country
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-county (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_COUNTY
+        source {
+            sequence: 11
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.county
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-postcode (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_POSTCODE
+        source {
+            sequence: 15
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.postcode
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-state (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_STATE
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.state
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-street (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_STREET
+        source {
+            sequence: 12
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.street
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-address-zipcode (
+        columnName: PO_SHIPPINGINSTRUCTIONS_ADDRESS_ZIPCODE
+        source {
+            sequence: 14
+            dataType: number
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Address.zipCode
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-name (
+        columnName: PO_SHIPPINGINSTRUCTIONS_NAME
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.name
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-shippinginstructions-phone (
+        columnName: PO_SHIPPINGINSTRUCTIONS_PHONE
+        source {
+            sequence: 8
+            dataType: array
+        }
+        parsing {
+            pathExpression: po.ShippingInstructions.Phone
+        }
+        advanced {
+            sourceDataType: array
+        }
+    )
+
+    dataProfileColumn po-special-instructions (
+        columnName: PO_SPECIAL_INSTRUCTIONS
+        source {
+            sequence: 16
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po."Special Instructions"
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn po-user (
+        columnName: PO_USER
+        source {
+            sequence: 1
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: po.User
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn quantity (
+        columnName: QUANTITY
+        source {
+            sequence: 20
+            parentColumn: @po-lineitems
+            dataType: number
+        }
+        parsing {
+            pathExpression: Quantity
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn type (
+        columnName: TYPE
+        source {
+            sequence: 22
+            parentColumn: @po-shippinginstructions-phone
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: type
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

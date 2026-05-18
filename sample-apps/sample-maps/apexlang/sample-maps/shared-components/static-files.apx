@@ -1,0 +1,110 @@
+file app-icon.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file app-icon.svg (
+    mimeType: image/svg+xml
+    charSet: utf-8
+)
+
+file app-sample-maps-16x16.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file app-sample-maps-32x32.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file app-sample-maps.ico (
+    mimeType: image/x-icon
+    charSet: utf-8
+)
+
+file app-sample-maps.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "map-screenshots/circle-search.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/clickable-map.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/faceted-search.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/heat-map.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/legacy.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/map-and-report.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/map-placeholder.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/nearest-neighbor.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/search-and-show.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/us-states-and-large-airports.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/us-states-extruded.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/us-states-flat.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "map-screenshots/us-states-with-links.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+

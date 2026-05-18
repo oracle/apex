@@ -1,0 +1,429 @@
+plugin html5BarChart (
+    name: HTML 5 Bar Chart
+    staticId: COM.ORACLE.APEX.HTML5_BAR_CHART
+    type: region
+    component {
+        standardAttributes: [
+            regionSourceIsSqlQuery
+            pageItemsToSubmitAttr
+            escapeSpecialCharsRegionAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render (
+                p_region in apex_plugin.t_region,
+                p_plugin in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean
+            ) return apex_plugin.t_region_render_result is
+            begin
+                sys.htp.prn('<div id="'||apex_escape.html_attribute(p_region.static_id)||'_chart" class="hbc">');
+                sys.htp.prn('</div>');
+                
+                apex_javascript.add_onload_code (
+                    p_code => 'com_oracle_apex_html5_bar_chart('||
+                        apex_javascript.add_value(p_region.static_id)||
+                        '{'||
+                            -- Why is this attribute needed if is not used?
+                            apex_javascript.add_attribute(
+                                'pageItems', 
+                                apex_plugin_util.page_item_names_to_jquery(p_region.ajax_items_to_submit)
+                            )||
+                            apex_javascript.add_attribute(
+                                'ajaxIdentifier', 
+                                apex_plugin.get_ajax_identifier, 
+                                FALSE, 
+                                FALSE
+                            )||
+                        '}'||
+                    ');'
+                );
+                
+                return null;
+            end render;
+            
+            function ajax (
+                p_region in apex_plugin.t_region,
+                p_plugin in apex_plugin.t_plugin
+            ) return apex_plugin.t_region_ajax_result is
+                -- Map region attributes to function constants
+                -- MODERN, CLASSIC
+                c_chart_type                 constant varchar2(7)     := p_region.attribute_15;
+                -- MODERN, MODERN_2, SOLAR, METRO, CUSTOM, COLUMN
+                c_color_scheme               constant varchar2(8)     := p_region.attribute_17;
+                c_custom_chart_colors        constant varchar2(4000)  := p_region.attribute_10;
+                c_color_column               constant varchar2(255)   := p_region.attribute_19;
+                -- NONE, IMAGE, ICON, INITIALS
+                c_icon_type                  constant varchar2(8)     := case when c_chart_type = 'ICON' then p_region.attribute_01 end;
+                c_label_column               constant varchar2(255)   := p_region.attribute_02;
+                c_label_link                 constant varchar2(255)   := p_region.attribute_03;
+                c_value_column               constant varchar2(255)   := p_region.attribute_04;
+                c_value_link                 constant varchar2(255)   := p_region.attribute_05;
+                c_value_format_mask          constant varchar2(4000)  := p_region.attribute_21;
+            
+                -- ABOVE, AROUND
+                c_text_position              varchar2(6)              := p_region.attribute_18;
+                c_chart_css_classes          constant varchar2(32767) := p_region.attribute_06;
+                c_image_url                  constant varchar2(4000)  := p_region.attribute_07;
+                c_css_icon_class_name        constant varchar2(255)   := p_region.attribute_08;
+                c_initials_column            constant varchar2(255)   := p_region.attribute_09;
+                -- ABSOLUTE, RELATIVE
+                c_bar_width_calculation      constant varchar2(8)     := p_region.attribute_16;
+                c_display                    constant varchar2(19)    := p_region.attribute_11;
+                c_prefix_for_value           constant varchar2(4000)  := p_region.attribute_12;
+                c_postfix_for_value          constant varchar2(4000)  := p_region.attribute_13;
+                c_maximum_rows               constant number          := p_region.attribute_14;
+                c_message_when_no_data_found constant varchar2(4000)  := p_region.attribute_20;
+                
+                l_color_column_number        pls_integer;
+                l_label_column_number        pls_integer;
+                l_value_column_number        pls_integer;
+                l_initials_column_number     pls_integer;
+                
+                l_column_value_list          apex_plugin_util.t_column_value_list2;
+                
+                l_color                      varchar2(4000)           := NULL;
+                l_label                      varchar2(4000)           := NULL;
+                l_label_link                 varchar2(4000)           := NULL;
+                l_value                      varchar2(4000)           := NULL;
+                l_display_value              varchar2(4000)           := NULL;
+                l_value_link                 varchar2(4000)           := NULL;
+                l_image_url                  varchar2(4000)           := NULL;
+                l_css_icon_class_name        varchar2(4000)           := NULL;
+                l_initials                   varchar2(4000)           := NULL;
+                l_message_when_no_data_found varchar2(4000)           := NULL;
+            
+                l_custom_chart_colors_table  apex_application_global.vc_arr2;
+                l_custom_chart_colors        varchar2(32767)          := NULL;
+            begin
+                l_column_value_list := apex_plugin_util.get_data2(
+                                           P_SQL_STATEMENT  => p_region.source,
+                                           P_MIN_COLUMNS    => 1,
+                                           P_MAX_COLUMNS    => NULL,
+                                           P_COMPONENT_NAME => p_region.name,
+                                           P_MAX_ROWS => c_maximum_rows);
+            
+                l_color_column_number := apex_plugin_util.get_column_no (
+                                             p_attribute_label   => 'Color Column',
+                                             p_column_alias      => c_color_column,
+                                             p_column_value_list => l_column_value_list,
+                                             p_is_required       => c_color_scheme = 'COLUMN',
+                                             P_data_type         => apex_plugin_util.c_data_type_varchar2);
+                l_label_column_number := apex_plugin_util.get_column_no (
+                                             p_attribute_label   => 'Label Column',
+                                             p_column_alias      => c_label_column,
+                                             p_column_value_list => l_column_value_list,
+                                             p_is_required       => TRUE,
+                                             P_data_type         => apex_plugin_util.c_data_type_varchar2);
+                l_value_column_number := apex_plugin_util.get_column_no (
+                                             p_attribute_label   => 'Value Column',
+                                             p_column_alias      => c_value_column,
+                                             p_column_value_list => l_column_value_list,
+                                             p_is_required       => TRUE,
+                                             P_data_type         => apex_plugin_util.c_data_type_varchar2);
+                if c_icon_type = 'INITIALS' then
+                    l_initials_column_number := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Initials Column',
+                                                    p_column_alias      => c_initials_column,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => true,
+                                                    P_data_type         => apex_plugin_util.c_data_type_varchar2);
+                end if;
+                -- begin output as JSON
+                owa_util.mime_header('application/json', FALSE);
+                sys.htp.p('Cache-Control: no-store');
+                sys.htp.p('Pragma: no-cache');
+                owa_util.http_header_close;
+                
+                if c_color_scheme = 'CUSTOM' then
+                    l_custom_chart_colors_table := apex_util.string_to_table(case when c_custom_chart_colors is not NULL then TRIM(BOTH '''' from apex_escape.js_literal(c_custom_chart_colors)) end, ':');
+                    l_custom_chart_colors := '"color_scheme":[';
+                    for I in l_custom_chart_colors_table.first .. l_custom_chart_colors_table.last loop
+                        if I > 1 then
+                            l_custom_chart_colors := l_custom_chart_colors||',';
+                        end if;
+                        l_custom_chart_colors := l_custom_chart_colors||'"'||l_custom_chart_colors_table(I)||'"';
+                    end loop;
+                    l_custom_chart_colors := l_custom_chart_colors||'],';
+                end if;
+            
+                l_message_when_no_data_found := apex_escape.html_whitelist(
+                                                    apex_plugin_util.replace_substitutions (
+                                                        p_value  => c_message_when_no_data_found,
+                                                        p_escape => FALSE));
+            
+                sys.htp.prn(
+                    '{'||
+                        apex_javascript.add_attribute (
+                            'chart_type',
+                            c_chart_type,
+                            FALSE,
+                            TRUE
+                        ));
+                sys.htp.prn(
+                    apex_javascript.add_attribute (
+                        'message_when_no_data_found',
+                        l_message_when_no_data_found,
+                        TRUE,
+                        TRUE
+                    ));
+                sys.htp.prn(
+                    apex_javascript.add_attribute (
+                        'chart_css_class_names',
+                        c_chart_css_classes,
+                        TRUE,
+                        TRUE
+                    ));
+                sys.htp.prn(
+                    apex_javascript.add_attribute (
+                        'icon_type',
+                        c_icon_type,
+                        TRUE,
+                        TRUE
+                    ));
+                if c_color_scheme = 'CUSTOM' then
+                    sys.htp.prn(
+                        l_custom_chart_colors
+                    );
+                else
+                    sys.htp.prn(
+                        apex_javascript.add_attribute (
+                            'color_scheme',
+                            c_color_scheme,
+                            TRUE,
+                            TRUE
+                        ));
+                end if;
+                sys.htp.prn(
+                        apex_javascript.add_attribute (
+                            'text_position',
+                            c_text_position,
+                            FALSE,
+                            TRUE
+                        )||
+                        apex_javascript.add_attribute (
+                            'bar_width_calculation',
+                            c_bar_width_calculation,
+                            FALSE,
+                            TRUE
+                        )||
+                        apex_javascript.add_attribute (
+                            'display',
+                            c_display,
+                            FALSE,
+                            TRUE
+                        )||
+                        case 
+                          when c_display in ('VALUE') then
+                              apex_javascript.add_attribute (
+                                  'prefix_for_value',
+                                  c_prefix_for_value,
+                                  TRUE,
+                                  TRUE
+                              )||
+                              apex_javascript.add_attribute (
+                                  'postfix_for_value',
+                                  c_postfix_for_value,
+                                  TRUE,
+                                  TRUE
+                              )
+                        end||
+                        '"items":['
+                );
+                
+                --for l_row_number in l_column_value_list(1).value_list.first .. l_column_value_list(1).value_list.last loop
+                for l_row_number in 1 .. l_column_value_list(1).value_list.count loop
+                    begin
+                        apex_plugin_util.set_component_values (
+                            p_column_value_list => l_column_value_list,
+                            p_row_num => l_row_number 
+                        );
+                        
+                        if l_row_number > 1 then
+                          sys.htp.prn(', ');
+                        end if;
+                        
+                        sys.htp.prn('{');
+                        
+                        l_label := apex_plugin_util.escape (
+                            apex_plugin_util.get_value_as_varchar2 (
+                                P_data_type => l_column_value_list(l_label_column_number).data_type,
+                                p_value => l_column_value_list(l_label_column_number).value_list(l_row_number)
+                            ),
+                            p_region.escape_output
+                        );
+                        sys.htp.prn(
+                          apex_javascript.add_attribute (
+                                'label',
+                                l_label,
+                                FALSE
+                          ));
+                        l_label_link := 
+                            case 
+                                when c_label_link is not NULL then 
+                                    apex_util.prepare_url (
+                                        apex_plugin_util.replace_substitutions (
+                                            p_value  => c_label_link,
+                                            p_escape => FALSE
+                                        ))
+                            end;
+                        sys.htp.prn(
+                          apex_javascript.add_attribute (
+                                'label_link',
+                                l_label_link
+                            ));
+                        
+                        l_value := apex_plugin_util.escape (
+                                       apex_plugin_util.get_value_as_varchar2 (
+                                           P_data_type => l_column_value_list(l_value_column_number).data_type,
+                                           p_value => l_column_value_list(l_value_column_number).value_list(l_row_number)),
+                                       p_region.escape_output);
+                        --
+                        l_display_value :=
+                            case 
+                                when c_value_format_mask is not NULL then
+                                  to_char(to_number(l_value),c_value_format_mask)
+                                else
+                                  l_value
+                            end;
+            
+                        sys.htp.prn(
+                          apex_javascript.add_attribute (
+                                'display_value',
+                                l_display_value,
+                                FALSE,
+                                TRUE
+                            ));
+                        --
+                        sys.htp.prn(
+                          apex_javascript.add_attribute (
+                                'value',
+                                l_value,
+                                FALSE,
+                                c_value_link is not NULL or l_color_column_number is not NULL or c_chart_type = 'ICON'
+                            ));
+            
+                        l_value_link := 
+                            case 
+                                when c_value_link is not NULL then 
+                                    apex_util.prepare_url (
+                                        apex_plugin_util.replace_substitutions (
+                                            p_value  => c_value_link,
+                                            p_escape => FALSE
+                                        ))
+                            end;
+                         sys.htp.prn(
+                          apex_javascript.add_attribute (
+                                'value_link',
+                                l_value_link,
+                                TRUE,
+                                l_color_column_number is not NULL or c_chart_type = 'ICON'
+                            ));
+                        if l_color_column_number is not NULL then
+                            l_color := apex_plugin_util.escape (
+                                           apex_plugin_util.get_value_as_varchar2 (
+                                               P_data_type => l_column_value_list(l_color_column_number).data_type,
+                                               p_value => l_column_value_list(l_color_column_number).value_list(l_row_number)),
+                                           p_region.escape_output);
+                            sys.htp.prn(
+                                apex_javascript.add_attribute (
+                                    'color',
+                                    l_color,
+                                    FALSE,
+                                    c_chart_type = 'ICON'
+                                ));
+                        end if;
+                        if c_icon_type = 'IMAGE' then
+                            l_image_url := 
+                                case 
+                                    when c_image_url is not NULL then 
+                                        apex_util.prepare_url (
+                                            apex_plugin_util.replace_substitutions (
+                                                p_value  => c_image_url,
+                                                p_escape => FALSE
+                                            ))
+                                end;
+                            sys.htp.prn(
+                                apex_javascript.add_attribute (
+                                    'image_url',
+                                    l_image_url,
+                                    FALSE,
+                                    FALSE
+                                ));
+                        elsif c_icon_type = 'ICON' then
+                            l_css_icon_class_name := apex_plugin_util.replace_substitutions (
+                                                         p_value  => c_css_icon_class_name,
+                                                         p_escape => TRUE);
+                            sys.htp.prn(
+                                apex_javascript.add_attribute (
+                                    'icon_css_class_name',
+                                    l_css_icon_class_name,
+                                    FALSE,
+                                    FALSE
+                                ));
+                        elsif c_icon_type = 'INITIALS' then
+                            l_initials := apex_plugin_util.escape (
+                                              apex_plugin_util.get_value_as_varchar2 (
+                                                  P_data_type => l_column_value_list(l_initials_column_number).data_type,
+                                                  p_value => l_column_value_list(l_initials_column_number).value_list(l_row_number)),
+                                              p_region.escape_output);
+                            sys.htp.prn(
+                                apex_javascript.add_attribute (
+                                    'initials',
+                                    l_initials,
+                                    FALSE,
+                                    FALSE
+                                ));
+                        end if;
+                        
+                        sys.htp.prn('}');
+                        
+                        apex_plugin_util.clear_component_values;
+                    exception
+                        when OTHERS then
+                            apex_plugin_util.clear_component_values;
+                            raise;
+                    end;
+                end loop;
+                sys.htp.prn(
+                        ']'||
+                    '}'
+                );
+                
+                return NULL;
+            end ajax;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+        ajaxProcedureName: ajax
+    }
+    advanced {
+        filePrefix: #IMAGE_PREFIX#plugins/com.oracle.apex.html5_bar_chart/1.1/
+    }
+    css {
+        fileUrls: #PLUGIN_FILES#com_oracle_apex_html5_bar_chart#MIN#.css
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#com_oracle_apex_html5_bar_chart#MIN#.js
+    }
+    information {
+        version: 20.2
+        aboutUrl: http://apex.oracle.com/plugins
+        helpText: <p>This plugin draws horizontal bar charts containing labels, values and even icons</p>
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        validation {
+            required: true
+        }
+        sqlQuery {
+            minColumns: 1
+        }
+    )
+
+)
+

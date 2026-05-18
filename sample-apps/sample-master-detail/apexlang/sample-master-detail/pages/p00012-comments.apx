@@ -1,0 +1,325 @@
+page 12 (
+    name: Comments
+    alias: COMMENTS
+    title: Comments
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region comments (
+        name: Comments
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select "ID", 
+                "PROJECT_ID",
+                "COMMENT_TEXT",
+                "CREATED",
+                "CREATED_BY"
+                from EBA_DEMO_MD_COMMENTS
+                  
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1838243706379356702
+        }
+
+        savedReport 14375 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT_ID
+                layout {
+                    show: false
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @COMMENT_TEXT
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @CREATED
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @CREATED_BY
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @ROWID
+                layout {
+                    sequence: 6
+                }
+            )
+
+            controlBreak (
+                column: @PROJECT_ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column COMMENT_TEXT (
+            type: textarea
+            heading {
+                heading: Comment
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                valueRequired: true
+                maxLength: 4000
+            }
+            link {
+                target: {
+                    page: 13
+                    items: {
+                        P13_ID: &ID.
+                    }
+                    clearCache: 13
+                    action: resetPagination
+                }
+            }
+            source {
+                databaseColumn: COMMENT_TEXT
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column CREATED (
+            type: displayOnly
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 50
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: timestampWithLocalTimeZone
+                queryOnly: true
+            }
+        )
+
+        column CREATED_BY (
+            type: displayOnly
+            heading {
+                heading: By
+            }
+            settings {
+                basedOn: lov
+            }
+            lov {
+                type: sharedComponent
+                lov: @username
+                displayExtraValues: false
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: CREATED_BY
+                dataType: varchar2
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column PROJECT_ID (
+            type: displayOnly
+            heading {
+                heading: Project
+            }
+            settings {
+                basedOn: lov
+            }
+            lov {
+                type: sharedComponent
+                lov: @projects
+                displayExtraValues: false
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+                queryOnly: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ROWID
+                dataType: rowid
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @comments
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,612 @@
+page 10061 (
+    name: Task Statuses
+    alias: TASK-STATUSES
+    title: Task Statuses
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sql (
+        name: SQL
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'insert into sp_task_statuses (ID, TASK_TYPE_ID, STATUS, STATIC_ID, INCLUDE_YN, IS_DEFAULT_YN, INDICATES_COMPLETE_YN, DISPLAY_SEQ) values ('||
+                       id||', '||
+                       task_type_id||', '''||
+                       status||''', '''||
+                       static_id||''', '''||
+                       include_yn||''', '''||
+                       is_default_yn||''', '''||
+                       indicates_complete_yn||''', '||
+                       DISPLAY_SEQ||');' sql
+                  from sp_task_statuses
+                order by display_seq
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column SQL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: SQL
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region task-statuses (
+        name: Task Statuses
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select s.ID,
+                       s.task_type_id,
+                       t.task_type,
+                       s.STATUS,
+                       s.STATIC_ID,
+                       s.DISPLAY_SEQ,
+                       s.CREATED,
+                       s.CREATED_BY,
+                       s.UPDATED,
+                       s.UPDATED_BY,
+                       decode(s.is_default_yn,'Y','Yes','N','No',s.is_default_yn) is_default,
+                       decode(s.indicates_complete_yn,'Y','Yes','N','No',s.indicates_complete_yn) indicates_complete,
+                       decode(s.include_yn,'Y','Yes','N','No',s.include_yn) include,
+                       (select count(*) from SP_TASKS where status_id = s.id) references
+                  from SP_TASK_STATUSES s,
+                       sp_task_types t
+                 where task_type_id = t.id (+)
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            headerText: These can be customized to meet your needs but retain an entry with the Static ID of COMPLETED.  That is used to ensure that a complete date is provided for tasks of that status.
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 10062
+                items: {
+                    P10062_ID: \#ID#\
+                }
+                clearCache: 10062
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 19937290591235422487
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column DISPLAY_SEQ (
+            type: plainText
+            heading {
+                heading: Display Seq
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 0
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INCLUDE (
+            type: plainText
+            heading {
+                heading: Include
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column INDICATES_COMPLETE (
+            type: plainText
+            heading {
+                heading: Indicates Complete
+            }
+            layout {
+                sequence: 49
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column IS_DEFAULT (
+            type: plainText
+            heading {
+                heading: Is Default
+            }
+            layout {
+                sequence: 79
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column REFERENCES (
+            type: plainText
+            heading {
+                heading: References
+                alignment: end
+            }
+            layout {
+                sequence: 29
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column STATIC_ID (
+            type: plainText
+            heading {
+                heading: Static ID
+            }
+            layout {
+                sequence: 59
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 39
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column TASK_TYPE (
+            type: plainText
+            heading {
+                heading: Task Type
+            }
+            layout {
+                sequence: 69
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column TASK_TYPE_ID (
+            type: hidden
+            heading {
+                heading: Selected Task Type
+            }
+            layout {
+                sequence: 89
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Review Types
+        }
+
+        savedReport 17024967 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DISPLAY_SEQ (
+                sequence: 4
+            )
+
+            displayColumn INCLUDE (
+                sequence: 8
+            )
+
+            displayColumn INDICATES_COMPLETE (
+                sequence: 7
+            )
+
+            displayColumn IS_DEFAULT (
+                sequence: 6
+            )
+
+            displayColumn REFERENCES (
+                sequence: 5
+            )
+
+            displayColumn STATIC_ID (
+                sequence: 3
+            )
+
+            displayColumn STATUS (
+                sequence: 2
+            )
+
+            displayColumn TASK_TYPE (
+                sequence: 1
+            )
+
+            displayColumn UPDATED (
+                sequence: 9
+            )
+
+            sort (
+                column: TASK_TYPE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: DISPLAY_SEQ
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: STATUS
+                sort {
+                    sequence: 3
+                }
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Task Status
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10062
+                clearCache: 10062
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10061
+                clearCache: 10061
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @task-statuses
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @task-statuses
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-report-on-dialog-close (
+        name: refresh report on dialog close
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @task-statuses
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

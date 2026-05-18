@@ -1,0 +1,126 @@
+page 1701 (
+    name: Region - List View Mobile Example
+    alias: REGION-LIST-VIEW-MOBILE-EXAMPLE
+    title: Region - List View Mobile Example
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigationMenu {
+        overrideUserInterfaceLevel: true
+        list: @ut-application-navigation
+        listPosition: top
+        listTemplate: @/top-navigation-tabs
+        templateOptions: [
+            #DEFAULT#
+            t-NavTabs--inlineLabels-lg
+            t-NavTabs--hiddenLabels-sm
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region departments (
+        name: Departments
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       (select project from EBA_UT_CHART_PROJECTS p where p.id = t.project) PROJECT,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS
+                  from EBA_UT_CHART_TASKS t
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: request=Value
+            value: sample2
+        }
+        settings {
+            features: [
+                showListDivider
+                enableSearch
+                insetList
+            ]
+            textColumn: TASK_NAME
+            counterColumn: STATUS
+            listDividerColumn: PROJECT
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+    )
+
+    region projects-list (
+        name: Projects List
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       (select project from EBA_UT_CHART_PROJECTS p where p.id = t.project) PROJECT,
+                       TASK_NAME,
+                       START_DATE,
+                       END_DATE,
+                       STATUS
+                  from EBA_UT_CHART_TASKS t
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: request=Value
+            value: sample1
+        }
+        settings {
+            features: insetList
+            textColumn: TASK_NAME
+            linkTarget: {
+                type: url
+                url: #
+            }
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+    )
+
+)
+

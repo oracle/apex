@@ -1,0 +1,266 @@
+page 73 (
+    name: View Response
+    alias: VIEW-RESPONSE
+    title: View Response
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @allow-deletion-of-responses
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region response (
+        name: Response
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                sys.htp.p('<h2>'||apex_escape.html(:P73_POLL_NAME)||'</h2>');
+                
+                for c1 in (
+                select r.id, r.email, r.updated, round(r.grade,1) grade, p.enable_score_yn, round(r.score,1) score, p.score_type,
+                       p.anonymous_yn
+                from EBA_QPOLL_POLLS p,
+                     EBA_QPOLL_RESULTS r
+                where p.id = :POLL_ID
+                  and p.id = r.poll_id 
+                  and r.id = :P73_RESULT_ID
+                ) loop
+                sys.htp.p('<p>Submitted: '||apex_util.get_since(c1.updated)||'<br/>');
+                sys.htp.p('By: '||case when c1.anonymous_yn = 'Y' then 'anonymous' else apex_escape.html(lower(c1.email)) end ||'</p>');
+                
+                if :POLL_OR_QUIZ = 'Q' then
+                   sys.htp.p('<p>Score: '|| c1.grade ||' %</p>');
+                end if;
+                
+                if c1.score_type in ('C','A') and c1.enable_score_yn = 'Y' then
+                   sys.htp.p('<p>Score: '|| c1.score ||'</p>');
+                end if;
+                
+                for c2 in (
+                select id, QUESTION, display_sequence, 
+                     ANSWER_01, 
+                     answer_02, 
+                     answer_03, 
+                     answer_04, 
+                     answer_05,
+                     answer_06, 
+                     answer_07, 
+                     answer_08, 
+                     answer_09,
+                     answer_10,
+                     answer_correct_yn
+                from EBA_QPOLL_RESULT_DETAILS
+                where result_id = c1.id) loop
+                sys.htp.p('<p>');
+                if :POLL_OR_QUIZ = 'Q' and c2.answer_correct_yn = 'N' then
+                   sys.htp.p('<img src="#IMAGE_PREFIX#menu/inline_error_16x16.gif" alt="Wrong Answer" /> ');
+                end if;
+                sys.htp.p('Question: '||c2.display_sequence||': <strong>'|| apex_escape.html(c2.question)||'</strong></p>');
+                sys.htp.p('<p>Answer: ');
+                sys.htp.p(apex_escape.html(c2.answer_01));
+                sys.htp.p(apex_escape.html(c2.answer_02));
+                sys.htp.p(apex_escape.html(c2.answer_03));
+                sys.htp.p(apex_escape.html(c2.answer_04));
+                sys.htp.p(apex_escape.html(c2.answer_05));
+                sys.htp.p(apex_escape.html(c2.answer_06));
+                sys.htp.p(apex_escape.html(c2.answer_07));
+                sys.htp.p(apex_escape.html(c2.answer_08));
+                sys.htp.p(apex_escape.html(c2.answer_09));
+                sys.htp.p(apex_escape.html(c2.answer_10));
+                sys.htp.p('</p>');
+                end loop;
+                
+                end loop;
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+            ]
+        }
+    )
+
+    pageItem P73_POLL_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @response
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P73_RESULT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @response
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        config {
+            buildOption: @allow-deletion-of-responses
+        }
+    )
+
+    dynamicAction cancel (
+        name: cancel
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p73-poll-name (
+        itemName: P73_POLL_NAME
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            sqlQuery: select poll_name from EBA_QPOLL_POLLS where id = :POLL_ID
+        }
+    )
+
+    process delete-response (
+        name: Delete Response
+        type: executeCode
+        source {
+            plsqlCode: delete from EBA_QPOLL_RESULTS where id = :P73_RESULT_ID;
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Response deleted.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 13925762889036953651
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 100
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

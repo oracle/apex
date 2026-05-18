@@ -1,0 +1,14 @@
+role ADMINISTRATOR (
+    name: Administrator
+    description {
+        description: Can monitor the application and add users.
+    }
+)
+
+role USER (
+    name: User
+    description {
+        description: Can access the applications protected pages, but not perform Administrative functions.
+    }
+)
+

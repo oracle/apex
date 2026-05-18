@@ -1,0 +1,674 @@
+page 3001 (
+    name: Components - Avatar
+    alias: AVATAR-COMPONENT
+    title: Avatar - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region avatar (
+        name: Avatar
+        type: themeTemplateComponent/avatar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select TITLE, 
+                       '#APP_FILES#' || IMAGE_URL as avatar
+                from EBA_UT_DEMO_CARDS
+                where category = 'badge'
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo-multiple-report
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: multipleDemo
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            type: image
+            image: {
+                type: urlColumn
+                urlColumn: AVATAR
+            }
+            size: large
+            cssClasses: u-color-29
+        }
+        pagination {
+            entitiesPerPage: 20
+        }
+
+        column AVATAR (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: AVATAR
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region classic-report (
+        name: Classic Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       TITLE as name, 
+                       SUBTITLE as job,
+                       BODY as email,
+                       '#APP_FILES#' || IMAGE_URL as avatar
+                  from EBA_UT_DEMO_CARDS
+                 where category = 'badge'
+                ```
+        }
+        layout {
+            sequence: 45
+            parentRegion: @demo-classic-report
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: CRDemo
+        }
+        reportLayout {
+            numberOfRows: 5
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column AVATAR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Avatar
+                alignment: center
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                            TYPE:=IMAGE
+                            IMAGE:=#AVATAR#
+                            IMAGE_ALT:=Employee Profile Image
+                            SIZE:=t-Avatar--lg
+                            SHAPE:=t-Avatar--circle
+                            CSS_CLASSES:=u-color-29
+                        {apply THEME$AVATAR/}
+                    ```
+            }
+        )
+
+        column EMAIL (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 80
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 90
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+    )
+
+    region configuration-classic-report (
+        name: Configuration: Classic Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Classic Report<br>
+                
+                <h4>Avatar Column</h4>
+                <p>The <strong>Avatar</strong> column uses the with-apply syntax in the HTML Expression attribute under Column Formatting to access the <em>Avatar</em> partial and display an avatar in each row.</p>
+                <strong>Type:</strong> Plain Text<br>
+                <strong>HTML Expression:</strong>
+                <code>
+                    {with/}
+                        TYPE:=IMAGE
+                        IMAGE:=#AVATAR#
+                        IMAGE_ALT:=Employee Profile Image
+                        SIZE:=t-Avatar--lg
+                        SHAPE:=t-Avatar--circle
+                        CSS_CLASSES:=u-color-29
+                    {apply THEME$AVATAR/}
+                </code>
+                ```
+        }
+        layout {
+            sequence: 55
+            parentRegion: @demo-classic-report
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region configuration-interactive-report (
+        name: Configuration: Interactive Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Interactive Report<br>
+                
+                <h4>Avatar Column</h4>
+                <p>In Interactive Reports, the <em>Avatar</em> partial is available for use as a column Type. The Avatar column in this demo uses the Avatar column Type and associated Partial settings to display an avatar in each row.</p>
+                
+                <h4>Avatar</h4>
+                <strong>Type:</strong> Initials<br>
+                <strong>Initials:</strong> Initials source column<br>
+                <strong>Shape:</strong> Default<br>
+                <strong>Size:</strong> Default<br>
+                <strong>CSS Classes:</strong> u-color-13
+                ```
+        }
+        layout {
+            sequence: 45
+            parentRegion: @demo-interactive-report
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region configuration-multiple-report (
+        name: Configuration: Multiple (Report)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h4>Region</h4>
+                <strong>Type:</strong> Avatar<br>
+                <strong>Display:</strong> Multiple (Report)<br>
+                
+                <h4>Attributes</h4>
+                <strong>Type:</strong> Image<br>
+                <strong>Image:</strong> AVATAR<br>
+                <strong>Shape:</strong> Default<br>
+                <strong>Size:</strong> Large<br>
+                <strong>CSS Classes:</strong> u-color-29
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @demo-multiple-report
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region demo-classic-report (
+        name: Demo: Classic Report
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-interactive-report (
+        name: Demo: Interactive Report
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-multiple-report (
+        name: Demo: Multiple (Report)
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region interactive-report (
+        name: Interactive Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ID,
+                       TITLE as name, 
+                       SUBTITLE as job,
+                       BODY as email,
+                       substr(TITLE, 0, 2) as AVATAR
+                  from EBA_UT_DEMO_CARDS
+                 where category = 'badge'
+                ```
+        }
+        layout {
+            sequence: 35
+            parentRegion: @demo-interactive-report
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: IRDemo
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        searchBar {
+            includeSearchBar: false
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 386405396485599035
+        }
+
+        column AVATAR (
+            type: themeTemplateComponent/avatar
+            heading {
+                heading: Avatar
+                alignment: center
+            }
+            settings {
+                type: initials
+                initials: AVATAR
+                cssClasses: u-color-13
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column JOB (
+            type: plainText
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        savedReport 3972975 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 5
+            }
+
+            displayColumn AVATAR (
+                sequence: 4
+            )
+
+            displayColumn EMAIL (
+                sequence: 2
+            )
+
+            displayColumn JOB (
+                sequence: 3
+            )
+
+            displayColumn NAME (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <strong>Avatars</strong> are useful for displaying an icon, image, or initials within a region. An Avatar can be used to display a single (partial) avatar, as multiple (report) avatars, or can be applied as a column type or in report templates to display an avatar for each report row. The multiple (report) display type is useful for being able to display multiple avatars as one region on a page outside of a report.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query-classic-report (
+        name: Sample SQL Query: Classic Report
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 65
+            parentRegion: @demo-classic-report
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: CRDemo
+        }
+    )
+
+    region sample-sql-query-interactive-report (
+        name: Sample SQL Query: Interactive Report
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 65
+            parentRegion: @demo-interactive-report
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: IRDemo
+        }
+    )
+
+    region sample-sql-query-multiple-report (
+        name: Sample SQL Query: Multiple (Report)
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 30
+            parentRegion: @demo-multiple-report
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: multipleDemo
+        }
+    )
+
+)
+

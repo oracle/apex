@@ -1,0 +1,14 @@
+genAIService EBA_GENAI_OPENAI (
+    name: OpenAI GenAI Service
+    provider: openai
+    endpointUrl {
+        url: https://api.openai.com/v1
+    }
+    authentication {
+        credentials: @EBA_CREDENTIALS_OPENAI
+    }
+    advanced {
+        modelName: gpt-4o
+    }
+)
+

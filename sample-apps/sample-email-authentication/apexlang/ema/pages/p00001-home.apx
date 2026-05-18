@@ -1,0 +1,177 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Home
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .apex-item-text {
+                --a-field-input-font-size: 3rem;
+                --a-field-input-line-height: 4rem;
+            }
+            .t-Form-itemWrapper {
+                justify-content: center;
+            }
+            
+            .t-Alert--wizard .t-Alert-buttons {
+                margin-block-start: 0.5rem;
+            }
+            
+            .t-Button--large {
+                --a-button-font-size: 1rem;
+            }
+            
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region links (
+        name: Links
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: u-tC
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region welcome-to-sample-email-authentication (
+        name: Welcome to Sample Email Authentication
+        type: staticContent
+        source {
+            htmlCode: This is where your home page content would be - displayed only once verified.
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--info
+                js-headingLevel-1
+                t-Form--noPadding
+            ]
+            cssClasses: u-tC
+            icon: app-icon
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    region welcome-to-sample-email-authentication-2 (
+        name: Welcome to Sample Email Authentication
+        type: staticContent
+        source {
+            htmlCode: <p>If you are a valid user in the application's ACL, click <b>User Login</b> below</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--info
+                js-headingLevel-1
+                t-Form--noPadding
+            ]
+            cssClasses: u-tC
+            icon: app-icon
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
+    )
+
+    button admin (
+        buttonName: ADMIN
+        label: Administration
+        layout {
+            sequence: 10
+            region: @links
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+        security {
+            authorizationScheme: @administrator
+        }
+    )
+
+    button sign-in (
+        buttonName: SIGN_IN
+        label: User Login
+        layout {
+            sequence: 30
+            region: @links
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: userIsPublicUser
+        }
+    )
+
+)
+

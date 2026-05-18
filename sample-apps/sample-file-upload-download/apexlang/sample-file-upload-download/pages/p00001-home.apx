@@ -1,0 +1,849 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample File Upload and Download
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            section.infoRegion {
+                border: 1px solid #9AAEC8;
+                background-color: #DDE7F5;
+            }
+            section.infoRegion > div.uRegionHeading {
+                background: none transparent;
+            }
+            .infoRegionIcon {
+                position: absolute;
+                left: 0;
+                margin: 16px;
+                top: 0;
+            }
+            section.infoRegion.uRegion > div.uRegionContent {
+                position: relative;
+                min-height: 32px;
+                padding: 16px 16px 16px 64px;
+            }
+            .infoRegion h1 {
+                font-weight: bold;
+                font-size: 14px;
+                color: #202020;
+                text-shadow: 0 1px 0 rgba(255,255,255,.65);
+            }
+            .infoRegion p {
+                font-size: 12px;
+                line-height: 20px;
+                padding: 8px 0 0 0;
+                text-shadow: 0 1px 0 rgba(255,255,255,.25);
+                color: #303030;
+            }
+            .infoRegion p:last-child {
+                margin-bottom: 0 !important;
+            }
+            
+            
+            
+            div.featuredBlock{
+            	-webkit-border-radius:3px;
+            	-moz-border-radius:3px;
+            	border-radius:3px;
+            	-webkit-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	-moz-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	border:1px solid #E1E6EB;
+            	margin-bottom:18px
+            }
+            div.featuredBlock div.featuredIcon{
+            	background-image:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIvPjxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmNGY0ZjgiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
+            	background-size:100%;
+            	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(40%, #ffffff), color-stop(60%, #f4f4f8), color-stop(100%, #ffffff));
+            	background-image:-webkit-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:-moz-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	-webkit-border-radius:3px 3px 0 0;
+            	-moz-border-radius:3px 3px 0 0;
+            	border-radius:3px 3px 0 0;
+            	padding:8px 0;
+            	min-height: 90px;
+            	text-align:center;
+            }
+            div.featuredBlock div.featuredIcon img{
+            	display:block;
+            	margin:0 auto 0 auto;
+            	-webkit-box-reflect:below -20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(255,255,255,0.2)));
+            }
+            div.featuredBlock div.featuredIcon h1{
+            	font-size:12px;
+            	line-height:12px;
+            	color:#404040;
+            	margin:0 8px;
+            	padding:0;
+            	text-align:center;
+            }
+            a.blockLink,a.blockLink:hover{
+            	text-decoration:none
+            }
+            a.blockLink:hover div.featuredBlock{
+            	border:1px solid #b1bbcb
+            }
+            a.blockLink:hover div.featuredBlock div.featuredIcon{
+            	background: none #e5effb;
+            	-webkit-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	-moz-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            }
+            .regionDivider {
+            	border-top: 2px solid #F0F0F0 !important;
+            	padding-top: 8px;;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: noArgumentsSupported
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-application (
+        name: About this application
+        type: staticContent
+        source {
+            htmlCode: <p>This application demonstrates how to upload and download files within applications written using Oracle Application Express (APEX).  The files are stored  within Oracle database tables in BLOB column types.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region additional-oracle-apex-communities-and-resources (
+        name: Additional Oracle APEX Communities and Resources
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="apex_row">
+                	<div class="apex_cols apex_span_2 alpha">
+                		<a href="https://forums.oracle.com/forums/forum.jspa?forumID=137" class="blockLink" target="_blank">
+                		<div class="featuredBlock">
+                			<div class="featuredIcon">
+                				<img src="#IMAGE_PREFIX#eba/icons/forums.png" alt="" />
+                				<h1>Oracle OTN Forums</h1>
+                			</div>
+                		</div>
+                		</a>
+                	</div>
+                	<div class="apex_cols apex_span_2">
+                		<a href="http://www.linkedin.com/skills/skill/Oracle_Application_Express" class="blockLink" target="_blank">
+                		<div class="featuredBlock">
+                			<div class="featuredIcon">
+                				<img src="#IMAGE_PREFIX#eba/icons/linkedin.png" alt="" />
+                				<h1>Connect on LinkedIn</h1>
+                			</div>
+                		</div>
+                		</a>
+                	</div>
+                	<div class="apex_cols apex_span_2">
+                		<a href="http://twitter.com/oracleapexnews" class="blockLink" target="_blank">
+                		<div class="featuredBlock">
+                			<div class="featuredIcon">
+                				<img src="#IMAGE_PREFIX#eba/icons/twitter.png" alt="" />
+                				<h1>Follow us on Twitter</h1>
+                			</div>
+                		</div>
+                		</a>
+                	</div>
+                	<div class="apex_cols apex_span_2">
+                		<a href="https://cloud.oracle.com/" class="blockLink" target="_blank">
+                		<div class="featuredBlock">
+                			<div class="featuredIcon">
+                				<img src="#IMAGE_PREFIX#eba/icons/cloud.png" alt="" />
+                				<h1>Oracle Database Cloud Service</h1>
+                			</div>
+                		</div>
+                		</a>
+                	</div>
+                	<div class="apex_cols apex_span_2">
+                		<a href="http://apex.oracle.com/" class="blockLink" target="_blank">
+                		<div class="featuredBlock">
+                			<div class="featuredIcon">
+                				<img src="#IMAGE_PREFIX#eba/icons/apexoracle.png" alt="" />
+                				<h1>apex.oracle.com</h1>
+                			</div>
+                		</div>
+                		</a>
+                	</div>
+                	<div class="apex_cols apex_span_2 omega">
+                		<a href="http://www.oracle.com/technetwork/developer-tools/apex/overview/index.html" class="blockLink" target="_blank">
+                		<div class="featuredBlock">
+                			<div class="featuredIcon">
+                				<img src="#IMAGE_PREFIX#eba/icons/otn.png" alt="" />
+                				<h1>APEX on OTN</h1>
+                			</div>
+                		</div>
+                		</a>
+                	</div>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/tabs-container
+            templateOptions: [
+                #DEFAULT#
+                t-TabsRegion-mod--simple
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region footer (
+        name: Footer
+        type: plugin/sampleAppsFooter
+        layout {
+            sequence: 70
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+    )
+
+    region project-summary (
+        name: Project Summary
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    count(distinct PROJECT) projects,
+                    count(distinct project||'.'||TASK_NAME) tasks,
+                    count(distinct STATUS) status_codes,
+                    count(distinct ASSIGNED_TO) assignees,
+                    sum(COST) total_cost,
+                    sum(BUDGET) total_budget,
+                    max(file_count.c) files,
+                    max(file_size.s) file_size
+                from EBA_DEMO_FILE_PROJECTS p,
+                    (select count(*) c from eba_demo_files) file_count,
+                    (select nvl(sum(dbms_lob.getlength(file_blob)),0) s 
+                     from eba_demo_files) file_size
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                i-h320
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: ONE
+            customAttributes: " "
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ASSIGNEES (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Assignees
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILES (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Files
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILE_SIZE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: File Size
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Projects
+            }
+            layout {
+                sequence: 1
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column STATUS_CODES (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Status Codes
+            }
+            layout {
+                sequence: 3
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TASKS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Tasks
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TOTAL_BUDGET (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Total Budget
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TOTAL_COST (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Total Cost
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region project-summary-sql-source (
+        name: Project Summary SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                i-h320
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: ONE
+        }
+    )
+
+    region recent-files (
+        name: Recent Files
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    ID,
+                    ROW_VERSION_NUMBER,
+                    PROJECT_ID,
+                    FILENAME,
+                    FILE_MIMETYPE,
+                    FILE_CHARSET,
+                    FILE_BLOB,
+                    FILE_COMMENTS,
+                    TAGS,
+                    CREATED,
+                    CREATED_BY,
+                    UPDATED,
+                    UPDATED_BY,
+                    sys.dbms_lob.getlength(file_blob) as file_size,
+                    sys.dbms_lob.getlength(file_blob) as download
+                from EBA_DEMO_FILES
+                order by created desc
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                i-h320
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: TWO
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            partialPageRefresh: false
+        }
+        performance {
+            maxRowsToProcess: 10
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 11
+            }
+        )
+
+        column DOWNLOAD (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: downloadBlob
+            heading {
+                heading: Download
+            }
+            layout {
+                sequence: 15
+            }
+            appearance {
+                downloadText: Download
+            }
+            blobAttributes {
+                tableName: EBA_DEMO_FILES
+                blobColumn: FILE_BLOB
+                primaryKeyColumn1: ID
+                mimeTypeColumn: FILE_MIMETYPE
+                filenameColumn: FILENAME
+                lastUpdatedColumn: UPDATED
+                charSetColumn: FILE_CHARSET
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILENAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Filename
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FILE_BLOB (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column FILE_CHARSET (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column FILE_COMMENTS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column FILE_MIMETYPE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column FILE_SIZE (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 14
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column ROW_VERSION_NUMBER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 9
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 12
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 13
+            }
+        )
+
+    )
+
+    region recent-files-sql-source (
+        name: Recent Files SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                i-h320
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: TWO
+        }
+    )
+
+    button add-file (
+        buttonName: ADD_FILE
+        label: Add File
+        layout {
+            sequence: 10
+            region: @recent-files
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+                clearCache: 12
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-project (
+        buttonName: ADD_PROJECT
+        label: Add Project
+        layout {
+            sequence: 10
+            region: @project-summary
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                clearCache: 13
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-files (
+        buttonName: VIEW_FILES
+        label: View Files
+        layout {
+            sequence: 20
+            region: @recent-files
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-projects (
+        buttonName: VIEW_PROJECTS
+        label: View Projects
+        layout {
+            sequence: 20
+            region: @project-summary
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

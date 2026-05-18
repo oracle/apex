@@ -1,0 +1,50 @@
+page 1919 (
+    name: Drawer Demo - Fixed Size
+    alias: DRAWER-DEMO-FIXED-SIZE
+    title: Drawer Demo - Fixed Size
+    pageGroup: @components
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This drawer has a fixed width of 400px and will not automatically resize to fit its contents.  This type of drawer is useful for wizards where the navigation buttons should remain in a constant position.</p>
+                <p>To set a width for a drawer page, simply set the "Width" property for the page in the Property Editor.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

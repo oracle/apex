@@ -1,0 +1,814 @@
+page 29 (
+    name: Project Images
+    alias: PROJECT-IMAGES
+    title: &P29_PROJECT_NAME. - Images
+    pageGroup: @projects
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @images
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P29_AUTHOR (
+            type: checkboxGroup
+            label {
+                label: Contributor
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: AUTHOR
+            }
+        )
+
+        facet P29_BELONGS_TO (
+            type: checkboxGroup
+            label {
+                label: Belongs To
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: BELONGS_TO
+            }
+        )
+
+        facet P29_FILE_EXTENSION (
+            type: checkboxGroup
+            label {
+                label: File Extension
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: FILE_EXTENSION
+            }
+        )
+
+        facet P29_MONTH_CREATED (
+            type: checkboxGroup
+            label {
+                label: Month Created
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: MONTH_CREATED
+            }
+        )
+
+        facet P29_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P29_TAGS (
+            type: checkboxGroup
+            label {
+                label: Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+    )
+
+    region images (
+        name: Images
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select :NOMENCLATURE_PROJECT belongs_to,
+                       apex_util.prepare_url('f?p='||:APP_ID||':30:'||:APP_SESSION||'::NO:30:P30_PREV_PAGE,P30_ID:29,'||d.id) details_link,
+                       null task,
+                       d.ID,
+                       d.DOCUMENT_FILENAME,
+                       d.document_mimetype,
+                       d.document_lastupd,
+                       UPDATED,
+                       d.created,
+                       d.tags,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.DOCUMENT_BLOB,
+                       lower(created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       apex_util.get_since(created) created_since,
+                       d.created date_created,
+                       lower(substr(DOCUMENT_FILENAME,instr(DOCUMENT_FILENAME,'.',-1)+1,length(DOCUMENT_FILENAME)-instr(DOCUMENT_FILENAME,'.',-1))) file_extension,
+                       to_char(d.created,'YYYY.MM') month_created
+                  from SP_PROJECT_DOCUMENTS d
+                 where project_id = :P29_PROJECT_ID and 
+                       (
+                           lower(DOCUMENT_FILENAME) like '%.png' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(DOCUMENT_FILENAME) like '%.avif' or 
+                           lower(DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                union all
+                select 'Task' belongs_to,
+                       apex_util.prepare_url('f?p='||:APP_ID||':505:'||:APP_SESSION||'::NO:505:P505_PREV_PAGE,P505_ID:29,'||d.id) details_link,
+                       (select task_type from sp_task_types rt where rt.id = t.task_type_id)||
+                           case when t.task_sub_type_id is not null then ': ' end ||
+                           (select task_type from sp_task_types rt where rt.id = t.task_sub_type_id) ||
+                           case when t.task is not null then ' - '||t.task end task,
+                       d.ID,
+                       d.DOCUMENT_FILENAME,
+                       d.document_mimetype,
+                       d.document_lastupd,
+                       d.UPDATED,
+                       d.created,
+                       d.tags,
+                       case when length(d.doc_description) > 200
+                            then substr(d.doc_description,1,200)||'...'
+                            else d.doc_description
+                            end doc_description,
+                       d.DOCUMENT_BLOB,
+                       lower(d.created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       apex_util.get_since(d.created) created_since,
+                       d.created date_created,
+                       lower(substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1))) file_extension,
+                       to_char(d.created,'YYYY.MM') month_created
+                  from SP_task_DOCUMENTS d,
+                       sp_tasks t
+                 where d.task_id = t.id
+                   and t.project_id = :P29_PROJECT_ID and 
+                       (
+                           lower(d.DOCUMENT_FILENAME) like '%.png' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.jpeg' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.gif' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.tiff' or 
+                           lower(d.DOCUMENT_FILENAME) like '%.ai' 
+                       )
+                order by created desc
+                
+                ```
+            pageItemsToSubmit: P29_PROJECT_ID
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: DOCUMENT_FILENAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                {if TASK/}&TASK.<br/>{endif/}
+                &AUTHOR. - &CREATED_SINCE.
+                
+                ```
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression: &DOC_DESCRIPTION.
+        }
+        media {
+            source: blobColumn
+            blobColumn: DOCUMENT_BLOB
+        }
+        blobAttributes {
+            mimeTypeColumn: DOCUMENT_MIMETYPE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &DETAILS_LINK.
+            }
+        )
+
+    )
+
+    region project (
+        name: Project
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.INITIATIVE_ID,
+                       f.area focus_area,
+                       f.id focus_area_id,
+                       i.initiative,
+                       p.PROJECT,
+                       (select t.first_name||' '||t.last_name
+                          from SP_TEAM_MEMBERS t 
+                         where t.id = p.OWNER_ID) project_owner,
+                       p.owner_id,
+                       p.TARGET_COMPLETE target_complete,
+                       case p.pct_complete when 0 then s.pc0_label 
+                                           when 10 then s.pc10_label
+                                           when 20 then s.pc20_label
+                                           when 30 then s.pc30_label
+                                           when 40 then s.pc40_label
+                                           when 50 then s.pc50_label
+                                           when 60 then s.pc60_label
+                                           when 70 then s.pc70_label
+                                           when 80 then s.pc80_label
+                                           when 90 then s.pc90_label
+                                           when 100 then s.pc100_label
+                                           end||' - '||p.pct_complete||'%' as status,
+                       p.PRIORITY_ID,
+                       nvl((select description from sp_project_priorities pp where pp.id = p.priority_id),'Not Prioritized') priority,
+                       (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.release_id) release,
+                       p.TAGS,
+                       p.CREATED,
+                       p.CREATED_BY,
+                       p.UPDATED,
+                       p.UPDATED_BY,
+                       p.project_size
+                  from SP_PROJECTS p, 
+                       SP_INITIATIVES i,
+                       SP_AREAS f,
+                       sp_project_scales s
+                where 
+                      p.initiative_id = i.id and
+                      i.area_id = f.id and
+                      p.id = :P29_PROJECT_ID and
+                      p.status_scale = s.scale_letter
+                ```
+            pageItemsToSubmit: P29_PROJECT_ID
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+                margin-right-md
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column CREATED (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Area
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #FOCUS_AREA#
+            }
+        )
+
+        column FOCUS_AREA_ID (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 210
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Initiative
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_INITIATIVE: #INITIATIVE#
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                }
+                linkText: #INITIATIVE#
+            }
+        )
+
+        column INITIATIVE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column OWNER_ID (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 220
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 110
+            }
+        )
+
+        column PRIORITY_ID (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+        column PROJECT_OWNER (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project Owner
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    page: 5
+                    items: {
+                        P5_ID: #OWNER_ID#
+                    }
+                    clearCache: 5
+                    action: resetRegions
+                }
+                linkText: #PROJECT_OWNER#
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Size
+                alignment: center
+            }
+            layout {
+                sequence: 130
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 140
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_projects
+                     where id = :P29_PROJECT_ID
+                       and release_id is not null
+                    ```
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 100
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column TARGET_COMPLETE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Target
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Updated
+                alignment: center
+            }
+            layout {
+                sequence: 190
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 200
+            }
+        )
+
+    )
+
+    pageItem P29_FI (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P29_PN (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P29_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P29_PROJECT_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @images
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-document (
+        buttonName: add_document
+        label: Add Document
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+                items: {
+                    P12_PROJECT_ID: &P3_PROJECT_ID.
+                }
+                clearCache: 12
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                items: {
+                    FI: &P29_FI.
+                    PN: &P29_PN.
+                }
+                clearCache: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dc (
+        name: DC
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @images
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p29-fi (
+        itemName: P29_FI
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select FRIENDLY_IDENTIFIER from sp_projects where id = :P29_PROJECT_ID
+        }
+    )
+
+    computation p29-pn (
+        itemName: P29_PN
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select PROJECT_URL_NAME from sp_projects where id = :P29_PROJECT_ID
+        }
+    )
+
+    computation p29-project-name (
+        itemName: P29_PROJECT_NAME
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select project from sp_projects where id = :P29_PROJECT_ID
+        }
+    )
+
+)
+

@@ -1,0 +1,197 @@
+page 7 (
+    name: Stock
+    alias: STOCK
+    title: Stock
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This demo showcases the &PRODUCT_NAME. native Stock chart, using Oracle JET Data Visualizations. Stock charts are useful for displaying information about a stock on a time axis. Unique to stock charts is the candlestick series which allows for displaying open, close, high, low information for the stock price.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-stock-chart
+        }
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region dummy-corp-stock-chart (
+        name: Dummy Corp Stock Chart
+        type: chart
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chart {
+            type: stock
+        }
+        dataCursor {
+            cursor: true
+            behavior: smooth
+        }
+        settings {
+            timeAxisType: auto
+            zoomAndScroll: delayed
+            initialZooming: first
+        }
+        overview {
+            show: false
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    SELECT null link , PRICING_DATE label , OPENING_VAL , LOW , HIGH , CLOSING_VAL, VOLUME
+                    from eba_demo_chart_stocks
+                    where stock_code = 'METR'
+                    order by PRICING_DATE
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                open: OPENING_VAL
+                low: LOW
+                high: HIGH
+                close: CLOSING_VAL
+                volume: VOLUME
+                labelTooltip: LABEL
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            value {
+                format: datetimeLong
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+                baselineScaling: min
+            }
+            appearance {
+                position: end
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region information (
+        name: Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Stock chart.<p/>
+                
+                <strong>Render As</strong> Use the chart attributes-level attribute to render the chart as Candlestick, representing open, close, high, and low information for the stock price.<p/>
+                <strong>Format</strong> - Use the axis-level attribute to define date/time and numeric formatting, such as currency, decimal places and date formatting. New in APEX 18.1 is the ability to leave the <strong>Currency</strong> property empty, to allow for the currency symbol to be automatically derived from the application language. Alternatively, you can define the currency yourself by providing the 3-character ISO 4217 alphabetic currency code, e.g. <strong>USD</strong><p/>
+                <strong>Data Cursor</strong> - Use this chart attribute to highlight the cursor for a selected chart element, and display its associated tooltip as the mouse moves over the data items of the chart.<p/>
+                <strong>Initial Zooming</strong> - Use the chart-level attribute to set the initial zooming behavior of the chart, to focus initial attention on a specific section of the chart. The setting for this example is First, to initially zoom to the first data points on the chart.<p/>
+                <strong>Volume</strong> - Stock volume information is represented via a Bar chart and Y2 axis, displayed beneath the Candlestick chart.<p/>
+                <strong>Overview</strong> - Use the overview section, displayed at the bottom of the chart region, to zoom & scroll to a specific section of the chart.<p/>
+                
+                <p>
+                For more information on the Oracle JET Stock chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=stockChart&demo=default" target="_blank">Stock Chart</a> example.
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

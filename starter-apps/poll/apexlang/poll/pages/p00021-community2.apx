@@ -1,0 +1,477 @@
+page 21 (
+    name: Community
+    alias: COMMUNITY2
+    title: Community
+    pageGroup: @communities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region details (
+        name: Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region members (
+        name: Members
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    email as respondent
+                from
+                    eba_qpoll_respondents
+                where
+                    id in (select
+                              respondent_id
+                           from
+                              eba_qpoll_resp_comm_ref
+                           where
+                              community_id = :P21_ID)
+                order by
+                    1
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        reportLayout {
+            numberOfRows: 200
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--noBorders
+                t-Report--rowHighlightOff
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: no members found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column RESPONDENT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P21_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P21_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NAME
+            used: always
+        }
+    )
+
+    pageItem P21_PUBLISH_YN (
+        type: selectList
+        label {
+            label: Publish
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @yes-no-y-n
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PUBLISH_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Only 'Published' communities are available to be invited to take polls.
+        }
+    )
+
+    button add-members (
+        buttonName: ADD_MEMBERS
+        label: Add Members
+        layout {
+            sequence: 30
+            region: @members
+            slot: edit
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 70
+                items: {
+                    P70_COMMUNITY_ACTION: -4
+                    P70_COMMUNITY_ID_TO: &P21_ID.
+                }
+                clearCache: [
+                    70
+                    71
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Respondent Community
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P21_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete Community
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P21_ID
+        }
+    )
+
+    button manage-members (
+        buttonName: MANAGE_MEMBERS
+        label: Manage Members
+        layout {
+            sequence: 20
+            region: @members
+            slot: edit
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 74
+                items: {
+                    IR_COMMUNITY_ID: &P21_ID.
+                }
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P21_ID
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    process fetch-row-from-eba-qpoll-resp-communities (
+        name: Fetch Row from EBA_QPOLL_RESP_COMMUNITIES
+        type: autoRowFetch
+        source {
+            tableName: EBA_QPOLL_RESP_COMMUNITIES
+            pkColumn: ID
+            pkItem: P21_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13856552278639611113
+        }
+    )
+
+    process process-row-of-eba-qpoll-resp-communities (
+        name: Process Row of EBA_QPOLL_RESP_COMMUNITIES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_QPOLL_RESP_COMMUNITIES
+            pkColumn: ID
+            pkItem: P21_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 13856552463048611114
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 13856552673611611115
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &LAST_VIEW.
+            }
+        }
+    )
+
+    branch (
+        name: back to page 9
+        execution {
+            sequence: 1
+        }
+        behavior {
+            target: {
+                page: 9
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

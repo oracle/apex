@@ -1,0 +1,282 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry administration (
+        name: Administration
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry background-load (
+        name: Background Load
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+    )
+
+    entry column-mapping (
+        name: Column Mapping
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @load-employees
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry csv-load (
+        name: CSV Load
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry data-load-results (
+        name: Data Load Results
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @load-employees
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-loading (
+        name: Data Loading
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry data-validation (
+        name: Data Validation
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @load-employees
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry load-data-using-pl-sql-api (
+        name: Load Data using PL/SQL API
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @manual-data-loading
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry load-employees (
+        name: Load Employees
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry load-status (
+        name: Load Status
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @background-load
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry manual-data-loading (
+        name: Manual Data Loading
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry multiple-file-types-load (
+        name: Multiple File Types Load
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry pl-sql-parser (
+        name: PL/SQL Parser
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @manual-data-loading
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry reset-data (
+        name: Reset Data
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry transformation-and-lookup (
+        name: Transformation and Lookup
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-loading
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+)
+

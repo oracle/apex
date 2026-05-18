@@ -1,0 +1,27 @@
+automation load-employee-data (
+    name: Load Employee Data
+    execution {
+        scheduleExpression: FREQ=HOURLY;INTERVAL=1;BYMINUTE=0
+    }
+    source {
+        tableName: EBA_DEMO_LOAD_EMP
+    }
+
+    action new-action (
+        name: New Action
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    null;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+    )
+
+)
+

@@ -1,0 +1,73 @@
+Identify server requirements,ACME Web Configuration,1/16/25,1/16/25,Closed,John Watson,100,200
+HR software upgrades,Maintain Support Systems,12/31/24,1/26/25,On-Hold,Pam King,8000,7000
+Apply Billing System updates,Maintain Support Systems,11/16/24,11/23/24,On-Hold,Russ Sanders,9500,7000
+Determine Web listener configuration(s),ACME Web Configuration,12/31/24,1/10/25,Closed,James Cassidy,100,100
+Specify security authentication scheme(s),ACME Web Configuration,1/7/25,1/26/25,Closed,John Watson,200,300
+"Select servers for Development, Test, Production",ACME Web Configuration,11/15/24,12/4/24,Closed,James Cassidy,200,600
+Complete plan,Email Integration,11/22/24,12/14/24,Closed,Mark Nile,3000,1500
+Configure Workspace provisioning,ACME Web Configuration,1/16/25,1/19/25,Closed,John Watson,200,100
+Create pilot workspace,ACME Web Configuration,2/7/25,2/23/25,Closed,John Watson,100,100
+Run installation,ACME Web Configuration,2/8/25,2/8/25,Closed,James Cassidy,100,100
+Implement bug tracking software,Bug Tracker,12/2/24,12/23/24,Closed,Myra Sutcliff,100,100
+Review automated testing tools,Bug Tracker,11/13/24,12/7/24,On-Hold,Myra Sutcliff,2750,1500
+Publish development standards,Train Developers,1/13/25,1/22/25,On-Hold,John Watson,1000,2000
+Publish links to self-study courses,Train Developers,12/16/24,1/3/25,Closed,John Watson,100,100
+Create training workspace,Train Developers,11/14/24,11/14/24,Closed,James Cassidy,500,700
+Identify point solutions required,Load Packaged Applications,11/24/24,12/8/24,Closed,John Watson,200,300
+Conduct project kickoff meeting,Software Projects Tracking,12/20/24,12/28/24,Closed,Pam King,100,100
+Identify pilot client server applications,Client Server Conversion,11/29/24,12/1/24,Closed,Scott Spencer,200,200
+Determine host server,Public Website,12/24/24,1/21/25,Closed,Tiger Scott,200,200
+Install in development,Load Packaged Applications,12/8/24,12/31/24,Closed,John Watson,100,100
+Check software licenses,Public Website,12/14/24,1/3/25,Closed,Tom Suess,100,100
+Migrate pilot client server to web,Client Server Conversion,1/8/25,2/4/25,Closed,Scott Spencer,400,500
+Customize solutions,Load Packaged Applications,1/21/25,2/16/25,Open,John Watson,1500,4000
+"Enter base data (Projects, Milestones, etc.)",Software Projects Tracking,1/18/25,2/8/25,Closed,Tom Suess,200,200
+Identify pilot applications,Migrate Desktop Application,11/20/24,12/8/24,Closed,Mark Nile,300,500
+"Purchase additional software licenses, if needed",Public Website,11/28/24,12/12/24,On-Hold,Al Bines,300,1000
+Check software licenses,Email Integration,1/8/25,1/10/25,Closed,Mark Nile,200,200
+Load current tasks and enhancements,Software Projects Tracking,1/31/25,2/16/25,Closed,Tom Suess,400,500
+Get RFPs for new server,Email Integration,1/9/25,1/10/25,Open,Mark Nile,2000,1000
+Customize Software Projects software,Software Projects Tracking,12/26/24,1/22/25,Open,Tom Suess,600,1000
+Collect mission-critical spreadsheets,Convert Spreadsheet,1/14/25,1/22/25,Open,Pam King,2500,4000
+Lock spreadsheets,Convert Spreadsheet,11/23/24,12/20/24,Open,Pam King,1000,800
+Create web applications from spreadsheets,Convert Spreadsheet,11/15/24,12/7/24,Open,Pam King,10000,6000
+Document quality assurance procedures,Bug Tracker,12/4/24,12/15/24,Open,Myra Sutcliff,3500,4000
+Send links to previous spreadsheet owners,Convert Spreadsheet,12/8/24,1/5/25,Open,Pam King,1000,1500
+Migrate pilot applications to web,Migrate Desktop Application,11/20/24,12/9/24,Closed,Mark Nile,500,500
+Complete questionnaire,Employee Satisfaction Survey,1/18/25,1/28/25,On-Hold,Irene Jones,1200,800
+Identify owners,Discussion Forum,11/15/24,12/14/24,Closed,Hank Davis,250,300
+Arrange for vacation coverage,Maintain Support Systems,12/17/24,12/23/24,Open,Al Bines,300,500
+Post-migration review,Client Server Conversion,12/20/24,12/25/24,Closed,Pam King,100,100
+Plan migration schedule,Client Server Conversion,11/17/24,11/29/24,Closed,Pam King,100,100
+Post-migration review,Migrate Desktop Application,2/2/25,2/11/25,Closed,Mark Nile,100,100
+Plan migration schedule,Migrate Desktop Application,1/30/25,2/27/25,Closed,Mark Nile,600,200
+Migrate client server apps,Client Server Conversion,2/4/25,3/2/25,Open,Pam King,300,12000
+Install web application on production server,Discussion Forum,1/9/25,1/17/25,Closed,Hank Davis,100,100
+Implement in Production,Load Packaged Applications,11/11/24,12/4/24,Open,John Watson,200,1500
+Monitor participation,Discussion Forum,1/18/25,2/3/25,Open,Hank Davis,450,500
+Migrate Desktop Applications,Migrate Desktop Application,12/6/24,12/23/24,Open,Mark Nile,1000,8000
+End-user Training,Migrate Desktop Application,12/31/24,1/2/25,Open,John Watson,0,2000
+Investigate new Virus Protection software,Maintain Support Systems,1/11/25,2/6/25,Open,Pam King,1700,1500
+User acceptance testing,Migrate Desktop Application,11/25/24,11/29/24,Open,Mark Nile,1500,6000
+Obtain credentials,Migrate from Legacy Server,1/5/25,1/9/25,Pending,James Cassidy,0,500
+Create new database connection,Migrate from Legacy Server,11/13/24,12/5/24,Pending,Scott Spencer,0,100
+Identify integration points,Migrate from Legacy Server,12/31/24,1/28/25,Pending,Mark Nile,0,2000
+Review with legal,Employee Satisfaction Survey,1/13/25,2/1/25,On-Hold,Irene Jones,200,400
+Develop web pages,Public Website,12/4/24,12/11/24,On-Hold,Tiger Scott,800,2000
+Train developers / users,Load Packaged Applications,12/30/24,1/15/25,Pending,John Watson,0,8000
+Purchase backup server,Email Integration,1/20/25,1/31/25,Pending,Mark Nile,0,3000
+Plan rollout schedule,Employee Satisfaction Survey,1/19/25,2/15/25,On-Hold,Irene Jones,0,750
+Map data usage,Migrate from Legacy Server,11/27/24,12/5/24,Pending,Mark Nile,0,8000
+Train developers on tracking bugs,Bug Tracker,2/5/25,2/26/25,On-Hold,Myra Sutcliff,0,2000
+Measure effectiveness of improved QA,Bug Tracker,1/23/25,2/20/25,Pending,Myra Sutcliff,0,1500
+Decommission SQL Server,Migrate from Legacy Server,12/24/24,1/11/25,Pending,Al Bines,0,500
+Test migrated applications,Client Server Conversion,1/19/25,2/8/25,Pending,Russ Saunders,0,6000
+Convert processes,Migrate from Legacy Server,12/31/24,1/8/25,Pending,Pam King,0,3000
+Implement integration using Oracle,Migrate from Legacy Server,11/22/24,12/4/24,Pending,Mark Nile,0,1500
+User acceptance testing,Client Server Conversion,1/7/25,2/4/25,Pending,Russ Saunders,0,2500
+Plan rollout schedule,Public Website,1/10/25,2/5/25,On-Hold,Tom Suess,0,100
+Migrate table structures,Migrate from Legacy Server,1/25/25,2/9/25,Pending,John Watson,0,2500
+Import data,Migrate from Legacy Server,1/17/25,1/28/25,Pending,John Watson,0,1000
+Notify users,Migrate from Legacy Server,12/16/24,1/8/25,Pending,Mark Nile,0,200
+End-user Training,Client Server Conversion,1/25/25,2/17/25,Pending,Myra Sutcliff,0,2500
+Rollout migrated clent server apps on web,Client Server Conversion,11/24/24,11/30/24,Pending,Pam King,0,500

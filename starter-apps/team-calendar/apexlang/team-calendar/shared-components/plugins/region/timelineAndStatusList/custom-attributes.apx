@@ -1,0 +1,249 @@
+customAttribute attribute_01 (
+    apexlangName: groupByColumn
+    attribute: 1
+    name: Group By Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    supports {
+        dataTypes: [
+            varchar2
+            number
+            date
+            timestamp
+            timestampWithTimeZone
+            timestampWithLocalTimeZone
+        ]
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the column the report will be grouped by.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: colorColumn
+    attribute: 2
+    name: Color Column
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 120
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the color for the list.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: titleColumn
+    attribute: 3
+    name: Title Column
+    type: regionSqlQueryColumn
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 30
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the title for each grouping.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: linkColumn
+    attribute: 4
+    name: Link Column
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 40
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the link for each record.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: firstValue
+    attribute: 5
+    name: First Value
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 50
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the first value to be displayed in the report.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: secondValue
+    attribute: 6
+    name: Second Value
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 60
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the second value to be displayed in the report.
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: thirdValue
+    attribute: 7
+    name: Third Value
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 70
+    }
+    builder {
+        common: false
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the third value to be displayed in the report.
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: fourthValue
+    attribute: 8
+    name: Fourth Value
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 80
+    }
+    builder {
+        common: false
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the fourth value to be displayed in the report.
+    }
+)
+
+customAttribute attribute_09 (
+    apexlangName: primaryDescription
+    attribute: 9
+    name: Primary Description
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 90
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the primary description to be displayed in the report.
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: secondaryDescription
+    attribute: 10
+    name: Secondary Description
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 100
+    }
+    builder {
+        common: false
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the secondary description to be displayed in the report.
+    }
+)
+
+customAttribute attribute_11 (
+    apexlangName: additionalDescriptionWithHtml
+    attribute: 11
+    name: Additional Description (with HTML)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 110
+    }
+    builder {
+        common: false
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds an additional description to be displayed in the report, which allows HTML content.
+    }
+)
+
+customAttribute attribute_12 (
+    apexlangName: displayAs
+    attribute: 12
+    name: Display As
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 5
+    }
+    default {
+        value: D
+    }
+    help {
+        helpText: Select whether the region should be displayed as a timeline, based on a given date, or a list.
+    }
+
+    entry statusList (
+        sequence: 20
+        display: Status List
+        return: L
+    )
+
+    entry timeline (
+        sequence: 10
+        display: Timeline
+        return: D
+    )
+
+)
+
+customAttribute attribute_13 (
+    apexlangName: statusColumn
+    attribute: 13
+    name: Status Column
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds the status to be displayed in the report.
+    }
+)
+
+customAttribute attribute_14 (
+    apexlangName: colorLabel
+    attribute: 14
+    name: Color Label
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 140
+    }
+    builder {
+        showInWizard: false
+    }
+    dependingOn {
+        attribute: @attribute_02/component
+        conditionType: isNotNull
+    }
+)
+
+customAttribute attribute_15 (
+    apexlangName: secondAdditionalDescriptionWithHtml
+    attribute: 15
+    name: Second Additional Description (with HTML)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 115
+    }
+    builder {
+        common: false
+    }
+    help {
+        helpText: Select the column from the region SQL Query that holds an additional description to be displayed in the report, which allows HTML content.
+    }
+)
+

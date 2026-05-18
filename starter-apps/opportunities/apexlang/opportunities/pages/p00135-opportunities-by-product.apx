@@ -1,0 +1,1085 @@
+page 135 (
+    name: Opportunities by Product
+    alias: OPPORTUNITIES-BY-PRODUCT
+    title: Opportunities by Product
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is an interactive report of all opportunities listed by product. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 1210
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region opportunities-by-product (
+        name: Opportunities by Product
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.id,
+                  d.row_key,
+                  d.deal_name,
+                  dp.close_date,
+                  p.product_family_id,
+                  pf.lob_id as lob,
+                  t.id territory_id,
+                  t.territory_name,
+                  c.id account_id,
+                  c.customer_name account,
+                  d.deal_amount,
+                  d.deal_probability,
+                  case
+                    when deal_probability > 0 and deal_probability < 100
+                    then 'Yes'
+                    else 'No'
+                  end open,
+                  deal_close_date,
+                  case
+                    when deal_close_date < sysdate and deal_probability != 0 and deal_probability != 100
+                    then 'Yes'
+                    else 'No'
+                  end past_due,
+                  d.qtr,
+                  dp.qtr as product_qtr,
+                  substr(dp.qtr,1,2) as pqo,
+                  substr(dp.qtr,-2) as pfyo,
+                  dsc.status_code,
+                  d.updated,
+                  d.updated_by,
+                  d.created,
+                  d.created_by,
+                  sr.rep_first_name || ' ' || sr.rep_last_name as sales_rep_name,
+                  p.product_name,
+                  p.product_sku,
+                  p.id product_id,
+                  d.svp_id,
+                  c.secondary_rep,
+                  sr.REP_MANAGER_ID as sales_mgr,
+                  case 
+                      when :OPP_SET_PROD_LEV_BO = 'Include' then
+                          case when dp.term is null then nvl(dp.quote_price, 0) else nvl(dp.quote_price, 0) * dp.term/12 end
+                  else
+                          d.deal_amount
+                  end as revenue,
+                  decode(p.sold_as, 'SUBSCRIPTION', 'Cloud Subscription', 'PURCHASE', 'On-Premise Purchase', p.sold_as) as product_type,
+                  case when dp.term is not null then nvl(dp.quote_price, 0) else 0 end calculated_deal_amount,
+                  case when dp.term is null then nvl(dp.quote_price, 0) else 0 end calculated_opp_amount,
+                  nvl(dp.tcv, 0) as calculated_tcv
+                from eba_sales_deals d
+                join eba_sales_customers c
+                  on c.id = d.customer_id
+                join eba_sales_deal_products dp
+                  on dp.deal_id = d.id
+                join eba_sales_products p
+                  on p.id = dp.product_id
+                join eba_sales_product_families pf
+                  on pf.id = p.product_family_id
+                left join eba_sales_deal_status_codes dsc
+                  on dsc.id = d.deal_status_code_id
+                left join eba_sales_territories t
+                  on t.id = c.customer_territory_id
+                left join eba_sales_salesreps sr
+                  on sr.id = d.salesrep_id_01
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: grid_region
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        actionsMenu {
+            savePublicReport: true
+            savePublicReportAuthorization: @administration-rights
+        }
+        advanced {
+            savedReportMappingIdentifier: 1593857071664209851
+        }
+
+        column ACCOUNT (
+            type: link
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 70
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_ID: #ID#
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+                linkText: #ACCOUNT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ACCOUNT_ID (
+            type: hidden
+            heading {
+                heading: Selected Account
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CALCULATED_DEAL_AMOUNT (
+            type: plainText
+            heading {
+                heading: &AMT_HDR.
+                alignment: end
+            }
+            layout {
+                sequence: 260
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AH
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CALCULATED_OPP_AMOUNT (
+            type: plainText
+            heading {
+                heading: On-Premise Purchase Amount
+                alignment: end
+            }
+            layout {
+                sequence: 310
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AM
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CALCULATED_TCV (
+            type: plainText
+            heading {
+                heading: Total Contract Value
+                alignment: end
+            }
+            layout {
+                sequence: 300
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AL
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column CLOSE_DATE (
+            type: plainText
+            heading {
+                heading: Product Close Date
+            }
+            layout {
+                sequence: 270
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: &APP_DATE_FORMAT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: AI
+            }
+            config {
+                buildOption: @product-level-close-dates
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column DEAL_AMOUNT (
+            type: plainText
+            heading {
+                heading: Amount
+                alignment: end
+            }
+            layout {
+                sequence: 180
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            config {
+                buildOption: !@opportunity-amount-set-at-product-level
+            }
+        )
+
+        column DEAL_CLOSE_DATE (
+            type: plainText
+            heading {
+                heading: Opportunity Close Date
+            }
+            layout {
+                sequence: 210
+            }
+            appearance {
+                formatMask: &APP_DATE_FORMAT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: AA
+            }
+            config {
+                buildOption: !@product-level-close-dates
+            }
+        )
+
+        column DEAL_NAME (
+            type: link
+            heading {
+                heading: Opportunity
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 80
+                    items: {
+                        P80_ID: #ID#
+                    }
+                    clearCache: 80
+                    action: resetPagination
+                }
+                linkText: #DEAL_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column DEAL_PROBABILITY (
+            type: plainText
+            heading {
+                heading: Probability
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LOB (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Line of Business
+            }
+            lov {
+                lov: @lines-of-business
+            }
+            layout {
+                sequence: 360
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AR
+            }
+        )
+
+        column OPEN (
+            type: plainText
+            heading {
+                heading: Open
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PAST_DUE (
+            type: plainText
+            heading {
+                heading: Past Due
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column PFYO (
+            type: plainText
+            heading {
+                heading: Product Fiscal Year Only
+            }
+            layout {
+                sequence: 380
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AT
+            }
+        )
+
+        column PQO (
+            type: plainText
+            heading {
+                heading: Product Quarter Only
+            }
+            layout {
+                sequence: 370
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AS
+            }
+        )
+
+        column PRODUCT_FAMILY_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Product Family
+            }
+            lov {
+                lov: @product-families
+            }
+            layout {
+                sequence: 280
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column PRODUCT_ID (
+            type: hidden
+            heading {
+                heading: Selected Product
+            }
+            layout {
+                sequence: 240
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AD
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column PRODUCT_NAME (
+            type: link
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 220
+            }
+            link {
+                target: {
+                    page: 85
+                    items: {
+                        P85_ID: #ID#
+                        IR_PRODUCT: #PRODUCT_NAME#
+                    }
+                    clearCache: 85
+                    action: resetPagination
+                }
+                linkText: #PRODUCT_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        column PRODUCT_QTR (
+            type: plainText
+            heading {
+                heading: Quarter
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AF
+            }
+            config {
+                buildOption: @product-level-close-dates
+            }
+        )
+
+        column PRODUCT_SKU (
+            type: plainText
+            heading {
+                heading: Product SKU
+            }
+            layout {
+                sequence: 230
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column PRODUCT_TYPE (
+            type: plainText
+            heading {
+                heading: Product Type
+            }
+            layout {
+                sequence: 290
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AK
+            }
+            config {
+                buildOption: @opportunity-amount-set-at-product-level
+            }
+        )
+
+        column QTR (
+            type: plainText
+            heading {
+                heading: Opportunity Quarter
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            config {
+                buildOption: !@product-level-close-dates
+            }
+        )
+
+        column REVENUE (
+            type: plainText
+            heading {
+                heading: Total Revenue
+                alignment: end
+            }
+            layout {
+                sequence: 320
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AN
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column SALES_MGR (
+            type: plainTextBasedOnLov
+            heading {
+                heading: &REP_TITLE. Manager
+            }
+            lov {
+                lov: @sales-rep-managers
+            }
+            layout {
+                sequence: 350
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AQ
+            }
+        )
+
+        column SALES_REP_NAME (
+            type: plainText
+            heading {
+                heading: &REP_TITLE.
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column SECONDARY_REP (
+            type: plainText
+            heading {
+                heading: &SALES_LDR_TITLE.
+            }
+            layout {
+                sequence: 340
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AP
+            }
+        )
+
+        column STATUS_CODE (
+            type: plainText
+            heading {
+                heading: Stage
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column SVP_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: SVP
+            }
+            lov {
+                lov: @svps
+            }
+            layout {
+                sequence: 330
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AO
+            }
+        )
+
+        column TERRITORY_ID (
+            type: hidden
+            heading {
+                heading: Territory id
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column TERRITORY_NAME (
+            type: link
+            heading {
+                heading: Account Territory
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    page: 93
+                    items: {
+                        P93_ID: #TERRITORY_ID#
+                    }
+                    clearCache: 93
+                    action: resetPagination
+                }
+                linkText: #TERRITORY_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Territories'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 8725606 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACCOUNT (
+                sequence: 6
+            )
+
+            displayColumn CALCULATED_DEAL_AMOUNT (
+                sequence: 17
+            )
+
+            displayColumn CALCULATED_OPP_AMOUNT (
+                sequence: 18
+            )
+
+            displayColumn CALCULATED_TCV (
+                sequence: 16
+            )
+
+            displayColumn DEAL_NAME (
+                sequence: 1
+            )
+
+            displayColumn DEAL_PROBABILITY (
+                sequence: 9
+            )
+
+            displayColumn LOB (
+                sequence: 3
+            )
+
+            displayColumn OPEN (
+                sequence: 10
+            )
+
+            displayColumn PAST_DUE (
+                sequence: 11
+            )
+
+            displayColumn PRODUCT_FAMILY_ID (
+                sequence: 4
+            )
+
+            displayColumn PRODUCT_NAME (
+                sequence: 2
+            )
+
+            displayColumn PRODUCT_QTR (
+                sequence: 8
+            )
+
+            displayColumn PRODUCT_TYPE (
+                sequence: 5
+            )
+
+            displayColumn REVENUE (
+                sequence: 19
+            )
+
+            displayColumn SALES_MGR (
+                sequence: 13
+            )
+
+            displayColumn SALES_REP_NAME (
+                sequence: 12
+            )
+
+            displayColumn SECONDARY_REP (
+                sequence: 15
+            )
+
+            displayColumn SVP_ID (
+                sequence: 14
+            )
+
+            displayColumn TERRITORY_NAME (
+                sequence: 7
+            )
+
+            sort (
+                column: PRODUCT_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: REVENUE
+            )
+
+        )
+
+    )
+
+    pageItem P135_HELP (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @opportunities-by-product
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 135
+                clearCache: [
+                    135
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 135
+        }
+    )
+
+    computation p135-help (
+        itemName: P135_HELP
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: This is help text
+        }
+    )
+
+    branch (
+        name: Go To Page 135
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 135
+                successMessage: false
+            }
+        }
+    )
+
+)
+

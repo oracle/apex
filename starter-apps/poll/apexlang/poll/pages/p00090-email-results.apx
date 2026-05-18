@@ -1,0 +1,730 @@
+page 90 (
+    name: Email Results
+    alias: EMAIL-RESULTS
+    title: Email Results
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region community-members (
+        name: Community Members
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.email
+                from eba_qpoll_respondents r,
+                     eba_qpoll_resp_comm_ref rc
+                where rc.community_id = :P90_COMMUNITY_ID
+                  and r.id = rc.respondent_id
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @email-results-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from EBA_QPOLL_RESP_COMMUNITIES
+        }
+        reportLayout {
+            numberOfRows: 500
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--noBorders
+                t-Report--rowHighlightOff
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region email-results-for-poll-name (
+        name: Email Results for &POLL_NAME.
+        type: staticContent
+        layout {
+            sequence: 5
+            slot: body-3
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region header (
+        name: header
+        type: staticContent
+        source {
+            htmlCode: <p>You can select a community, provide email addresses or both.  A formatted summary of the poll results will be sent to all the email addresses, as long as they have not opted out of receiving email from this application.</p>
+        }
+        layout {
+            sequence: 7
+            parentRegion: @email-results-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region items (
+        name: items 1
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @email-results-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region items-2 (
+        name: items 2
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @email-results-for-poll-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P90_COMMUNITY_ID (
+        type: selectList
+        label {
+            label: Community
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @communities-p-2
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 7
+            region: @items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        advanced {
+            customAttributes: style="width:300px;"
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from EBA_QPOLL_RESP_COMMUNITIES
+        }
+        help {
+            helpText: Select the community of users that you wish to send poll results to.
+        }
+    )
+
+    pageItem P90_EMAIL_FROM (
+        type: displayOnly
+        label {
+            label: Email From
+            alignment: left
+        }
+        layout {
+            sequence: 5
+            region: @items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                case when instr(:APP_USER,'@') > 0 then lower(:APP_USER)
+                     else replace(eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'), 'N/A', null)
+                     end
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P90_EMAIL_TO (
+        type: textarea
+        label {
+            label: Addresses to email results to
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @items-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 4
+            valuePlaceholder: Enter email addresses here
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P90_INTRO_TEXT (
+        type: textarea
+        label {
+            label: Introduction Text
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @items-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 4
+            valuePlaceholder: If provided, this text will be included in the email before the results
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 5
+            region: @items-2
+            slot: bottom
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button email-results (
+        buttonName: EMAIL_RESULTS
+        label: Email Results
+        layout {
+            sequence: 10
+            region: @items-2
+            slot: bottom
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel (
+        name: Cancel
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-community-members-report (
+        name: Show Community Members Report
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P90_COMMUNITY_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P90_COMMUNITY_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P90_COMMUNITY_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+    )
+
+    validation p90-community-id-and-or-emails (
+        name: P90_COMMUNITY_ID and/or emails
+        execution {
+            sequence: 10
+        }
+        validation {
+            language: sql
+            sqlExpression: :P90_COMMUNITY_ID is not null or :P90_EMAIL_TO is not null
+        }
+        error {
+            errorMessage: You must select a community and/or provide email addresses to send poll results to.
+            associatedItem: @P90_COMMUNITY_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @email-results
+        }
+    )
+
+    process load-emails (
+        name: Load emails
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_line      varchar2(32767);
+                    l_emails    wwv_flow_global.vc_arr2;
+                    l_email     varchar2(4000);
+                    l_at        number;
+                    l_dot       number;
+                    l_valid     boolean := true;
+                    l_domain    varchar2(4000);
+                begin
+                    ---------------------
+                    -- create collections
+                    --
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_EMAIL_RES_INVALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_EMAIL_RES_VALID');
+                
+                  if :P90_EMAIL_TO is not null then
+                
+                    --------------------------------------------
+                    -- replace delimiting characters with commas
+                    --
+                    l_line := :P90_EMAIL_TO;
+                    l_line := replace(l_line,chr(10),' ');
+                    l_line := replace(l_line,chr(13),' ');
+                    l_line := replace(l_line,chr(9),' ');
+                    l_line := replace(l_line,'<',' ');
+                    l_line := replace(l_line,'>',' ');
+                    l_line := replace(l_line,';',' ');
+                    l_line := replace(l_line,':',' ');
+                    l_line := replace(l_line,'(',' ');
+                    l_line := replace(l_line,')',' ');
+                    l_line := replace(l_line,' ',',');
+                
+                    -----------------------------------------
+                    -- get one comma separated line of emails
+                    --
+                    for j in 1..1000 loop
+                        if instr(l_line,',,') > 0 then
+                           l_line := replace(l_line,',,',',');
+                        else
+                           exit;
+                        end if;
+                    end loop;
+                
+                    -------------------------
+                    -- get an array of emails
+                    --
+                    l_emails := wwv_flow_utilities.string_to_table(l_line,',');
+                
+                    -----------------------------
+                    -- add emails to a collection
+                    --
+                    l_email := null;
+                    l_domain := null;
+                    l_at := 0;
+                    l_dot := 0;
+                    for j in 1..l_emails.count loop
+                        l_valid := true;
+                        l_email := trim(l_emails(j));
+                        l_email := replace(l_email,chr(49824),null);
+                        l_email := lower(l_email);
+                
+                        if l_email is not null then
+                            -----------
+                            -- Validate
+                            --
+                            l_at := instr(nvl(l_email,'x'),'@');
+                            l_domain := substr(l_email,l_at+1);
+                            l_dot := instr(l_domain,'.');
+                            if l_at < 2 then
+                                -- invalid email
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                    p_c001            => l_email,
+                                    p_c002            => 'INVALID EMAIL');
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                            if l_dot = 0 and l_valid then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                    p_c001            => l_email,
+                                    p_c002            => 'INVALID EMAIL');
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                
+                            l_email := trim(l_email);
+                            l_email := trim(both '.' from l_email);
+                            l_email := replace(l_email,' ',null);
+                            l_email := replace(l_email,chr(10),null);
+                            l_email := replace(l_email,chr(9),null);
+                            l_email := replace(l_email,chr(13),null);
+                            l_email := replace(l_email,chr(49824),null);
+                
+                            if l_valid and length(l_email) > 255 then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                    p_c001            => l_email,
+                                    p_c002            => 'INVALID EMAIL');
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEXeaf772 */  c001
+                                             from wwv_flow_collections
+                                            where collection_name = 'EBA_QPOLL_EMAIL_RES_VALID'
+                                              and c001 = l_email
+                                ) loop
+                                    apex_collection.add_member(
+                                        p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                        p_c001            => l_email,
+                                        p_c002            => 'DUPLICATE EMAIL');
+                                        commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select  1
+                                             from eba_qpoll_respondents r,
+                                                  eba_qpoll_email_opt_out o
+                                            where r.id = o.respondent_id
+                                              and r.email = l_email
+                                ) loop
+                                    apex_collection.add_member(
+                                        p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                        p_c001            => l_email,
+                                        p_c002            => 'OPTED OUT');
+                                        commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_EMAIL_RES_VALID',
+                                    p_c001            => l_email);
+                                    commit;
+                            end if;
+                
+                        end if;
+                        l_email := null;
+                    end loop;
+                
+                  end if;
+                
+                  if :P90_COMMUNITY_ID is not null then
+                    for c0 in (
+                       select r.id respondent_id, r.email
+                         from eba_qpoll_respondents r,
+                              eba_qpoll_resp_comm_ref cr
+                        where r.id = cr.respondent_id
+                          and cr.community_id = :P90_COMMUNITY_ID
+                    ) loop
+                        l_valid := true;
+                        for c1 in (select /* APEXeaf772 */  c001
+                                     from wwv_flow_collections
+                                    where collection_name = 'EBA_QPOLL_EMAIL_RES_VALID'
+                                      and c001 = c0.email
+                        ) loop
+                            apex_collection.add_member(
+                                p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                p_c001            => c0.email,
+                                p_c002            => 'DUPLICATE EMAIL');
+                                commit;
+                            l_valid := false;
+                            exit;
+                        end loop;
+                
+                        if l_valid then
+                            for c1 in (select  1
+                                         from eba_qpoll_email_opt_out
+                                        where respondent_id = c0.respondent_id
+                            ) loop
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_EMAIL_RES_INVALID',
+                                    p_c001            => c0.email,
+                                    p_c002            => 'OPTED OUT');
+                                    commit;
+                                l_valid := false;
+                                exit;
+                            end loop;
+                        end if;
+                
+                        if l_valid then
+                            apex_collection.add_member(
+                                p_collection_name => 'EBA_QPOLL_EMAIL_RES_VALID',
+                                p_c001            => c0.email);
+                                commit;
+                        end if;
+                    end loop;
+                  end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 14033753281253460342
+        }
+    )
+
+    process send-emails (
+        name: Send emails
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_html_body        clob;
+                   l_email_id         number;
+                begin
+                
+                   l_html_body := eba_qpoll.prepare_poll_results(:POLL_ID);
+                
+                   for c in (
+                      select c001 as email
+                        from apex_collections
+                       where collection_name = 'EBA_QPOLL_EMAIL_RES_VALID'
+                   ) loop
+                     
+                      eba_qpoll_email.send (
+                         p_app_id             => :APP_ID,
+                         p_template_static_id => 'RESULTS',
+                         p_placeholders       => '{' || 
+                                                 '    "POLL_NAME":'         || apex_json.stringify( :POLL_NAME ) || 
+                                                 '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                                 '   ,"INTRO_TEXT":'        || apex_json.stringify( case when :P90_INTRO_TEXT is not null
+                                                                                                         then '<p>'||apex_escape.html(:P90_INTRO_TEXT)||'</p>'
+                                                                                                         else null
+                                                                                                         end ) || 
+                                                 '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                                    :APP_PATH ||
+                                                                                                    APEX_UTIL.PREPARE_URL(p_url => 'f?p=' ||:APP_ID || ':optout',
+                                                                                                        p_plain_url => TRUE),
+                                                                                                    apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                                 '   ,"BODY":'  || apex_json.stringify(l_html_body) || 
+                                                          '}' , 
+                         p_to                  => c.email,
+                         p_from                => :P90_EMAIL_FROM,
+                         p_cc                  => null,
+                         p_poll_id             => :POLL_ID,
+                         p_email_id            => l_email_id);
+                
+                   end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 14033753485025508731
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 91
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @email-results
+        }
+    )
+
+)
+

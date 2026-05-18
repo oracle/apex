@@ -1,0 +1,1658 @@
+page 72 (
+    name: Invite
+    alias: INVITE
+    title: Invite
+    pageGroup: @invite
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region advanced (
+        name: Advanced
+        type: staticContent
+        source {
+            htmlCode: This application's current EMAIL FROM address is: <strong>&P72_EMAIL_FROM.</strong>.  The EMAIL FROM address value can be controlled by navigating to application administration.
+        }
+        layout {
+            sequence: 60
+            parentRegion: @invite-community-and-or-individuals
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P72_EMAIL_FROM
+        }
+    )
+
+    region already-invited (
+        name: Already Invited
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select nvl(community_name,'Individuals') community_name,
+                       (select count(*) 
+                          from eba_qpoll_results r,
+                               eba_qpoll_invites i
+                         where r.poll_id = :POLL_ID
+                           and r.IS_VALID_YN = 'Y'
+                           and i.comm_invite_id = c.id
+                           and r.respondent_id = i.respondent_id ) num_responses,
+                       (select count(*)
+                          from eba_qpoll_invites 
+                         where comm_invite_id = c.id) num_requests,
+                       created invite_date
+                  from eba_qpoll_comm_invites c
+                 where poll_id = :P72_POLL_ID
+                   and community_name is not null
+                union
+                select respondent_email community_name,
+                       nvl((select 1 
+                          from eba_qpoll_results
+                         where poll_id = :POLL_ID
+                           and IS_VALID_YN = 'Y'
+                           and respondent_id = i.respondent_id ),0) num_responses,
+                       null num_requests,
+                       c.created invite_date
+                  from eba_qpoll_comm_invites c,
+                       eba_qpoll_invites i
+                 where c.poll_id = :P72_POLL_ID
+                   and c.community_name is null
+                   and c.id = i.comm_invite_id
+                order by invite_date desc
+                ```
+            pageItemsToSubmit: P72_POLL_ID
+        }
+        layout {
+            sequence: 50
+            parentRegion: @invite-community-and-or-individuals
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites c
+                 where poll_id = :P72_POLL_ID
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMMUNITY_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Community/Individual
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITE_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Invited
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NUM_REQUESTS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Invitations
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NUM_RESPONSES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Responses
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region community-members (
+        name: Community Members
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    r.email
+                from
+                    eba_qpoll_respondents r,
+                    EBA_QPOLL_RESP_COMMUNITIES c,
+                    eba_qpoll_resp_comm_ref rc
+                where
+                    c.id = :P72_COMMUNITY_ID
+                and
+                    rc.community_id = c.id
+                and
+                    r.id = rc.respondent_id
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @invite-community-and-or-individuals
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region invite-community-and-or-individuals (
+        name: Invite Community and/or Individuals
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region warning-email-from-address-undefined (
+        name: Warning - EMAIL FROM Address Undefined
+        type: staticContent
+        source {
+            htmlCode: Invitations cannot be sent because the EMAIL FROM address has not been defined.  Please contact an administrator.
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P72_EMAIL_FROM
+        }
+    )
+
+    region warning-poll-in-testing-phase (
+        name: Warning - Poll In Testing Phase
+        type: staticContent
+        source {
+            htmlCode: This poll is in the testing phase.  If an invitee is not a Contributor or Administrator, they will be able to view and take the poll.
+        }
+        layout {
+            sequence: 15
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_qpoll_polls
+                 where id = :P72_POLL_ID
+                   and status_id = 2
+                ```
+        }
+    )
+
+    pageItem P72_COMMUNITY_ID (
+        type: selectList
+        label {
+            label: Community
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @communities-p
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        cascadingLov {
+            parentItems: P72_POLL_ID
+        }
+        layout {
+            sequence: 40
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        advanced {
+            customAttributes: style="width:300px;"
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from EBA_QPOLL_RESP_COMMUNITIES
+        }
+        help {
+            helpText: Select the community of users that you wish to invite to take this poll.
+        }
+    )
+
+    pageItem P72_COMM_INVITE_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P72_COMM_INVITE_ID2 (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P72_EMAIL_FROM (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P72_INVITE_BODY (
+        type: textarea
+        label {
+            label: Email Body
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 8
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select nvl(invite_body,'<p>Please take #POLL_LINK#.</p>
+                '||
+                           case when authentication_req_yn = 'N'
+                                then apex_lang.message('UNAUTH_MSG') end ||
+                '<p>Thanks in advance for your participation!</p>
+                <p>Best Regards,</p>
+                <p>The '||:APPLICATION_TITLE||' Team</p>') default_body
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+        help {
+            helpText: Include html formatted content to be used as the body of the email inviting people to take your poll or quiz.  Make sure you include #POLL_LINK# in your text.  It will be replaced with a link to take the poll and will include the poll name.
+        }
+    )
+
+    pageItem P72_INVITE_METHOD (
+        type: radioGroup
+        label {
+            label: Invite Method
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @invite-method
+            displayNullValue: false
+        }
+        layout {
+            sequence: 80
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: staticValue
+            staticValue: EMAIL
+        }
+        default {
+            type: static
+            staticValue: EMAIL
+        }
+        help {
+            helpText:
+                ```html
+                Use the <strong>Invite Method</strong> method if you wish to send email invitations from this system.
+                Use the <strong>Manual</strong> method if you wish to invite users to take this poll yourself; and not via an email from this system.
+                ```
+        }
+    )
+
+    pageItem P72_INVITE_SUBJECT (
+        type: textField
+        label {
+            label: Email Subject
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 255
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select nvl(invite_subject,'Please Share Your Opinion on ' || POLL_NAME)
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+    )
+
+    pageItem P72_OTHER_INVITEES (
+        type: textarea
+        label {
+            label: Individuals
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 3
+        }
+        validation {
+            maxLength: 4000
+        }
+        help {
+            helpText: You can include individuals, that are not in a community, to take a poll.  You can do this when inviting a community or just invite individuals (without any community).
+        }
+    )
+
+    pageItem P72_OTHER_INVITEES_MSG (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P72_POLL_ID (
+        type: displayOnly
+        label {
+            label: Poll
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sharedComponent
+            lov: @active-and-staged-poles
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: style="width:300px;"
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P72_POLL_NAME (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P72_PREVIEW_URL (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+        }
+        source {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_util.prepare_url( p_url => 'f?p='||:APP_ID||':57:'||:APP_SESSION||'::NO:57:P57_METHOD:INVITE:', 
+                                       p_checksum_type => 'SESSION', 
+                                       p_plain_url => TRUE)
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-community (
+        buttonName: add_community
+        label: Add New Community
+        layout {
+            sequence: 50
+            region: @invite-community-and-or-individuals
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 70
+                clearCache: 70
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button preview (
+        buttonName: PREVIEW
+        label: Preview
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button send (
+        buttonName: SEND
+        label: Invite
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction disable-results-link-when-manual (
+        name: Disable results link when manual
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P72_INVITE_METHOD
+        }
+        clientSideCondition {
+            type: item=value
+            item: P72_INVITE_METHOD
+            value: MANUAL
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: items
+                items: P72_INCLUDE_RESULTS_LINK
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-enable (
+            action: enable
+            affectedElements {
+                selectionType: items
+                items: P72_INCLUDE_RESULTS_LINK
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: N
+            }
+            affectedElements {
+                selectionType: items
+                items: P72_INCLUDE_RESULTS_LINK
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction disable-send-when-no-email-from (
+        name: Disable send when no EMAIL FROM
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P72_EMAIL_FROM
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: button
+                button: @send
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction hide-community-members-report (
+        name: hide Community Members report
+        execution {
+            sequence: 50
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction hide-subject-body-when-manual-invite (
+        name: hide subject/body when manual invite
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P72_INVITE_METHOD
+        }
+        clientSideCondition {
+            type: item=value
+            item: P72_INVITE_METHOD
+            value: EMAIL
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P72_INVITE_SUBJECT
+                    P72_INVITE_BODY
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P72_INVITE_SUBJECT
+                    P72_INVITE_BODY
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction preview-button (
+        name: Preview Button
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @preview
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null; -- to get these items saved
+                itemsToSubmit: [
+                    P72_INVITE_SUBJECT
+                    P72_INVITE_BODY
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: window.open($v('P72_PREVIEW_URL'));
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-community-members-report (
+        name: Show Community Members Report
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P72_COMMUNITY_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P72_COMMUNITY_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P72_COMMUNITY_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @community-members
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    validation application-from-address-is-valid (
+        name: Application From Address is valid
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM') = 'N/A' or instr(eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'),'@example.com') > 0 then
+                    return false;
+                else
+                    return true;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: The "From" address that this application uses to send emails has been improperly configured. It either has not been defined or it is using an invalid domain name (e.g. it ends in "@example.com" when your server's domain name is NOT "example.com"). An application administrator must update the application's FROM address to resolve this problem.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+            type: expression
+            plsqlExpression: :P72_INVITE_METHOD = 'EMAIL'
+        }
+    )
+
+    validation email-body-contains-poll-link (
+        name: Email body contains #POLL_LINK#
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: instr(:P72_INVITE_BODY,'#POLL_LINK#') > 0
+        }
+        error {
+            errorMessage: You must include #POLL_LINK# in your Email Body.
+            associatedItem: @P72_INVITE_BODY
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+            type: item=value
+            item: P72_INVITE_METHOD
+            value: EMAIL
+        }
+    )
+
+    validation p72-community-id-or-other-invitees-not-null (
+        name: P72_COMMUNITY_ID or other_invitees not null
+        execution {
+            sequence: 5
+        }
+        validation {
+            language: sql
+            sqlExpression:
+                ```sql
+                :P72_COMMUNITY_ID is not null or
+                :P72_OTHER_INVITEES is not null
+                ```
+        }
+        error {
+            errorMessage: You must invite a community, individuals or both.
+            associatedItem: @P72_COMMUNITY_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+    validation subject-not-null (
+        name: subject not null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P72_INVITE_SUBJECT
+        }
+        error {
+            errorMessage: You must provide a subject for your email invitations.
+            associatedItem: @P72_INVITE_SUBJECT
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+            type: item=value
+            item: P72_INVITE_METHOD
+            value: EMAIL
+        }
+    )
+
+    computation p72-email-from (
+        itemName: P72_EMAIL_FROM
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM')
+        }
+    )
+
+    computation p72-poll-name (
+        itemName: P72_POLL_NAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select
+                    poll_name
+                from
+                    eba_qpoll_polls
+                where
+                    id = :P72_POLL_ID;
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P72_POLL_ID
+        }
+    )
+
+    process load-other-invitees (
+        name: Load other invitees
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_validate_emails  varchar2(1);
+                    l_line             varchar2(32767);
+                    l_emails           wwv_flow_global.vc_arr2;
+                    l_email            varchar2(4000);
+                    l_at               number;
+                    l_dot              number;
+                    l_valid            boolean := true;
+                    l_domain           varchar2(4000);
+                begin
+                
+                    if eba_qpoll_fw.get_preference_value('USERNAME_FORMAT') = 'EMAIL' then 
+                       l_validate_emails := 'Y';
+                    else
+                       l_validate_emails := 'N';
+                    end if;
+                    
+                    ---------------------
+                    -- create collections
+                    --
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_INVITEES_INVALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_QPOLL_INVITEES_VALID');
+                 
+                    --------------------------------------------
+                    -- replace delimiting characters with commas
+                    --
+                    l_line := :P72_OTHER_INVITEES;
+                    l_line := replace(l_line,chr(10),' ');
+                    l_line := replace(l_line,chr(13),' ');
+                    l_line := replace(l_line,chr(9),' ');
+                    l_line := replace(l_line,'<',' ');
+                    l_line := replace(l_line,'>',' ');
+                    l_line := replace(l_line,';',' ');
+                    l_line := replace(l_line,':',' ');
+                    l_line := replace(l_line,'(',' ');
+                    l_line := replace(l_line,')',' ');
+                    l_line := replace(l_line,' ',',');
+                
+                    -----------------------------------------
+                    -- get one comma separated line of emails
+                    --
+                    for j in 1..1000 loop
+                        if instr(l_line,',,') > 0 then
+                           l_line := replace(l_line,',,',',');
+                        else
+                           exit;
+                        end if;
+                    end loop;
+                
+                    -------------------------
+                    -- get an array of emails
+                    --
+                    l_emails := wwv_flow_utilities.string_to_table(l_line,',');
+                
+                    -----------------------------
+                    -- add emails to a collection
+                    --
+                    l_email := null;
+                    l_domain := null;
+                    l_at := 0;
+                    l_dot := 0;
+                    for j in 1..l_emails.count loop
+                        l_valid := true;
+                        l_email := trim(l_emails(j));
+                        l_email := replace(l_email,chr(49824),null);
+                
+                        if l_email is not null then
+                            if l_validate_emails = 'Y' then
+                               -----------
+                               -- Validate
+                               --
+                               l_at := instr(nvl(l_email,'x'),'@');
+                               l_domain := substr(l_email,l_at+1);
+                               l_dot := instr(l_domain,'.');
+                               if l_at < 2 then
+                                   apex_collection.add_member(
+                                       p_collection_name => 'EBA_QPOLL_INVITEES_INVALID',
+                                       p_c001            => l_email,
+                                       p_c002            => 'INVALID EMAIL');
+                                   commit;
+                                   l_valid := false;
+                               end if;
+                
+                               if l_dot = 0 and l_valid then
+                                   apex_collection.add_member(
+                                       p_collection_name => 'EBA_QPOLL_INVITEES_INVALID',
+                                       p_c001            => l_email,
+                                       p_c002            => 'INVALID EMAIL');
+                                   commit;
+                                   l_valid := false;
+                               end if;
+                            end if;
+                
+                            l_email := trim(l_email);
+                            l_email := trim(both '.' from l_email);
+                            l_email := replace(l_email,' ',null);
+                            l_email := replace(l_email,chr(10),null);
+                            l_email := replace(l_email,chr(9),null);
+                            l_email := replace(l_email,chr(13),null);
+                            l_email := replace(l_email,chr(49824),null);
+                
+                            if l_valid and length(l_email) > 255 then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_INVITEES_INVALID',
+                                    p_c001            => upper(l_email),
+                                    p_c002            => 'NAME TOO LONG');
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEXeaf772 */  c001
+                                             from wwv_flow_collections
+                                            where collection_name = 'EBA_QPOLL_INVITEES_VALID'
+                                              and c001 = upper(l_email))
+                                loop
+                                    apex_collection.add_member(
+                                        p_collection_name => 'EBA_QPOLL_INVITEES_INVALID',
+                                        p_c001            => upper(l_email),
+                                        p_c002            => 'DUPLICATE USER');
+                                        commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEXeaf772 */  1
+                                             from eba_qpoll_invites i,
+                                                  eba_qpoll_comm_invites ci
+                                            where i.comm_invite_id = ci.id
+                                              and upper(i.respondent_email) = upper(l_email)
+                                              and ci.poll_id = :P72_POLL_ID )
+                                loop
+                                    apex_collection.add_member(
+                                        p_collection_name => 'EBA_QPOLL_INVITEES_INVALID',
+                                        p_c001            => upper(l_email),
+                                        p_c002            => 'ALREADY INVITED');
+                                        commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_QPOLL_INVITEES_VALID',
+                                    p_c001            => lower(l_email));
+                                    commit;
+                            end if;
+                
+                        end if;
+                        l_email := null;
+                    end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 5
+            point: afterSubmit
+        }
+        advanced {
+            executionMappingIdentifier: 14033587284935327822
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+            type: itemIsNotNull
+            item: P72_OTHER_INVITEES
+        }
+    )
+
+    process record-and-send-invitations (
+        name: Record and Send Invitations
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_comm_invite_id   number;
+                   l_page_link        number := 50;
+                   l_invited_yn       varchar2(1);
+                   l_opted_out_yn     varchar2(1);
+                   l_email_id         number;
+                   l_poll_url         varchar2(4000);
+                   l_body             clob;
+                
+                   l_cnt_ind_already_invited  number := 0;
+                   l_respondent_id    number;
+                   l_comm_invite_id2  number;
+                   l_msg              varchar2(4000);
+                begin
+                
+                -- save new defaults
+                if nvl(:P72_INVITE_METHOD,'EMAIL') = 'EMAIL' then
+                   update eba_qpoll_polls
+                      set invite_subject = :P72_INVITE_SUBJECT,
+                          invite_body = :P72_INVITE_BODY
+                    where id = :POLL_ID;
+                   commit;
+                end if;
+                
+                
+                for c1 in (
+                   select authentication_req_yn
+                     from eba_qpoll_polls
+                    where id = :P72_POLL_ID
+                ) loop
+                   if c1.authentication_req_yn = 'Y' then
+                      l_page_link := 500;
+                   else
+                      l_page_link := 50;
+                   end if;
+                end loop;
+                
+                if :P72_COMMUNITY_ID is not null then
+                   for c1 in (
+                      select name
+                        from eba_qpoll_resp_communities
+                       where id = :P72_COMMUNITY_ID
+                   ) loop
+                      insert into eba_qpoll_comm_invites
+                         (poll_id, community_id, community_name, invite_method)
+                      values
+                         (:P72_POLL_ID, :P72_COMMUNITY_ID, c1.name, :P72_INVITE_METHOD)
+                      returning id into l_comm_invite_id;
+                     :P72_COMM_INVITE_ID := l_comm_invite_id;
+                   end loop;
+                
+                   for c1 in (
+                      select r.id as respondent_id,
+                             r.name,
+                             r.email
+                        from eba_qpoll_respondents r,
+                             eba_qpoll_resp_communities c,
+                             eba_qpoll_resp_comm_ref rc
+                       where c.id = :P72_COMMUNITY_ID
+                         and rc.community_id = c.id
+                         and r.id = rc.respondent_id
+                   ) loop
+                
+                      l_invited_yn    := 'N';
+                      l_opted_out_yn  := 'N';
+                
+                      -- check if already invited to take this poll
+                      for c2 in (
+                         select 1
+                           from eba_qpoll_comm_invites ci,
+                                eba_qpoll_invites i
+                          where ci.poll_id = :P72_POLL_ID
+                            and ci.id = i.comm_invite_id
+                            and i.respondent_id = c1.respondent_id
+                      ) loop
+                          l_invited_yn := 'Y';
+                      end loop;
+                
+                      if l_invited_yn = 'N' and nvl(:P72_INVITE_METHOD,'EMAIL') = 'EMAIL' then
+                         -- check if opted out of email
+                         for c2 in (
+                            select 1
+                              from eba_qpoll_email_opt_out
+                             where respondent_id = c1.respondent_id
+                         ) loop
+                            l_opted_out_yn := 'Y';
+                         end loop;
+                      end if;
+                
+                      if l_invited_yn = 'N' and l_opted_out_yn = 'N' and
+                         nvl(:P72_INVITE_METHOD,'EMAIL') = 'EMAIL' then
+                
+                         l_poll_url := '<a href="'|| :APP_PATH ||
+                                               APEX_UTIL.PREPARE_URL(p_url => 'f?p='||:APP_ID||':'||l_page_link||':::::LPOLL_ID,PID:' ||
+                                                                               :P72_POLL_ID||','||c1.respondent_id,
+                                                                     p_checksum_type => '1',
+                                                                     p_plain_url => TRUE)||'">' || :POLL_NAME || '</a>'; -- :POLL_NAME is stored as an escaped value (no need to over-escape it)
+                                                                     
+                        l_body := replace(:P72_INVITE_BODY,'#POLL_LINK#',l_poll_url);
+                        
+                         eba_qpoll_email.send (
+                            p_app_id             => :APP_ID,
+                            p_template_static_id => 'INVITE',
+                            p_placeholders       => '{' || 
+                                                    '    "SUBJECT":'           || apex_json.stringify( :P72_INVITE_SUBJECT ) || 
+                                                    '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                                    '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                                       :APP_PATH ||
+                                                                                                        APEX_UTIL.PREPARE_URL(p_url => 'f?p=' ||:APP_ID || ':optout',
+                                                                                                            p_plain_url => TRUE),
+                                                                                                       apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                                    '   ,"BODY":'  || apex_json.stringify( l_body ) || 
+                                                    '}' , 
+                            p_to                  => c1.email,
+                            p_from                => eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'),
+                            p_cc                  => null,
+                            p_poll_id             => :P72_POLL_ID,
+                            p_community_id        => :P72_COMMUNITY_ID,
+                            p_respondent_id       => c1.respondent_id,
+                            p_email_id            => l_email_id);
+                
+                      end if;
+                
+                      if l_invited_yn = 'N' then
+                         insert into eba_qpoll_invites
+                            (comm_invite_id, respondent_id, respondent_email, 
+                             email_sent, email_id)
+                         values
+                            (l_comm_invite_id, c1.respondent_id, lower(c1.email),
+                             case when :P72_INVITE_METHOD = 'MANUAL' then 'MANUAL_INVITE'
+                                  when l_invited_yn = 'Y' then 'PREVIOUSLY_SENT'
+                                  when l_opted_out_yn = 'Y' then 'OPTED_OUT'
+                                  else 'YES' end, 
+                             l_email_id );
+                      end if;
+                   end loop;
+                
+                end if;
+                
+                if :P72_OTHER_INVITEES is not null then
+                    for c in (
+                        select c001 as respondent
+                          from apex_collections
+                         where collection_name = 'EBA_QPOLL_INVITEES_VALID'
+                    ) loop
+                
+                      begin
+                         select r.id
+                           into l_respondent_id
+                           from eba_qpoll_respondents r
+                          where lower(r.email) = c.respondent;
+                      exception
+                        when no_data_found then
+                             l_respondent_id := null;
+                     end;
+                
+                     if l_respondent_id is null then
+                        insert into eba_qpoll_respondents
+                           (email)
+                        values
+                           (c.respondent)
+                        returning id into l_respondent_id;
+                     end if;
+                
+                      l_invited_yn    := 'N';
+                      l_opted_out_yn  := 'N';
+                
+                      -- check if already invited to take this poll
+                      for c2 in (
+                         select 1
+                           from eba_qpoll_comm_invites ci,
+                                eba_qpoll_invites i
+                          where ci.poll_id = :P72_POLL_ID
+                            and ci.id = i.comm_invite_id
+                            and i.respondent_id = l_respondent_id
+                      ) loop
+                          l_invited_yn := 'Y';
+                          l_cnt_ind_already_invited := l_cnt_ind_already_invited + 1;
+                      end loop;
+                
+                      if l_invited_yn = 'N' and nvl(:P72_INVITE_METHOD,'EMAIL') = 'EMAIL' then
+                         -- check if opted out of email
+                         for c2 in (
+                            select 1
+                              from eba_qpoll_email_opt_out
+                             where respondent_id = l_respondent_id
+                         ) loop
+                            l_opted_out_yn := 'Y';
+                         end loop;
+                      end if;
+                
+                      if l_invited_yn = 'N' and l_opted_out_yn = 'N' and
+                         nvl(:P72_INVITE_METHOD,'EMAIL') = 'EMAIL' then
+                
+                         l_poll_url := '<a href="'|| :APP_PATH ||
+                                               APEX_UTIL.PREPARE_URL(p_url => 'f?p=' || :APP_ID || ':' || l_page_link || ':::::LPOLL_ID,PID:' || :P72_POLL_ID || ',' || l_respondent_id,
+                                                                     p_checksum_type => '1',
+                                                                     p_plain_url => TRUE) || '">' || :POLL_NAME || '</a>';  -- :POLL_NAME is stored as an escaped value (no need to over-escape it)
+                                                                     
+                        l_body := replace(:P72_INVITE_BODY, '#POLL_LINK#', l_poll_url);
+                        
+                         eba_qpoll_email.send (
+                            p_app_id             => :APP_ID,
+                            p_template_static_id => 'INVITE',
+                            p_placeholders       => '{' || 
+                                                    '    "SUBJECT":'           || apex_json.stringify( :P72_INVITE_SUBJECT ) || 
+                                                    '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                                    '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                 :APP_PATH ||
+                                                                                 APEX_UTIL.PREPARE_URL(p_url => 'f?p=' ||:APP_ID || ':optout',
+                                                                                                       p_plain_url => TRUE),
+                                                                                 apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                                    '   ,"BODY":'  || apex_json.stringify( l_body ) || 
+                                                    '}' , 
+                            p_to                  => c.respondent,
+                            p_from                => :P72_EMAIL_FROM,
+                            p_cc                  => null,
+                            p_poll_id             => :P72_POLL_ID,
+                            p_respondent_id       => l_respondent_id,
+                            p_email_id            => l_email_id );
+                        
+                      end if;
+                
+                      if l_invited_yn = 'N' then
+                         if l_comm_invite_id2 is null then
+                            insert into eba_qpoll_comm_invites
+                               (poll_id, invite_method)
+                            values
+                               (:P72_POLL_ID, :P72_INVITE_METHOD)
+                            returning id into l_comm_invite_id2;
+                            :P72_COMM_INVITE_ID2 := l_comm_invite_id2;
+                         end if;
+                
+                         insert into eba_qpoll_invites
+                            (comm_invite_id, respondent_id, respondent_email, 
+                             email_sent, email_id)
+                         values
+                            (l_comm_invite_id2, l_respondent_id, lower(c.respondent),
+                             case when :P72_INVITE_METHOD = 'MANUAL' then 'MANUAL_INVITE'
+                                  when l_invited_yn = 'Y' then 'PREVIOUSLY_SENT'
+                                  when l_opted_out_yn = 'Y' then 'OPTED_OUT'
+                                  else 'YES' end, 
+                             l_email_id);
+                      end if;
+                
+                     l_respondent_id := null;
+                
+                   end loop;
+                
+                   for c1 in (
+                      select count(*) cnt
+                        from wwv_flow_collections
+                       where collection_name = 'EBA_QPOLL_INVITEES_INVALID'
+                         and c002 = 'INVALID EMAIL'
+                   ) loop
+                      if c1.cnt != 0 then
+                         l_msg := c1.cnt || ' invalid emails, ';
+                      end if;
+                   end loop;
+                
+                   for c1 in (
+                      select count(*) cnt
+                        from wwv_flow_collections
+                       where collection_name = 'EBA_QPOLL_INVITEES_INVALID'
+                         and c002 = 'DUPLICATE USER'
+                   ) loop
+                      if c1.cnt != 0 then
+                         l_msg := l_msg || c1.cnt || ' duplicate users, ';
+                      end if;
+                   end loop;
+                
+                   for c1 in (
+                      select count(*) cnt
+                        from wwv_flow_collections
+                       where collection_name = 'EBA_QPOLL_INVITEES_INVALID'
+                         and c002 = 'ALREADY INVITED'
+                   ) loop
+                      if c1.cnt != 0 or l_cnt_ind_already_invited != 0 then
+                         l_msg := l_msg || c1.cnt + l_cnt_ind_already_invited || ' already invited, ';
+                      end if;
+                   end loop;
+                   
+                   for c1 in (
+                      select count(*) cnt
+                        from wwv_flow_collections
+                       where collection_name = 'EBA_QPOLL_INVITEES_INVALID'
+                         and c002 = 'NAME TOO LONG'
+                   ) loop
+                      if c1.cnt != 0 then
+                         l_msg := l_msg || c1.cnt || ' names too long, ';
+                      end if;
+                   end loop;
+                
+                   if l_msg is not null then
+                      l_msg := rtrim(l_msg,', ');
+                      :P72_OTHER_INVITEES_MSG := '<strong>Individual Invitations</strong>: ' || l_msg;
+                   end if;
+                
+                   ---------------------
+                   -- delete collections
+                   --
+                   wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_INVITEES_INVALID');
+                   wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_INVITEES_VALID');
+                
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 13923600894347807148
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+        }
+    )
+
+    branch (
+        name: if email
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 23
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+            type: item=value
+            item: P72_INVITE_METHOD
+            value: EMAIL
+        }
+    )
+
+    branch (
+        name: if manual
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 36
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @send
+            type: item=value
+            item: P72_INVITE_METHOD
+            value: MANUAL
+        }
+    )
+
+)
+

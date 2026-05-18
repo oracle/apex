@@ -1,0 +1,44 @@
+appProcess set-globals (
+    name: set globals
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            select count(*) into :STORES from oow_demo_stores;
+            
+            select count(*) into :PRODUCTS from oow_demo_items;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: afterHeader
+    }
+)
+
+appProcess trim-all-page-items (
+    name: Trim All Page Items
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            begin
+                for c1 in (select item_name
+                           from apex_application_page_items
+                           where application_id = :APP_ID
+                               and page_id = :APP_PAGE_ID
+                               and display_as_code in ('NATIVE_TEXT_FIELD',
+                                                       'NATIVE_TEXTAREA',
+                                                       'NATIVE_NUMBER_FIELD') ) loop
+                    apex_util.set_session_state( c1.item_name,
+                       rtrim( ltrim( apex_util.get_session_state( c1.item_name ) ) )
+                    );
+                end loop;
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: afterSubmit
+    }
+)
+

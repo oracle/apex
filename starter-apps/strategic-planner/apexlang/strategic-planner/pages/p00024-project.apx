@@ -1,0 +1,1439 @@
+page 24 (
+    name: Project
+    alias: PROJECT
+    title: &NOMENCLATURE_PROJECT.
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region advanced (
+        name: Advanced
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @project
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region project (
+        name: Project
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_PROJECTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P24_CLOSE_DIALOG (
+        type: hidden
+        layout {
+            sequence: 250
+            region: @project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_DEF_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 230
+            region: @project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_DESCRIPTION (
+        type: richTextEditor
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+            allowCustomHtml: true
+        }
+        layout {
+            sequence: 180
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @project
+            column: DESCRIPTION
+            dataType: clob
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P24_ID
+        }
+    )
+
+    pageItem P24_DISPLAY_EXTERNAL_LINK_YN (
+        type: switch
+        label {
+            label: Display External Link
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @project
+            column: DISPLAY_EXTERNAL_LINK_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    pageItem P24_DOC_IMPACT_YN (
+        type: switch
+        label {
+            label: Doc Impact
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @project
+            column: DOC_IMPACT_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: Indicates if a &NOMENCLATURE_PROJECT. impacts documentation.
+        }
+    )
+
+    pageItem P24_FOCUS_AREA_ID (
+        type: selectOne
+        label {
+            label: Focus Area
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select focus_area, id
+                  from sp_initiative_focus_areas
+                 where initiative_id = :P24_INITIATIVE_ID
+                   and (active_yn = 'Y' or id = :P24_FOCUS_AREA_ID)
+                 order by 1
+                ```
+        }
+        cascadingLov {
+            parentItems: P24_INITIATIVE_ID
+        }
+        layout {
+            sequence: 130
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @project
+            column: FOCUS_AREA_ID
+            dataType: number
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_focus_areas
+                 where initiative_id = :P24_INITIATIVE_ID
+                   and (active_yn = 'Y' or id = :P24_FOCUS_AREA_ID)
+                ```
+        }
+    )
+
+    pageItem P24_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @project
+            slot: regionBody
+        }
+        source {
+            formRegion: @project
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_INITIATIVE_ID (
+        type: selectOne
+        label {
+            label: &NOMENCLATURE_INITIATIVE.
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.initiative area_initiative,
+                       i.id initiative_id
+                from sp_initiatives i, sp_areas a
+                where i.area_id = a.id
+                order by upper(i.initiative)
+                ```
+        }
+        layout {
+            sequence: 30
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @project
+            column: INITIATIVE_ID
+            dataType: number
+        }
+    )
+
+    pageItem P24_LINK (
+        type: textField
+        label {
+            label: URL
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P24_ID
+        }
+    )
+
+    pageItem P24_LINK_NAME (
+        type: textField
+        label {
+            label: Link Name
+            alignment: left
+        }
+        layout {
+            sequence: 220
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P24_ID
+        }
+    )
+
+    pageItem P24_MIN_PC_FOR_STATUS (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P24_OLD_OWNER_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @project
+            slot: regionBody
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select owner_id from sp_projects
+                 where id = :P24_ID
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_OWNER_ID (
+        type: selectOne
+        label {
+            label: Owner
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-members
+        }
+        layout {
+            sequence: 50
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @project
+            column: OWNER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P24_PCT_COMPLETE (
+        type: selectList
+        label {
+            label: Completeness
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select pc0_label ||' - 0%' d,
+                       0 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc10_label ||' - 10%' d,
+                       10 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc20_label ||' - 20%' d,
+                       20 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc30_label ||' - 30%' d,
+                       30 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc40_label ||' - 40%' d,
+                       40 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc50_label ||' - 50%' d,
+                       50 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc60_label ||' - 60%' d,
+                       60 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc70_label ||' - 70%' d,
+                       70 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc80_label ||' - 80%' d,
+                       80 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc90_label ||' - 90%' d,
+                       90 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                union all
+                select pc100_label ||' - 100%' d,
+                       100 r
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = nvl(:P24_STATUS_SCALE,'A')
+                order by r
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @project
+            column: PCT_COMPLETE
+            dataType: number
+        }
+        default {
+            type: static
+            staticValue: 10
+        }
+    )
+
+    pageItem P24_PRIORITY_ID (
+        type: selectList
+        label {
+            label: Priority
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select description, id
+                from sp_project_priorities
+                order by priority
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 80
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @project
+            column: PRIORITY_ID
+            dataType: number
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select max(id) r
+                from SP_PROJECT_PRIORITIES
+                where IS_DEFAULT_YN = 'Y'
+                ```
+        }
+    )
+
+    pageItem P24_PROJECT (
+        type: textField
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @project
+            column: PROJECT
+            dataType: varchar2
+        }
+    )
+
+    pageItem P24_PROJECT_GROUP_ID (
+        type: selectOne
+        label {
+            label: &NOMENCLATURE_PROJECT.  Group
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select group_name, id 
+                from sp_project_groups
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 130
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @project
+            column: PROJECT_GROUP_ID
+            dataType: number
+        }
+        help {
+            helpText: &NOMENCLATURE_PROJECT. Groups allow you to categorize &NOMENCLATURE_PROJECTS. across &NOMENCLATURE_INITIATIVES..
+        }
+        config {
+            buildOption: @project-groups
+        }
+    )
+
+    pageItem P24_PROJECT_SIZE (
+        type: radioGroup
+        label {
+            label: Size
+            alignment: left
+        }
+        settings {
+            noOfCols: 8
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select project_size d, project_size r 
+                from sp_project_sizes ps
+                where include_yn = 'Y'
+                order by EFFORT_DAYS
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 70
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            formRegion: @project
+            column: PROJECT_SIZE
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: M
+        }
+        help {
+            helpText: &P24_SIZE_HELP_TEXT!RAW.
+        }
+    )
+
+    pageItem P24_RECENT_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 200
+            region: @project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_RECENT_INITIATIVE_NAME (
+        type: hidden
+        layout {
+            sequence: 190
+            region: @project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_RELEASE_ID (
+        type: selectOne
+        label {
+            label: Release
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @releases
+        }
+        layout {
+            sequence: 120
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @project
+            column: RELEASE_ID
+            dataType: number
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    pageItem P24_REQUIRES_REVIEWS_YN (
+        type: switch
+        label {
+            label: Requires Reviews
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            formRegion: @project
+            column: REQUIRES_REVIEWS_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Indicates if a &NOMENCLATURE_PROJECT. requires reviews.  If yes, the &NOMENCLATURE_PROJECT. will be flagged in exception reports if there are no reviewers assigned.
+        }
+        config {
+            buildOption: @reviews
+        }
+    )
+
+    pageItem P24_SIZE_HELP_TEXT (
+        type: hidden
+        layout {
+            sequence: 240
+            region: @project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P24_STATUS_ID (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d, r   
+                  from
+                (
+                select status d, id r, display_seq
+                  from sp_project_statuses
+                 where include_yn = 'Y'
+                    or id = :P24_STATUS_ID
+                union all
+                select 'Not Set' d, null r, 0 display_seq
+                  from dual
+                 where :P24_ID is null
+                    or exists (select 1 from sp_projects
+                                where id = :P24_ID
+                                  and status_id is null)
+                )
+                  order by display_seq
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 100
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @project
+            column: STATUS_ID
+            dataType: number
+        }
+        default {
+            type: static
+            staticValue: 10
+        }
+    )
+
+    pageItem P24_STATUS_SCALE (
+        type: radioGroup
+        label {
+            label: Status Scale
+            alignment: left
+        }
+        settings {
+            noOfCols: 5
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select scale_name, scale_letter
+                from sp_project_scales
+                where is_active_yn = 'Y'
+                order by scale_letter
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            formRegion: @project
+            column: STATUS_SCALE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P24_TAGS (
+        type: combobox
+        label {
+            label: Tags
+            alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+            maxValuesInList: 20
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select tag d from SP_DEFAULT_TAGS order by display_sequence, tag
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
+        }
+        layout {
+            sequence: 170
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @project
+            column: TAGS
+            dataType: varchar2
+        }
+        comments {
+            comments: Enter comma separated tags.  Note any spaces will be replaced with a dash "-".
+        }
+    )
+
+    pageItem P24_TARGET_COMPLETE (
+        type: datePicker
+        label {
+            label: Target Complete
+            alignment: left
+        }
+        settings {
+            multipleMonths: 2
+        }
+        layout {
+            sequence: 110
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @project
+            column: TARGET_COMPLETE
+            dataType: date
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P24_ID
+        }
+    )
+
+    button previous (
+        buttonName: Previous
+        label: Previous
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 104
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P24_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P24_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction change-pct-complete-show-hide-status (
+        name: change pct complete (show/hide status)
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P24_PCT_COMPLETE
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P24_STATUS_ID
+            }
+            execution {
+                sequence: 40
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: Number(apex.item("P24_PCT_COMPLETE").getValue()) < Number(apex.item("P24_MIN_PC_FOR_STATUS").getValue())
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P24_STATUS_ID
+            }
+            execution {
+                sequence: 50
+            }
+            clientSideCondition {
+                type: item=value
+                item: P24_PCT_COMPLETE
+                value: 100
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P24_STATUS_ID
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: Number(apex.item("P24_PCT_COMPLETE").getValue()) >= Number(apex.item("P24_MIN_PC_FOR_STATUS").getValue())
+            }
+        )
+
+    )
+
+    validation link (
+        name: Link
+        execution {
+            sequence: 50
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                (:P24_LINK is not null and :P24_LINK_NAME is not null) or 
+                (:P24_LINK is null and :P24_LINK_NAME is null)
+                ```
+        }
+        error {
+            errorMessage: To add a link you must provide the link url and name.
+            associatedItem: @P24_LINK
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    validation target-complete-mandatory-when-50-complete (
+        name: target_complete mandatory when >=50% complete
+        execution {
+            sequence: 60
+        }
+        validation {
+            type: itemIsNotNull
+            item: P24_TARGET_COMPLETE
+        }
+        error {
+            errorMessage: Must provide Target Complete when 50% complete or higher.
+            associatedItem: @P24_TARGET_COMPLETE
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P24_PCT_COMPLETE >= 50
+        }
+    )
+
+    computation p24-requires-reviews-yn (
+        itemName: P24_REQUIRES_REVIEWS_YN
+        execution {
+            sequence: 40
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+        }
+        error {
+            errorMessage: N
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P24_REQUIRES_REVIEWS_YN
+        }
+    )
+
+    computation p24-size-help-text (
+        itemName: P24_SIZE_HELP_TEXT
+        execution {
+            sequence: 10
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare 
+                  x varchar2(500) := null;
+                begin
+                  for c1 in (
+                     select PROJECT_SIZE, SIZE_DESCRIPTION, EFFORT_DAYS
+                     from   SP_PROJECT_SIZES ps
+                     where  include_yn = 'Y'
+                     order by 3) loop
+                     x := x||apex_escape.html(c1.project_size||': '||c1.SIZE_DESCRIPTION||' ( '||to_char(c1.EFFORT_DAYS,'FM999G999G990')||' days )')||'<br>';
+                  end loop;
+                  return x;
+                end;
+                ```
+        }
+    )
+
+    process add-link (
+        name: add link
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P24_LINK is not null then
+                    sp_util.add_project_link (
+                        p_project_id   => :P24_ID,
+                        p_link_url     => :P24_LINK,
+                        p_link_name    => :P24_LINK_NAME );
+                end if;
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 10828857016945922218
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+            type: itemIsNotNull
+            item: P24_LINK
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 139365438137421516317
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process default-scale-letter-and-min-pc-for-status (
+        name: default scale_letter and min_pc_for_status
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select status_scale
+                      from sp_initiatives
+                     where id = :P24_INITIATIVE_ID
+                ) loop
+                    :P24_STATUS_SCALE := c1.status_scale;
+                end loop;
+                
+                for c1 in (
+                    select min_pc_for_status
+                      from sp_project_scales
+                     where scale_letter = :P24_STATUS_SCALE
+                ) loop
+                    :P24_MIN_PC_FOR_STATUS := c1.min_pc_for_status;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 5476375039551247612
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P24_INITIATIVE_ID
+        }
+    )
+
+    process default-tasks (
+        name: default tasks
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.default_project_tasks (
+                    p_project_id   => :P24_ID);
+                
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 18278020077683280028
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process initialize-form-project (
+        name: Initialize form Project
+        type: formInitialization
+        formRegion: @project
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 139365437397259516316
+        }
+    )
+
+    process log (
+        name: log
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_log.log_interaction(
+                    p_project_id => :P24_ID);
+                ```
+        }
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 11977826633082668615
+        }
+    )
+
+    process process-form-project (
+        name: Process form Project
+        type: formAutoRowProcessing
+        formRegion: @project
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 139365437738336516317
+        }
+    )
+
+    process send-notification (
+        name: send notification
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_project_link  varchar2(4000);
+                begin
+                
+                for c1 in (
+                    select apex_escape.html(project) project, friendly_identifier fi,
+                           target_complete, apex_escape.html(project_size) project_size, apex_escape.html(tags) tags,
+                           case when release_id is not null
+                                then apex_escape.html((select release_train ||' ' || release
+                                                         from sp_release_trains
+                                                        where id = p.release_id))
+                                end release,
+                           (select apex_escape.html(first_name)
+                              from sp_team_members
+                             where id = :P24_OWNER_ID) first_name
+                      from sp_projects p
+                     where id = :P24_ID
+                ) loop
+                    l_project_link := sp_util.get_setting(p_static_id => 'APP_PREFIX_URL')||
+                                      apex_page.get_url (
+                                          p_application    => :APP_ID,
+                                          p_page           => 'project-details',
+                                          p_session        => null,
+                                          p_items          => 'fi',
+                                          p_values         => c1.fi,
+                                          p_plain_url      => TRUE );
+                
+                    sp_util.assignment_notification (
+                        p_team_member_id => :P24_OWNER_ID,
+                        p_app_name       => :NOMENCLATURE_STRATEGIC_PLANNER,
+                        p_app_id         => :APP_ID,
+                        p_title          => 'You are now the owner of '||c1.project,
+                        p_project_id     => :P24_ID,
+                        p_link           => l_project_link,
+                        p_view_what      => :NOMENCLATURE_PROJECT,
+                        p_email_contents => 'Hi '||c1.first_name||'<br/><br/>'||
+                                            'You have been set as the owner of the following '||:NOMENCLATURE_PROJECT||':<br/><br/>'||
+                                            :NOMENCLATURE_PROJECT||': <a  style="font-weight:bold" href="'||l_project_link||'">'||c1.project||'</a><br/>'||
+                                            'Assigned by: '||lower(apex_escape.html(:APP_USER))||'<br/>'||
+                                            'Assigned on: '||to_char(sysdate,'DD-MON-YYYY')||'<br/>'||
+                                            case when c1.release is not null 
+                                                 then 'Release: '||c1.release||'<br/>'
+                                                 end ||
+                                            case when c1.target_complete is not null 
+                                                 then 'Target Complete: '||to_char(c1.target_complete,'DD-MON-YYYY')||'<br/>'
+                                                 end ||
+                                            case when c1.project_size is not null 
+                                                 then 'Size: '||c1.project_size||'<br/>'
+                                                 end ||
+                                            case when c1.tags is not null 
+                                                 then 'Tags: '||c1.tags
+                                                 end,
+                        p_notification_type => 'OWNER' );
+                end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 3394094041415724047
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from dual
+                 where (:P24_ID is null and :P24_OWNER_ID is not null and :P24_OWNER_ID != :APP_USER_ID) 
+                    or (:P24_OWNER_ID is not null and :P24_OWNER_ID != :APP_USER_ID and :P24_OWNER_ID != nvl(:P24_OLD_OWNER_ID,'1') )
+                ```
+        }
+    )
+
+)
+

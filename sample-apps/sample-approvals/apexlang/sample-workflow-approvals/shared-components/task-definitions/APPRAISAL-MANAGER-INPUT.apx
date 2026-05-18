@@ -1,0 +1,43 @@
+taskDefinition APPRAISAL_MANAGER_INPUT (
+    name: Appraisal - Manager Input
+    type: action
+    task {
+        subject: Evaluate &ENAME.
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select e.ename
+            from eba_demo_appr_appraisals a
+            left join eba_demo_appr_emp e on e.empno = a.empno
+            where a.id = :APEX$TASK_PK
+            ```
+    }
+    advanced {
+        detailsPage: {
+            page: 17
+            items: {
+                P17_TASK_ID: &TASK_ID.
+            }
+            clearCache: 17
+            action: resetPagination
+        }
+    }
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: eba_demo_appr.get_appraisal_manager(:APEX$TASK_PK)
+        }
+    )
+
+)
+

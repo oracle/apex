@@ -1,0 +1,122 @@
+page 1114 (
+    name: Login Page Template
+    alias: LOGIN-PAGE-TEMPLATE
+    title: Login Page Template - &APP_TITLE.
+    appearance {
+        pageTemplate: @/login
+        templateOptions: [
+            #DEFAULT#
+            t-LoginPage--bg3
+        ]
+    }
+    navigationMenu {
+        overrideUserInterfaceLevel: true
+        list: @ut-sample-navigation-menu
+        listPosition: top
+        listTemplate: @/top-navigation-menu
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region login-region (
+        name: Login Region
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/login
+            templateOptions: #DEFAULT#
+            icon: app-sample-universal-theme
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P1114_PASSWORD (
+        type: password
+        label {
+            label: Password
+            alignment: left
+        }
+        settings {
+            submitWhenEnterPressed: false
+        }
+        layout {
+            sequence: 20
+            region: @login-region
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-key
+            width: 30
+            valuePlaceholder: password
+        }
+        advanced {
+            cssClasses: icon-login-password
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    pageItem P1114_USER (
+        type: textField
+        label {
+            label: User Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @login-region
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-user
+            width: 30
+            valuePlaceholder: username
+        }
+    )
+
+    button p1114-login (
+        buttonName: P1114_LOGIN
+        label: Log In
+        layout {
+            sequence: 10
+            region: @login-region
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+)
+

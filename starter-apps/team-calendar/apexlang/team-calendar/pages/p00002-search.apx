@@ -1,0 +1,929 @@
+page 2 (
+    name: Search
+    alias: SEARCH
+    title: &APPLICATION_TITLE. - Search
+    pageGroup: @public
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: By default this page shows all upcoming events. From this page you can edit any existing event by clicking the <strong>Edit</strong> icon (pencil) next to the event. Click the <strong>Add Event</strong> button to add a new event. Click the <strong>Delete Multiple Events</strong> button to delete multiple events.
+    }
+
+    region breadcrumbs (
+        name: breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--showBreadcrumb
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region events (
+        name: Events
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select e.EVENT_ID
+                ,      e.event_name
+                ,      case when et.display_color is not null then 
+                         '<span style="white-space:nowrap;">' 
+                         || apex_escape.html(et.type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null)) || '</span>'
+                       else 
+                         '<span style="white-space:nowrap;">' 
+                         || apex_escape.html(et.type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null)) || '</span>'
+                       end event_type
+                ,      e.EVENT_DATE_TIME event_date
+                ,      case when e.display_time = 'Y' then 
+                          e.EVENT_DATE_TIME 
+                       else 
+                         null
+                       end event_start_time
+                ,      e.DURATION
+                ,      case when e.duration = 0  then '0 mins'
+                            when e.duration = .25 then '15 mins'
+                            when e.duration = .5 then '30 mins'
+                            when e.duration = .75 then '45 mins'
+                            when e.duration = 1 then '1 hr'
+                            when e.duration > 1 then to_char(trunc(e.duration)) || ' hrs'
+                              || case when e.duration - trunc(e.duration) = 0  then ''
+                                      when e.duration - trunc(e.duration) = .25 then ' 15 mins'
+                                      when e.duration - trunc(e.duration) = .5 then ' 30 mins'
+                                      when e.duration - trunc(e.duration) = .75 then ' 45 mins'
+                                 end
+                            end disp_duration
+                ,      e.EVENT_DESC
+                ,      e.CONTACT_PERSON
+                ,      e.location
+                ,      case when e.link_url_1 is not null or
+                                 e.link_url_2 is not null or
+                                 e.link_url_3 is not null 
+                            then 'Y'
+                            else null
+                            end links
+                ,      decode(decode(e.series_id, null, null, 'Y'),'Y','Yes','N','No',decode(e.series_id, null, null, 'Y')) recur_flag
+                ,      eba_ca_api.get_timeframes(e.event_id) timeframes
+                ,      e.CREATED_ON
+                ,      lower(e.CREATED_BY) created_by
+                ,      e.LAST_UPDATED_ON
+                ,      lower(e.LAST_UPDATED_BY) last_updated_by
+                ,      e.tags
+                ,      decode(e.calendar_id, null, 'Default'
+                              , c.short_name || ' - ' || c.calendar_name 
+                                || decode(c.public_view_yn, 'Y', null, ' (Private)')
+                             ) calendar
+                from eba_ca_events e
+                ,    eba_ca_event_types et
+                ,    eba_ca_calendars c
+                where e.type_id = et.type_id
+                and   e.calendar_id = c.calendar_id (+)
+                and   (   :MULTIPLE_CAL_BO = 'Exclude' 
+                       or (   e.calendar_id is null
+                           or (   c.public_view_yn = 'Y'
+                               or exists (select 'x'
+                                          from eba_ca_users u
+                                          where u.username = :APP_USER
+                                          and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                                 or (access_level_id = 3 and restricted_to is null)
+                                                )
+                                         )
+                              )
+                          )
+                      )
+                and   (   :EXTERNAL_INTERNAL_BO = 'Exclude'
+                       or (   nvl(et.internal_yn, 'N') = 'N'
+                           or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                          )
+                      )
+                and   (   :P2_TIMEFRAME is null 
+                       or (    trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                 >= (select start_date 
+                                     from EBA_ca_timeframes
+                                     where :P2_TIMEFRAME = tf_id
+                                    ) 
+                           and trunc(to_date(to_char(e.event_date_time,'DD-MON-RRRR'),'DD-MON-RRRR'))
+                                 <= (select end_date 
+                                     from EBA_ca_timeframes
+                                     where :P2_TIMEFRAME = tf_id
+                                    )
+                          )
+                      )
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 3
+                items: {
+                    P3_EVENT_ID: #EVENT_ID#
+                    P3_PREV_PAGE: 2
+                }
+                clearCache: 3
+            }
+            linkIcon: <span class="fa fa-edit" aria-hidden="true"></span>
+            linkAttributes: aria-label="Edit #EVENT_NAME#"
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToYOfZ
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than 10,000 rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 7750611519607594047
+        }
+
+        columnGroup audit-info (
+            name: Audit Info
+            layout {
+                sequence: 20
+            }
+        )
+
+        columnGroup details (
+            name: Details
+            layout {
+                sequence: 10
+            }
+        )
+
+        column CALENDAR (
+            type: plainText
+            heading {
+                heading: Calendar
+                alignment: center
+            }
+            layout {
+                sequence: 41
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AL
+            }
+            config {
+                buildOption: @include-multiple-calendars
+            }
+        )
+
+        column CONTACT_PERSON (
+            type: plainText
+            heading {
+                heading: Contact Person
+            }
+            layout {
+                sequence: 9
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+            help {
+                helpText: Person to contact for more information.
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 11
+                group: @audit-info
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+            help {
+                helpText: The user who created the record.
+            }
+        )
+
+        column CREATED_ON (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 28
+                group: @audit-info
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column DISP_DURATION (
+            type: plainText
+            heading {
+                heading: Duration
+            }
+            layout {
+                sequence: 24
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column DURATION (
+            type: plainText
+            heading {
+                heading: Duration
+                alignment: end
+            }
+            layout {
+                sequence: 31
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column EVENT_DATE (
+            type: plainText
+            heading {
+                heading: Date
+            }
+            layout {
+                sequence: 25
+                group: @details
+            }
+            appearance {
+                formatMask: &APP_DATE_FORMAT.
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AE
+            }
+        )
+
+        column EVENT_DESC (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 8
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            help {
+                helpText: Description of the event.
+            }
+        )
+
+        column EVENT_ID (
+            type: hidden
+            heading {
+                heading: Event ID
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column EVENT_NAME (
+            type: plainText
+            heading {
+                heading: Event Name
+            }
+            layout {
+                sequence: 3
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            help {
+                helpText: Name of the event.
+            }
+        )
+
+        column EVENT_START_TIME (
+            type: plainText
+            heading {
+                heading: Start Time
+            }
+            layout {
+                sequence: 26
+                group: @details
+            }
+            appearance {
+                formatMask: &APP_TIME_FORMAT.
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column EVENT_TYPE (
+            type: plainText
+            heading {
+                heading: Event Type
+            }
+            layout {
+                sequence: 2
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LAST_UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Last Updated By
+            }
+            layout {
+                sequence: 12
+                group: @audit-info
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            help {
+                helpText: The user who last updated the record.
+            }
+        )
+
+        column LAST_UPDATED_ON (
+            type: plainText
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 29
+                group: @audit-info
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column LINKS (
+            type: plainText
+            heading {
+                heading: Links
+            }
+            layout {
+                sequence: 21
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column LOCATION (
+            type: plainText
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 18
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column RECUR_FLAG (
+            type: plainText
+            heading {
+                heading: Recurring
+            }
+            layout {
+                sequence: 10
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column TIMEFRAMES (
+            type: plainText
+            heading {
+                heading: Timeframes
+            }
+            layout {
+                sequence: 27
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            columnFilter {
+                type: namedLovWordContains
+                namedLov: @timeframes-for-ir-col-headings
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        savedReport 4487536 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CALENDAR (
+                sequence: 3
+            )
+
+            displayColumn CONTACT_PERSON (
+                sequence: 7
+            )
+
+            displayColumn DISP_DURATION (
+                sequence: 6
+            )
+
+            displayColumn EVENT_DATE (
+                sequence: 4
+            )
+
+            displayColumn EVENT_NAME (
+                sequence: 1
+            )
+
+            displayColumn EVENT_START_TIME (
+                sequence: 5
+            )
+
+            displayColumn EVENT_TYPE (
+                sequence: 2
+            )
+
+            displayColumn LOCATION (
+                sequence: 8
+            )
+
+            displayColumn RECUR_FLAG (
+                sequence: 10
+            )
+
+            displayColumn TAGS (
+                sequence: 9
+            )
+
+            sort (
+                column: EVENT_DATE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: EVENT_START_TIME
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: EVENT_NAME
+                sort {
+                    sequence: 3
+                }
+            )
+
+            filter ir-condition (
+                type: rowExpression
+                rowExpression: "  AE >= decode(AK,'All Day', trunc(sysdate), sysdate - (AK/24))"
+                identification {
+                    name: Only future events
+                }
+            )
+
+        )
+
+    )
+
+    region hidden-items (
+        name: hidden Items
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id, 
+                       nvl(lower(NOTIFICATION_TYPE),'yellow') as ALERT_TYPE,
+                       NOTIFICATION_NAME alert_title,
+                       NOTIFICATION_DESCRIPTION alert_desc,
+                       '' alert_action
+                  from EBA_CA_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                 order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/alerts
+            templateOptions: #DEFAULT#
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ALERT_ACTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Alert Action
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_DESC (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Alert Desc
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Alert Title
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Alert Type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region timezone (
+        name: Timezone
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                 "TIMEZONE"
+                
+                 
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        settings {
+            expandShortcuts: true
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Event
+        layout {
+            sequence: 30
+            region: @breadcrumbs
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10
+                clearCache: 10
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button delete-multiple (
+        buttonName: DELETE_MULTIPLE
+        label: Delete Multiple Events
+        layout {
+            sequence: 20
+            region: @breadcrumbs
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+                t-Button--iconRight
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                clearCache: 13
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: style="font-weight:bold"
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @events
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-calendar (
+        name: Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Action Processed.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @events
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 2
+        }
+    )
+
+)
+

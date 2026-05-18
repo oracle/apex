@@ -1,0 +1,86 @@
+page 51 (
+    name: Access Request Submitted
+    alias: ACCESS-REQUEST-SUBMITTED
+    title: Access Request Submitted
+    pageGroup: @request-access
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region hide-nobody (
+        name: hide nobody
+        type: staticContent
+        source {
+            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if apex_authentication.is_authenticated then
+                   return false;
+                else
+                   return true;
+                end if;
+                ```
+        }
+    )
+
+    region your-request-for-access-has-been-submitted (
+        name: Your request for access has been submitted
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Thank you for requesting access.</p>
+                <ul>
+                <li>You will receive an email with login credentials upon approval.
+                <li>Email address: &P14_EMAIL_ADDRESS.
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
+        }
+        headerAndFooter {
+            headerText:
+                ```html
+                <center><img src="#IMAGE_PREFIX#themes/apps/icons/success_96.png" alt="Success!" /></center>
+                <br clear="all">
+                ```
+        }
+    )
+
+)
+

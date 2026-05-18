@@ -1,0 +1,639 @@
+page 114 (
+    name: Link Details
+    alias: LINK-DETAILS
+    title: Link Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region opportunity-link (
+        name: Opportunity Link
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    pageItem P114_ACCOUNT_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_CONTACT_ID (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_ENTITY_ID (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @opportunity-link
+            slot: regionBody
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_ENTITY_TYPE (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENTITY_TYPE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_LEAD_ID (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LEAD_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_LINK_COMMENTS (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @opportunity-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LINK_COMMENTS
+            used: always
+        }
+    )
+
+    pageItem P114_LINK_TARGET (
+        type: textField
+        label {
+            label: URL
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @opportunity-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LINK_TARGET
+            used: always
+        }
+        default {
+            type: static
+            staticValue: http://
+        }
+    )
+
+    pageItem P114_LINK_TEXT (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @opportunity-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LINK_TEXT
+            used: always
+        }
+    )
+
+    pageItem P114_OPPORTUNITY_ID (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_PRODUCT_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PRODUCT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P114_TAGS (
+        type: textField
+        label {
+            label: Tags
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @opportunity-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+    )
+
+    pageItem P114_TERRITORY_ID (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @opportunity-link
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TERRITORY_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Link
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P114_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P114_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P114_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction page-loaded (
+        name: Page loaded
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var targetElmt = document.getElementById('P114_LINK_TARGET');
+                    
+                    $(targetElmt).focus();
+                    
+                    // Focus the cursor at the end of the input for the link target
+                    targetElmt.selectionStart = targetElmt.selectionEnd = targetElmt.value.length;
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation p114-link-not-duplicated (
+        name: P114 link not duplicated
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_links
+                where (:P114_ID is null or id != :P114_ID)
+                  and (
+                    (:P114_ENTITY_TYPE = 'OPPORTUNITY' and deal_id = :P114_OPPORTUNITY_ID)
+                      or (:P114_ENTITY_TYPE = 'LEAD' and lead_id = :P114_LEAD_ID)
+                      or (:P114_ENTITY_TYPE = 'TERRITORY' and territory_id = :P114_TERRITORY_ID)
+                      or (:P114_ENTITY_TYPE = 'ACCOUNT' and account_id = :P114_ACCOUNT_ID)
+                      or (:P114_ENTITY_TYPE = 'CONTACT' and contact_id = :P114_CONTACT_ID)
+                      or (:P114_ENTITY_TYPE = 'PRODUCT' and product_id = :P114_PRODUCT_ID)
+                  )
+                  and upper(link_target) = upper(:P114_LINK_TARGET)
+                ```
+        }
+        error {
+            errorMessage: Provided link already exists.
+            associatedItem: @P114_LINK_TARGET
+        }
+    )
+
+    validation p114-link-target-valid-url (
+        name: P114_LINK_TARGET valid URL
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P114_LINK_TARGET
+            regexp: "^http[s]?://[-a-zA-Z0-9_.:]+[-a-zA-Z0-9_:@&?=+,.!/~*'%$]*$"
+        }
+        error {
+            errorMessage: Invalid URL
+            associatedItem: @P114_LINK_TARGET
+        }
+    )
+
+    computation p114-link-text (
+        itemName: P114_LINK_TEXT
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: item
+            itemName: P114_LINK_TARGET
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P114_LINK_TEXT
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            itemsToReturn: REQUEST
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 6542458744081038185
+        }
+    )
+
+    process fetch-row-from-eba-sales-links (
+        name: Fetch Row from EBA_SALES_LINKS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_LINKS
+            pkColumn: ID
+            pkItem: P114_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 9014056347690847110
+        }
+    )
+
+    process process-row-of-eba-sales-links (
+        name: Process Row of EBA_SALES_LINKS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_LINKS
+            pkColumn: ID
+            pkItem: P114_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 9014056541069847111
+        }
+    )
+
+    process proxy-p114-entity-id-on-create (
+        name: Proxy P114_ENTITY_ID on create
+        type: executeCode
+        source {
+            plsqlCode: apex_util.set_session_state('P114_' || :P114_ENTITY_TYPE || '_ID', :P114_ENTITY_ID);
+        }
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        advanced {
+            executionMappingIdentifier: 6636881107810315203
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+        comments {
+            comments: This needs to go before validations and processing to allow them to work correctly.
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 9014056751722847111
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

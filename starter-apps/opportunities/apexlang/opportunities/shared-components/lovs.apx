@@ -1,0 +1,1493 @@
+lov access-control-scope (
+    name: ACCESS CONTROL SCOPE
+    source {
+        location: staticValues
+    }
+
+    entry contributor-access-for-any-authenticated-user (
+        sequence: 2
+        display: Contributor access for any authenticated user
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry reader-access-for-any-authenticated-user (
+        sequence: 1
+        display: Reader access for any authenticated user
+        return: PUBLIC_READONLY
+    )
+
+    entry restricted-to-users-defined-in-access-control-list (
+        sequence: 3
+        display: Restricted to users defined in access control list
+        return: ACL_ONLY
+    )
+
+)
+
+lov access-control-scope-2 (
+    name: ACCESS CONTROL SCOPE1
+    source {
+        location: staticValues
+    }
+
+    entry contributors (
+        sequence: 2
+        display: Contributors
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry readers (
+        sequence: 1
+        display: Readers
+        return: PUBLIC_READONLY
+    )
+
+)
+
+lov access-levels (
+    name: ACCESS_LEVELS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select access_level d, id r
+            from eba_sales_access_levels
+            order by id desc
+            ```
+    }
+)
+
+lov accounts (
+    name: ACCOUNTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CUSTOMER_NAME display_value, ID return_value 
+            from eba_sales_CUSTOMERS
+            order by 1
+            ```
+    }
+)
+
+lov agreement-types (
+    name: AGREEMENT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_sales_agreement_types
+             order by 1
+            ```
+    }
+)
+
+lov agreements (
+    name: AGREEMENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_sales_agreements
+             order by 1
+            ```
+    }
+)
+
+lov application-privs (
+    name: APPLICATION PRIVS
+    source {
+        location: staticValues
+    }
+
+    entry administrator (
+        sequence: 30
+        display: Administrator
+        return: A
+    )
+
+    entry read-only (
+        sequence: 20
+        display: Read Only
+        return: RO
+    )
+
+    entry read-write (
+        sequence: 10
+        display: Read Write
+        return: RW
+    )
+
+)
+
+lov card-and-interactive-report-view-as (
+    name: CARD AND INTERACTIVE REPORT VIEW AS
+    source {
+        location: staticValues
+    }
+
+    entry cards (
+        sequence: 10
+        display: Cards
+        return: CARDS
+    )
+
+    entry interactive-report (
+        sequence: 20
+        display: Interactive Report
+        return: IR
+    )
+
+)
+
+lov card-ir-chart (
+    name: CARD, IR, CHART
+    source {
+        location: staticValues
+    }
+
+    entry bar-chart (
+        sequence: 30
+        display: Bar Chart
+        return: BAR
+    )
+
+    entry cards (
+        sequence: 10
+        display: Cards
+        return: CARDS
+    )
+
+    entry interactive-report (
+        sequence: 20
+        display: Interactive Report
+        return: REPORT
+    )
+
+)
+
+lov contacts (
+    name: CONTACTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CONTACT_NAME as display_value, ID as return_value 
+              from EBA_SALES_CUSTOMER_CONTACTS
+             order by 1
+            ```
+    }
+)
+
+lov contacts-with-titles (
+    name: CONTACTS WITH TITLES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CONTACT_NAME || case when contact_title is not null then ' (' || CONTACT_TITLE || ')' else null end as display_value, ID as return_value 
+              from EBA_SALES_CUSTOMER_CONTACTS
+             order by 1
+            ```
+    }
+)
+
+lov country-codes (
+    name: COUNTRY CODES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select COUNTRY_NAME display_value, COUNTRY_CODE return_value 
+            from eba_sales_COUNTRIES
+            order by 1
+            ```
+    }
+)
+
+lov customers (
+    name: CUSTOMERS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CUSTOMER_NAME as display_value, ID as return_value 
+              from EBA_SALES_CUSTOMERS
+             order by 1
+            ```
+    }
+)
+
+lov data-load-charset (
+    name: DATA_LOAD_CHARSET
+    source {
+        location: staticValues
+    }
+
+    entry arabic-iso (
+        sequence: 1
+        display: Arabic ISO-8859-6
+        return: iso-8859-6
+    )
+
+    entry arabic-windows (
+        sequence: 1
+        display: Arabic Windows 1256
+        return: windows-1256
+    )
+
+    entry chinese-big (
+        sequence: 1
+        display: Chinese Big5
+        return: big5
+    )
+
+    entry chinese-gbk (
+        sequence: 1
+        display: Chinese GBK
+        return: gbk
+    )
+
+    entry cyrilic-iso (
+        sequence: 1
+        display: Cyrilic ISO-8859-5
+        return: iso-8859-5
+    )
+
+    entry cyrilic-koi8-r (
+        sequence: 1
+        display: Cyrilic KOI8-R
+        return: koi8-r
+    )
+
+    entry cyrilic-koi8-u (
+        sequence: 1
+        display: Cyrilic KOI8-U
+        return: koi8-u
+    )
+
+    entry cyrilic-windows (
+        sequence: 1
+        display: Cyrilic Windows 1251
+        return: windows-1251
+    )
+
+    entry eastern-european-iso (
+        sequence: 1
+        display: Eastern European ISO-8859-2
+        return: iso-8859-2
+    )
+
+    entry eastern-european-windows (
+        sequence: 1
+        display: Eastern European Windows 1250
+        return: windows-1250
+    )
+
+    entry greek-iso (
+        sequence: 1
+        display: Greek ISO-8859-7
+        return: iso-8859-7
+    )
+
+    entry greek-windows (
+        sequence: 1
+        display: Greek Windows 1253
+        return: windows-1253
+    )
+
+    entry hebrew-iso-8859-8-i (
+        sequence: 1
+        display: Hebrew ISO-8859-8-i
+        return: iso-8859-8-i
+    )
+
+    entry hebrew-windows (
+        sequence: 1
+        display: Hebrew Windows 1255
+        return: windows-1255
+    )
+
+    entry japanese-euc (
+        sequence: 1
+        display: Japanese EUC
+        return: euc-jp
+    )
+
+    entry japanese-shift-jis (
+        sequence: 1
+        display: Japanese Shift JIS
+        return: shift_jis
+    )
+
+    entry korean-euc (
+        sequence: 1
+        display: Korean EUC
+        return: euc-kr
+    )
+
+    entry northern-european-iso (
+        sequence: 1
+        display: Northern European ISO-8859-4
+        return: iso-8859-4
+    )
+
+    entry northern-european-windows (
+        sequence: 1
+        display: Northern European Windows 1257
+        return: windows-1257
+    )
+
+    entry southern-european-iso (
+        sequence: 1
+        display: Southern European ISO-8859-3
+        return: iso-8859-3
+    )
+
+    entry thai-tis (
+        sequence: 1
+        display: Thai TIS-620
+        return: tis-620
+    )
+
+    entry turkish-iso (
+        sequence: 1
+        display: Turkish ISO-8859-9
+        return: iso-8859-9
+    )
+
+    entry turkish-windows (
+        sequence: 1
+        display: Turkish Windows 1254
+        return: windows-1254
+    )
+
+    entry unicode-utf (
+        sequence: 1
+        display: Unicode UTF-8
+        return: utf-8
+    )
+
+    entry unicode-utf-16-big-endian (
+        sequence: 1
+        display: Unicode UTF-16 Big Endian
+        return: utf-16be
+    )
+
+    entry unicode-utf-16-little-endian (
+        sequence: 1
+        display: Unicode UTF-16 Little Endian
+        return: utf-16le
+    )
+
+    entry us-ascii (
+        sequence: 1
+        display: US-ASCII
+        return: us-ascii
+    )
+
+    entry vietnamese-windows (
+        sequence: 1
+        display: Vietnamese Windows 1258
+        return: windows-1258
+    )
+
+    entry western-european-iso (
+        sequence: 1
+        display: Western European ISO-8859-1
+        return: iso-8859-1
+    )
+
+    entry western-european-windows (
+        sequence: 1
+        display: Western European Windows 1252
+        return: windows-1252
+    )
+
+)
+
+lov data-load-option (
+    name: DATA_LOAD_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry copy-and-paste (
+        sequence: 20
+        display: Copy and Paste
+        return: PASTE
+    )
+
+    entry upload-file-comma-separated-csv-or-tab-delimited (
+        sequence: 10
+        display: Upload file, comma separated (*.csv) or tab delimited
+        return: UPLOAD
+    )
+
+)
+
+lov date-format-opt (
+    name: DATE_FORMAT_OPT
+    source {
+        location: staticValues
+    }
+
+    entry provide-custom-formats-for-uploaded-columns (
+        sequence: 20
+        display: Provide custom formats for uploaded columns
+        return: N
+    )
+
+    entry use-application-standard-format-masks (
+        sequence: 10
+        display: Use application standard format masks
+        return: Y
+    )
+
+)
+
+lov date-format-option (
+    name: DATE_FORMAT_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+
+lov deal (
+    name: DEAL
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select DEAL_NAME display_value, ID return_value 
+            from EBA_SALES_DEALS
+            order by 1
+            ```
+    }
+)
+
+lov deal-status-all-open-closed (
+    name: DEAL STATUS ALL OPEN CLOSED
+    source {
+        location: staticValues
+    }
+
+    entry all (
+        sequence: 10
+        display: All
+        return: ALL
+    )
+
+    entry closed (
+        sequence: 30
+        display: Closed
+        return: CLOSED
+    )
+
+    entry open (
+        sequence: 20
+        display: Open
+        return: OPEN
+    )
+
+)
+
+lov display (
+    name: DISPLAY
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 1
+        return: 1
+    )
+
+    entry lov_data-10 (
+        sequence: 100
+        display: 50
+        return: 50
+    )
+
+    entry lov_data-11 (
+        sequence: 110
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-12 (
+        sequence: 120
+        display: 500
+        return: 500
+    )
+
+    entry lov_data-2 (
+        sequence: 20
+        display: 5
+        return: 5
+    )
+
+    entry lov_data-3 (
+        sequence: 30
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-4 (
+        sequence: 40
+        display: 15
+        return: 15
+    )
+
+    entry lov_data-5 (
+        sequence: 50
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-6 (
+        sequence: 60
+        display: 25
+        return: 25
+    )
+
+    entry lov_data-7 (
+        sequence: 70
+        display: 30
+        return: 30
+    )
+
+    entry lov_data-8 (
+        sequence: 80
+        display: 35
+        return: 35
+    )
+
+    entry lov_data-9 (
+        sequence: 90
+        display: 40
+        return: 40
+    )
+
+)
+
+lov first-row-option (
+    name: FIRST_ROW_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+
+lov fiscal-years-deal-close-dates (
+    name: FISCAL YEARS - DEAL CLOSE DATES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct sp.fiscal_year + 2000 as dv, sp.fiscal_year as rv
+              from eba_sales_sales_periods sp,
+                   eba_sales_deals d
+             where sp.fiscal_year = substr(d.qtr, -2)
+             order by 2 asc
+            ```
+    }
+)
+
+lov fiscal-years-product-close-dates (
+    name: FISCAL YEARS - PRODUCT CLOSE DATES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct sp.fiscal_year + 2000 as dv, sp.fiscal_year as rv
+              from eba_sales_sales_periods sp,
+                   eba_sales_deal_products dp
+             where sp.fiscal_year = substr(dp.qtr, -2)
+             order by 2 asc
+            ```
+    }
+)
+
+lov industries (
+    name: INDUSTRIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select industry_name as d,
+                   id as r
+              from eba_sales_industries
+             order by 1
+            ```
+    }
+)
+
+lov key-accounts-all-accounts (
+    name: KEY ACCOUNTS ALL ACCOUNTS
+    source {
+        location: staticValues
+    }
+
+    entry all-accounts (
+        sequence: 10
+        display: All Accounts
+        return: ALL
+    )
+
+    entry key-accounts (
+        sequence: 20
+        display: Key Accounts
+        return: KEY
+    )
+
+)
+
+lov lead-codes (
+    name: LEAD CODES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select STATUS_CODE display_value, id return_value 
+            from EBA_SALES_LEAD_STATUS_CODES
+            order by 1
+            ```
+    }
+)
+
+lov lines-of-business (
+    name: LINES OF BUSINESS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from EBA_SALES_PRODUCT_LOBS
+             order by 1
+            ```
+    }
+)
+
+lov lov-dataload-upload-opportunities (
+    name: LOV_DATALOAD_UPLOAD OPPORTUNITIES
+    source {
+        location: staticValues
+    }
+
+    entry account (
+        sequence: 20
+        display: Account
+        return: CUSTOMER_ID
+    )
+
+    entry account-standing (
+        sequence: 130
+        display: Account Standing
+        return: ACCOUNT_STANDING_ID
+    )
+
+    entry close-date (
+        sequence: 50
+        display: Close Date
+        return: DEAL_CLOSE_DATE
+    )
+
+    entry created (
+        sequence: 200
+        display: Created
+        return: CREATED
+    )
+
+    entry created-by (
+        sequence: 210
+        display: Created By
+        return: CREATED_BY
+    )
+
+    entry deal-amount (
+        sequence: 60
+        display: Deal Amount
+        return: DEAL_AMOUNT
+    )
+
+    entry location (
+        sequence: 30
+        display: Location
+        return: DEAL_CUSTOMER_LOCATION
+    )
+
+    entry opportunity-name (
+        sequence: 40
+        display: Opportunity Name
+        return: DEAL_NAME
+    )
+
+    entry pro-re-active (
+        sequence: 140
+        display: Pro / Re-Active
+        return: PRO_RE_ACTIVE
+    )
+
+    entry probability (
+        sequence: 100
+        display: Probability
+        return: DEAL_PROBABILITY
+    )
+
+    entry risk (
+        sequence: 90
+        display: Risk
+        return: RISK_ASSESSMENT_ID
+    )
+
+    entry row-key (
+        sequence: 10
+        display: Row Key
+        return: ROW_KEY
+    )
+
+    entry stage (
+        sequence: 70
+        display: Stage
+        return: DEAL_STAGE
+    )
+
+    entry summary (
+        sequence: 160
+        display: Summary
+        return: DEAL_SUMMARY
+    )
+
+    entry tags (
+        sequence: 150
+        display: Tags
+        return: TAGS
+    )
+
+    entry territory (
+        sequence: 110
+        display: Territory
+        return: TERRITORY_ID
+    )
+
+)
+
+lov new-or-existing (
+    name: NEW_OR_EXISTING
+    source {
+        location: staticValues
+    }
+
+    entry existing-account (
+        sequence: 1
+        display: Existing Account
+        return: EXISTING
+    )
+
+    entry new-account (
+        sequence: 2
+        display: New Account
+        return: NEW
+    )
+
+)
+
+lov notification-type (
+    name: NOTIFICATION TYPE
+    source {
+        location: staticValues
+    }
+
+    entry red (
+        sequence: 20
+        display: Red
+        return: RED
+    )
+
+    entry yellow (
+        sequence: 10
+        display: Yellow
+        return: YELLOW
+    )
+
+)
+
+lov numeric-quarters (
+    name: NUMERIC_QUARTERS
+    source {
+        location: staticValues
+    }
+
+    entry first-quarter (
+        sequence: 1
+        display: First Quarter
+        return: Q1
+    )
+
+    entry fourth-quarter (
+        sequence: 4
+        display: Fourth Quarter
+        return: Q4
+    )
+
+    entry second-quarter (
+        sequence: 2
+        display: Second Quarter
+        return: Q2
+    )
+
+    entry third-quarter (
+        sequence: 3
+        display: Third Quarter
+        return: Q3
+    )
+
+)
+
+lov p93-country-r-id (
+    name: P93_COUNTRY_R_ID
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select COUNTRY_NAME display_value, id return_value 
+            from eba_sales_COUNTRIES
+            where id not in (select country_id
+                             from eba_sales_terr_map
+                             where territory_id = :P93_ID
+                             and country_id is not null)
+            order by 1
+            ```
+    }
+)
+
+lov p93-state-r-id (
+    name: P93_STATE_R_ID
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select state d, id r
+            from  eba_sales_states
+            where id not in (select state_id
+                             from eba_sales_terr_map
+                             where territory_id = :P93_ID
+                             and state_id is not null)
+            order by 1
+            ```
+    }
+)
+
+lov pill-display-as (
+    name: PILL_DISPLAY_AS
+    source {
+        location: staticValues
+    }
+
+    entry cards-view (
+        sequence: 1
+        display: Cards View
+        return: CARDS
+        globalization {
+            template: <span class="t-Icon fa fa-cards" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+    entry customizable-grid (
+        sequence: 3
+        display: Customizable Grid
+        return: GRID
+        globalization {
+            template: <span class="t-Icon fa fa-table" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+    entry report-view (
+        sequence: 2
+        display: Report View
+        return: REPORT
+        globalization {
+            template: <span class="t-Icon fa fa-reorder" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+)
+
+lov primary-sales-rep (
+    name: PRIMARY_SALES_REP
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select r.rep_email||' - '||r2.role_name display_value, 
+                     r.ID return_value 
+            from eba_sales_SALESREPS r, 
+                    eba_sales_salesrep_roles r2
+            where r.rep_role = r2.id(+) and r2.is_sales_rep = 'Y'
+            order by 1
+            ```
+    }
+)
+
+lov probability-percentages (
+    name: PROBABILITY PERCENTAGES
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-10 (
+        sequence: 100
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-11 (
+        sequence: 110
+        display: 0
+        return: 0
+    )
+
+    entry lov_data-2 (
+        sequence: 20
+        display: 90
+        return: 90
+    )
+
+    entry lov_data-3 (
+        sequence: 30
+        display: 80
+        return: 80
+    )
+
+    entry lov_data-4 (
+        sequence: 40
+        display: 70
+        return: 70
+    )
+
+    entry lov_data-5 (
+        sequence: 50
+        display: 60
+        return: 60
+    )
+
+    entry lov_data-6 (
+        sequence: 60
+        display: 50
+        return: 50
+    )
+
+    entry lov_data-7 (
+        sequence: 70
+        display: 40
+        return: 40
+    )
+
+    entry lov_data-8 (
+        sequence: 80
+        display: 30
+        return: 30
+    )
+
+    entry lov_data-9 (
+        sequence: 90
+        display: 20
+        return: 20
+    )
+
+)
+
+lov product-families (
+    name: PRODUCT FAMILIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select product_family as d,
+                   id as r
+              from eba_sales_product_families
+             order by 1
+            ```
+    }
+)
+
+lov products (
+    name: PRODUCTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PRODUCT_NAME display_value, ID return_value 
+            from eba_sales_PRODUCTS
+            order by 1
+            ```
+    }
+)
+
+lov purchase-or-subscription (
+    name: PURCHASE OR SUBSCRIPTION
+    source {
+        location: staticValues
+    }
+
+    entry cloud-subscription (
+        sequence: 10
+        display: Cloud Subscription
+        return: SUBSCRIPTION
+    )
+
+    entry on-premise-purchase (
+        sequence: 20
+        display: On-Premise Purchase
+        return: PURCHASE
+    )
+
+)
+
+lov quarter (
+    name: QUARTER
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PERIOD_NAME display_value, PERIOD_NAME return_value 
+            from EBA_SALES_SALES_PERIODS
+            order by first_day
+            ```
+    }
+)
+
+lov quarter-begin (
+    name: QUARTER BEGIN
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PERIOD_NAME ||
+                   case when sysdate between first_day and last_day then ' *' end d,
+                   to_char(first_day,'YYYYMMDD') r 
+              from EBA_SALES_SALES_PERIODS
+             where sysdate >= first_day
+            order by first_day
+            ```
+    }
+)
+
+lov quarter-end (
+    name: QUARTER END
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PERIOD_NAME ||
+                   case when sysdate between first_day and last_day then ' *' end d,
+                   to_char(last_day,'YYYYMMDD') r 
+              from EBA_SALES_SALES_PERIODS
+             where sysdate >= first_day
+             order by first_day
+            ```
+    }
+)
+
+lov quarter-past-and-current (
+    name: QUARTER - PAST AND CURRENT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PERIOD_NAME  ||
+                   case when sysdate between first_day and last_day then ' *' end d,
+                   PERIOD_NAME r 
+              from EBA_SALES_SALES_PERIODS
+             where sysdate >= first_day
+             order by first_day
+            ```
+    }
+)
+
+lov rows (
+    name: ROWS
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 5
+        return: 5
+    )
+
+    entry lov_data-2 (
+        sequence: 20
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-3 (
+        sequence: 30
+        display: 15
+        return: 15
+    )
+
+    entry lov_data-4 (
+        sequence: 40
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-5 (
+        sequence: 50
+        display: 50
+        return: 50
+    )
+
+    entry lov_data-6 (
+        sequence: 60
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-7 (
+        sequence: 70
+        display: 500
+        return: 500
+    )
+
+)
+
+lov sales-rep-managers (
+    name: SALES REP MANAGERS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select initcap(rep_first_name) || ' '|| initcap(rep_last_name) display_value, ID return_value 
+            from eba_sales_salesreps
+            where rep_manager_id is null
+            union
+            select initcap(rep_first_name) || ' '|| initcap(rep_last_name) display_value, ID return_value 
+            from eba_sales_salesreps
+            where id in (select distinct rep_manager_id from eba_sales_salesreps)
+            order by 1
+            ```
+    }
+)
+
+lov search-page-include-options (
+    name: SEARCH PAGE, INCLUDE OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry accounts (
+        sequence: 20
+        display: Accounts
+        return: ACCOUNTS
+    )
+
+    entry contacts (
+        sequence: 30
+        display: Contacts
+        return: CONTACTS
+    )
+
+    entry leads (
+        sequence: 5
+        display: Leads
+        return: LEADS
+    )
+
+    entry opportunities (
+        sequence: 10
+        display: Opportunities
+        return: OPPORTUNITIES
+    )
+
+    entry products (
+        sequence: 40
+        display: Products
+        return: PRODUCTS
+    )
+
+    entry territories (
+        sequence: 15
+        display: Territories
+        return: TERRITORIES
+        config {
+            buildOption: @territories
+        }
+    )
+
+)
+
+lov steps-to-close-status-code (
+    name: STEPS TO CLOSE (STATUS CODE)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CORRESPONDING_PROB_PCT/10 ||'. '||status_code d,id
+            from EBA_SALES_DEAL_STATUS_CODES
+            order by CORRESPONDING_PROB_PCT/10 
+            ```
+    }
+)
+
+lov support-amount-types (
+    name: SUPPORT AMOUNT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from EBA_SALES_SUPRT_AMT_TYPES
+             order by 1
+            ```
+    }
+)
+
+lov support-amounts (
+    name: SUPPORT AMOUNTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from EBA_SALES_SUPPORT_AMTS
+             order by 1
+            ```
+    }
+)
+
+lov svps (
+    name: SVPS
+    source {
+        type: legacySqlQuery
+        sqlQuery: select svp_name, id from eba_sales_svps order by upper(svp_name)
+    }
+)
+
+lov team-member (
+    name: TEAM MEMBER
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select r.rep_email||' - '||r2.role_name display_value, 
+                     r.ID return_value 
+            from eba_sales_SALESREPS r, 
+                    eba_sales_salesrep_roles r2
+            where r.rep_role = r2.id(+)
+            order by 1
+            ```
+    }
+)
+
+lov terms-id-return-value (
+    name: TERMS - ID RETURN VALUE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_sales_terms
+             order by 2
+            ```
+    }
+)
+
+lov terms-num-months-return-value (
+    name: TERMS - NUM_MONTHS RETURN VALUE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   month_equiv as r
+              from eba_sales_terms
+             order by 2
+            ```
+    }
+)
+
+lov territory (
+    name: TERRITORY
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select TERRITORY_NAME display_value, ID return_value 
+            from eba_sales_TERRITORIES
+            order by 1
+            ```
+    }
+)
+
+lov territory-types (
+    name: TERRITORY TYPES
+    source {
+        location: staticValues
+    }
+
+    entry country (
+        sequence: 4
+        display: Country
+        return: COUNTRY
+    )
+
+    entry named-account (
+        sequence: 2
+        display: Named Account
+        return: NAMED_ACCOUNT
+    )
+
+    entry region (
+        sequence: 5
+        display: Region
+        return: REGION
+    )
+
+    entry state (
+        sequence: 1
+        display: State
+        return: STATE
+    )
+
+)
+
+lov timeframe-4-weeks (
+    name: TIMEFRAME (4 WEEKS)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select wwv_flow_lang.system_message('N_MINUTES','15') d, 
+            trim(to_char(15/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','30') d, 
+            trim(to_char(30/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOUR','1') d, 
+            trim(to_char(1/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','90') d, 
+            trim(to_char(90/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','2') d, 
+            trim(to_char(1/12,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','3') d, 
+            trim(to_char(3/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','4') d, 
+            trim(to_char(4/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','5') d, 
+            trim(to_char(5/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','6') d, 
+            trim(to_char(6/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','8') d, 
+            trim(to_char(8/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','10') d, 
+            trim(to_char(10/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','12') d, 
+            trim(to_char(12/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','16') d, 
+            trim(to_char(16/24,'00000.9999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAY','1') d, trim(to_char(1,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','2') d, trim(to_char(2,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','3') d, trim(to_char(3,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','4') d, trim(to_char(4,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','5') d, trim(to_char(5,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEK','1') d, trim(to_char(7,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEKS','2') d, trim(to_char(14,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEKS','3') d, trim(to_char(21,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEKS','4') d, trim(to_char(28,'00000.9999999999')) t from dual
+            order by 2
+            ```
+    }
+)
+
+lov username-format (
+    name: USERNAME_FORMAT
+    source {
+        location: staticValues
+    }
+
+    entry email-address (
+        sequence: 1
+        display: Email Address
+        return: EMAIL
+    )
+
+    entry non-email-address (
+        sequence: 2
+        display: Non-Email Address
+        return: STRING
+    )
+
+)
+
+lov yes-no-returns-y-n (
+    name: YES NO (RETURNS Y N)
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

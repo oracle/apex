@@ -1,0 +1,61 @@
+plugin stripeReport (
+    name: Stripe Report
+    staticId: COM.ORACLE.APEX.STRIPE.REPORT
+    type: dynamicAction
+    component {
+        standardAttributes: defaultFireOnInitialization
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render_stripe_report (
+                p_dynamic_action in apex_plugin.t_dynamic_action,
+                p_plugin         in apex_plugin.t_plugin )
+                return apex_plugin.t_dynamic_action_render_result
+            is
+                l_result        apex_plugin.t_dynamic_action_render_result;
+                -- It's better to have named variables instead of using the generic ones, makes
+                -- the code more readable.
+                -- If an attribute value is 'Required' and there is a 'Default Value' set in the 
+                -- plug-in attribute definition, this should also be defined here.
+                l_stripe_color  varchar2(4000) := coalesce(p_dynamic_action.attribute_01,'#FAFAFA');
+            begin
+                -- During plug-in development it's very helpful to have some debug information
+                if apex_application.g_debug then
+                    apex_plugin_util.debug_dynamic_action (
+                        p_plugin            => p_plugin,
+                        p_dynamic_action    => p_dynamic_action );
+                end if;
+            
+                -- ***********************************
+                -- Here starts the actual plug-in code
+                -- ***********************************
+                -- Register the javascript function which should be called when the plug-in
+                -- action is executed with the APEX client side dynamic action framework.
+                -- The javascript function can be a named javascript function, but it can
+                -- also be an anonymous function if the code is really short.
+                -- For example: function(){this.affectedElements.hide(this.action.attribute01);}
+                l_result.javascript_function    := 'com_oracle_apex_stripe_report';
+                l_result.attribute_01           := l_stripe_color;
+                
+                return l_result;
+            end render_stripe_report;
+            
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_stripe_report
+    }
+    advanced {
+        category: effect
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #PLUGIN_FILES#stripe_report_2_0.js
+    }
+    information {
+        version: 2.0
+    }
+)
+

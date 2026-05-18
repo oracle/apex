@@ -1,0 +1,183 @@
+page 6 (
+    name: All Restaurants
+    alias: ALL-RESTAURANTS
+    title: All Restaurants
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region all-restaurants (
+        name: All Restaurants
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.logo_url as image,
+                       r.name as name,
+                       c.name as category,
+                       r.rating,
+                       r.delivery_time,
+                       r.delivery_time + 10 delivery_time_estimated,
+                       r.delivery_fee
+                  from sample_restaurant r,
+                       sample_restaurant_categories c
+                 where c.id = r.category_id
+                 order by id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME.
+            description:
+                ```html
+                {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/}<br />
+                &DELIVERY_TIME.-&DELIVERY_TIME_ESTIMATED. min
+                ```
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: url
+                url: #APP_FILES#&IMAGE.
+            }
+            size: medium
+        }
+        plugin-badge {
+            label: &RATING.
+            value: RATING
+            style: subtle
+            shape: circular
+            columnWidth: small
+            position: end
+            alignment: end
+        }
+
+        column CATEGORY (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: CATEGORY
+                dataType: varchar2
+            }
+        )
+
+        column DELIVERY_FEE (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: DELIVERY_FEE
+                dataType: number
+            }
+        )
+
+        column DELIVERY_TIME (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: DELIVERY_TIME
+                dataType: number
+            }
+        )
+
+        column DELIVERY_TIME_ESTIMATED (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: DELIVERY_TIME_ESTIMATED
+                dataType: number
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column IMAGE (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: IMAGE
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column RATING (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: RATING
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: fullRowLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 5
+                    items: {
+                        P5_RESTAURANT_ID: &ID.
+                    }
+                }
+            }
+        )
+
+    )
+
+)
+

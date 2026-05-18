@@ -1,0 +1,726 @@
+page 44 (
+    name: Calendar Details
+    alias: CALENDAR-DETAILS
+    title: Calendar Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+                This page allows app administrators to change attributes of a calendar. Click the <strong>Apply Changes</strong> button to save your changes. Click the <strong>Delete</strong> button to delete this calendar. Click the <strong>Cancel</strong> button to leave this page.
+            </p>
+            ```
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region calendar-details (
+        name: Calendar Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region contributors (
+        name: Contributors
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select username, 
+                       case when restricted_to is null then 'Unrestricted Contributor'
+                            else 'Restricted To set for this calendar' end access_type,
+                       decode(access_level_id, 3, 'Administrator', 'Contributor') access_level
+                  from eba_ca_users
+                 where access_level_id >= 2
+                 and   (   instr(':'||restricted_to||':',':'||:P44_CALENDAR_ID||':') > 0
+                        or (    restricted_to is null 
+                            and access_level_id = 3
+                           )
+                       )
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P44_CALENDAR_ID
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--inline
+                t-Report--rowHighlightOff
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No users found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ACCESS_LEVEL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Access level
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ACCESS_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Access Type
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Username
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region readers-for-this-private-calendar (
+        name: Readers (for this Private Calendar)
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select username, 
+                       'Restricted To set for this calendar' access_type
+                  from eba_ca_users
+                 where access_level_id = 1
+                 and   instr(':'||restricted_to||':',':'||:P44_CALENDAR_ID||':') > 0
+                 order by 1
+                ```
+            pageItemsToSubmit: P44_PUBLIC_VIEW_YN
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P44_CALENDAR_ID is not null
+                and eba_ca_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--inline
+                t-Report--rowHighlightOff
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No users found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ACCESS_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Access Type
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Username
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P44_CALENDAR_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @calendar-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CALENDAR_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P44_CALENDAR_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @calendar-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 48
+        }
+        validation {
+            valueRequired: true
+            maxLength: 60
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CALENDAR_NAME
+            used: always
+        }
+        help {
+            helpText: Full name of Calendar.
+        }
+    )
+
+    pageItem P44_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @calendar-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DESCRIPTION
+            used: always
+        }
+        help {
+            helpText: Description of the Calendar.  Only displayed on the Calendars report (to Adminstrators).
+        }
+    )
+
+    pageItem P44_IS_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active?
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @calendar-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IS_ACTIVE_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: If not active, events will still display but new events cannot be associated with the calendar.
+        }
+    )
+
+    pageItem P44_PUBLIC_VIEW_YN (
+        type: switch
+        label {
+            label: Public Can View Events?
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @calendar-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PUBLIC_VIEW_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_ca_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+        }
+        help {
+            helpText:
+                ```html
+                <p>Define whether all users can view the events on this calendar or only selected users.</p>
+                <p>If public can not view the events, you must update users who have rights to the calendar by going to Access Control List and selecting each users. On the User Details screen update Restricted To, selecting the calendars the user has access to.</p>
+                ```
+        }
+    )
+
+    pageItem P44_SHORT_NAME (
+        type: textField
+        label {
+            label: Short Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 15
+            region: @calendar-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            valueRequired: true
+            maxLength: 10
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SHORT_NAME
+            used: always
+        }
+        help {
+            helpText: Short name for Calendar.  Used as prefix when Events are displayed.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Calendar
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P44_CALENDAR_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P44_CALENDAR_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P44_CALENDAR_ID
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-readers (
+        name: Show Readers
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P44_PUBLIC_VIEW_YN
+        }
+        clientSideCondition {
+            type: item=value
+            item: P44_PUBLIC_VIEW_YN
+            value: N
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @readers-for-this-private-calendar
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @readers-for-this-private-calendar
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation no-related-events-before-delete (
+        name: no related events before delete
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from EBA_ca_events
+                 where :P44_CALENDAR_ID = calendar_id
+                ```
+        }
+        error {
+            errorMessage: Cannot delete Calendar - it is related to Events.
+            associatedItem: @P44_CALENDAR_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    validation p44-calendar-name-unique (
+        name: P44_CALENDAR_NAME unique
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_ca_calendars
+                 where lower(:P44_CALENDAR_NAME) = lower(calendar_name)
+                   and (:P44_CALENDAR_ID != calendar_id or :P44_CALENDAR_ID is null)
+                ```
+        }
+        error {
+            errorMessage: Calendar Name already exists.
+            associatedItem: @P44_CALENDAR_NAME
+        }
+    )
+
+    validation p44-short-name-unique (
+        name: P44_SHORT_NAME unique
+        execution {
+            sequence: 15
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_ca_calendars
+                 where lower(:P44_SHORT_NAME) = lower(short_name)
+                   and (:P44_CALENDAR_ID != calendar_id or :P44_CALENDAR_ID is null)
+                ```
+        }
+        error {
+            errorMessage: Short Name already exists.
+            associatedItem: @P44_SHORT_NAME
+        }
+    )
+
+    process close (
+        name: close
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 108591461097964971
+        }
+    )
+
+    process fetch-row-from-eba-ca-calendars (
+        name: Fetch Row from EBA_CA_CALENDARS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CA_CALENDARS
+            pkColumn: CALENDAR_ID
+            pkItem: P44_CALENDAR_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 1837141397563675611
+        }
+    )
+
+    process process-row-of-eba-ca-calendars (
+        name: Process Row of EBA_CA_CALENDARS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CA_CALENDARS
+            pkColumn: CALENDAR_ID
+            pkItem: P44_CALENDAR_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CA_CALENDARS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 1837141828787675611
+        }
+    )
+
+)
+

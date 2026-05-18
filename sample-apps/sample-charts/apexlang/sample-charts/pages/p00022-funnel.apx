@@ -1,0 +1,438 @@
+page 22 (
+    name: Funnel
+    alias: FUNNEL
+    title: Funnel
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Funnel charts, using Oracle JET Data Visualizations, are showcased on this page. Funnel charts are useful for viewing data for stages of a process, such as the stages of a sales process. The area of a funnel slice is proportional to its value for the corresponding stage. Use of target values helps display additional context. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-funnel-chart
+        }
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region funnel-3d-effect (
+        name: Funnel (3D Effect)
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            htmlDomId: 3DfunnelTarget
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: Render your Funnel chart in 3D by setting the <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank">threeDEffect</a> attribute of the ojChart API. Edit the chart, and view the code snippet in the JavaScript Code attribute.<p/>
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chart {
+            type: funnel
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ){
+                
+                    // Set chart initialization options
+                    options.styleDefaults = {
+                        threeDEffect: "on" 
+                    };
+                    return options;
+                }
+                ```
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.quantity, b.customer, 100 TARGET_VAL
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and a.product_id = 5
+                    ```
+            }
+            columnMapping {
+                label: CUSTOMER
+                value: QUANTITY
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region funnel-multi-select-selection-mode (
+        name: Funnel ( Multi-select Selection Mode)
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            htmlDomId: funnel
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: Select a segment of the chart, to display its associated information above the chart. Hold the Ctrl key while clicking on multiple items.
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chart {
+            type: funnel
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {   
+                    // Set Selection Mode to Multiple chart elements
+                    options.selectionMode = "multiple";
+                        
+                    // Initialize the component with the optionChange callback specified
+                    options.optionChange = function( event, ui ) {
+                        if ( ui[ "option" ] === "selection" ) {
+                            var items = " ";
+                            if( ui['value'] ){
+                                for( var i = 0; i < ui['value'].length; i++ ){
+                                    if(ui['value'][i]) {
+                                        items += "    " + ui['value'][i]['series'] + "<br/>";
+                                    } 
+                                }
+                                $s( "P22_SERIES_2", items );
+                            }  
+                        }
+                    };
+                    return options;
+                }
+                ```
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.quantity, b.customer, 100 TARGET_VAL
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and a.product_id = 5
+                    ```
+            }
+            columnMapping {
+                label: CUSTOMER
+                value: QUANTITY
+                targetValue: TARGET_VAL
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region funnel-multi-select-selection-mode-chart-information (
+        name: Funnel (Multi-select Selection Mode) Chart Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates multi-selection of data points on a Funnel chart, using custom JavaScript.<p/>
+                
+                <strong>JavaScript Code</strong> - Use the chart-level attribute to define custom JavaScript, to set the attribute <strong>selectionMode</strong> for the chart. By default, a user can declaratively define links based upon the selection of a data point.  If you wish to apply alternative selection handling on your chart, such as using multi-selection, this must be defined via JavaScript.  You can also define an 'optionChange' listener on the chart, based upon the click action. In that 'optionChange' listener, define the action you want to occur when a data point selection is detected. In this example, a page item with the label 'Series' will be updated to display the data point name(s).  The code snippet used is as follows:
+                <pre>
+                function( options ) {   
+                    // Set Selection Mode to Multiple chart elements
+                    options.selectionMode = "multiple";
+                        
+                    // Initialize the component with the optionChange callback specified
+                    options.optionChange = function( event, ui ) {
+                        if ( ui[ "option" ] === "selection" ) {
+                            var items = " ";
+                            if( ui['value'] ){
+                                for( var i = 0; i < ui['value'].length; i++ ){
+                                    if(ui['value'][i]) {
+                                        items += "    " + ui['value'][i]['series'] + "<br/>";
+                                    } 
+                                }
+                                $s( "P22_SERIES_2", items );
+                            }  
+                        }
+                    };
+                    return options;
+                }
+                </pre>
+                <p/>
+                <p>
+                For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank">Funnel Chart: Selection</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @funnel-multi-select-selection-mode
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region funnel-target-value (
+        name: Funnel (Target Value)
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            htmlDomId: funnelTarget
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: Drill down to a segment of the chart, to display its associated information above the chart. To drill using a mouse, click on a segment of the chart.  To drill using a keyboard, use the arrow keys to navigate to a segment of the chart, and hit Enter.
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        chart {
+            type: funnel
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+        }
+
+        series series (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.quantity, b.customer, 100 TARGET_VAL
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and a.product_id = 5
+                    ```
+            }
+            columnMapping {
+                label: CUSTOMER
+                value: QUANTITY
+                targetValue: TARGET_VAL
+            }
+            link {
+                type: redirectUrl
+                targetUrl: javascript:$s("P22_SERIES",'&CUSTOMER. Sales: $&QUANTITY., Target: $&TARGET_VAL.');
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region funnel-target-value-chart-information (
+        name: Funnel (Target Value) Chart Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Funnel chart.<p/>
+                
+                <strong>Target Value</strong> - Use the series-level attribute to define a target value for the chart. When target values are set on a data item, the value attribute defines the filled area within the slice and the target value attribute represents the value of the whole slice.<p/>
+                <strong>Link Target</strong> - Use the series-level attribute to define a link on the selection of a segment of the chart.  In this example, the link is using JavaScript to set a page item to the value of the currently selected data point.  The link target is referencing columns in the SQL query using &amp;COLUMN_NAME. syntax.<p/>
+                
+                <p>
+                For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=targetValues" target="_blank">Funnel Chart: Target Values</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank">Funnel Chart: Selection</a> examples.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @funnel-target-value
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P22_SERIES (
+        type: displayOnly
+        label {
+            label: Selected:
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @funnel-target-value
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P22_SERIES_2 (
+        type: displayOnly
+        label {
+            label: Selected:
+            alignment: left
+        }
+        settings {
+            format: html
+        }
+        layout {
+            sequence: 10
+            region: @funnel-multi-select-selection-mode
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

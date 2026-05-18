@@ -1,0 +1,1267 @@
+page 71 (
+    name: Create Opportunity
+    alias: CREATE-OPPORTUNITY
+    title: Create Opportunity
+    pageGroup: @opportunities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            
+            a.simpleButton{display:inline-block;padding:0 8px;font:normal 11px/20px Arial,sans-serif;color:#666;background-color:#F0F0F0;border:1px solid #CCC;text-align:center;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:8px; text-decoration: none !important}
+            a.simpleButton:hover {background-color: #FFF}
+            </style>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region new-account (
+        name: New Account
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: wizardBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region opportunity-information (
+        name: Opportunity Information
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region other-opportunity-attributes (
+        name: Other Opportunity Attributes
+        type: staticContent
+        layout {
+            sequence: 1210
+            slot: wizardBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P71_ACCOUNT (
+        type: popupLov
+        label {
+            label: Account
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @accounts
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @opportunity-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_AMOUNT (
+        type: numberField
+        label {
+            label: Amount
+            alignment: left
+        }
+        settings {
+            minValue: 1
+            maxValue: 10000000000
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 50
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            formatMask: FML999G999G999G999G999
+            width: 32
+            valuePlaceholder: $0
+        }
+        validation {
+            valueRequired: true
+            maxLength: 50
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: !@opportunity-amount-set-at-product-level
+        }
+    )
+
+    pageItem P71_CLOSE_DATE (
+        type: datePicker
+        label {
+            label: Close Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody: return to_char((sysdate + 90),'&APP_DATE_FORMAT.');
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: !@product-level-close-dates
+        }
+    )
+
+    pageItem P71_CUSTOMER_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+            height: 3
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_CUSTOMER_DUNS (
+        type: textField
+        label {
+            label: DUNS#
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 120
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_CUSTOMER_IS_KEY_ACCOUNT_YN (
+        type: selectList
+        label {
+            label: Key Account
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes;Y,No;N
+            displayNullValue: false
+        }
+        layout {
+            sequence: 70
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_CUSTOMER_NAME (
+        type: textField
+        label {
+            label: Account Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_CUSTOMER_SIC (
+        type: textField
+        label {
+            label: SIC
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 130
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_CUSTOMER_STOCK_SYMB (
+        type: textField
+        label {
+            label: Stock Symbol
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_CUSTOMER_WEB_SITE (
+        type: textField
+        label {
+            label: Web Site
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 140
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_DEAL_SUMMARY (
+        type: textarea
+        label {
+            label: Summary
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 70
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEAL_SUMMARY
+            used: always
+        }
+    )
+
+    pageItem P71_DEFAULT_REP_ID (
+        type: popupLov
+        label {
+            label: Default &REP_TITLE.
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select REP_LAST_NAME||', '|| REP_FIRST_NAME n, id r
+                from EBA_SALES_SALESREPS
+                order by 1
+                ```
+            nullDisplayValue: - Select Rep -
+        }
+        layout {
+            sequence: 80
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_NEW_OR_EXISTING (
+        type: selectList
+        label {
+            label: Use
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @new-or-existing
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @opportunity-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: EXISTING
+        }
+    )
+
+    pageItem P71_OPPORTUNITY_NAME (
+        type: textField
+        label {
+            label: Opportunity
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @opportunity-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_OPP_ID (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @other-opportunity-attributes
+            slot: regionBody
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P71_OPP_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                from eba_sales_tags_type_sum
+                where content_type = 'DEAL'
+                ```
+        }
+        layout {
+            sequence: 80
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+    )
+
+    pageItem P71_SALESREP (
+        type: selectList
+        label {
+            label: &REP_TITLE.
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @primary-sales-rep
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 20
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x number := null;
+                begin
+                   for c1 in (select DEFAULT_REP_ID
+                                 from EBA_SALES_CUSTOMERS
+                                 where id = :P71_ACCOUNT) loop
+                       x := c1.DEFAULT_REP_ID;
+                   end loop;
+                   return x;
+                end;
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Only sales representatives that have been assigned the role of "Sales Representative", "Sales Manager", or "Tele Sales" will appear in this list. Contact your application administrator if you're not seeing someone expected to be in this list and ask them to change that person's role to one of the three roles mentioned above.
+        }
+    )
+
+    pageItem P71_SPONSOR_CONTACT_ID (
+        type: selectList
+        label {
+            label: Client Sponsor
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @contacts-with-titles
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 30
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        help {
+            helpText: Select a client sponsor from the list provided. If you do not see the client sponsor you want in the list, click the "Contacts" tab and add a new contact that represents the client sponsor you want to add to this opportunity. Once you've created the contact, you can come back to this page and assign the newly added contact as this opportunity's client sponsor.
+        }
+    )
+
+    pageItem P71_STATUS (
+        type: selectList
+        label {
+            label: Stage
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @steps-to-close-status-code
+            displayExtraValues: false
+            nullDisplayValue: - Select a Status -
+        }
+        layout {
+            sequence: 10
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_SVP (
+        type: selectList
+        label {
+            label: SVP
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select svp_name, id from eba_sales_svps order by upper(svp_name)
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @other-opportunity-attributes
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SVP_ID
+            used: always
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_sales_svps
+        }
+    )
+
+    pageItem P71_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                  from eba_sales_tags_type_sum
+                 where content_type = 'ACCOUNT'
+                ```
+        }
+        layout {
+            sequence: 100
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_TERRITORY_ID (
+        type: selectList
+        label {
+            label: Territory
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @territory
+            nullDisplayValue: - Select Territory -
+        }
+        layout {
+            sequence: 60
+            region: @new-account
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Create Opportunity
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-clicked (
+        name: Cancel clicked
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-existing-account-item (
+        name: show hide existing account item
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P71_NEW_OR_EXISTING
+        }
+        clientSideCondition {
+            type: item=value
+            item: P71_NEW_OR_EXISTING
+            value: EXISTING
+        }
+
+        action native-hide (
+            action: hide
+            settings {
+                hidePageItemsOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P71_ACCOUNT
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-set-focus (
+            action: setFocus
+            affectedElements {
+                selectionType: items
+                items: P71_ACCOUNT
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            settings {
+                showAllOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P71_ACCOUNT
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-new-account-region (
+        name: show hide new account region
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P71_NEW_OR_EXISTING
+        }
+        clientSideCondition {
+            type: item=value
+            item: P71_NEW_OR_EXISTING
+            value: NEW
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @new-account
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-set-focus (
+            action: setFocus
+            affectedElements {
+                selectionType: items
+                items: P71_CUSTOMER_NAME
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @new-account
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation p71-account-not-null-when-existing (
+        name: P71_ACCOUNT not null when existing
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P71_ACCOUNT
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P71_ACCOUNT
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P71_NEW_OR_EXISTING
+            value: EXISTING
+        }
+    )
+
+    validation p71-customer-name-not-duplicated (
+        name: P71_CUSTOMER_NAME not duplicated
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_customers
+                where upper(customer_name) = upper(:P71_CUSTOMER_NAME)
+                ```
+        }
+        error {
+            errorMessage: An account with that name already exists.
+            associatedItem: @P71_CUSTOMER_NAME
+        }
+        serverSideCondition {
+            type: item=value
+            item: P71_NEW_OR_EXISTING
+            value: NEW
+        }
+    )
+
+    validation p71-customer-name-not-null-when-new (
+        name: P71_CUSTOMER_NAME not null when new
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P71_CUSTOMER_NAME
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P71_CUSTOMER_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P71_NEW_OR_EXISTING
+            value: NEW
+        }
+    )
+
+    validation p71-opportunity-name-not-duplicated (
+        name: P71_OPPORTUNITY_NAME not duplicated
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_deals
+                where upper(deal_name) = upper(:P71_OPPORTUNITY_NAME)
+                ```
+        }
+        error {
+            errorMessage: An opportunity with that name already exists.
+            associatedItem: @P71_OPPORTUNITY_NAME
+        }
+    )
+
+    validation p71-territory-id-not-null (
+        name: P71_TERRITORY_ID not null
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: itemIsNotNull
+            item: P71_TERRITORY_ID
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P71_TERRITORY_ID
+        }
+        serverSideCondition {
+            type: item=value
+            item: P71_NEW_OR_EXISTING
+            value: NEW
+        }
+    )
+
+    validation valid-tag-characters (
+        name: Valid Tag Characters
+        execution {
+            sequence: 60
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P71_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P71_TAGS
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    validation valid-tag-characters-opportunity (
+        name: Valid Tag Characters Opportunity
+        execution {
+            sequence: 70
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P71_OPP_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P71_OPP_TAGS
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    process clear-session-data (
+        name: Clear Session Data
+        type: clearSessionState
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 7957990420757602394
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 7957990506257602395
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    process create-opportunity (
+        name: create opportunity
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_account_id   number;
+                    l_opp_id       number;
+                    
+                    la_product     apex_application_global.vc_arr2;
+                    la_team        apex_application_global.vc_arr2;
+                    la_competition apex_application_global.vc_arr2;
+                begin
+                    if :P71_NEW_OR_EXISTING = 'NEW' then
+                        insert into eba_sales_customers (
+                        customer_name,
+                        customer_territory_id,
+                        customer_web_site,
+                        customer_duns,
+                        customer_sic,
+                        customer_stock_symb,
+                        customer_is_key_account_yn,
+                        default_rep_id,
+                        customer_description,
+                        tags              
+                        )
+                        values (
+                        :P71_CUSTOMER_NAME,
+                        :P71_TERRITORY_ID,
+                        :P71_CUSTOMER_WEB_SITE,
+                        :P71_CUSTOMER_DUNS,
+                        :P71_CUSTOMER_SIC,
+                        :P71_CUSTOMER_STOCK_SYMB,
+                        :P71_CUSTOMER_IS_KEY_ACCOUNT_YN,
+                        :P71_DEFAULT_REP_ID,
+                        :P71_CUSTOMER_DESCRIPTION,
+                        :P71_TAGS
+                        ) returning id into l_account_id;
+                    else
+                        l_account_id := :P71_ACCOUNT;
+                    end if;
+                    
+                    insert into EBA_SALES_DEALS (
+                    DEAL_NAME,
+                    CUSTOMER_ID,
+                    SALESREP_ID_01,
+                    DEAL_AMOUNT,
+                    DEAL_CLOSE_DATE,
+                    DEAL_STATUS_CODE_ID,
+                    SPONSOR_CONTACT_ID,
+                    VP_ID,
+                    DEAL_SUMMARY,
+                    TAGS,
+                    SVP_ID
+                    )
+                    values (
+                    :P71_OPPORTUNITY_NAME,
+                    l_account_id,
+                    :P71_SALESREP,
+                    :P71_AMOUNT,
+                    :P71_CLOSE_DATE,
+                    :P71_STATUS,
+                    :P71_SPONSOR_CONTACT_ID,
+                    :P71_SVP,
+                    :P71_DEAL_SUMMARY,
+                    :P71_OPP_TAGS,
+                    :P71_SVP
+                    )
+                    returning id into l_opp_id;
+                    
+                    :P71_OPP_ID := l_opp_id; -- used to branch later
+                    
+                -- The code below is remarked out because this functionality was removed from the wizard
+                -- Allan 21-NOV-2016
+                /*
+                    -- add products
+                    if :P73_PRODUCTS is not null then
+                        la_product := apex_util.string_to_table(:P73_PRODUCTS);
+                        for i in 1..la_product.count
+                        loop
+                            insert into eba_sales_deal_products (deal_id, product_id) values (l_opp_id, la_product(i));
+                        end loop;
+                    end if;
+                  
+                    -- team
+                    if :P72_TEAM is not null then
+                        la_team := apex_util.string_to_table(:P72_TEAM);
+                        for i in 1..la_team.count
+                        loop
+                            insert into eba_sales_deal_team (deal_id, REP_ID) values (l_opp_id, la_team(i));
+                        end loop;
+                    end if;
+                
+                    -- competition
+                    if :P72_COMPETITION is not null then
+                        la_competition := apex_util.string_to_table(:P72_COMPETITION);
+                        for i in 1..la_competition.count
+                        loop
+                            insert into eba_sales_deal_competition (deal_id, competitor_id) values (l_opp_id, la_competition(i));
+                        end loop;
+                    end if;
+                */
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Opportunity Created
+        }
+        error {
+            errorMessage: Unable to create opportunity
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8021891686162898196
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

@@ -1,0 +1,591 @@
+page 50 (
+    name: Feature Customization
+    alias: FEATURE-CUSTOMIZATION
+    title: Feature Customization
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region feature-customization (
+        name: Feature Customization
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       ONLEAVE,
+                       NOTES,
+                       DEPTNO
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    // get the grid view features sub object creating it if needed
+                    var features = apex.util.getNestedObject( config, "views.grid.features" );
+                    // turn single row view off
+                    features.singleRowView = false;
+                    return config;
+                }
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 1416399069403265981
+        }
+
+        savedReport 14493 (
+            visibility: primary
+            view {
+                default: grid
+                rowsPerPage: 5
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 148
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 117
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 135
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 103
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 95
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 90
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 89
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    width: 109
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 118
+                    sequence: 11
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select DNAME as d, DEPTNO as r from EBA_DEMO_IG_DEPT order by 1
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            settings {
+                navigationListFor: month
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: radioGroup
+            heading {
+                heading: Job
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-jobs
+                displayNullValue: false
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select ENAME as d, EMPNO as r from EBA_DEMO_IG_EMP order by 1
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textarea
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                width: 60
+                height: 8
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+            advanced {
+                columnInitJavaScriptFunction:
+                    ```javascript-browser
+                    function(config) {
+                        config.features.sort = false;
+                        config.features.aggregate = false;
+                        return config;
+                    }
+                    ```
+            }
+        )
+
+        column ONLEAVE (
+            type: checkbox
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region overview-feature-customization (
+        name: Overview: Feature Customization
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Interactive Grid has so many options that to keep the number of
+                declarative options from becoming overwhelming some options are only
+                available through advanced configuration using JavaScript code. 
+                The same is true for column attributes. Keep in mind that the UI to access a
+                feature Such as the Actions > Data > Flashback menu is separate
+                from the feature. If you disable the feature the menu item is hidden.
+                But just hiding, disabling, or removing the menu
+                item or toolbar button doesn't disable the feature.
+                Most features of Interactive Grid can be controlled through APIs and configurable
+                option properties. See the JavaScript API documentation for details.
+                </p>
+                <p>This example disables the Single Row View option of the grid view
+                (See the Advanced: Initialization JavaScript Function attribute). 
+                In addition the Notes column overides the declarative options to not allow sorting
+                or aggregation but still allow control break. (See the NOTES column Advanced:
+                Column Initialization JavaScript Function attribute).
+                </p>
+                <p>You should use the declarative setting if there is one and only use
+                JavaScript configuration when there is no declarative setting or
+                if the settings must be made conditionally.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 51
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 40
+                action: resetPagination
+            }
+        }
+    )
+
+    process save-interactive-grid-data (
+        name: " - Save Interactive Grid Data"
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @feature-customization
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 720277710511019171
+        }
+    )
+
+)
+

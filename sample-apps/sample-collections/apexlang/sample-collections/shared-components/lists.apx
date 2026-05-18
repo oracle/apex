@@ -1,0 +1,288 @@
+list admin-options (
+    name: admin options
+
+    entry remove-collections (
+        label: Remove Collections
+        icon {
+            imageIconCssClasses: fa-ban
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: This application creates Oracle APEX collections.  Use this link to drop all collections resetting this application to factory defaults.
+            2: formIcon
+        }
+    )
+
+    entry reset-data (
+        label: Reset Data
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: This application uses the sample EBA_DEMO_CS_EMP table, use this link to reset the table to the original specification.
+            2: formIcon
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+
+list collection-examples (
+    name: Collection Examples
+
+    entry api-examples (
+        label: API Examples
+        icon {
+            imageIconCssClasses: fa-keyboard-o
+        }
+        layout {
+            sequence: 22
+        }
+        link {
+            target: {
+                page: 12
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View Oracle APEX API examples which you can use in your own application.
+        }
+    )
+
+    entry basic-collections (
+        label: Basic Collections
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+        userDefinedAttributes {
+            1: Creating a Basic Collection.  Create a user defined collection name on a simple Employee table structure.
+        }
+    )
+
+    entry data-synchronization (
+        label: Data Synchronization
+        icon {
+            imageIconCssClasses: fa-spinner
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Populate a collection from a sample Employees table, update the collection, and then synchronize the data in the collection with the base table.
+        }
+    )
+
+)
+
+list navigation-bar-top (
+    name: Navigation Bar (Top)
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 19
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                5
+                35
+                36
+                39
+            ]
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry api-examples (
+        label: API Examples
+        icon {
+            imageIconCssClasses: fa-keyboard-o
+        }
+        layout {
+            sequence: 9
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry basic-collections (
+        label: Basic Collections
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 2
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                3
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry data-synchronization (
+        label: Data Synchronization
+        icon {
+            imageIconCssClasses: fa-spinner
+        }
+        layout {
+            sequence: 6
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                7
+            ]
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                8
+                100
+            ]
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,438 @@
+page 63 (
+    name: Copy Release
+    alias: COPY-RELEASE
+    title: Copy Release
+    pageGroup: @releases
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @releases
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region milestones (
+        name: Milestones
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with r as (
+                    select trunc(sysdate-release_open_date) push_default
+                      from sp_release_trains
+                     where id = :P63_COPY_FROM_RELEASE_ID)
+                select MILESTONE_NAME,
+                       MILESTONE_DATE,
+                       milestone_date + r.push_default default_date,
+                       milestone_description
+                  from sp_release_milestones, r
+                 where release_id = :P63_COPY_FROM_RELEASE_ID
+                 order by milestone_date asc
+                ```
+            pageItemsToSubmit: P63_COPY_FROM_RELEASE_ID
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No Milestones found.
+        }
+
+        column DEFAULT_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Date plus Push Default
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: DD-MON-RR
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MILESTONE_DATE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Date
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: DD-MON-RR
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MILESTONE_DESCRIPTION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Milestone Description
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MILESTONE_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Milestone
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region release (
+        name: Release
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P63_COPY_FROM_RELEASE_ID (
+        type: selectList
+        label {
+            label: Copy From Release
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select release_train||' '||release || ' (open '|| to_char(release_open_date,'DD-Mon-YY')||')' d, id 
+                  from SP_RELEASE_TRAINS
+                 order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - Select Release to Copy -
+        }
+        layout {
+            sequence: 20
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P63_NEW_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @release
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P63_OPEN_DATE (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @release
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P63_PUSH_DAYS (
+        type: numberField
+        label {
+            label: Push Days
+            alignment: left
+        }
+        settings {
+            minValue: 0
+            virtualKeyboard: numeric
+        }
+        layout {
+            sequence: 50
+            region: @release
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            valueRequired: true
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: The number of days to be added to each of the Milestone dates when the new Release is created.  The default is as if the release open of the selected release is today.
+        }
+    )
+
+    pageItem P63_RELEASE (
+        type: textField
+        label {
+            label: New Release
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button copy (
+        buttonName: COPY
+        label: Copy
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-report-when-rel-changes (
+        name: refresh report when rel changes
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P63_COPY_FROM_RELEASE_ID
+        }
+
+        action default-push-days (
+            name: default push days
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select trunc(sysdate-release_open_date)
+                      from sp_release_trains
+                     where id = :P63_COPY_FROM_RELEASE_ID
+                    ```
+                itemsToSubmit: P63_COPY_FROM_RELEASE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P63_PUSH_DAYS
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @milestones
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process copy-release (
+        name: Copy Release
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.copy_release (
+                    p_copy_from_release_id => :P63_COPY_FROM_RELEASE_ID,
+                    p_new_release          => :P63_RELEASE,
+                    p_push_days            => :P63_PUSH_DAYS,
+                    p_new_release_id       => :P63_NEW_RELEASE_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Release copied.
+        }
+        error {
+            errorMessage: Release failed to be copied.
+        }
+        advanced {
+            executionMappingIdentifier: 4463721975158362634
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 117
+                items: {
+                    P117_RELEASE_ID: &P63_NEW_RELEASE_ID.
+                }
+                clearCache: 117
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,608 @@
+page 22 (
+    name: Initiative
+    alias: INITIATIVE-EDIT
+    title: &NOMENCLATURE_INITIATIVE.
+    pageGroup: @initiatives
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region nomenclature-initiative (
+        name: &NOMENCLATURE_INITIATIVE.
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_INITIATIVES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P22_FOCUS_AREA_ID (
+        type: selectList
+        label {
+            label: &NOMENCLATURE_AREA.
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-areas-area
+            nullDisplayValue: - Choose &NOMENCLATURE_AREA. -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 20
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: AREA_ID
+            dataType: number
+        }
+    )
+
+    pageItem P22_HIDDEN_BY_DEFAULT_YN (
+        type: switch
+        label {
+            label: Hidden By Default
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: HIDDEN_BY_DEFAULT_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: Use this flag to reduce clutter of abandoned &NOMENCLATURE_INITIATIVES..  If an &NOMENCLATURE_INITIATIVE. is no longer in use enable this hidden by default.
+        }
+    )
+
+    pageItem P22_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @nomenclature-initiative
+            slot: regionBody
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P22_IMAGE (
+        type: imageUpload
+        label {
+            label: Drag and Drop Icon Image here
+            alignment: left
+        }
+        display {
+            downloadLinkText: Download Icon
+        }
+        storage {
+            mimeTypeColumn: IMAGE_MIMETYPE
+            filenameColumn: IMAGE_NAME
+            blobLastUpdatedColumn: IMAGE_LAST_UPDATED
+        }
+        cropping {
+            allowCropping: true
+            aspectRatio: square
+        }
+        resizeTo {
+            maxWidth: 256
+            maxHeight: 256
+        }
+        layout {
+            sequence: 60
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: IMAGE
+            dataType: blob
+        }
+    )
+
+    pageItem P22_INITIATIVE (
+        type: textField
+        label {
+            label: &NOMENCLATURE_INITIATIVE.
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: INITIATIVE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P22_OBJECTIVE (
+        type: richTextEditor
+        label {
+            label: Objective
+            alignment: left
+        }
+        settings {
+            minHeight: 180
+            allowCustomHtml: true
+        }
+        layout {
+            sequence: 40
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: OBJECTIVE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P22_SPONSOR_ID (
+        type: selectOne
+        label {
+            label: Owner
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+                  from SP_TEAM_MEMBERS
+                 where is_current_yn = 'Y'
+                    or id = :P22_SPONSOR_ID
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 50
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: SPONSOR_ID
+            dataType: number
+        }
+    )
+
+    pageItem P22_TAGS (
+        type: combobox
+        label {
+            label: Tags
+            alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+            maxValuesInList: 7
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'research' tag from dual union all
+                select 'devops' tag from dual union all
+                select 'review' tag from dual
+                order by 1
+                ```
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
+        }
+        layout {
+            sequence: 70
+            region: @nomenclature-initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @nomenclature-initiative
+            column: TAGS
+            dataType: varchar2
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P22_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P22_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P22_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-status-scale-report (
+        name: refresh status scale report
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P22_STATUS_SCALE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P22_STATUS_SCALE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation can-t-delete-if-projects (
+        name: Can't delete if projects
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_projects
+                 where initiative_id = :P22_ID
+                ```
+        }
+        error {
+            errorMessage: You cannot delete an initiative that has projects.
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 139358523426174845508
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    process delete-to-avoid-mutating-triggers (
+        name: Delete - to avoid mutating triggers
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                delete from sp_initiative_approvals
+                 where initiative_id = :P22_ID;
+                
+                for c1 in (
+                    select image_ref_id
+                      from sp_initiative_comments
+                     where initiative_id = :P22_ID
+                       and image_ref_id is not null
+                ) loop
+                    delete from sp_comment_images
+                     where image_ref_id = c1.image_ref_id;
+                end loop;
+                
+                delete from sp_initiative_comments
+                 where initiative_id = :P22_ID;
+                
+                delete from sp_initiative_default_tasks
+                 where initiative_id = :P22_ID;
+                
+                delete from sp_initiative_documents
+                 where initiative_id = :P22_ID;
+                
+                delete from sp_initiative_focus_areas
+                 where initiative_id = :P22_ID;
+                
+                delete from sp_initiative_links
+                 where initiative_id = :P22_ID;
+                
+                delete from sp_initiatives
+                 where id = :P22_ID;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: &NOMENCLATURE_INITIATIVE. deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 13234562033873689302
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process initialize-form-initiative (
+        name: Initialize form Initiative
+        type: formInitialization
+        formRegion: @nomenclature-initiative
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 139358522657993845506
+        }
+    )
+
+    process process-form-initiative (
+        name: Process form Initiative
+        type: formAutoRowProcessing
+        formRegion: @nomenclature-initiative
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 139358523053242845507
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    branch (
+        name: to main initiative page after delete
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 21
+                clearCache: [
+                    22
+                    94
+                ]
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

@@ -1,0 +1,420 @@
+page 63 (
+    name: Convert to Opportunity
+    alias: CONVERT-TO-OPPORTUNITY
+    title: Convert to Opportunity
+    pageGroup: @leads
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    config {
+        buildOption: @leads
+    }
+
+    region button-bar (
+        name: Button bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region convert (
+        name: Convert
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P63_ACCOUNT (
+        type: selectList
+        label {
+            label: Account
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @accounts
+            nullDisplayValue: - Select Account -
+        }
+        layout {
+            sequence: 30
+            region: @convert
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select account_id from EBA_SALES_LEADS where id = :P63_LEAD_ID
+        }
+    )
+
+    pageItem P63_AMOUNT (
+        type: numberField
+        label {
+            label: Amount
+            alignment: left
+        }
+        settings {
+            minValue: 1
+            maxValue: 10000000000
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 50
+            region: @convert
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 15
+        }
+        validation {
+            valueRequired: true
+            maxLength: 2000
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P63_CLOSE_DATE (
+        type: datePicker
+        label {
+            label: Close Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @convert
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+            width: 15
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            used: always
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody: return to_char((sysdate + 90),'&APP_DATE_FORMAT.');
+        }
+    )
+
+    pageItem P63_LEAD_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @convert
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P63_OPPORTUNITY (
+        type: textField
+        label {
+            label: Opportunity
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @convert
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+    )
+
+    pageItem P63_SALES_REP (
+        type: selectList
+        label {
+            label: Primary &REP_TITLE.
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.rep_email || ' - ' || rr.role_name display_value, 
+                  r.id return_value 
+                from eba_sales_salesreps r
+                join eba_sales_salesrep_roles rr
+                  on rr.id = r.rep_role
+                where rr.is_sales_rep = 'Y'
+                order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @convert
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x number := null;
+                begin
+                   for c1 in (select DEFAULT_REP_ID
+                                 from EBA_SALES_CUSTOMERS
+                                 where id = :P71_ACCOUNT) loop
+                       x := c1.DEFAULT_REP_ID;
+                   end loop;
+                   return x;
+                end;
+                ```
+        }
+    )
+
+    pageItem P63_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @steps-to-close-status-code
+            displayExtraValues: false
+            nullDisplayValue: - Select a Status -
+        }
+        layout {
+            sequence: 70
+            region: @convert
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button convert-to-opportunity (
+        buttonName: Convert_to_opportunity
+        label: Convert to Opportunity
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-clicked (
+        name: Cancel clicked
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Lead converted.
+        }
+        advanced {
+            executionMappingIdentifier: 6520927654010296777
+        }
+    )
+
+    process convert-lead-to-opportunity (
+        name: convert lead to opportunity
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                
+                  l_id             number;
+                  l_sales_lead_rec eba_sales_leads%rowtype;
+                  l_message        varchar2(4000);
+                
+                begin
+                
+                  insert into eba_sales_deals (
+                    deal_name,
+                    customer_id,
+                    salesrep_id_01,
+                    deal_amount,
+                    deal_close_date,
+                    deal_status_code_id
+                  ) values (
+                    :P63_OPPORTUNITY,
+                    :P63_ACCOUNT,
+                    :P63_SALES_REP,
+                    :P63_AMOUNT,
+                    to_date(:P63_CLOSE_DATE,'DD-MON-YYYY'),
+                    :P63_STATUS
+                  )
+                  returning id 
+                  into l_id;
+                
+                  update eba_sales_leads 
+                  set opportunity_id = l_id, 
+                    lead_status_id = 5 
+                  where id = :P63_LEAD_ID;
+                /*
+                  select *
+                  into l_sales_lead_rec
+                  from eba_sales_leads 
+                  where id = :P63_LEAD_ID;
+                
+                  l_message := 'converted from lead ' || l_sales_lead_rec.row_key;
+                
+                  insert into eba_sales_deal_notes(
+                    deal_id,
+                    note
+                  ) values (
+                    l_id,
+                    l_message
+                  );
+                 */
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 9017478038061680032
+        }
+    )
+
+)
+

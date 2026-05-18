@@ -1,0 +1,250 @@
+page 14 (
+    name: Help
+    alias: HELP
+    title: Help
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.helpContainer{width:960px;margin:16px auto;zoom:1}
+            div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+            div.helpContainer:after{clear:both}
+            div.helpContainer div.helpSide{float:left;width:300px}
+            div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+            div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+            div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+            div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+            div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+            div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>About this Application</h2>
+                <p>This application highlights the reporting engines of Oracle APEX.</p><p>
+                
+                Use this application to better understand the native and declarative reporting functionality of Oracle APEX.</p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            cssClasses: t-HeroRegion--featured
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App version
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>Features</h2>
+                <p />
+                <ul>
+                <li>Interactive Reports</li>
+                <ul>
+                <li>column filtering</li>
+                <li>column sorting</li>
+                <li>row high lighting</li>
+                <li>drill down reporting</li>
+                <li>saved reports</li>
+                <li>report column selection</li>
+                <li>row and detail views</li>
+                <li>column formatting</li>
+                </ul>
+                
+                <li>Interactive Grids</li>
+                <ul>
+                <li>column filtering</li>
+                <li>column sorting</li>
+                <li>drill down reporting</li>
+                <li>saved reports</li>
+                <li>report column selection</li>
+                <li>column formatting</li>
+                </ul>
+                
+                <li>Classic Reports</li>
+                
+                <ul>
+                <li>row linking</li>
+                <li>column formatting</li>
+                <li>column sorting</li>
+                <li>referencing field values in report SQL using bind variables</li>
+                </ul>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+    region help (
+        name: Help
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region help-container (
+        name: Help Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region quick-start (
+        name: Quick Start
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <H2>Getting Started</h2>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137">OTN Forum</a>.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @help-container
+            slot: subRegions
+        }
+    )
+
+)
+

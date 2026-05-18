@@ -1,0 +1,397 @@
+page 96 (
+    name: Customer Referenceability
+    alias: CUSTOMER-REFERENCEABILITY
+    title: Customer Referenceability
+    pageGroup: @customers
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region referenceability (
+        name: Referenceability
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P96_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @referenceability
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P96_REFERENCABLE (
+        type: selectList
+        label {
+            label: Publicly Referenceable
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @referencable
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 20
+            region: @referenceability
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REFERENCABLE
+            used: always
+        }
+        default {
+            type: static
+            staticValue: No
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Would this customer give us a good reference?
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P96_REFERENCE_PHASE_ID (
+        type: selectList
+        label {
+            label: Reference Phase
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @reference-phase
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @referenceability
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REFERENCE_PHASE_ID
+            used: always
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P96_REFERENCE_TYPES (
+        type: checkboxGroup
+        label {
+            label: Reference Types
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @reference-types
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @referenceability
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQueryMultipleValues
+            sqlQuery:
+                ```sql
+                select listagg(rt.id,':') within group (order by rt.reference_type) types
+                from eba_cust_reference_types rt,
+                    eba_cust_customer_reftype_ref ref
+                where rt.id = ref.reference_type_id
+                    and ref.customer_id = :P96_ID
+                ```
+        }
+        help {
+            helpText: In what ways would this customer be willing to be a reference?
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P96_REF_RECRUITMENT_OWNER (
+        type: textField
+        label {
+            label: Recruitment Owner
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @referenceability
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REF_RECRUITMENT_OWNER
+            used: always
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P96_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 16826015700869450001
+        }
+    )
+
+    process fetch-row-from-eba-cust-customers (
+        name: Fetch Row from EBA_CUST_CUSTOMERS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_CUSTOMERS
+            pkColumn: ID
+            pkItem: P96_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 16860653631407359642
+        }
+    )
+
+    process process-row-of-eba-cust-customers (
+        name: Process Row of EBA_CUST_CUSTOMERS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_CUSTOMERS
+            pkColumn: ID
+            pkItem: P96_ID
+            returnKeyIntoItem: P96_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CUST_CUSTOMERS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 16860738635200381914
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    process save-reference-types (
+        name: Save Reference Types
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    delete from eba_cust_customer_reftype_ref
+                    where customer_id = :P96_ID
+                        and ':'||:P96_REFERENCE_TYPES||':' not like '%:'||reference_type_id||':%';
+                
+                    merge into eba_cust_customer_reftype_ref dest using (
+                        select :P96_ID customer_id, rt.id reference_type_id
+                        from eba_cust_reference_types rt
+                        where ':'||:P96_REFERENCE_TYPES||':' like '%:'||rt.id||':%'
+                    ) src
+                    on (dest.customer_id = src.customer_id and dest.reference_type_id = src.reference_type_id)
+                    when not matched then
+                        insert( customer_id, reference_type_id )
+                        values( src.customer_id, src.reference_type_id );
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 16860753558107383229
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+)
+

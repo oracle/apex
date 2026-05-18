@@ -1,0 +1,326 @@
+page 14 (
+    name: Revenue by Quarter
+    alias: REVENUE-BY-QUARTER
+    title: Revenue by Quarter
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Vertical bar chart showing sales forcast by quarter for a user definable reporting period. Change the "Beginning" and "Ending" filters to vary the bar graph's results.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region revenue-by-quarter (
+        name: Revenue by Quarter
+        type: chart
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        serverSideCondition {
+            type: inlineValidationErrorsNotDisplayed
+        }
+        chartLayout {
+            height: 300
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            show: false
+        }
+
+        series revenue-by-quarter (
+            name: Revenue by Quarter
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select label,
+                     null series,
+                     sum(deal_amount) value
+                    from (
+                      select d.qtr label,
+                        case when apex_util.get_build_option_status(
+                                      p_application_id    => :APP_ID,
+                                      p_build_option_name => 'Opportunity Amount Set at Product Level'
+                                  ) = 'EXCLUDE' then
+                            d.deal_amount
+                        else
+                            nvl((select sum(nvl(dp.quote_price, 0)) from EBA_SALES_DEAL_PRODUCTS dp where dp.deal_id = d.id), 0)
+                        end as deal_amount,
+                        q.first_day ob
+                      from eba_sales_deals d,
+                        eba_sales_sales_periods q
+                      where d.qtr = q.period_name
+                        and d.deal_probability = 100
+                        and d.deal_close_date >= to_date(:P14_BEGIN_QTR,'YYYYMMDD')
+                        and d.deal_close_date <= to_date(:P14_END_QTR,'YYYYMMDD')
+                      union all
+                      select period_name label,
+                        0 deal_amount,
+                        first_day ob
+                      from eba_sales_sales_periods
+                      where first_day >= to_date(:P14_BEGIN_QTR,'YYYYMMDD')
+                        and last_day  <= to_date(:P14_END_QTR,'YYYYMMDD')
+                    )
+                    group by label, ob
+                    order by ob 
+                    ```
+                pageItemsToSubmit: [
+                    P14_BEGIN_QTR
+                    P14_END_QTR
+                ]
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    pageItem P14_BEGIN_QTR (
+        type: selectList
+        label {
+            label: Beginning
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @quarter-begin
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                select first_day 
+                  from eba_sales_sales_periods
+                 where sysdate between first_day and last_day
+                )
+                loop
+                return c1.first_day;
+                end loop;
+                ```
+        }
+    )
+
+    pageItem P14_END_QTR (
+        type: selectList
+        label {
+            label: Ending
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @quarter-end
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @search
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                select last_day 
+                  from eba_sales_sales_periods
+                 where sysdate between first_day and last_day
+                )
+                loop
+                return c1.last_day;
+                end loop;
+                ```
+        }
+    )
+
+    dynamicAction p14-begin-qtr-or-p14-end-qtr-changed (
+        name: P14_BEGIN_QTR or P14_END_QTR changed
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                P14_BEGIN_QTR
+                P14_END_QTR
+            ]
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @revenue-by-quarter
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation end-begin (
+        name: End >= Begin
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: to_date(:P14_END_QTR,'YYYYMMDD') >= to_date(:P14_BEGIN_QTR,'YYYYMMDD')
+        }
+        error {
+            errorMessage: Ending Quarter must be greater than or equal to Beginning Quarter.
+            associatedItem: @P14_BEGIN_QTR
+        }
+    )
+
+    process set-initial-begin-and-end (
+        name: Set Initial Begin and End
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                  for c1 in (
+                  select first_day
+                    from eba_sales_sales_periods
+                   where sysdate-270 between first_day and last_day
+                  )
+                  loop
+                     :P14_BEGIN_QTR := to_char(c1.first_day,'YYYYMMDD');
+                  end loop;
+                
+                  for c2 in (
+                  select last_day
+                    from eba_sales_sales_periods
+                   where sysdate between first_day and last_day
+                  )
+                  loop
+                     :P14_END_QTR := to_char(c2.last_day,'YYYYMMDD');
+                  end loop;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 10203045567906360461
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P14_BEGIN_QTR
+        }
+    )
+
+)
+

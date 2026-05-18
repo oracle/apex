@@ -1,0 +1,98 @@
+page 4 (
+    name: Image URL
+    alias: IMAGE-URL
+    title: &APP_NAME. - Image URL
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>You can use Cards to display as photo gallery.  This page uses images sourced from external URLs.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-camera
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region image-url (
+        name: Image URL
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_RANDOM_IMAGE
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleA
+            ]
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: AUTHOR
+        }
+        media {
+            source: urlColumn
+            urlColumn: DOWNLOAD_URL
+            position: first
+            appearance: widescreen
+            sizing: cover
+            imageDescription: &AUTHOR. Photo
+        }
+    )
+
+)
+

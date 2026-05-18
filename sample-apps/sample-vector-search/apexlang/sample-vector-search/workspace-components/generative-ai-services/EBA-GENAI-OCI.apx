@@ -1,0 +1,17 @@
+genAIService EBA_GENAI_OCI (
+    name: OCI GenAI Service
+    provider: ociGenAI
+    endpointUrl {
+        url: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com
+    }
+    authentication {
+        credentials: @EBA_CREDENTIALS_OCI
+    }
+    additionalData {
+        attributes: {"compartmentId":"ocid1.compartment.oc1","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}
+    }
+    advanced {
+        modelName: cohere.command-r-08-2024
+    }
+)
+

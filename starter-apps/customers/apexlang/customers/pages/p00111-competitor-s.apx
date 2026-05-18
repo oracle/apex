@@ -1,0 +1,441 @@
+page 111 (
+    name: Competitor(s)
+    alias: COMPETITOR-S
+    title: Competitor(s)
+    pageGroup: @customers
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region competitors (
+        name: Competitors
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region select-competitors (
+        name: Select Competitors
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    apex_item.checkbox2(p_idx        => 1,
+                                        p_value      => c.id,
+                                        p_attributes => case
+                                                            when exists (   select null
+                                                                            from eba_cust_cust_competitor_ref rf
+                                                                            where rf.customer_id = :P111_CUSTOMER_ID
+                                                                                and rf.competitor_id = c.id
+                                                                        ) then
+                                                            'CHECKED'
+                                                        else
+                                                            null
+                                                        end,
+                                        p_checked_values => null,
+                                        p_item_id    => 'P111_COMPETITOR_IDS',    
+                                        p_item_label => 'Select/Unselect' || name ) as competitor_id,
+                    c.name,
+                    ( select count(*) from eba_cust_cust_competitor_ref rf where rf.competitor_id = c.id ) references
+                from eba_cust_competitors c
+                order by c.name
+                ```
+            pageItemsToSubmit: P111_CUSTOMER_ID
+        }
+        layout {
+            sequence: 20
+            parentRegion: @competitors
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: competitorsIRR
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            headerText: <label for="P111_COMPETITORS_IDS">Select applicable competitors from the report below. Use the search field to find competitors quickly.</label>
+            footerText: <br>
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        actionsMenu {
+            includeActionsMenu: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 16691936419170360434
+        }
+
+        column COMPETITOR_ID (
+            type: plainText
+            heading {
+                heading: <input type="checkbox" id="selectUnselectAll" title="Select/Unselect All">
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column REFERENCES (
+            type: plainText
+            heading {
+                heading: References
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        savedReport 166920378 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn COMPETITOR_ID (
+                sequence: 1
+            )
+
+            displayColumn NAME (
+                sequence: 2
+            )
+
+            displayColumn REFERENCES (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    pageItem P111_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @competitors
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P111_REFRESHED (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            region: @competitors
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button update-competitors (
+        buttonName: UPDATE_COMPETITORS
+        label: Update Competitor(s)
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: cancel dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-region (
+        name: Refresh Region
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @select-competitors
+        }
+        clientSideCondition {
+            type: itemIsNull
+            item: P111_REFRESHED
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @select-competitors
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: Y
+            }
+            affectedElements {
+                selectionType: items
+                items: P111_REFRESHED
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction select-unselect-all-products (
+        name: Select/Unselect All Products
+        execution {
+            sequence: 30
+            eventScope: dynamic
+            staticContainer: #competitorsIRR
+        }
+        when {
+            selectionType: jQuerySelector
+            jquerySelector: #selectUnselectAll
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    if ( $( '#selectUnselectAll' ).is(':checked') ) {
+                      $('input[type=checkbox][name=f01]').attr('checked',true);
+                    }
+                    else {
+                      $('input[type=checkbox][name=f01]').attr('checked',false);
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 17747574374954837138
+        }
+    )
+
+    process update-competitors (
+        name: Update Competitors
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_collection varchar2(30) := 'EBA_COMPETITORS';
+                begin
+                    apex_collection.create_or_truncate_collection( l_collection );
+                
+                    for i in 1..apex_application.g_f01.count loop
+                        apex_collection.add_member( p_collection_name => l_collection,
+                                                    p_n001 => to_number( apex_application.g_f01(i) ) );
+                    end loop;
+                
+                    delete from eba_cust_cust_competitor_ref rf
+                    where rf.customer_id = :P111_CUSTOMER_ID
+                        and not exists (select null
+                                        from apex_collections c
+                                        where c.collection_name = l_collection
+                                            and c.n001 = rf.competitor_id
+                                        );
+                
+                
+                    merge into eba_cust_cust_competitor_ref rf using (
+                        select :P111_CUSTOMER_ID customer_id,
+                            c.n001 competitor_id
+                        from apex_collections c
+                        where c.collection_name = l_collection
+                    ) src
+                        on ( rf.customer_id = src.customer_id and rf.competitor_id = src.competitor_id )
+                    when not matched then
+                        insert ( customer_id, competitor_id )
+                        values ( src.customer_id, src.competitor_id );
+                
+                    apex_collection.delete_collection( l_collection );
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 17747574831066837139
+        }
+    )
+
+)
+

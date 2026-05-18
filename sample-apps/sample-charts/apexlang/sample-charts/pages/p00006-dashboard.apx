@@ -1,0 +1,652 @@
+page 6 (
+    name: Dashboard
+    alias: DASHBOARD
+    title: Dashboard
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows built-in &PRODUCT_NAME. plugin-in based dashboard style controls.  Oracle APEX region plugins allow
+                 APEX developers to extend the APEX application builder with missing and custom solutions not currently available in &PRODUCT_NAME..</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-list-alt
+        }
+    )
+
+    region badge-list-circular (
+        name: Badge List (Circular)
+        type: plugin/badgeList
+        source {
+            sqlQuery:
+                ```sql
+                SELECT 'Commisioned' label,
+                    to_char(count(*),'990') value,
+                    null pct
+                from eba_demo_chart_emp
+                where comm is not null
+                union all
+                select label, to_char(pct,'990')||'%' value, pct
+                from (
+                    select 'Comm. Percent' label,
+                        100 * (sum(case nvl(comm,0)
+                                when 0 then 0
+                                else 1 end) / count(*)) pct
+                    from eba_demo_chart_emp )
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: badgeListCircular
+            regionDisplaySelector: true
+        }
+        settings {
+            badgeStyle: circular
+            value: VALUE
+            bottomLabel: LABEL
+            linkTarget: {
+                type: url
+                url: #
+            }
+            layout: 2Columns
+            badgeSize: extraLarge
+            color: yes
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 80
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region orders (
+        name: Orders
+        type: chart
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h320
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: combination
+        }
+        legend {
+            position: end
+            hideAndShowBehavior: noRescaling
+        }
+
+        series acme-store (
+            name: Acme Store
+            type: area
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+                position: center
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            type: line
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+                position: aboveMarker
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+        axis y-2 (
+            name: y
+            title: Y1 Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region project-task-status (
+        name: Project Task Status
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.id,
+                       '#' as link,
+                       --'fa-circle' as icon,
+                       ' ' link_attr,
+                       ' ' link_class,
+                       ' ' list_badge,
+                       ' ' list_class,
+                       ' ' list_text,
+                       p.project,
+                       t.task_name as list_title,
+                       t.start_date,
+                       t.end_date,
+                       t.status,
+                       t.assigned_to,
+                       t.cost
+                  from eba_demo_chart_tasks t,
+                       eba_demo_chart_projects p
+                 where t.project = p.id
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: i-h300
+        }
+        advanced {
+            htmlDomId: sttSlide
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 300
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                t-MediaList--showDesc
+                t-MediaList--showBadges
+                t-MediaList--stack
+            ]
+            showNullValuesAs: -
+        }
+
+        column ASSIGNED_TO (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Assigned to
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+        )
+
+        column COST (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Cost
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column END_DATE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: End date
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 14
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Link attr
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+        )
+
+        column LINK_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Link class
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+        )
+
+        column LIST_BADGE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: List badge
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                htmlExpression: #STATUS#
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: List class
+                alignment: center
+            }
+            layout {
+                sequence: 11
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: List text
+                alignment: center
+            }
+            layout {
+                sequence: 12
+            }
+            columnFormatting {
+                htmlExpression: #PROJECT# &middot; #ASSIGNED_TO# &middot; #COST#
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: List title
+                alignment: center
+            }
+            layout {
+                sequence: 13
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Project
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Start date
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Status
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+        )
+
+    )
+
+    region task-costings (
+        name: Task Costings
+        type: chart
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h320
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: combo1
+            regionDisplaySelector: true
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            show: false
+        }
+
+        series tasks-by-budget-cost (
+            name: Tasks By Budget/Cost
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select task_name,
+                           budget
+                      from eba_demo_chart_tasks
+                     where budget > 2000
+                    order by 2,1
+                    ```
+            }
+            columnMapping {
+                label: TASK_NAME
+                value: BUDGET
+            }
+            label {
+                show: true
+                position: outsideBarEdge
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region task-costs (
+        name: Task Costs
+        type: plugin/badgeList
+        source {
+            sqlQuery:
+                ```sql
+                select p.id,
+                       'fa-circle' as icon,
+                       p.project,
+                       t.task_name,
+                       t.start_date,
+                       t.end_date,
+                       t.status,
+                       t.assigned_to,
+                       t.cost
+                  from eba_demo_chart_tasks t,
+                       eba_demo_chart_projects p
+                 where t.project = p.id
+                ```
+        }
+        layout {
+            sequence: 100
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: i-h300
+        }
+        advanced {
+            htmlDomId: sttTooltip
+            regionDisplaySelector: true
+        }
+        settings {
+            value: COST
+            bottomLabel: TASK_NAME
+            layout: 3Columns
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

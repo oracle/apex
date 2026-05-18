@@ -1,0 +1,129 @@
+page 180 (
+    name: for question image display
+    alias: FOR-QUESTION-IMAGE-DISPLAY
+    title: for question image display
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region region (
+        name: region
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: 1 = 2
+        }
+    )
+
+    pageItem P180_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @region
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P180_IMAGE_BLOB (
+        type: fileUpload
+        label {
+            label: Image
+            alignment: right
+        }
+        display {
+            displayDownloadLink: false
+        }
+        storage {
+            mimeTypeColumn: IMAGE_MIMETYPE
+            filenameColumn: IMAGE_FILENAME
+            charSetColumn: IMAGE_CHARSET
+            bobLastUpdatedColumn: IMAGE_LAST_UPDATED
+        }
+        layout {
+            sequence: 20
+            region: @region
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_BLOB
+            used: always
+        }
+    )
+
+    process fetch-row-from-eba-qpoll-questions (
+        name: Fetch Row from EBA_QPOLL_QUESTIONS
+        type: autoRowFetch
+        source {
+            tableName: EBA_QPOLL_QUESTIONS
+            pkColumn: ID
+            pkItem: P180_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13024700949299606967
+        }
+    )
+
+    process raise-error (
+        name: raise error
+        type: executeCode
+        source {
+            plsqlCode: raise_application_error(-20001,'This page is not runnable by this application');
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13024710695739754564
+        }
+    )
+
+)
+

@@ -1,0 +1,2660 @@
+list access-control (
+    name: Access Control
+
+    entry access-control (
+        label: Access Control
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 151
+            }
+        }
+        userDefinedAttributes {
+            1: Use to change the Access Control Scope or to disable Access Control.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry territory-access-control-list (
+        label: Territory Access Control List
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 104
+                clearCache: 104
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage application users by sales territory. Administrators can see all territories, contributors are limited to the assignments defined on these pages.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry username-format (
+        label: Username Format
+        icon {
+            imageIconCssClasses: fa-at
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Define the username format for new users in this application.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 115
+                clearCache: [
+                    115
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Administrators can define the domain of users and assign each a role.
+            2: userIcon
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sales_acl_api.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+
+list actions-account (
+    name: Actions - Account
+
+    entry add-agreement (
+        label: Add Agreement
+        icon {
+            imageIconCssClasses: fa-handshake-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 102
+                items: {
+                    P102_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 102
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from apex_application_build_options bo
+                where application_id = :APP_ID
+                  and build_option_name = 'Agreements'
+                  and build_option_status = 'Include'
+                  and (select count(*) from EBA_SALES_AGREEMENTS) > 0
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @agreements
+        }
+    )
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: ACCOUNT
+                    P99_ENTITY_ID: &P94_ID.
+                }
+                clearCache: 99
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: ACCOUNT
+                    P22_ENTITY_ID: &P94_ID.
+                }
+                clearCache: 22
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry add-competition (
+        label: Add Competition
+        icon {
+            imageIconCssClasses: fa-user-plus
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 145
+                items: {
+                    P145_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 145
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry add-contact (
+        label: Add Contact
+        icon {
+            imageIconCssClasses: fa-phone
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 106
+                items: {
+                    P106_CUSTOMER_ID: &P94_ID.
+                    P106_SHOW_ACCOUNT: N
+                }
+                clearCache: 106
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: ACCOUNT
+                    P114_ENTITY_ID: &P94_ID.
+                }
+                clearCache: 114
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry add-location (
+        label: Add Location
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 32
+                items: {
+                    P32_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 32
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @account-locations
+        }
+    )
+
+    entry add-support-amount (
+        label: Add Support Amount
+        icon {
+            imageIconCssClasses: fa-money
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 122
+                items: {
+                    P122_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 122
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from apex_application_build_options bo
+                where application_id = :APP_ID
+                  and build_option_name = 'Support Amounts'
+                  and build_option_status = 'Include'
+                  and (select count(*) from EBA_SALES_SUPPORT_AMTS) > 0
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @support-amounts
+        }
+    )
+
+)
+
+list actions-contact (
+    name: Actions - Contact
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: CONTACT
+                    P99_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: CONTACT
+                    P22_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: CONTACT
+                    P114_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+)
+
+list actions-lead (
+    name: Actions - Lead
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: LEAD
+                    P99_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: LEAD
+                    P22_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: LEAD
+                    P114_ENTITY_ID: &P133_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+)
+
+list actions-opportunity (
+    name: Actions - Opportunity
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: OPPORTUNITY
+                    P99_ENTITY_ID: &P80_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: OPPORTUNITY
+                    P22_ENTITY_ID: &P80_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-competition (
+        label: Add Competition
+        icon {
+            imageIconCssClasses: fa-user-plus
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_DEAL_ID: &P80_ID.
+                }
+                clearCache: 27
+            }
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: OPPORTUNITY
+                    P114_ENTITY_ID: &P80_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+    entry add-product (
+        label: Add Product
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 108
+                items: {
+                    P108_DEAL_ID: &P80_ID.
+                }
+                clearCache: 108
+            }
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry add-team-member (
+        label: Add Team Member
+        icon {
+            imageIconCssClasses: fa-user-plus
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 30
+                items: {
+                    P30_DEAL_ID: &P80_ID.
+                }
+                clearCache: 30
+            }
+        }
+    )
+
+)
+
+list actions-product (
+    name: Actions - Product
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: PRODUCT
+                    P99_ENTITY_ID: &P61_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: PRODUCT
+                    P22_ENTITY_ID: &P61_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: PRODUCT
+                    P114_ENTITY_ID: &P61_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+)
+
+list actions-territory (
+    name: Actions - Territory
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: TERRITORY
+                    P99_ENTITY_ID: &P93_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: TERRITORY
+                    P22_ENTITY_ID: &P93_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-country (
+        label: Add Country
+        icon {
+            imageIconCssClasses: fa-map-pin
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 124
+                items: {
+                    P124_TERRITORY_ID: &P93_ID.
+                }
+                clearCache: 124
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: TERRITORY
+                    P114_ENTITY_ID: &P93_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+    entry add-state (
+        label: Add State
+        icon {
+            imageIconCssClasses: fa-map-pin
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 126
+                items: {
+                    P126_TERRITORY_ID: &P93_ID.
+                }
+                clearCache: 126
+            }
+        }
+    )
+
+)
+
+list activity-reports (
+    name: Activity Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 3
+        }
+        link {
+            target: {
+                page: 139
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar of application activity, reporting distinct users and total page views by day.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 90
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of page view details.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 91
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of page views aggregated by user.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+)
+
+list additional-administration-options (
+    name: Additional Administration Options
+
+    entry application-appearance (
+        label: Application Appearance
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 450
+        }
+        link {
+            target: {
+                page: 141
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface color scheme for all users.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 435
+        }
+        link {
+            target: {
+                page: 175
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all internal errors encountered within the application.
+            2: reportIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry closed-opportunities (
+        label: Closed Opportunities
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 420
+        }
+        link {
+            target: {
+                page: 81
+            }
+        }
+        userDefinedAttributes {
+            1: Opportunities that are won or lost (0 or 100% probability) cannot be edited. Set the status to something other then 0 or 100% to reenable edit capabilities.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry fiscal-quarters (
+        label: Fiscal Quarters
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 200
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the fiscal quarters used for reporting.  Companies have different quarter start and end dates, click here to manage those dates.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry rename-application (
+        label: Rename Application
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 432
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+        userDefinedAttributes {
+            1: Change the application name, displayed on the top left of each page, to one of your choosing.  By default, the application name is "&APP_NAME.".
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry sample-data (
+        label: Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 400
+        }
+        link {
+            target: {
+                page: 142
+            }
+        }
+        userDefinedAttributes {
+            1: Manage sample data for Accounts, &REP_TITLE.s, Products, Opportunities, Notes and Leads.  Options to remove, install, or re-install.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry svps (
+        label: SVPs
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 410
+        }
+        isCurrent {
+            type: pages
+            pages: 66
+        }
+        link {
+            target: {
+                page: 66
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Opportunities can be tracked by Senior Vice President (SVP).  Use these pages to define the domain of SVP's for use within this application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+
+list application-menu (
+    name: Application Menu
+
+    entry accounts-customers (
+        label: "Accounts [&CUSTOMERS.]"
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                94
+                98
+                105
+                107
+                127
+                130
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                10
+                13
+                12
+                18
+                17
+                26
+                25
+                33
+                11
+                44
+                43
+                37
+                38
+                8
+                9
+                6
+                7
+                4
+                5
+                33
+                54
+                53
+                56
+                55
+                57
+                60
+                59
+                65
+                64
+                67
+                66
+                70
+                69
+                51
+                77
+                78
+                81
+                96
+                83
+                104
+                109
+                110
+                112
+                111
+                116
+                113
+                115
+                119
+                82
+                210
+                211
+                212
+                213
+                43
+                128
+                44
+                109
+                104
+                110
+                175
+                175
+                15
+                153
+                154
+                45
+                141
+                142
+                28
+                35
+                40
+                35
+                36
+                58
+                84
+                103
+                118
+                136
+                144
+            ]
+        }
+        link {
+            target: {
+                page: 33
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry by-competitor (
+        label: By Competitor
+        layout {
+            sequence: 130
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 134
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry by-product (
+        label: By Product
+        layout {
+            sequence: 140
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 135
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry by-rep-title-raw (
+        label: By &REP_TITLE_RAW.
+        layout {
+            sequence: 120
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 31
+                action: resetPagination
+            }
+        }
+    )
+
+    entry by-territory (
+        label: By Territory
+        layout {
+            sequence: 150
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 42
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    entry contacts-contacts (
+        label: "Contacts [&CONTACTS.]"
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 55
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                23
+                24
+            ]
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                43
+                100
+                128
+                148
+            ]
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry leads-leads (
+        label: "Leads [&LEADS.]"
+        icon {
+            imageIconCssClasses: fa-crosshairs
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                29
+                133
+                138
+                19
+            ]
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        config {
+            buildOption: @leads
+        }
+    )
+
+    entry opportunities-deals (
+        label: "Opportunities [&DEALS.]"
+        icon {
+            imageIconCssClasses: fa-briefcase
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                80
+                85
+                86
+                87
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry products-products (
+        label: "Products [&PRODUCTS.]"
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                68
+                61
+            ]
+        }
+        link {
+            target: {
+                page: 68
+            }
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                14
+                20
+                39
+                46
+                47
+                48
+                49
+                62
+                90
+                91
+                121
+                129
+                131
+                132
+                139
+            ]
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry territories-territories (
+        label: "Territories [&TERRITORIES.]"
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                50
+                93
+                123
+                125
+            ]
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+)
+
+list data-load-process-train-load-opportunities (
+    name: Data Load Process Train - load opportunities
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 210
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 211
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 212
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry finish (
+        label: Finish
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 213
+            }
+        }
+    )
+
+)
+
+list data-load-wizard-progress-upload-accounts (
+    name: Data Load Wizard Progress - Upload Accounts
+
+    entry data-load-results (
+        label: Data Load Results
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 143
+            }
+        }
+    )
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 136
+            }
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 137
+            }
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 140
+            }
+        }
+    )
+
+)
+
+list exception-reports (
+    name: Exception Reports
+
+    entry accounts-with-no-territory (
+        label: Accounts with No Territory
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 132
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of all accounts with no territory specified.
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    entry opportunities-past-due (
+        label: Opportunities Past Due
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 131
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of all opportunities open but with a close date in the past.
+        }
+    )
+
+    entry opportunities-with-no-products (
+        label: Opportunities with No Products
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 129
+                clearCache: [
+                    129
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report identifying opportunities that do not specify any products.
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+)
+
+list manage-code-tables-xx (
+    name: Manage Code Tables XX
+
+    entry agreement-types (
+        label: Agreement Types
+        icon {
+            imageIconCssClasses: fa-handshake-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the various agreement types that will be used throughout the application.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @agreements
+        }
+    )
+
+    entry agreements (
+        label: Agreements
+        icon {
+            imageIconCssClasses: fa-handshake-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 84
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the agreements that will be used throughout the application.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_sales_agreement_types;
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @agreements
+        }
+    )
+
+    entry competitor-threats (
+        label: Competitor Threats
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 59
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Competitor Threats that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry countries (
+        label: Countries
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Countries that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry currencies (
+        label: Currencies
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 111
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Currencies that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry financial-assessments (
+        label: Financial Assessments
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 57
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Financial Assessments that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry industries (
+        label: Industries
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 64
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Industries that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry lead-sources (
+        label: Lead Sources
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 69
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Lead Sources that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry lead-status-codes (
+        label: Lead Status Codes
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Lead Status Codes that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry opportunity-stages (
+        label: Opportunity Stages
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 10
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Opportunity Stages that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry risk-assessments (
+        label: Risk Assessments
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 110
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 53
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Risk Assessments that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry states (
+        label: States
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 83
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of States that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry status-assessments (
+        label: Status Assessments
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 140
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 55
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Status Assessments that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry support-amount-types (
+        label: Support Amount Types
+        icon {
+            imageIconCssClasses: fa-money
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                Manage the support amount types that will be used throughout the application.
+                
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @support-amounts
+        }
+    )
+
+    entry support-amounts (
+        label: Support Amounts
+        icon {
+            imageIconCssClasses: fa-money
+        }
+        layout {
+            sequence: 160
+        }
+        link {
+            target: {
+                page: 118
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the support amounts that will be used throughout the application.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_sales_suprt_amt_types;
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @support-amounts
+        }
+    )
+
+    entry team-roles (
+        label: Team Roles
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 120
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Team Roles that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry customize-appearance (
+        label: Customize Appearance
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 55
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: #CUSTOMIZE_URL#
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: '#CUSTOMIZE_URL#' is not null
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 1001
+                items: {
+                    P1001_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 1001
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: 1000
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 56
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry preferences (
+        label: Preferences
+        icon {
+            imageIconCssClasses: fa-heart-o
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 148
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: 1000
+        }
+    )
+
+    entry search (
+        label: Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 25
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 149
+                clearCache: 149
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: 1000
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 60
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list preferences (
+    name: Preferences
+
+    entry time-zone (
+        label: Time Zone
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+        userDefinedAttributes {
+            1: Set time zone for the current user.
+            2: switchIcon
+        }
+    )
+
+)
+
+list primary-administration-options (
+    name: Primary Administration Options
+
+    entry application-preferences (
+        label: Application Preferences
+        icon {
+            imageIconCssClasses: fa-heart-o
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 35
+                clearCache: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Manage your application's preferences. Set the title text used to describe representatives in your line of business.
+        }
+    )
+
+    entry build-options (
+        label: Build Options
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 110
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Enable and disable various features and functionality within the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry competitors (
+        label: Competitors
+        icon {
+            imageIconCssClasses: fa-bullseye
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 51
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage a list of competitors.  Manage the domain of competitors available to be identified by opportunities.
+            2: formIcon
+            3: Manage
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry contract-terms (
+        label: Contract Terms
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 51
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the various contract terms that are used throughout the application. This facilitates opportunity tracking by contract term.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry lines-of-business (
+        label: Lines of Business
+        icon {
+            imageIconCssClasses: fa-building-o
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 144
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the lines of businesses that can be assigned to product families.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 77
+            }
+        }
+        userDefinedAttributes {
+            1: Manage notifications which are displayed on this applications home page.  Use notifications to communicate important information to users of this application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry product-families (
+        label: Product Families
+        icon {
+            imageIconCssClasses: fa-object-group
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the domain of product families available within this application. Opportunities can identify one or more products, each potentially belonging to a product family. This facilitates opportunity tracking by product and product family.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry products (
+        label: Products
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the domain of products available within this application.  Opportunities can identify one or more products.  This facilitates opportunity tracking by product.
+            2: formIcon
+            3: Manage
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry rep-title-s (
+        label: &REP_TITLE.s
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Manage all &REP_TITLE.s.  Identify name, email, and role.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry territories (
+        label: Territories
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Accounts are organized into territories.  Each account must be in one and only one territory.  Territory's facilitate reporting and organization of opportunities.
+            2: formIcon
+            3: Manage
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+)
+
+list primary-reports (
+    name: Primary Reports
+
+    entry competitor-analysis (
+        label: Competitor Analysis
+        icon {
+            imageIconCssClasses: fa-bullseye
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+        userDefinedAttributes {
+            1: View opportunity counts organized by Competitor, Quarter, and Status.
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry opportunities-about-to-close (
+        label: Opportunities About to Close
+        icon {
+            imageIconCssClasses: fa-dollar
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Identifies opportunities that are past due, or about to become past due.
+        }
+    )
+
+    entry opportunity-pipeline (
+        label: Opportunity Pipeline
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 62
+            }
+        }
+        userDefinedAttributes {
+            1: Opportunity analysis by sales stage.
+        }
+    )
+
+    entry revenue-by-quarter (
+        label: Revenue by Quarter
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: "Vertical bar chart showing sales forcast by quarter for a user definable reporting period.  "
+        }
+    )
+
+)
+
+list report-directory (
+    name: report directory
+
+    entry potential-revenue-by-rep-title (
+        label: Potential Revenue by &REP_TITLE.
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 41
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 121
+            }
+        }
+        userDefinedAttributes {
+            1: Chart showing potential revenue by &REP_TITLE..
+        }
+    )
+
+    entry projected-close-dates (
+        label: Projected Close Dates
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 47
+            }
+        }
+        userDefinedAttributes {
+            1: Calendar of projected opportunity close dates.
+        }
+    )
+
+    entry revenue-by-rep-title (
+        label: Revenue by &REP_TITLE.
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+        userDefinedAttributes {
+            1: Chart showing revenue by &REP_TITLE..
+        }
+    )
+
+    entry tags (
+        label: Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 48
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Tags with click through to tag references.
+        }
+    )
+
+)
+
+list upload-data (
+    name: upload data
+
+    entry accounts (
+        label: Accounts
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 136
+                clearCache: [
+                    136
+                    137
+                    140
+                    143
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Upload accounts from a spreadsheet
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry opportunities (
+        label: Opportunities
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 210
+                clearCache: [
+                    210
+                    211
+                    212
+                    213
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Upload opportunities from a spreadsheet
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

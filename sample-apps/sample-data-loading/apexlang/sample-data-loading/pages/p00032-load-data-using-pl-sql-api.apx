@@ -1,0 +1,696 @@
+page 32 (
+    name: Load Data using PL/SQL API
+    alias: LOAD-DATA-USING-PL-SQL-API
+    title: Load Data using PL/SQL API
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function set_item() {
+                $x('P32_DATA').value= $v('P32_SAMPLE_DATA');
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region data-loading-sql-statement (
+        name: Data Loading SQL Statement
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                Clicking the <strong>Load Data</strong> will execute the following SQL Statement:
+                </p>
+                <pre>
+                insert into EBA_DEMO_LOAD_EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno ) (
+                <span style="color: blue">    select to_number( col001 ),
+                           upper( col002 ),
+                           upper( col003 ),        
+                           (select empno from eba_demo_load_emp where ename = upper( col004 ) ),
+                           to_date( col005 ), 
+                           to_number( col006 ), 
+                           to_number( col007 ), 
+                           (select deptno from eba_demo_load_dept where dname = upper( col008 ) )
+                      from table( apex_data_parser.parse(
+                               p_content   => to_blob( <em>{- the data -}</em> ),
+                               p_skip_rows => 1,
+                               p_file_type => apex_data_parser.c_file_type_csv ) )</span> 
+                )
+                log errors into EBA_DEMO_LOAD_EMP_ERR$ 
+                reject limit unlimited;
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region employees (
+        name: Employees
+        type: classicReport
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_LOAD_EMP
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: The EBA_DEMO_LOAD_EMP table is empty.
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Comm
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Deptno
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Empno
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Ename
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Hiredate
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Mgr
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Sal
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region failed-rows (
+        name: Failed Rows
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                       ORA_ERR_NUMBER$  F_ORA_ERR_NUMBER$,
+                       ORA_ERR_MESG$    F_ORA_ERR_MESG$,
+                       ORA_ERR_ROWID$   F_ORA_ERR_ROWID$,
+                       ORA_ERR_OPTYP$   F_ORA_ERR_OPTYP$,
+                       ORA_ERR_TAG$     F_ORA_ERR_TAG$,
+                       EMPNO            F_EMPNO,
+                       ENAME            F_ENAME,
+                       JOB              F_JOB,
+                       MGR              F_MGR,
+                       HIREDATE         F_HIREDATE,
+                       SAL              F_SAL,
+                       COMM             F_COMM,
+                       DEPTNO           F_DEPTNO,
+                       CREATED          F_CREATED,
+                       LAST_UPDATED     F_LAST_UPDATED
+                  from EBA_DEMO_LOAD_EMP_ERR$
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: failed_rows
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select * from eba_demo_load_emp_err$
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: The EBA_DEMO_LOAD_EMP table is empty.
+        }
+
+        column F_COMM (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Comm
+            }
+            layout {
+                sequence: 12
+            }
+        )
+
+        column F_CREATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 14
+            }
+        )
+
+        column F_DEPTNO (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Deptno
+            }
+            layout {
+                sequence: 13
+            }
+        )
+
+        column F_EMPNO (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Empno
+            }
+            layout {
+                sequence: 6
+            }
+        )
+
+        column F_ENAME (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Ename
+            }
+            layout {
+                sequence: 7
+            }
+        )
+
+        column F_HIREDATE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Hiredate
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column F_JOB (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 8
+            }
+        )
+
+        column F_LAST_UPDATED (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 15
+            }
+        )
+
+        column F_MGR (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Mgr
+            }
+            layout {
+                sequence: 9
+            }
+        )
+
+        column F_ORA_ERR_MESG$ (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Message
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column F_ORA_ERR_NUMBER$ (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 16
+            }
+        )
+
+        column F_ORA_ERR_OPTYP$ (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 18
+            }
+        )
+
+        column F_ORA_ERR_ROWID$ (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 17
+            }
+        )
+
+        column F_ORA_ERR_TAG$ (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 19
+            }
+        )
+
+        column F_SAL (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Sal
+            }
+            layout {
+                sequence: 11
+            }
+        )
+
+    )
+
+    region load-data (
+        name: Load Data
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region page-instructions (
+        name: Page Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page uploads data into an existing table (<strong>EBA_DEMO_LOAD_EMP</strong>) using a SQL INSERT statement and the <strong>APEX_DATA_PARSER.PARSE</strong> PL/SQL function. Unlike using the APEX Data Loading wizard, this approach allows to implement "single-step" data loading, without any further end user interaction. On the other hand, uploaded data has to match the target table structure.
+                After load, table contents can be reviewed below. Failed rows will be placed into the <strong>EBA_DEMO_LOAD_EMP_ERR$</strong> table, which can be reviewed in report at the bottom of the page.</p>
+                <p><a href="javascript:set_item();">Click here</b></a> to copy and paste, or select the text below and paste it into the <b>Copy and Paste Delimited Data</b> section. One row (<code>9000,DOE,MARKERING_ANALYST...</code>) is supposed to be rejected; it will show up as <strong>Failed Row</strong> after loading.
+                </p>
+                <pre>
+                &P32_SAMPLE_DATA.
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P32_DATA (
+        type: textarea
+        label {
+            label: Copy and Paste Delimited Data
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @load-data
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+    )
+
+    pageItem P32_ROWS_FAILED (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @load-data
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P32_ROWS_LOADED (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @load-data
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P32_SAMPLE_DATA (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @page-instructions
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue:
+                ```
+                Empno,Ename,Job,Mgr,Hiredate,Sal,Comm,Deptno
+                8011,Campbell,CLERK,King,1-Nov-11,1300,,ACCOUNTING
+                8021,Chevy,ANALYST,Ford,20-Oct-11,3000,,RESEARCH
+                8118,BENZ,ANALYST,FORD,10-Oct-11,2800,,ACCOUNTING
+                9000,DOE,MARKERING_ANALYST,KING,10-jan-12,0,0,ACCOUNTING
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button load-data (
+        buttonName: LOAD_DATA
+        label: Load Data
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process load-data (
+        name: Load Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_error_log_exists boolean := false;
+                    l_data             raw(32767);
+                begin
+                    l_data := sys.utl_raw.cast_to_raw( :P32_DATA );
+                
+                    delete from EBA_DEMO_LOAD_EMP_ERR$;
+                    
+                    insert into EBA_DEMO_LOAD_EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno ) (
+                        select to_number( col001 ),
+                               upper( col002 ),
+                               upper( col003 ),        
+                               (select empno from eba_demo_load_emp where ename = upper( col004 ) ),
+                               to_date( col005 ), 
+                               to_number( col006 ), 
+                               to_number( col007 ), 
+                               (select deptno from eba_demo_load_dept where dname = upper( col008 ) )
+                          from table( apex_data_parser.parse(
+                                   p_content   => to_blob( l_data ),
+                                   p_skip_rows => 1,
+                                   p_file_type => apex_data_parser.c_file_type_csv ) ) )
+                   log errors into EBA_DEMO_LOAD_EMP_ERR$ 
+                   reject limit unlimited;
+                   
+                   :P32_ROWS_LOADED := sql%rowcount;
+                   
+                   select count(*) 
+                     into :P32_ROWS_FAILED
+                     from EBA_DEMO_LOAD_EMP_ERR$;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: &P32_ROWS_LOADED. row(s) loaded successfully into EBA_DEMO_LOAD_EMP; &P32_ROWS_FAILED. row(s) failed.
+        }
+        advanced {
+            executionMappingIdentifier: 1864842641196032883
+        }
+        serverSideCondition {
+            whenButtonPressed: @load-data
+        }
+    )
+
+)
+

@@ -1,0 +1,12 @@
+/*!
+ Copyright (c) 2020, 2024, Oracle and/or its affiliates.
+ */
+
+.no-item-ui {
+  --a-field-input-border-width: 0;
+  --a-field-input-background-color: transparent;
+}
+
+.t-BreadcrumbRegion-breadcrumb .apex-partial-theme-content-row {
+  margin-inline-start: auto;
+}

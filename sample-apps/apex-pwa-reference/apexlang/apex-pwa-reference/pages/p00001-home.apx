@@ -1,0 +1,363 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Home - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Oracle APEX provides developers with the ability to create Progressive Web
+                    Apps (PWAs) that can be easily installed on any desktop or mobile device,
+                    offering users a more native app experience. This application serves as a
+                    useful reference for developers looking to incorporate key PWA features
+                    into their own applications, helping them to create more engaging and
+                    user-friendly apps.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnCssClasses: [
+                col-lg-10
+                col-xl-8
+                col-xxl-8
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+                margin-bottom-sm
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region explore (
+        name: Explore
+        type: list
+        source {
+            list: @navigation-menu
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnCssClasses: [
+                col-lg-10
+                col-xl-8
+                col-xxl-8
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--featured force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--3cols
+                t-Cards--hideBody
+                t-Cards--iconsRounded
+                t-Cards--animColorFill
+            ]
+        }
+    )
+
+    region features (
+        name: Features
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  1 id,
+                  'Faster Performance' list_title,
+                  'Take advantage of advanced caching for even faster page rendering performance.' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-bolt' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  2 id,
+                  'Install Anywhere' list_title,
+                  'Your app can be installed on any desktop or mobile devices without downloading from an app store.' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-cloud-arrow-down' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  3 id,
+                  'Feels Native' list_title,
+                  'Your app runs fullscreen, can be added to the home screen, provide shortcuts actions, and is searchable.' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-mobile' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  4 id,
+                  'Lightweight' list_title,
+                  'APEX PWAs have a tiny footprint on devices and take virtually no space compared to native apps.' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-compress' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  5 id,
+                  'Device Integration' list_title,
+                  'Send notifications, fetch geolocation, share APEX data to other apps, access the camera, and more.' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-shapes' icon_class
+                from sys.dual
+                
+                union all
+                
+                select
+                  6 id,
+                  'Fully Branded' list_title,
+                  'Customize your app''s appearance, including home screen icons, color scheme, logo and more.' list_text,
+                  null list_class,
+                  null link, 
+                  null link_attr,
+                  null icon_color_class,
+                  'fa fa-design' icon_class
+                from sys.dual
+                
+                order by id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-ContentBlock--lightBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+            cssClasses: [
+                col-lg-10
+                col-xl-8
+                col-xxl-8
+            ]
+        }
+        reportLayout {
+            numberOfRows: 999
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                t-MediaList--showIcons
+                t-MediaList--showDesc
+                t-MediaList--cols t-MediaList--2cols
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: List Class
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: List Text
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: List Title
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region progressive-web-apps-in-apex (
+        name: Progressive Web Apps in APEX
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        comments {
+            comments:
+                ```
+                <p>
+                    Users install an Oracle APEX Progressive Web App on any desktop or mobile device for a rich experience that rivals native apps and uses advanced caching for improved performance.
+                </p>
+                ```
+        }
+    )
+
+)
+

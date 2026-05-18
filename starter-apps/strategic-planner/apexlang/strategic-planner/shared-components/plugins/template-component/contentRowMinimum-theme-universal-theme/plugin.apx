@@ -1,0 +1,58 @@
+plugin contentRowMinimum (
+    name: Content Row Minimum
+    staticId: THEME_42$CONTENT_ROW64393
+    theme: @universal-theme
+    templateComponent {
+        availableAs: [
+            partial
+            report
+        ]
+        partial:
+            ```html
+              <div class="t-ContentRow-wrap" aria-hidden="true">
+                {if ?SELECTION%assigned/}<div class="t-ContentRow-selection is-placeholder"></div>{endif/}
+            
+                  <div class="t-ContentRow-badge #BADGE_COL_WIDTH!ATTR# #BADGE_POS!ATTR# #BADGE_ALIGNMENT!ATTR#">
+                    {with/}
+                      LABEL:=
+                      VALUE:=
+                      SIZE:=#BADGE_SIZE#
+                      SHAPE:=#BADGE_SHAPE#
+                    {apply THEME$BADGE/}
+                  </div>
+            
+            
+                  <div class="t-ContentRow-avatar">
+                    {with/}
+                      SHAPE:=#AVATAR_SHAPE#
+                      SIZE:=#AVATAR_SIZE#
+                    {apply THEME$AVATAR/}
+                  </div>
+            
+                <div class="t-ContentRow-body">
+                  <div class="t-ContentRow-content">
+                    <div class="t-ContentRow-overline is-placeholder"></div>
+                    <div class="t-ContentRow-title is-placeholder"></div>
+                    <div class="t-ContentRow-description is-placeholder"></div>
+                  </div>
+                  <div class="t-ContentRow-misc is-placeholder"></div>
+                  <div class="t-ContentRow-actions is-placeholder"></div>
+                </div>
+              </div>
+            
+            ```
+        reportBody: <ul class="t-ContentRow{if ?STYLE/} #STYLE!ATTR#{endif/}{if REMOVE_PADDING/} t-ContentRow--removePadding{endif/}{if HIDE_BORDERS/} t-ContentRow--hideBorders{endif/}{if APPLY_THEME_COLORS/} u-colors{endif/} #APEX$COMPONENT_CSS_CLASSES#">#APEX$ROWS#</ul>
+        reportRow: <li class="t-ContentRow-item{if ?ITEM_CLASSES/} #ITEM_CLASSES#{endif/}" #APEX$ROW_IDENTIFICATION#>#APEX$PARTIAL#</li>
+        numberOfLazyLoadingSkeletons: 3
+    }
+    component {
+        standardAttributes: regionTemplateAttr
+    }
+    advanced {
+        quickPick: true
+    }
+    information {
+        helpText: Display content in a formatted row with a title, description, and more. Supports avatars and badges. Available for a single row or as a report with multiple rows.
+    }
+)
+

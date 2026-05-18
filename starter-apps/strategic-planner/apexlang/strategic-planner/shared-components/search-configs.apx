@@ -1,0 +1,66 @@
+searchConfig project_search (
+    name: Project Search
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select p.ID,
+                   f.area,
+                   i.initiative||' / '||f.area area_initiative,
+                   p.PROJECT,
+                   p.TARGET_COMPLETE,
+                   p.PRIORITY_ID,
+                   case when p.release_id is not null
+                        then (select release_train||' '||release from SP_RELEASE_TRAINS t where t.id = p.release_id)
+                        when p.target_complete is null
+                        then 'Not Targeted'
+                        else to_char(p.target_complete,'DD-MON-YYYY') 
+                        end target,
+                   p.updated,
+                   nvl((select 'P'||priority from sp_project_priorities pp where pp.id = p.priority_id),'Not Prioritized')||' - '||
+                   (select first_name||' '||last_name from sp_team_members t where t.id = p.OWNER_ID)||' - '||
+                   P.PCT_COMPLETE||'%'||' - '||
+                   (select first_name||' '||last_name from sp_team_members t where t.id = p.OWNER_ID)||
+                   decode(p.tags, null, null, ' - '||p.tags)
+                   details,
+                   'PR' initials,
+                   p.id project_id
+              from SP_PROJECTS p, 
+                   SP_INITIATIVES i,
+                   SP_AREAS f
+            where (nvl(:P23_INITIATIVE_ID,0) = 0 or :P23_INITIATIVE_ID = p.INITIATIVE_ID ) and 
+                  (nvl(:P23_FOCUS_AREA_ID,0) = 0 or :P23_AREA_ID = f.ID ) and
+                  p.initiative_id = i.id and
+                  i.area_id = f.id
+            ```
+        searchableColumns: [
+            AREA_INITIATIVE
+            PROJECT
+            DETAILS
+            INITIALS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: PROJECT
+        subtitleColumn: AREA_INITIATIVE
+        descriptionColumn: DETAILS
+        lastModifiedColumn: UPDATED
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 3
+            items: {
+                P3_PROJECT_ID: &ID.
+            }
+            clearCache: 3
+            action: resetPagination
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package
+    }
+)
+

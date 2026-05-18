@@ -1,0 +1,1561 @@
+page 2 (
+    name: Area
+    alias: AREA
+    title: Area
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var gAppImages = "#APP_IMAGES#";
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Area charts, using Oracle JET Data Visualizations, are showcased on this page. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-area-chart
+        }
+    )
+
+    region area-chart-color-javascript-code-customization (
+        name: Area Chart (Color JavaScript Code Customization)
+        type: chart
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: area_js
+            regionDisplaySelector: true
+        }
+        chart {
+            type: area
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        dataCursor {
+            cursor: true
+            behavior: smooth
+            dimOnHover: false
+        }
+        legend {
+            position: top
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                
+                    // Setup a callback function which gets called when data is retrieved, to manipulate the series data
+                    options.dataFilter = function( data ) {
+                        
+                        data.series[ 0 ].color = "#309fdb";
+                        data.series[ 0 ].borderColor = "black";
+                        data.series[ 0 ].markerDisplayed = "on";
+                        data.series[ 0 ].markerShape = "plus";
+                        data.series[ 0 ].markerColor = "#309fdb";
+                        data.series[ 0 ].markerSize = 8;
+                        data.series[ 0 ].pattern = "smallChecker";
+                        return data;
+                    };
+                
+                    return options;
+                }
+                ```
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer,a.product_name || ' ' || a.product_description || '<br/>X: ' ||
+                                        a.list_price || '<br/>Y: ' || a.product_id "shortDesc", a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                customTooltip: "shortDesc"
+            }
+        )
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        axis x (
+            name: x
+            title: X-Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y-Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region area-chart-color-javascript-code-customization-information (
+        name: Area Chart (Color JavaScript Code Customization) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to customize the series style of an Area chart data, via JavaScript code customizations.<p/>
+                
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  To customize your chart, a callback function, options.dataFilter, must be defined.  Within that function, apply your customizations to the data.  Any chart initialization changes, to attributes such as the chart title, type, or orientation, can also be made.  The JavaScript Code should follow a template similar to the following:<br/>
+                
+                <pre>
+                function( options ) {
+                
+                    // Setup a callback function which gets called when data is retrieved, to manipulate the series data
+                    options.dataFilter = function( data ) {
+                        
+                        data.series[ 0 ].color = "#ED6647";
+                        data.series[ 0 ].borderColor = "#0F3248";
+                        data.series[ 0 ].markerDisplayed = "on";
+                        data.series[ 0 ].markerShape = "plus";
+                        data.series[ 0 ].markerColor = "red";
+                        data.series[ 0 ].markerSize = 8;
+                        data.series[ 0 ].pattern = "smallChecker";
+                        return data;
+                    };
+                
+                    return options;
+                }
+                </pre><p/>
+                
+                <p>
+                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.
+                </p>
+                <p>
+                For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank">Area Chart: Styles</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @area-chart-color-javascript-code-customization
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region area-chart-legend-javascript-code-customization (
+        name: Area Chart (Legend JavaScript Code Customization)
+        type: chart
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: area
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        dataCursor {
+            cursor: true
+            behavior: smooth
+            dimOnHover: false
+        }
+        legend {
+            position: top
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                    
+                    // Setup a callback function which gets called when data is retrieved, to manipulate the series data
+                    options.dataFilter = function( data ) {
+                
+                        // Define a new legend, rather than using the default legend behavior applied to the chart
+                        data.legend = {
+                            sections:[{ items:[] }]
+                        }
+                        
+                        // Loop through the chart series, to define the new legend
+                        for ( var i = 0; i < data.series.length; i++ ) {
+                        
+                            // Manually add each series to the legend
+                            // Note: We assume that images exist in Shared Components 'Static Application Files', with a size of 16x16 pixel for every series entry.
+                            //       The variable 'gAppImages' is defined in the page attribute 'Function and Global Variable Declaration'
+                            data.legend.sections[ 0 ].items.push( {
+                                text: data.series[ i ].name,
+                                color: data.series[ i ].color,
+                                symbolType: "image",
+                                source: gAppImages + "legend/" + data.series[ i ].name + ".png"
+                            });
+                            
+                            // Do not automatically include the series in the legend
+                            data.series[ i ].displayInLegend = 'off';
+                        }  
+                        return data;
+                    }
+                    return options;
+                }
+                ```
+        }
+
+        series acme (
+            name: Acme
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer,a.product_name || ' ' || a.product_description || '<br/>X: ' ||
+                                        a.list_price || '<br/>Y: ' || a.product_id "shortDesc", a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                customTooltip: "shortDesc"
+            }
+        )
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        series shop (
+            name: Shop
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store (
+            name: Store
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        axis x (
+            name: x
+            title: X-Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y-Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region area-chart-legend-javascript-code-customization-information (
+        name: Area Chart (Legend JavaScript Code Customization) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to customize the icons associated with series entries of the legend on an Area chart data, via JavaScript code customizations.<p/>
+                
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  To customize your chart, a callback function, options.dataFilter, must be defined.  Within that function, apply your customizations to the data.  Any chart initialization changes, to attributes such as the chart title, type, or orientation, can also be made.  The JavaScript Code used on this example is as follows:<br/>
+                
+                <pre>
+                function( options ) {
+                    
+                    // Setup a callback function which gets called when data is retrieved, to manipulate the series data
+                    options.dataFilter = function( data ) {
+                
+                        // Define a new legend, rather than using the default legend behavior applied to the chart
+                        data.legend = {
+                            sections:[{ items:[] }]
+                        }
+                        
+                        // Loop through the chart series, to define the new legend
+                        for ( var i = 0; i < data.series.length; i++ ) {
+                        
+                            // Manually add each series to the legend
+                            // Note: We assume that images exist in Shared Components 'Static Application Files', with a size of 16x16 pixel for every series entry.
+                            //       The variable 'gAppImages' is defined in the page attribute 'Function and Global Variable Declaration'
+                            data.legend.sections[ 0 ].items.push( {
+                                text: data.series[ i ].name,
+                                color: data.series[ i ].color,
+                                symbolType: "image",
+                                source: gAppImages + "legend/" + data.series[ i ].name + ".png"
+                            });
+                            
+                            // Do not automatically include the series in the legend
+                            data.series[ i ].displayInLegend = 'off';
+                        }  
+                        return data;
+                    }
+                    return options;
+                }
+                </pre><p/>
+                
+                <p>
+                For more information on the JET chart legend options, refer to the Oracle JET <a href="&OJCHART_API_URL.#LegendItem" target="_blank">LegendItem symbolType</a> attributes in the ojChart API.
+                </p>
+                <p>
+                For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank">Area Chart: Styles</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @area-chart-legend-javascript-code-customization
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region area-chart-line-types (
+        name: Area Chart (Line Types)
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: area2
+            regionDisplaySelector: true
+        }
+        chart {
+            type: area
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            height: 400
+        }
+        legend {
+            position: end
+            hideAndShowBehavior: noRescaling
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+        axis y-2 (
+            name: y
+            title: Y1 Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region area-chart-line-types-information (
+        name: Area Chart (Line Types) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of an Area chart.<p/>
+                
+                <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>Without Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. The chart axes will not rescale, which is useful to remain in context. <p/>
+                <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the buttons to the top right of the chart to change the line type of the chart series. Line type specifies the shape of the data point connectors on the chart.<p/>
+                <p>
+                For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=lineTypes" target="_blank">Area Chart: Line Types</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @area-chart-line-types
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region area-chart-markers (
+        name: Area Chart (Markers)
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       project as label,
+                       NVL((select sum(t.budget) from eba_demo_chart_tasks t where t.project =  p.id and t.budget > t.cost),0) as value,
+                       'under budget' as series ,
+                       'green' as color
+                  from eba_demo_chart_projects p
+                union all
+                select id,
+                       project as label,
+                       NVL((select sum(t.budget) from eba_demo_chart_tasks t where t.project =  p.id and t.budget <= t.cost),0) as value,
+                       'over budget' as series ,
+                       'red' as color
+                  from eba_demo_chart_projects p
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: area
+        }
+        chartAppearance {
+            stack: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series budget (
+            name: Budget
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+                labelTooltip: LABEL
+            }
+            marker {
+                show: true
+                shape: circle
+            }
+            label {
+                show: true
+                position: none
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+            tickLabel {
+                rotation: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region area-chart-stacked (
+        name: Area Chart (Stacked)
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: area1
+            regionDisplaySelector: true
+        }
+        chart {
+            type: area
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            maxWidth: 500
+            height: 400
+        }
+        dataCursor {
+            cursor: true
+            behavior: smooth
+            dimOnHover: false
+        }
+        multiSeriesChartData {
+            sortOrder: labelDesc
+        }
+        legend {
+            position: top
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer,a.product_name || ' ' || a.product_description || '<br/>X: ' ||
+                                        a.list_price || '<br/>Y: ' || a.product_id "shortDesc", a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                customTooltip: "shortDesc"
+            }
+        )
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and b.customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region area-chart-stacked-information (
+        name: " Area Chart (Stacked) Information"
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of an Area chart.<p/>
+                
+                <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>With Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. This allows the user to focus on specific series that are interesting to them. The chart axes will rescale as the minimum and maximum values of the visible data increase or decrease. This can be useful for series with largely varying values.<p/>
+                <strong>Sort Order</strong> - Use this new chart-level attribute to set the sort order of the chart. In this example, the attribute is set to <strong>Label - Descending</strong>, which orders the x-axis labels in descending order.<p/>
+                <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the Horizontal/Vertical buttons to the top left of the chart to change the orientiation of the data items on the charts, and the Stack/Unstack buttons to the top right of the chart to change the rendering style of the data items. When multiple series are shown, stacking is recommended to prevent values from being obscured.<p/>
+                <p>
+                For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=default" target="_blank">Area Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=hideShow" target="_blank">Area Chart: Hide & Show</a> examples.
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @area-chart-stacked
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region area-chart-y-axis-value-formatting (
+        name: Area Chart (Y-Axis Value Formatting)
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: combination
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series average-budget (
+            name: Average Budget
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select task_name, round(avg_budget,2) from (  
+                        select task_name,
+                           avg(budget) over () avg_budget
+                      from eba_demo_chart_tasks
+                     where budget > 2000
+                    order by 2,1)
+                    ```
+            }
+            columnMapping {
+                label: TASK_NAME
+                value: ROUND(AVG_BUDGET,2)
+            }
+            line {
+                width: 4
+            }
+        )
+
+        series tasks-by-budget-cost (
+            name: Tasks By Budget/Cost
+            type: area
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select task_name,
+                           budget
+                      from eba_demo_chart_tasks
+                     where budget > 2000
+                    order by 2,1
+                    ```
+            }
+            columnMapping {
+                label: TASK_NAME
+                value: BUDGET
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y Axis Title
+            value {
+                format: decimal
+                formatScaling: thousand
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    button curved (
+        buttonName: Curved
+        label: Curved
+        layout {
+            sequence: 20
+            region: @area-chart-line-types
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button horizontal (
+        buttonName: Horizontal
+        label: Horizontal
+        layout {
+            sequence: 30
+            region: @area-chart-stacked
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-bars
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button none (
+        buttonName: None
+        label: None
+        layout {
+            sequence: 50
+            region: @area-chart-line-types
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button segmented (
+        buttonName: Segmented
+        label: Centered Segmented
+        layout {
+            sequence: 40
+            region: @area-chart-line-types
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button stack (
+        buttonName: Stack
+        label: Stack
+        layout {
+            sequence: 10
+            region: @area-chart-stacked
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button stepped (
+        buttonName: Stepped
+        label: Stepped
+        layout {
+            sequence: 30
+            region: @area-chart-line-types
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button straight (
+        buttonName: Straight
+        label: Straight
+        layout {
+            sequence: 10
+            region: @area-chart-line-types
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button unstack (
+        buttonName: Unstack
+        label: Unstack
+        layout {
+            sequence: 20
+            region: @area-chart-stacked
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button vertical (
+        buttonName: Vertical
+        label: Vertical
+        layout {
+            sequence: 40
+            region: @area-chart-stacked
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-area-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction curved (
+        name: Curved
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @curved
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'curved'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-line-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction horizontal-orientation (
+        name: Horizontal Orientation
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @horizontal
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area1").widget().ojChart({orientation: 'horizontal'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-stacked
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction none (
+        name: None
+        execution {
+            sequence: 90
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @none
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'none'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-line-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction segmented (
+        name: Segmented
+        execution {
+            sequence: 80
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @segmented
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'centeredSegmented'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-line-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction stack-chart (
+        name: Stack Chart
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @stack
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area1").widget().ojChart({stack: 'on'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-stacked
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction stepped (
+        name: Stepped
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @stepped
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'stepped'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-line-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction straight (
+        name: Straight
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @straight
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'straight'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-line-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction unstack-chart (
+        name: Unstack Chart
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @unstack
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area1").widget().ojChart({stack: 'off'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-stacked
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction vertical-orientation (
+        name: Vertical Orientation
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @vertical
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("area1").widget().ojChart({orientation: 'vertical'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @area-chart-stacked
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

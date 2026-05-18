@@ -1,0 +1,287 @@
+page 13 (
+    name: Prepare Movie Data (Step 3: Preview)
+    alias: PREPARE-MOVIE-DATA-3
+    title: Prepare Movie Data
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region data-loading-summary (
+        name: Data Loading Summary
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select count( id ) as Row_Count,
+                       sum( case when embedding_vector is not null
+                            then 1 
+                            else 0 
+                            end ) as Vector_Count
+                  from eba_vector_moviedata;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--xlarge
+                t-BadgeList--circular
+                t-BadgeList--fixed
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column ROW_COUNT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Loaded Row Count
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+        )
+
+        column VECTOR_COUNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Vector Count
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    region data-uploaded-successfully (
+        name: Data Uploaded Successfully
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Your data has been loaded successfully into the data table.</p>
+                <p>The next step to enable vector search is to generate <em>vector embeddings</em> that represent this data. These embeddings are then stored in the database and serve as the <strong>foundation for performing vector searches</strong>.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_vector_moviedata
+                 where embedding_vector is null;
+                ```
+        }
+    )
+
+    region progress (
+        name: Progress
+        type: list
+        source {
+            list: @ai-generated-data-progress
+        }
+        layout {
+            sequence: 30
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayCurrentLabelOnly
+            ]
+        }
+    )
+
+    button generate-vector-embeddings (
+        buttonName: GENERATE_VECTOR_EMBEDDINGS
+        label: Generate Vector Embeddings
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            showProcessing: true
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from eba_vector_moviedata
+                 where embedding_vector is null;
+                ```
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Back
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process clean-helper-table (
+        name: Clean Helper Table
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    execute immediate 'truncate table eba_vector_ai_helper';
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 11279389352618182
+        }
+        serverSideCondition {
+            whenButtonPressed: @generate-vector-embeddings
+        }
+    )
+
+    process generate-vectors-embeddings (
+        name: Generate Vectors Embeddings
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_vector vector;
+                
+                begin
+                    for moviedata in ( select id, title, moviedescription, actors from eba_vector_moviedata where embedding_vector is null ) loop
+                
+                        l_vector := apex_ai.get_vector_embeddings(
+                            p_value             => 'Title: ' || moviedata.title || ', Description: ' || moviedata.moviedescription || ', Actors: ' || moviedata.actors,
+                            p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end
+                        );
+                
+                        
+                        update eba_vector_moviedata
+                           set embedding_vector = l_vector
+                         where id = moviedata.id;
+                
+                    end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 11279772795618183
+        }
+        serverSideCondition {
+            whenButtonPressed: @generate-vector-embeddings
+        }
+    )
+
+    branch (
+        name: to Movie Vector Search
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+)
+

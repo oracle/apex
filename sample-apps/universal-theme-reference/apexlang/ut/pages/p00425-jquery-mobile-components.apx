@@ -1,0 +1,515 @@
+page 425 (
+    name: jQuery Mobile Components
+    alias: JQUERY-MOBILE-COMPONENTS
+    title: jQuery Mobile Components
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region column-toggle-examples (
+        name: Column Toggle Examples
+        type: staticContent
+        source {
+            htmlCode: <b>Column Toggle Examples</b>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @column-toggle-report
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+                margin-top-md
+            ]
+            icon: fa-mouse-pointer
+            renderComponents: belowContent
+        }
+    )
+
+    region column-toggle-report (
+        name: Column Toggle Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                The column toggle table mode selectively hides columns at narrower widths as a sensible default but also offers a menu to let users manually control which columns they want to see.
+                
+                <p>The Column Toggle Report provides a responsive table-based report that can selectively hide columns based on the width of the screen. There is also a column selection control where you can manually set the columns to display. This component is ideally suited for display tabular data in an easily consumable manner for small screen devices.</p>
+                
+                <p>Be sure to visit the <a href="f?p=&APP_ID.:1720">Components &rarr; Data Tables and Reports &rarr; Column Toggle Report</a> page for additional examples.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region jquery-mobile-is-no-longer-supported (
+        name: jQuery Mobile is no longer supported
+        type: staticContent
+        source {
+            htmlCode: <p>Please note that jQuery Mobile applications are desupported.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                margin-bottom-lg
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region list-view (
+        name: List View
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The List View component provides a simple list-based user interface that has a wide range of features. This component has built in search, list dividers, counters, nested lists, and more.</p>
+                
+                <p>Be sure to visit the <a href="f?p=&APP_ID.:1700">Components &rarr; List View</a> page for additional examples.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region list-view-examples (
+        name: List View Examples
+        type: staticContent
+        source {
+            htmlCode: <b>List View Examples</b>
+        }
+        layout {
+            sequence: 40
+            parentRegion: @list-view
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+                margin-top-md
+            ]
+            icon: fa-mouse-pointer
+            renderComponents: belowContent
+        }
+    )
+
+    region mobile-ui-patterns (
+        name: Mobile UI Patterns
+        type: staticContent
+        source {
+            htmlCode: <p>Here are a number of Mobile UI Patterns you can follow as you build your next mobile app.</p>
+        }
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region mobile-ui-patterns-2 (
+        name: Mobile UI Patterns
+        type: list
+        source {
+            list: @ut-mobile-patterns
+        }
+        layout {
+            sequence: 90
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                t-MediaList--showIcons
+                u-colors
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>APEX 18.1 introduced three new Region Types that have been ported from the jQuery Mobile user interface. These components are light weight, mobile friendly, and can help to simplify your apps transition from jQuery Mobile to Universal Theme.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region reflow-report (
+        name: Reflow Report
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The Reflow Report provides another responsive table-based report where on small screens, the table columns become stacked and each row becomes a block of data.
+                This is an alternative display to the Column Toggle Report and can be useful when you want to display all columns of a tabular report in a way that works well for small screens.</p>
+                
+                <p>Be sure to visit the <a href="f?p=&APP_ID.:1710">Components &rarr; Data Tables and Reports &rarr; Reflow Report</a> page for additional examples.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region reflow-report-examples (
+        name: Reflow Report Examples
+        type: staticContent
+        source {
+            htmlCode: <b>Reflow Report Examples</b>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @reflow-report
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+                margin-top-md
+            ]
+            icon: fa-mouse-pointer
+            renderComponents: belowContent
+        }
+    )
+
+    region responsive-design-and-mobile-ui-patterns (
+        name: Responsive Design and Mobile UI Patterns
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Universal Theme is designed to be responsive, so it will look and feel great on any screen size device. However, the patterns you use for your application may change depending on the your use cases. Here are some commonly asked questions that may provide some guidance as you build your next app.</p>
+                
+                <ul class="dm-UL">
+                  <li>
+                      <p><strong>How can I migrate my jQuery Mobile app to Universal Theme?</strong><br />
+                      For most apps, perhaps the simplest solution may be to start with a blank slate using Universal Theme.  Identify the key flows of your mobile app, and then reimagine them using all the features and functionality of Universal Theme.  This may be the perfect opportunity to experiment with the capabilities of Universal Theme and how you can use them to build an incredible small screen experience.</p>
+                  </li>
+                  <li>
+                      <p><strong>Should I build a separate app for mobile and desktop?</strong><br />
+                      This may be unnecessary for most cases. Unless your app will be primarily used on small screen devices, it may be better to optimize the UI of your app for the mobile use case rather than creating a separate app.  However, if you have a very specific mobile use case, then by all means, build a separate app that is mobile-optimized and applies mobile UI patterns to provide a great small screen experience.</p>
+                  </li>
+                  <li>
+                      <p><strong>What are some things I should keep in mind as I develop my next mobile app?</strong><br />
+                      That's a great question! First -- who are your users? What type of devices do they use? What is the primary usecase of your application? What is the setting in which your application is used? There are several things to consider before you write a single line of code. The more you understand your users and use cases, the more successful you will be with your APEX app.</p>
+                  </li>
+                </ul>
+                     
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button col-toggle (
+        buttonName: COL_TOGGLE_1
+        label: Example 1
+        layout {
+            sequence: 10
+            region: @column-toggle-examples
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1721:&APP_SESSION.:sample1','Column Toggle Report');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button col-toggle-2 (
+        buttonName: COL_TOGGLE_2
+        label: Example 2
+        layout {
+            sequence: 20
+            region: @column-toggle-examples
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1721:&APP_SESSION.:sample2','Column Toggle Report');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button list (
+        buttonName: LIST_1
+        label: Example 1
+        layout {
+            sequence: 10
+            region: @list-view-examples
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1701:&APP_SESSION.:sample1','List View');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button list-2 (
+        buttonName: LIST_2
+        label: Example 2
+        layout {
+            sequence: 30
+            region: @list-view-examples
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1701:&APP_SESSION.:sample2','List View');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reflow (
+        buttonName: REFLOW_1
+        label: Example 1
+        layout {
+            sequence: 10
+            region: @reflow-report-examples
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1711:&APP_SESSION.:sample1','Reflow Report');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reflow-2 (
+        buttonName: REFLOW_2
+        label: Example 2
+        layout {
+            sequence: 20
+            region: @reflow-report-examples
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.theme42demo.openMobileSamplePage('f?p=&APP_ID.:1711:&APP_SESSION.:sample2','Reflow Report');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

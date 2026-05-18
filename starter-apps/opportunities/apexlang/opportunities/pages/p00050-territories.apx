@@ -1,0 +1,1515 @@
+page 50 (
+    name: Territories
+    alias: TERRITORIES
+    title: Territories
+    pageGroup: @territories
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            // standard, cacheable elements
+            var timeout = 0; // used for debounce on search
+            var CONTAINER_SEL = '.t-Form-fieldContainer';
+            var pagePrefix = 'P' + $('#pFlowStepId').val();
+            var displayAsId = pagePrefix + '_DISPLAY_AS';
+            var $displayAs = $('#' + displayAsId);
+            var $body = $('.t-PageBody');
+            var $search = $('#' + pagePrefix + '_SEARCH');
+            var $sort = $('#' + pagePrefix + '_SORT');
+            var $reset = $('#reset_button');
+            var $cardsReg = $('#cards_region');
+            var $reportReg = $('#report_region');
+            var $gridReg = $('#grid_region');
+            
+            // custom items (will vary by page)
+            
+            function showLeftColumn() {
+              $body
+                .removeClass('t-PageBody--hideLeft')
+                .addClass('t-PageBody--showLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+            
+            function hideLeftColumn() {
+              $body
+                .removeClass('t-PageBody--showLeft')
+                .addClass('t-PageBody--hideLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+              
+            // applyFilters triggers the refresh event on the correct region
+            function applyFilters() {
+              var display = $v(displayAsId);
+              
+              if (display === 'CARDS') {
+                $cardsReg.trigger('apexrefresh');
+              } else if (display === 'REPORT') {
+                $reportReg.trigger('apexrefresh');
+              } else if (display === 'GRID') {
+                $gridReg.trigger('apexrefresh');
+              }
+            }
+            
+            // toggleRegionDisplay is similar to applyFilters except that it also
+            // takes into account what regions or items need to be displayed or hidden
+            function toggleRegionDisplay(refresh) {
+              var display = $v(displayAsId);
+              
+              refresh = (refresh === false) ? false : true;
+              
+              if (display === 'CARDS') {
+                $reportReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                $sort.closest(CONTAINER_SEL).show();
+            
+                if (refresh) {
+                  $cardsReg.trigger('apexrefresh');
+                }
+                
+                $cardsReg.show();
+              } else if (display === 'REPORT') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                if (refresh) {
+                  $reportReg.trigger('apexrefresh');
+                }
+            
+                $reportReg.show();
+              } else if (display === 'GRID') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $reportReg.hide();
+            
+                hideLeftColumn();
+            
+                if (refresh) {
+                  $gridReg.trigger('apexrefresh');
+                }
+            
+                $gridReg.show();
+              }
+            }
+              
+            function debounceSearch(e) {
+                /*
+                 * Prevent search for following keys:
+                 * TAB:     9
+                 * SHIFT:   16
+                 * LEFT:    37
+                 * RIGHT:   39
+                 */
+                if ( e.which === 9 || e.which === 16 || e.which === 37 || e.which === 39 ) {
+                    return false;
+                }
+                clearTimeout(timeout);
+                timeout = setTimeout(applyFilters, 250);
+            }
+              
+            function preventSubmitOnEnter(e) {
+              if (e.which === 13) {
+                return false;
+              }
+            }
+            
+            function resetFilters() {
+              $search.val(null);
+              
+              $sort.val('NAME');
+            
+              applyFilters();
+            }
+            
+            // standard search event bindings
+            $search.keydown(preventSubmitOnEnter);
+            $search.keyup(debounceSearch);
+            
+            // dynamic event bindings (will vary by filter page)
+            
+            // standard display, sort, reset event bindings
+            $displayAs.change(toggleRegionDisplay);
+            $sort.change(applyFilters);
+            $reset.click(resetFilters);
+              
+            toggleRegionDisplay(false);
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .t-Card-initials {
+              font-size: 14px;
+            }
+            
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            
+            Use the filters on the left to show different results in the region on the right. The right region can be displayed in one of three ways (Cards View, Report View, and Customizable Grid) by using the display-mode buttons located just to the left of the <strong>Manage Territories</strong> button. Filters are not displayed in the Customizable Grid view.
+            ```
+    }
+    config {
+        buildOption: @territories
+    }
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region page-settings (
+        name: Page Settings
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @territories
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region territories (
+        name: Territories
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+    )
+
+    region territories-cards (
+        name: Territories Cards
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_territories as (
+                  select id,
+                    territory_name,
+                    territory_description,
+                    row_key,
+                    updated,
+                    (
+                      select count(*)
+                      from eba_sales_customers c
+                      where t.id = c.customer_territory_id
+                    ) accounts,
+                    (
+                      select count(*)
+                      from eba_sales_deals
+                      where customer_id in (
+                        select id 
+                        from eba_sales_customers 
+                        where customer_territory_id = t.id
+                      )
+                    ) opportunities,
+                    (
+                      select count(*)
+                      from eba_sales_deals
+                      where deal_probability != 0
+                        and deal_probability != 100
+                        and customer_id in (
+                          select id 
+                          from eba_sales_customers 
+                          where customer_territory_id = t.id
+                        )
+                    ) open_opportunities
+                  from eba_sales_territories t
+                  where :P50_DISPLAY_AS = 'CARDS'
+                ),
+                card_details as (
+                  select territory_name card_title,
+                    null card_icon,
+                    row_key card_initials,
+                    case 
+                      when length(territory_description) < 50
+                      then territory_description
+                      else substr(territory_description, 1, 50) || '...'
+                    end card_text,
+                    apex_util.prepare_url(
+                      'f?p=' ||
+                      :APP_ID ||
+                      ':93:' ||
+                      :APP_SESSION ||
+                      ':::93:P93_ID:' ||
+                      id
+                    ) card_link,
+                    to_char(accounts,'999G999G999G990') ||
+                      ' accounts, ' ||
+                      to_char(opportunities,'999G999G999G990') ||
+                      ' opportunities' ||
+                      case open_opportunities
+                        when 0 then null
+                        else ', ' || to_char(open_opportunities,'999G999G999G990') || ' open'
+                      end card_stats,
+                    updated card_subtext,
+                    accounts,
+                    open_opportunities,
+                    opportunities,
+                    territory_description
+                  from base_territories
+                )
+                select *
+                from card_details
+                where (
+                  :P50_SEARCH is null
+                    or instr(upper(card_title), upper(:P50_SEARCH)) > 0
+                    or instr(upper(card_initials), upper(:P50_SEARCH)) > 0
+                    or instr(upper(territory_description), upper(:P50_SEARCH)) > 0
+                    or instr(upper(card_stats), upper(:P50_SEARCH)) > 0
+                    or instr(upper('Updated: ' || apex_util.get_since(card_subtext)), upper(:P50_SEARCH)) > 0
+                  )
+                order by
+                  case :P50_SORT
+                    when 'NAME' then card_title
+                  end,
+                  case :P50_SORT
+                    when 'ACC' then accounts
+                  end desc,
+                  case :P50_SORT
+                    when 'OPENOPP' then open_opportunities
+                  end desc,
+                  case :P50_SORT
+                    when 'OPP' then opportunities
+                  end desc,
+                  case :P50_SORT
+                    when 'UPDATED' then card_subtext
+                  end desc
+                ```
+            pageItemsToSubmit: [
+                P50_SEARCH
+                P50_DISPLAY_AS
+                P50_SORT
+            ]
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: cards_region
+            customAttributes: style="display:none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--basic
+                t-Cards--3cols
+                t-Cards--animColorFill
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column ACCOUNTS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Accounts
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card icon
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_STATS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Card stats
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: since
+            }
+            columnFormatting {
+                htmlExpression: Updated: #CARD_SUBTEXT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 4
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    #CARD_TEXT# <br />
+                    <small>#CARD_STATS#</small>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPEN_OPPORTUNITIES (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Open opportunities
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPPORTUNITIES (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Opportunities
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TERRITORY_DESCRIPTION (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Territory description
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region territories-grid (
+        name: Territories Grid
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.id, 
+                  t.row_key,
+                  territory_name,
+                  t.tags,
+                  (
+                    select count(*)
+                    from eba_sales_links
+                    where territory_id = t.id
+                  ) links,
+                  (
+                    select count(*)
+                    from eba_sales_files
+                    where territory_id = t.id
+                  ) attachments,
+                  (
+                    select count(*)
+                    from eba_sales_comments
+                    where territory_id = t.id
+                  ) comments,
+                  (
+                    select count(*)
+                    from eba_sales_verifications
+                    where territory_id = t.id
+                  ) validations,
+                  (
+                    select max(created)
+                    from eba_sales_verifications
+                    where territory_id = t.id
+                  ) last_validation,
+                  (
+                    select count(*)
+                    from eba_sales_clicks
+                    where territory_id = t.id
+                      and view_timestamp >= sysdate - 90
+                  ) views_90_days,
+                    (   select count(distinct(app_username))
+                        from eba_sales_clicks
+                        where territory_id = t.id
+                            and view_timestamp >= sysdate - 90
+                    ) users_90_days,
+                  created,
+                  created_by,
+                  updated,
+                  updated_by,
+                  territory_description description,
+                  (
+                    select count(*) 
+                    from eba_sales_customers c
+                    where t.id = c.customer_territory_id
+                  ) accounts,
+                  (
+                    select count(*) 
+                    from eba_sales_deals 
+                    where customer_id in (
+                      select id 
+                      from eba_sales_customers 
+                      where customer_territory_id = t.id
+                    )
+                  ) opportunities,
+                  (
+                    select count(*) 
+                    from eba_sales_deals 
+                    where deal_probability != 0 
+                      and deal_probability != 100 
+                      and customer_id in (
+                        select id 
+                        from eba_sales_customers 
+                        where customer_territory_id = t.id
+                      )
+                  ) open_opportunities
+                from eba_sales_territories t
+                where :P50_DISPLAY_AS = 'GRID'
+                ```
+            pageItemsToSubmit: P50_DISPLAY_AS
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: grid_region
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 721309131722153124
+        }
+
+        column ACCOUNTS (
+            type: plainText
+            heading {
+                heading: Accounts
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ATTACHMENTS (
+            type: plainText
+            heading {
+                heading: Attachments
+                alignment: end
+            }
+            layout {
+                sequence: 160
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+                alignment: end
+            }
+            layout {
+                sequence: 170
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LAST_VALIDATION (
+            type: plainText
+            heading {
+                heading: Last Validation
+            }
+            layout {
+                sequence: 190
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: R
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column LINKS (
+            type: plainText
+            heading {
+                heading: Links
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column OPEN_OPPORTUNITIES (
+            type: plainText
+            heading {
+                heading: Open Opportunities
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column OPPORTUNITIES (
+            type: plainText
+            heading {
+                heading: Opportunities
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Row key
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column TERRITORY_NAME (
+            type: link
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 93
+                    items: {
+                        P93_ID: #ID#
+                    }
+                    clearCache: 93
+                    action: resetPagination
+                }
+                linkText: #TERRITORY_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column USERS_90_DAYS (
+            type: plainText
+            heading {
+                heading: Users 90 days
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VALIDATIONS (
+            type: plainText
+            heading {
+                heading: Validations
+                alignment: end
+            }
+            layout {
+                sequence: 180
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VIEWS_90_DAYS (
+            type: plainText
+            heading {
+                heading: 90 Day Views
+                alignment: end
+            }
+            layout {
+                sequence: 200
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 7218911 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACCOUNTS (
+                sequence: 3
+            )
+
+            displayColumn OPEN_OPPORTUNITIES (
+                sequence: 5
+            )
+
+            displayColumn OPPORTUNITIES (
+                sequence: 4
+            )
+
+            displayColumn ROW_KEY (
+                sequence: 2
+            )
+
+            displayColumn TERRITORY_NAME (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    region territories-report (
+        name: Territories Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_territories as (
+                  select t.id, 
+                    t.row_key,
+                    territory_name,
+                    updated,
+                    case 
+                      when length(territory_description) < 50
+                      then territory_description
+                      when territory_description is not null
+                      then substr(territory_description, 1, 50) || '...'
+                    end description,
+                    (
+                      select count(*) 
+                      from eba_sales_customers c
+                      where t.id = c.customer_territory_id
+                    ) accounts,
+                    (
+                      select count(*) 
+                      from eba_sales_deals 
+                      where customer_id in (
+                        select id 
+                        from eba_sales_customers 
+                        where customer_territory_id = t.id
+                      )
+                    ) opportunities,
+                    (
+                      select count(*) 
+                      from eba_sales_deals 
+                      where deal_probability != 0 
+                        and deal_probability != 100 
+                        and customer_id in (
+                          select id 
+                          from eba_sales_customers 
+                          where customer_territory_id = t.id
+                        )
+                    ) open_opportunities,
+                    territory_description
+                  from eba_sales_territories t
+                  where :P50_DISPLAY_AS = 'REPORT'
+                )
+                select *
+                from base_territories
+                where (
+                  :P50_SEARCH is null
+                    or instr(upper(territory_name), upper(:P50_SEARCH)) > 0
+                    or instr(upper(row_key), upper(:P50_SEARCH)) > 0
+                    or instr(upper(territory_description), upper(:P50_SEARCH)) > 0
+                    or instr(upper(accounts), upper(:P50_SEARCH)) > 0
+                    or instr(upper(opportunities), upper(:P50_SEARCH)) > 0
+                    or instr(upper(open_opportunities), upper(:P50_SEARCH)) > 0
+                    or instr(upper(apex_util.get_since(updated)), upper(:P50_SEARCH)) > 0
+                )
+                ```
+            pageItemsToSubmit: [
+                P50_SEARCH
+                P50_DISPLAY_AS
+                P50_SORT
+            ]
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: report_region
+            customAttributes: style="display: none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+        messages {
+            whenNoDataFound: No territory found
+        }
+
+        column ACCOUNTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Accounts
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 4
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column OPEN_OPPORTUNITIES (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Open Opp.
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column OPPORTUNITIES (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Opportunities
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column TERRITORY_DESCRIPTION (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 9
+            }
+        )
+
+        column TERRITORY_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 93
+                    items: {
+                        P93_ID: #ID#
+                    }
+                    action: resetPagination
+                }
+                linkText: #TERRITORY_NAME#
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    pageItem P50_DISPLAY_AS (
+        type: radioGroup
+        label {
+            label: Display
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: sharedComponent
+            lov: @pill-display-as
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @page-settings
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: CARDS
+        }
+        sessionState {
+            storage: user
+        }
+        security {
+            escapeSpecialChars: false
+        }
+    )
+
+    pageItem P50_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 30
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search Territories
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P50_SORT (
+        type: selectList
+        label {
+            label: Sort
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Territory;NAME,Accounts;ACC,Open Opportunities;OPENOPP,Opportunities;OPP,Updated;UPDATED
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: NAME
+        }
+        sessionState {
+            storage: user
+        }
+    )
+
+    button manage-territory (
+        buttonName: MANAGE_TERRITORY
+        label: Manage Territories
+        layout {
+            sequence: 60
+            region: @territories
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                clearCache: 8
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 10
+            region: @filters
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: reset_button
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 70
+            region: @territories-grid
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 50
+        }
+    )
+
+)
+

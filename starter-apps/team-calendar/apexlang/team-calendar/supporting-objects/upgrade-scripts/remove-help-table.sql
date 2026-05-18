@@ -1,0 +1,1 @@
+drop table eba_ca_help_page;

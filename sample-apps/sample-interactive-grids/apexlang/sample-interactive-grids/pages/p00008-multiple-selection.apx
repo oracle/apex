@@ -1,0 +1,690 @@
+page 8 (
+    name: Multiple Selection
+    alias: MULTIPLE-SELECTION
+    title: Multiple Selection
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            $("#barchart").stickyWidget({
+                toggleWidth: true
+            });
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region compare-salary (
+        name: Compare Salary
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: barchart
+            regionDisplaySelector: true
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+        messages {
+            whenNoDataFound: Select some employees
+        }
+
+        series salary (
+            name: Salary
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery: select ename, sal from eba_demo_ig_emp where instr( ':' || :P8_SELECTED || ':', ':' || empno || ':' ) > 0
+                pageItemsToSubmit: P8_SELECTED
+            }
+            columnMapping {
+                label: ENAME
+                value: SAL
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region multiple-selection (
+        name: Multiple Selection
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO,
+                       ONLEAVE,
+                       NOTES
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(config) {
+                    config.defaultGridViewOptions = {
+                        multiple: true,
+                        selectAll: true,
+                        // new in 24.1 keep the selected row ids updated in a page item
+                        selectionStateItem: "P8_SELECTED"
+                    }
+                    return config; // don't forget to return this!
+                }
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 3251282632080512314
+        }
+
+        savedReport 14446 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    frozen: true
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 96
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    frozen: true
+                    width: 106
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 86
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 94
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 121
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 85
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    sequence: 10
+                }
+            )
+
+            sort (
+                column: @ENAME
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select dname, deptno 
+                    from eba_demo_ig_dept
+                    ```
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 30
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: textField
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 9
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ename, empno 
+                    from eba_demo_ig_emp
+                    ```
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textField
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: switch
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 100
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region overview-multiple-selection (
+        name: Overview: Multiple Selection
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This example shows that multiple selection including the ability to select all is independent of the selection row header.
+                Advanced configuration is used to set multiple selection and select all to true. See attribute Advanced: JavaScript Code.
+                </p>
+                <p>Selection uses the standard keyboard modifiers to select or unselect. Holding the Shift key while clicking or moving
+                with arrow keys will select a range of rows. Holding the Ctrl key while clicking or while moving with the arrow keys and using the Space key
+                will select or unselect a row. Ctrl+A will select all. These keys work even when there is a selection row header.
+                </p>
+                <p>This also shows an example of something useful that can be done with the Interactive Grid selection. When the selection changes the 
+                bar chart is updated to show the selected salaries. This is done with a dynamic action that listens for a selection change event.
+                This example has been updated for 24.1 to use a simpler method to refresh the chart. Now only the Refresh action is needed in the 
+                dynamic action because the selectionStateItem option is set in the Interactive Grid Initialization JavaScript Function attribute
+                so that the selected primary keys are automatically stored in page item P8_SELECTED. The chart series SQL query
+                checks if the EMPNO is in the list. The hidden item is specified as a page item to submit for the chart region.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P8_SELECTED (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @overview-multiple-selection
+            slot: regionBody
+        }
+        source {
+            used: always
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 7
+                action: resetPagination
+            }
+        }
+    )
+
+    dynamicAction update-chart (
+        name: update chart
+        execution {
+            sequence: 10
+        }
+        when {
+            event: region/interactiveGrid/interactivegridselectionchange
+            selectionType: region
+            region: @multiple-selection
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var i, selectedIds = ":",
+                        model = this.data.model;
+                    
+                    for ( i = 0; i < this.data.selectedRecords.length; i++ ) {
+                        selectedIds += model.getValue( this.data.selectedRecords[i], "EMPNO") + ":";
+                    }
+                    $s("P8_SELECTED", selectedIds);
+                    apex.region("barchart").refresh();
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            serverSideCondition {
+                type: never
+            }
+            comments {
+                comments: Update for 24.1. This is the old way of gathering the select item ids. Now all that is needed is a Refresh action
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @compare-salary
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

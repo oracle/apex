@@ -1,0 +1,22 @@
+authentication username-only (
+    name: Username Only
+    type: custom
+    settings {
+        authFunctionName: login
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function login (
+                p_username in varchar2,
+                p_password in varchar2 )
+                return boolean
+            is
+            begin
+                -- This sample app allows authentication for any username, no password
+                return true;
+            end;
+            ```
+    }
+)
+

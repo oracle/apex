@@ -1,0 +1,492 @@
+page 86 (
+    name: Respondent Details
+    alias: RESPONDENT-DETAILS
+    title: Respondent Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Select a respondent to view polls taken and those invited to but not taken.</p>
+    }
+
+    region polls-not-taken-but-invited-to-take (
+        name: Polls not Taken (but invited to take)
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.poll_name,
+                       p.status_id || case when p.status_id = 3 then p.invite_only_yn end status,
+                       lower(ci.created_by) invitation_sent_by,
+                       ci.created  invitation_sent,
+                       decode(i.email_sent, 'YES', 'Email Sent',
+                                            'OPTED_OUT','Opted Out',
+                                            'PREVIOUSLY_SENT','Previously Sent',
+                                            'MANUAL_INVITE','Manual Invite',
+                                            i.email_sent) invite_method
+                  from eba_qpoll_polls p,
+                       eba_qpoll_resp_communities c,
+                       eba_qpoll_comm_invites ci,
+                       eba_qpoll_invites i
+                 where p.id = ci.poll_id
+                   and c.id = ci.community_id
+                   and ci.id = i.comm_invite_id
+                   and i.respondent_id = :P86_RESPONDENT_ID
+                   and not exists (select 1 from eba_qpoll_results
+                                    where poll_id = p.id
+                                      and respondent_id = :P86_RESPONDENT_ID)
+                order by p.poll_name, ci.created desc
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P86_RESPONDENT_ID
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: None.
+        }
+        breakFormatting {
+            breakColumns: cols1-3
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column INVITATION_SENT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Sent
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITATION_SENT_BY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Invitation Sent By
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITE_METHOD (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Method
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Poll Status
+            }
+            lov {
+                type: sharedComponent
+                lov: @customized-poll-status
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region polls-taken (
+        name: Polls Taken
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT p.POLL_NAME,  
+                       p.poll_or_quiz,
+                       case when r.is_valid_yn = 'N'
+                            then 'Errors in submission, will not be considered' end note,
+                       p.start_time,
+                       r.updated submitted,
+                       round(r.grade,1) || case when r.grade is not null then ' %' end grade, 
+                       case when p.score_type in ('C','A') and p.enable_score_yn = 'Y' 
+                           then r.score || ' ('|| apex_lang.message('SCORE_'||p.score_type) ||' score type)' end score
+                  from EBA_QPOLL_POLLS p,
+                       eba_qpoll_results r
+                 where p.id = r.poll_id
+                   and r.respondent_id = :P86_RESPONDENT_ID
+                 order by r.updated desc, poll_name
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P86_RESPONDENT_ID
+        }
+        reportLayout {
+            numberOfRows: 10
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: None.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column GRADE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Grade
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NOTE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Note
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_OR_QUIZ (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Type
+            }
+            lov {
+                type: sharedComponent
+                lov: @poll-or-quiz-2
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SCORE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Score
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column START_TIME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Started
+            }
+            layout {
+                sequence: 3
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SUBMITTED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Submitted
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region selection (
+        name: selection
+        type: staticContent
+        source {
+            htmlCode: Select a user to view their details.
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P86_RESPONDENT_ID (
+        type: popupLov
+        label {
+            label: Respondent
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select email d, id r
+                  from eba_qpoll_respondents
+                 where email != 'nobody'
+                 order by 1
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @selection
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+    )
+
+    pageItem P86_ROLE (
+        type: displayOnly
+        label {
+            label: Role
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 20
+            region: @selection
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_role                  varchar2(255);
+                   l_access_control_scope  varchar2(255);
+                begin
+                
+                for c1 in (
+                   select role_names
+                     from APEX_APPL_ACL_USERS
+                    where application_id = :APP_ID
+                      and user_name_lc = (select lower(email) from eba_qpoll_respondents
+                                           where id = :P86_RESPONDENT_ID)
+                ) loop
+                   l_role := c1.role_names;
+                end loop;
+                
+                if l_role is null then
+                   l_access_control_scope := eba_qpoll_fw.get_preference_value('ACCESS_CONTROL_SCOPE');
+                   if l_access_control_scope = 'PUBLIC_READONLY' then
+                      l_role := 'Reader';
+                   elsif l_access_control_scope = 'PUBLIC_CONTRIBUTE' then
+                      l_role := 'Contributor';
+                   end if;
+                end if;
+                
+                return nvl(l_role,'None');
+                
+                end;
+                ```
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P86_RESPONDENT_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    dynamicAction when-new-respondent (
+        name: when new respondent
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P86_RESPONDENT_ID
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

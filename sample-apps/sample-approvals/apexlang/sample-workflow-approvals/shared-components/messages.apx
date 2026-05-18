@@ -1,0 +1,7 @@
+textMessage SUBSTITUTE_SAME_AS_ORIGINAL (
+    message {
+        text: The substitute user must be different from the original user.
+        language: en
+    }
+)
+

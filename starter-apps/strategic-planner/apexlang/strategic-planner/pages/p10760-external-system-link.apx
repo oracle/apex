@@ -1,0 +1,479 @@
+page 10760 (
+    name: External System Link
+    alias: EXTERNAL-SYSTEM-LINK
+    title: External System Link
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region external-system-link (
+        name: External System Link
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_EXTERNAL_TICKETING_SYSTEMS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10760_DESCRIPTION (
+        type: textField
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @external-system-link
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        help {
+            helpText: Describe this external system
+        }
+    )
+
+    pageItem P10760_EVAULATION_SEQUENCE (
+        type: numberField
+        label {
+            label: Evaulation Sequence
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @external-system-link
+            column: EVAULATION_SEQUENCE
+            dataType: number
+        }
+        help {
+            helpText: Only one external link is identified.  The search for systems will occur in this order.  Only active external systems will be included.
+        }
+    )
+
+    pageItem P10760_EXTERNAL_SYSTEM_NAME (
+        type: textField
+        label {
+            label: External System Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 30
+        }
+        source {
+            formRegion: @external-system-link
+            column: EXTERNAL_SYSTEM_NAME
+            dataType: varchar2
+        }
+        help {
+            helpText: Name of the external system to link to.
+        }
+    )
+
+    pageItem P10760_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @external-system-link
+            slot: regionBody
+        }
+        source {
+            formRegion: @external-system-link
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10760_IS_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @external-system-link
+            column: IS_ACTIVE_YN
+            dataType: varchar2
+        }
+        help {
+            helpText: Toggle to active to scan for this external link
+        }
+    )
+
+    pageItem P10760_LINK_PATTERN (
+        type: textField
+        label {
+            label: Link Pattern
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            formRegion: @external-system-link
+            column: LINK_PATTERN
+            dataType: varchar2
+        }
+        help {
+            helpText:
+                ```html
+                Substitute the Ticket ID using the #TICKET# or #TICKET_NUMERIC# substitution string.  #TICKET_NUMERIC# will strip all non-numeric characters from your regexp.
+                 For example: https://jira.mycompany.com/jira/browse/#TICKET# or
+                              https://jira.mycompany.com/jira/browse/#TICKET_NUMERIC#
+                ```
+        }
+    )
+
+    pageItem P10760_REQUIRED_INITIATIVE_ID (
+        type: popupLov
+        label {
+            label: Required &NOMENCLATURE_INITIATIVE.
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select a.area ||' - '|| i.initiative d, i.id 
+                  from sp_areas a,
+                       sp_initiatives i
+                 where a.id = i.area_id
+                 order by 1
+                ```
+            nullDisplayValue: - Any -
+        }
+        layout {
+            sequence: 70
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @external-system-link
+            column: REQUIRED_INITIATIVE_ID
+            dataType: number
+        }
+        help {
+            helpText: If provided, this REGEXP will only be used on &NOMENCLATURE_PROJECTS. within the &NOMENCLATURE_INITIATIVE..
+        }
+    )
+
+    pageItem P10760_TICKET_ID_REGEX (
+        type: textField
+        label {
+            label: Identify Ticket ID REGEXP
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @external-system-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @external-system-link
+            column: TICKET_ID_REGEX
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: "[Aa][Bb][Cc][Dd][-: ]\\d{4,5}"
+        }
+        help {
+            helpText:
+                ```html
+                Use this regular expression to identify the pattern containing the ticket ID that is to be used to link to the external system.  For example: 
+                
+                <pre>[Aa][Bb][Cc][Dd][-: ]\d{4,5}</pre>
+                
+                which searches for case insensitive "ABCD" followed by a dash, colon or space and then 4 or 5 numbers.  This entire string, or just the numeric portion, can then used in the Link.
+                ```
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10760_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10760_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10760_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 4473281716328458623
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-external-system-link (
+        name: Initialize form External System Link
+        type: formInitialization
+        formRegion: @external-system-link
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4473280954698458622
+        }
+    )
+
+    process process-form-external-system-link (
+        name: Process form External System Link
+        type: formAutoRowProcessing
+        formRegion: @external-system-link
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4473281364785458623
+        }
+    )
+
+)
+

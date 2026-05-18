@@ -1,0 +1,214 @@
+restDataSource APEX_Youtube_Playlists (
+    name: APEX YouTube Playlists
+    source {
+        type: http
+        remoteServer: @www_googleapis_com_youtube_v3
+        urlPathPrefix: /playlists
+    }
+    authentication {
+        credentials: @google_api_key
+    }
+    advanced {
+        passEcid: Y
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+        remoteCache {
+            caching: allUsers
+            timeout: 10080
+        }
+    )
+
+    parameter channelid (
+        name: channelId
+        parameter {
+            type: urlQueryString
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: UCEpIXFjcQIztReQNLymvYrQ
+        }
+    )
+
+    parameter maxresults (
+        name: maxResults
+        parameter {
+            type: urlQueryString
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: 25
+        }
+    )
+
+    parameter part (
+        name: part
+        parameter {
+            type: urlQueryString
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: snippet,contentDetails,player
+        }
+    )
+
+    dataProfile {
+        name: APEX Youtube Channel
+        rowSelector: items
+    }
+
+    dataProfileColumn channelid (
+        columnName: CHANNELID
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: snippet.channelId
+        }
+        advanced {
+            hidden: true
+        }
+    )
+
+    dataProfileColumn channeltitle (
+        columnName: CHANNELTITLE
+        source {
+            sequence: 25
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: snippet.channelTitle
+        }
+    )
+
+    dataProfileColumn description (
+        columnName: DESCRIPTION
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: snippet.localized.description
+        }
+    )
+
+    dataProfileColumn embedhtml (
+        columnName: EMBEDHTML
+        source {
+            sequence: 27
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: player.embedHtml
+        }
+    )
+
+    dataProfileColumn etag (
+        columnName: ETAG
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: etag
+        }
+    )
+
+    dataProfileColumn height (
+        columnName: HEIGHT
+        source {
+            sequence: 10
+            dataType: number
+        }
+        parsing {
+            pathExpression: snippet.thumbnails.high.height
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: id
+        }
+    )
+
+    dataProfileColumn itemcount (
+        columnName: ITEMCOUNT
+        source {
+            sequence: 26
+            dataType: number
+        }
+        parsing {
+            pathExpression: contentDetails.itemCount
+        }
+    )
+
+    dataProfileColumn kind (
+        columnName: KIND
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: kind
+        }
+    )
+
+    dataProfileColumn publishedat (
+        columnName: PUBLISHEDAT
+        source {
+            sequence: 24
+            dataType: timestampWithTimeZone
+        }
+        parsing {
+            pathExpression: snippet.publishedAt
+            formatMask: YYYY-MM-DD"T"HH24:MI:SS.FF3TZR
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: snippet.title
+        }
+    )
+
+    dataProfileColumn url (
+        columnName: URL
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: snippet.thumbnails.high.url
+        }
+    )
+
+    dataProfileColumn width (
+        columnName: WIDTH
+        source {
+            sequence: 9
+            dataType: number
+        }
+        parsing {
+            pathExpression: snippet.thumbnails.high.width
+        }
+    )
+
+)
+

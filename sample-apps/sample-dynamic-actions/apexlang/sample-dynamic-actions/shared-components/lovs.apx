@@ -1,0 +1,234 @@
+lov department (
+    name: DEPARTMENT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+
+lov job (
+    name: JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov manager (
+    name: MANAGER
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p13-eba-demo-da-emp-deptno (
+    name: P13_EBA_DEMO_DA_EMP_DEPTNO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+
+lov p13-eba-demo-da-emp-job (
+    name: P13_EBA_DEMO_DA_EMP_JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p13-eba-demo-da-emp-mgr (
+    name: P13_EBA_DEMO_DA_EMP_MGR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p15-eba-demo-da-emp-deptno (
+    name: P15_EBA_DEMO_DA_EMP_DEPTNO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+
+lov p15-eba-demo-da-emp-job (
+    name: P15_EBA_DEMO_DA_EMP_JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p15-eba-demo-da-emp-mgr (
+    name: P15_EBA_DEMO_DA_EMP_MGR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p22-eba-demo-da-emp-deptno (
+    name: P22_EBA_DEMO_DA_EMP_DEPTNO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+
+lov p22-eba-demo-da-emp-job (
+    name: P22_EBA_DEMO_DA_EMP_JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p22-eba-demo-da-emp-mgr (
+    name: P22_EBA_DEMO_DA_EMP_MGR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p7-eba-demo-da-emp-deptno (
+    name: P7_EBA_DEMO_DA_EMP_DEPTNO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+
+lov p7-eba-demo-da-emp-job (
+    name: P7_EBA_DEMO_DA_EMP_JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p7-eba-demo-da-emp-mgr (
+    name: P7_EBA_DEMO_DA_EMP_MGR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p9-eba-demo-da-emp-deptno (
+    name: P9_EBA_DEMO_DA_EMP_DEPTNO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+
+lov p9-eba-demo-da-emp-job (
+    name: P9_EBA_DEMO_DA_EMP_JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+
+lov p9-eba-demo-da-emp-mgr (
+    name: P9_EBA_DEMO_DA_EMP_MGR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+

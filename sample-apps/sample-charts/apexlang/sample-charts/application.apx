@@ -1,0 +1,132 @@
+app SAMPLE-CHARTS (
+    name: Sample Charts
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: Sample Charts
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar-top
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-auth
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        runOnPublicPages: true
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 819AF279A51271862EE4DBFB2E2934664253791AF028E6C782E7061E27B3B9F4
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown
+            at https://oss.oracle.com/licenses/upl/
+            
+            This script makes use of the Oracle JavaScript Extension Toolkit(JET). 
+            Refer to THIRD_PARTY_LICENSES.txt in the top directory of this project
+            or at https://github.com/oracle/apex-samples for license information.
+            ```
+    }
+    comments {
+        comments:
+            ```
+            1.0.7 -> 1.0.8: Added "SQL Source" show/hide region to all pages.
+            1.0.9 -> 1.0.10: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie
+            1.0.12 -> 1.0.13: Added D3 Collapsible Treemap region to page 16
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Charts
+        }
+    )
+
+    substitution GETTING_STARTED_URL (
+        value {
+            staticValue: https://www.oracle.com/technetwork/developer-tools/apex/index.html
+        }
+    )
+
+    substitution JET_COOKBOOK_URL (
+        value {
+            staticValue: https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html
+        }
+    )
+
+    substitution OJCHART_API_URL (
+        value {
+            staticValue: https://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojChart.html
+        }
+    )
+
+    substitution JET_GET_STARTED_URL (
+        value {
+            staticValue: https://www.oracle.com/webfolder/technetwork/jet/index.html?_ojCoreRouter=getstarted
+        }
+    )
+
+    substitution OJCHART_ITEM_API_URL (
+        value {
+            staticValue: https://www.oracle.com/webfolder/technetwork/jet/jsdocs/oj.ojChartItem.html
+        }
+    )
+
+    substitution PRODUCT_NAME (
+        value {
+            staticValue: Oracle APEX
+        }
+    )
+
+)
+

@@ -1,0 +1,212 @@
+restDataSource eba_rest_employee_invoke (
+    name: EBA_REST_EMPLOYEE_INVOKE
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /data/emp
+    }
+    settings {
+        sortingNulls: flexible
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation get-2 (
+        label: GET - /:id
+        operation {
+            urlPattern: /:id
+            httpMethod: get
+            databaseOperation: fetchSingleRow
+        }
+    )
+
+    operation put (
+        label: PUT - /:id
+        operation {
+            urlPattern: /:id
+            httpMethod: put
+            databaseOperation: update
+        }
+        requestBody {
+            template:
+                ```
+                {
+                   "sal":#SAL#  
+                }
+                ```
+            versionNumber: 1
+        }
+    )
+
+    parameter content-type (
+        name: Content-Type
+        parameter {
+            type: httpHeader
+        }
+        value {
+            static: true
+            defaultValueType: staticValue
+            staticValue: application/json
+        }
+    )
+
+    parameter id (
+        name: id
+        operation: @put
+        parameter {
+            dataType: numeric
+        }
+    )
+
+    parameter id-2 (
+        name: id
+        operation: @get-2
+        parameter {
+            dataType: numeric
+        }
+    )
+
+    parameter response (
+        name: response
+        operation: @put
+        parameter {
+            type: requestOrResponseBody
+            direction: out
+        }
+    )
+
+    parameter sal (
+        name: SAL
+        operation: @put
+        parameter {
+            type: requestOrResponseBody
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_EMPLOYEE_INVOKE
+        rowSelector: items
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: comm
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: deptno
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 5
+            dataType: number
+        }
+        parsing {
+            pathExpression: empno
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: ename
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 8
+            dataType: timestampWithTimeZone
+        }
+        parsing {
+            pathExpression: hiredate
+            formatMask: YYYY"-"MM"-"DD"T"HH24":"MI:SS.FF9TZR
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 1
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: job
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: mgr
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 3
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+)
+

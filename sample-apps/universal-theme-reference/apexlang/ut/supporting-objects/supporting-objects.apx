@@ -1,0 +1,43 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_UT_CHART_PROJECTS
+            EBA_UT_CHART_TASKS
+            EBA_UT_DEMO_CARDS
+        ]
+    }
+    installationMessages {
+        welcome: This application installer will guide you through the process of creating your database objects and seed data.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+    }
+    upgradeMessages {
+        welcome: The application installer has detected that this application's supporting objects were previously installed.  This wizard will guide you through the process of upgrading these supporting objects.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        success: Your application's supporting objects have been installed.
+        failure: Installation of database objects and seed data has failed.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        postDeinstall: Deinstallation complete.
+    }
+    messages {
+        validations: The following validations will be performed to ensure your system is compatible with this application.
+        appSubstitutions: You can configure the following attributes of your application.
+        buildOptions: You can choose to include the following build options.
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

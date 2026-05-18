@@ -1,0 +1,225 @@
+file "APEX$DATA$PKG/EBA_UT_MAP_AIRPORTS$604631.zip" (
+    mimeType: application/x-zip
+    charSet: utf-8
+)
+
+file bookmarklet.html (
+    mimeType: text/html
+    charSet: utf-8
+)
+
+file bookmarklet.js (
+    mimeType: application/javascript
+    charSet: utf-8
+)
+
+file bookmarklet.js.map (
+    mimeType: application/json
+    charSet: utf-8
+)
+
+file bookmarklet.min.js (
+    mimeType: application/javascript
+    charSet: utf-8
+)
+
+file "demo/buttonBuilder.js" (
+    mimeType: application/javascript
+    charSet: utf-8
+)
+
+file "demo/demo.js" (
+    mimeType: application/javascript
+    charSet: utf-8
+)
+
+file "demo/iconSearch.js" (
+    mimeType: application/javascript
+    charSet: utf-8
+)
+
+file "demo/icons.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "demo/icons.min.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/adaptable.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/ai.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/analyze.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/app_user.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/best-in-class.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/blockchain.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/chatbots.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/collaboration.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/construction-and-engineering.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/discovery.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/diversity.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/emerging-tech.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/hr.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/persona-female01-apex.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/persona-female03.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/persona-female04-oracle.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/persona-male01-apex.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/persona-male03.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/persona-male04-apex.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/Screenshot-1.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/Screenshot-2.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/Screenshot-3.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/Screenshot-4.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/Screenshot-5.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "theme_styles/iris.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "theme_styles/redwood-light.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "theme_styles/vita---dark.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "theme_styles/vita---red.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "theme_styles/vita---slate.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "theme_styles/vita.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+

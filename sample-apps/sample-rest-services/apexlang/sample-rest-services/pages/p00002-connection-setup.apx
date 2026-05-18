@@ -1,0 +1,484 @@
+page 2 (
+    name: Connection Setup
+    alias: CONNECTION-SETUP
+    title: Connection Setup
+    appearance {
+        pageTemplate: @/minimal-no-navigation
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments: Use this items on this page to configure the app.
+    }
+
+    region 1-remote-server-setup (
+        name: 1. Remote Server Setup
+        title: Remote Server Setup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <br/>
+                <p>Enter here your remote server Base URL and Schema Alias </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                margin-bottom-md
+            ]
+            icon: fa-number-1
+            renderComponents: belowContent
+        }
+    )
+
+    region 2-odata-url-setup (
+        name: 2. OData URL Setup
+        title: OData URL Setup
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <br/>
+                <p>Enter the URL of a working OData endpoint returning "Northwind" data</p>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                margin-bottom-md
+            ]
+            icon: fa-number-2
+            renderComponents: belowContent
+        }
+    )
+
+    region 3-proxy-setup (
+        name: 3. Proxy Setup
+        title: Proxy Setup
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                margin-bottom-md
+            ]
+            icon: fa-number-3
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: not apex_application_global.g_cloud
+        }
+    )
+
+    region button-remote-server (
+        name: Button Remote Server
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+    )
+
+    region guide (
+        name: Guide
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                The Sample REST Services application is a comprehensive Oracle APEX REST Data integration and visualization demo, showcasing how APEX can efficiently consume, manipulate, and display data from RESTful services using components like Reports, Forms, Charts, Maps or others. It serves as a reference application for exploring various techniques for integrating external REST APIs with Oracle APEX, handling data dynamically, and enhancing user experience with different presentation formats.
+                </p><p>To  get started, please configure the following settings.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region remote-server-setup-guide (
+        name: Remote Server Setup Guide
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region welcome-to-sample-rest-services (
+        name: Welcome to Sample REST Services
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                Please take a moment to complete this first time setup.
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @remote-server-setup-guide
+            slot: subRegions
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    pageItem P2_BASE_URL (
+        type: textField
+        label {
+            label: Base URL
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @1-remote-server-setup
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--indicatorAsterisk
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 80
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: expression
+            plsqlExpression: apex_util.host_url('APEX_PATH');
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText:
+                ```html
+                   <p>The <strong>Base URL</strong> is the portion of your ORDS URL that includes the protocol, host, port (if applicable), and the path up to (and including) <code>/ords/</code>. It does not include the schema or workspace name.</p>
+                   <p>Examples:</p>
+                   <ul>
+                      <li><strong>Dev Instance:</strong> For example: <code>http://yourserver.example.com:8084/ords/</code></li>
+                      <li><strong>apex.oracle.com:</strong> For example: <code>https://apex.oracle.com/pls/apex/</code></li>
+                   </ul>
+                ```
+        }
+    )
+
+    pageItem P2_ODATA_URL (
+        type: textField
+        label {
+            label: OData Endpoint URL
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @2-odata-url-setup
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 80
+        }
+        default {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value(p_name =>'ODATA_URL')
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText:
+                ```html
+                <p>Please enter the URL of a valid OData endpoint that provides "Northwind" data</p> </br>
+                Example: <em>https://ODataBaseUrl/version/Northwind/</em>
+                ```
+        }
+    )
+
+    pageItem P2_PROXY (
+        type: textField
+        label {
+            label: Proxy  Server
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @3-proxy-setup
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 80
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText:
+                ```html
+                    <p>
+                    Use this field to specify a proxy server to be used by the application.
+                    Using a proxy server may be required for REST requests done by the application, for instance when REST Data Sources or the APEX_WEB_SERVICE package is used.
+                    
+                    </p>
+                
+                    <p>
+                        Example: http://www-proxy.example.com
+                    </p>
+                ```
+        }
+    )
+
+    pageItem P2_SCHEMA (
+        type: textField
+        label {
+            label: "Schema Alias "
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @1-remote-server-setup
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--indicatorAsterisk
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 80
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select lower(path_prefix)
+                  from apex_workspaces
+                 where workspace_id = v('workspace_id');
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText:
+                ```html
+                   <p>The <strong>Schema</strong> is the workspace or schema name that appears in your ORDS URL immediately after <code>/ords/</code>. Examples:</p>
+                   <ul>
+                      <li><strong>Internal Instance:</strong> If your full URL is: <code>http://yourserver.example.com:8084/ords/r/myworkspace/…</code>, then the Schema is <em>myworkspace</em>.</li>
+                      <li><strong>apex.oracle.com:</strong> If your URL is: <code>https://apex.oracle.com/pls/apex/workspace/</code>, then the Schema is <em>workspace</em>.</li>
+                   </ul>
+                ```
+        }
+    )
+
+    button complete-setup (
+        buttonName: Complete_Setup
+        label: Complete Setup
+        layout {
+            sequence: 10
+            region: @button-remote-server
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--iconLeft
+            ]
+            icon: fa-check-circle
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation p2-base-url-not-null (
+        name: P2_BASE_URL not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P2_BASE_URL
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P2_BASE_URL
+        }
+    )
+
+    validation p2-schema-is-not-null (
+        name: P2_SCHEMA is not null
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P2_SCHEMA
+        }
+        error {
+            errorMessage: #LABEL# must have a value.
+            associatedItem: @P2_SCHEMA
+        }
+    )
+
+    process persist-user-data (
+        name: Persist User Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin 
+                    apex_app_setting.set_value('REMOTE_SERVER_BASE_URL', :P2_BASE_URL);
+                    apex_app_setting.set_value('REMOTE_SERVER_SCHEMA_ALIAS', :P2_SCHEMA);
+                    apex_app_setting.set_value('ODATA_URL', :P2_ODATA_URL);
+                    apex_app_setting.set_value('REMOTE_SERVER_INITIALIZED', 'YES');
+                    :REMOTE_SERVER := 'YES';
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        successMessage {
+            successMessage: Connection setup successfully.
+        }
+        error {
+            errorMessage: Error while setup the connection.
+        }
+        advanced {
+            executionMappingIdentifier: 7518197002094822
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-setup
+        }
+    )
+
+    process set-proxy (
+        name: Set Proxy
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                   if :P2_PROXY is not null and not apex_application_global.g_cloud then
+                      apex_application_admin.set_proxy_server(
+                         p_application_id => v('app_id'),
+                         p_proxy_server   => :P2_PROXY
+                      );
+                   end if;
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        advanced {
+            executionMappingIdentifier: 6287171243916747
+        }
+    )
+
+    branch (
+        name: Move to home page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 1
+            }
+        }
+        serverSideCondition {
+            type: item=value
+            item: REMOTE_SERVER
+            value: YES
+        }
+    )
+
+)
+

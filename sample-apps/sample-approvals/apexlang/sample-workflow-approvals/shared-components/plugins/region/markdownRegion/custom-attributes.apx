@@ -1,0 +1,52 @@
+customAttribute content (
+    apexlangName: content
+    attribute: 2
+    name: Content
+    type: textarea
+    appearance {
+        sequence: 20
+    }
+    dependingOn {
+        attribute: @source/component
+        conditionType: =
+        value: INLINE
+    }
+)
+
+customAttribute file_name (
+    apexlangName: fileName
+    attribute: 3
+    name: File Name
+    appearance {
+        sequence: 30
+    }
+    dependingOn {
+        attribute: @source/component
+        conditionType: =
+        value: APPLICATION_STATIC_FILE
+    }
+)
+
+customAttribute source (
+    apexlangName: source
+    attribute: 1
+    name: Source
+    type: selectList
+    appearance {
+        sequence: 10
+    }
+
+    entry applicationStaticFile (
+        sequence: 20
+        display: Application Static File
+        return: APPLICATION_STATIC_FILE
+    )
+
+    entry inline (
+        sequence: 10
+        display: Inline
+        return: INLINE
+    )
+
+)
+

@@ -1,0 +1,649 @@
+page 21 (
+    name: Debounce and Throttle
+    alias: DEBOUNCE-AND-THROTTLE
+    title: Debounce and Throttle
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region debounce-delay (
+        name: Debounce Delay
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region debounce-delay-help-text (
+        name: Debounce Delay Help Text
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Debounce Delay:</strong> the Dynamic Action will execute 2000ms after the key release event was triggered. If the event is triggered multiple times before the delay is over, the timer resets each time and the action will execute after the last event.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @debounce-delay
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region debounce-immediate (
+        name: Debounce Immediate
+        type: staticContent
+        layout {
+            sequence: 50
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region debounce-immediate-help-text (
+        name: Debounce Immediate Help Text
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Debounce Immediate:</strong> the Dynamic Action will execute immediately after the first key release event before starting the timer for 2000ms. If the event is triggered before the delay is over, the timer resets each time and all events are ignored until the delay is over.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @debounce-immediate
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region enter-text-here (
+        name: Enter Text Here
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region immediate (
+        name: Immediate
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region immediate-help-text (
+        name: Immediate Help Text
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Immediate:</strong> the Dynamic Action will execute immediately. Each time a key is released, the item will be updated to have the same value as the text area.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @immediate
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how the Execution properties of Dynamic Actions provide control over when a dynamic action executes. By default, actions are executed immediately. However, the Debounce and Throttle execution types can delay the execution of a dynamic action.</p>
+                <p>Debounce will execute an action a single time after a specified delay from the last time the dynamic action was triggered. Here are a couple examples:</p>
+                    <ul>
+                        <li>Use <strong>Debounce Delay</strong> to fire an AJAX request when a user has stopped typing for 2 seconds.</li>
+                        <li>Use <strong>Debounce Immediate</strong> to refresh a region once after a user clicks a button, then ignore all following button clicks until 2 seconds has passed from the last click.</li>
+                    </ul>
+                <p>Throttle will execute an action in intervals of a specified length, as long as the dynamic action continues getting triggered. Here are a couple examples:</p>
+                    <ul>
+                        <li>Use <strong>Throttle Immediate</strong> to refresh a region once every 2 seconds as a user continuously clicks a button.</li>
+                        <li>Use <strong>Throttle Delay</strong> to wait for page item values of a form to update before submitting the page when the Save button is clicked.</li>
+                    </ul>
+                <p>In the example on this page, typing in the text area will trigger dynamic actions to update each of the display only items. Each item will update a little differently based on the event Type used to execute the Set Value action.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region throttle-delay (
+        name: Throttle Delay
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region throttle-delay-help-text (
+        name: Throttle Delay Help Text
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Throttle Delay:</strong> the Dynamic Action will execute 2000ms after the first key release event. If the event is triggered multiple times before the delay is over, the last triggered event will be executed at the end of the initial delay.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @throttle-delay
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region throttle-immediate (
+        name: Throttle Immediate
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region throttle-immediate-help-text (
+        name: Throttle Immediate Help Text
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p><strong>Throttle Immediate:</strong> the Dynamic Action will execute immediately after the first key release and then the 2000ms delay begins. If the event is triggered during the delay, the last triggered event will be executed after the initial delay and another delay begins.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @throttle-immediate
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P21_DEBOUNCE_DELAY (
+        type: displayOnly
+        label {
+            label: Debounce Delay
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @debounce-delay
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText:
+                ```html
+                <p>Dynamic Action Settings:</p>
+                <ul>
+                    <li>Event: Key Release</li>
+                    <li>Execution Type: Debounce</li>
+                    <li>Execution Time: 2000</li>
+                    <li>Execution Immediate: off</li>
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P21_DEBOUNCE_IMMEDIATE (
+        type: displayOnly
+        label {
+            label: Debounce Immediate
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @debounce-immediate
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText:
+                ```html
+                <p>Dynamic Action Settings:</p>
+                <ul>
+                    <li>Event: Key Release</li>
+                    <li>Execution Type: Debounce</li>
+                    <li>Execution Time: 2000</li>
+                    <li>Execution Immediate: on</li>
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P21_IMMEDIATE (
+        type: displayOnly
+        label {
+            label: Immediate
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @immediate
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText:
+                ```html
+                <p>Dynamic Action Settings:</p>
+                <ul>
+                    <li>Event: Key Release</li>
+                    <li>Execution Type: Immediate</li>
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P21_TEXT_AREA (
+        type: textarea
+        label {
+            label: Enter Text Here
+            alignment: left
+        }
+        settings {
+            resizable: false
+        }
+        layout {
+            sequence: 20
+            region: @enter-text-here
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+            valuePlaceholder: Start typing...
+        }
+    )
+
+    pageItem P21_THROTTLE_DELAY (
+        type: displayOnly
+        label {
+            label: Throttle Delay
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @throttle-delay
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText:
+                ```html
+                <p>Dynamic Action Settings:</p>
+                <ul>
+                    <li>Event: Key Release</li>
+                    <li>Execution Type: Throttle</li>
+                    <li>Execution Time: 2000</li>
+                    <li>Execution Immediate: off</li>
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P21_THROTTLE_IMMEDIATE (
+        type: displayOnly
+        label {
+            label: Throttle Immediate
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @throttle-immediate
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText:
+                ```html
+                <p>Dynamic Action Settings:</p>
+                <ul>
+                    <li>Event: Key Release</li>
+                    <li>Execution Type: Throttle</li>
+                    <li>Execution Time: 2000</li>
+                    <li>Execution Immediate: on</li>
+                </ul>
+                ```
+        }
+    )
+
+    dynamicAction update-p21-debounce-delay (
+        name: Update P21_DEBOUNCE_DELAY
+        execution {
+            sequence: 20
+            type: debounce
+            time: 2000
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P21_TEXT_AREA
+        }
+
+        action set-item-value (
+            name: Set item value
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.value
+            }
+            affectedElements {
+                selectionType: items
+                items: P21_DEBOUNCE_DELAY
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction update-p21-debounce-immediate (
+        name: Update P21_DEBOUNCE_IMMEDIATE
+        execution {
+            sequence: 30
+            type: debounce
+            time: 2000
+            immediate: true
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P21_TEXT_AREA
+        }
+
+        action set-item-value (
+            name: Set item value
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.value
+            }
+            affectedElements {
+                selectionType: items
+                items: P21_DEBOUNCE_IMMEDIATE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction update-p21-immediate (
+        name: Update P21_IMMEDIATE
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P21_TEXT_AREA
+        }
+
+        action set-item-value (
+            name: Set item value
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.value
+            }
+            affectedElements {
+                selectionType: items
+                items: P21_IMMEDIATE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction update-p21-throttle-delay (
+        name: Update P21_THROTTLE_DELAY
+        execution {
+            sequence: 50
+            type: throttle
+            time: 2000
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P21_TEXT_AREA
+        }
+
+        action set-item-value (
+            name: Set item value
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.value
+            }
+            affectedElements {
+                selectionType: items
+                items: P21_THROTTLE_DELAY
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction update-p21-throttle-immediate (
+        name: Update P21_THROTTLE_IMMEDIATE
+        execution {
+            sequence: 40
+            type: throttle
+            time: 2000
+            immediate: true
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P21_TEXT_AREA
+        }
+
+        action set-item-value (
+            name: Set item value
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.value
+            }
+            affectedElements {
+                selectionType: items
+                items: P21_THROTTLE_IMMEDIATE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

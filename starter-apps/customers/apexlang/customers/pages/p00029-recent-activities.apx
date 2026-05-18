@@ -1,0 +1,352 @@
+page 29 (
+    name: Recent Activities
+    alias: RECENT-ACTIVITIES
+    title: Recent Activities
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @reports
+    }
+
+    region customer-updates (
+        name: Customer Updates
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select  n.customer_id,
+                        c.customer_name,
+                        'Note Added' note_type,
+                        dbms_lob.substr(n.note,100,1)||decode(greatest(length(n.note),100),100,null,'...') detail,
+                        lower(n.created_by) updated_by,
+                        n.created updated
+                from EBA_CUST_NOTES n, eba_cust_customers c
+                where n.customer_id = c.id
+                union all
+                select  c.id,
+                        c.customer_name,
+                        'Customer Added' note_type,
+                        c.summary detail,
+                        lower(c.created_by) updated_by,
+                        c.created updated
+                from eba_cust_customers c
+                union all
+                select  n.customer_id,
+                        c.customer_name,
+                        'Contact Added' note_type,
+                        n.name detail,
+                        lower(n.created_by) updated_by,
+                        n.created updated
+                from EBA_CUST_CONTACTS n, eba_cust_customers c
+                where n.customer_id = c.id
+                union all
+                select  n.customer_id,
+                        c.customer_name,
+                        'Link Added' note_type,
+                        n.link_desc detail,
+                        lower(n.created_by) updated_by,
+                        n.created updated
+                from EBA_CUST_LINKS n, eba_cust_customers c
+                where n.customer_id = c.id
+                union all
+                select  n.customer_id,
+                        c.customer_name,
+                        'File Added' note_type,
+                        n.file_name detail,
+                        lower(n.created_by) updated_by,
+                        n.created updated
+                from EBA_CUST_FILES n, eba_cust_customers c
+                where n.customer_id = c.id
+                union all
+                select y.customer_id,
+                       y.customer_name,
+                       y.note_type,
+                       substr(y.detail,1,100)||decode(greatest(length(y.detail),100),100,null,'...') detail,
+                       y.updated_by,
+                       y.updated
+                from (
+                select h.component_id customer_id,
+                       c.customer_name,
+                       initcap(substr(h.table_name, 1, length(h.table_name) - 1)) || ' Updated' note_type,
+                       initcap(replace(replace(h.COLUMN_NAME,'_ID',null),'_',' '))||' changed from "'||h.OLD_VALUE||'" to "'||h.new_value||'"' detail,
+                       lower(h.CHANGED_BY) updated_by,
+                       h.CHANGE_DATE updated
+                from EBA_CUST_HISTORY h, eba_cust_customers c
+                where h.component_id = c.id) y
+                union all
+                select y.customer_id,
+                       y.customer_name,
+                       y.note_type,
+                       substr(y.detail,1,100)||decode(greatest(length(y.detail),100),100,null,'...') detail,
+                       y.updated_by,
+                       y.updated
+                from (
+                select h.component_id customer_id,
+                       h.old_value customer_name,
+                       initcap(substr(h.table_name, 1, length(h.table_name) - 1)) || ' Removed' note_type,
+                       'This customer has been removed. The "Customer Name" link will give a "No Data Found" error.' detail,
+                       lower(h.CHANGED_BY) updated_by,
+                       h.CHANGE_DATE updated
+                from EBA_CUST_HISTORY h
+                where h.column_name = 'CUSTOMER_REMOVED') y
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2533964723637934404
+        }
+
+        column CUSTOMER_ID (
+            type: hidden
+            heading {
+                heading: Customer Id
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: link
+            heading {
+                heading: Customer Name
+            }
+            layout {
+                sequence: 7
+            }
+            link {
+                target: {
+                    page: 50
+                    items: {
+                        P50_ID: #CUSTOMER_ID#
+                    }
+                    clearCache: 50
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column DETAIL (
+            type: plainText
+            heading {
+                heading: Detail
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column NOTE_TYPE (
+            type: plainText
+            heading {
+                heading: Update Type
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        savedReport 25339667 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CUSTOMER_ID (
+                sequence: 1
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 2
+            )
+
+            displayColumn DETAIL (
+                sequence: 5
+            )
+
+            displayColumn NOTE_TYPE (
+                sequence: 3
+            )
+
+            displayColumn SUMMARY (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            displayColumn UPDATED_BY (
+                sequence: 6
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region customer-updates-2 (
+        name: Customer Updates
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @customer-updates
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 29
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

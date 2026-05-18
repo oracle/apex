@@ -1,0 +1,663 @@
+page 19 (
+    name: Workflow Status
+    alias: WORKFLOW-STATUS
+    title: Workflow Status
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @operations-team
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page shows the workflows in which the current user is a participant. Use the search box to filter the list. 
+                    Toggle between seeing the workflows ordered by Create Date or Last Updated using the order by page item. 
+                    The page was created using the <strong>Create Page</strong> wizard, choosing <strong>Workflow Console</strong>
+                    page type, and picking a <strong>Report Context</strong> of "My Workflows". Both workflows in the sample list
+                    all members of the OPERATIONS department (40) as workflow participants (BO, JANE, STEVE, PAT), and specify PAT
+                    as the workflow admin.
+                </p>
+                
+                <p>
+                    By default the workflow console shows workflow instances for all applications in the workspace, but this page
+                    has customized the query of the report region to pass in the <code>p_application_id</code> parameter to the
+                    pipelined table function <code>apex_workflow.get_workflows()</code> to show only the workflows
+                    related to the current application.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        security {
+            authorizationScheme: @operations-team
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region my-workflows-report (
+        name: My Workflows - Report
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select workflow_id,
+                       workflow_def_name,
+                       workflow_def_app_name,
+                       title,
+                       initiator,
+                       state_code,
+                       created_on,
+                       created_ago,
+                       created_ago_hours,
+                       last_updated_on,
+                       badge_text,
+                       badge_state,
+                       apex_page.get_url(
+                         p_page => 31,
+                         p_items => 'P31_WORKFLOW_ID',
+                         p_values => WORKFLOW_ID) as map_url
+                  from table ( apex_workflow.get_workflows (
+                                   p_context => 'MY_WORKFLOWS'
+                                   --, p_application_id => :APP_ID
+                                   ) )
+                ```
+            optimizerHint: APEX$USE_NO_GROUPING_SETS
+        }
+        orderBy {
+            type: item
+            item: {
+                itemName: P19_SORT_BY
+                orderBys: {
+                    CREATED_ON: created_on desc
+                    LAST_UPDATED_ON: last_updated_on desc
+                }
+            }
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description:
+                ```html
+                <strong>&WORKFLOW_DEF_NAME!HTML.</strong>
+                {if INITIATOR/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span>
+                    &{APEX.WORKFLOW.INITIATED_BY_USER_SINCE 0=&INITIATOR!HTML. 1=&CREATED_AGO.}.
+                {endif/}
+                <span role="separator" aria-label="&middot;"> &middot; </span>
+                <a class="u-align-self-center" title="View workflow status in a diagram" href="&MAP_URL!ATTR."><span class="fa fa-workflow"></span></a>
+                ```
+            displayBadge: true
+        }
+        plugin-badge {
+            label: State
+            value: BADGE_TEXT
+            state: BADGE_STATE
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            type: scroll
+        }
+        entityTitle {
+            singular: workflow
+            plural: workflows
+        }
+        messages {
+            whenNoDataFound: No Workflows
+            noDataFoundIcon: fa-workflow fa-lg
+        }
+
+        column BADGE_STATE (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_TEXT (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: BADGE_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column CREATED_AGO (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: CREATED_AGO
+                dataType: varchar2
+            }
+        )
+
+        column CREATED_AGO_HOURS (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: CREATED_AGO_HOURS
+                dataType: number
+            }
+        )
+
+        column CREATED_ON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: CREATED_ON
+                dataType: timestampWithTimeZone
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column INITIATOR (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: INITIATOR
+                dataType: varchar2
+            }
+        )
+
+        column LAST_UPDATED_ON (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: LAST_UPDATED_ON
+                dataType: timestampWithTimeZone
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column MAP_URL (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: MAP_URL
+                dataType: varchar2
+            }
+        )
+
+        column STATE_CODE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: STATE_CODE
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column WORKFLOW_DEF_APP_NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: WORKFLOW_DEF_APP_NAME
+                dataType: varchar2
+            }
+        )
+
+        column WORKFLOW_DEF_NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: WORKFLOW_DEF_NAME
+                dataType: varchar2
+            }
+        )
+
+        column WORKFLOW_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: WORKFLOW_ID
+                dataType: number
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 26
+                    items: {
+                        P26_WORKFLOW_ID: &WORKFLOW_ID.
+                    }
+                    action: resetPagination
+                }
+            }
+        )
+
+        action terminate (
+            position: primaryActions
+            template: button
+            label: Terminate
+            layout {
+                sequence: 40
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+                linkAttributes: data-id="&WORKFLOW_ID."
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-times u-danger-text
+                cssClasses: terminate
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :state_code in ('ACTIVE','FAULTED','SUSPENDED')
+            }
+        )
+
+    )
+
+    region my-workflows-smart-filters (
+        name: My Workflows - Smart Filters
+        type: smartFilters
+        source {
+            filteredRegion: @my-workflows-report
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: searchFieldAndSmartFilters
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            maxSuggestionChips: 0
+            compactNosThreshold: 10000
+        }
+
+        filter P19_APPLICATION (
+            type: checkboxGroup
+            label {
+                label: Application
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: WORKFLOW_DEF_APP_NAME
+            }
+        )
+
+        filter P19_INITIATED (
+            type: range
+            label {
+                label: Initiated
+            }
+            settings {
+                selectMultiple: true
+            }
+            lov {
+                type: sharedComponent
+                lov: @workflow-console-lov-initiated
+            }
+            layout {
+                sequence: 90
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: CREATED_AGO_HOURS
+                dataType: number
+            }
+        )
+
+        filter P19_INITIATOR (
+            type: checkboxGroup
+            label {
+                label: Initiator
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 80
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: INITIATOR
+            }
+        )
+
+        filter P19_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        filter P19_STATE (
+            type: checkboxGroup
+            label {
+                label: State
+            }
+            lov {
+                type: sharedComponent
+                lov: @workflow-console-lov-workflow-state
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                sortByTopCounts: false
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: STATE_CODE
+            }
+        )
+
+        filter P19_TYPE (
+            type: checkboxGroup
+            label {
+                label: Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            suggestions {
+                type: dynamic
+            }
+            source {
+                databaseColumn: WORKFLOW_DEF_NAME
+            }
+        )
+
+    )
+
+    pageItem P19_SORT_BY (
+        type: selectList
+        label {
+            label: Sort By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Create Date;CREATED_ON,Last Update;LAST_UPDATED_ON
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @my-workflows-report
+            slot: sortOrder
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-sort-amount-desc
+            height: 1
+        }
+        advanced {
+            cssClasses: mnw160
+            warnOnUnsavedChanges: ignore
+        }
+        source {
+            type: staticValue
+            staticValue: LAST_UPDATED_ON
+        }
+        sessionState {
+            storage: user
+        }
+    )
+
+    pageItem P19_WORKFLOW_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            encryptSessionState: false
+        }
+    )
+
+    dynamicAction refresh-my-workflows-report (
+        name: Refresh - My Workflows - Report
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosecanceldialog
+            selectionType: region
+            region: @my-workflows-report
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-workflows-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-workflows-smart-filters
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction terminate (
+        name: Terminate
+        execution {
+            sequence: 30
+            eventScope: dynamic
+            staticContainer: body
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: a.terminate
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    apex_workflow.terminate (
+                        p_instance_id => :P19_WORKFLOW_ID );
+                    ```
+                itemsToSubmit: P19_WORKFLOW_ID
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Workflow terminated');
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-workflows-smart-filters
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @my-workflows-report
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.dataset.id
+            }
+            affectedElements {
+                selectionType: items
+                items: P19_WORKFLOW_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

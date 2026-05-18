@@ -1,0 +1,461 @@
+page 139 (
+    name: My Subscriptions
+    alias: MY-SUBSCRIPTIONS
+    title: My Subscriptions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            
+            .a-CardView-iconWrap,
+            .a-CardView-badge { align-self: flex-start; }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @subscriptions
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region notification-subscriptions (
+        name: Notification Subscriptions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select n.name || case when r.id is not null then ' for '|| r.release_train ||' '|| r.release end notification,
+                       initcap(ns.frequency) frequency,
+                       ns.UPDATED,
+                       ns.last_sent,
+                       ns.notification_id for_link,
+                       ns.release_id
+                  from SP_NOTIFICATION_SUBSCRIPTIONS ns,
+                       SP_NOTIFICATIONS n,
+                       sp_release_trains r
+                where n.id = ns.NOTIFICATION_ID
+                  and ns.team_member_id = :APP_USER_ID
+                  and ns.opted_in_yn = 'Y'
+                  and ns.release_id = r.id (+)
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+                margin-left-lg
+            ]
+        }
+        config {
+            buildOption: @subscriptions
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: No notification subscriptions found
+        }
+
+        column FOR_LINK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Send
+                alignment: center
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 139
+                    items: {
+                        P139_NOTIFICATION_ID: #FOR_LINK#
+                        P139_RELEASE_ID: #RELEASE_ID#
+                        P139_FREQUENCY: #FREQUENCY#
+                    }
+                    clearCache: 139
+                    request: EMAIL
+                }
+                linkText: Email Now
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FREQUENCY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Frequency
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_SENT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Last Sent
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NOTIFICATION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Notification
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RELEASE_ID (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Opted In
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P139_FREQUENCY (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @notification-subscriptions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P139_NOTIFICATION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @notification-subscriptions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P139_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @notification-subscriptions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button manage-my-subscriptions (
+        buttonName: Manage_my_subscriptions
+        label: Manage My Subscriptions
+        layout {
+            sequence: 10
+            region: @notification-subscriptions
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 149
+                clearCache: 149
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-info (
+        name: refresh info
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+    )
+
+    dynamicAction refresh-subscrption (
+        name: refresh subscrption
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @notification-subscriptions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @notification-subscriptions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process email-now (
+        name: Email Now
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_summary     clob;
+                    l_subject     varchar2(4000);
+                    l_changes_yn  varchar2(1);
+                begin
+                
+                    if :P139_NOTIFICATION_ID = sp_util.get_notification_id('WEEKLY_SUMMARY')
+                    then l_subject := :NOMENCLATURE_STRATEGIC_PLANNER ||' Weekly Summary';
+                         l_summary := sp_contributor_summary.generate (
+                                          p_team_member_id  => :APP_USER_ID,
+                                          p_links           => 'EMAIL');
+                
+                    elsif :P139_NOTIFICATION_ID = sp_util.get_notification_id('PROJECT_EXCEPTIONS')
+                    then l_subject := :NOMENCLATURE_STRATEGIC_PLANNER ||' Project Exceptions';
+                         l_summary := sp_contributor_summary.project_exceptions (
+                                          p_team_member_id  => :APP_USER_ID,
+                                          p_links           => 'EMAIL');
+                
+                    elsif :P139_NOTIFICATION_ID = sp_util.get_notification_id('RELEASE_EXCEPTIONS') and
+                          :P139_RELEASE_ID is not null
+                    then for c1 in (
+                             select release_train||' '||release release
+                               from sp_release_trains
+                              where id = :P139_RELEASE_ID
+                          ) loop
+                              l_subject := :NOMENCLATURE_STRATEGIC_PLANNER || ' ' || c1.release ||' Release Exceptions';
+                          end loop;
+                          l_summary := sp_release_timeline.release_exceptions (
+                                           p_release_id => :P139_RELEASE_ID,
+                                           p_links      => 'EMAIL');
+                
+                    elsif :P139_NOTIFICATION_ID = sp_util.get_notification_id('PROJECT_CHANGES') and
+                          :P139_FREQUENCY is not null
+                    then l_subject := :NOMENCLATURE_STRATEGIC_PLANNER ||' Project Changes';
+                         sp_contributor_summary.project_changes (
+                             p_team_member_id => :APP_USER_ID,
+                             p_frequency      => upper(:P139_FREQUENCY),
+                             p_links          => 'EMAIL',
+                             p_changes_yn     => l_changes_yn,
+                             p_change_summary => l_summary );
+                
+                         if l_changes_yn = 'N' then
+                            l_summary := null;
+                         end if;
+                
+                    end if;
+                
+                    if l_summary is not null then
+                
+                        apex_mail.send ( 
+                                p_to                 => :APP_USER,   
+                                p_from               => :APP_USER,  
+                                p_application_id     => :APP_ID,  
+                                p_template_static_id => 'EMAIL_ME',  
+                                p_placeholders       => '{' || '"APPLICATION_LINK": "' || sp_util.get_setting(p_static_id => 'APP_HOME_URL') ||'", '|| 
+                                                               '"APP_NAME": '   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||', '||
+                                                               '"SUBJECT": '    || apex_json.stringify( l_subject ) ||', '||
+                                                               '"SUMMARY": '    || apex_json.stringify( l_summary ) ||
+                                                         '}' ); 
+                
+                    end if;
+                
+                    :P139_NOTIFICATION_ID := null;
+                    :P139_RELEASE_ID      := null;
+                    :P139_FREQUENCY       := null;
+                
+                exception when others then 
+                    :P139_NOTIFICATION_ID := null;
+                    :P139_RELEASE_ID      := null;
+                    :P139_FREQUENCY       := null;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        successMessage {
+            successMessage: Email sent.
+        }
+        advanced {
+            executionMappingIdentifier: 11501714038403050937
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P139_NOTIFICATION_ID is not null and
+                :REQUEST = 'EMAIL'
+                ```
+        }
+    )
+
+)
+

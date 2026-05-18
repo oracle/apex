@@ -1,0 +1,1227 @@
+page 11 (
+    name: Report and Marquee - Marquee
+    alias: REPORT-AND-MARQUEE-MARQUEE
+    title: Report and Marquee - Marquee
+    appearance {
+        pageTemplate: @/marquee
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .a-MediaBlock-graphic img {
+            width: 100%;
+            }
+            .t-Comments-userIcon {
+            border-color: rgba(0,0,0,.25);
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region comments (
+        name: Comments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.id comment_id
+                , 'u-color-' || ora_hash(c.created_by, 29) || ' u-color-' || ora_hash(c.created_by, 29) || '-bd' icon_modifier
+                , c.comment_text
+                , c.created comment_date
+                ,  apex_string.get_initials(c.created_by) user_icon
+                , c.created_by user_name
+                , apex_page.get_url(p_page => 13, p_items => 'P13_ID', p_values => id) actions
+                , null attribute_1
+                , null attribute_2
+                , null attribute_3
+                , null attribute_4
+                from eba_demo_md_comments c
+                where c.project_id = :P11_PROJECT_ID
+                order by c.created
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: comments
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                11
+                49
+            ]
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+            showNullValuesAs: &nbsp;
+        }
+        messages {
+            whenNoDataFound: No comments for this project.
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 7
+            }
+            columnFormatting {
+                htmlExpression: <a href="#ACTIONS#" class="t-Button t-Button--small t-Button--simple">Edit</a>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Comment date
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Comment id
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment text
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Icon modifier
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: User icon
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: User name
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region master-project (
+        name: Master Project
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.description
+                , (select full_name from eba_demo_md_team_members tm where tm.id = p.project_lead) project_lead
+                , p.completed_date
+                , p.status_cd
+                , p.created
+                , p.updated last_updated
+                from eba_demo_md_projects p
+                where p.id = :P11_PROJECT_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No data found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMPLETED_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Completed Date
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 5
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_LEAD (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Project Lead
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS_CD (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Status
+            }
+            lov {
+                type: sharedComponent
+                lov: @status
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region milestones (
+        name: Milestones
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select m.id as ms_id
+                , m.name as ms_name
+                , m.description
+                , m.due_date
+                from eba_demo_md_milestones m
+                where project_id = :P11_PROJECT_ID
+                order by due_date, updated desc
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: milestones
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No milestones for this project.
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DUE_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Due Date
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MS_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 1
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 7
+                    items: {
+                        P7_ID: #MS_ID#
+                    }
+                    clearCache: 7
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="Edit Milestone">
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MS_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region project-actions (
+        name: Project Actions
+        type: list
+        source {
+            list: @project-actions
+        }
+        layout {
+            sequence: 10
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: actions
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: [
+                #DEFAULT#
+                t-LinksList--actions
+                t-LinksList--showIcons
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region tasks (
+        name: Tasks
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.id
+                , t.project_id
+                , t.name
+                , t.description
+                , decode(nvl(t.is_complete_yn,'N'),
+                    'N','<span class="u-VisuallyHidden">No</span>',
+                    'Y','<span class="fa fa-check"><span class="u-VisuallyHidden">Yes</span></span>'
+                  ) completed
+                , (select m.name from eba_demo_md_milestones m where m.id = t.milestone_id) milestone
+                , (select tm.full_name from eba_demo_md_team_members tm where tm.id = t.assignee) assignee
+                , t.start_date
+                , t.end_date
+                , (select count(*)
+                   from eba_demo_md_task_todos d
+                   where d.task_id = t.id
+                  ) todos
+                , (select count(*)
+                   from eba_demo_md_task_links l
+                   where l.task_id = t.id
+                  ) links
+                from eba_demo_md_tasks t
+                where t.project_id = :P11_PROJECT_ID
+                order by start_date, nvl(t.end_date, sysdate)
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: tasks
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No tasks for this project.
+        }
+
+        column ASSIGNEE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Assignee
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMPLETED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Completed?
+                alignment: center
+            }
+            layout {
+                sequence: 9
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column END_DATE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Edit
+                alignment: center
+            }
+            layout {
+                sequence: 1
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 31
+                    items: {
+                        P31_TASK_ID: #ID#
+                        P31_LAST_PAGE: 11
+                        P31_PROJECT_ID: &P11_PROJECT_ID.
+                    }
+                    clearCache: 9
+                    action: resetPagination
+                }
+                linkText: <img src="#IMAGE_PREFIX#app_ui/img/icons/apex-edit-pencil.png" class="apex-edit-pencil" alt="Edit Task">
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINKS (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Links
+            }
+            layout {
+                sequence: 11
+            }
+            link {
+                target: {
+                    page: 22
+                    items: {
+                        P22_TASK_ID: #ID#
+                        P22_PROJECT_ID: #PROJECT_ID#
+                    }
+                    clearCache: 22
+                    action: resetPagination
+                }
+                linkText: #LINKS#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MILESTONE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Milestone
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TODOS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: link
+            heading {
+                heading: To Dos
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 14
+                    items: {
+                        P14_PROJECT_ID: #PROJECT_ID#
+                        P14_TASK_ID: #ID#
+                    }
+                    clearCache: 14
+                    action: resetPagination
+                }
+                linkText: #TODOS#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P11_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @master-project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11_PROJECT_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @master-project
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-comment (
+        buttonName: ADD_COMMENT
+        label: Add comment
+        layout {
+            sequence: 10
+            region: @comments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                items: {
+                    P13_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 13
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: add-comment
+        }
+    )
+
+    button add-milestone (
+        buttonName: ADD_MILESTONE
+        label: Add milestone
+        layout {
+            sequence: 10
+            region: @milestones
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 7
+                items: {
+                    P7_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 7
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: add-milestone
+        }
+    )
+
+    button add-task (
+        buttonName: ADD_TASK
+        label: Add task
+        layout {
+            sequence: 10
+            region: @tasks
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 9
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: add-task
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button edit-project (
+        buttonName: EDIT_PROJECT
+        label: Edit Project
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 5
+                items: {
+                    P5_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 5
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction add-comments (
+        name: Add Comments
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #add_comment, #actions
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId == "13"
+        }
+    )
+
+    dynamicAction comments-region-dialog-closed (
+        name: Comments Region - Dialog Closed
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @comments
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P11_PROJECT_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction milestone-updates (
+        name: Milestone Updates
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #milestones, #add-milestone, #actions
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId == "7"
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @milestones
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction project-updates (
+        name: Project Updates
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @edit-project
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-reports-on-add (
+        name: Refresh reports on add
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @project-actions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @milestones
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-3 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction task-region-dialog-closed (
+        name: Task Region - Dialog Closed
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @tasks
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P11_PROJECT_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: item
+            itemName: APP_PAGE_ID
+        }
+    )
+
+    computation p11-project-name (
+        itemName: P11_PROJECT_NAME
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select name
+                from eba_demo_md_projects
+                where id = :P11_PROJECT_ID
+                ```
+        }
+    )
+
+)
+

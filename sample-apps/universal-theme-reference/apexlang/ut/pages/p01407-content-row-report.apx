@@ -1,0 +1,442 @@
+page 1407 (
+    name: Reports - Content Row
+    alias: CONTENT-ROW-REPORT
+    title: Content Row - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: dm-Page
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region column-names (
+        name: Column Names
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '#ITEM_CLASSES#' d, 'CSS Class-based modifiers for the content row item' r from dual union all
+                select '#SELECTION#' d  , 'Use this to add a checkbox or radio button for selection' r from dual union all
+                select '#ICON_CLASS#' d, 'Icon of the content row. Please prefix with "fa" when using Font APEX.' r from dual union all
+                select '#ICON_HTML#' d, 'Use this to display custom HTML in place of the icon, for example an image tag.' r from dual union all
+                select '#TITLE#' d, 'Title column, typically the link ' r from dual union all
+                select '#DESCRIPTION#' d, 'Description or text of the content' r from dual union all
+                select '#MISC#' d, 'This displays adjacent actions column and can be used for showing user information or last updated date.' r from dual union all
+                select '#ACTIONS#' d, 'Use this to display a button or other actions' r from dual
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column D (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: D
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column R (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: R
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    region demo (
+        name: Demo
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  null item_classes,
+                  null selection,
+                  case t.status 
+                    when 'Open' then 'fa fa-lg fa-exclamation-circle-o'
+                    when 'Closed' then 'fa fa-lg fa-check-circle u-success-text'
+                    when 'On-Hold' then 'fa fa-lg fa-minus-circle u-danger-text'
+                    when 'Pending' then 'fa fa-lg fa-exclamation-triangle u-warning-text'
+                  end icon_class,
+                  null icon_html,
+                  t.task_name title,
+                  'Project: ' || p.project description,
+                  t.status misc,
+                  null actions
+                from
+                  eba_ut_chart_tasks t,
+                  eba_ut_chart_projects p
+                where
+                  t.project = p.id
+                order by p.created
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            htmlDomId: Demo1
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 6
+        }
+        componentAppearance {
+            template: @/content-row
+            templateOptions: [
+                #DEFAULT#
+                t-Report--hideNoPagination
+            ]
+            cssClasses: dm-TemplateOption-previewTarget
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            link {
+                target: {
+                    type: url
+                    url: #
+                }
+                linkText: <span class="t-Icon fa fa-edit" aria-hidden="true"></span>Edit
+                linkAttributes: class="t-Button t-Button--icon t-Button--iconLeft t-Button--link"
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Description
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_CLASS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_HTML (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Icon Html
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_CLASSES (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Item Classes
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MISC (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Misc
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SELECTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Selection
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TITLE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Title
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            link {
+                target: {
+                    type: url
+                    url: #
+                }
+                linkText: #TITLE#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Content Row</strong> is a Classic Report template that is suitable for displaying most types of content. This report features a column for selection such as a checkbox or radio button, an icon, title and description, miscellaneous attributes, and actions.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--lightBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            regionStaticId: Demo1
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+)
+

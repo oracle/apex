@@ -1,0 +1,139 @@
+lov login-remember-username (
+    name: LOGIN_REMEMBER_USERNAME
+    source {
+        location: staticValues
+    }
+
+    entry remember-username (
+        sequence: 10
+        display: Remember username
+        return: Y
+    )
+
+)
+
+lov lov-airports (
+    name: LOV_AIRPORTS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select id,
+                   airport_name,
+                   iata_code,
+                   initcap( airport_type ) airport_type,
+                   city,
+                   state_name,
+                   activation_date,
+                   apex_json.stringify( geometry ) as geojson
+              from eba_sample_map_airports
+            ```
+    }
+    columnMapping {
+        return: ID
+        display: AIRPORT_NAME
+    }
+
+    column ACTIVATION_DATE (
+        heading {
+            heading: Activation Date
+        }
+        layout {
+            sequence: 70
+        }
+        source {
+            dataType: varchar2
+        }
+        appearance {
+            formatMask: mon-yyyy
+        }
+    )
+
+    column AIRPORT_NAME (
+        heading {
+            heading: Airport Name
+        }
+        layout {
+            sequence: 20
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column AIRPORT_TYPE (
+        heading {
+            heading: Airport Type
+        }
+        layout {
+            sequence: 40
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column CITY (
+        heading {
+            heading: City
+        }
+        layout {
+            sequence: 50
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column GEOJSON (
+        show: false
+        heading {
+            heading: Geojson
+        }
+        layout {
+            sequence: 80
+        }
+        source {
+            dataType: clob
+        }
+    )
+
+    column IATA_CODE (
+        heading {
+            heading: Code
+        }
+        layout {
+            sequence: 30
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column ID (
+        show: false
+        layout {
+            sequence: 10
+        }
+        source {
+            dataType: number
+        }
+        advanced {
+            searchable: false
+        }
+    )
+
+    column STATE_NAME (
+        heading {
+            heading: State
+        }
+        layout {
+            sequence: 60
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+)
+

@@ -1,0 +1,411 @@
+page 132 (
+    name: Accounts with No Territory
+    alias: ACCOUNTS-WITH-NO-TERRITORY
+    title: Accounts with No Territory
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is an interactive report of all accounts with no territory specified. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+    }
+
+    region accounts-with-no-territory (
+        name: Accounts with No Territory
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.id,
+                  c.row_key,
+                  c.customer_name,
+                  c.customer_territory_id,
+                  case c.customer_is_key_account_yn
+                    when 'Y' then 'Yes'
+                    when 'N' then 'No'
+                  end customer_is_key_account_yn,
+                  c.created,
+                  c.created_by,
+                  c.updated,
+                  c.updated_by,
+                  (
+                    select count(*)
+                    from eba_sales_deals dx
+                    where dx.customer_id = c.id
+                      and dx.deal_probability > 0
+                      and dx.deal_probability < 100
+                  ) open_deals,
+                  (
+                    select count(*)
+                    from eba_sales_deals
+                    where customer_id = c.id
+                      and deal_close_date < sysdate
+                      and deal_probability != 0
+                      and deal_probability != 100
+                  ) past_due,
+                  (
+                    select count(*) 
+                    from eba_sales_leads 
+                    where account_id = c.id
+                  ) leads
+                from eba_sales_customers c
+                where c.customer_territory_id is null
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No territories found.
+        }
+        advanced {
+            savedReportMappingIdentifier: 1593796581996025096
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column CUSTOMER_IS_KEY_ACCOUNT_YN (
+            type: plainText
+            heading {
+                heading: Key Account
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: link
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_ID: #ID#
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column CUSTOMER_TERRITORY_ID (
+            type: hidden
+            heading {
+                heading: Customer territory id
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LEADS (
+            type: link
+            heading {
+                heading: Leads
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 19
+                    items: {
+                        P19_DISPLAY_AS: GRID
+                        IR_ACCOUNT_ID: #ID#
+                    }
+                    clearCache: [
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #LEADS#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column OPEN_DEALS (
+            type: plainText
+            heading {
+                heading: Open Opp.
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PAST_DUE (
+            type: plainText
+            heading {
+                heading: Past Due Opp.
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 8724945 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CUSTOMER_IS_KEY_ACCOUNT_YN (
+                sequence: 3
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 1
+            )
+
+            displayColumn LEADS (
+                sequence: 6
+            )
+
+            displayColumn OPEN_DEALS (
+                sequence: 4
+            )
+
+            displayColumn PAST_DUE (
+                sequence: 5
+            )
+
+            displayColumn ROW_KEY (
+                sequence: 2
+            )
+
+            sort (
+                column: CUSTOMER_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

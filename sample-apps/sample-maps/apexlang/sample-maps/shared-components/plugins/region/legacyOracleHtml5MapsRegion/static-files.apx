@@ -1,0 +1,74 @@
+file apx-maps-plugin-html5.js (
+    mimeType: application/javascript
+    charSet: utf-8
+)
+
+file m-blue.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-cluster.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-darkblue.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-darkgray.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-darkred.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-gray.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-green.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-lightgray.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-orange.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-purple.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-red.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-violet.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file m-yellow.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file transp.png (
+    mimeType: image/png
+)
+

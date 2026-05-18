@@ -1,0 +1,7 @@
+shortcut DELETE_CONFIRM_MSG (
+    source {
+        type: jsEscapeSingleQuotes
+        text: Would you like to perform this delete action?
+    }
+)
+

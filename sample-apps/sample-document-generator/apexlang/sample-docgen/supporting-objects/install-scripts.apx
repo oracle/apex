@@ -1,0 +1,26 @@
+installScript EMP_DEPT (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: emp-dept.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from all_tab_columns where table_name = 'EBA_DEMO_DG_DEPT';
+    }
+)
+
+installScript ORDER_ITEMS (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: order-items.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from all_tab_columns where table_name = 'EBA_DEMO_DG_CUSTOMERS';
+    }
+)
+

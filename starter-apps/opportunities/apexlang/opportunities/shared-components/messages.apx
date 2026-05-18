@@ -1,0 +1,409 @@
+textMessage ABOUT_TO_CREATE (
+    message {
+        text: Please confirm adding the following %0 <strong>%1</strong> user(s) to your access control list.
+        language: en
+    }
+)
+
+textMessage ABOUT_TO_CREATE_WITH_INVALIDS (
+    message {
+        text: Please confirm adding the following %0 <strong>%1</strong> user(s) to your access control list. Note that %2 string(s) were invalid usernames.
+        language: en
+    }
+)
+
+textMessage ACCESS_CONTROL_INFO (
+    message {
+        text:
+            ```
+            <p>When Access Control is enabled, Administrators have the ability to restrict access to certain application features, for authenticated users. Opportunities supports the following 3 access levels; Reader, Contributor and Administrator.
+              <b>Readers</b> have read-only access and can also view reports.
+              <b>Contributors</b> can create, edit, delete and view reports.
+              <b>Administrators</b>, in addition to Contributor's capability, can also perform Opportunities administration, including configuration of access control, managing application look-up data and installing or uninstalling sample data.</p> 
+            
+            ```
+        language: en
+    }
+)
+
+textMessage ACCESS_CONTROL_IS_DISABLED (
+    message {
+        text: Access control for this application is currently disabled.  All users are currently Administrators. Navigate to <a href="%0">application administration</a> to enable access control.
+        language: en
+    }
+)
+
+textMessage ACL_DISABLED (
+    message {
+        text: <p>All users are currently <strong>Administrators</strong>. Please enable Access Control to restrict user access to this application.</p>
+        language: en
+    }
+)
+
+textMessage ACL_ENABLED (
+    message {
+        text: <p>Only users defined in the Access Control List have access to this application.</p>
+        language: en
+    }
+)
+
+textMessage ACL_PUBLIC_CONTRIBUTE (
+    message {
+        text: <p>All authenticated users have <strong>Reader</strong> and <strong>Contributor</strong> access.</p><p>Administrators are restricted by the Access Control List.</p>
+        language: en
+    }
+)
+
+textMessage ACL_PUBLIC_READONLY (
+    message {
+        text: <p>All authenticated users have <strong>Reader</strong> access.</p><p>Contributors and Administrators are restricted by the Access Control List.</p>
+        language: en
+    }
+)
+
+textMessage AC_CONFIGURATION_INFO (
+    message {
+        text:
+            ```
+            <p><b>Enabling Access Control</b> means that access to the application and its features are controlled by the current <b>Access Control List</b>, as defined by the application administrator. Opportunities has 3 access levels available that can be granted to a user; Administrator, Contributor and Reader. Please see the Manage Access Control List page for further details on what each level provides.</p>
+            <p>In addition, if you don't want to have to define every 'Reader' of your application, you can select <b>Any Authenticated User</b> from the <b>Reader Access</b> configuration option. This opens read-only access to any user who can authenticate into your application.</p>
+            <br />
+            <p><b>Disabling Access Control</b> means that access to the application and all of its features including Administration are open to any user who can authenticate to the application.</p>
+            <br />
+            <p><em>Note: Whether Access Control is enabled or disabled, a user still has to authenticate successfully into the application.</em></p>
+            ```
+        language: en
+    }
+)
+
+textMessage ADMINISTRATION (
+    message {
+        text: Administration
+        language: en
+    }
+)
+
+textMessage ALREADY_IN_ACL (
+    message {
+        text: User is already in Access Control List
+        language: en
+    }
+)
+
+textMessage ANY_AUTHENTICATED_USER (
+    message {
+        text: Any Authenticated User
+        language: en
+    }
+)
+
+textMessage AUTHENTICATION_REQUIRED_PAGES (
+    message {
+        text: Login Required Pages
+        language: en
+    }
+)
+
+textMessage BAU_EMAIL_INSTRUCTIONS (
+    message {
+        text: Enter or copy and paste email addresses separated by commas, semicolons, or new lines. Note that if you copy and paste email addresses from email messages, extraneous text will be filtered out. All email users provided will be added as the selected role. Existing or duplicate email addresses will be ignored.
+        language: en
+    }
+)
+
+textMessage BAU_STRING_INSTRUCTIONS (
+    message {
+        text: Enter or copy and paste usernames separated by commas, semicolons, or whitespace. All usernames provided will be added as the selected role. Existing or duplicate usernames will be ignored.
+        language: en
+    }
+)
+
+textMessage DUPLICATE_USER (
+    message {
+        text: Duplicate user in list
+        language: en
+    }
+)
+
+textMessage EMAIL_USERNAME_FORMAT_MSG (
+    message {
+        text: This application is currently using an <strong>email address</strong> username format (e.g. xyz@xyz.com). <a href="f?p=%0:%1:%2:">Change Username Format</a>
+        language: en
+    }
+)
+
+textMessage HELP (
+    message {
+        text: Help
+        language: en
+    }
+)
+
+textMessage HELP_ABOUT (
+    message {
+        text:
+            ```
+            <div class="aboutApp">
+            <h2>About this Application</h2>
+            <p>
+            	Manage opportunities, track leads, manage accounts and contacts. Opportunities are organized by territory and account. For each opportunity you can track products, competition, team members, and add hypertext links and file attachments. Use interactive reports to slice and dice your sales pipeline. You can upload leads from spreadsheets and convert leads to opportunities.
+            </p>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_FEATURES (
+    message {
+        text:
+            ```
+            <div class="textRegion">
+            <h2>Features</h2>
+            <ul>
+            	<li>Track Sales Opportunities</li>
+            	<li>View opportunities by product, territory, sales person</li>
+            	<li>Track and manage leads</li>
+            	<li>Link, Note, and File Attachments</li>
+            	<li>Mobile Interface</li>
+            	<li>Flexible Access Control (reader, contributor, administrator model)</li>
+            	<li>Timezone Support</li>
+            </ul>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_GETTING_STARTED (
+    message {
+        text:
+            ```
+            <div class="textRegion">
+            <h2>Getting Started</h2>
+            <p>
+            	1. Create your Team Members
+            </p>
+            <ul>
+            	<li>Click the administration icon (gear icon)</li>
+            	<li>Click Team Members</li>
+            	<li>Add your &REP_TITLE.s</li>
+            </ul>
+            <p>
+            	2. Define your products:
+            </p>
+            <ul>
+            	<li>Click the administration icon (gear icon)</li>
+            	<li>Click Products</li>
+            	<li>Add your products</li>
+            </ul>
+            <p>
+            	2. Define your territories:
+            </p>
+            <ul>
+            	<li>Click the administration icon (gear icon)</li>
+            	<li>Click Territories</li>
+            	<li>Add Territories</li>
+            </ul>
+            <p>
+            	2. Enter your opportunities:
+            </p>
+            <ul>
+            	<li>Navigate to the home page</li>
+            	<li>Click (+) icon in open opportunities region</li>
+            	<li>Follow the wizard to add an opportunity</li>
+            </ul>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_SIDEBAR (
+    message {
+        text:
+            ```
+            <h1 class="appNameHeader">
+                <img src="%0f_spacer.gif" class="appIcon %1" alt="" />
+                %2
+            </h1>
+            <ul class="vapList">
+                <li>
+                    <span class="vLabel">App Version</span>
+                    <span class="vValue">%3</span>
+                </li>
+                <li>
+                    <span class="vLabel">Pages</span>
+                    <span class="vValue">%4</span>
+                </li>
+                <li>
+                    <span class="vLabel">Vendor</span>
+                    <span class="vValue">%5 </span>
+                </li>
+            </ul>
+            ```
+        language: en
+    }
+)
+
+textMessage HELP_SUPPORT (
+    message {
+        text:
+            ```
+            <div class="textRegion">
+            <h2>Additional Information</h2>
+            <p>If you have questions, ask them on the <a href="%0" target="_blank">%1</a>.
+            </p>
+            </div>
+            ```
+        language: en
+    }
+)
+
+textMessage INFO_TEXT_ADMIN_PRODUCTS (
+    message {
+        text: Products are associated with an opportunities. Define the domain of products available to opportunities here.
+        language: en
+    }
+)
+
+textMessage INFO_TEXT_ADMIN_PRODUCTS_FORM (
+    message {
+        text: Products are associated with an opportunities.  Use this page to identify each product that can be associated with an opportunity.  Products are associated by numeric ID and not by name, so changing a product name will be immediately reflected on all opportunities, past and present.
+        language: en
+    }
+)
+
+textMessage INVALID_USERS_NOT_CREATED (
+    message {
+        text: Note that %0 string(s) were invalid usernames.
+        language: en
+    }
+)
+
+textMessage LOGIN (
+    message {
+        text: Login
+        language: en
+    }
+)
+
+textMessage LOGOUT (
+    message {
+        text: Logout
+        language: en
+    }
+)
+
+textMessage MISSING_AT_SIGN (
+    message {
+        text: Missing @ sign
+        language: en
+    }
+)
+
+textMessage MISSING_DOT (
+    message {
+        text: Missing dot
+        language: en
+    }
+)
+
+textMessage MOBILE (
+    message {
+        text: Mobile
+        language: en
+    }
+)
+
+textMessage N_DAY (
+    message {
+        text: %0 day
+        language: en
+    }
+)
+
+textMessage N_DAYS (
+    message {
+        text: %0 days
+        language: en
+    }
+)
+
+textMessage N_HOUR (
+    message {
+        text: %0 hour
+        language: en
+    }
+)
+
+textMessage N_HOURS (
+    message {
+        text: %0 hours
+        language: en
+    }
+)
+
+textMessage N_MINUTES (
+    message {
+        text: %0 minutes
+        language: en
+    }
+)
+
+textMessage N_WEEK (
+    message {
+        text: %0 week
+        language: en
+    }
+)
+
+textMessage N_WEEKS (
+    message {
+        text: %0 weeks
+        language: en
+    }
+)
+
+textMessage PAGES_WITH_CUSTOM_AUTH (
+    message {
+        text: Authorization Protected
+        language: en
+    }
+)
+
+textMessage PUBLIC_PAGES (
+    message {
+        text: Public Pages
+        language: en
+    }
+)
+
+textMessage SEARCH_TERM_BLURB (
+    message {
+        text: Enter a search term and press enter to search accounts, customers and opportunities.
+        language: en
+    }
+)
+
+textMessage STATE.RESTRICTED_CHAR.WEB_SAFE (
+    message {
+        text: %0 contains <, > or " which are invalid characters.
+        language: en
+    }
+)
+
+textMessage STRING_USERNAME_FORMAT_MSG (
+    message {
+        text: This application is currently using a <strong>non-email address</strong> username format (e.g. JOHNDOE). <a href="f?p=%0:%1:%2:">Change Username Format</a>
+        language: en
+    }
+)
+
+textMessage USERNAME_TOO_LONG (
+    message {
+        text: Username too long
+        language: en
+    }
+)
+

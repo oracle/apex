@@ -1,0 +1,572 @@
+page 9 (
+    name: Contact Type Details
+    alias: CONTACT-TYPE-DETAILS
+    title: Contact Type Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            //-->
+            </script>
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region audit-information (
+        name: Audit Information
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @contact-type-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P9_ID
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region contact-type-details (
+        name: Contact Type Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P9_CONTACT_TYPE (
+        type: textField
+        label {
+            label: Contact Type
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @contact-type-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 48
+        }
+        validation {
+            valueRequired: true
+            maxLength: 60
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CONTACT_TYPE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Contact Types are used to categorize Contacts.
+        }
+    )
+
+    pageItem P9_CREATED (
+        type: displayOnly
+        label {
+            label: <b>Created On:</b>
+            alignment: left
+        }
+        settings {
+            showLineBreaks: false
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CREATED
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The date on which the Contact Type was created.
+        }
+    )
+
+    pageItem P9_CREATED_BY (
+        type: displayOnly
+        label {
+            label: <b>Created By:</b>
+            alignment: left
+        }
+        settings {
+            showLineBreaks: false
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CREATED_BY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The User who created this Contact Type.
+        }
+    )
+
+    pageItem P9_ID (
+        type: hidden
+        layout {
+            sequence: 1
+            region: @contact-type-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9_IS_ACTIVE (
+        type: checkboxGroup
+        label {
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Active;Y
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 30
+            region: @contact-type-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IS_ACTIVE
+            used: always
+        }
+        default {
+            type: expression
+            plsqlExpression: case when :P9_ID is null then 'Y' end;
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P9_UPDATED (
+        type: displayOnly
+        label {
+            label: <b>Updated On:</b>
+            alignment: left
+        }
+        settings {
+            showLineBreaks: false
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 50
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: &APP_DATE_FORMAT.
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: UPDATED
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The date on which the Contact Type details was last Updated.
+        }
+    )
+
+    pageItem P9_UPDATED_BY (
+        type: displayOnly
+        label {
+            label: <b>Updated By:</b>
+            alignment: left
+        }
+        settings {
+            showLineBreaks: false
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 60
+            region: @audit-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: UPDATED_BY
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The User who last updated the Contact Type Details.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Contact Type
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P9_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P9_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P9_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation check-dependencies (
+        name: Check Dependencies
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery: select 1 from eba_cust_contacts where CONTACT_TYPE_ID = :P9_ID and rownum = 1
+        }
+        error {
+            errorMessage: Cannot Delete this Contact Type, Contacts exists in this Category.
+            associatedItem: @P9_CONTACT_TYPE
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    validation p9-contact-type-unique (
+        name: P9_CONTACT_TYPE unique
+        execution {
+            sequence: 5
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_cust_contact_types
+                where upper(contact_type) = upper(:P9_CONTACT_TYPE)
+                    and ( :P9_ID is null or id <> :P9_ID )
+                ```
+        }
+        error {
+            errorMessage: #LABEL# already exists.
+            associatedItem: @P9_CONTACT_TYPE
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 1611697940881273276
+        }
+    )
+
+    process fetch-row-from-eba-cust-contact-types (
+        name: Fetch Row from EBA_CUST_CONTACT_TYPES
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_CONTACT_TYPES
+            pkColumn: ID
+            pkItem: P9_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 17798879483627718572
+        }
+    )
+
+    process load-data (
+        name: Load data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :REQUEST = 'HOME' then
+                   :LAST_VIEW := 100 ;
+                else
+                   :LAST_VIEW := 8 ;
+                end if;
+                ```
+        }
+        execution {
+            sequence: 50
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 17798286631026303127
+        }
+    )
+
+    process process-row-of-eba-cust-contact-types (
+        name: Process Row of EBA_CUST_CONTACT_TYPES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_CONTACT_TYPES
+            pkColumn: ID
+            pkItem: P9_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CUST_CONTACT_TYPES.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 17798879667672718574
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 40
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 17798879870386718574
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

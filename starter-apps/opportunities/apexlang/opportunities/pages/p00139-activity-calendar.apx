@@ -1,0 +1,97 @@
+page 139 (
+    name: Activity Calendar
+    alias: ACTIVITY-CALENDAR
+    title: Activity Calendar
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is a monthly calendar of application activity, reporting distinct users and total page views by day. Click the <strong><</strong> button to go to the previous month and the <strong>></strong> button to go forward a month. Switch between the calendar view to the list view by clicking the <strong>list</strong> button.
+    }
+
+    region activity-calendar (
+        name: Activity Calendar
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select to_char(distinct_users) || ' user(s) - ' || trim(to_char(page_events,'999G999G999G990')) || ' event(s)' "THE_USER",
+                       log_day the_day
+                  from apex_workspace_log_archive
+                 where application_id = :app_id
+                 union all
+                select to_char(count( distinct USERID) ) || ' user(s) - ' || trim(to_char(count(*),'999G999G999G990')) || ' event(s)' "THE_USER",
+                       trunc(time_stamp) the_day
+                  from apex_activity_log l
+                 where flow_id = :app_id 
+                   and userid is not null 
+                   and time_stamp > trunc(sysdate)
+                 group by trunc(time_stamp)
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        settings {
+            displayColumn: THE_USER
+            startDateColumn: THE_DAY
+            endDateColumn: THE_DAY
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

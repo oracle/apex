@@ -1,0 +1,770 @@
+page 4 (
+    name: Home
+    alias: HOME
+    title: Home
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* Categories */
+            .c-Categories {
+              --a-cv-placeholder-color: transparent; /* Hide Placeholders */
+              --a-cv-background-color: transparent; /* Remove Card Background */
+              --a-cv-border-width: 0px; /* Remove Card Borders */
+              --a-cv-header-padding-y: .5rem;
+              --a-cv-title-font-size: .875rem;
+              --a-cv-title-font-weight: 400;
+              --a-cv-shadow: none;
+              --a-cv-icon-image-size: 4rem;
+            
+              min-block-size: 8rem; /* Set Initial Size of Cards */
+            }
+            
+            /* Align Category Image */
+            .c-Categories .a-CardView-iconImg {
+              margin-inline: auto;
+            }
+            
+            /* Misc Category Styles */
+            .c-Categories .a-CardView-items {
+              padding-inline: .25rem;
+              padding-block: 0;
+              margin-inline: auto;
+              text-align: center;
+              inline-size: max-content;
+            }
+            
+            /* Misc Category Item Styles */
+            .c-Categories .a-CardView-item {
+              flex-shrink: 0;
+              padding-block: .5rem;
+              min-inline-size: 0;
+            }
+            
+            /* Set Carousel Aspect Ratio */
+            .t-Region-carouselRegions {
+              aspect-ratio: 2.5 / 1;
+              overflow: hidden;
+            }
+            
+            /* Cards */
+            .a-CardView-items {
+              max-inline-size: 100%;
+              scrollbar-width: 0;
+              scroll-snap-type: x mandatory;
+              overflow-x: auto;
+              display: flex;
+              flex-wrap: nowrap;
+            }
+            
+            /* Hide Scrollbars for Webkit Browsers */
+            .a-CardView-items::-webkit-scrollbar {
+              display: none;
+            }
+            
+            .a-CardView-item {
+              scroll-snap-align: start;
+              min-inline-size: 17.5rem;
+            }
+            
+            /* Rating Badge */
+            .a-CardView-badge {
+              background-color: var(--a-palette-warning-shade);
+              color: var(--a-palette-warning);
+            }
+            
+            .a-CardView-badgeValue {
+              color: initial;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region categories (
+        name: Categories
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.id,
+                       c.name,
+                       c.image_url,
+                       c.created,
+                       c.created_by,
+                       c.updated,
+                       c.updated_by
+                  from sample_restaurant_categories c
+                 where exists ( select 1
+                                  from sample_restaurant r 
+                                 where r.category_id = c.id )
+                 order by c.name
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                margin-top-none
+                margin-bottom-none
+            ]
+            cssClasses: c-Categories
+        }
+        title {
+            column: NAME
+            cssClasses: u-textCenter
+        }
+        iconAndBadge {
+            iconSource: imageUrl
+            imageUrl: #APP_FILES#&IMAGE_URL.
+            iconPosition: top
+        }
+        messages {
+            whenNoDataFound: The categories are empty!
+            noDataFoundIcon: fa-emoji-grin-sweat
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #action$open-search?category=&NAME.
+            }
+        )
+
+    )
+
+    region credits (
+        name: Credits
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @promotionals
+            slot: slides
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--stretch
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#slides/slide-2.jpg
+            accessibleDescription: APEXToGo credits
+        }
+    )
+
+    region delivery-free (
+        name: Delivery Free
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.hero_url as image,
+                       r.name as name,
+                       c.name as category,
+                       r.rating,
+                       r.delivery_time,
+                       r.delivery_fee
+                  from sample_restaurant r,
+                       sample_restaurant_categories c 
+                 where c.id = r.category_id
+                   and delivery_fee = 0
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        card {
+            cssClasses: [
+                a-CardView-item-mobile
+                rounded
+                rounded-lg
+            ]
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: NAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+        }
+        iconAndBadge {
+            badgeColumn: RATING
+            badgeCssClasses: [
+                fa
+                fa-star
+                u-color-7-text
+            ]
+        }
+        media {
+            source: imageUrl
+            url: #APP_FILES#&IMAGE.
+            position: first
+            appearance: widescreen
+            sizing: cover
+            cssClasses: [
+                rounded-top
+                rounded-top-lg
+            ]
+        }
+        messages {
+            whenNoDataFound: This category is empty!
+            noDataFoundIcon: fa-emoji-grin-sweat
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 5
+                    items: {
+                        P5_RESTAURANT_ID: &ID.
+                    }
+                }
+            }
+        )
+
+    )
+
+    region favorites (
+        name: Favorites
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.hero_url as image,
+                       r.name as name,
+                       c.name as category,
+                       r.rating,
+                       r.delivery_time,
+                       r.delivery_fee
+                  from sample_restaurant r,
+                       sample_restaurant_categories c
+                 where c.id = r.category_id
+                 order by dbms_random.value
+                 fetch first 3 rows only
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                margin-top-none
+            ]
+        }
+        card {
+            cssClasses: [
+                a-CardView-item-mobile
+                rounded
+                rounded-lg
+            ]
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: NAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+        }
+        iconAndBadge {
+            badgeColumn: RATING
+            badgeCssClasses: [
+                fa
+                fa-star
+                u-color-7-text
+            ]
+        }
+        media {
+            source: imageUrl
+            url: #APP_FILES#&IMAGE.
+            position: first
+            appearance: widescreen
+            sizing: cover
+            cssClasses: [
+                rounded-top
+                rounded-top-lg
+            ]
+        }
+        messages {
+            whenNoDataFound: This category is empty!
+            noDataFoundIcon: fa-emoji-grin-sweat
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 5
+                    items: {
+                        P5_RESTAURANT_ID: &ID.
+                    }
+                }
+            }
+        )
+
+    )
+
+    region info (
+        name: Info
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @promotionals
+            slot: slides
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--stretch
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#slides/slide-3.jpg
+            accessibleDescription: APEXToGo info
+        }
+    )
+
+    region popular-near-you (
+        name: Popular near you
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.hero_url as image,
+                       r.name as name,
+                       c.name as category,
+                       r.rating,
+                       r.delivery_time,
+                       r.delivery_fee
+                  from sample_restaurant r,
+                       sample_restaurant_categories c
+                 where c.id = r.category_id
+                 order by dbms_random.value
+                 fetch first 8 rows only
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        card {
+            cssClasses: [
+                a-CardView-item-mobile
+                rounded
+                rounded-lg
+            ]
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: NAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+        }
+        iconAndBadge {
+            badgeColumn: RATING
+            badgeCssClasses: [
+                fa
+                fa-star
+                u-color-7-text
+            ]
+        }
+        media {
+            source: imageUrl
+            url: #APP_FILES#&IMAGE.
+            position: first
+            appearance: widescreen
+            sizing: cover
+            cssClasses: [
+                rounded-top
+                rounded-top-lg
+            ]
+        }
+        messages {
+            whenNoDataFound: This category is empty!
+            noDataFoundIcon: fa-emoji-grin-sweat
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 5
+                    items: {
+                        P5_RESTAURANT_ID: &ID.
+                    }
+                }
+            }
+        )
+
+    )
+
+    region premium (
+        name: Premium
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @promotionals
+            slot: slides
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--stretch
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#slides/slide-1.jpg
+            accessibleDescription: APEXToGo premium
+        }
+    )
+
+    region promotionals (
+        name: Promotionals
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/carousel-container
+            templateOptions: [
+                #DEFAULT#
+                js-cycle5s
+                t-Region--carouselSlide
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+                margin-top-sm
+                margin-bottom-md
+            ]
+            cssClasses: [
+                rounded
+                rounded-lg
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+    )
+
+    region today-s-offers (
+        name: Today's offers
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.hero_url as image,
+                       r.name as name,
+                       c.name as category,
+                       r.rating,
+                       r.delivery_time,
+                       r.delivery_fee
+                  from sample_restaurant r,
+                       sample_restaurant_categories c
+                 where c.id = r.category_id
+                 order by dbms_random.value
+                 fetch first 8 rows only
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        card {
+            cssClasses: [
+                a-CardView-item-mobile
+                rounded
+                rounded-lg
+            ]
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: NAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+        }
+        iconAndBadge {
+            badgeColumn: RATING
+            badgeCssClasses: [
+                fa
+                fa-star
+                u-color-7-text
+            ]
+        }
+        media {
+            source: imageUrl
+            url: #APP_FILES#&IMAGE.
+            position: first
+            appearance: widescreen
+            sizing: cover
+            cssClasses: [
+                rounded-top
+                rounded-top-lg
+            ]
+        }
+        messages {
+            whenNoDataFound: This category is empty!
+            noDataFoundIcon: fa-emoji-grin-sweat
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 5
+                    items: {
+                        P5_RESTAURANT_ID: &ID.
+                    }
+                }
+            }
+        )
+
+    )
+
+    button search (
+        buttonName: SEARCH
+        label: Search APEXToGo...
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--simple
+                t-Button--iconLeft
+                t-Button--stretch
+                t-Button--gapTop
+                t-Button--padBottom
+            ]
+            cssClasses: [
+                margin-top-md
+                u-textStart
+            ]
+            icon: fa-search
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+        advanced {
+            htmlDomId: SEARCH
+        }
+    )
+
+    button show-all-delivery-free (
+        buttonName: SHOW_ALL_DELIVERY_FREE
+        label: Show All
+        layout {
+            sequence: 10
+            region: @delivery-free
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button show-all-favorites (
+        buttonName: SHOW_ALL_FAVORITES
+        label: Show All
+        layout {
+            sequence: 20
+            region: @favorites
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button show-all-popular (
+        buttonName: SHOW_ALL_POPULAR
+        label: Show All
+        layout {
+            sequence: 10
+            region: @popular-near-you
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button show-all-todays-offers (
+        buttonName: SHOW_ALL_TODAYS_OFFERS
+        label: Show All
+        layout {
+            sequence: 10
+            region: @today-s-offers
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction open-search-region (
+        name: Open Search Region
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @search
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.actions.invoke( 'open-search' );
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

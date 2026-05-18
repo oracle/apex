@@ -1,0 +1,708 @@
+page 7 (
+    name: Add/Edit Collection Member
+    alias: EDITEMP
+    title: Add/Edit Collection Member
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    readOnly {
+        type: item=value
+        item: P7_STATUS
+        value: D
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardButtons
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region collection-member (
+        name: Collection Member
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: wizardBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+            ]
+        }
+    )
+
+    pageItem P7_COMM (
+        type: numberField
+        label {
+            label: Commission
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_DEPTNO (
+        type: selectList
+        label {
+            label: Dept&nbsp;No
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @deptno-lov
+            displayNullValue: false
+        }
+        layout {
+            sequence: 100
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_EMPNO (
+        type: numberField
+        label {
+            label: Emp&nbsp;No
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 30
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P7_EMPNO
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_ENAME (
+        type: textField
+        label {
+            label: Employee&nbsp;Name
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_HIREDATE (
+        type: datePicker
+        label {
+            label: Hire&nbsp;Date
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_JOB (
+        type: selectList
+        label {
+            label: Job
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @job-lov
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_MGR (
+        type: selectList
+        label {
+            label: Manager
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ename d, empno r
+                  from eba_demo_cs_emp
+                 where (:P7_EMPNO is null or empno <> :P7_EMPNO)
+                 order by 1 asc;
+                ```
+            displayNullValue: false
+        }
+        layout {
+            sequence: 60
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_SAL (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 2000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_SEQ (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @collection-member
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_STATUS (
+        type: displayOnly
+        label {
+            label: Status
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+            sendOnPageSubmit: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @status-lov
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 10
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P7_XMLTYPE (
+        type: textarea
+        label {
+            label: XMLType
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 110
+            region: @collection-member
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 15
+        }
+        validation {
+            maxLength: 4000
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P7_SEQ
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The XMLType field in this application is only used for demonstration purposes.  The value of this field is computed using the PL/SQL API DBMS_XMLGEN.
+        }
+    )
+
+    button add-member (
+        buttonName: Add_Member
+        label: Add Member
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P7_SEQ
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete-member (
+        buttonName: Delete_Member
+        label: Delete Member
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P7_SEQ is not null and :P7_STATUS <> 'D'
+        }
+    )
+
+    button update-member (
+        buttonName: Update_Member
+        label: Update Member
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P7_SEQ is not null and :P7_STATUS <> 'D'
+        }
+    )
+
+    dynamicAction cancel-modal (
+        name: Cancel Modal
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process add-member (
+        name: Add Member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_xmltype xmltype;
+                begin
+                if :P7_XMLTYPE is not null then
+                    l_xmltype := xmltype( :P7_XMLTYPE );
+                end if;
+                
+                apex_collection.add_member(
+                    p_collection_name => 'EMPCOLLECTION',
+                    p_n001            => :P7_EMPNO,
+                    p_n002            => :P7_SAL,
+                    p_n003            => :P7_COMM,
+                    p_n004            => :P7_DEPTNO,
+                    p_c001            => :P7_ENAME,
+                    p_c002            => :P7_JOB,
+                    p_c003            => :P7_MGR,
+                    p_d001            => :P7_HIREDATE,
+                    p_c004            => 'N',
+                    p_xmltype001      => l_xmltype,
+                    p_generate_md5    => 'YES' );
+                --
+                commit;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Successfully added new member to EMP collection.
+        }
+        error {
+            errorMessage: Error adding new member to EMP collection.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867473614988316822
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-member
+        }
+    )
+
+    process clear-cache (
+        name: Clear Cache
+        type: clearSessionState
+        execution {
+            sequence: 50
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867464011562288027
+        }
+    )
+
+    process delete-member (
+        name: Delete Member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                --
+                -- If the member of the collection is 'New', then we don't
+                -- need to mark it for deletion, we can physically remove it
+                -- from the collection.  Otherwise, mark it for deletion so
+                -- it will be eventually physically removed from the EMP table
+                -- when applied
+                --
+                if :P7_STATUS = 'N' then
+                    apex_collection.delete_member(
+                        p_collection_name => 'EMPCOLLECTION',
+                        p_seq             => :P7_SEQ );
+                else
+                    apex_collection.update_member_attribute(
+                       p_collection_name => 'EMPCOLLECTION',
+                       p_seq             => :P7_SEQ,
+                       p_attr_number     => 4,
+                       p_attr_value      => 'D' );
+                end if;
+                --
+                commit;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Succesfully deleted collection member.
+        }
+        error {
+            errorMessage:
+                ```
+                Error deleting collection member.
+                
+                
+                ```
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867503301999383607
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete-member
+        }
+    )
+
+    process populate-form-with-member-attributes (
+        name: Populate Form with Member Attributes
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (select c001, c002, c003, c004, d001, n001, n002, n003, n004, xmltype001
+                             from apex_collections
+                            where collection_name = 'EMPCOLLECTION'
+                              and seq_id = :P7_SEQ) loop
+                    --
+                    :P7_EMPNO    := c1.n001;
+                    :P7_ENAME    := c1.c001;
+                    :P7_JOB      := c1.c002;
+                    :P7_MGR      := c1.c003;
+                    :P7_HIREDATE := c1.d001;
+                    :P7_SAL      := c1.n002;
+                    :P7_COMM     := c1.n003;
+                    :P7_DEPTNO   := c1.n004;
+                    :P7_STATUS   := c1.c004;
+                    if c1.xmltype001 is not null then
+                        :P7_XMLTYPE  := xmltype.extract(c1.xmltype001,'/*').getstringval();
+                    end if;
+                    --
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8867485391025358397
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P7_SEQ
+        }
+    )
+
+    process update-member (
+        name: Update Member
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_status  varchar2(10);
+                    l_xmltype xmltype;
+                begin
+                    --
+                    -- If the member of the collection is marked as 'New', then
+                    -- leave it marked as 'New', otherwise mark as updated so
+                    -- it will eventually be updated to the EMP database table.
+                    --
+                    if :P7_STATUS = 'N' then
+                        l_status := 'N';
+                    else
+                        l_status := 'U';
+                    end if;
+                    --
+                    if :P7_XMLTYPE is not null then
+                        l_xmltype := xmltype( :P7_XMLTYPE );
+                    end if;
+                    --
+                    apex_collection.update_member(
+                        p_collection_name => 'EMPCOLLECTION',
+                        p_seq             => :P7_SEQ,
+                        p_n001 => :P7_EMPNO,
+                        p_n002 => :P7_SAL,
+                        p_n003 => :P7_COMM,
+                        p_n004 => :P7_DEPTNO,
+                        p_c001 => :P7_ENAME,
+                        p_c002 => :P7_JOB,
+                        p_c003 => :P7_MGR,
+                        p_d001 => :P7_HIREDATE,
+                        p_c004 => l_status,
+                        p_xmltype001 => l_xmltype );
+                    --
+                    commit;
+                end;
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Succesfully updated collection member.
+        }
+        error {
+            errorMessage: Error updating collection member.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8867516314254423533
+        }
+        serverSideCondition {
+            whenButtonPressed: @update-member
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            type: page
+            pageNumber: 6
+        }
+        comments {
+            comments: Created 17-JUL-2002 14:16 by JOEL
+        }
+    )
+
+)
+

@@ -1,0 +1,461 @@
+page 47 (
+    name: Customer Updates
+    alias: CUSTOMER-UPDATES
+    title: Customer Updates
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region updates (
+        name: Updates
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                        '' class, --use grayComment for gray look
+                        'Note' note_type,
+                        replace(apex_escape.html(dbms_lob.substr(n.note,2000,1)),chr(10),'<br />') comment_text,
+                        decode(c.name,null,'',' <strong>['||apex_escape.html(c.name)||']</strong>') attribute_1,
+                        '' attribute_2,
+                        '' attribute_3,
+                        '' attribute_4,
+                        lower(n.created_by) user_name,
+                        substr(n.created_by,0,2) user_icon,
+                        'u-color-'|| (ora_hash(n.created_by,44) + 1) icon_modifier,
+                        apex_util.get_since(NVL(n.note_date, nvl(n.updated, n.created))) ||' - '||to_char(NVL(n.note_date, nvl(n.updated, n.created)),'Day DD-MON-YYYY HH24:MI') comment_date,
+                        'Edit' as link,
+                        '' as actions,
+                        n.created,
+                        n.id note_id
+                from EBA_CUST_NOTES n
+                ,    EBA_CUST_CONTACTS c
+                where n.CUSTOMER_ID = :P47_ID 
+                and   n.contact_id = c.id (+)
+                union all
+                select
+                        'grayComment' class, --use grayComment for gray look
+                        'Update' note_type,
+                        initcap(replace(replace(COLUMN_NAME,'_ID',null),'_',' ')) comment_text,
+                        ' changed from "'||apex_escape.html(OLD_VALUE)||'"' attribute_1,
+                        ' to "'||new_value||'"' attribute_2,
+                        ' ' attribute_3,
+                        ' ' attribute_4,
+                        lower(changed_by) user_name,
+                        substr(changed_by,0,2) user_icon,
+                        'u-color-'|| (ora_hash(changed_by,44) + 1) icon_modifier,
+                        apex_util.get_since(CHANGE_DATE)||' - '||to_char(CHANGE_DATE,'Day DD-MON-YYYY HH24:MI') comment_date,
+                        ' ' as link,
+                        ' ' as actions,
+                        change_date as created,
+                        null note_id
+                from EBA_CUST_HISTORY f
+                where component_id = :P47_ID
+                    and table_name = 'CUSTOMERS'
+                union all
+                select
+                        'grayComment' class, --use grayComment for gray look
+                        'Product Update' note_type,
+                        initcap(replace(replace(COLUMN_NAME,'_ID',null),'_',' ')) comment_text,
+                        ' changed from "'||apex_escape.html(OLD_VALUE)||'"' attribute_1,
+                        ' to "'||new_value||'"' attribute_2,
+                        ' ' attribute_3,
+                        ' ' attribute_4,
+                        lower(changed_by) user_name,
+                        substr(changed_by,0,2) user_icon,
+                        'u-color-'|| (ora_hash(changed_by,44) + 1) icon_modifier,
+                        apex_util.get_since(CHANGE_DATE)||' - '||to_char(CHANGE_DATE,'Day DD-MON-YYYY HH24:MI') comment_date,
+                        ' ' as link,
+                        ' ' as actions,
+                        change_date as created,
+                        null note_id
+                from EBA_CUST_HISTORY f
+                where component_id = :P47_ID
+                    and table_name = 'PRODUCT_USES'
+                union all
+                select
+                        'grayComment' class, --use grayComment for gray look
+                        'Contact Update' note_type,
+                        decode(sign(eba_cust.get_authorization_level(:APP_USER)-1),
+                            1, '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':37:'||:APP_SESSION||'::NO::P37_ID:'||cc.id)
+                                ||'">'||apex_escape.html(cc.name)||'</a>',
+                            apex_escape.html(cc.name))
+                            ||' '||initcap(replace(replace(f.COLUMN_NAME,'_ID',null),'_',' ')) comment_text,
+                        ' changed from "'||apex_escape.html(f.OLD_VALUE)||'"' attribute_1,
+                        ' to "'||f.new_value||'"' attribute_2,
+                        ' ' attribute_3,
+                        ' ' attribute_4,
+                        lower(f.changed_by) user_name,
+                        substr(f.changed_by,0,2) user_icon,
+                        'u-color-'|| (ora_hash(f.changed_by,44) + 1) icon_modifier,
+                        apex_util.get_since(f.CHANGE_DATE)||' - '||to_char(f.CHANGE_DATE,'Day DD-MON-YYYY HH24:MI') comment_date,
+                        ' ' as link,
+                        ' ' as actions,
+                        f.change_date as created,
+                        null as note_id
+                from EBA_CUST_HISTORY f,
+                    eba_cust_contacts cc
+                where f.component_id = cc.id
+                    and cc.customer_id = :P47_ID
+                    and table_name = 'CONTACTS'
+                order by 11 desc
+                ```
+            pageItemsToSubmit: P47_ID
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        reportLayout {
+            numberOfRows: 25
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No updates found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: columnNames
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 15
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column CLASS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Class
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+            }
+            layout {
+                sequence: 14
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+            }
+            layout {
+                sequence: 13
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 8
+            }
+            link {
+                target: {
+                    page: 7
+                    items: {
+                        P7_ID: #NOTE_ID#
+                    }
+                    clearCache: 7
+                    request: CUST_NOTE
+                }
+                linkText: #LINK#
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: '#NOTE_ID#' is not null
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        column NOTE_ID (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 9
+            }
+        )
+
+        column NOTE_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Note Type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: User Icon
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: User Name
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P47_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @updates
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button popnote (
+        buttonName: POPNOTE
+        label: Add Update
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 97
+                items: {
+                    P97_CUSTOMER_ID: &P47_ID.
+                }
+                clearCache: 97
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    dynamicAction refresh-irr-on-close (
+        name: Refresh IRR on Close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @popnote
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @updates
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

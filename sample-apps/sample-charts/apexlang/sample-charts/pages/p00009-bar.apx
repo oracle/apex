@@ -1,0 +1,1479 @@
+page 9 (
+    name: Bar
+    alias: BAR
+    title: Bar
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            ul.barGraph{margin:12px !important;list-style:none;white-space:nowrap}
+            ul.barGraph li{display:inline-block;width:48px}
+            ul.barGraph li:hover big small{background-color:#4A6D98}
+            ul.barGraph li.barHeaders{width:128px}
+            ul.barGraph li.barHeaders > span{text-align:left}
+            ul.barGraph li > label{display:block;font:normal 11px/12px Arial,sans-serif;color:#444;text-align:center}
+            ul.barGraph li > label span{display:block;font:normal 11px/12px Arial,sans-serif;color:#767676}
+            ul.barGraph li > big{height:120px;margin:8px;position:relative;display:block}
+            ul.barGraph li > big > small{display:block;position:absolute;bottom:0;width:30px;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;background-color:#6A9CDA;-moz-box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;border:1px solid #4A6D98}
+            ul.barGraph li > span{display:block;text-align:center;font:normal 11px/16px Arial,sans-serif;color:#444;border-top:1px solid #F0F0F0;padding:8px}
+            ul.barGraph li > span.noBorder{border-top:none;padding-top:0}
+            ul.barGraph li > span a{color:##405580}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Bar charts, using Oracle JET Data Visualizations, and our plug-in based bar charts are showcased on this page. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts. With plug-in based bar charts, you can display labels in a legend or with rollover labels on the bars. Drill down links are controlled via plug-in attributes. Oracle APEX region plug-ins allow APEX developers to extend the APEX application builder with custom solutions not currently available in Oracle APEX.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-bar-chart
+        }
+    )
+
+    region bar-chart-dual-y-axis-with-formatted-labels (
+        name: Bar Chart (Dual Y Axis with formatted Labels)
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: dualChart
+            regionDisplaySelector: true
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            maxWidth: 700
+            height: 400
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        legend {
+            position: top
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+                fontSize: 14
+                fontColor: BLUE
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            appearance {
+                assignedToY2Axis: true
+            }
+            label {
+                show: true
+                position: outsideBarEdge
+                fontSize: 14
+                fontColor: #309fdb
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+                position: insideBarEdge
+                fontSize: 14
+                fontColor: WHITE
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y1 Axis Title
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+    )
+
+    region bar-chart-series-colors (
+        name: Bar Chart (Series Colors)
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region bar-chart-series-colors-information (
+        name: Bar Chart (Series Colors) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                These examples demonstrate the various ways to control the colors used for the chart series.<p/><p/>
+                
+                <strong>Default Color Palette</strong> - The JET chart color palette is integrated with Universal Theme.  So you can easily change the default color palette using Theme Roller, allowing you to globally define the colour scheme for your application - for your charts and all other components. Simply launch Theme Roller on your chart page, click the <b>Show All</b> button, to expose all available groups, then scroll down to the Palette group and start making your color selections.  Once you've defined your selection, click 'Save As' to save the changes to a new Theme Style. Then click 'Set as Current', to apply your changes to the application.  Note that the changed color palette will be applied to all components of your application, not just to charts.<p/>
+                <strong>Series-Level Color Attribute</strong> - We declaratively support the definition of a series color via the series-level <b>Color</b> attribute.  You can type the color, or use the Quick Pick or Color Picker, to make your selection.<p/>
+                
+                <strong>SQL Series-Defined Colors</strong> - If you wish to apply colors based on a column in your table, or dynamically via your SQL query, then all you need to do is include the column/alias in your query and reference it in the series-level <b>Color</b> attribute.  For example:<br/>
+                <pre>
+                select a.product_name, 
+                       b.quantity, 
+                       b.customer,
+                       case when b.quantity > 50 then 'gold'
+                            when b.quantity <= 30 then 'red' 
+                         when b.quantity > 30 then 'green'
+                         else 'blue'
+                       end colors
+                from eba_demo_chart_products a, eba_demo_chart_orders b
+                where a.product_id = b.product_id
+                and customer = 'Store A'
+                </pre>
+                ...where a column alias COLORS has been defined.  The column alias can then be referenced in the series color via the series-level Color attribute, using <b>&amp;COLORS.</b> syntax.<p/><p/>
+                
+                <strong>Custom Colors via JavaScript</strong> - Use the chart-level advanced attribute <b>JavaScript Code</b> to customize the chart colors at chart initialization. For example,:<p/>
+                <pre>
+                function( options ){ 
+                        
+                    // Setup a callback function which gets called when data is retrieved, it allows to manipulate the series 
+                    options.dataFilter = function( data ) { 
+                        data.series[ 0 ].items[0].color = "red"; 
+                        data.series[ 0 ].items[1].color = "blue"; 
+                        data.series[ 0 ].items[2].color = "yellow"; 
+                        data.series[ 0 ].items[3].color = "green"; 
+                        data.series[ 0 ].items[4].color = "purple"; 
+                        return data; 
+                    };
+                        
+                    // Set chart initialization options 
+                    return options; 
+                }
+                </pre>
+                
+                <p>
+                <strong>Sort Order</strong> - These examples demonstrate the use of an ORDER BY in the chart SQL Query to control the sort ordering of a single-series chart.
+                <p>
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @bar-chart-series-colors
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region bar-chart-series-name-column-mapping (
+        name: Bar Chart (Series Name Column Mapping)
+        type: chart
+        layout {
+            sequence: 90
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        title {
+            title: Jobs By Department
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series jobs-by-department (
+            name: Jobs By Department
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select job, deptno, avg(sal) avg_sal 
+                      from eba_demo_chart_emp 
+                     group by job, deptno 
+                     order by deptno
+                    ```
+            }
+            columnMapping {
+                seriesName: JOB
+                label: DEPTNO
+                value: AVG_SAL
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 29
+                    items: {
+                        IG_DEPTNO: &DEPTNO.
+                    }
+                    action: clearRegions
+                    request: "IG[emp]_emp_details"
+                }
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region bar-chart-series-name-column-mapping-information (
+        name: Bar Chart (Series Name Column Mapping) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a multi-series Bar chart, with links defined on each chart element. Oracle JET requires that each series of a multi-series chart contains a data point for each label that is displayed on the x-axis.  With APEX 5.1.3, we introduced automatically filling in of any gaps in a given series, to densify the data and ensure the resulting data can be rendered correctly by Oracle JET. In APEX 18.1, we have introduced two new declarative options, to allow you to control whether the densification should be applied to your multi-series chart, and the sort order of the chart data. The options are:<br/>
+                
+                <ul>
+                <li><strong>Fill Gaps in Chart Data</strong>: by default, this is set to <strong>Yes</strong>, to indicate that the data densification logic will be applied to your multi-series chart. Try switching this option to No, to inspect the rendered chart.  Without the densification logic applied, data points are not rendered in the correct position on the chart.</li>
+                <li><strong>Sort Order</strong>: by default, this is set to <strong>Label - Ascending</strong>.  The option is only available for a multi-series chart, where the <strong>Fill Gaps in Chart Data</strong> attribute has been set to Yes.</li>
+                </ul>
+                
+                <strong>Link</strong> - This series-level attribute can be set to define a link on the chart element.  For this example, the new Interactive Grid URL Filtering support is demonstrated here.  When you click on a chart element, the URL will redirect you to page 29 in the application, which contains an Interactive Grid saved report on the EBA_DEMO_CHART_EMP table.  The report will filter information based upon the department number (DEPTNO) associated with the selected chart element.  The URL Filtering is achieved by defining a link on the chart series, with the following settings:
+                <ul>
+                <li> <strong>Link Type</strong> = Redirect to Page</li>
+                <li> <strong>Target</strong> = Page 29</li> 
+                <li> <strong>Link Builder Target settings:</strong></i> 
+                <ul>
+                <li> <strong>Set Item Name</strong> = IG_DEPTNO     - using the <i>IG_</i> syntax to reference a column of the Interactive Grid</i> 
+                <li> <strong>Set Item Value</strong> = &amp;DEPTNO.</i> 
+                <li> <strong>Clear/Reset Action</strong> = 'Clear Regions'</li> 
+                <li> <strong>Advanced Request</strong> = IG[<i>emp</i>]_<i>emp_details</i>  -  where <i>emp</i> is the region static ID, and <i>emp_details</i> is the saved report name.</li> 
+                </ul>
+                </ul>
+                <p/><p/>
+                <strong>Series Name</strong> - This series-level attribute can be used to handle the rendering of a multi-series chart, based upon your multi-series dynamic query defined either at series level or region level.
+                <p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @bar-chart-series-name-column-mapping
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region bar-chart-stack-label-stack-category (
+        name: Bar Chart (Stack Label & Stack Category)
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: stackCategoryChart
+            regionDisplaySelector: true
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            maxWidth: 700
+            height: 400
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        legend {
+            position: top
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            appearance {
+                stackCategory: stack1
+            }
+            label {
+                show: true
+                cssStyling: font-size:14px;color:blue;
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            appearance {
+                stackCategory: stack2
+            }
+            label {
+                show: true
+                position: outsideBarEdge
+                cssStyling: font-size:14px;color:blue;
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            appearance {
+                stackCategory: stack1
+            }
+            label {
+                show: true
+                position: insideBarEdge
+                cssStyling: font-size:14px;color:white;
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y1 Axis Title
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+    )
+
+    region bar-chart-stack-label-stack-category-information (
+        name: Bar Chart (Stack Label & Stack Category) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates 2 attributes of a Bar chart.<p/><p/>
+                
+                <strong>Stack Label</strong> - Use this chart-level attribute to display the total values of stacked data items on a chart.<p/>
+                <strong>Stack Category</strong> - Set the series-level attribute to assign a series to a specific category on the chart.  This attribute allows you to render multiple stacks on a stacked chart, without the need to use JavaScript code.<p/>
+                
+                <p>
+                For more information on the Stack Label and Stack Category attributes, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=barChart&demo=dataLabels" target="_blank">Bar Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=stackCategory" target="_blank">Stack Categories</a> examples, and the <a href="&OJCHART_API_URL.#stackLabel" target="_blank">stackLabel</a> attribute in the ojChart API guide.
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @bar-chart-stack-label-stack-category
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region bar-chart-stacked (
+        name: Bar Chart (Stacked)
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       project as label,
+                       NVL((select sum(t.budget) from eba_demo_chart_tasks t where t.project =  p.id and t.budget > t.cost),0) as value,
+                       'under budget' as series ,
+                       'green' as color
+                  from eba_demo_chart_projects p
+                union all
+                select id,
+                       project as label,
+                       NVL((select sum(t.budget) from eba_demo_chart_tasks t where t.project =  p.id and t.budget <= t.cost),0) as value,
+                       'over budget' as series ,
+                       'red' as color
+                  from eba_demo_chart_projects p
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series new (
+            name: New
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+                labelTooltip: LABEL
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region bar-chart-stacked-percent (
+        name: Bar Chart (Stacked Percent)
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       project as label,
+                       NVL((select sum(t.budget) from eba_demo_chart_tasks t where t.project =  p.id and t.budget > t.cost),0) as value,
+                       'under budget' as series ,
+                       'green' as color
+                  from eba_demo_chart_projects p
+                union all
+                select id,
+                       project as label,
+                       NVL((select sum(t.budget) from eba_demo_chart_tasks t where t.project =  p.id and t.budget <= t.cost),0) as value,
+                       'over budget' as series ,
+                       'red' as color
+                  from eba_demo_chart_projects p
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series new (
+            name: New
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+                labelTooltip: LABEL
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                min: 0
+                max: 1
+                format: percent
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region bar-chart-stacked-percent-information (
+        name: Bar Chart (Stacked Percent) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Stacked Bar chart, with values represented in percent.<p/>
+                
+                <strong>Format</strong> - To represent your data as percent value on a Stacked Bar Chart, you must set this y-axis level attribute to <strong>Percent</strong>.  The associated attributes <strong>Minimum</strong> and <strong>Maximum</strong> must be set to <strong>0</strong>, and <strong>1</strong> respectively.  This will ensure the y-axis renders from 0% to 100%.  When a format of 'Percent' is used, Oracle JET interprets a value of 1 = 100%.  On a Stacked Percent Bar chart, &PRODUCT_NAME. will automatically calculates the fractional values for the chart series, based on the sum of the values within each group.  This allows Oracle JET to accurately represent the data in percent format on the stacked chart.<p/>
+                
+                <strong>Hide and Show Behavior</strong> - This chart-level attribute can be used to support hide and show behavior using the chart legend. The option <strong>With Rescale</strong> Hide and Show behavior, allows a user to hide and unhide a series by clicking the chart legend markers. This allows the user to focus on specific series that are interesting to them. <strong>NOTE</strong>: The chart axes will not rescale on a stacked chart displaying percent values. The y-axis will remain representing 0% - 100%.<p/>
+                
+                <p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @bar-chart-stacked-percent
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region custom-colors-via-javascript (
+        name: Custom Colors via JavaScript
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @bar-chart-series-colors
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            headerText: * Labels Sorted Descending
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        chartLayout {
+            height: 340
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            show: false
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ){ 
+                        
+                    // Setup a callback function which gets called when data is retrieved, it allows to manipulate the series 
+                    options.dataFilter = function( data ) { 
+                        data.series[ 0 ].items[0].color = "red"; 
+                        data.series[ 0 ].items[1].color = "blue"; 
+                        data.series[ 0 ].items[2].color = "yellow"; 
+                        data.series[ 0 ].items[3].color = "green"; 
+                        data.series[ 0 ].items[4].color = "purple"; 
+                        return data; 
+                    };
+                        
+                    // Set chart initialization options 
+                    return options; 
+                }
+                ```
+        }
+
+        series fruit-sales (
+            name: Fruit Sales
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    order by a.product_name desc
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region default-color-palette (
+        name: Default Color Palette
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @bar-chart-series-colors
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: bar_1
+        }
+        headerAndFooter {
+            headerText: * Values Sorted Ascending
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        chartLayout {
+            height: 340
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            show: false
+        }
+
+        series fruit-sales (
+            name: Fruit Sales
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    order by b.quantity asc
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region series-level-color-attribute (
+        name: Series-Level Color Attribute
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @bar-chart-series-colors
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            headerText: * Values Sorted Descending
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        chartLayout {
+            height: 340
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            show: false
+        }
+
+        series fruit-sales (
+            name: Fruit Sales
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    order by b.quantity desc
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            appearance {
+                color: #FC3254
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region sql-series-defined-colors (
+        name: SQL Series-Defined Colors
+        type: chart
+        layout {
+            sequence: 30
+            parentRegion: @bar-chart-series-colors
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            headerText: * Labels Sorted Ascending
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        chartLayout {
+            height: 340
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            show: false
+        }
+
+        series fruit-sales (
+            name: Fruit Sales
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, 
+                           b.quantity, 
+                           b.customer,
+                           case when b.quantity > 50 then 'gold'
+                                when b.quantity <= 30 then 'red' 
+                             when b.quantity > 30 then 'green'
+                             else 'blue'
+                           end colors
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    order by a.product_name asc
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+            }
+            appearance {
+                color: &COLORS.
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    button horizontal (
+        buttonName: Horizontal
+        label: Horizontal
+        layout {
+            sequence: 30
+            region: @bar-chart-stack-label-stack-category
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-bars
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button stack (
+        buttonName: Stack
+        label: Stack
+        layout {
+            sequence: 10
+            region: @bar-chart-stack-label-stack-category
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button unstack (
+        buttonName: Unstack
+        label: Unstack
+        layout {
+            sequence: 20
+            region: @bar-chart-stack-label-stack-category
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button vertical (
+        buttonName: Vertical
+        label: Vertical
+        layout {
+            sequence: 40
+            region: @bar-chart-stack-label-stack-category
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-bar-chart
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction horizontal-orientation (
+        name: Horizontal Orientation
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @horizontal
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("stackCategoryChart").widget().ojChart({orientation: 'horizontal'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @bar-chart-stack-label-stack-category
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction stack-chart (
+        name: Stack Chart
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @stack
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("stackCategoryChart").widget().ojChart({stack: 'on'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @bar-chart-stack-label-stack-category
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction unstack-chart (
+        name: Unstack Chart
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @unstack
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("stackCategoryChart").widget().ojChart({stack: 'off'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @bar-chart-stack-label-stack-category
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction vertical-orientation (
+        name: Vertical Orientation
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @vertical
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("stackCategoryChart").widget().ojChart({orientation: 'vertical'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @bar-chart-stack-label-stack-category
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

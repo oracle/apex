@@ -1,0 +1,1094 @@
+page 112 (
+    name: Initiative Milestones
+    alias: INITIATIVE-MILESTONES
+    title: &NOMENCLATURE_INITIATIVE. Milestones
+    pageGroup: @initiatives
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .project-rds-region {
+              background-color: rgba(219, 204, 175, .2);
+            }
+            
+            .t-Body-title {
+              --ut-palette-warning-shade: rgba(var(--oj-palette-neutral-rgb-160));
+              --ut-component-background-color: rgba(var(--oj-palette-neutral-rgb-170));
+              --ut-alert-horizontal-border-radius: 0px;
+            }
+            
+            .t-ContextualInfo .t-Button--link {
+              --a-button-line-height: 1rem;
+              --a-button-border-radius: 0;
+              --a-button-font-weight: normal;
+            }
+            
+            .t-ContextualInfo .t-Button--link:hover {
+              text-decoration: none;
+            }
+            
+            .sp-control-break {
+                background-color: rgba(219, 204, 175, .2);
+                font-size: 0.875rem;
+                font-weight: 700;
+                line-height: var(--ut-report-header-cell-line-height, var(--ut-report-cell-line-height, 1rem));
+                padding-block-end: var(--ut-report-header-cell-padding-y, .75rem);
+                padding-block-start: var(--ut-report-header-cell-padding-y, .75rem);
+                padding-inline-end: var(--ut-report-header-cell-padding-x, .75rem);
+                padding-inline-start: var(--ut-report-header-cell-padding-x, .75rem);
+            }
+            /* Hide repeating col headers for schedule report */
+            .sp-schedule-report tbody:not(:first-child) + thead tr:first-child {
+                display: none;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 13
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region details (
+        name: Details
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--noPadding
+            ]
+            cssClasses: u-flex
+        }
+    )
+
+    region details-2 (
+        name: details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.area, 
+                       i.initiative,
+                       --
+                       -- projects in initaitive
+                       --
+                       (select count(*) 
+                        from sp_projects p 
+                        where p.initiative_id = i.id and
+                              p.ARCHIVED_YN = 'N' and
+                              p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       -- projects resolved
+                       --
+                       (select count(*) 
+                        from sp_projects p 
+                        where p.initiative_id = i.id and
+                              p.ARCHIVED_YN = 'N' and
+                              p.pct_complete = 100 and
+                              p.DUPLICATE_OF_PROJECT_ID is null) projects_resolved,
+                       --
+                       i.updated
+                  from SP_INITIATIVES i,
+                       SP_AREAS f
+                 where i.area_id = f.id
+                   and i.id = :P112_INITIATIVE_ID
+                
+                     
+                ```
+            pageItemsToSubmit: P112_INITIATIVE_ID
+        }
+        layout {
+            sequence: 70
+            parentRegion: @details
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column AREA (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_AREA.
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #AREA#
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Projects
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column PROJECTS_RESOLVED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Projects Resolved
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    region filter (
+        name: Filter
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 112
+                        items: {
+                            P112_INITIATIVE_ID: &P112_INITIATIVE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 112
+                        items: {
+                            P112_INITIATIVE_ID: &P112_INITIATIVE_ID.
+                        }
+                        clearCache: 112
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+        )
+
+    )
+
+    region report-results (
+        name: Report Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select project_id, 
+                       project, 
+                       pct_complete, 
+                       the_owner, 
+                       milestone_owner,
+                       task_type, 
+                       target_date, 
+                       milestone_status, 
+                       overdue,
+                       friendly_identifier, 
+                       project_url_name,
+                       project_group,
+                       focus_area,
+                       project_target,
+                       case when PCT_COMPLETE >= 90 
+                            then 'Recently Completed'
+                            when TARGET_DATE is null
+                            then 'No Target'
+                            else to_char(TARGET_DATE,'Month ''RR')
+                            end to_group
+                  from (
+                --
+                --
+                --
+                select p.ID project_id,
+                       p.PROJECT,
+                       p.pct_complete,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = t.OWNER_ID) milestone_owner,
+                       (select focus_area from SP_INITIATIVE_FOCUS_AREAS ifa where ifa.id = p.focus_area_id) focus_area,
+                       tt.task_type, tt.display_seq task_display_seq,
+                       t.target_complete target_date,
+                       s.status milestone_status,
+                       case when p.pct_complete < 90 and t.target_complete < sysdate then 'Y' end overdue,
+                       p.friendly_identifier,
+                       p.project_url_name,
+                       nvl((select group_name from SP_PROJECT_GROUPS pg where pg.id = p.project_group_id),'Not Grouped') Project_group,
+                       case when p.target_complete is null
+                            then 'No Target'
+                            else to_char(p.target_complete,'DD-Mon-YYYY')
+                            end ||
+                            case when p.release_id is not null 
+                                 then ' ('||(select release_train||': '||release from SP_RELEASE_TRAINS t where t.id = p.release_id)||')'
+                                 end project_target
+                from  SP_PROJECTS p,
+                      sp_tasks t,
+                      sp_task_statuses s,
+                      sp_task_types tt
+                where nvl(p.ARCHIVED_YN,'N') != 'Y' 
+                  and p.DUPLICATE_OF_PROJECT_ID is null
+                  and (:P112_FOCUS_AREA_ID is null or p.focus_area_id = :P112_FOCUS_AREA_ID)
+                  and (:P112_PROJECT_GROUP_ID is null or p.PROJECT_GROUP_ID = :P112_PROJECT_GROUP_ID)
+                  and (trim(:P112_PROJECT) is null or instr(upper(p.project),trim(upper(:P112_PROJECT)))> 0 )
+                  and p.pct_complete >= nvl(:P112_MIN_PERCENT,0)
+                  and p.pct_complete <= nvl(:P112_MAX_PERCENT,100)
+                  and p.id = t.project_id
+                  and (t.task_sub_type_id = :P112_MILESTONE_TYPE_ID or :P112_MILESTONE_TYPE_ID = 0)
+                  and t.status_id = s.id
+                  and t.task_sub_type_id = tt.id
+                  --and (p.pct_complete < 100 or t.target_complete > sysdate-90)
+                  and (:P112_TAG is null or instr(','||upper(p.tags)||',',','||upper(:P112_TAG)||',') > 0 )
+                  and p.initiative_id = :P112_INITIATIVE_ID
+                ) i
+                where (:P112_TARGET is null or instr(upper(PROJECT_TARGET),upper(:P112_TARGET)) > 0 )
+                order by case when PCT_COMPLETE >= 90 
+                              then 1
+                              when TARGET_DATE is not null
+                              then 2
+                              else 3
+                              end, target_date, project, task_display_seq, pct_complete
+                ```
+            pageItemsToSubmit: [
+                P112_MILESTONE_TYPE_ID
+                P112_MIN_PERCENT
+            ]
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            cssClasses: sp-schedule-report
+            icon: " "
+        }
+        headerAndFooter {
+            footerText: <br><div class="padding-sm">Recently Completed will only show &NOMENCLATURE_PROJECTS. that completed selected milestone in the last 90 days.</div>
+        }
+        reportLayout {
+            numberOfRows: 5000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        messages {
+            whenNoDataFound: No &NOMENCLATURE_PROJECTS. found.
+        }
+        breakFormatting {
+            breakColumns: col1
+            style: repeatHeadings
+            repeatHeadingFormat: <div class="sp-control-break">#COLUMN_VALUE#</div>
+        }
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 160
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column MILESTONE_OWNER (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Milestone Owner
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MILESTONE_STATUS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Milestone Status
+            }
+            layout {
+                sequence: 90
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OVERDUE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECT. Completeness
+            }
+            layout {
+                sequence: 70
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_PROJECT.
+            }
+            layout {
+                sequence: 40
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            link {
+                target: {
+                    page: 36
+                    items: {
+                        P36_ID: #PROJECT_ID#
+                    }
+                    clearCache: 36
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_GROUP (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Group
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+            config {
+                buildOption: @project-groups
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column PROJECT_TARGET (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Project Target
+            }
+            layout {
+                sequence: 170
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column TARGET_DATE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Target Date
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            columnFormatting {
+                htmlExpression: {if OVERDUE/}<span style="color:red;">#TARGET_DATE#</span>{else/}#TARGET_DATE#{endif/}
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TASK_TYPE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Milestone Type
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: P112_MILESTONE_TYPE_ID
+                value: 0
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECT. Owner
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TO_GROUP (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Complete
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+    )
+
+    pageItem P112_FOCUS_AREA_ID (
+        type: selectOne
+        label {
+            label: Focus Area
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select FOCUS_AREA, id
+                from SP_INITIATIVE_FOCUS_AREAS
+                where INITIATIVE_ID = :P112_INITIATIVE_ID
+                ```
+        }
+        layout {
+            sequence: 50
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_INITIATIVE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @filter
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @filter
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_INIT_FOCUS_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @filter
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_MAX_PERCENT (
+        type: selectOne
+        label {
+            label: Maximum &NOMENCLATURE_PROJECT. Percent Complete
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:0%;0,10%;10,20%;20,30%;30,40%;40,50%;50,60%;60,70%;70,80%;80,90%;90,100%;100
+        }
+        layout {
+            sequence: 120
+            region: @filter
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: 100
+        }
+    )
+
+    pageItem P112_MILESTONE_TYPE_ID (
+        type: selectOne
+        label {
+            label: Milestone Type
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select task_type d, id r
+                  from sp_task_types
+                 where parent_type_id = (select id from sp_task_types where static_id = 'MILESTONE')
+                 order by display_seq
+                ```
+        }
+        layout {
+            sequence: 90
+            region: @filter
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select id task_id 
+                  from sp_task_types 
+                 where static_id = 'MILESTONE-MERGED'
+                ```
+        }
+    )
+
+    pageItem P112_MIN_PERCENT (
+        type: selectOne
+        label {
+            label: Minimum &NOMENCLATURE_PROJECT. Percent Complete
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:0%;0,10%;10,20%;20,30%;30,40%;40,50%;50,60%;60,70%;70,80%;80
+        }
+        layout {
+            sequence: 110
+            region: @filter
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: 20
+        }
+    )
+
+    pageItem P112_PROJECT (
+        type: textField
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @filter
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P112_PROJECT_GROUP_ID (
+        type: selectOne
+        label {
+            label: &NOMENCLATURE_PROJECT. Group
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select group_name, id
+                from SP_PROJECT_GROUPS
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 60
+            region: @filter
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        config {
+            buildOption: @project-groups
+        }
+    )
+
+    pageItem P112_TAG (
+        type: textField
+        label {
+            label: Tag
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @filter
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P112_TARGET (
+        type: textField
+        label {
+            label: Target
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @filter
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    button run-report (
+        buttonName: run_report
+        label: Run Report
+        layout {
+            sequence: 70
+            region: @filter
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--gapTop
+                t-Button--padBottom
+            ]
+            icon: fa-bolt
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 94
+                items: {
+                    P94_INITIATIVE_ID: &P112_INITIATIVE_ID.
+                }
+                clearCache: 94
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction after-edit (
+        name: after edit
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @menubar
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @details-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p112-initiative (
+        itemName: P112_INITIATIVE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select i.initiative
+                from SP_INITIATIVES i
+                where i.id = :P112_INITIATIVE_ID
+                ```
+        }
+    )
+
+)
+

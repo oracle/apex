@@ -1,0 +1,620 @@
+searchConfig cancelled_orders_search_configuration (
+    name: Cancelled Orders Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select order_id,
+                   'ORDER#' || order_id as order_title,
+                   order_status,
+                   order_datetime,
+                   customer_id,
+                   full_name            as customer_name,
+                   items 
+             from eba_demo_search_cust_ord_prd 
+            where order_status = 'CANCELLED'
+            ```
+        searchableColumns: [
+            ORDER_TITLE
+            ORDER_STATUS
+            ITEMS
+            ORDER_ID
+            CUSTOMER_NAME
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ORDER_ID
+        titleColumn: ORDER_TITLE
+        subtitleColumn: CUSTOMER_NAME
+        descriptionColumn: ITEMS
+        badgeColumn: ORDER_STATUS
+        lastModifiedColumn: ORDER_DATETIME
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-exclamation-circle u-danger-text
+    }
+)
+
+searchConfig company (
+    name: Company Search Configuration
+    source {
+        location: restSource
+        restSource: @Search_Company
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: NAME
+        subtitleColumn: ORIGIN_COUNTRY
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 105
+            items: {
+                P105_ID: &ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: imageUrl
+        imageUrl: &LOGO_PATH.
+    }
+
+    parameter (
+        name: @query
+        value {
+            type: staticValue
+            staticValue: Netflix
+        }
+    )
+
+)
+
+searchConfig complete_orders_search_configuration (
+    name: Complete Orders Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select order_id,
+                   'ORDER#'||order_id as order_title,
+                   order_status,
+                   order_datetime,
+                   customer_id,
+                   full_name          as customer_name,
+                   items 
+             from eba_demo_search_cust_ord_prd 
+            where order_status = 'COMPLETE'
+            ```
+        searchableColumns: [
+            ORDER_TITLE
+            ORDER_STATUS
+            ITEMS
+            ORDER_ID
+            CUSTOMER_NAME
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ORDER_ID
+        titleColumn: ORDER_TITLE
+        subtitleColumn: CUSTOMER_NAME
+        descriptionColumn: ITEMS
+        badgeColumn: ORDER_STATUS
+        lastModifiedColumn: ORDER_DATETIME
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-check-circle u-success-text
+    }
+)
+
+searchConfig customer (
+    name: Customer Search Configuration
+    source {
+        tableName: EBA_DEMO_SEARCH_CUSTOMERS
+        searchableColumns: [
+            FULL_NAME
+            EMAIL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: CUSTOMER_ID
+        titleColumn: FULL_NAME
+        descriptionColumn: EMAIL_ADDRESS
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 203
+            items: {
+                P203_CUSTOMER_ID: &CUSTOMER_ID.
+            }
+            clearCache: 203
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-user u-color-10-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig movie (
+    name: Movie Search Configuration
+    source {
+        location: restSource
+        restSource: @MovieDB
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        descriptionColumn: OVERVIEW
+        badgeColumn: VOTE_AVERAGE
+        lastModifiedColumn: RELEASE_DATE
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 104
+            items: {
+                P104_ID: &ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: imageUrl
+        imageUrl: &POSTER_PATH.
+    }
+
+    parameter (
+        name: @query
+        value {
+            type: staticValue
+            staticValue: Jack+Reacher
+        }
+    )
+
+)
+
+searchConfig product (
+    name: Product Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        searchableColumns: [
+            PRODUCT_NAME
+            DESCRIPTION
+            GENDER
+            COLOUR
+            BRAND
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+        customColumn1: COLOUR
+        customColumn2: GENDER
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 205
+            items: {
+                P205_PRODUCT_ID: &PRODUCT_ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package u-color-1-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig product_custom (
+    name: Product Search Configuration Custom Display
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   p.product_image,
+                   p.image_mime_type,
+                   substr(j.description,1,100) as description,
+                   j.gender, 
+                   j.colour,
+                   j.brand,
+                   APEX_UTIL.PREPARE_URL(p_url => 'f?p=' || :APP_ID || ':205:'|| :APP_SESSION ||'::NO::P205_PRODUCT_ID:'||p.product_id) product_url
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        searchableColumns: [
+            PRODUCT_NAME
+            DESCRIPTION
+            GENDER
+            COLOUR
+            BRAND
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+        mimeTypeColumn: IMAGE_MIME_TYPE
+    }
+    iconAndBadge {
+        iconSource: imageBlobColumn
+        imageColumn: PRODUCT_IMAGE
+    }
+    columnFormatting {
+        htmlExpression:
+            ```html
+            <div class="a-ResultsItem &RESULT_CSS_CLASSES!ATTR.">
+                {if ?ICON_VALUE/}
+                  {case ICON_TYPE/}
+                    {when INITIALS/}
+                      <div class="a-ResultItem-initials u-color-var">&ICON_VALUE.</div>
+                    {when URL/}
+                      <div class="a-ResultItem-image"><img src="&ICON_VALUE!ATTR." alt=""/></div>
+                    {when CLASS/}
+                      <div class="a-ResultItem-icon u-color-var"><span class="fa &ICON_VALUE!ATTR." aria-hidden="true"></span></div>
+                  {endcase/}
+                  {else/}
+                      <div class="a-ResultItem-image"><img src="#APP_FILES#image_not_found.png" alt="" width="150"/></div>
+                {endif/}
+                <div class="a-ResultsItem-content">
+                  <div class="a-ResultsItem-details">
+                    <div class="a-ResultsItem-header">
+                        <span class="a-ResultsItem-title"><a href="&PRODUCT_URL!ATTR." >&PRODUCT_NAME.</a></span>
+                    </div>
+                    <div class="a-ResultsItem-subTitle"><span>Store : </span>&BRAND.</div>
+                    <div class="a-ResultsItem-description">&DESCRIPTION. ...</div>
+                  </div>
+                  <div class="a-ResultsItem-price">&UNIT_PRICE.</div>
+                </div>
+              </div>
+            ```
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig product_image (
+    name: Product Search Configuration With Image
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   p.product_image,
+                   p.image_mime_type,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        searchableColumns: [
+            PRODUCT_NAME
+            DESCRIPTION
+            GENDER
+            COLOUR
+            BRAND
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+        mimeTypeColumn: IMAGE_MIME_TYPE
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 205
+            items: {
+                P205_PRODUCT_ID: &PRODUCT_ID.
+            }
+            clearCache: 205
+        }
+    }
+    iconAndBadge {
+        iconSource: imageBlobColumn
+        imageColumn: PRODUCT_IMAGE
+    }
+)
+
+searchConfig product_prefix (
+    name: Product Search Configuration With Prefix
+    searchQueryPrefix: prod
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        searchableColumns: [
+            PRODUCT_NAME
+            DESCRIPTION
+            GENDER
+            COLOUR
+            BRAND
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package u-color-1-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig product_search_configuration_oracle_text (
+    name: Product Search Configuration Oracle Text
+    type: text
+    source {
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   p.text_index_column,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        oracleTextIndexColumn: TEXT_INDEX_COLUMN
+        type: sqlQuery
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package u-color-1-text
+    }
+)
+
+searchConfig product_text_index_function (
+    name: Product Search Configuration Oracle Text  Function
+    type: text
+    source {
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   p.text_index_column,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        oracleTextIndexColumn: TEXT_INDEX_COLUMN
+        type: sqlQuery
+    }
+    rowSearch {
+        textQueryFunction: custom
+        customFunctionName: eba_demo_search_text_pkg.convert_text_query
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package u-color-1-text
+    }
+)
+
+searchConfig store (
+    name: Store Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select store_id,
+                   store_name,
+                   web_address,
+                   physical_address
+              from eba_demo_search_stores
+            ```
+        searchableColumns: [
+            STORE_NAME
+            PHYSICAL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: STORE_ID
+        titleColumn: STORE_NAME
+        subtitleColumn: WEB_ADDRESS
+        descriptionColumn: PHYSICAL_ADDRESS
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 106
+            items: {
+                P106_STORE_ID: &STORE_ID.
+            }
+            action: resetRegions
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-shopping-bag u-color-4-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig store_map (
+    name: Store Search Configuration With Location
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select store_id,
+                   store_name,
+                   web_address,
+                   physical_address,
+                   longitude,
+                   latitude
+              from eba_demo_search_stores
+            ```
+        searchableColumns: [
+            STORE_NAME
+            PHYSICAL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: STORE_ID
+        titleColumn: STORE_NAME
+        subtitleColumn: WEB_ADDRESS
+        descriptionColumn: PHYSICAL_ADDRESS
+        customColumn1: LONGITUDE
+        customColumn2: LATITUDE
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-shopping-bag
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+
+searchConfig store_prefix (
+    name: Store Search Configuration With Prefix
+    searchQueryPrefix: store
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select store_id,
+                   store_name,
+                   web_address,
+                   physical_address,
+                   longitude,
+                   latitude
+              from eba_demo_search_stores
+            ```
+        searchableColumns: [
+            STORE_NAME
+            PHYSICAL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: STORE_ID
+        titleColumn: STORE_NAME
+        subtitleColumn: WEB_ADDRESS
+        descriptionColumn: PHYSICAL_ADDRESS
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-shopping-bag u-color-4-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

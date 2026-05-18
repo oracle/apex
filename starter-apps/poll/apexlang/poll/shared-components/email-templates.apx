@@ -1,0 +1,289 @@
+emailTemplate ACCESS_REQUEST_APPROVED_WITHOUT_PASSWORD (
+    name: Access Request Approved without password
+    emailSubject: #APPLICATION_TITLE# Access
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body:
+            ```html
+            <h1>You have been granted access to #APPLICATION_TITLE#.</h1> 
+            <p>You may now log in to #APP_LINK#.</p> 
+            <p>Your application login credentials are provided below.</p> 
+            <p> 
+              Username: #USERNAME# 
+            </p>
+            ```
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message.</div>
+    }
+    plainTextFormat {
+        content:
+            ```html
+            You have been granted access to #APPLICATION_TITLE#.
+            You may now log in to #APP_LINK#.
+            Your application login credentials are provided below. 
+             
+              Username: #USERNAME# 
+            
+            ```
+    }
+    advanced {
+        versionNumber: 1
+    }
+)
+
+emailTemplate ACCESS_REQUEST_APPROVED_WITH_PASSWORD (
+    name: Access Request Approved with password
+    emailSubject: #APPLICATION_TITLE# Access
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body:
+            ```html
+            <h1>You have been granted access to #APPLICATION_TITLE#.</h1> 
+            <p>You may now log in to #APP_LINK#.</p> 
+            <p>Your application login credentials are provided below.</p> 
+            <p> 
+              Username: #USERNAME# 
+              <br> 
+              Password: #APEX_PASSWORD# 
+            </p>
+            ```
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message.</div>
+    }
+    plainTextFormat {
+        content:
+            ```html
+            You have been granted access to #APPLICATION_TITLE#.
+            You may now log in to #APP_LINK#.
+            Your application login credentials are provided below.
+            
+            Username: #USERNAME# 
+            
+            Password: #APEX_PASSWORD# 
+            
+            ```
+    }
+    advanced {
+        versionNumber: 1
+    }
+)
+
+emailTemplate ACCESS_REQUEST_DECLINED (
+    name: Access Request Declined
+    emailSubject: #APPLICATION_TITLE# Access Request
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body:
+            ```html
+            <p>You recently requested access to #APPLICATION_TITLE#.</p> 
+            <p>Your request was declined.</p> 
+            <p>  
+              Reason: #ACTION_REASON# 
+            </p>
+            ```
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message.</div>
+    }
+    plainTextFormat {
+        content:
+            ```html
+            You recently requested access to #APPLICATION_TITLE#.
+            Your request was declined.
+               
+              Reason: #ACTION_REASON# 
+            
+            ```
+    }
+    advanced {
+        versionNumber: 1
+    }
+)
+
+emailTemplate INVITE (
+    name: Poll Invitation or Reminder
+    emailSubject: #SUBJECT#
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body: #BODY!RAW#
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message. #OPT_OUT_TEXT!RAW#</div>
+    }
+    plainTextFormat {
+        content:
+            ```html
+            #BODY#
+            
+            This is a system generated email. Please do not reply to this message. #OPT_OUT_TEXT#
+            ```
+    }
+    advanced {
+        versionNumber: 1
+    }
+)
+
+emailTemplate RESULTS (
+    name: Poll Results
+    emailSubject: Results for "#POLL_NAME#"
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body:
+            ```html
+            #INTRO_TEXT!RAW#
+            <p>Below are the results for #POLL_NAME#.</p> 
+            <style type="text/css"> 
+            /* Client-specific Styles */ 
+            #outlook a{padding:0;} 
+            /* Force Outlook to provide a "view in browser" button. */ 
+            body{width:100% !important;} 
+            .ReadMsgBody{width:100%;} = .ExternalClass{width:100%;} 
+            /* Force Hotmail to display emails at full width */ 
+            body{-webkit-text-size-adjust:none;} 
+            /* Prevent Webkit platforms from changing default text sizes. */ 
+            /* Reset Styles */ 
+            body{margin:0; padding:0;} img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;} table td{border-collapse:collapse;} 
+            #backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;} body, 
+            #backgroundTable{ background-color:#F8F8F8; } #Container{ border: 1px solid #E0E0E0; box-shadow: 0 1px 4px rgba(0,0,0,.1); } h1, 
+            .h1{ color:#202020; display:block; font-family:Arial; font-size:24px; font-weight:bold; line-height:100%; margin-top:0; margin-right:0; margin-bottom:16px; margin-left:0; text-align:left; } h2, 
+            .h2{ color:#202020; display:block; font-family:Arial; font-size:20px; font-weight:bold; line-height:100%; margin-top:0; margin-right:0; margin-bottom:10px; margin-left:0; text-align:left; } h3, 
+            .h3{ color:#202020; display:block; font-family:Arial; font-size:16px; font-weight:bold; line-height:100%; margin-top:0; margin-right:0; margin-bottom:10px; margin-left:0; text-align:left; } h4, 
+            .h4{ color:#202020; display:block; font-family:Arial; font-size:12px; font-weight:bold; line-height:100%; margin-top:0; margin-right:0; margin-bottom:10px; margin-left:0; text-align:left; } 
+            #Header{ background-color:#FFFFFF; border-bottom:0; } 
+            .logoHeader { background-color: #FF0000; color:#FFF; font-family:Arial; font-size:20px; font-weight:bold; line-height:100%; padding: 0 20px; text-align:left; vertical-align:middle; height: 48px; border-bottom: 1px solid #D30915; } 
+            .appHeader { background-color: #F3F8FC; color:#404040; font-family:Arial; font-size:14px; font-weight:bold; line-height:100%; padding: 0 20px; text-align:left; vertical-align:middle; height: 40px; border-bottom: 1px solid #D4E2E6; } 
+            .headerContent a:link, .headerContent a:visited, 
+            /* Yahoo! Mail Override */ 
+            .headerContent a .yshortcuts 
+            /* Yahoo! Mail Override */
+            { color:#2E79B3; font-weight:normal; text-decoration:underline; } #headerImage{ height:auto; max-width:600px !important; } #Container, 
+            .bodyContent{ background-color:#FFFFFF; } 
+            .bodyContent div{ color:#505050; font-family:Arial; font-size:14px; line-height:150%; text-align:left; } 
+            .body-Name { margin-bottom: 16px; } 
+            .bodyParagraph { color:#505050; font-family:Arial; font-size:14px; line-height:150%; text-align:left; margin: 8px 0; } 
+            .bodyParagraph-last { color:#505050; font-family:Arial; font-size:14px; line-height:150%; text-align:left; margin: 8px 0 0 0; } 
+            .bodyContent div a:link, 
+            .bodyContent div a:visited, 
+            /* Yahoo! Mail Override */ 
+            .bodyContent div a .yshortcuts 
+            /* Yahoo! Mail Override */
+            { color:#2E79B3; font-weight:normal; text-decoration:underline; } 
+            .dataTable{ background-color:#FFFFFF; border:1px solid #DDDDDD; border-top: none; } 
+            .dataTableHeading{ background-color:#F8F8F8; color:#606060; font-family:Helvetica; font-size:14px; font-weight:bold; line-height:150%; text-align:left; border-top: 1px solid #DDDDDD; } 
+            .dataTableHeading a:link, 
+            .dataTableHeading a:visited, 
+            /* Yahoo! Mail Override */ 
+            .dataTableHeading a .yshortcuts 
+            /* Yahoo! Mail Override */
+            { color:#FFFFFF; font-weight:bold; text-decoration:underline; } 
+            .dataTableContent{ border-top:1px solid #DDDDDD; border-bottom:0; color:#404040; font-family:Helvetica; font-size:14px; font-weight:normal; line-height:150%; text-align:left; } 
+            .dataTableHeadingRow { background-color: #F8F8F8; border-top:1px solid #DDDDDD; border-right:1px solid #DDDDDD; border-bottom:0; color:#606060; font-family:Helvetica; font-size:14px; font-weight:bold; line-height:150%; text-align:left; } 
+            .dataTableContent a:link, 
+            .dataTableContent a:visited, 
+            /* Yahoo! Mail Override */ 
+            .dataTableContent a .yshortcuts 
+            /* Yahoo! Mail Override */
+            { color:#202020; font-weight:bold; text-decoration:underline; } 
+            .Button{ -moz-border-radius:3px; -webkit-border-radius:3px; background-color:#EA0000; border:0; border-collapse:separate !important; border-radius:3px; } 
+            .Button, 
+            .Button a:link, 
+            .Button a:visited, 
+            /* Yahoo! Mail Override */ 
+            .Button a .yshortcuts 
+            /* Yahoo! Mail Override */
+            { color:#FFFFFF; font-family:Arial; font-size:15px; font-weight:bold; letter-spacing:-.5px; line-height:100%; text-align:left; text-decoration:none; } 
+            .bodyContent img{ display:inline; height:auto; } #templateFooter{ background-color:#FFFFFF; border-top:0; } 
+            .footerContent div{ color:#707070; font-family:Arial; font-size:12px; line-height:125%; text-align:left; } 
+            .footerContent div a:link, 
+            .footerContent div a:visited, 
+            /* Yahoo! Mail Override */ 
+            .footerContent div a .yshortcuts 
+            /* Yahoo! Mail Override */
+            { color:#336699; font-weight:normal; text-decoration:underline; } 
+            .footerContent img{ display:inline; } 
+            </style> 
+            #BODY!RAW#
+            ```
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message. #OPT_OUT_TEXT!RAW#</div>
+    }
+    plainTextFormat {
+        content: This email must be viewed using an html client.
+    }
+    advanced {
+        versionNumber: 1
+        htmlTemplate:
+            ```html
+            <!DOCTYPE HTML>
+            <html>
+            <head>
+              <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+              <meta name="viewport" content="width=device-width">
+              <style>
+                body { background-color: #fdfdfd; color: #3e3e3e; margin: 0; padding: 0; min-width: 100%; -webkit-text-size-adjust: none; -ms-text-size-adjust: none; text-size-adjust: none; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif; line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+                table { border: 0; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+                table td { padding: 0; vertical-align: top; border-collapse: collapse; }
+                table, th, td { line-height: inherit; }
+                img { vertical-align: middle; text-decoration: none; outline: none; border: 0; -ms-interpolation-mode: bicubic; }
+                table.container { margin-right: auto; margin-left: auto; width: 600px; }
+                p { margin: 0 0 20px 0; }
+                a, .main a { color: #056abf; }
+                @media only screen and (max-width: 612px) {
+                  .mobile-hide { display: none !important; }
+                  .stack { display: block !important; width: auto !important; }
+                  table.container { width: 100% !important; }
+                  table td { text-align: left !important; }
+                }
+              </style>
+            </head>
+            <body yahoo="fix" style="background-color: #efefef; line-height: 1.5;">
+            <table class="body" border="0" width="100%">
+              <tr>
+                <td align="center" valign="top" style="background-color: #efefef;">
+                  <center>
+                    <table class="container" width="600">
+                      <tr>
+                        <td style="padding: 12px 6px;">
+            
+                          <!-- Header -->
+                          <table width="100%" style="background-color: #f8f8f8; border-radius: 4px 4px 0 0">
+                            <tr>
+                              <td style="text-align: left; padding: 20px 12px; border-bottom: 1px solid #eaeaea;">
+            
+                                #HEADER#
+            
+                              </td>
+                            </tr>
+                          </table>
+                          <!-- // Header -->
+            
+                          <!-- Main Body -->
+                          <table width="100%" style="background-color: #ffffff; border-radius: 0 0 4px 4px;">
+                            <tr>
+                              <td class="main" style="text-align: left; padding: 12px; font-size: 14px;">
+            
+                              #BODY#
+            
+                              </td>
+                            </tr>
+                          </table>
+                          <!-- // Main Body -->
+            
+                          <!-- Footer -->
+                          <table width="100%">
+                            <tr>
+                              <td style="font-size: 11px; padding: 12px;">
+            
+                                #FOOTER#
+            
+                              </td>
+                            </tr>
+                          </table>
+                          <!-- // Footer -->
+            
+                        </td>
+                      </tr>
+                    </table>
+                  </center>
+                </td>
+              </tr>
+            </table>
+            </body>
+            </html>
+            ```
+    }
+)
+

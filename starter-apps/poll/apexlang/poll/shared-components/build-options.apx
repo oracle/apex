@@ -1,0 +1,46 @@
+buildOption allow-deletion-of-responses (
+    name: Allow Deletion of Responses
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: If included, Contributors and Administrators can delete responses.  Testing responses can always be deleted, this governs responses given when the poll/quiz is published.
+    }
+)
+
+buildOption enable-scrubbing-respondent-emails (
+    name: Enable Scrubbing Respondent Emails
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: If enabled, Administrators will be able to access a page to allow the removal of leading, non-displayed characters from Respondents.
+    }
+)
+
+buildOption feature-access-control (
+    name: Feature: Access Control
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ACCESS_CONTROL
+    }
+    comments {
+        comments: Incorporate role based user authentication within your application and manage username mappings to application roles.
+    }
+)
+
+buildOption self-service-requests (
+    name: Self Service Requests
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: If included, users can request access to the application.  An administrator would then review and approve/decline the request.
+    }
+)
+

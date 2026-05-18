@@ -1,0 +1,9 @@
+authentication apex-auth (
+    name: APEX Auth
+    type: oracleApexAccounts
+    postLogout {
+        redirectTo: url
+        url: f?p=&APP_ID.:1
+    }
+)
+

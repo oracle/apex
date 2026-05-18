@@ -1,0 +1,15 @@
+file "js/script.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "js/script.js.map" (
+    mimeType: application/json
+    charSet: utf-8
+)
+
+file "js/script.min.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+

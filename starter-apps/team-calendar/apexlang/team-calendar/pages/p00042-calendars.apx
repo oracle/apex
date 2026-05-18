@@ -1,0 +1,533 @@
+page 42 (
+    name: Calendars
+    alias: CALENDARS
+    title: Calendars
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>When the Multiple Calendar build option is enabled, events can be placed on a Calendar. A calendar can be defined as public or private, which will determine whether only specified users can view the events or not. Creation and editing of events can be limited to Contributors granted limited access.  The Short Name of the Calendar is used as a prefix on events when displayed. Click the <strong>Add Calendar</strong> button to add a new calendar.</p>
+    }
+
+    region calendars (
+        name: Calendars
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select calendar_id,
+                       short_name,
+                       calendar_name,
+                       description,
+                       case when public_view_yn = 'Y' then 'Yes' else 'No' end public_view,
+                       case when is_active_yn = 'Y' then 'Yes' else 'No' end active,
+                       (select count(*) from EBA_CA_EVENTS e
+                         where e.calendar_id = c.calendar_id) cnt_events,
+                       CREATED_ON,
+                       LOWER(CREATED_BY) CREATED_BY,
+                       nvl(last_updated_on, created_on) LAST_UPDATED_ON,
+                       LOWER(LAST_UPDATED_BY) LAST_UPDATED_BY
+                  from EBA_CA_CALENDARS c
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 44
+                items: {
+                    P44_CALENDAR_ID: #CALENDAR_ID#
+                }
+                clearCache: 44
+            }
+            linkIcon: <span class="fa fa-edit" aria-hidden="true"></span>
+            linkAttributes: title="Edit #CALENDAR_NAME#"
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No calendars found.
+            whenMoreDataFound: This query returns more than 10,000 rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 17558533966832672704
+        }
+
+        columnGroup audit-info (
+            name: Audit Info
+            layout {
+                sequence: 20
+            }
+        )
+
+        columnGroup details (
+            name: Details
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ACTIVE (
+            type: plainText
+            heading {
+                heading: Active?
+            }
+            layout {
+                sequence: 14
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column CALENDAR_ID (
+            type: hidden
+            heading {
+                heading: Calendar Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CALENDAR_NAME (
+            type: plainText
+            heading {
+                heading: Calendar Name
+            }
+            layout {
+                sequence: 12
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column CNT_EVENTS (
+            type: plainText
+            heading {
+                heading: Number of Events
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+                group: @details
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 4
+                group: @audit-info
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            help {
+                helpText: The user who created the record.
+            }
+        )
+
+        column CREATED_ON (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 8
+                group: @audit-info
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 13
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column LAST_UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Last Updated By
+            }
+            layout {
+                sequence: 5
+                group: @audit-info
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            help {
+                helpText: The user who last updated the record.
+            }
+        )
+
+        column LAST_UPDATED_ON (
+            type: plainText
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 9
+                group: @audit-info
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column PUBLIC_VIEW (
+            type: plainText
+            heading {
+                heading: Public Can View?
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column SHORT_NAME (
+            type: plainText
+            heading {
+                heading: Short Name
+            }
+            layout {
+                sequence: 11
+                group: @details
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        savedReport 18346147 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ACTIVE (
+                sequence: 7
+            )
+
+            displayColumn CALENDAR_NAME (
+                sequence: 2
+            )
+
+            displayColumn CNT_EVENTS (
+                sequence: 5
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 3
+            )
+
+            displayColumn LAST_UPDATED_ON (
+                sequence: 6
+            )
+
+            displayColumn PUBLIC_VIEW (
+                sequence: 4
+            )
+
+            displayColumn SHORT_NAME (
+                sequence: 1
+            )
+
+            sort (
+                column: SHORT_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: LAST_UPDATED_ON
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: TYPE_NAME_DISP
+                sort {
+                    sequence: 3
+                }
+            )
+
+        )
+
+        savedReport 18346155 (
+            visibility: alternativeDefault
+            name: with Audit Info
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ACTIVE (
+                sequence: 9
+            )
+
+            displayColumn CALENDAR_NAME (
+                sequence: 2
+            )
+
+            displayColumn CNT_EVENTS (
+                sequence: 4
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 6
+            )
+
+            displayColumn CREATED_ON (
+                sequence: 5
+            )
+
+            displayColumn LAST_UPDATED_BY (
+                sequence: 8
+            )
+
+            displayColumn LAST_UPDATED_ON (
+                sequence: 7
+            )
+
+            displayColumn PUBLIC_VIEW (
+                sequence: 3
+            )
+
+            displayColumn SHORT_NAME (
+                sequence: 1
+            )
+
+            sort (
+                column: TYPE_NAME_DISP
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Calendar
+        layout {
+            sequence: 20
+            region: @calendars
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 44
+                clearCache: 44
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @calendars
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 42
+                clearCache: [
+                    7
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-add (
+        name: Refresh on Add
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @create
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @calendars
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on Edit
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @calendars
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @calendars
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

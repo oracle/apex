@@ -1,0 +1,467 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry administration (
+        name: Administration
+        pageNumber: 500
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry advanced-features (
+        name: Advanced Features
+        pageNumber: 400
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry application-appearance (
+        name: Application Appearance
+        pageNumber: 501
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 501
+            }
+        }
+    )
+
+    entry calendar (
+        name: Calendar
+        pageNumber: 308
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 308
+            }
+        }
+    )
+
+    entry cards-layout (
+        name: Cards Layout
+        pageNumber: 304
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 304
+            }
+        }
+    )
+
+    entry combine-with-relational-data (
+        name: Combine with Relational Data
+        pageNumber: 200
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry data-display-options (
+        name: Data Display Options
+        pageNumber: 300
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry derived-columns (
+        name: Derived Columns
+        pageNumber: 202
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @combine-with-relational-data
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+    )
+
+    entry faceted-search-on-rest (
+        name: Faceted Search on REST
+        pageNumber: 306
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 306
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry invoke-api-process (
+        name: Invoke API Process
+        pageNumber: 402
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced-features
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry map (
+        name: Map
+        pageNumber: 307
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 307
+            }
+        }
+    )
+
+    entry nested-json-and-dynamic-actions (
+        name: Nested JSON and Dynamic Actions
+        pageNumber: 405
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced-features
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+    )
+
+    entry network-setup (
+        name: Network Setup
+        pageNumber: 504
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 504
+            }
+        }
+    )
+
+    entry odata (
+        name: OData
+        pageNumber: 103
+        execution {
+            sequence: 12
+        }
+        appearance {
+            parentEntry: @rest-data-sources
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry oracle-jet-charts (
+        name: Oracle JET Charts
+        pageNumber: 305
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 305
+            }
+        }
+    )
+
+    entry oracle-rest-data-services-ords (
+        name: Oracle REST Data Services (ORDS)
+        pageNumber: 102
+        execution {
+            sequence: 11
+        }
+        appearance {
+            parentEntry: @rest-data-sources
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry post-processing-sql (
+        name: Post Processing SQL
+        pageNumber: 201
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @combine-with-relational-data
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+    )
+
+    entry report-with-pagination (
+        name: Report with Pagination
+        pageNumber: 302
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+    )
+
+    entry report-with-query (
+        name: Report with Query
+        pageNumber: 303
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+    )
+
+    entry reset-data (
+        name: Reset Data
+        pageNumber: 502
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+    )
+
+    entry rest-and-workflow (
+        name: REST and Workflow
+        pageNumber: 407
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced-features
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+    )
+
+    entry rest-data-and-pl-sql (
+        name: REST Data and PL/SQL
+        pageNumber: 404
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced-features
+        }
+        link {
+            target: {
+                page: 404
+            }
+        }
+    )
+
+    entry rest-data-source-plugins (
+        name: REST Data Source Plugins
+        pageNumber: 406
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced-features
+        }
+        link {
+            target: {
+                page: 406
+            }
+        }
+    )
+
+    entry rest-data-sources (
+        name: REST Data Sources
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry rest-synchronization (
+        name: REST  Synchronization
+        pageNumber: 401
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced-features
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry simple-http (
+        name: Simple HTTP
+        pageNumber: 101
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @rest-data-sources
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry simple-report (
+        name: Simple Report
+        pageNumber: 301
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-display-options
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+    )
+
+    entry web-credentials (
+        name: Web Credentials
+        pageNumber: 503
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+    )
+
+    entry workflow-console (
+        name: Workflow Console
+        pageNumber: 408
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @rest-and-workflow
+        }
+        link {
+            target: {
+                page: 408
+            }
+        }
+    )
+
+)
+

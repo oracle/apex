@@ -1,0 +1,256 @@
+page 11 (
+    name: Participant Information
+    alias: PARTICIPANT-INFORMATION
+    title: Participant Information
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    css {
+        inline:
+            ```css
+            .apex-item-text {
+                --a-field-input-font-size: 2rem;
+                --a-field-input-line-height: 4rem;
+            }
+            .t-Form-itemWrapper {
+                justify-content: center;
+            }
+            
+            .t-Alert--wizard .t-Alert-buttons {
+                margin-block-start: 0.5rem;
+            }
+            
+            .t-Button--large {
+                --a-button-font-size: 1rem;
+            }
+            
+            ```
+    }
+    security {
+        authentication: public
+        deepLinking: true
+        pageAccessProtection: noArgumentsSupported
+        formAutoComplete: false
+    }
+
+    region welcome-to-qask (
+        name: Welcome to qAsk
+        type: staticContent
+        source {
+            htmlCode: Enter details requested for this Session
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--info
+                t-Form--noPadding
+            ]
+            cssClasses: u-tC
+            icon: app-icon
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P11_EMAIL (
+        type: textField
+        label {
+            label: Your Email
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @welcome-to-qask
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+            ]
+            width: 30
+            valuePlaceholder: Your Email
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: qask_util.session_resp_email_req_yn(p_session_id => :SESSION_ID) = 'Y'
+        }
+        security {
+            sessionStateProtection: restricted
+            restrictedChars: noSpecialCharNoNewline
+        }
+    )
+
+    pageItem P11_NAME (
+        type: textField
+        label {
+            label: Your Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @welcome-to-qask
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                margin-top-md
+            ]
+            width: 30
+            valuePlaceholder: Your Name
+        }
+        advanced {
+            cssClasses: [
+                u-tC
+                w320
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: qask_util.session_resp_name_req_yn(p_session_id => :SESSION_ID) = 'Y'
+        }
+        security {
+            sessionStateProtection: restricted
+            restrictedChars: noSpecialCharNoNewline
+        }
+    )
+
+    button join (
+        buttonName: Join
+        label: Join
+        layout {
+            sequence: 40
+            region: @welcome-to-qask
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+            cssClasses: [
+                w260
+                margin-auto
+                padding-md
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation email-required (
+        name: email required
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if :P11_EMAIL is not null then
+                   return true;
+                else
+                   return false;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: Email is required
+            associatedItem: @P11_EMAIL
+        }
+        serverSideCondition {
+            whenButtonPressed: @join
+            type: expression
+            plsqlExpression: qask_util.session_resp_email_req_yn (p_session_id => :SESSION_ID) = 'Y'
+        }
+    )
+
+    validation email-valid (
+        name: email valid
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P11_EMAIL
+            regexp: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+        }
+        error {
+            errorMessage: Email is not valid
+            associatedItem: @P11_EMAIL
+        }
+        serverSideCondition {
+            whenButtonPressed: @join
+            type: expression
+            plsqlExpression: qask_util.session_resp_email_req_yn (p_session_id => :SESSION_ID) = 'Y'
+        }
+    )
+
+    validation name-required (
+        name: name required
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if :P11_NAME is not null then
+                   return true;
+                else
+                   return false;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: Name is required
+            associatedItem: @P11_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @join
+            type: expression
+            plsqlExpression: qask_util.session_resp_name_req_yn (p_session_id => :SESSION_ID) = 'Y'
+        }
+    )
+
+    branch (
+        name: show question
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 20
+                clearCache: 20
+                action: resetRegions
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,82 @@
+page 3 (
+    name: Opt Out Confirm
+    alias: OPT-OUT-CONFIRM
+    title: Opt Out Confirm
+    pageGroup: @opt-out
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            @media only screen and (max-width: 640px) {
+            section.uRegion {
+              width: auto !important;
+            }
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region hide-nobody (
+        name: hide nobody
+        type: staticContent
+        source {
+            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+        }
+        layout {
+            sequence: 1
+            slot: body-3
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if apex_authentication.is_authenticated then
+                   return false;
+                else
+                   return true;
+                end if;
+                ```
+        }
+    )
+
+    region opt-out-confirmed (
+        name: Opt Out Confirmed
+        type: staticContent
+        source {
+            htmlCode: <p>Your opt out preference has been received.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body-3
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--warning
+                t-Alert--horizontal
+            ]
+        }
+    )
+
+)
+

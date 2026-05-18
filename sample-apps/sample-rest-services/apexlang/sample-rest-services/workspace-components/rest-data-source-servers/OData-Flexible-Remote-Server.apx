@@ -1,0 +1,27 @@
+restDataSourceServer OData_Flexible_Remote_Server (
+    name: OData Flexible Remote Server
+    endpointUrl {
+        url: #host#
+    }
+    dynamicConfig {
+        plsqlCode:
+            ```plsql
+            procedure configure_odata_remote_server(
+               p_info   in apex_plugin.t_remote_server_info,
+               p_config in out apex_plugin.t_remote_server_config
+            )
+            is
+            begin
+            
+               p_config.base_url := apex_app_setting.get_value(p_name => 'ODATA_URL');
+            
+            exception
+               when no_data_found then
+                  p_config.base_url := null;
+            end;
+            
+            ```
+        procedureName: configure_odata_remote_server
+    }
+)
+

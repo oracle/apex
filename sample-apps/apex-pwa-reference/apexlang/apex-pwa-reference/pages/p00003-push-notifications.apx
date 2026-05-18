@@ -1,0 +1,1672 @@
+page 3 (
+    name: Push Notifications
+    alias: PUSH-NOTIFICATIONS
+    title: Push Notifications
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region apex-appl-push-subscriptions (
+        name: apex_appl_push_subscriptions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    The <code>apex_appl_push_subscriptions</code> view lists all users who have
+                    opted in to receive your notifications, making it easy to target your messages
+                    to all your subscribers and Send a notification using the API. You could find
+                    an example in <code>Send using API</code> section above.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @apex-views
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--textContent
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-push-notifications-queue (
+        name: apex_push_notifications_queue
+        type: staticContent
+        source {
+            htmlCode: <p>The <code>apex_push_notifications_queue</code> view, provides the notification records that are pending or have encountered errors during the sending process. This information useful for troubleshooting issues and ensuring the successful delivery of your push notifications.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @apex-views
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--textContent
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-views (
+        name: APEX Views
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Regardless of the method you choose to send a push notification, it's
+                    important (for the APEX engine) to be able to identify the users who
+                    have subscribed to the feature in order to use the page process or the
+                    API meaningfully. APEX offers two views to help analyze this records of
+                    who is subscribed to the push notifications of your application and the
+                    notifications in the queue.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @sending-notifications
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: API
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region changing-the-application-alias-blocks-future-delivery-of-push-notifications (
+        name: Changing the application alias blocks future delivery of push notifications
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Updating an application alias changes the structure of the URL and causes the service worker to invalidate.
+                </p>
+                <p>
+                    We recommend not updating an application alias for production systems, or users will have to subscribe to push notifications again.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region code (
+        name: Code
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>begin
+                    apex_pwa.send_push_notification (
+                        p_application_id => 100,
+                        p_user_name      => 'SMITH',
+                        p_title          => 'Notification Title',
+                        p_body           => 'Notification Body' );
+                end;</code>
+                
+                <br /><br />
+                
+                <code>begin
+                    for l_subscription in ( 
+                        select distinct user_name
+                          from apex_appl_push_subscriptions
+                         where application_id = :APP_ID )
+                    loop
+                        apex_pwa.send_push_notification (
+                            p_application_id => :APP_ID,
+                            p_user_name      => l_subscription.user_name,
+                            p_title          => 'APEX 23.1 is here!',
+                            p_body           => 'Try out the new features.' );
+                    end loop;
+                end;</code>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @send-using-api
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region code-2 (
+        name: Code
+        type: staticContent
+        source {
+            htmlCode: <code>select * from apex_appl_push_subscriptions</code>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @apex-appl-push-subscriptions
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region code-3 (
+        name: Code
+        type: staticContent
+        source {
+            htmlCode: <code>select * from apex_push_notifications_queue</code>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @apex-push-notifications-queue
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region code-4 (
+        name: Code
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>begin
+                    apex_pwa.push_queue;
+                end;</code>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @push-queue
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+    )
+
+    region common-issues (
+        name: Common Issues
+        type: staticContent
+        layout {
+            sequence: 110
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region compatibility (
+        name: Compatibility
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This table shows the supported combinations of operating
+                    systems and browsers for the push notification feature.
+                </p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes*</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <br />
+                <p>* iOS 16.4 and later only on installed PWAs.</p>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region deploying-application (
+        name: Deploying Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    For security purposes, APEX applications using push notifications require a key-pair credentials. 
+                    Since credentials are not exported with an application during deployment, 
+                    it's necessary to regenerate the key-pair credentials on the destination environment for push notifications to work. 
+                
+                </p>
+                
+                <p>
+                
+                    It's only necessary to regenerate the credentials the first time your application is being deployed. 
+                    Any subsequent deployments don't need to regenerate their key-pair credentials.
+                
+                </p>
+                
+                <p>
+                
+                    To regenerate the credentials for an application push notifications, you can either:
+                
+                    <ol>
+                        <li>Go to Shared Components > Progressive Web App > Push Notifications > Regenerate Credentials</li>
+                        <li>Use the API to regenerate push credentials for the newly deployed application:</li>
+                    </ol>
+                
+                    <pre><code>
+                    begin
+                        apex_pwa.generate_push_credentials (
+                            p_application_id => :APP_ID );
+                    end;
+                    </code></pre>
+                
+                </p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 100
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: PWA Receiving Push Notifications
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region enable-push-notifications-for-a-new-apex-application (
+        name: Enable push notifications for a new APEX application
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @new-application
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region enable-push-notifications-on-an-existing-apex-app (
+        name: Enable push notifications on an existing APEX app
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @existing-application
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region example-of-an-ios-device-subscribing-to-apex-push-notifications (
+        name: Example of an iOS device subscribing to APEX push notifications
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @subscribing-devices
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region existing-application (
+        name: Existing Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    To enable push notifications in your existing APEX app, turn on
+                    the <strong>Enable Push Notifications</strong> switch in the
+                    Progressive Web App page and configure the required attributes.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @enable-push-notifications-on-an-existing-apex-app
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/edit-app-push.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-10 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @example-of-an-ios-device-subscribing-to-apex-push-notifications
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-subscribe-ios4.jpeg
+            accessibleDescription: Authorize notifications for the operating system
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-11 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @example-of-an-ios-device-subscribing-to-apex-push-notifications
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-subscribe-ios2.jpeg
+            accessibleDescription: Open User Settings Page
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-12 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @example-of-an-ios-device-subscribing-to-apex-push-notifications
+            slot: subRegions
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-subscribe-ios1.jpeg
+            accessibleDescription: Locate User Settings Menu
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-13 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @send-using-page-process
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/process-send-push-notification.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @overview
+            slot: regionBody
+            columnSpan: 7
+            columnCssClasses: flex-center
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-received-macos.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-3 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @overview
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 2
+            columnCssClasses: flex-center
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-received-ios.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-4 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @overview
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 2
+            columnCssClasses: flex-center
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-received-watch.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-5 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @enable-push-notifications-for-a-new-apex-application
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/create-app-push.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-6 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @receiving-an-apex-notification-on-macos
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-received-macos.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-7 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @receiving-an-apex-notification-on-ios
+            slot: subRegions
+            columnSpan: 6
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-received-ios.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-8 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @receiving-an-apex-notification-on-a-wearable
+            slot: subRegions
+            columnSpan: 6
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-received-watch.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-9 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @example-of-an-ios-device-subscribing-to-apex-push-notifications
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/push-subscribe-ios3.jpeg
+            accessibleDescription: Enable the checkbox
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In <strong>App Builder</strong> go to <strong>Shared Components</strong></li>
+                    <li>Go to <strong>Progressive Web App</strong></li>
+                    <li>Turn on <strong>Enable Progressive Web App</strong></li>
+                    <li>Turn on <strong>Enable Push Notifications</strong> </li>
+                    <li>Configure <strong>Credentials</strong>. Choose an existing key pair credential to authenticate against or click <strong>Generate Credentials</strong> to automatically generate a new key pair credentials for your application. This ensures that users can subscribe to push notifications securely. </li>
+                    <li>Configure <strong>Settings Page</strong>. Create a feature page where users can subscribe to push notifications for your application. This page will allow users to manage their push notification preferences. </li>
+                    <li>Configure <strong>Contact Email: </strong> Enter an email address where the push notification service provider (such as Google, Mozilla, or Apple) can contact the application owner if needed.</li>
+                    <li>Users can proceed with subscribing to push notifications</li>
+                    <li>APEX can proceed to send push notification to subscribers</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @existing-application
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Push Notifications Instructions
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In <strong>App Builder</strong>, click <strong>Create Application</strong></li>
+                    <li>Select <strong>New Application</strong></li>
+                    <li>Fill the required fields for creating a new application</li>
+                    <li>Under <strong>Features</strong>, select <strong>Push Notifications</strong> checkbox</li>
+                    <li>Click <strong>Create Application</strong></li>
+                    <li>Users can proceed with subscribing to push notifications</li>
+                    <li>APEX can proceed to send push notification to subscribers</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @new-application
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Push Notifications Instructions
+        }
+    )
+
+    region instructions-3 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>Run your application</li>
+                    <li>In the top navigation bar, tap your username and select <strong>Settings</strong></li>
+                    <li>A user settings drawer appears</li>
+                    <li>Select <strong>Push Notifications</strong> option from the list of settings</li>
+                    <li>Check the <strong>Enable push notifications on this device</strong> checkbox</li>
+                    <li>Tap <strong>Allow</strong> to authorize this APEX app to send notifications to iOS device</li>
+                    <li>Going back to the user settings list, <strong>Push Notifications</strong> should be set to <strong>On</strong></li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @subscribing-devices
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Push Notifications Instructions
+        }
+    )
+
+    region new-application (
+        name: New Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    The fastest way to get started with APEX push notifications is enabling the push
+                    notification feature checkbox in the Create Application wizard.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region notifications-are-not-being-delivered-to-my-device (
+        name: Notifications are not being delivered to my device
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Ensure that the username has been correctly entered in the native page process
+                    or in the APEX_PWA API. The username is case sensitive.
+                </p>
+                
+                <p>
+                    First, check to see if notifications are enabled in your browser settings.
+                    You can usually access these settings by clicking on the three-dot menu in
+                    the top-right corner of your browser window and selecting "Settings" or
+                    "Preferences." From there, look for a section called "Notifications" or
+                    "Site Settings" and make sure that notifications are turned on for the
+                    relevant website.
+                </p>
+                
+                <p>
+                    If notifications are enabled but you're still not receiving them, try
+                    clearing your browser's cache and cookies.
+                </p>
+                
+                <p>
+                    Verify if your browser engine, the browser through which the PWA is installed
+                    allows sending notifications in your operating system settings.
+                </p>
+                
+                <p>
+                    Finally, make sure that you're connected to the internet and that your
+                    device is not in "Do Not Disturb" mode. These settings can sometimes
+                    prevent notifications from coming through.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region on-ios-the-user-settings-page-shows-not-supported (
+        name: On iOS, the user settings page shows "Not Supported"
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    First, check to make sure that your device is running iOS 16.4 or later.
+                    If not, you'll need to update your phone's operating system by going to
+                    your phone settings and selecting "Software Update.".
+                </p>
+                
+                <p>
+                    If your device is running iOS 16.4 or later, note that push notifications
+                    are only available on Safari browsers for installed PWAs only. Try installing
+                    the PWA and then check back on the user settings page.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region ora-24247-network-access-denied-by-access-control-list-acl (
+        name: ORA-24247: network access denied by access control list (ACL)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This error should not occur when using APEX Service or APEX on Autonomous Database. However, in other environments where
+                    you need to manually configure whih outbound network requests are allowed, you can run the following script
+                    as <tt>SYS</tt> or another user with DBA privileges to grant the appropriate privileges for the APEX engine to
+                    use the REST APIs involved in securely delivering notifications to subscribed users.
+                </p>
+                
+                <pre><code>
+                -- Run as SYS or DBA user
+                declare
+                    l_principal varchar2(20) := apex_application.g_flow_schema_owner;
+                    l_proxy varchar2(100)    := null; -- e.g. 'proxy.example.org'
+                    l_proxy_port number      := 80;
+                    l_hosts apex_t_varchar2  := apex_t_varchar2(
+                                                '*.push.apple.com',
+                                                '*.notify.windows.com',
+                                                'updates.push.services.mozilla.com',
+                                                'android.googleapis.com',
+                                                'fcm.googleapis.com');
+                    procedure add_priv(p_priv varchar2, p_host varchar2, p_port number) is
+                    begin
+                        dbms_network_acl_admin.append_host_ace (
+                            host       => p_host, 
+                            lower_port => p_port,
+                            upper_port => p_port,
+                            ace        => 
+                                xs$ace_type(privilege_list => xs$name_list(p_priv),
+                                            principal_name => l_principal,
+                                            principal_type => xs_acl.ptype_db));
+                    end;
+                begin
+                    if l_proxy is not null then
+                        add_priv('connect',l_proxy,l_proxy_port);
+                    end if;
+                    for j in (select column_value as hostname from table(l_hosts)) loop
+                        add_priv('connect',j.hostname,443);
+                    end loop;
+                    commit;
+                end;
+                </code></pre>
+                
+                <p>
+                    For more information, read this <a href="https://docs.oracle.com/en/database/oracle/apex/22.1/htmig/enabling-network-services-in-Oracle-db11g-or-later.html">documentation chapter.</a>
+                </p>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region ora-29024-certificate-validation-failure (
+        name: ORA-29024: Certificate validation failure
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                   APEX delivers push notifications using the secure HTTPS protocol that 
+                   requires your APEX instance to trust the certificate of the 
+                   Apple, Microsoft, Mozilla, and Google sites hosting their respective
+                   push notification delivery REST APIs. If you don't currently have
+                   a wallet configured, many APEX community users have reported a successful
+                   experience using this <a target="_blank" href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open
+                   source certificate authority wallet generator script</a>,
+                   whose README file explains how to use it and update APEX to 
+                   point to the newly generated wallet. 
+                </p>
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region ora-29106-cannot-import-pkcs-12-wallet (
+        name: ORA-29106: Cannot import PKCS #12 wallet
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                   Some APEX community user who have used the <a target="_blank" href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open
+                   source certificate authority wallet generator script</a> from the machine where
+                   their Oracle Database is installed have encountered this error when trying to
+                   use the wallet that it creates using the <tt>orapki</tt> utility. The solution they've
+                   found was to remove <tt>$ORACLE_HOME/bin</tt> from the system path in the
+                   shell window where they run the script. Doing this causes the script to use
+                   <tt>openssl</tt> to generate the certificate authority wallet instead and the wallet
+                   produced using this alternative worked correctly. The issue does not reproduce on all
+                   versions of the Oracle Database <tt>orapki</tt>, and is not an issue with the script
+                   itself. 
+                </p>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region ora-29260-network-error-tns-operation-timed-out (
+        name: ORA-29260: network error: TNS:operation timed out
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Your environment requires that you specify a proxy server for the notifications to be delivered successfully. 
+                </p>
+                <p>
+                    For example if you use a firewall and the target of the push notification endpoint is outside the firewall relative to APEX, you may need to specify a proxy server.
+                </p>
+                <p>
+                    The proxy can be set at the instance level if you are an administrator, or at the application level under Shared Components, Application Definition, Proxy Server.
+                </p>
+                <p>
+                    Here is an example of a proxy server value: www-proxy.company.com
+                </p>
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    APEX push notifications bring real-time communication between APEX applications
+                    and users on all desktop or mobile devices. These notifications enhance the user
+                    experience by providing instant updates and alerts, even when users are not
+                    actively engaged with the application. Notification target links redirect users
+                    back to your APEX application with a tap.
+                
+                </p>
+                
+                <p>
+                
+                    APEX provides hassle-free push notifications setup and offers declarative, no-code
+                    notification sending with a native page process. Developers who want more control
+                    can use the <code>apex_pwa</code> API to seamlessly integrate sending notifications
+                    into their existing workflow. There has never been an easier way to stay connected
+                    with users who've opted in to receive notifications using the built-in settings page.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region push-queue (
+        name: Push Queue
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    <code>apex_pwa.push_queue</code> is an API designed to trigger sending pending
+                    push notifications in the queue. When sending a push notification, it is in fact
+                    simply added to a queue, with the push queue mechanism responsible for dispatching
+                    these notifications. In case of a failure, the queue entry is updated with an error
+                    message and can be located in the apex_push_notifications_queue view. Upon successful
+                    delivery, the entry is removed from the queue. Although a background job is set to
+                    process the queue every 2 minutes by default, developers can expedite the delivery using
+                    the apex_pwa.push_queue API.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @sending-notifications
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region receiving-an-apex-notification-on-a-wearable (
+        name: Receiving an APEX notification on a wearable
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @receiving-notifications
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region receiving-an-apex-notification-on-ios (
+        name: Receiving an APEX notification on iOS
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @receiving-notifications
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region receiving-an-apex-notification-on-macos (
+        name: Receiving an APEX notification on macOS
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @receiving-notifications
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region receiving-notifications (
+        name: Receiving Notifications
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Receiving push notifications from an APEX app feels special. Examples below
+                    illustrate how different devices receive notifications. Only devices that
+                    have opted in for push notifications can receive these updates. Those push
+                    notifications function even when the device is idle, or when users are not
+                    actively interacting with the app. This ensures that important information
+                    is delivered promptly, keeping users informed at all times.
+                
+                </p>
+                
+                <p>
+                
+                    When a user taps on a push notification, they can be redirected back into the
+                    APEX app. This simplifies navigation and fosters greater engagement and interaction
+                    with the app, as it helps maintain an ongoing connection with users, encourages user
+                    retention, and ultimately drives the overall success of the app. By default
+                    clicking the notification will redirect you to the home page.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: PWA Receiving Push Notifications
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region send-using-api (
+        name: Send using API
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                For users seeking more control over the appearance and content of their push notifications, the <code>apex_pwa</code> API offers more flexibility. By using this API, you can manage additional parameters such as the icon and a different destination application. This approach is useful for looping through multiple users and sending multiple notifications at once.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @sending-notifications
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region send-using-page-process (
+        name: Send using Page Process
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    The built-in 'Send Push Notification' page process lets you send a notification
+                    declaratively. This option is ideal for users who prefer a straightforward
+                    process without the need for extensive customization. This process sends a
+                    notification to a single user, although this user might have multiple devices
+                    expecting the same notification. To use this process, simply fill in the required
+                    fields, including the username, title, and description of the push notification.
+                    The process ensures your message is delivered to the intended recipient on any of
+                    their devices on which they've opted in to receive notifications.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @sending-notifications
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region sending-notifications (
+        name: Sending Notifications
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                
+                    APEX offers two methods for sending push notifications from an app. Each
+                    offers its own benefits and levels of control. Understanding these methods
+                    can help you choose the best approach for your specific needs.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: API
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region subscribing-devices (
+        name: Subscribing Devices
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                
+                    APEX prioritizes security above all else, ensuring that users only receive push
+                    notifications that they have consented to. Web standards require an app to request
+                    permission before sending notifications to prevent unwanted messages.
+                
+                </p>
+                
+                <p class="col-8">
+                
+                    For each APEX application and on each device, end users opt-in to receive push
+                    notifications using the new, user-friendly Settings menu under the username in
+                    the navigation bar. Be sure to consult the compatibility matrix provided above
+                    to confirm that your device can fully utilize this feature.
+                
+                </p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: PWA Push Notifications Examples
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region this-device-failed-to-enable-push-notifications (
+        name: This device failed to enable push notifications
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    To ensure that your Progressive Web App is properly configured for push
+                    notifications, start by checking your credentials in the settings of your
+                    Progressive Web App.
+                
+                </p>
+                
+                <p>
+                
+                    After installing or importing an Application into your workspace, you will
+                    need to generate the credentials for your application. If you failed to
+                    perform this step, click (Regenerate Credentials) button in the Push Notifications
+                    tab. However, be aware that regenerating already-valid credentials invalidates
+                    all existing subscriptions that used the previous key pair credentials that
+                    were in effect.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @common-issues
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+)
+

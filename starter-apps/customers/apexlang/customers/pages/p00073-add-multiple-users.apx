@@ -1,0 +1,424 @@
+page 73 (
+    name: Add Multiple Users
+    alias: ADD-MULTIPLE-USERS
+    title: Add Multiple Users
+    pageGroup: @acl
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .helpText {
+            padding: 8px;
+            color: #707070;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region wizard-container (
+        name: Wizard Container
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P73_PRELIM_USERS (
+        type: textarea
+        label {
+            label: Usernames
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @wizard-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 10
+            valuePlaceholder: Enter usernames here
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        help {
+            inlineHelpText: Enter usernames separated by commas, semicolons, or whitespace. Existing or duplicate usernames will automatically be ignored.
+        }
+    )
+
+    pageItem P73_ROLE (
+        type: radioGroup
+        label {
+            label: Role
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-levels
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @wizard-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P73_USERNAME_FORMAT1 (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value ('USERNAME_FORMAT')
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+                t-Button--gapLeft
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    process create-collections (
+        name: Create Collections
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_line      varchar2(32767);
+                    l_emails    wwv_flow_global.vc_arr2;
+                    l_username  varchar2(4000);
+                    l_at        number;
+                    l_dot       number;
+                    l_valid     boolean := true;
+                    l_domain    varchar2(4000);
+                begin
+                    ---------------------
+                    -- create collections
+                    --
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_CUST_BULK_USER_INVALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_CUST_BULK_USER_VALID');
+                    apex_collection.CREATE_OR_TRUNCATE_COLLECTION ('EBA_CUST_BULK_USER_CREATE');
+                
+                    --------------------------------------------
+                    -- replace delimiting characters with commas
+                    --
+                    l_line := :P73_PRELIM_USERS;
+                    l_line := replace(l_line,chr(10),' ');
+                    l_line := replace(l_line,chr(13),' ');
+                    l_line := replace(l_line,chr(9),' ');
+                    l_line := replace(l_line,'<',' ');
+                    l_line := replace(l_line,'>',' ');
+                    l_line := replace(l_line,';',' ');
+                    l_line := replace(l_line,':',' ');
+                    l_line := replace(l_line,'(',' ');
+                    l_line := replace(l_line,')',' ');
+                    l_line := replace(l_line,' ',',');
+                
+                    -----------------------------------------
+                    -- get one comma separated line of emails
+                    --
+                    for j in 1..1000 loop
+                        if instr(l_line,',,') > 0 then
+                           l_line := replace(l_line,',,',',');
+                        else
+                           exit;
+                        end if;
+                    end loop;
+                
+                    -------------------------
+                    -- get an array of emails
+                    --
+                    l_emails := wwv_flow_utilities.string_to_table(l_line,',');
+                
+                    -----------------------------
+                    -- add emails to a collection
+                    --
+                    l_username := null;
+                    l_domain := null;
+                    l_at := 0;
+                    l_dot := 0;
+                    for j in 1..l_emails.count loop
+                        l_valid := true;
+                        l_username := trim(l_emails(j));
+                
+                        if l_username is not null then
+                            if eba_cust_fw.get_preference_value('USERNAME_FORMAT') = 'EMAIL' then
+                              -----------
+                              -- Validate
+                              --
+                              l_at := instr(nvl(l_username,'x'),'@');
+                              l_domain := substr(l_username,l_at+1);
+                              l_dot := instr(l_domain,'.');
+                              if l_at < 2 then
+                                  -- invalid email
+                                  apex_collection.add_member(
+                                      p_collection_name => 'EBA_CUST_BULK_USER_INVALID',
+                                      p_c001            => l_username,
+                                      p_c002            => apex_lang.message('MISSING_AT_SIGN'));
+                                  commit;
+                                  l_valid := false;
+                              end if;
+                
+                              if l_dot = 0 and l_valid then
+                                  apex_collection.add_member(
+                                      p_collection_name => 'EBA_CUST_BULK_USER_INVALID',
+                                      p_c001            => l_username,
+                                      p_c002            => apex_lang.message('MISSING_DOT'));
+                                  commit;
+                                  l_valid := false;
+                              end if;
+                            end if;
+                
+                            l_username := trim(l_username);
+                            l_username := trim(both '.' from l_username);
+                            l_username := replace(l_username,' ',null);
+                            l_username := replace(l_username,chr(10),null);
+                            l_username := replace(l_username,chr(9),null);
+                            l_username := replace(l_username,chr(13),null);
+                            l_username := replace(l_username,chr(49824),null);
+                
+                            if l_valid and length(l_username) > 255 then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_CUST_BULK_USER_INVALID',
+                                    p_c001            => upper(l_username),
+                                    p_c002            => apex_lang.message('USERNAME_TOO_LONG'));
+                                commit;
+                                l_valid := false;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEX76a66f */ username
+                                             from eba_cust_users
+                                            where upper(username) = upper(l_username))
+                                loop
+                                    wwv_flow_collection.add_member(
+                                        p_collection_name => 'EBA_CUST_BULK_USER_INVALID',
+                                        p_c001            => upper(l_username),
+                                        p_c002            => apex_lang.message('ALREADY_IN_ACL'));
+                                    commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                for c1 in (select /* APEXeaf772 */  c001
+                                             from wwv_flow_collections
+                                            where collection_name = 'EBA_CUST_BULK_USER_VALID'
+                                              and c001 = upper(l_username))
+                                loop
+                                    apex_collection.add_member(
+                                        p_collection_name => 'EBA_CUST_BULK_USER_INVALID',
+                                        p_c001            => upper(l_username),
+                                        p_c002            => apex_lang.message('DUPLICATE_USER'));
+                                        commit;
+                                    l_valid := false;
+                                    exit;
+                                end loop;
+                            end if;
+                
+                            if l_valid then
+                                apex_collection.add_member(
+                                    p_collection_name => 'EBA_CUST_BULK_USER_VALID',
+                                    p_c001            => upper(l_username));
+                                    commit;
+                            end if;
+                
+                        end if;
+                        l_username := null;
+                    end loop;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        error {
+            errorMessage: #SQLERRM@
+        }
+        advanced {
+            executionMappingIdentifier: 14813850905314734911
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 74
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

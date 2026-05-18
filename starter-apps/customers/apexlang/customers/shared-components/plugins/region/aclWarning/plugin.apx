@@ -1,0 +1,47 @@
+plugin aclWarning (
+    name: ACL Warning
+    staticId: COM.ORACLE.APEX.ACL_WARNING
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            function render (   p_region              in apex_plugin.t_region,
+                                    p_plugin              in apex_plugin.t_plugin,
+                                    p_is_printer_friendly in boolean ) return apex_plugin.t_region_render_result is
+                l_retval         apex_plugin.t_region_render_result;
+                --
+                c_admin_page  constant varchar2(512)   := p_region.attribute_01;
+            begin
+                -- This plugin displays a warning message if the ACL is disabled. To use:
+                --    1) Add this plugin region to the top of the application home page.
+                --    2) Set the template to Alert region, with the Warning template option.
+                --    3) Add a PL/SQL expression condition to the region, following this pattern:
+                --        eba_XXX_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'N'
+            
+                sys.htp.p('Access control for this application is currently disabled. '
+                    ||'All users are currently Administrators. Navigate to <a href="'
+                    ||apex_util.prepare_url(c_admin_page)||'">application administration</a> '
+                    ||'to enable access control.');
+            
+                return l_retval;    
+            end;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 5.0.1
+        aboutUrl: http://apex.oracle.com/plugins
+        helpText:
+            ```
+            <p>ACL Warning is designed for those applications that use the built-in Application Express authentication Access Control List (ACL), to control access to the application and features. The plug-in displays a warning when ACL is disabled.</p>
+            <p>This plug-in is suitable for adding to the Home page to provide warnings when ACL is not enabled, allowing every user to act as an Administrator.</p>
+            ```
+    }
+)
+

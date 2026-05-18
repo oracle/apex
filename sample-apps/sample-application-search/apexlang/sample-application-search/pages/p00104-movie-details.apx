@@ -1,0 +1,627 @@
+page 104 (
+    name: Movie Details
+    alias: MOVIE-DETAILS
+    title: Movie Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Customize Movie Header Card */
+            .movie-header-card.a-CardView {
+                /* Increase the font sizes for movie name and tag line */
+                --a-cv-title-font-size: 24px;
+                --a-cv-subtitle-font-size: 16px;
+            
+                /* Add additional spacing around the header content */
+                --ut-cv-subtitle-margin: 16px 0 0 0;
+                display: flex;
+                padding: 24px 0;
+            }
+            
+            .movie-header-card .a-CardView-header {
+                /* Center Title and Badge */
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .a-CardView-media{
+                background: black;
+            }
+            .a-CardView-media img{
+                opacity: .7;
+            }
+            .movie-header-card .a-CardView-body {
+                /* Remove unnecessary padding */
+                padding-top: 0;
+            }
+            .movie-details {
+                /* Center align Card Body text */
+                text-align: center;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region header (
+        name: Header
+        type: cards
+        source {
+            location: restSource
+            restSource: @Movie_Details
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       title,
+                       'https://image.tmdb.org/t/p/w500' || poster_path                                                    as poster_url,
+                       'https://image.tmdb.org/t/p/w500' || backdrop_path                                                  as backdrop_url,
+                       release_date,
+                       runtime,
+                       trunc(runtime/60) || 'hr ' || extract (minute from numtodsinterval((runtime/60), 'HOUR' )) || 'min' as runtime_friendly,
+                       vote_average,
+                       tagline
+                  from #APEX$SOURCE_DATA#
+                ```
+        }
+        layout {
+            sequence: 220
+            parentRegion: @movie-details
+            slot: regionBody
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+        }
+
+        parameter (
+            name: @movie-id
+            value {
+                type: item
+                item: P104_ID
+            }
+        )
+
+        componentAppearance {
+            layout: horizontal
+            cssClasses: movie-header-card
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: TAGLINE
+        }
+        body {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <div class="movie-details">
+                    <span title="Release Date">Released &RELEASE_DATE.</span> &middot; 
+                    <span title="Runtime">&RUNTIME_FRIENDLY.</span> &middot;
+                    <span title="&VOTE_AVERAGE. out of 10"><span class="fa fa-star" style="color:gold;" aria-hidden="true"></span> &VOTE_AVERAGE.</span>
+                </div>
+                ```
+        }
+        iconAndBadge {
+            iconSource: imageUrl
+            imageUrl: &POSTER_URL.
+            iconCssClasses: w100 h100
+        }
+        media {
+            source: imageUrl
+            url: &BACKDROP_URL.
+            position: background
+            sizing: cover
+        }
+    )
+
+    region movie-details (
+        name: Movie Details
+        type: form
+        source {
+            location: restSource
+            restSource: @Movie_Details
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+
+        parameter (
+            name: @movie-id
+            value {
+                type: item
+                item: P104_ID
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: &P104_OVERVIEW.
+        }
+        layout {
+            sequence: 230
+            parentRegion: @movie-details
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    pageItem P104_ADULT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: ADULT
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_BACKDROP_PATH (
+        type: hidden
+        layout {
+            sequence: 180
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: BACKDROP_PATH
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_BELONGS_TO_COLLECTION (
+        type: hidden
+        layout {
+            sequence: 210
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: BELONGS_TO_COLLECTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_BUDGET (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: BUDGET
+            dataType: number
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_HOMEPAGE (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: HOMEPAGE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_IMDB_ID (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: IMDB_ID
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_ORIGINAL_LANGUAGE (
+        type: hidden
+        layout {
+            sequence: 200
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: ORIGINAL_LANGUAGE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_ORIGINAL_TITLE (
+        type: hidden
+        layout {
+            sequence: 190
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: ORIGINAL_TITLE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_OVERVIEW (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: OVERVIEW
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_POPULARITY (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: POPULARITY
+            dataType: number
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_POSTER_PATH (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: POSTER_PATH
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_RELEASE_DATE (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: RELEASE_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_REVENUE (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: REVENUE
+            dataType: number
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_RUNTIME (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: RUNTIME
+            dataType: number
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_STATUS (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: STATUS
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_TAGLINE (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: TAGLINE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_TITLE (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: TITLE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_VIDEO (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: VIDEO
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_VOTE_AVERAGE (
+        type: hidden
+        layout {
+            sequence: 170
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: VOTE_AVERAGE
+            dataType: number
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P104_VOTE_COUNT (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @movie-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @movie-details
+            column: VOTE_COUNT
+            dataType: number
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 4100478956817998571
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-movie-details (
+        name: Initialize form Movie Details
+        type: formInitialization
+        formRegion: @movie-details
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4100478565179998571
+        }
+    )
+
+)
+

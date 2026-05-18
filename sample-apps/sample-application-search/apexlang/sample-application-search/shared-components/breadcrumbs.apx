@@ -1,0 +1,339 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry administration (
+        name: Administration
+        pageNumber: 500
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry advanced (
+        name: Advanced
+        pageNumber: 300
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 502
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+    )
+
+    entry basics (
+        name: Basics
+        pageNumber: 100
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry cards-region (
+        name: Cards Region
+        pageNumber: 301
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+    )
+
+    entry custom-result-row-template (
+        name: Custom Result Row Template
+        pageNumber: 204
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 204
+            }
+        }
+    )
+
+    entry filter-search-configurations (
+        name: Filter Search Configurations
+        pageNumber: 206
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 206
+            }
+        }
+    )
+
+    entry highlight-results (
+        name: Highlight Results
+        pageNumber: 303
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry link-search-result-to-form (
+        name: Link Search Result to Form
+        pageNumber: 202
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 501
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 501
+            }
+        }
+    )
+
+    entry map-region (
+        name: Map Region
+        pageNumber: 302
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+    )
+
+    entry multiple-search-configurations (
+        name: Multiple Search Configurations
+        pageNumber: 102
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry multiple-search-regions (
+        name: Multiple Search Regions
+        pageNumber: 207
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 207
+            }
+        }
+    )
+
+    entry oracle-text (
+        name: Oracle Text
+        pageNumber: 400
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry rest-data-source (
+        name: REST Data Source
+        pageNumber: 103
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry search-query-prefix (
+        name: Search Query Prefix
+        pageNumber: 201
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+    )
+
+    entry single-search-configuration (
+        name: Single Search Configuration
+        pageNumber: 101
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry standard (
+        name: Standard
+        pageNumber: 401
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @oracle-text
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry text-index-function (
+        name: Text Index Function
+        pageNumber: 402
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @oracle-text
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry use-cases (
+        name: Use Cases
+        pageNumber: 200
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry web-credentials-settings (
+        name: Web Credentials Settings
+        pageNumber: 503
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+    )
+
+)
+

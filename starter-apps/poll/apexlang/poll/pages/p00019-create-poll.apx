@@ -1,0 +1,1165 @@
+page 19 (
+    name: Create Poll
+    alias: CREATE-POLL
+    title: Create Poll
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region advanced (
+        name: Advanced
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 100
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region customize-display (
+        name: Customize Display
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region details (
+        name: Details
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--hiddenOverflow
+            ]
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region note (
+        name: Note
+        type: staticContent
+        source {
+            htmlCode: <p><a href="f?p=&APP_ID.:76:&APP_SESSION.:::76">Create a Poll as a copy of an existing poll</a></p>
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_qpoll_polls
+        }
+    )
+
+    region poll-name (
+        name: Poll Name
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P19_ID
+        }
+    )
+
+    pageItem P19_ALL_VIEW_RESULTS_YN (
+        type: switch
+        label {
+            label: Invitees Can View Results
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ALL_VIEW_RESULTS_YN
+            used: always
+        }
+        help {
+            helpText: Poll results are always viewable by Readers, Contributors and Administrators of this application. Click this to allow those invited to take this poll to view the results, whether or not they have Reader or greater access. If Yes, there will the option to include a "View Results" link in all email invitations and a "View Results" button will be displayed on the thank you page after completing the poll.
+        }
+    )
+
+    pageItem P19_ANONYMOUS_YN (
+        type: switch
+        label {
+            label: Anonymize Results
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANONYMOUS_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: If set to Yes, the name of the respondent will not be displayed when viewing results (e.g. who selected which answer).  If you choose <strong>No</strong>, each response will be labeled with the respondent.
+        }
+    )
+
+    pageItem P19_ANON_NO_CHANGE (
+        type: displayOnly
+        label {
+            label: Note
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 150
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: staticValue
+            staticValue: When a Poll is set to Anonymize Results and there are already responses, you cannot change the setting.
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P19_AUTHENTICATION_REQ_YN (
+        type: switch
+        label {
+            label: Require Login
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: AUTHENTICATION_REQ_YN
+            used: always
+        }
+        help {
+            helpText: If you select <strong>Yes</strong> for login required, all invitees will be required to login to take the poll.  If you choose <strong>No</strong> for login required, then your users will only require access to the server to take the poll.
+        }
+    )
+
+    pageItem P19_CAN_UPDATE_ANSWERS_YN (
+        type: switch
+        label {
+            label: Can Update Answers
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CAN_UPDATE_ANSWERS_YN
+            used: always
+        }
+        help {
+            helpText: "If you allow update, a respondent can access the poll again and update their answers.  "
+        }
+    )
+
+    pageItem P19_ENABLE_SCORE_YN (
+        type: switch
+        label {
+            label: Scoring Enabled
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENABLE_SCORE_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: If scoring is enabled, the score of each response will be displayed in the results.
+        }
+    )
+
+    pageItem P19_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P19_IMAGE_BLOB (
+        type: fileUpload
+        label {
+            label: Image
+            alignment: left
+        }
+        display {
+            displayDownloadLink: false
+        }
+        storage {
+            mimeTypeColumn: IMAGE_MIMETYPE
+            filenameColumn: IMAGE_FILENAME
+            charSetColumn: IMAGE_CHARSET
+            bobLastUpdatedColumn: IMAGE_LAST_UPDATED
+        }
+        layout {
+            sequence: 40
+            region: @customize-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_BLOB
+            used: always
+        }
+        default {
+            type: static
+            staticValue: IMAGE_BLOB
+        }
+        help {
+            helpText: If you include an image, it will be displayed at the top of any poll created from this question set.
+        }
+    )
+
+    pageItem P19_IMAGE_HEIGHT (
+        type: numberField
+        label {
+            label: Image Height
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 50
+            region: @customize-display
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_HEIGHT
+            used: always
+        }
+    )
+
+    pageItem P19_IMAGE_WIDTH (
+        type: numberField
+        label {
+            label: Width
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 60
+            region: @customize-display
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_WIDTH
+            used: always
+        }
+    )
+
+    pageItem P19_INTRO_TEXT (
+        type: textarea
+        label {
+            label: Introduction Text
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @customize-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 3
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: INTRO_TEXT
+            used: always
+        }
+        help {
+            helpText: Introduction text, if provided, is displayed on the main poll page.  Use this to explain the poll, if necessary.
+        }
+    )
+
+    pageItem P19_INVITE_ONLY_YN (
+        type: switch
+        label {
+            label: Invite Only
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: INVITE_ONLY_YN
+            used: always
+        }
+        help {
+            helpText: Selecting invite only <strong>Yes</strong> will restrict the list of people who can take your poll to those who have been invited.
+        }
+    )
+
+    pageItem P19_POLL_DETAILS (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 70
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 2
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: POLL_DETAILS
+            used: always
+        }
+        help {
+            helpText: This is only displayed to Contributors when managing the poll - not displayed to users when taking a poll.
+        }
+    )
+
+    pageItem P19_POLL_NAME (
+        type: textField
+        label {
+            label: Poll Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @poll-name
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: POLL_NAME
+            used: always
+        }
+        help {
+            helpText: The poll name will display in the email invitations as well as within this application.  Please use a descriptive name.
+        }
+    )
+
+    pageItem P19_POLL_OR_QUIZ (
+        type: radioGroup
+        label {
+            label: Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: sharedComponent
+            lov: @poll-or-quiz
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 80
+            region: @details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: POLL_OR_QUIZ
+            used: always
+        }
+        default {
+            type: static
+            staticValue: P
+        }
+        help {
+            inlineHelpText: Choose the <strong>Poll</strong> type if there is no correct answer. Choose type <strong>Quiz</strong> if questions have correct answers.
+            helpText: Identify if the question set represents a poll or a quiz.  A poll can have scoring enabled to allow you to assign 0-10 to each answer and evaluate the responses based on either the average or cumulative score.  With a quiz, you identify the correct answer(s) and a grade is then assigned to each response.
+        }
+    )
+
+    pageItem P19_SCORE_TYPE (
+        type: radioGroup
+        label {
+            label: Poll Score Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @qset-score-type
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @advanced
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SCORE_TYPE
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            inlineHelpText: Polls can be scored, this allows answers to be assigned a numeric value allowing you to sum or average responses over all answers.
+            helpText: Polls may be scored, meaning that answers to questions can be given a weighting of 0 to 10.  Scoring answers allows a poll, designed to be scored, the ability to distill poll results into a single numeric value.  Use scoring if you are asking satisfaction type questions.  Textual responses can not be scored.
+        }
+    )
+
+    pageItem P19_STATUS_ID (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select <strong>Published</strong> if you wish to make this poll available to be taken (by the general user community or by those you have invited).  If you select <strong>Testing</strong>, the poll can be tested by users who are contributors.  Use this to ensure your poll is set up correctly.  Once you are done testing and are ready to publish, you can easily remove your testing responses.
+        }
+    )
+
+    pageItem P19_THANK_YOU_TEXT (
+        type: textarea
+        label {
+            label: Thank You Text
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @customize-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 3
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: THANK_YOU_TEXT
+            used: always
+        }
+        help {
+            helpText: Thank you text, if provided, is shown on the page the user is navigated to after they submit their response.  It does not need to thank them for submitting - the page already contains "Thank you for submitting your poll".
+        }
+    )
+
+    pageItem P19_USE_SECTIONS_YN (
+        type: switch
+        label {
+            label: Use Sections
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @customize-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USE_SECTIONS_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: If set to Yes, you will be able to define sections and then assign questions to those sections.  If set to No, even if sections are defined, they will not be displayed within the poll.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: create
+        label: Create Poll
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P19_ID
+        }
+    )
+
+    dynamicAction hide-enable-scoring-for-default-view (
+        name: hide enable_scoring (for default view)
+        execution {
+            sequence: 50
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P19_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction hide-p19-anon-no-change (
+        name: hide P19_ANON_NO_CHANGE
+        execution {
+            sequence: 15
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P19_ANON_NO_CHANGE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-anon-and-results-cannot-change (
+        name: when anon and results, cannot change
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and :P19_ANONYMOUS_YN = 'Y'
+                ```
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: items
+                items: P19_ANONYMOUS_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P19_ANON_NO_CHANGE
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction when-not-authenticated-invite-only (
+        name: When not authenticated, invite only
+        execution {
+            sequence: 2
+        }
+        when {
+            selectionType: items
+            items: P19_AUTHENTICATION_REQ_YN
+        }
+        clientSideCondition {
+            type: item=value
+            item: P19_AUTHENTICATION_REQ_YN
+            value: N
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: items
+                items: P19_INVITE_ONLY_YN
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-enable (
+            action: enable
+            affectedElements {
+                selectionType: items
+                items: P19_INVITE_ONLY_YN
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: Y
+            }
+            affectedElements {
+                selectionType: items
+                items: P19_INVITE_ONLY_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-quiz-no-poll-score-type (
+        name: when quiz, no poll score type
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P19_POLL_OR_QUIZ
+        }
+        clientSideCondition {
+            type: item=value
+            item: P19_POLL_OR_QUIZ
+            value: Q
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P19_SCORE_TYPE
+                    P19_ENABLE_SCORE_YN
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: N
+            }
+            affectedElements {
+                selectionType: items
+                items: P19_SCORE_TYPE
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                value: N
+            }
+            affectedElements {
+                selectionType: items
+                items: P19_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P19_SCORE_TYPE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction when-score-type-display-enable-score (
+        name: when score type, display enable score
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P19_SCORE_TYPE
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P19_SCORE_TYPE
+            list: [
+                A
+                C
+            ]
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P19_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: N
+            }
+            affectedElements {
+                selectionType: items
+                items: P19_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P19_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    computation p19-enable-score-yn (
+        itemName: P19_ENABLE_SCORE_YN
+        execution {
+            sequence: 30
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+            staticValue: N
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P19_ENABLE_SCORE_YN
+        }
+    )
+
+    computation p19-score-type (
+        itemName: P19_SCORE_TYPE
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+            staticValue: N
+        }
+        serverSideCondition {
+            type: item=value
+            item: P19_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    process dml (
+        name: dml
+        type: autoRowProcessing
+        target {
+            tableName: EBA_QPOLL_POLLS
+            pkColumn: ID
+            pkItem: P19_ID
+            returnKeyIntoItem: LPOLL_ID
+            supportedOperations: insert
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4534122539282855864
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 7528506909634783628
+        }
+    )
+
+    process set-values-of-disabled-items (
+        name: set values of disabled items
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P19_AUTHENTICATION_REQ_YN = 'N' then
+                   :P19_INVITE_ONLY_YN := 'Y';
+                end if;
+                
+                -- if was anonymous and there is one result, can't change
+                for c1 in (
+                   select p.anonymous_yn
+                     from eba_qpoll_polls p,
+                          eba_qpoll_results r
+                    where p.id = :POLL_ID
+                      and p.id = r.poll_id
+                ) loop
+                   if c1.anonymous_yn = 'Y' then
+                      :P19_ANONYMOUS_YN := 'Y';
+                   end if;
+                   exit;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        advanced {
+            executionMappingIdentifier: 7528507324188783628
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 1
+        }
+        behavior {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+)
+

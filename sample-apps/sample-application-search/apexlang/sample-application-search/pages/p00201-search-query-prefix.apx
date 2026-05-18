@@ -1,0 +1,243 @@
+page 201 (
+    name: Search Query Prefix
+    alias: SEARCH-QUERY-PREFIX
+    title: Search Query Prefix
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to use <strong>Search Query Prefix</strong> to perform targeted searches when using multiple Search Configurations. To assign a prefix to a Search Configuration, navigate to the <strong>Shared Components</strong> section in <strong>Page Designer,</strong> select one of the Search Configurations referenced in the Search region, and click on "<strong>Edit Component</strong>" to access the configuration settings. In the "<strong>Search Query Prefix</strong>" attribute, assign a prefix to use for the search.</p>
+                <p>In this example, two Search Configurations exist: <em>Product Search Configuration</em> with the prefix "<em><strong>prod</strong></em>" and <em>Store Search Configuration</em> with the prefix "<em><strong>store</strong></em>". By using prefixes, you can perform targeted searches within specific Search Configurations.</p>
+                <p><em>Examples:</em></p>
+                <ul>
+                <li>"<strong><em>prod</em>:jeans red</strong>" in the search box, the keyword "<strong>jeans</strong>" will only be searched in the <em>Product Search Configuration</em>, while "<strong>red</strong>" will be searched in both configurations.</li>
+                <li>"<strong><em>prod</em>:jeans <em>store</em>:london</strong>", the keyword "<strong>jeans</strong>" will only be searched in the <em>Product Search Configuration</em>, while "<strong>london</strong>" will only be searched in the Store configuration.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Products and Stores
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: t-ResultsRegion--iconMd
+        }
+        accessibility {
+            useLandmark: false
+        }
+        settings {
+            searchPageItem: P201_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Enter a query to search for products or stores.
+            noResultsFoundMessage: No products or stores found.
+        }
+
+        searchSource product-search-configuration (
+            name: Product Search Configuration
+            searchConfig: @product_prefix
+            layout {
+                sequence: 20
+            }
+        )
+
+        searchSource store-search-configuration (
+            name: Store Search Configuration
+            searchConfig: @store_prefix
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P201_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: prod:<product-query> store:<store-query>
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 202
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 200
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P201_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

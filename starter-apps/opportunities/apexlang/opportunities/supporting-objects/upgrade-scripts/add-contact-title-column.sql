@@ -1,0 +1,1 @@
+alter table eba_sales_customer_contacts add contact_title varchar2(100);

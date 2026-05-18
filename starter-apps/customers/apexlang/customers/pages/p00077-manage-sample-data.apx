@@ -1,0 +1,275 @@
+page 77 (
+    name: Manage Sample Data
+    alias: MANAGE-SAMPLE-DATA
+    title: Manage Sample Data
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region manage-sample-data (
+        name: Manage Sample Data
+        type: staticContent
+        source {
+            htmlCode: <p>This application ships with sample data.  You can remove and recreate sample data using this page.  If the sample data is old recreating the data makes the dates more current.  Removing or adding sample data will not affect any decisions you created.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @manage-sample-data
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button load-sample-data (
+        buttonName: load_sample_data
+        label: Load Sample Data
+        layout {
+            sequence: 30
+            region: @manage-sample-data
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--primary
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null as value from eba_cust_links where id < 100
+                union all
+                select null as value from eba_cust_notes where id < 100
+                union all
+                select null as value from eba_cust_product_uses where id < 100
+                union all
+                select null as value from eba_cust_products where id < 100
+                union all
+                select null as value from eba_cust_contacts where id < 100
+                union all
+                select null as value from eba_cust_customers where id < 100;
+                ```
+        }
+    )
+
+    button remove-sample-data (
+        buttonName: remove_sample_data
+        label: Remove Sample Data
+        layout {
+            sequence: 20
+            region: @manage-sample-data
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null as value from eba_cust_links where id < 100
+                union all
+                select null as value from eba_cust_notes where id < 100
+                union all
+                select null as value from eba_cust_product_uses where id < 100
+                union all
+                select null as value from eba_cust_products where id < 100
+                union all
+                select null as value from eba_cust_contacts where id < 100
+                union all
+                select null as value from eba_cust_customers where id < 100;
+                ```
+        }
+    )
+
+    button reset-data (
+        buttonName: reset_data
+        label: Reset Data
+        layout {
+            sequence: 40
+            region: @manage-sample-data
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process load-sample-data (
+        name: Load Sample Data
+        type: executeCode
+        source {
+            plsqlCode: eba_cust_sample_data.create_sample_data;
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Sample Data Loaded.
+        }
+        advanced {
+            executionMappingIdentifier: 15384412086262296351
+        }
+        serverSideCondition {
+            whenButtonPressed: @load-sample-data
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    process remove-sample-data (
+        name: remove sample data
+        type: executeCode
+        source {
+            plsqlCode: eba_cust_sample_data.remove_sample_data;
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Sample Data Removed
+        }
+        advanced {
+            executionMappingIdentifier: 15384411672393296351
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-sample-data
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    process reset-data (
+        name: reset data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_cust_sample_data.remove_sample_data;
+                eba_cust_sample_data.create_sample_data;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Sample data reset.
+        }
+        advanced {
+            executionMappingIdentifier: 15384411307996296349
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-data
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    branch (
+        name: Go To Administration
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: settings
+            }
+        }
+        comments {
+            comments: Created 06-JAN-2012 15:08 by MIKE
+        }
+    )
+
+)
+

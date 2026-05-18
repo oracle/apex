@@ -1,0 +1,432 @@
+page 146 (
+    name: Links
+    alias: LINKS-IR
+    title: Links
+    pageGroup: @cross-project-reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All Links with this application along with what object they are associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT.) and by whom and when they were added.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region links-interactive-report (
+        name: Links Interactive Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select name,
+                       link_name,
+                       link_url,
+                       created,
+                       added_by,
+                       important,
+                       release,
+                       tags,
+                       action
+                  from (
+                select p.project name,
+                       d.link_name,
+                       case when lower(d.link_url) not like 'http%' then 'http://' end || d.link_url link_url,
+                       d.created,
+                       lower(d.created_by) added_by,
+                       decode(d.important_yn,'Y','Yes','No') important,
+                       case when p.release_id is not null
+                            then (select release_train||' '||release from sp_release_trains where id = p.release_id)
+                            else 'Not Targeted'
+                            end release,
+                       p.tags,
+                       '<a href="'||apex_util.prepare_URL(
+                                            p_url => 'f?p='||:APP_ID||':3:'||:APP_SESSION||'::NO:3:P3_PROJECT_ID:'||p.id,
+                                            p_checksum_type => '3')||'">'||:NOMENCLATURE_PROJECT||': '||apex_escape.html(p.project)||'</a>' action
+                  from SP_PROJECT_LINKS d,
+                       sp_projects p
+                 where project_id = p.id and
+                       p.ARCHIVED_YN = 'N' and 
+                       p.DUPLICATE_OF_PROJECT_ID is null
+                union all
+                select r.release_train ||' ' ||r.release name,
+                       d.link_name,
+                       case when lower(d.link_url) not like 'http%' then 'http://' end || d.link_url link_url,
+                       d.created,
+                       lower(d.created_by) added_by,
+                       decode(d.important_yn,'Y','Yes','No') important,
+                       release_train||' '||release release,
+                       null tags,
+                       '<a href="'||apex_util.prepare_URL(
+                                            p_url => 'f?p='||:APP_ID||':117:'||:APP_SESSION||'::NO:117:P117_RELEASE_ID:'||r.id,
+                                            p_checksum_type => '3')||'">'||'Release: '||apex_escape.html(r.release_train||' '||release)||'</a>' action
+                  from SP_RELEASE_LINKS d,
+                       sp_release_trains r
+                 where r.id = d.release_id
+                union all
+                select a.area || ' / ' ||initiative name,
+                       d.link_name,
+                       case when lower(d.link_url) not like 'http%' then 'http://' end || d.link_url link_url,
+                       d.created,
+                       lower(d.created_by) added_by,
+                       decode(d.important_yn,'Y','Yes','No') important,
+                       null release,
+                       i.tags,
+                       '<a href="'||apex_util.prepare_URL(
+                                            p_url => 'f?p='||:APP_ID||':94:'||:APP_SESSION||'::NO:94:P94_INITIATIVE_ID:'||i.id,
+                                            p_checksum_type => '3')||'">'||:NOMENCLATURE_INITIATIVE||': '||apex_escape.html(i.initiative)||'</a>' action
+                  from SP_INITIATIVE_LINKS d,
+                       sp_initiatives i,
+                       sp_areas a
+                 where d.initiative_id = i.id
+                   and i.area_id = a.id
+                union all
+                select p.project || ' / ' ||
+                         (select task_type from sp_task_types rt where rt.id = t.task_type_id)||
+                           case when t.task_sub_type_id is not null then ': ' end ||
+                           (select task_type from sp_task_types rt where rt.id = t.task_sub_type_id) name,
+                       d.link_name,
+                       case when lower(d.link_url) not like 'http%' then 'http://' end || d.link_url link_url,
+                       d.created,
+                       lower(d.created_by) added_by,
+                       decode(d.important_yn,'Y','Yes','No') important,
+                       case when p.release_id is not null
+                            then (select release_train||' '||release from sp_release_trains where id = p.release_id)
+                            else 'Not Targeted'
+                            end release,
+                       t.tags,
+                       '<a href="'||apex_util.prepare_URL(
+                                            p_url => 'f?p='||:APP_ID||':502:'||:APP_SESSION||'::NO:502:P502_PREV_PAGE,P502_PROJECT_ID,P502_TASK_ID:3,'||p.id||','||t.id,
+                                            p_checksum_type => '3')||'">'||
+                           (select apex_escape.html(task_type) from sp_task_types rt where rt.id = t.task_type_id)||
+                           case when t.task_sub_type_id is not null then ': ' end ||
+                           (select apex_escape.html(task_type) from sp_task_types rt where rt.id = t.task_sub_type_id) ||
+                           case when t.task is not null then ' - '||apex_escape.html(t.task) end ||'</a>' action
+                  from sp_task_links d,
+                       sp_tasks t,
+                       sp_projects p
+                 where p.id = t.project_id
+                   and t.id = d.task_id
+                  )
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 16651512047837978121
+        }
+
+        column ACTION (
+            type: plainText
+            heading {
+                heading: Associated With
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ADDED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 91
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 101
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column IMPORTANT (
+            type: plainText
+            heading {
+                heading: Important
+            }
+            layout {
+                sequence: 51
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column LINK_NAME (
+            type: link
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 31
+            }
+            link {
+                target: {
+                    type: url
+                    url: #LINK_URL#
+                }
+                linkText: #LINK_NAME#
+                linkAttributes: target="_blank"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column LINK_URL (
+            type: plainText
+            heading {
+                heading: Link URL
+            }
+            layout {
+                sequence: 41
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 61
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 81
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Links Interactive Report
+        }
+
+        savedReport 166516158 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTION (
+                sequence: 1
+            )
+
+            displayColumn ADDED_BY (
+                sequence: 5
+            )
+
+            displayColumn CREATED (
+                sequence: 6
+            )
+
+            displayColumn IMPORTANT (
+                sequence: 4
+            )
+
+            displayColumn LINK_NAME (
+                sequence: 3
+            )
+
+            displayColumn NAME (
+                sequence: 2
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 146
+                clearCache: [
+                    146
+                    CIR
+                    RIR
+                ]
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

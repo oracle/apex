@@ -1,0 +1,1143 @@
+page 210 (
+    name: Data Load Source
+    alias: DATA-LOAD-SOURCE2
+    title: Data Load Source
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            function set_item()
+            {
+            $x('P210_COPY_PASTE').value= $v('P210_SAMPLE_DATA');
+            $x('P210_SEPARATOR').value= ',';
+            $s('P210_FIRST_ROW', 'Y');
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>This wizard allows the uploading of opportunities into this application. Two options are provided to upload data, by uploading a comma separated file (.CSV), or to copy and paste data directly into the page.  The second step maps database column names with the uploaded data.  The third step, shows the data after lookups keys have been detected and validated.  Row keys that match are updated, otherwise the opportunity is added.  Lookup codes that do not match are not inserted or updated and are ignored.</p>
+            <p>To see how it works, click the <strong>Try Sample Data</strong> button and then the <strong>Next</strong> button.</p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 60
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region data-load-process-train (
+        name: Data Load Process Train
+        type: list
+        source {
+            list: @data-load-process-train-load-opportunities
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/wizard-container
+            templateOptions: [
+                #DEFAULT#
+                t-Wizard--hideStepsSmall
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayLabels
+            ]
+        }
+    )
+
+    region data-load-source (
+        name: Data Load Source
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @data-load-process-train
+            slot: wizardSubRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: style="width:100%;max-width:none;"
+            regionDisplaySelector: true
+        }
+    )
+
+    region globalization (
+        name: Globalization
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            customAttributes: style="width:100%;max-width:none;"
+        }
+    )
+
+    region loading-data-from-spreadsheets (
+        name: Loading Data From Spreadsheets
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>To load or update opportunity data from a spreadsheet follow these instructions:</p> 
+                
+                
+                <ol>
+                <li>Organize data in a spreadsheet with column headings of "Row Key" (for updates), "Account", "Opportunity Name", "Close Date", "Deal Amount", and so forth. </li>
+                
+                <li>Ensure the various code values match the codes defined in this application.  Administrators of this application can define code values.  The current values are displayed on this page for reference.</li>
+                
+                <li>Once you have your data organized in your spreadsheet you can export the data to CSV format (recommended for larger data sets), or simply cut and paste the data (including column headings) into the text field on this page.</li>
+                
+                <li>Follow the wizard and load your data.</li>
+                </ol>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region loading-sample-data (
+        name: Loading Sample Data
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Click the <strong>Try Sample Data</strong> button to test data loading functionality.  The sample data has 5 columns. The first record uses the Row Key to perform an update. If the Opportunity Row Key is not AACN then it will be treated as an insert.</p> 
+                </p>
+                
+                <table summary="sample data" class="uReport uReportStandard">
+                  <thead>
+                    <tr>
+                      <th>Row Key</th>
+                      <th>Account</th>
+                      <th>Opportunity Name</th>
+                      <th>Close Date</th>
+                      <th>Deal Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>AACN</td>
+                      <td>ACME Guardians</td>
+                      <td>Change Account from Lexington Exports to ACME</td>
+                      <td>01-JAN-2016</td>
+                      <td>54321</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>ACME Gaurdians</td>
+                      <td>New Opportunity for ACME</td>
+                      <td></td>
+                      <td>22333</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>army</td>
+                      <td>New tank equipment (Note the account name is lower case instead of upper case)</td>
+                      <td>01-JAN-2016</td>
+                      <td>50000</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td>Department of energy</td>
+                      <td>Solar and wind equipment</td>
+                      <td></td>
+                      <td>100000</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region valid-account-standings (
+        name: Valid Account Standings
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select standing_text standing
+                ,      standing_description description
+                from eba_sales_account_standing
+                order by display_order
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STANDING (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Standing
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region valid-accounts (
+        name: Valid Accounts
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select customer_name account
+                from eba_sales_customers
+                order by upper(customer_name)
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column ACCOUNT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region valid-risks (
+        name: Valid Risks
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select assessment_text assessment
+                ,      assessment_description description
+                from eba_sales_risk_assessments
+                order by display_order
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column ASSESSMENT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Assessment
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region valid-territories (
+        name: Valid Territories
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select territory_name territory
+                ,      territory_type type
+                ,      territory_description description
+                from eba_sales_territories
+                order by upper(territory_name)
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @data-load-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TERRITORY (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P210_APP_DATE_FORMAT (
+        type: checkboxGroup
+        label {
+            label: Use Application Date Format
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @date-format-option
+        }
+        layout {
+            sequence: 60
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Select this box if you would like to use the application Date/Timestamp formats during your data loading.
+        }
+    )
+
+    pageItem P210_COPY_PASTE (
+        type: textarea
+        label {
+            label: Copy and Paste Delimited Data
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 10
+        }
+    )
+
+    pageItem P210_CURRENCY (
+        type: textField
+        label {
+            label: Currency Symbol
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @globalization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select value
+                  from nls_session_parameters
+                 where parameter = 'NLS_CURRENCY'
+                ```
+        }
+        default {
+            type: static
+            staticValue: $
+        }
+        help {
+            helpText: If your data contains international currency symbol, enter it here. For example, if your data has "&euro;1,234.56" or "&yen;1,234.56", enter "&euro;" or "&yen;".  Otherwise the data will not load correctly.
+        }
+    )
+
+    pageItem P210_DECIMAL_CHARACTER (
+        type: textField
+        label {
+            label: Decimal Character
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 100
+            region: @globalization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        source {
+            type: expression
+            plsqlExpression: apex_application.get_nls_decimal_separator
+        }
+        help {
+            helpText:
+                ```html
+                <p>The decimal character separates the integer and decimal parts of a number.</p>
+                <p> Any character can be the decimal character. The character specified must be single-byte, and the decimal character must be different from group separator. The character can be a space, but cannot be any numeric character or any of the following characters:</p>
+                <ul class="noIndent">
+                <li>plus (+)</li>
+                <li>hyphen (-)</li> 
+                <li>less than sign (<)</li>
+                <li>greater than sign (>)</li> 
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P210_ENCLOSED_BY (
+        type: textField
+        label {
+            label: Optionally Enclosed By
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        default {
+            type: static
+            staticValue: "
+        }
+        help {
+            helpText: Enter a delimiter character. You can use this character to delineate the starting and ending boundary of a data value. If you specify a delimiter character, Data Workshop ignores whitespace occurring before the starting and ending boundary of a data value. You can also use this option to enclose a data value with the specified delimiter character.
+        }
+    )
+
+    pageItem P210_FILE_NAME (
+        type: fileUpload
+        label {
+            label: File Name
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+            purgeFileAt: endOfRequest
+        }
+        layout {
+            sequence: 20
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText: Name of the file to upload
+        }
+    )
+
+    pageItem P210_FIRST_ROW (
+        type: checkboxGroup
+        label {
+            label: First Row has Column Names
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @first-row-option
+        }
+        layout {
+            sequence: 50
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        help {
+            helpText: Select this box if your data contains column names in the first row.
+        }
+    )
+
+    pageItem P210_GROUP_SEPARATOR (
+        type: textField
+        label {
+            label: Group Separator
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 90
+            region: @globalization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            maxLength: 2
+        }
+        source {
+            type: expression
+            plsqlExpression: apex_application.get_nls_group_separator
+        }
+        help {
+            helpText:
+                ```html
+                <p>A group separator is a character that separates integer groups, for example to show thousands and millions.</p>
+                <p>Any character can be the group separator. The character specified must be single-byte, and the group separator must be different from any other decimal character. The character can be a space, but cannot be a numeric character or any of the following:</p>
+                <ul class="noIndent">
+                <li>plus (+)</li>
+                <li>hyphen (-)</li> 
+                <li>less than sign (<)</li>
+                <li>greater than sign (>)</li> 
+                </ul>
+                ```
+        }
+    )
+
+    pageItem P210_IMPORT_FROM (
+        type: radioGroup
+        label {
+            label: Import From
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @data-load-option
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: PASTE
+        }
+    )
+
+    pageItem P210_SAMPLE_DATA (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @loading-sample-data
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue:
+                ```
+                "Row Key","Account","Opportunity Name","Close Date","Deal Amount"
+                "AACN","ACME Guardians","Change Account from Lexington Exports to ACME",01-JAN-2016,54321 
+                "","ACME Guardians","New Opportunity for ACME",,22333
+                "","army","New tank equipment (Note the account name is lower case instead of upper case)",01-JAN-2016,50000
+                "","Department of energy","Solar and wind equipment",,100000
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P210_SEPARATOR (
+        type: textField
+        label {
+            label: Separator
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @data-load-source
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 2
+        }
+        validation {
+            valueRequired: true
+            maxLength: 2
+        }
+        default {
+            type: static
+            staticValue: \t
+        }
+        help {
+            helpText: Identify a column separator character. Use <code>\t</code> for tab separators.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @data-load-process-train
+            slot: close
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 33
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @data-load-process-train
+            slot: next
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+                t-Button--large
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.widget.textareaClob.upload('P210_COPY_PASTE', 'NEXT');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button try-sample-data (
+        buttonName: TRY_SAMPLE_DATA
+        label: Try Sample Data
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:set_item();
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction import-from-copy-and-paste (
+        name: Import From Copy and Paste
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P210_IMPORT_FROM
+        }
+        clientSideCondition {
+            type: item=value
+            item: P210_IMPORT_FROM
+            value: PASTE
+        }
+
+        action native-hide (
+            action: hide
+            settings {
+                hidePageItemsOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P210_COPY_PASTE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            settings {
+                showAllOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P210_COPY_PASTE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction import-from-file (
+        name: Import from File
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P210_IMPORT_FROM
+        }
+        clientSideCondition {
+            type: item=value
+            item: P210_IMPORT_FROM
+            value: UPLOAD
+        }
+
+        action native-hide (
+            action: hide
+            settings {
+                hidePageItemsOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P210_FILE_NAME
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            settings {
+                showAllOnSameLine: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P210_FILE_NAME
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation filename-is-not-null (
+        name: Filename is not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P210_FILE_NAME
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P210_FILE_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P210_IMPORT_FROM
+            value: UPLOAD
+        }
+    )
+
+    validation paste-buffer-is-not-null (
+        name: Paste buffer is not null
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNotNull
+            item: P210_COPY_PASTE
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P210_COPY_PASTE
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+            type: item=value
+            item: P210_IMPORT_FROM
+            value: PASTE
+        }
+    )
+
+    process parse-uploaded-data (
+        name: Parse Uploaded Data
+        type: parseUploadedData
+        dataLoading {
+            dataLoadDefinition: @upload-opportunities
+        }
+        sourceData {
+            importFromItem: P210_IMPORT_FROM
+            fileNameItem: P210_FILE_NAME
+            copyAndPasteItem: P210_COPY_PASTE
+        }
+        parsingOptions {
+            separatorItem: P210_SEPARATOR
+            enclosedByItem: P210_ENCLOSED_BY
+            firstRowItem: P210_FIRST_ROW
+            currencySymbolItem: P210_CURRENCY
+            groupSeparatorItem: P210_GROUP_SEPARATOR
+            decimalCharItem: P210_DECIMAL_CHARACTER
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 9046548142421424704
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 211
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

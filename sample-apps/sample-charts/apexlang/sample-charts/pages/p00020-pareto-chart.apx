@@ -1,0 +1,313 @@
+page 20 (
+    name: Pareto Chart
+    alias: PARETO-CHART
+    title: Pareto Chart
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Combination charts, using Oracle JET Data Visualizations, can be customized to render as a <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=pareto" target="_blank">Pareto</a> chart. Pareto charts are useful for displaying categories of data in descending order of frequency.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-combo-chart
+        }
+    )
+
+    region pareto-chart (
+        name: Pareto Chart
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select product_name, 
+                       quantity, 
+                       customer, 
+                       product_description, 
+                       ratio, 
+                       sum (ratio) over (order by ratio desc) as running_ratio,
+                       'Product:    ' || product_name ||  chr(10)|| 'Quantity: ' || quantity as quantity_tooltip,
+                       'Product:    ' || product_name ||  chr(10)|| 'Cumulative: ' || round(sum (ratio) over (order by ratio desc)*100) ||'%' as pct_running_ratio
+                from 
+                (select a.product_name, 
+                        b.quantity, 
+                        b.customer, 
+                        a.product_description, 
+                        RATIO_TO_REPORT(b.quantity) OVER () RATIO
+                   from eba_demo_chart_products a, eba_demo_chart_orders b
+                  where a.product_id = b.product_id
+                    and customer = 'Deli'
+                  order by b.quantity)
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: pareto
+            regionDisplaySelector: true
+        }
+        chart {
+            type: combination
+        }
+        chartLayout {
+            height: 400
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+            showValue: false
+        }
+        legend {
+            position: end
+            hideAndShowBehavior: noRescaling
+        }
+
+        series cumulative (
+            name: Cumulative %
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: RUNNING_RATIO
+                customTooltip: PCT_RUNNING_RATIO
+            }
+            appearance {
+                assignedToY2Axis: true
+            }
+            line {
+                type: curved
+            }
+            marker {
+                show: false
+            }
+        )
+
+        series product-quantity (
+            name: Product Quantity
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                customTooltip: QUANTITY_TOOLTIP
+                legendTooltip: CUSTOMER
+                labelTooltip: PRODUCT_DESCRIPTION
+            }
+            line {
+                style: dotted
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Product Quantity
+            title {
+                fontStyle: italic
+                fontSize: 16
+            }
+            value {
+                max: 250
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Cumulative %
+            value {
+                min: 0
+                max: 1
+                format: percent
+            }
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: false
+            }
+        )
+
+    )
+
+    region pareto-chart-information (
+        name: Pareto Chart - Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to render a Pareto chart, based upon a declaratively created Combination chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line. The Oracle PL/SQL <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/RATIO_TO_REPORT.html#GUID-9D10C275-4341-435F-ACF4-767B9CCB7390" target="_blank">RATIO_TO_REPORT</a> function is an analytic function which returns the proportion of a value over the total set of values, and is used in the calculation of the <i>Cumulative</i> line series of the Pareto chart.<p/><br/>
+                
+                <strong>Region Source</strong> - set the chart query at region-level, using a query similar to the following:<br/>
+                <pre>
+                select product_name, 
+                       quantity, 
+                       customer, 
+                       product_description, 
+                       ratio, 
+                       sum (ratio) over (order by ratio desc) as running_ratio,
+                       'Product:    ' || product_name ||  chr(10)|| 'Quantity: ' || quantity as quantity_tooltip,
+                       'Product:    ' || product_name ||  chr(10)|| 'Cumulative: ' || round(sum (ratio) over (order by ratio desc)*100) ||'%' as pct_running_ratio
+                from 
+                (select a.product_name, 
+                        b.quantity, 
+                        b.customer, 
+                        a.product_description, 
+                        RATIO_TO_REPORT(b.quantity) OVER () RATIO
+                   from eba_demo_chart_products a, eba_demo_chart_orders b
+                  where a.product_id = b.product_id
+                    and customer = 'Deli'
+                  order by b.quantity)
+                </pre><p/>
+                
+                Note the following column aliases in the above query:<br/>
+                <ul>
+                <li><strong>ratio</strong> - Use of the RATIO_TO_REPORT function, to calculate the proportion of the given QUANTITY value over the total set of QUANTITY values.</li>
+                <li><strong>running_ratio</strong> - the cumulative total</li>
+                <li><strong>quantity_tooltip</strong> - custom tooltip for the bar series, to display the actual value in the tooltip</li>
+                <li><strong>pct_running_ratio</strong> - custom tooltip for the line series, to display the cumulative value in the tooltip</li>
+                </ul>
+                <br/>
+                <strong>Chart Type</strong> - set to <strong>Combination</strong>.  Use the declarative options to define a Line chart, as you normally would.<p/><p/>
+                <strong>Product Quantity Series settings</strong> - Set the following series-level attributes:<br/>
+                <ul>
+                <li><strong>Type</strong> - Bar</li>
+                <li><strong>Location</strong> - Region Source</li>
+                <li><strong>Label</strong> - PRODUCT_NAME</li>
+                <li><strong>Value</strong> - QUANTITY</li>
+                <li><strong>Custom Tooltip</strong> - QUANTITY_TOOLTIP</li>
+                <li><strong>Legend Tooltip</strong> - Customer</li>
+                <li><strong>Label Tooltip</strong> - Product Description</li>
+                </ul>
+                <p/>
+                <strong>Cumulative % Series settings</strong> - Set the following series-level attributes:<br/>
+                <ul>
+                <li><strong>Type</strong> - Line</li>
+                <li><strong>Location</strong> - Region Source</li>
+                <li><strong>Label</strong> - PRODUCT_NAME</li>
+                <li><strong>Value</strong> - RUNNING_RATIO</li>
+                <li><strong>Custom Tooltip</strong> - PCT_RUNNING_RATIO</li>
+                <li><strong>Assigned To Y2 Axis</strong> - On</li>
+                <li><strong>Line Style</strong> - Solid</li>
+                <li><strong>Line Type</strong> - Automatic</li>
+                </ul>
+                <p/>
+                
+                <strong>Y-Axis Settings</strong> - Set the following axis-level attributes:
+                <ul>
+                <li><strong>Title</strong> - Product Quantity</li>
+                <li><strong>Format</strong> - Decimal</li>
+                <li><strong>Decimal Places</strong> - 0</li>
+                </ul>
+                <p/>
+                
+                
+                <strong>Y2-Axis Settings</strong> - Set the following axis-level attributes:
+                <ul>
+                <li><strong>Title</strong> - Cumulative %</li>
+                <li><strong>Minimum</strong> - 0</li>
+                <li><strong>Maximum</strong> - 1</li>
+                <li><strong>Format</strong> - Percent</li>
+                </ul>
+                <p/>
+                
+                For more information on the Pareto chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=pareto" target="_blank">Pareto</a> example.
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

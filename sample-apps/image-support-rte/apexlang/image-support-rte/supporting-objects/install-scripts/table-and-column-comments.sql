@@ -1,0 +1,32 @@
+comment on table EXCM_CONTENT is 'Contains CLOB content for this example app';
+comment on column EXCM_CONTENT.ID is 'System generated unique identifier of the content row';
+comment on column EXCM_CONTENT.BODY is 'Content entered via the UI';
+comment on column EXCM_CONTENT.BODY_HTML is 'HTML version of content entered via the UI, used in reports using the Comment template';
+comment on column EXCM_CONTENT.BODY_NO_IMAGES is 'Content with image references removed, used for emails and reports where images cannot be displayed';
+comment on column EXCM_CONTENT.IMAGE_REF_ID is 'System generated unique identifier used to link images within the BODY column to those images within EXCM_RTE_IMAGES';
+comment on column EXCM_CONTENT.CREATED is 'Date on which this content was created';
+comment on column EXCM_CONTENT.CREATED_BY is 'Username of user who created the content';
+comment on column EXCM_CONTENT.UPDATED is 'Date on which this content was last updated';
+comment on column EXCM_CONTENT.UPDATED_BY is 'Username of user who last updated the content';
+
+comment on table EXCM_CONTENT_V is 'Contains CLOB content for this example app';
+comment on column EXCM_CONTENT_V.ID is 'System generated unique identifier of the content row';
+comment on column EXCM_CONTENT_V.BODY is 'Content entered via the UI';
+comment on column EXCM_CONTENT_V.BODY_HTML is 'HTML version of content entered via the UI, used in reports using the Comment template';
+comment on column EXCM_CONTENT_V.BODY_NO_IMAGES is 'Content with image references removed, used for emails and reports where images cannot be displayed';
+comment on column EXCM_CONTENT_V.IMAGE_REF_ID is 'System generated unique identifier used to link images within the BODY column to those images within EXCM_RTE_IMAGES';
+comment on column EXCM_CONTENT_V.CREATED is 'Date on which this content was created';
+comment on column EXCM_CONTENT_V.CREATED_BY is 'Username of user who created the content';
+comment on column EXCM_CONTENT_V.UPDATED is 'Date on which this content was last updated';
+comment on column EXCM_CONTENT_V.UPDATED_BY is 'Username of user who last updated the content';
+
+comment on table EXCM_RTE_IMAGES is 'All images referenced within EXCM_CONTENT.BODY';
+comment on column EXCM_RTE_IMAGES.ID is 'System generated unique identifier of the image';
+comment on column EXCM_RTE_IMAGES.FILE_BLOB is 'BLOB containing the image';
+comment on column EXCM_RTE_IMAGES.UNIQUE_FILENAME is 'System Generated unique filename, not numeric, that uniquely identifies the image - used to reference the image within EXCM_CONTENT.BODY';
+comment on column EXCM_RTE_IMAGES.FILENAME is 'Actual filename of the image, if a file was dragged in - image.png if the image was pasted in.';
+comment on column EXCM_RTE_IMAGES.MIMETYPE is 'MIME type of the image, needed for display';
+comment on column EXCM_RTE_IMAGES.BLOB_SIZE is 'Size of the image, needed for display';
+comment on column EXCM_RTE_IMAGES.IMAGE_REF_ID is 'System generated unique identifier used to link to EXCM_RTE_IMAGES.IMAGE_REF_ID to find unreferenced images';
+comment on column EXCM_RTE_IMAGES.CREATED is 'Date on which this image was uploaded';
+comment on column EXCM_RTE_IMAGES.CREATED_BY is 'Username of user who uploaded the image';

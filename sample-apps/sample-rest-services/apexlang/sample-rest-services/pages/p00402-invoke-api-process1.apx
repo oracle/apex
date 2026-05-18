@@ -1,0 +1,554 @@
+page 402 (
+    name: Invoke API Process
+    alias: INVOKE-API-PROCESS1
+    title: Invoke API Process
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region employees-data (
+        name: Employees Data
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @eba_rest_employee_invoke
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: empIR
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        advanced {
+            savedReportMappingIdentifier: 11883971485490565
+        }
+
+        column COMM (
+            type: plainText
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column DEPTNO (
+            type: plainText
+            heading {
+                heading: Department
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column EMPNO (
+            type: plainText
+            heading {
+                heading: Employee Number
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ENAME (
+            type: plainText
+            heading {
+                heading: Employee
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column HIREDATE (
+            type: plainText
+            heading {
+                heading: Hiredate
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column JOB (
+            type: plainText
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column MGR (
+            type: plainText
+            heading {
+                heading: Manager
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column SAL (
+            type: plainText
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 45757 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn COMM (
+                sequence: 7
+            )
+
+            displayColumn DEPTNO (
+                sequence: 8
+            )
+
+            displayColumn EMPNO (
+                sequence: 1
+            )
+
+            displayColumn ENAME (
+                sequence: 2
+            )
+
+            displayColumn HIREDATE (
+                sequence: 5
+            )
+
+            displayColumn JOB (
+                sequence: 3
+            )
+
+            displayColumn MGR (
+                sequence: 6
+            )
+
+            displayColumn SAL (
+                sequence: 4
+            )
+
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page demonstrates how to use the <strong>Invoke API</strong> page process with the  
+                    <strong>PUT</strong> operation of a REST Data Source. Clicking the <strong>Raise Salary</strong> 
+                    button will open a dialog which allows to enter a new <em>Salary</em> value; and to submit
+                    the change to a REST API.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P402_MESSAGE (
+        type: hidden
+        layout {
+            sequence: 50
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P402_STATUS (
+        type: hidden
+        layout {
+            sequence: 60
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 404
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 401
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button raise-salary (
+        buttonName: Raise_Salary
+        label: Raise Salary
+        layout {
+            sequence: 10
+            region: @employees-data
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-compass
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 403
+                clearCache: 403
+            }
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+    )
+
+    dynamicAction capture-message-value (
+        name: Capture Message Value
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: document
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: dialogReturnItem
+                returnItem: P403_MESSAGE
+            }
+            affectedElements {
+                selectionType: items
+                items: P402_MESSAGE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction capture-status-value (
+        name: "Capture Status Value "
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: document
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: dialogReturnItem
+                returnItem: P403_STATUS
+            }
+            affectedElements {
+                selectionType: items
+                items: P402_STATUS
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction success-message-display (
+        name: Success Message Display
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P402_MESSAGE
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var ordsStatus   = apex.item("P402_STATUS").getValue(),
+                        ordsResponse = apex.item("P402_MESSAGE").getValue();
+                    
+                    
+                    try {
+                     
+                      switch (parseInt(ordsStatus)) {
+                        case 200:
+                          apex.message.showPageSuccess(apex.lang.formatMessage('P402.DA.ORDS.RESPONSE', ordsResponse));  
+                          apex.region("empIR").refresh();
+                          break;
+                    
+                        case 400:
+                          apex.message.showErrors([
+                            {
+                              type: "error",
+                              location: ["inline", "page"],
+                              message: apex.lang.formatMessage('P402.DA.ORDS.RESPONSE', ordsResponse) ,
+                              unsafe: false
+                            }
+                          ]);
+                          break;
+                        case 401:
+                          apex.debug.error(ordsResponse);
+                          apex.message.showErrors([
+                            {
+                              type: "error",
+                              location: ["inline", "page"],
+                              message: apex.lang.formatMessage('P402.DA.UNAUTHORIZED.MSG'),
+                              unsafe: false
+                            }
+                          ]);
+                          break;
+                        case 403:
+                          apex.debug.error(ordsResponse);
+                          apex.message.showErrors([
+                            {
+                              type: "error",
+                              location: ["inline", "page"],
+                              message: apex.lang.formatMessage('P402.DA.FORBIDDEN.MSG'),
+                              unsafe: false
+                            }
+                          ]);
+                          break;
+                        case 404:
+                          apex.debug.error(ordsResponse);
+                          apex.message.showErrors([
+                            {
+                              type: "error",
+                              location: ["inline", "page"],
+                              message: apex.lang.formatMessage('P402.DA.NOTFOUND.MSG'),
+                              unsafe: false
+                            }
+                          ]);
+                          break;
+                        case 500:
+                          apex.debug.error(ordsResponse);
+                          apex.message.showErrors([
+                            {
+                              type: "error",
+                              location: ["inline", "page"],
+                              message: apex.lang.formatMessage('P402.DA.SERVEREERR.MSG'),
+                              unsafe: false
+                            }
+                          ]);
+                          break;
+                        default:
+                          apex.debug.error(ordsResponse);
+                          apex.message.showErrors([
+                            {
+                              type: "error",
+                              location: ["inline", "page"],
+                              message: apex.lang.formatMessage('P402.DA.UNEXPECTEDERR.MSG'),
+                              unsafe: false
+                            }
+                          ]);
+                          break;
+                      }
+                    } catch (e) {
+                      apex.message.showErrors([
+                        {
+                          type: "error",
+                          location: ["inline", "page"],
+                          message: apex.lang.formatMessage("P402.DA.ERROR.MSG", e.message),
+                          unsafe: false
+                        }
+                      ]);
+                    }
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

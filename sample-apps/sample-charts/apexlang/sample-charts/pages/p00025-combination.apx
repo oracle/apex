@@ -1,0 +1,1049 @@
+page 25 (
+    name: Combination
+    alias: COMBINATION
+    title: Combination
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            ul.barGraph{margin:12px !important;list-style:none;white-space:nowrap}
+            ul.barGraph li{display:inline-block;width:48px}
+            ul.barGraph li:hover big small{background-color:#4A6D98}
+            ul.barGraph li.barHeaders{width:128px}
+            ul.barGraph li.barHeaders > span{text-align:left}
+            ul.barGraph li > label{display:block;font:normal 11px/12px Arial,sans-serif;color:#444;text-align:center}
+            ul.barGraph li > label span{display:block;font:normal 11px/12px Arial,sans-serif;color:#767676}
+            ul.barGraph li > big{height:120px;margin:8px;position:relative;display:block}
+            ul.barGraph li > big > small{display:block;position:absolute;bottom:0;width:30px;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;background-color:#6A9CDA;-moz-box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;box-shadow:0 1px 0 rgba(255,255,255,0.5) inset;border:1px solid #4A6D98}
+            ul.barGraph li > span{display:block;text-align:center;font:normal 11px/16px Arial,sans-serif;color:#444;border-top:1px solid #F0F0F0;padding:8px}
+            ul.barGraph li > span.noBorder{border-top:none;padding-top:0}
+            ul.barGraph li > span a{color:##405580}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Combination charts, using Oracle JET Data Visualizations, are showcased on this page. Combination charts allow bar, line, and area series to be displayed on the same chart. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your combination charts.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-combo-chart
+        }
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region combination-chart-data-label-positions (
+        name: Combination Chart (Data Label Positions)
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: combo1
+            regionDisplaySelector: true
+        }
+        chart {
+            type: combination
+        }
+        chartLayout {
+            maxWidth: 600
+            height: 400
+        }
+        legend {
+            position: end
+            hideAndShowBehavior: noRescaling
+        }
+
+        series acme-store (
+            name: Acme Store
+            type: area
+            execution {
+                sequence: 40
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                legendTooltip: CUSTOMER
+                labelTooltip: PRODUCT_DESCRIPTION
+            }
+        )
+
+        series deli (
+            name: Deli
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                legendTooltip: CUSTOMER
+                labelTooltip: PRODUCT_DESCRIPTION
+            }
+            label {
+                show: true
+            }
+        )
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 60
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                legendTooltip: CUSTOMER
+                labelTooltip: PRODUCT_DESCRIPTION
+            }
+            label {
+                show: true
+                position: center
+            }
+            advanced {
+                javaScriptStaticId: c_series
+            }
+        )
+
+        series store-a (
+            name: Store A
+            type: line
+            execution {
+                sequence: 50
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, a.product_description
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: QUANTITY
+                legendTooltip: CUSTOMER
+                labelTooltip: PRODUCT_DESCRIPTION
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y1 Axis Title
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+    )
+
+    region combination-chart-information-data-label-positions (
+        name: Combination Chart  Information (Data Label Positions)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Combination chart.<p/>
+                
+                <strong>Type</strong> - Use this series-level attribute to define a different series type for each series represented on the chart. For example, the series 'Deli' is of type Bar, 'Store A' is of type Line, and 'Acme Store' is of type Area.<p/>
+                <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>Without Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. The chart axes will not rescale, which is useful to remain in context. <p/>
+                <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the buttons to the top right of the chart to change the line type of the 'Store A' chart series. Line type specifies the shape of the data point connectors on the chart.<p/>
+                <p>
+                For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=dataLabels" target="_blank">Combination Chart: Data Labels</a>  examples.
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @combination-chart-data-label-positions
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region combination-chart-information-regular-v-mixed-frequency-time-axis (
+        name: Combination Chart  Information (Regular v Mixed Frequency Time Axis)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various time axis options supported by Oracle JET charts.<p/>
+                
+                <strong>Time Axis Type</strong> - Use the chart-level attribute to define the type of time axis to be supported on the chart. When the series Label is mapped to a Date or Timestamp column, the <strong>Time Axis Type</strong> should be set to type that is appropriate for the data being rendered. Oracle JET charts support three kinds of time axis: <strong>Enabled</strong>, <strong>Skip Gaps</strong>, and <strong>Mixed Frequency</strong>. 
+                <ul>
+                <li>The 'Enabled' and Skip Gaps' time axis types require that the data items within each group share the same time value. The time intervals between groups do not have to be uniform; however, if the time axis type is Skip Gaps', the times always will be drawn uniformly ignoring the gaps. Stacking is possible in these two modes.</li>
+                <li>The 'Mixed Frequency' time axis type allows each data item to have a different time value. Since the time value of the data items within each group can vary, stacking is not possible.</li>
+                </ul>
+                <p/>
+                For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank">Chart: Time Axis</a> example.
+                
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region combination-chart-information-y-axis-value-formatting (
+        name: Combination Chart  Information (Y-Axis Value Formatting)
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates various attributes of a Combination chart.<p/>
+                
+                <strong>Format Scaling</strong> - Use the axis-level attribute to define the scaling behavior of the Y-axis value. When set to <strong>None</strong>, the values will not be automatically scaled, and display thousands values with the locale default thousand separator, for example 1,000.  The automatic behaviour would display such a value as 1K.<p/>
+                <strong>Reference Series</strong> - Similar to the Oracle JET Reference Object functionality, a series can be defined on a chart, representing a constant value, to be used as a reference point on the chart.  In the example, the reference series 'Average Budget', serves to highlight task budget amounts in relation to the averaage budget amount across all tasks.  The series-level Label <strong>Show</strong> attribute is set to No for this series.<p/>
+                <strong>Y-Axis Title</strong> - The axis-level Title attributes Font Family, Font Style, Font Size and Font Color have been set to style the y-axis title to use the font Times New Roman, the font style Italic, the font size 18px, and the font color red.<br/> 
+                
+                <p>
+                For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=refObject" target="_blank">Combination Chart: Reference Object</a>  examples.
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @combination-chart-y-axis-value-formatting
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region combination-chart-regular-v-mixed-frequency-time-axis (
+        name: Combination Chart (Regular v Mixed Frequency Time Axis)
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region combination-chart-y-axis-value-formatting (
+        name: Combination Chart (Y-Axis Value Formatting)
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: combination
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        chartLayout {
+            height: 400
+        }
+        animation {
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+            showGroupName: false
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+
+        series average-budget (
+            name: Average Budget
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select task_name, round(avg_budget,2) from (  
+                        select task_name,
+                           avg(budget) over () avg_budget
+                      from eba_demo_chart_tasks
+                     where budget > 2000
+                    order by 2,1)
+                    ```
+            }
+            columnMapping {
+                label: TASK_NAME
+                value: ROUND(AVG_BUDGET,2)
+            }
+            appearance {
+                color: #4FB000
+            }
+            line {
+                style: dashed
+                width: 4
+            }
+        )
+
+        series tasks-by-budget-cost (
+            name: Tasks By Budget/Cost
+            type: area
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select task_name,
+                           budget
+                      from eba_demo_chart_tasks
+                     where budget > 2000
+                    order by 2,1
+                    ```
+            }
+            columnMapping {
+                label: TASK_NAME
+                value: BUDGET
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Y-Axis Title
+            title {
+                fontFamily: timesNewRoman
+                fontStyle: italic
+                fontSize: 18
+                fontColor: RED
+            }
+            value {
+                formatScaling: none
+                baselineScaling: min
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region mixed-frequency-time-axis (
+        name: Mixed Frequency Time Axis
+        type: chart
+        layout {
+            sequence: 30
+            parentRegion: @combination-chart-regular-v-mixed-frequency-time-axis
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: combination
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            timeAxisType: mixedFrequency
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            show: false
+        }
+
+        series acme-store (
+            name: Acme Store
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, sales_date
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Acme Store'
+                    ```
+            }
+            columnMapping {
+                label: SALES_DATE
+                value: QUANTITY
+            }
+        )
+
+        series deli (
+            name: Deli
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, sales_date
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Deli'
+                    ```
+            }
+            columnMapping {
+                label: SALES_DATE
+                value: QUANTITY
+            }
+        )
+
+        axis x (
+            name: x
+            title: Date
+            value {
+                formatScaling: none
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region regular-time-axis (
+        name: Regular Time Axis
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @combination-chart-regular-v-mixed-frequency-time-axis
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: regTime
+        }
+        chart {
+            type: combination
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            show: false
+        }
+
+        series shop-c (
+            name: Shop C
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, sales_date
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Shop C'
+                    ```
+            }
+            columnMapping {
+                label: SALES_DATE
+                value: QUANTITY
+            }
+        )
+
+        series store-a (
+            name: Store A
+            type: line
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.product_name, b.quantity, b.customer, sales_date
+                    from eba_demo_chart_products a, eba_demo_chart_orders b
+                    where a.product_id = b.product_id
+                    and customer = 'Store A'
+                    ```
+            }
+            columnMapping {
+                label: SALES_DATE
+                value: QUANTITY
+            }
+        )
+
+        axis x (
+            name: x
+            title: Date
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    pageItem P25_SKIP_GAP (
+        type: switch
+        label {
+            label: Skip Gaps
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @combination-chart-regular-v-mixed-frequency-time-axis
+            slot: regionBody
+            alignment: left
+            columnSpan: 3
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText:
+                ```html
+                The 'Regular Time Axis' chart renders data items that share the same date value i.e. the date values associated with the points of series 'Shop C' are exactly the same as the dates values associated with the points of series 'Store A'. The date intervals between items do not have to be uniform.  The <strong>Time Axis Type</strong> attribute can be used to define how the data that is not uniform.  Select how you wish the data items to be rendered:<p/>
+                
+                <li><strong>Yes</strong> - this sets the Time Axis Type to <strong>Skip Gaps</strong>, where the dates will always be drawn uniformly, ignoring any gaps in dates.</li>
+                <li><strong>No</strong> - this sets the Time Axis type to <strong>Enabled</strong>, where the dates will not be drawn uniformly, respecting any gaps in dates.</li>
+                ```
+        }
+    )
+
+    button curved (
+        buttonName: Curved
+        label: Curved
+        layout {
+            sequence: 20
+            region: @combination-chart-data-label-positions
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button none (
+        buttonName: None
+        label: None
+        layout {
+            sequence: 50
+            region: @combination-chart-data-label-positions
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button segmented (
+        buttonName: Segmented
+        label: Centered Segmented
+        layout {
+            sequence: 40
+            region: @combination-chart-data-label-positions
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button stepped (
+        buttonName: Stepped
+        label: Stepped
+        layout {
+            sequence: 30
+            region: @combination-chart-data-label-positions
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button straight (
+        buttonName: Straight
+        label: Straight
+        layout {
+            sequence: 10
+            region: @combination-chart-data-label-positions
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction curved (
+        name: Curved
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @curved
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'curved'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction none (
+        name: None
+        execution {
+            sequence: 90
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @none
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'none'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction segmented (
+        name: Segmented
+        execution {
+            sequence: 80
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @segmented
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'centeredSegmented'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction skip-gap-off (
+        name: Skip Gap Off
+        execution {
+            sequence: 110
+        }
+        when {
+            selectionType: items
+            items: P25_SKIP_GAP
+        }
+        clientSideCondition {
+            type: item=value
+            item: P25_SKIP_GAP
+            value: N
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $("#regTime_jet").ojChart({timeAxisType:'enabled'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction skip-gap-on (
+        name: Skip Gap On
+        execution {
+            sequence: 100
+        }
+        when {
+            selectionType: items
+            items: P25_SKIP_GAP
+        }
+        clientSideCondition {
+            type: item=value
+            item: P25_SKIP_GAP
+            value: Y
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $("#regTime_jet").ojChart({timeAxisType:'skipGaps'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction stepped (
+        name: Stepped
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @stepped
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'stepped'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction straight (
+        name: Straight
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @straight
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'straight'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @combination-chart-data-label-positions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

@@ -1,0 +1,696 @@
+page 13 (
+    name: Interactive Report
+    alias: INTERACTIVE-REPORT
+    title: Interactive Report
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            .apexir_WORKSHEET_ICONS {border: none !important; -moz-box-shadow: none !important; -box-shadow: none !important; -webkit-box-shadow: none !important;}
+            .apexir_WORKSHEET_ICONS td {border-bottom: none !important}
+            .apexir_WORKSHEET_ICONS td img {border: 4px solid #CCC; -moz-border-radius: 4px; -webkit-border-radius: 4px;}
+            .apexir_WORKSHEET_CUSTOM td {
+            border-right: none !important;}
+            .reportDetail td.separator { border-top: 1px solid #DDD !important;}
+            </style>
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This interactive report page demonstrates linking from charts.  You can link your chart to an interactive report by first clearing any existing interactive report filters using the "Reset Interactive Report" <strong>RIR</strong> clear cache setting in the URL and by passing interactive report column <strong>IR_</strong> filters.  See the chart pages for details on how to construct the links, and view the URL on this page to see the format of the URL.  The drill down from the chart to this report passes the project ID column.  It could have passed the project name, but passing the numeric ID column is safer.  The report on this page has the report ID column set to hidden, so that it can not be selected as a displayed column, and the label of the ID column is set to <strong>Selected Project</strong>.  Interactive reports allow filtering on hidden columns to support this exact use case.  The <strong>CS</strong> attribute in the URL is a checksum that limits exposure to URL tampering and is automatically computed by the Oracle APEX engine.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region projects (
+        name: Projects
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.id,
+                       p.project,
+                       t.task_name,
+                       t.start_date,
+                       t.end_date,
+                       t.status,
+                       t.assigned_to,
+                       t.cost,
+                       t.budget
+                  from eba_demo_chart_tasks t,
+                       eba_demo_chart_projects p
+                 where t.project = p.id
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        advanced {
+            htmlDomId: projects_report
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        searchBar {
+            rowsPerPageSelector: true
+        }
+        actionsMenu {
+            rowsPerPage: false
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        detailView {
+            show: true
+            beforeRows:
+                ```html
+                <style>
+                table.apexir_WORKSHEET_CUSTOM { border: none !important; -moz-box-shadow: none; box-shadow: none; -webkit-box-shadow: none; }
+                .apexir_WORKSHEET_DATA td {border-bottom: none !important;}
+                table.reportDetail td {
+                	border: none !important;
+                	font: 11px/16px Arial, sans-serif;
+                	}
+                	table.reportDetail td.separator {
+                		background: #CCC;
+                		height: 2px !important;
+                padding: 0;
+                		line-height: 2px !important;
+                overflow: hidden;
+                		}
+                table.reportDetail td h1 {margin: 8px 0 !important}
+                table.reportDetail td img {margin-top: 8px; border: 4px solid #CCC; -moz-border-radius: 4px; -webkit-border-radius: 4px;}
+                </style>
+                <table class="reportDetail">
+                ```
+            forEachRow:
+                ```html
+                <tr><td colspan="4" class="separator"></td></tr>
+                <tr>
+                <td><strong><u>#PROJECT#</u></strong></td><td><i>#TASK_NAME#</i></td>
+                </tr>
+                <tr><td align="left"><strong>#STATUS_LABEL#:</strong></td><td>#STATUS#</td>
+                </tr>
+                <tr><td align="left"><strong>#ASSIGNED_TO_LABEL#:</strong></td><td>#ASSIGNED_TO#</td>
+                </tr>
+                <tr>
+                <td style="padding-bottom: 0px;"><strong>#START_DATE_LABEL#</strong></td>
+                <td style="padding-bottom: 0px;"><strong>#END_DATE_LABEL#</strong></td>
+                <td style="padding-bottom: 0px;"><strong>#BUDGET_LABEL#</strong></td>
+                <td style="padding-bottom: 0px;"><strong>#COST_LABEL#</strong></td>
+                </tr>
+                <tr>
+                <td style="padding-top: 0px;">#START_DATE#</td>
+                <td style="padding-top: 0px;">#END_DATE#</td>
+                <td style="padding-top: 0px;">#BUDGET#</td>
+                <td style="padding-top: 0px;">#COST#</td>
+                </tr>
+                ```
+            afterRows:
+                ```html
+                <tr><td colspan="4" class="separator"></td></tr>
+                </table>
+                ```
+        }
+        advanced {
+            savedReportMappingIdentifier: 655030323192259552
+        }
+
+        column ASSIGNED_TO (
+            type: plainText
+            heading {
+                heading: Assigned To
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column BUDGET (
+            type: plainText
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            layout {
+                sequence: 18
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column COST (
+            type: plainText
+            heading {
+                heading: Cost
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Selected Project
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column PROJECT (
+            type: plainText
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column TASK_NAME (
+            type: plainText
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        savedReport 6550316 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ASSIGNED_TO (
+                sequence: 7
+            )
+
+            displayColumn BUDGET (
+                sequence: 9
+            )
+
+            displayColumn COST (
+                sequence: 8
+            )
+
+            displayColumn END_DATE (
+                sequence: 5
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn PROJECT (
+                sequence: 2
+            )
+
+            displayColumn START_DATE (
+                sequence: 4
+            )
+
+            displayColumn STATUS (
+                sequence: 6
+            )
+
+            displayColumn TASK_NAME (
+                sequence: 3
+            )
+
+            sort (
+                column: START_DATE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: END_DATE
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: PROJECT
+                sort {
+                    sequence: 3
+                }
+            )
+
+            aggregate (
+                column: COST
+            )
+
+            aggregate (
+                column: BUDGET
+            )
+
+            filter ir-condition (
+                column: ID
+                value: 1
+            )
+
+        )
+
+        savedReport 6550318 (
+            visibility: alternativeDefault
+            name: Budget Review
+            view {
+                chart: true
+                groupBy: true
+                default: chart
+                rowsPerPage: 15
+            }
+
+            displayColumn BUDGET (
+                sequence: 5
+            )
+
+            displayColumn COST (
+                sequence: 4
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 3
+            )
+
+            displayColumn TASK_NAME (
+                sequence: 2
+            )
+
+            computation APXWS_CC_001 (
+                identifier: C01
+                source {
+                    expression: I - H
+                    dataType: number
+                }
+                label {
+                    column: Budget v Cost
+                }
+                appearance {
+                    formatMask: FML999G999G999G999G990D00
+                }
+            )
+
+            aggregate (
+                column: APXWS_CC_001
+            )
+
+            aggregate (
+                column: COST
+            )
+
+            aggregate (
+                column: BUDGET
+            )
+
+            controlBreak (
+                column: PROJECT
+                layout {
+                    sequence: 1
+                }
+            )
+
+            chart {
+                label: PROJECT
+                value: APXWS_CC_001
+                valueAggregation: sum
+            }
+            axisTitle {
+                label: Project
+                value: Budget v Cost
+            }
+            sort {
+                by: labelAsc
+            }
+            chartAppearance {
+                orientation: horizontal
+            }
+
+            groupByColumn (
+                column: STATUS
+                layout {
+                    sequence: 1
+                }
+            )
+
+            groupByAggregate (
+                aggregate {
+                    column: COST
+                    displaySum: true
+                }
+                appearance {
+                    formatMask: FML999G999G999G999G990D00
+                }
+                layout {
+                    sequence: 1
+                }
+            )
+
+            groupByAggregate (
+                aggregate {
+                    column: BUDGET
+                    displaySum: true
+                }
+                appearance {
+                    formatMask: FML999G999G999G999G990D00
+                }
+                layout {
+                    sequence: 2
+                }
+            )
+
+            groupByAggregate (
+                aggregate {
+                    column: APXWS_CC_001
+                    displaySum: true
+                }
+                appearance {
+                    formatMask: FML999G999G999G999G990D00
+                }
+                layout {
+                    sequence: 3
+                }
+            )
+
+            groupBySort (
+                column: STATUS
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+        savedReport 6550322 (
+            visibility: alternativeDefault
+            name: Control Break
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ASSIGNED_TO (
+                sequence: 7
+            )
+
+            displayColumn BUDGET (
+                sequence: 9
+            )
+
+            displayColumn COST (
+                sequence: 8
+            )
+
+            displayColumn END_DATE (
+                sequence: 5
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn PROJECT (
+                sequence: 2
+            )
+
+            displayColumn START_DATE (
+                sequence: 4
+            )
+
+            displayColumn STATUS (
+                sequence: 6
+            )
+
+            displayColumn TASK_NAME (
+                sequence: 3
+            )
+
+            sort (
+                column: START_DATE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: END_DATE
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: PROJECT
+                sort {
+                    sequence: 3
+                }
+            )
+
+            aggregate (
+                column: COST
+            )
+
+            aggregate (
+                column: BUDGET
+            )
+
+            controlBreak (
+                column: PROJECT
+                layout {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: projects_report
+        }
+    )
+
+    button reset-data (
+        buttonName: RESET_DATA
+        label: Reset
+        layout {
+            sequence: 10
+            region: @projects
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                clearCache: [
+                    13
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

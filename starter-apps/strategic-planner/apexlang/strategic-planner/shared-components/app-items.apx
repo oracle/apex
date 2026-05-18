@@ -1,0 +1,78 @@
+appItem APPROVALS_MORE_INFO_CNT (
+    config {
+        buildOption: @approvals
+    }
+)
+
+appItem APPROVALS_PENDING_CNT (
+    config {
+        buildOption: @approvals
+    }
+)
+
+appItem APP_USER_FIRST_LAST_NAME (
+)
+
+appItem APP_USER_FIRST_NAME (
+)
+
+appItem APP_USER_ID (
+)
+
+appItem COMPLETE_TASK_STATUS_IDS (
+)
+
+appItem FOCUS_AREA (
+)
+
+appItem INITIATIVE (
+)
+
+appItem IS_ADMIN (
+)
+
+appItem LAST_COUNT_REFRESH (
+)
+
+appItem LAST_PROJECT_VIEW (
+)
+
+appItem LAST_PROJ_JUMP_PG (
+)
+
+appItem NOMENCLATURE_AREA (
+)
+
+appItem NOMENCLATURE_AREAS (
+)
+
+appItem NOMENCLATURE_CONTRIBUTOR (
+)
+
+appItem NOMENCLATURE_CONTRIBUTORS (
+)
+
+appItem NOMENCLATURE_INITIATIVE (
+)
+
+appItem NOMENCLATURE_INITIATIVES (
+)
+
+appItem NOMENCLATURE_PROJECT (
+)
+
+appItem NOMENCLATURE_PROJECTS (
+)
+
+appItem NOMENCLATURE_STRATEGIC_PLANNER (
+)
+
+appItem NOMENCLATURE_USER (
+)
+
+appItem NOMENCLATURE_USERS (
+)
+
+appItem PROJECT (
+)
+

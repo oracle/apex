@@ -1,0 +1,52 @@
+installScript "Create Table" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: create-table.sql
+    }
+)
+
+installScript "EMP and DEPT tables" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: emp-and-dept-tables.sql
+    }
+)
+
+installScript "Load Data" (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: load-data.sql
+    }
+)
+
+installScript "Pipelined Function Package" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: pipelined-function-package.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_DEMO_IR_PKG
+    )
+
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+

@@ -1,0 +1,96 @@
+restDataSource Search_Company (
+    name: Search Company
+    source {
+        type: http
+        remoteServer: @api_themoviedb_org_3
+        urlPathPrefix: search/company
+    }
+    settings {
+        paginationType: pageNo
+        pageNoUrlParam: page
+        fixedPageSize: 20
+    }
+    authentication {
+        credentials: @tmdb_api_key
+    }
+    advanced {
+        passEcid: Y
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+        advanced {
+            fixedPageSize: 20
+        }
+    )
+
+    parameter query (
+        name: query
+        parameter {
+            type: urlQueryString
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: Netflix
+        }
+        advanced {
+            useForRowSearch: true
+        }
+    )
+
+    dataProfile {
+        name: Search Company
+        rowSelector: results
+    }
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: id
+        }
+    )
+
+    dataProfileColumn logo-path (
+        columnName: LOGO_PATH
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: logo_path
+        }
+    )
+
+    dataProfileColumn name (
+        columnName: NAME
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: name
+        }
+    )
+
+    dataProfileColumn origin-country (
+        columnName: ORIGIN_COUNTRY
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: origin_country
+        }
+    )
+
+)
+

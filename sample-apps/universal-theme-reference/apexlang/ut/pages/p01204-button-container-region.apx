@@ -1,0 +1,512 @@
+page 1204 (
+    name: Region - Button Container
+    alias: BUTTON-CONTAINER-REGION
+    title: Button Container - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region additional-example (
+        name: Additional Example
+        type: staticContent
+        source {
+            htmlCode: <p>You can have any number of buttons within a button group.  Here is an example of a music player toolbar styled the same method.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @using-page-buttons
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                margin-top-lg
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Button Groups are a series of buttons that appear together to make a single conrol.  You can create button groups in APEX using the button component, or as a customized radio group page item.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region step (
+        name: Step 1
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="dm-Hero-steps">
+                <strong>Step 1.</strong> Create a Radio Group item and set the following properties:<br>
+                <ol>
+                  <li>Set <em>Number of Columns</em> to the number of buttons you want to have in the button group. In this example, it is set to 3.</li>
+                  <li>Under <strong>List of Values</strong>, make sure that <em>Display Extra Values</em> and <em>Display Null Value</em> are set to <strong>No</strong></li>
+                </ol>
+                <p>After competing this step, you should have a button group that looks like the item below.</p>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @using-page-items
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region step-2 (
+        name: Step 2
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="dm-Hero-steps">
+                <p><strong>Step 2.</strong> Update the Radio Group item's Template Options and set <em>Item Group Display</em> to <strong>Display as Pill Button</strong></p>
+                <p>That's it. Your Radio Group item will now appear as a Button Group.</p>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @using-page-items
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region using-page-buttons (
+        name: Using Page Buttons
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You can turn a set of buttons into a button group simply by modifying the template options. Follow these instructions to create a simple button group of the following three buttons.</p>
+                <div class="dm-Hero-steps margin-bottom-md">
+                <strong>Step 1.</strong> Create three buttons in the same button position<br>
+                <strong>Step 2.</strong> Update each of the buttons' Template Options as follows<br>
+                <ol>
+                  <li>Button A: set <em>Button Set</em> to <b>First Button</b></li>
+                  <li>Button B: set <em>Button Set</em> to <b>Inner Button</b></li>
+                  <li>Button C: set <em>Button Set</em> to <b>Last Button</b></li>
+                </ol>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region using-page-items (
+        name: Using Page Items
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You can also style the <strong>radio button</strong> or <strong>checkbox</strong> items to appear as a Button Group. This is particularly useful when you want to use store the selection in Session State and if you want to Dynamic Actions to perform some client side behavior as you interact with the control.</p>
+                <p>For example, in several Packaged Apps, this technique is used to switch between different displays of the same data.</p>
+                <p>Follow the instrutions below to convert a Radio Group item into a Button Group.</p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P1204_RADIO_A (
+        type: radioGroup
+        label {
+            label: Radio Group
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Option A;A,Option B;B,Option C;C
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @step
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+            ]
+        }
+        default {
+            type: static
+            staticValue: A
+        }
+    )
+
+    pageItem P1204_RADIO_B (
+        type: radioGroup
+        label {
+            label: Radio Button Group
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Option A;A,Option B;B,Option C;C
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @step-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: A
+        }
+    )
+
+    button btn-grp-2a (
+        buttonName: BTN_GRP_2A
+        label: Previous
+        layout {
+            sequence: 60
+            region: @additional-example
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-step-backward
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-2b (
+        buttonName: BTN_GRP_2B
+        label: Rewind
+        layout {
+            sequence: 70
+            region: @additional-example
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-backward
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-2c (
+        buttonName: BTN_GRP_2C
+        label: Play
+        layout {
+            sequence: 80
+            region: @additional-example
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-play
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-2d (
+        buttonName: BTN_GRP_2D
+        label: Stop
+        layout {
+            sequence: 90
+            region: @additional-example
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-stop
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-2e (
+        buttonName: BTN_GRP_2E
+        label: Forward
+        layout {
+            sequence: 100
+            region: @additional-example
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-forward
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-2f (
+        buttonName: BTN_GRP_2F
+        label: Next
+        layout {
+            sequence: 110
+            region: @additional-example
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-step-forward
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-a (
+        buttonName: BTN_GRP_A
+        label: Button A
+        layout {
+            sequence: 10
+            region: @using-page-buttons
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-b (
+        buttonName: BTN_GRP_B
+        label: Button B
+        layout {
+            sequence: 30
+            region: @using-page-buttons
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-grp-c (
+        buttonName: BTN_GRP_C
+        label: Button C
+        layout {
+            sequence: 50
+            region: @using-page-buttons
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+)
+

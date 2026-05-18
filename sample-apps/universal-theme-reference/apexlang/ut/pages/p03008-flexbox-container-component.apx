@@ -1,0 +1,567 @@
+page 3008 (
+    name: Components - Flexbox Container
+    alias: FLEXBOX-CONTAINER-COMPONENT
+    title: Components - Flexbox Container
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region column (
+        name: Flexbox Container - Column
+        type: themeTemplateComponent/flexboxContainer
+        layout {
+            sequence: 10
+            parentRegion: @demo-direction
+            slot: subRegions
+        }
+        componentAppearance {
+            display: regionOnly
+        }
+        settings {
+            direction: column
+            gap: lg
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        source {
+            htmlCode: <p>This demonstrates how regions can be laid out in a row and stretch to be equal in height.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo-alignment (
+        name: Alignment
+        type: staticContent
+        source {
+            htmlCode: <p>This demonstrates how flexbox items can be aligned declaratively. Here we have two regions that are center aligned vertically.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @demo
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region demo-direction (
+        name: Direction
+        type: staticContent
+        source {
+            htmlCode: <p>This demonstrates how flexbox items can be laid out vertically in a column, or horizontally in a row.</p>
+        }
+        layout {
+            sequence: 50
+            parentRegion: @demo
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region demo-wrapping (
+        name: Wrapping
+        type: staticContent
+        source {
+            htmlCode: <p>This demonstrates how flexbox items can wrap onto multiple lines when needed.</p>
+        }
+        layout {
+            sequence: 60
+            parentRegion: @demo
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region flexbox-container-alignment (
+        name: Flexbox Container - Alignment
+        type: themeTemplateComponent/flexboxContainer
+        layout {
+            sequence: 10
+            parentRegion: @demo-alignment
+            slot: subRegions
+        }
+        componentAppearance {
+            display: regionOnly
+        }
+        settings {
+            alignItems: center
+            gap: lg
+            flexBehavior: growIfNeeded
+        }
+    )
+
+    region flexbox-container-wrapping (
+        name: Flexbox Container - Wrapping
+        type: themeTemplateComponent/flexboxContainer
+        layout {
+            sequence: 10
+            parentRegion: @demo-wrapping
+            slot: subRegions
+        }
+        componentAppearance {
+            display: regionOnly
+        }
+        settings {
+            wrap: wrap
+            gap: lg
+        }
+    )
+
+    region flexbox-demo (
+        name: Flexbox Container - Stretching
+        type: themeTemplateComponent/flexboxContainer
+        layout {
+            sequence: 10
+            parentRegion: @stretching
+            slot: subRegions
+        }
+        advanced {
+            htmlDomId: FlexboxDemo
+        }
+        componentAppearance {
+            display: regionOnly
+        }
+        settings {
+            wrap: wrap
+            alignContent: center
+            justifyContent: start
+            gap: lg
+            flexBehavior: growIfNeeded
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: FlexboxDemo
+        }
+    )
+
+    region left-column (
+        name: Left Column
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @flexbox-demo
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: h400
+        }
+    )
+
+    region new_1 (
+        name: Left Column
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @flexbox-container-alignment
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: h400
+        }
+    )
+
+    region new_1_1 (
+        name: Right Column
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @flexbox-container-alignment
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: h200
+        }
+    )
+
+    region new_2 (
+        name: Region 1
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @flexbox-container-wrapping
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: w400
+        }
+    )
+
+    region new_2_1 (
+        name: Region 3
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @flexbox-container-wrapping
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: w400
+        }
+    )
+
+    region new_2_1_1 (
+        name: Region 5
+        type: staticContent
+        layout {
+            sequence: 50
+            parentRegion: @flexbox-container-wrapping
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: w400
+        }
+    )
+
+    region new_2_1_2 (
+        name: Region 4
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @flexbox-container-wrapping
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: w400
+        }
+    )
+
+    region new_2_2 (
+        name: Region 2
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @flexbox-container-wrapping
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: w400
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Flexbox Container</strong> is a theme component that is suitable for arranging components in a flexible layout. This component supports horizontal or vertical direction, wrapping, spacing, alignment, justification, overflow, and flex item sizing.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-1 (
+        name: Region 1
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @column
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-1_1 (
+        name: Region 1
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @row
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-2 (
+        name: Region 2
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @column
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-2_1 (
+        name: Region 2
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @row
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-3 (
+        name: Region 3
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @column
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-3_1 (
+        name: Region 3
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @row
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region right-column (
+        name: Right Column
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @flexbox-demo
+            slot: plugin-body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region row (
+        name: Flexbox Container - Row
+        type: themeTemplateComponent/flexboxContainer
+        layout {
+            sequence: 20
+            parentRegion: @demo-direction
+            slot: subRegions
+            startNewRow: false
+        }
+        componentAppearance {
+            display: regionOnly
+        }
+        settings {
+            gap: lg
+            flexBehavior: growIfNeeded
+        }
+    )
+
+    region stretching (
+        name: Stretching
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+)
+

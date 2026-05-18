@@ -1,0 +1,11 @@
+legacyDataLoadDefinition people (
+    name: People
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_DEMO_IG_PEOPLE
+    }
+    uniqueKeys {
+        uniqueColumn1: NAME
+    }
+)
+

@@ -1,0 +1,20 @@
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup data-generation (
+    name: Data Generation
+)
+
+pageGroup regions (
+    name: Regions
+)
+
+pageGroup reporting (
+    name: Reporting
+)
+
+pageGroup stores (
+    name: Stores
+)
+

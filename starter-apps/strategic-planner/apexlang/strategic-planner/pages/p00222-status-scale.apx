@@ -1,0 +1,810 @@
+page 222 (
+    name: Status Scale
+    alias: STATUS-SCALE
+    title: Status Scale
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region p222-label-a (
+        name: &P222_LABEL_A.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 0 pct_complete, pc0_label project_status, pc0_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 10 pct_complete, pc10_label project_status, pc10_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 20 pct_complete, pc20_label project_status, pc20_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 30 pct_complete, pc30_label project_status, pc30_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 40 pct_complete, pc40_label project_status, pc40_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 50 pct_complete, pc50_label project_status, pc50_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 60 pct_complete, pc60_label project_status, pc60_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 70 pct_complete, pc70_label project_status, pc70_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 80 pct_complete, pc80_label project_status, pc80_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 90 pct_complete, pc90_label project_status, pc90_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                union all
+                select 100 pct_complete, pc100_label project_status, pc100_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'A'
+                order by pct_complete
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_scales 
+                 where is_active_yn = 'Y'
+                   and scale_letter = 'A'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region p222-label-b (
+        name: &P222_LABEL_B.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 0 pct_complete, pc0_label project_status, pc0_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 10 pct_complete, pc10_label project_status, pc10_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 20 pct_complete, pc20_label project_status, pc20_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 30 pct_complete, pc30_label project_status, pc30_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 40 pct_complete, pc40_label project_status, pc40_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 50 pct_complete, pc50_label project_status, pc50_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 60 pct_complete, pc60_label project_status, pc60_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 70 pct_complete, pc70_label project_status, pc70_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 80 pct_complete, pc80_label project_status, pc80_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 90 pct_complete, pc90_label project_status, pc90_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                union all
+                select 100 pct_complete, pc100_label project_status, pc100_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'B'
+                order by pct_complete
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_scales 
+                 where is_active_yn = 'Y'
+                   and scale_letter = 'B'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region p222-label-c (
+        name: &P222_LABEL_C.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 0 pct_complete, pc0_label project_status, pc0_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 10 pct_complete, pc10_label project_status, pc10_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 20 pct_complete, pc20_label project_status, pc20_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 30 pct_complete, pc30_label project_status, pc30_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 40 pct_complete, pc40_label project_status, pc40_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 50 pct_complete, pc50_label project_status, pc50_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 60 pct_complete, pc60_label project_status, pc60_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 70 pct_complete, pc70_label project_status, pc70_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 80 pct_complete, pc80_label project_status, pc80_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 90 pct_complete, pc90_label project_status, pc90_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                union all
+                select 100 pct_complete, pc100_label project_status, pc100_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'C'
+                order by pct_complete
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_scales 
+                 where is_active_yn = 'Y'
+                   and scale_letter = 'C'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region p222-label-d (
+        name: &P222_LABEL_D.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 0 pct_complete, pc0_label project_status, pc0_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 10 pct_complete, pc10_label project_status, pc10_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 20 pct_complete, pc20_label project_status, pc20_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 30 pct_complete, pc30_label project_status, pc30_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 40 pct_complete, pc40_label project_status, pc40_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 50 pct_complete, pc50_label project_status, pc50_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 60 pct_complete, pc60_label project_status, pc60_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 70 pct_complete, pc70_label project_status, pc70_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 80 pct_complete, pc80_label project_status, pc80_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 90 pct_complete, pc90_label project_status, pc90_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                union all
+                select 100 pct_complete, pc100_label project_status, pc100_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'D'
+                order by pct_complete
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_scales 
+                 where is_active_yn = 'Y'
+                   and scale_letter = 'D'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region p222-label-e (
+        name: &P222_LABEL_E.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 0 pct_complete, pc0_label project_status, pc0_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 10 pct_complete, pc10_label project_status, pc10_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 20 pct_complete, pc20_label project_status, pc20_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 30 pct_complete, pc30_label project_status, pc30_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 40 pct_complete, pc40_label project_status, pc40_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 50 pct_complete, pc50_label project_status, pc50_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 60 pct_complete, pc60_label project_status, pc60_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 70 pct_complete, pc70_label project_status, pc70_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 80 pct_complete, pc80_label project_status, pc80_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 90 pct_complete, pc90_label project_status, pc90_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                union all
+                select 100 pct_complete, pc100_label project_status, pc100_desc description
+                  from SP_PROJECT_SCALES s
+                 where scale_letter = 'E'
+                order by pct_complete
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_scales 
+                 where is_active_yn = 'Y'
+                   and scale_letter = 'E'
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_STATUS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P222_LABEL_A (
+        type: hidden
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P222_LABEL_B (
+        type: hidden
+        layout {
+            sequence: 80
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P222_LABEL_C (
+        type: hidden
+        layout {
+            sequence: 90
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P222_LABEL_D (
+        type: hidden
+        layout {
+            sequence: 100
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P222_LABEL_E (
+        type: hidden
+        layout {
+            sequence: 110
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    process load-labels (
+        name: load labels
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select scale_letter, scale_name
+                    from sp_project_scales 
+                    where is_active_yn = 'Y'
+                    order by scale_letter) loop
+                    if    c1.scale_letter = 'A' then :P222_LABEL_A := c1.scale_name;
+                    elsif c1.scale_letter = 'B' then :P222_LABEL_B := c1.scale_name;
+                    elsif c1.scale_letter = 'C' then :P222_LABEL_C := c1.scale_name;
+                    elsif c1.scale_letter = 'D' then :P222_LABEL_D := c1.scale_name;
+                    elsif c1.scale_letter = 'E' then :P222_LABEL_E := c1.scale_name;
+                    end if;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4560428092012332697
+        }
+    )
+
+)
+

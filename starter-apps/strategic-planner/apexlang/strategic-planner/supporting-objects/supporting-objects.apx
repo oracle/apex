@@ -1,0 +1,117 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            SP_NOTIF_SUBSCRIPTIONS
+            SP_RELEASE_TIMELINE
+            SP_SEQ
+            SP_LOG
+            SP_VALUE_COMPARE
+            SP_PROJ_STATUS_UI
+            SP_CONTRIBUTOR_SUMMARY
+            SP_FAVORITE_TOGGLE
+            SP_DATE_RANGE_PCT_COMP
+            SP_TAG_DIFF
+            SP_PROJECT_PRIORITIES
+            SP_RESOURCE_TYPES
+            SP_TEAM_MEMBERS
+            SP_INITIATIVES
+            SP_INITIATIVE_DOCUMENTS
+            SP_INITIATIVE_COMMENTS
+            SP_PROJECTS
+            SP_PROJECT_CONTRIBUTORS
+            SP_PROJECT_HISTORY
+            SP_PROJECT_COMMENTS
+            SP_PROJECT_DOCUMENTS
+            SP_PROJECT_LINKS
+            SP_PROJECT_RELATED
+            SP_APP_NOMENCLATURE
+            SP_APP_SETTINGS
+            SP_DEFAULT_TAGS
+            SP_COUNTRIES
+            SP_PROJECT_COMMENTS_EMAILS
+            SP_PROJECT_SIZES
+            SP_RELEASE_TRAINS
+            SP_RELEASE_COMMENTS
+            SP_RELEASE_MILESTONES
+            SP_RELEASE_DOCUMENTS
+            SP_RELEASE_HISTORY
+            SP_RELEASE_LINKS
+            SP_INITIATIVE_LINKS
+            SP_PROJ_INTERACTIONS_LOG
+            SP_FAVORITES
+            SP_CONFIGURABLE_TEXT
+            SP_PROJECT_SCALES
+            SP_ACTIVITY_TYPES
+            SP_ACTIVITIES
+            SP_NOTIFICATIONS
+            SP_NOTIFICATION_SUBSCRIPTIONS
+            SP_GROUPS
+            SP_GROUP_MEMBERS
+            SP_DEFAULT_PEOPLE_TAGS
+            SP_EXTERNAL_TICKETING_SYSTEMS
+            SP_APPLICATION_NOTIFICATIONS
+            SP_COMPETENCIES
+            SP_TASK_TYPES
+            SP_INITIATIVE_DEFAULT_TASKS
+            SP_TASK_STATUSES
+            SP_TASKS
+            SP_TASK_HISTORY
+            SP_TASK_LINKS
+            SP_TASK_DOCUMENTS
+            SP_TASK_COMMENTS
+            SP_AREAS
+            SP_INITIATIVE_FOCUS_AREAS
+            SP_TEAM_MEMBER_NOTIFICATIONS
+            SP_APP_LOG
+            SP_GLOBALS
+            SP_APPROVAL_TYPES
+            SP_INITIATIVE_APPROVALS
+            SP_INITIATIVE_APPROVAL_CHAIN
+            SP_PROJECT_APPROVALS
+            SP_PROJECT_APPROVAL_CHAIN
+            SP_COMMENT_IMAGES
+            SP_UTIL
+            SP_COMMENT_UTIL
+            SP_REPORT_QUESTIONS
+            SP_AI_PROMPTS
+            SP_PROJECT_AI_SUMMARIES
+            SP_RELEASE_AI_SUMMARIES
+            SP_DOCUMENTS_V
+            SP_ERROR_LOG
+        ]
+    }
+    installationMessages {
+        welcome: This application installer will guide you through the process of creating your database objects and seed data.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+    }
+    upgradeMessages {
+        welcome: The application installer has detected that this application's supporting objects were previously installed.  This wizard will guide you through the process of upgrading these supporting objects.
+        confirmation: Please confirm that you would like to install this application's supporting objects.
+        success: Your application's supporting objects have been installed.
+        failure: Installation of database objects and seed data has failed.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        postDeinstall: Deinstallation complete.
+    }
+    messages {
+        validations: The following validations will be performed to ensure your system is compatible with this application.
+        appSubstitutions: You can configure the following attributes of your application.
+        buildOptions: You can choose to include the following build options.
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

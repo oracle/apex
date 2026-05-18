@@ -1,0 +1,541 @@
+page 12 (
+    name: Prepare Movie Data (Step 2: Preview)
+    alias: PREPARE-MOVIE-DATA-STEP-2
+    title: Prepare Movie Data
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        executeWhenPageLoads: gInterval = window.setInterval( function() {apex.event.trigger( document, "updateProgress" ); }, 3700 );
+    }
+    css {
+        inline:
+            ```css
+            .csv {
+               white-space: pre-line;
+               font-family: monospace;
+               font-size: 8pt;
+               overflow-x: scroll; }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region data-generated-successfully (
+        name: Data Generated Successfully
+        type: staticContent
+        source {
+            htmlCode: <p>Your data has been successfully generated and is available to preview below. The next step is to upload this data into the datatable.</p>
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--success
+            ]
+        }
+    )
+
+    region generated-csv (
+        name: Generated CSV
+        title: Generated Data Preview
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region generating-data (
+        name: Generating Data...
+        type: staticContent
+        source {
+            htmlCode: <p role="alert" id="status" class="u-tC">Data generation initiated.</p>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-refresh fa-anim-spin
+        }
+        advanced {
+            htmlDomId: progress
+        }
+    )
+
+    region progress (
+        name: Progress
+        type: list
+        source {
+            list: @ai-generated-data-progress
+        }
+        layout {
+            sequence: 10
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayCurrentLabelOnly
+            ]
+        }
+    )
+
+    pageItem P12_AI_OUTPUT (
+        type: textarea
+        label {
+            label: AI Generated Data
+            alignment: left
+        }
+        settings {
+            autoHeight: true
+        }
+        layout {
+            sequence: 40
+            region: @generated-csv
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+                margin-bottom-sm
+            ]
+            width: 30
+            height: 12
+        }
+        advanced {
+            cssClasses: csv
+        }
+    )
+
+    pageItem P12_SOFAR (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 60
+            region: @generated-csv
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: -1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_TOTALWORK (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 70
+            region: @generated-csv
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: -2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Back
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 11
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button upload (
+        buttonName: UPLOAD
+        label: Upload Data
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction generation-running-update (
+        name: Generation Running Update
+        execution {
+            sequence: 10
+        }
+        when {
+            event: custom
+            customEvent: updateProgress
+            selectionType: jsExpression
+            javaScriptExpression: document
+        }
+
+        action get-execution-progress (
+            name: Get Execution Progress
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select sofar, totalwork
+                      from apex_appl_page_bg_proc_status
+                     where application_id = :APP_ID
+                       and execution_id = :P11_EXE_ID
+                    ```
+            }
+            affectedElements {
+                selectionType: items
+                items: [
+                    P12_SOFAR
+                    P12_TOTALWORK
+                ]
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action show-execution-progress (
+            name: Show Execution Progress
+            action: executeJsCode
+            settings {
+                jsCode: $("#status").text( apex.lang.formatMessage( "EBA_VECTOR.STATUS_UPDATE_AI_GENERATION", $v("P12_SOFAR"), $v("P12_TOTALWORK") ) );
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action trigger-finished-when-all-done (
+            name: Trigger "Finished" When All Done
+            action: executeJsCode
+            settings {
+                jsCode: apex.event.trigger( document, "generationFinished" )
+            }
+            execution {
+                sequence: 80
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: $v("P12_SOFAR") === $v("P12_TOTALWORK")
+            }
+        )
+
+    )
+
+    dynamicAction toggle-generation-finished-indicator (
+        name: Toggle Generation Finished Indicator
+        execution {
+            sequence: 40
+        }
+        when {
+            event: custom
+            customEvent: generationFinished
+            selectionType: jsExpression
+            javaScriptExpression: document
+        }
+
+        action get-the-generated-content (
+            name: Get the Generated Content
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select output 
+                      from eba_vector_ai_helper
+                     where execution_id = :P11_EXE_ID
+                    ```
+                escapeSpecialChars: false
+            }
+            affectedElements {
+                selectionType: items
+                items: P12_AI_OUTPUT
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action hide-the-execution-progress-text-area (
+            name: Hide the Execution Progress Text Area
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @generating-data
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+        )
+
+        action show-the-button-bar-with-csv (
+            name: "Show the Button Bar with CSV "
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @button-bar
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action show-the-success-text-area (
+            name: Show the Success Text Area
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @data-generated-successfully
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+        action show-the-text-area-with-csv (
+            name: "Show the Text Area with CSV "
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @generated-csv
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action stop-the-refresh-timer (
+            name: Stop the Refresh Timer
+            action: executeJsCode
+            settings {
+                jsCode: window.clearInterval( gInterval );
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction toggle-text-field-visibility-on-page-load (
+        name: Toggle Text Field Visibility on Page Load
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @generated-csv
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @button-bar
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-hide-3 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @data-generated-successfully
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+    )
+
+    process clean-data (
+        name: Clean Data
+        type: executeCode
+        executionChain: @load-data
+        source {
+            plsqlCode: eba_sample_vector_search_pkg.delete_invalid_movie_data
+        }
+        execution {
+            sequence: 80
+        }
+        advanced {
+            executionMappingIdentifier: 11266803279609088
+        }
+    )
+
+    process clear-success-message (
+        name: Clear Success Message
+        type: executeCode
+        executionChain: @load-data
+        source {
+            plsqlCode: apex_application.g_print_success_message := null;
+        }
+        execution {
+            sequence: 90
+        }
+        advanced {
+            executionMappingIdentifier: 11202133728643440
+        }
+    )
+
+    process data-load (
+        name: Data Load
+        type: dataLoading
+        executionChain: @load-data
+        dataLoading {
+            dataLoadDefinition: @genai_csv_load
+        }
+        sourceData {
+            sourceDataType: textareaItem
+            textareaItem: P12_AI_OUTPUT
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 11266085773609087
+        }
+    )
+
+    process load-data (
+        name: Load Data
+        type: executionChain
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 11266433588609088
+        }
+        serverSideCondition {
+            whenButtonPressed: @upload
+        }
+    )
+
+    branch (
+        name: Go To Vector Generation
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 13
+                clearCache: [
+                    11
+                    12
+                ]
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @upload
+        }
+    )
+
+)
+

@@ -1,0 +1,16 @@
+event slide (
+    name: Slide
+)
+
+event slidechange (
+    name: Change
+)
+
+event slidestart (
+    name: Start
+)
+
+event slidestop (
+    name: Stop
+)
+

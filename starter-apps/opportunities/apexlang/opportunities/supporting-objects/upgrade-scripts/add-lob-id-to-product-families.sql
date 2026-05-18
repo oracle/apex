@@ -1,0 +1,1 @@
+alter table eba_sales_product_families add lob_id NUMBER references eba_sales_product_lobs;

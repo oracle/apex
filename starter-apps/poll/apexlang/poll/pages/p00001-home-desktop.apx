@@ -1,0 +1,2142 @@
+page 1 (
+    name: &APPLICATION_TITLE.
+    alias: HOME_DESKTOP
+    title: &APPLICATION_TITLE.
+    pageGroup: @home
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* This should all be removed later */
+            .qa-ContentRowReport-items{
+              list-style-type:none;
+              margin: 0 !important;
+            }
+            
+            .qa-ContentRowReport-item:not(:only-child):not(:last-child) {
+              border-bottom: 1px solid rgba(0, 0, 0, 0.075);
+            }
+            
+            .qa-ContentRowReport + .t-Report-pagination {
+              border-top: 1px solid rgba(0, 0, 0, 0.075);
+            }
+            
+            .qa-ContentRowReport-itemWrap {
+              padding: 16px;
+              display: flex;
+              flex-wrap: nowrap;
+            }
+            
+            a.qa-ContentRowReport-itemWrap {
+              text-decoration: none !important;
+              outline: none;
+            }
+            
+            .qa-ContentRowReport-itemSelection {
+              margin-right: 16px;
+              font-size: 16px;
+              flex-grow: 0;
+              flex-shrink: 0;
+              flex-basis: auto;
+              align-self: center;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              -ms-user-select: none;
+              user-select: none;
+            }
+            
+            .u-RTL .qa-ContentRowReport-itemSelection {
+              margin-right: 0;
+              margin-left: 16px;
+            }
+            
+            .qa-ContentRowReport-itemSelection input {
+              font-size: 16px;
+              margin: 0;
+            }
+            
+            .qa-ContentRowReport-itemSelection:empty {
+              display: none;
+            }
+            
+            .qa-ContentRowReport-itemIconWrap {
+              margin-right: 12px;
+              flex-grow: 0;
+              flex-shrink: 0;
+              flex-basis: auto;
+              padding-top: 2px;
+              padding-bottom: 2px;
+              align-self: center;
+              color: rgba(0, 0, 0, 0.25);
+            }
+            
+            .u-RTL .qa-ContentRowReport-itemIconWrap {
+              margin-right: 0;
+              margin-left: 12px;
+            }
+            
+            .qa-ContentRowReport-itemIconWrap:empty {
+              display: none;
+            }
+            
+            .qa-ContentRowReport-itemBody {
+              flex-grow: 1;
+              flex-shrink: 1;
+              flex-basis: auto;
+              display: flex;
+              flex-wrap: nowrap;
+            }
+            
+            .qa-ContentRowReport-itemBody p:empty {
+              display: none;
+            }
+            
+            .qa-ContentRowReport-itemContent {
+              flex-grow: 1;
+              flex-shrink: 1;
+              flex-basis: auto;
+              align-self: center;
+            }
+            
+            .qa-ContentRowReport-itemTitle {
+              margin-bottom: 0;
+              font-size: 16px;
+              line-height: 20px;
+              font-weight: 700;
+              margin-right: 8px;
+              display: inline-block;
+              vertical-align: top;
+            }
+            
+            .qa-ContentRowReport-itemTitle > label {
+              display: block;
+              cursor: pointer;
+            }
+            
+            .qa-ContentRowReport-itemTitle a:not([class]):hover {
+              text-decoration: underline;
+            }
+            
+            .qa-QuestionList-badge + .qa-ContentRowReport-itemTitle {
+              margin-left: 4px;
+            }
+            
+            .u-RTL .qa-QuestionList-badge + .qa-ContentRowReport-itemTitle {
+              margin-left: 0;
+              margin-right: 4px;
+            }
+            
+            .is-read .qa-ContentRowReport-itemTitle {
+              font-weight: 400;
+            }
+            
+            .qa-ContentRowReport-itemDescription {
+              margin: 4px 0 0;
+              font-size: 12px;
+              color: rgba(0, 0, 0, 0.55);
+            }
+            
+            .qa-ContentRowReport-itemDescription:empty {
+              display: none;
+            }
+            
+            .qa-ContentRowReport-itemDescription .qa-QuestionList-badges {
+              margin-top: 4px;
+            }
+            
+            .qa-ContentRowReport-itemDescription .qa-QuestionList-author {
+              color: black;
+              font-weight: 500;
+            }
+            
+            .qa-QuestionList-tag {
+              display: inline-block;
+              padding: 3px 0;
+              font-size: 11px;
+              line-height: 12px;
+              margin: 2px 8px 2px 0;
+              border-radius: 2px;
+            }
+            
+            .u-RTL .qa-QuestionList-tag {
+              margin: 2px 0 2px 8px;
+            }
+            
+            .qa-QuestionList-tag:before {
+              content: '';
+              width: 12px;
+              height: 12px;
+              margin-right: 4px;
+              display: inline-block;
+              vertical-align: top;
+              background-image: url('data:image/svg+xml,<svg xmlns=!string!width=!string!height=!string!viewBox=!string!><path fill=!string!d=!string!/></svg>');
+              background-position: 50%;
+              background-repeat: no-repeat;
+              opacity: .5;
+            }
+            
+            .u-RTL .qa-QuestionList-tag:before {
+              margin-right: 0;
+              margin-left: 4px;
+            }
+            
+            .qa-QuestionList-tag.is-category:before {
+              opacity: 1;
+              background-image: url('data:image/svg+xml,<svg xmlns=!string!width=!string!height=!string!viewBox=!string!><path fill=!string!d=!string!/></svg>');
+            }
+            
+            .qa-ContentRowReport-itemMisc {
+              margin-left: 20px;
+              margin-right: 20px;
+              flex-grow: 0;
+              flex-shrink: 0;
+              flex-basis: auto;
+              align-self: center;
+            }
+            
+            .qa-ContentRowReport-itemMisc:empty {
+              display: none;
+            }
+            
+            .qa-QuestionList-stats {
+              padding-right: 20px;
+            }
+            
+            .u-RTL .qa-QuestionList-stats {
+              padding-right: 0;
+              padding-left: 20px;
+            }
+            
+            .qa-QuestionList-stat {
+              font-size: 12px;
+              line-height: 18px;
+            }
+            
+            .qa-QuestionList-stat .qa-QuestionList-value,
+            .qa-QuestionList-stat .qa-QuestionList-label {
+              font-size: inherit;
+              line-height: inherit;
+              display: inline-block;
+              vertical-align: top;
+            }
+            
+            .qa-QuestionList-stat .qa-QuestionList-value {
+              min-width: 40px;
+              text-align: right;
+            }
+            
+            .qa-QuestionList-stat .qa-QuestionList-label {
+              color: rgba(0, 0, 0, 0.55);
+            }
+            
+            .qa-ContentRowReport-itemActions {
+              flex-grow: 0;
+              flex-shrink: 0;
+              flex-basis: auto;
+              align-self: center;
+            }
+            
+            .qa-ContentRowReport-itemActions:empty {
+              display: none;
+            }
+            
+            .qa-ContentRowReport-itemActions .qa-User {
+              width: 160px;
+            }
+            
+            .qa-ContentRowReport-itemActions .qa-User-name {
+              font-weight: 500;
+              font-size: 12px;
+            }
+            
+            .qa-ContentRowReport .qa-Report-percentChart {
+              width: 100%;
+              margin: 4px 0;
+              height: 8px;
+              border-radius: 8px;
+            }
+            
+            .qa-ContentRowReport--hideIcons .qa-ContentRowReport-itemIconWrap {
+              display: none;
+            }
+            
+            .qa-ContentRowReport--hideBorders .qa-ContentRowReport-item {
+              border-bottom: 0 !important;
+            }
+            
+            .qa-ContentRowReport--removePadding .qa-ContentRowReport-itemWrap {
+              padding-left: 0;
+              padding-right: 0;
+              padding-top: 8px;
+              padding-bottom: 8px;
+            }
+            
+            .qa-ContentRowReport--removePadding .qa-ContentRowReport-item:first-child .qa-ContentRowReport-itemWrap {
+              padding-top: 0;
+            }
+            
+            .qa-ContentRowReport--removePadding .qa-ContentRowReport-item:last-child .qa-ContentRowReport-itemWrap {
+              padding-bottom: 0;
+            }
+            
+            
+            .qp-Stats {
+              display: flex;
+            }
+            
+            .qp-Stats-item {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              margin: 0 8px 0 0;
+            }
+            
+            .u-RTL .qp-Stats-item {
+              margin: 0 0 0 8px;
+            }
+            
+            .qp-Stats-label {
+              font-size: 11px;
+            }
+            
+            .qp-Stats-item:last-child {
+              margin-right: 0;
+            }
+            
+            .u-RTL .qp-Stats-item:last-child {
+              margin-left: 0;
+              margin-right: 8px;
+            }
+            
+            .tag-badge {
+              display: inline-block;
+              padding: 0 6px;
+              margin: 2px 4px 2px 0;
+              border-radius: 2px;
+              font-size: 11px;
+              font-weight: bold;
+              box-shadow: 0 1px 1px -1px rgba(0, 0, 0, .05), 0 0 0 1px rgba(0, 0, 0, .075) inset;
+            }
+            
+            .u-RTL .tag-badge {
+              margin: 2px 0 2px 4px;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: @reader-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+               This application allows you to conduct a simple poll or quiz. Results can be reviewed in real time. You can use this &APPLICATION_TITLE. application during meetings or presentations to get instant feedback and to facilitate discussions.   
+            </p>
+            <p>
+            Users of this application who have the Contributor or Administrator access level can create and manage polls and quizzes.
+            </p>
+            ```
+    }
+    comments {
+        comments: <link rel="stylesheet" href="#IMAGE_PREFIX#themes/oracle/pdbss/css/oow.css">
+    }
+
+    region acl-warning (
+        name: ACL Warning
+        type: plugin/aclWarning
+        layout {
+            sequence: 30
+            parentRegion: @main-column
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+                margin-top-md
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'N'
+        }
+        settings {
+            administrationPageLink: {
+                page: SETTINGS
+                action: resetPagination
+            }
+        }
+    )
+
+    region application-title (
+        name: &APPLICATION_TITLE.
+        type: staticContent
+        source {
+            htmlCode: <p>Create, distribute, take, and review polls</p>
+        }
+        layout {
+            sequence: 100
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_QPOLL_POLLS
+        }
+    )
+
+    region contrib-filters (
+        name: Contrib Filters
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @filters
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from eba_qpoll_polls
+                 where nvl(:P1_VIEW_SELECTOR,'R') = 'C'
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    region contributor-view (
+        name: Contributor View
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT poll_id,
+                       poll item_title, 
+                       case when invitations > 0 then 
+                                 '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':16:'||:APP_SESSION||':::RIR,CIR:IR_POLL_ID:'||poll_id)||
+                                 '">'||invitations||'</a>'
+                            else '0' end invitations,
+                       case when responses > 0 then 
+                                 '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':66:'||:APP_SESSION||':::RP,66:LPOLL_ID:'||poll_id)||
+                                 '">'||responses||'</a>'
+                            else '0' end responses,
+                       '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':100:'||:APP_SESSION||':::100:LPOLL_ID:'||poll_id)||
+                                 '">'||questions||'</a>' questions,
+                       null item_selection,
+                       null item_icon,
+                       apex_util.prepare_url('f?p='||:APP_ID||':100:'||:APP_SESSION||':::100:LPOLL_ID:'||poll_id) ITEM_LINK,
+                       apex_escape.html(POLL_DETAILS) || 
+                          case when poll_details is not null then '<br>' end ||
+                          case status_id when 1 then '<span class="tag-badge u-hot" title="Status: Being Authored">Being Authored</span>'
+                                         when 2 then '<span class="tag-badge u-warning" title="Status: Testing">Testing</span>'
+                                         when 3 then '<span class="tag-badge u-success" title="Status: Published">Published</span>'
+                                         when 4 then '<span class="tag-badge u-color-15" title="Status: Closed">Closed</span>'
+                                         end || 
+                          ' created by '||lower(created_by) ||
+                          case status_id when 1 then ' '||apex_util.get_since(created)
+                                         when 2 then ' '||apex_util.get_since(created)
+                                         when 3 then ', published '|| apex_util.get_since(start_time) 
+                                         when 4 then ', closed '|| apex_util.get_since(stop_time)
+                                         end item_description,
+                       case when responses > 0 then '<a class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch" href="'||
+                       apex_util.prepare_url('f?p='||:APP_ID||':66:'||:APP_SESSION||':::RP,66:LPOLL_ID:'||poll_id)||
+                               '">View Results</a>'
+                            end item_actions,
+                      case when take_status in ('CAN_TAKE_IT','HAS_ERRORS','CAN_UPDATE') and questions > 0
+                           then '<a class="t-Button t-Button--small t-Button--simple t-Button--stretch" href="'
+                               ||apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:LPOLL_ID:'||poll_id)
+                               ||'">'||apex_escape.html(apex_lang.message(take_status))||'</a>'
+                           else '' end item_misc
+                from
+                (SELECT id poll_id,
+                        POLL_NAME poll, 
+                        POLL_DETAILS,
+                        created,
+                        lower(created_by) created_by,
+                        updated,
+                        lower(updated_by) updated_by,
+                        status_id,
+                        start_time, stop_time,
+                        decode(POLL_OR_QUIZ,'P','Poll','Q','Quiz',p.POLL_OR_QUIZ) poll_type,
+                        nvl((select count(*) from EBA_QPOLL_QUESTIONS qu where qu.POLL_ID = p.id),0) questions,
+                        nvl((select count(distinct respondent_id)
+                              from eba_qpoll_comm_invites c,
+                                   eba_qpoll_invites i
+                             where c.poll_id = p.id
+                               and c.id = i.comm_invite_id),0) invitations,
+                        nvl((select count(*)
+                               from eba_qpoll_results r
+                              where r.poll_ID = p.id
+                                and nvl(r.is_valid_yn,'Y') = 'Y'),0)  responses,
+                        eba_qpoll.poll_take_status (
+                           p_app_id      => :APP_ID,
+                           p_poll_id     => id,
+                           p_app_user    => :APP_USER,
+                           p_app_session => :APP_SESSION) take_status
+                  from EBA_QPOLL_POLLS p
+                 where (:P1_SEARCH is null or lower(poll_name) like '%'||lower(:P1_SEARCH)||'%')
+                   and (:P1_STATUS_ID is null or instr(':'||:P1_STATUS_ID||':',':'||p.status_id||':') > 0)
+                   and (:P1_CREATED_BY is null or created_by = :P1_CREATED_BY)
+                )
+                order by case when nvl(:P1_SORT,'UD') = 'UD' then updated end desc,
+                         case when :P1_SORT = 'UA' then updated end,
+                         case when :P1_SORT = 'CD' then created end desc,
+                         case when :P1_SORT = 'CA' then created end,
+                         case when :P1_SORT = 'P' then poll end
+                         
+                
+                ```
+            pageItemsToSubmit: [
+                P1_SEARCH
+                P1_STATUS_ID
+                P1_CREATED_BY
+                P1_SORT
+            ]
+        }
+        layout {
+            sequence: 90
+            parentRegion: @main-column
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            cssClasses: report_polls
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_qpoll_polls
+                 where nvl(:P1_VIEW_SELECTOR,'R') = 'C'
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        componentAppearance {
+            template: @qp-content-row
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: None found meeting your search criteria.
+        }
+
+        column INVITATIONS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Invitations
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_ACTIONS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Item Actions
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_DESCRIPTION (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Item Description
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_ICON (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Item Icon
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_LINK (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Item Link
+                alignment: center
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_MISC (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Item Misc
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_SELECTION (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Item Selection
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="qp-Stats">
+                    <span class="qp-Stats-item">
+                        <span class="qp-Stats-num">#RESPONSES#</span>
+                        <span class="qp-Stats-label">responses</span>
+                    </span>
+                    <span class="qp-Stats-item">
+                        <span class="qp-Stats-num">#INVITATIONS#</span>
+                        <span class="qp-Stats-label">invites</span>
+                    
+                    </span>
+                    <span class="qp-Stats-item">
+                        <span class="qp-Stats-num">#QUESTIONS#</span>
+                        <span class="qp-Stats-label">questions</span>
+                    
+                    </span>
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Item Title
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Poll Id
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column QUESTIONS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Questions
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column RESPONSES (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Responses
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+    )
+
+    region email-address-not-set (
+        name: Email Address Not Set
+        type: staticContent
+        source {
+            htmlCode: <p>You have not defined the EMAIL FROM address (in Administration > Default Email Addresses).</p>
+        }
+        layout {
+            sequence: 70
+            parentRegion: @main-column
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--defaultIcons
+                t-Alert--danger
+                t-Alert--horizontal
+            ]
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare x varchar2(4000) := null;
+                begin
+                  x := trim(replace(eba_qpoll_fw.get_preference_value('NOTIFICATION_EMAIL_FROM'),'N/A',null));
+                  if x is null or instr(x,'@') = 0  or instr(x,'.') = 0 then 
+                     return true; 
+                  else 
+                     return false; 
+                  end if;
+                end;
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @side-column
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            htmlDomId: filters
+        }
+    )
+
+    region getting-started (
+        name: Getting Started
+        type: staticContent
+        source {
+            htmlCode: <p>&APPLICATION_TITLE. makes it easy to create polls, distribute them, and analyze the results.</p>
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-mouse-pointer
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery: select 1 from EBA_QPOLL_POLLS
+        }
+    )
+
+    region main-column (
+        name: Main Column
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select     id,
+                    decode(lower(NOTIFICATION_TYPE),'yellow','warning','red','danger',lower(NOTIFICATION_TYPE)) as ALERT_TYPE,
+                    NOTIFICATION_NAME as ALERT_TITLE,
+                    NOTIFICATION_DESCRIPTION as ALERT_DESC,
+                    '' alert_action
+                  from EBA_QPOLL_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                 order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_QPOLL_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                ```
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/alerts
+            templateOptions: #DEFAULT#
+            showNullValuesAs: " "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ALERT_ACTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Alert Action
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_DESC (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Alert Desc
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Alert Title
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Alert Type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region reader-filters (
+        name: Reader Filters
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @filters
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: nvl(:P1_VIEW_SELECTOR,'R') = 'R'
+        }
+    )
+
+    region reader-view (
+        name: Reader View
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select poll_name item_title, 
+                       case when action in ('TAKE','UPDATE','ERRORS')
+                            then apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:LPOLL_ID:'||id) 
+                            end item_link,
+                       case when intro_text is not null
+                            then apex_escape.html(intro_text) ||'<br/>' 
+                            end || case when poll_or_quiz = 'Q'
+                                        then '<span class="tag-badge-yellow">'||apex_escape.html(apex_lang.message('QUIZ_INITCAP'))||'</span> '
+                                        end ||
+                            'published '|| apex_util.get_since(start_time) || 
+                               case when status_id = 3 then ', still accepting responses'
+                                    when status_id = 4 then ', closed '|| apex_util.get_since(stop_time)
+                                    end item_description,
+                       nbr_results responses,
+                       nbr_questions,
+                       null item_selection,
+                       null item_icon,
+                       null item_misc,
+                       case when action not in ('TAKEN','CLOSED')
+                            then '<a class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch" href="'||
+                                 apex_util.prepare_url('f?p='||:APP_ID||':50:'||:APP_SESSION||':::50:LPOLL_ID:'||id)||'">'||
+                                 case action when 'TAKE' then 'Take'
+                                             when 'UPDATE' then 'Update Response'
+                                             when 'ERRORS' then 'Fix Errors'
+                                      end ||'</a>' 
+                            end ||
+                            case when all_view_results_yn = 'Y' and nbr_results > 0 and status_id in (3,4)
+                                 then case when action != 'TAKEN' then '<br/>' end ||
+                                      '<a class="t-Button t-Button--small t-Button--simple t-Button--stretch" href="'||
+                                      apex_util.prepare_url('f?p='||:APP_ID||':66:'||:APP_SESSION||':::RP,66:LPOLL_ID:'||id)||'">View Results</a>'
+                                 end item_actions,
+                       created, updated
+                from
+                (
+                select id,
+                       poll_name, 
+                       intro_text,
+                       start_time,
+                       poll_or_quiz,
+                       (select count(*) from eba_qpoll_questions
+                         where poll_id = p.id
+                           and publish_yn = 'Y') nbr_questions,
+                       nvl((select count(*) from eba_qpoll_results
+                             where p.id = poll_id 
+                               and nvl(is_valid_yn,'Y') = 'Y'),0) nbr_results,
+                       'TAKE' action,
+                       p.status_id,
+                       p.stop_time,
+                       all_view_results_yn,
+                       created, updated
+                  from EBA_QPOLL_POLLS p
+                 where p.status_id = 3 
+                  and not exists (select 1
+                                    from eba_qpoll_results
+                                   where poll_id = p.id
+                                     and ((p.anonymous_yn = 'Y' and 
+                                           APEX_SESSION_ID = :APP_SESSION and
+                                           is_valid_yn = 'N') or
+                                          apex_user = :APP_USER) )
+                  and ( invite_only_yn = 'N' or 
+                        exists (select 1 
+                                  from eba_qpoll_comm_invites c, eba_qpoll_invites i
+                                 where c.poll_id = p.ID and c.id = i.comm_invite_id
+                                   and upper(respondent_email) = :APP_USER))
+                union all
+                select p.id,
+                       p.poll_name,  
+                       p.intro_text,
+                       p.start_time,
+                       p.poll_or_quiz,
+                       (select count(*) from eba_qpoll_questions
+                         where poll_id = p.id
+                           and publish_yn = 'Y') nbr_questions,
+                       (select count(*) from eba_qpoll_results
+                         where p.id = poll_id 
+                           and nvl(is_valid_yn,'Y') = 'Y') nbr_results,
+                       'UPDATE' action,
+                       p.status_id,
+                       p.stop_time,
+                       all_view_results_yn,
+                       p.created, p.updated
+                  from eba_qpoll_polls p,
+                       eba_qpoll_results r
+                 where p.id = r.poll_id
+                   and p.status_id = 3
+                   and r.apex_user = :APP_USER
+                   and p.can_update_answers_yn = 'Y'
+                   and nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select p.id,
+                       p.poll_name,  
+                       p.intro_text,
+                       p.start_time,
+                       p.poll_or_quiz,
+                       (select count(*) from eba_qpoll_questions
+                         where poll_id = p.id
+                           and publish_yn = 'Y') nbr_questions,
+                       (select count(*) from eba_qpoll_results
+                         where p.id = poll_id 
+                           and nvl(is_valid_yn,'Y') = 'Y') nbr_results,
+                       'ERRORS' action,
+                       p.status_id,
+                       p.stop_time,
+                       all_view_results_yn,
+                       p.created, p.updated
+                  from eba_qpoll_polls p,
+                       eba_qpoll_results r
+                 where p.id = r.poll_id
+                   and p.status_id = 3
+                   and ((p.anonymous_yn = 'Y' and 
+                         r.APEX_SESSION_ID = :APP_SESSION and
+                         is_valid_yn = 'N') or
+                        r.apex_user = :APP_USER) 
+                   and nvl(r.is_valid_yn,'Y') = 'N'
+                union all
+                select p.id,
+                       p.poll_name,  
+                       p.intro_text,
+                       p.start_time,
+                       p.poll_or_quiz,
+                       (select count(*) from eba_qpoll_questions
+                         where poll_id = p.id
+                           and publish_yn = 'Y') nbr_questions,
+                       (select count(*) from eba_qpoll_results
+                         where p.id = poll_id 
+                           and nvl(is_valid_yn,'Y') = 'Y') nbr_results,
+                       'TAKEN' action,
+                       p.status_id,
+                       p.stop_time,
+                       all_view_results_yn,
+                       p.created, p.updated
+                  from eba_qpoll_polls p,
+                       eba_qpoll_results r
+                 where p.id = r.poll_id
+                   and ((p.anonymous_yn = 'Y' and 
+                         r.APEX_SESSION_ID = :APP_SESSION and
+                         is_valid_yn = 'Y') or
+                        r.apex_user = :APP_USER) 
+                   and nvl(r.is_valid_yn,'Y') = 'Y'
+                   and p.can_update_answers_yn = 'N' 
+                   and p.status_id = 3
+                union all
+                select id,
+                       poll_name,  
+                       intro_text,
+                       start_time,
+                       poll_or_quiz,
+                       nbr_questions,
+                       nbr_results,
+                       case when user_took > 0 then 'TAKEN' else 'CLOSED' end action,
+                       status_id,
+                       stop_time,
+                       all_view_results_yn,
+                       created, updated
+                  from 
+                    (select p.id,
+                            p.poll_name,  
+                
+                            p.intro_text,
+                            p.start_time,
+                            p.poll_or_quiz,
+                            (select count(*) from eba_qpoll_questions
+                              where poll_id = p.id
+                                and publish_yn = 'Y') nbr_questions,
+                            (select count(*) from eba_qpoll_results
+                              where p.id = poll_id 
+                                and nvl(is_valid_yn,'Y') = 'Y') nbr_results,
+                            p.status_id,
+                            p.stop_time,
+                            p.all_view_results_yn,
+                            p.created, p.updated,
+                            (select count(*)
+                               from eba_qpoll_results r
+                              where p.id = r.poll_id
+                                and ((p.anonymous_yn = 'Y' and 
+                                      r.APEX_SESSION_ID = :APP_SESSION and
+                                      is_valid_yn = 'Y') or
+                                     r.apex_user = :APP_USER) 
+                                and nvl(r.is_valid_yn,'Y') = 'Y') user_took
+                       from eba_qpoll_polls p
+                      where exists (select 1 from eba_qpoll_results where poll_id = p.id and nvl(is_valid_yn,'Y') = 'Y')
+                        and p.status_id = 4
+                    )
+                )
+                 where (:P1_SEARCH_READER is null or lower(poll_name) like '%'||lower(:P1_SEARCH_READER)||'%')
+                   and (:P1_STATUS_READER is null or instr(':'||:P1_STATUS_READER||':', ':'||action||':') > 0 or 
+                         ((instr(':'||:P1_STATUS_READER||':', ':TAKE:') > 0 or instr(':UPDATE:', ':'||action||':') > 0) and action = 'ERRORS'))
+                order by case when nvl(:P1_SORT_READER,'UD') = 'UD' then start_time end desc,
+                         case when :P1_SORT_READER = 'UA' then start_time end,
+                         case when :P1_SORT_READER = 'P' then poll_name end
+                ```
+            pageItemsToSubmit: [
+                P1_SEARCH_READER
+                P1_STATUS_READER
+                P1_SORT_READER
+            ]
+        }
+        layout {
+            sequence: 100
+            parentRegion: @main-column
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            cssClasses: report_polls
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: nvl(:P1_VIEW_SELECTOR,'R') = 'R'
+        }
+        componentAppearance {
+            template: @qp-content-row
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: None found meeting your search criteria.
+        }
+
+        column CREATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_ACTIONS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Item Actions
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_DESCRIPTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Item Description
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_ICON (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Item Icon
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_LINK (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Item Link
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ITEM_MISC (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Item Misc
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_SELECTION (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Item Selection
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="qp-Stats">
+                    <span class="qp-Stats-item">
+                        <span class="qp-Stats-num">#RESPONSES#</span>
+                        <span class="qp-Stats-label">responses</span>
+                    </span>
+                    <span class="qp-Stats-item">
+                        <span class="qp-Stats-num">#NBR_QUESTIONS#</span>
+                        <span class="qp-Stats-label">questions</span>
+                    
+                    </span>
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_TITLE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Item Title
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NBR_QUESTIONS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Nbr Questions
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RESPONSES (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Responses
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Updated
+                alignment: center
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region side-column (
+        name: Side Column
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_QPOLL_POLLS
+        }
+    )
+
+    region view-selector (
+        name: View Selector
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @filters
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region warning (
+        name: Warning
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>You have Responses with Errors.  If these are not resubmitted, they will not be considered.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @main-column
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--colorBG
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                SELECT 1
+                from EBA_QPOLL_POLLS p,
+                     eba_qpoll_results r
+                where p.id = r.poll_id
+                  and p.status_id = 3 
+                  and ((p.anonymous_yn = 'Y' and r.APEX_SESSION_ID = :APP_SESSION) or
+                       r.apex_user = :APP_USER) 
+                  and nvl(r.is_valid_yn,'Y') = 'N'
+                ```
+        }
+    )
+
+    pageItem P1_CREATED_BY (
+        type: selectList
+        label {
+            label: Created By
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select unique created_by d, created_by r
+                from   eba_qpoll_polls
+                order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: Created By
+        }
+        layout {
+            sequence: 50
+            region: @contrib-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                margin-left-sm
+                margin-right-sm
+            ]
+            icon: fa-user
+            height: 1
+        }
+    )
+
+    pageItem P1_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @contrib-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                margin-left-sm
+                margin-right-sm
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search polls...
+        }
+    )
+
+    pageItem P1_SEARCH_READER (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @reader-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search polls...
+        }
+    )
+
+    pageItem P1_SORT (
+        type: selectList
+        label {
+            label: Sort By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Last Updated First;UD,Last Updated Last;UA,Last Created First;CD,Last Created Last;CA,by Poll Name;P
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @contrib-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                margin-left-sm
+                margin-right-sm
+            ]
+            icon: fa-sort
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: UD
+        }
+    )
+
+    pageItem P1_SORT_READER (
+        type: selectList
+        label {
+            label: Sort By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Newest First;UD,Newest Last;UA,by Poll Name;P
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @reader-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-sort
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: UD
+        }
+    )
+
+    pageItem P1_STATUS_ID (
+        type: checkboxGroup
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @poll-statuses-short
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @contrib-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                margin-left-sm
+                margin-right-sm
+            ]
+        }
+    )
+
+    pageItem P1_STATUS_READER (
+        type: checkboxGroup
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:To Take;TAKE,Update Your Response;UPDATE,Already Taken;TAKEN
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @reader-filters
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1_VIEW_SELECTOR (
+        type: selectList
+        label {
+            label: View Mode
+            alignment: left
+        }
+        settings {
+            pageActionOnSelection: submitPage
+        }
+        lov {
+            type: sharedComponent
+            lov: @p1-contrib-reader-view
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @view-selector
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+                margin-left-sm
+                margin-right-sm
+            ]
+            icon: fa-glasses
+            height: 1
+        }
+    )
+
+    button advanced-search (
+        buttonName: Advanced_Search
+        label: Advanced Search
+        layout {
+            sequence: 70
+            region: @contrib-filters
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 200
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button create (
+        buttonName: Create
+        label: Create a Poll
+        layout {
+            sequence: 10
+            region: @application-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 19
+                items: {
+                    LAST_VIEW: 1
+                }
+                clearCache: 19
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button create-poll (
+        buttonName: CREATE_Poll
+        label: Create a Poll
+        layout {
+            sequence: 20
+            region: @getting-started
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 19
+                items: {
+                    LAST_VIEW: 1
+                }
+                clearCache: 19
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button learn-more (
+        buttonName: LEARN_MORE
+        label: Learn More
+        layout {
+            sequence: 10
+            region: @getting-started
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--link
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: ABOUT
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: reset
+        label: Reset Filters
+        layout {
+            sequence: 60
+            region: @contrib-filters
+            slot: regionBody
+            columnCssClasses: u-textCenter
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                clearCache: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-reader (
+        buttonName: reset_reader
+        label: Reset Filters
+        layout {
+            sequence: 50
+            region: @reader-filters
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--link
+                t-Button--iconLeft
+                t-Button--stretch
+            ]
+            icon: fa-box-arrow-in-west
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                items: {
+                    P1_VIEW_SELECTOR: &P1_VIEW_SELECTOR.
+                }
+                clearCache: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction perform-search-on-enter (
+        name: Perform Search on Enter
+        execution {
+            sequence: 60
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: [
+                P1_SEARCH
+                P1_SEARCH_READER
+            ]
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.browserEvent.keyCode === 13
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: this.browserEvent.preventDefault();
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: .report_polls
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-reports-on-filter-change (
+        name: Refresh Reports on Filter Change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                P1_STATUS_ID
+                P1_SORT
+                P1_CREATED_BY
+                P1_SEARCH_READER
+                P1_STATUS_READER
+                P1_SORT_READER
+            ]
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: .report_polls
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-view-selector-for-readers (
+        name: set view selector for Readers
+        execution {
+            sequence: 50
+        }
+        when {
+            event: ready
+        }
+        security {
+            authorizationScheme: !@contribution-rights
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @view-selector
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: R
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P1_VIEW_SELECTOR
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 1
+        }
+    )
+
+    computation p1-view-selector (
+        itemName: P1_VIEW_SELECTOR
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: C
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P1_VIEW_SELECTOR
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    branch (
+        name: Go to Getting Started Page
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 1000
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+)
+

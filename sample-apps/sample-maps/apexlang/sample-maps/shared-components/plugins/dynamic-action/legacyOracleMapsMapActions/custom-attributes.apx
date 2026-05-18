@@ -1,0 +1,77 @@
+customAttribute attribute_01 (
+    apexlangName: mapAction
+    attribute: 1
+    name: Map Action
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: RECTZOOM
+    }
+
+    entry clearCircleTool (
+        sequence: 80
+        display: Clear Circle Tool
+        return: CLEARCIRCLE
+    )
+
+    entry clearDrawing (
+        sequence: 50
+        display: Clear Drawing
+        return: RLCLEAR
+    )
+
+    entry distanceTool (
+        sequence: 20
+        display: Distance Tool
+        return: DISTANCE
+    )
+
+    entry finishCircleTool (
+        sequence: 100
+        display: Finish Circle Tool
+        return: ENDCIRCLE
+    )
+
+    entry finishDrawing (
+        sequence: 40
+        display: Finish Drawing
+        return: RLFINISH
+    )
+
+    entry rectangleZoom (
+        sequence: 10
+        display: Rectangle Zoom
+        return: RECTZOOM
+    )
+
+    entry refreshSqlFeatures (
+        sequence: 60
+        display: Refresh SQL Features
+        return: REFRESHFOI
+    )
+
+    entry removeMarkers (
+        sequence: 70
+        display: Remove Markers
+        return: REMOVEMARKER
+    )
+
+    entry startCircleTool (
+        sequence: 90
+        display: Start Circle Tool
+        return: STARTCIRCLE
+    )
+
+    entry startDrawing (
+        sequence: 30
+        display: Start Drawing
+        return: RLSTART
+    )
+
+)
+

@@ -1,0 +1,332 @@
+page 13 (
+    name: Help
+    alias: HELP
+    title: Help
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.helpContainer{width:960px;margin:16px auto;zoom:1}
+            div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+            div.helpContainer:after{clear:both}
+            div.helpContainer div.helpSide{float:left;width:300px}
+            div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+            div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+            div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+            div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+            div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+            div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+            </style>
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This application highlights the Workflow, Approvals, and Tasks capabilities of Oracle APEX.</p>
+                <p>Use it to better understand the native and declarative features Oracle APEX offers in these areas.</p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--featured t-HeroRegion--centered
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    region application-details (
+        name: Application Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App version
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+    )
+
+    region approving-requests (
+        name: Approving Requests
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    You can use the <em>Pending Approvals</em> page to see which
+                    sample user or users are assigned to review the task for
+                    approval. Log in as one of those sample users and visit
+                    the <em>My Tasks</em> page to see their unified task list.
+                    Clicking on the subject of a task opens the task details,
+                    allowing users to comment on the task, view its history,
+                    and claim/approve/reject it if applicable. Task approvers can 
+                    also approve or reject it directly from the unified task list.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region help-topics (
+        name: Help Topics
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region initiating-appraisals (
+        name: Initiating Appraisals
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Managers can initiate the employee appraisal of any subordinate 
+                    by clicking on the <em>Appraisal</em> button on the employee card.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+    )
+
+    region need-help (
+        name: Need Help?
+        type: staticContent
+        source {
+            htmlCode: <p>If you have questions, ask them on the <a href="https://apex.oracle.com/forum" target="_blank" rel="noopener noreferrer">APEX Discussion Forum</a>.</p>
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region requesting-changes (
+        name: Requesting Changes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    To request the change of an employee's salary or job, navigate
+                    to the <em>Employee Changes</em> page. A
+                    Cards region displays all the employees with a select list at
+                    the top allowing you to sort the list by Name, Job, or Salary.
+                    Click the <em>Edit Salary</em> or
+                    <em>Edit Job</em> buttons to request a
+                    change to Salary or Job, respectively. To request a new laptop,
+                    click the <em>Laptop</em> button on an employee card.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region user-accounts-for-approvals (
+        name: User Accounts for Approvals
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Any user can request the change of an employee's salary or
+                    job, or request a laptop. Managers can initiate the appraisal
+                    of any subordinate. Users in the OPERATIONS department are 
+                    involved in the approval and administration of <em>Salary
+                    Change</em>, <em>Job Change</em>, and <em>Laptop Approval</em>
+                    tasks. They also are owners of the <em>Laptop Request</em>
+                    and <em>Laptop Request</em> workflows. These users are:
+                        <code>BO</code>, <code>JANE</code>,
+                        <code>PAT</code>, <code>STEVE</code>
+                </p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

@@ -1,0 +1,55 @@
+page 9000 (
+    name: Get Image
+    alias: GET-IMAGE
+    title: Get Image
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @access-rights
+        deepLinking: true
+        formAutoComplete: false
+    }
+    sessionManagement {
+        rejoinSessions: allSessions
+    }
+
+    process download-image (
+        name: Download Image
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_file_blob  excm_rte_images.file_blob%type;
+                    l_mimetype   excm_rte_images.mimetype%type;
+                begin
+                
+                    select file_blob, mimetype
+                      into l_file_blob, l_mimetype
+                      from excm_rte_images
+                     where unique_filename = apex_application.g_x01;
+                
+                    apex_http.download (
+                        p_blob         => l_file_blob,
+                        p_content_type => l_mimetype,
+                        p_is_inline    => true );
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 16664583516701279442
+        }
+    )
+
+)
+

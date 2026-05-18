@@ -1,0 +1,1956 @@
+page 19 (
+    name: Leads
+    alias: LEADS
+    title: Leads
+    pageGroup: @leads
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            // standard, cacheable elements
+            var timeout = 0; // used for debounce on search
+            var CONTAINER_SEL = '.t-Form-fieldContainer';
+            var pagePrefix = 'P' + $('#pFlowStepId').val();
+            var displayAsId = pagePrefix + '_DISPLAY_AS';
+            var $displayAs = $('#' + displayAsId);
+            var $body = $('.t-PageBody');
+            var $search = $('#' + pagePrefix + '_SEARCH');
+            var $sort = $('#' + pagePrefix + '_SORT');
+            var $reset = $('#reset_button');
+            var $cardsReg = $('#cards_region');
+            var $reportReg = $('#report_region');
+            var $gridReg = $('#grid_region');
+            
+            // custom items (will vary by page)
+            var $territory = $('#' + pagePrefix + '_TERRITORY_ID');
+            var $account = $('#' + pagePrefix + '_ACCOUNT_ID');
+            var $source = $('#' + pagePrefix + '_SOURCE_ID');
+            var $status = $('#' + pagePrefix + '_STATUS_ID');
+            
+            function showLeftColumn() {
+              $body
+                .removeClass('t-PageBody--hideLeft')
+                .addClass('t-PageBody--showLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+            
+            function hideLeftColumn() {
+              $body
+                .removeClass('t-PageBody--showLeft')
+                .addClass('t-PageBody--hideLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+              
+            // applyFilters triggers the refresh event on the correct region
+            function applyFilters() {
+              var display = $v(displayAsId);
+              
+              if (display === 'CARDS') {
+                $cardsReg.trigger('apexrefresh');
+              } else if (display === 'REPORT') {
+                $reportReg.trigger('apexrefresh');
+              } else if (display === 'GRID') {
+                $gridReg.trigger('apexrefresh');
+              }
+            }
+            
+            // toggleRegionDisplay is similar to applyFilters except that it also
+            // takes into account what regions or items need to be displayed or hidden
+            function toggleRegionDisplay(refresh) {
+              var display = $v(displayAsId);
+              
+              refresh = (refresh === false) ? false : true;
+              
+              if (display === 'CARDS') {
+                $reportReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                $sort.closest(CONTAINER_SEL).show();
+            
+                if (refresh) {
+                  $cardsReg.trigger('apexrefresh');
+                }
+                
+                $cardsReg.show();
+              } else if (display === 'REPORT') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                if (refresh) {
+                  $reportReg.trigger('apexrefresh');
+                }
+            
+                $reportReg.show();
+              } else if (display === 'GRID') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $reportReg.hide();
+            
+                hideLeftColumn();
+            
+                if (refresh) {
+                  $gridReg.trigger('apexrefresh');
+                }
+            
+                $gridReg.show();
+              }
+            }
+              
+            function debounceSearch(e) {
+                /*
+                 * Prevent search for following keys:
+                 * TAB:     9
+                 * SHIFT:   16
+                 * LEFT:    37
+                 * RIGHT:   39
+                 */
+                if ( e.which === 9 || e.which === 16 || e.which === 37 || e.which === 39 ) {
+                    return false;
+                }
+                clearTimeout(timeout);
+                timeout = setTimeout(applyFilters, 250);
+            }
+              
+            function preventSubmitOnEnter(e) {
+              if (e.which === 13) {
+                return false;
+              }
+            }
+            
+            function resetFilters() {
+              $search.val(null);
+              $territory.val(null);
+              $account.val(null);
+              $source.val(null);
+              $status.val(null);
+              
+              $sort.val('NAME');
+            
+              applyFilters();
+            }
+            
+            // standard search event bindings
+            $search.keydown(preventSubmitOnEnter);
+            $search.keyup(debounceSearch);
+            
+            // dynamic event bindings (will vary by filter page)
+            $territory.change(applyFilters);
+            $account.change(applyFilters);
+            $source.change(applyFilters);
+            $status.change(applyFilters);
+            
+            // standard display, sort, reset event bindings
+            $displayAs.change(toggleRegionDisplay);
+            $sort.change(applyFilters);
+            $reset.click(resetFilters);
+              
+            toggleRegionDisplay(false);
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .t-Card-initials {
+              font-size: 14px;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Use the filters on the left to show different results in the region on the right. The right region can be displayed in one of three ways (Cards View, Report View, and Customizable Grid) by using the display-mode buttons located just to the left of the <strong>Create Lead</strong> button. Filters are not displayed in the Customizable Grid view.
+    }
+    config {
+        buildOption: @leads
+    }
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region hidden (
+        name: Hidden
+        type: staticContent
+        source {
+            htmlCode: <br />
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region leads (
+        name: Leads
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+            icon: fa-comment-o
+        }
+    )
+
+    region leads-cards (
+        name: Leads Cards
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_leads as (
+                  select l.id,
+                    l.row_key,
+                    l.lead_name_01 lead_name,
+                    l.lead_details,
+                    c.id account_id,
+                    c.customer_name account_name,
+                    ls.lead_source,
+                    lsc.status_code,
+                    l.updated,
+                    l.tags
+                  from eba_sales_leads l
+                  left join eba_sales_customers c
+                    on c.id = l.account_id
+                  left join eba_sales_territories t
+                    on t.id = c.customer_territory_id 
+                  left join eba_sales_lead_sources ls
+                    on ls.id = l.lead_source_id
+                  left join eba_sales_lead_status_codes lsc
+                    on lsc.id = l.lead_status_id
+                  where :P19_DISPLAY_AS = 'CARDS'
+                    and (
+                      :P19_TERRITORY_ID is null 
+                        or c.customer_territory_id = :P19_TERRITORY_ID
+                    )
+                    and (
+                      :P19_ACCOUNT_ID is null 
+                        or c.id = :P19_ACCOUNT_ID
+                    )
+                    and (
+                      :P19_SOURCE_ID is null 
+                        or ls.id = :P19_SOURCE_ID
+                    )
+                    and (
+                      :P19_STATUS_ID is null 
+                        or lsc.id = :P19_STATUS_ID
+                    )
+                ),
+                card_details as (
+                  select lead_name card_title,
+                    null card_icon,
+                    row_key card_initials,
+                    null card_text,
+                    case 
+                      when length(lead_details) < 50
+                      then lead_details
+                      else substr(lead_details, 1, 50) || '...'
+                    end card_text_p1,
+                    'Source: ' || lead_source card_text_p2,
+                    'Status: ' || status_code card_text_p3,
+                    apex_util.prepare_url(
+                      'f?p=' ||
+                      :APP_ID ||
+                      ':133:' ||
+                      :APP_SESSION ||
+                      ':::133,RP:P133_ID:' ||
+                      id
+                    ) card_link,
+                    updated card_subtext,
+                    account_name,
+                    updated,
+                    tags,
+                    lead_details
+                  from base_leads
+                )
+                select *
+                from card_details
+                where (
+                    :P19_SEARCH is null
+                      or instr(upper(card_title), upper(:P19_SEARCH)) > 0
+                      or instr(upper(card_initials), upper(:P19_SEARCH)) > 0
+                      or instr(upper(card_text_p2), upper(:P19_SEARCH)) > 0
+                      or instr(upper(card_text_p3), upper(:P19_SEARCH)) > 0
+                      or instr(upper('Updated: ' || apex_util.get_since(updated)), upper(:P19_SEARCH)) > 0
+                      or instr(upper(tags), upper(:P19_SEARCH)) > 0
+                      or instr(upper(lead_details), upper(:P19_SEARCH)) > 0
+                  )
+                order by
+                  case :P19_SORT
+                    when 'NAME' then card_title
+                  end,
+                  case :P19_SORT
+                    when 'UPDATED' then updated
+                  end desc
+                ```
+            pageItemsToSubmit: [
+                P19_SEARCH
+                P19_TERRITORY_ID
+                P19_ACCOUNT_ID
+                P19_SOURCE_ID
+                P19_STATUS_ID
+                P19_DISPLAY_AS
+            ]
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: cards_region
+            customAttributes: style="display: none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--basic
+                t-Cards--displayInitials
+                t-Cards--3cols
+                t-Cards--animColorFill
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No leads found
+        }
+
+        column ACCOUNT_NAME (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Account Name
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card icon
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: Updated: #CARD_SUBTEXT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 3
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    #CARD_TEXT_P1#<br >
+                    <small>
+                    #CARD_TEXT_P2#<br />
+                    #CARD_TEXT_P3#<br />
+                    </small>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P1 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card Text P1
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P2 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Card Text P2
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P3 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Card Text P3
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LEAD_DETAILS (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Lead Details
+            }
+            layout {
+                sequence: 13
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region leads-grid (
+        name: Leads Grid
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.id, 
+                  l.row_key,
+                  l.lead_priority,
+                  l.lead_name_01 lead,
+                  l.opportunity_id,
+                  case 
+                    when opportunity_id is null
+                    then '<a href="' || apex_util.prepare_url('f?p=&APP_ID.:63:&APP_SESSION.:::63:P63_LEAD_ID:' || l.id) || '" class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch">Convert</a>'
+                    else '<a href="' || apex_util.prepare_url('f?p=&APP_ID.:80:&APP_SESSION.:::80:P80_ID:' || l.opportunity_id) ||'" class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch">Opportunity</a>'
+                  end action,
+                  l.tags,
+                  (
+                    select count(*)
+                    from eba_sales_links
+                    where lead_id = l.id
+                  ) links,
+                  (
+                    select count(*)
+                    from eba_sales_files
+                    where lead_id = l.id
+                  ) attachments,
+                  (
+                    select count(*)
+                    from eba_sales_comments
+                    where lead_id = l.id
+                  ) comments,
+                  (
+                    select count(*)
+                    from eba_sales_verifications
+                    where lead_id = l.id
+                  ) validations,
+                  (
+                    select max(created)
+                    from eba_sales_verifications
+                    where lead_id = l.id
+                  ) last_validation,
+                  (
+                    select count(*)
+                    from eba_sales_clicks
+                    where lead_id = l.id
+                      and view_timestamp >= sysdate - 90
+                  ) views_90_day,
+                    (   select count(distinct(app_username))
+                        from eba_sales_clicks
+                        where lead_id = l.id
+                            and view_timestamp >= sysdate - 90
+                  ) users_90_day,
+                  l.created,
+                  l.created_by,
+                  l.updated,
+                  l.updated_by,
+                  l.lead_details,
+                  sr.rep_first_name || ' ' || sr.rep_last_name account_default_rep,
+                  t.id territory_id,
+                  t.territory_name territory_name,
+                  c.id account_id,
+                  c.customer_name account_name,
+                  slsc.status_code lead_status,
+                  ls.lead_source
+                from eba_sales_leads l
+                left join eba_sales_customers c
+                  on c.id = l.account_id
+                left join eba_sales_salesreps sr
+                  on sr.id = c.default_rep_id
+                left join eba_sales_territories t
+                  on t.id = c.customer_territory_id 
+                left join eba_sales_lead_status_codes slsc
+                  on slsc.id = l.lead_status_id
+                left join eba_sales_lead_sources ls
+                  on ls.id = l.lead_source_id
+                where :P19_DISPLAY_AS = 'GRID'
+                ```
+            pageItemsToSubmit: P19_DISPLAY_AS
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: grid_region
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No leads found
+        }
+        advanced {
+            savedReportMappingIdentifier: 714148645407964835
+        }
+
+        column ACCOUNT_DEFAULT_REP (
+            type: plainText
+            heading {
+                heading: Account Default Rep
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column ACCOUNT_ID (
+            type: hidden
+            heading {
+                heading: Selected Account
+            }
+            layout {
+                sequence: 220
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: U
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ACCOUNT_NAME (
+            type: link
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 100
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_ID: #ACCOUNT_ID#
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+                linkText: #ACCOUNT_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ACTION (
+            type: plainText
+            heading {
+                heading: Action
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            enableUsersTo {
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTACHMENTS (
+            type: plainText
+            heading {
+                heading: Attachments
+                alignment: end
+            }
+            layout {
+                sequence: 240
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+                alignment: end
+            }
+            layout {
+                sequence: 250
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column LAST_VALIDATION (
+            type: plainText
+            heading {
+                heading: Last Validation
+            }
+            layout {
+                sequence: 270
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: Z
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column LEAD (
+            type: link
+            heading {
+                heading: Lead
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 133
+                    items: {
+                        P133_ID: #ID#
+                    }
+                    clearCache: 133
+                    action: resetPagination
+                }
+                linkText: #LEAD#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column LEAD_DETAILS (
+            type: plainText
+            heading {
+                heading: Details
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column LEAD_PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column LEAD_SOURCE (
+            type: plainText
+            heading {
+                heading: Source
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column LEAD_STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column LINKS (
+            type: plainText
+            heading {
+                heading: Links
+                alignment: end
+            }
+            layout {
+                sequence: 230
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column OPPORTUNITY_ID (
+            type: hidden
+            heading {
+                heading: Opportunity id
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 190
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column TERRITORY_ID (
+            type: hidden
+            heading {
+                heading: Territory id
+            }
+            layout {
+                sequence: 210
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column TERRITORY_NAME (
+            type: link
+            heading {
+                heading: Account Territory
+            }
+            layout {
+                sequence: 90
+            }
+            link {
+                target: {
+                    page: 93
+                    items: {
+                        P93_ID: #TERRITORY_ID#
+                    }
+                    clearCache: 93
+                    action: resetPagination
+                }
+                linkText: #TERRITORY_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Territories'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 150
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column USERS_90_DAY (
+            type: plainText
+            heading {
+                heading: 90 Day Users
+                alignment: end
+            }
+            layout {
+                sequence: 290
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AB
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VALIDATIONS (
+            type: plainText
+            heading {
+                heading: Validations
+                alignment: end
+            }
+            layout {
+                sequence: 260
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Y
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VIEWS_90_DAY (
+            type: plainText
+            heading {
+                heading: 90 Day Views
+                alignment: end
+            }
+            layout {
+                sequence: 280
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AA
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 7212952 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACCOUNT_NAME (
+                sequence: 2
+            )
+
+            displayColumn ACTION (
+                sequence: 7
+            )
+
+            displayColumn LEAD (
+                sequence: 1
+            )
+
+            displayColumn LEAD_PRIORITY (
+                sequence: 4
+            )
+
+            displayColumn LEAD_SOURCE (
+                sequence: 5
+            )
+
+            displayColumn LEAD_STATUS (
+                sequence: 6
+            )
+
+            displayColumn ROW_KEY (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    region leads-report (
+        name: Leads Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.id, 
+                  l.row_key,
+                  nvl(l.lead_priority, 5) lead_priority,
+                  opportunity_id,
+                  case 
+                    when opportunity_id is null
+                    then '<a href="' || apex_util.prepare_url('f?p=&APP_ID.:63:&APP_SESSION.:::63:P63_LEAD_ID:' || l.id) || '" class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch">Convert</a>'
+                    else '<a href="' || apex_util.prepare_url('f?p=&APP_ID.:80:&APP_SESSION.:::80:P80_ID:' || l.opportunity_id) ||'" class="t-Button t-Button--small t-Button--hot t-Button--simple t-Button--stretch">Opportunity</a>'
+                  end action,
+                  c.customer_name account_name,
+                  slsc.status_code lead_status,
+                  ls.lead_source,
+                  l.updated,
+                  t.territory_name,
+                  case
+                    when length(l.lead_details) <= 50
+                    then l.lead_details
+                    else substr(l.lead_details, 1, 50) || '...'
+                  end lead_details,
+                  l.lead_name_01 name
+                from eba_sales_leads l
+                left join eba_sales_customers c
+                  on c.id = l.account_id
+                left join eba_sales_territories t
+                  on t.id = c.customer_territory_id 
+                left join eba_sales_lead_status_codes slsc
+                  on slsc.id = l.lead_status_id
+                left join eba_sales_lead_sources ls
+                  on ls.id = l.lead_source_id
+                where :P19_DISPLAY_AS = 'REPORT'
+                  and (
+                    :P19_SEARCH is null
+                      or instr(lower(l.lead_name_01), lower(:P19_SEARCH)) > 0
+                      or instr(lower(l.row_key), lower(:P19_SEARCH)) > 0
+                      or instr(lower(l.lead_details), lower(:P19_SEARCH)) > 0
+                      or instr(lower(c.customer_name), lower(:P19_SEARCH)) > 0
+                      or instr(lower(t.territory_name), lower(:P19_SEARCH)) > 0
+                      or instr(lower(l.lead_priority), lower(:P19_SEARCH)) > 0
+                      or instr(lower(slsc.status_code), lower(:P19_SEARCH)) > 0
+                      or instr(upper(apex_util.get_since(l.updated)), upper(:P19_SEARCH)) > 0
+                  )
+                  and (:P19_TERRITORY_ID is null or t.id = :P19_TERRITORY_ID)
+                  and (:P19_ACCOUNT_ID is null or c.id = :P19_ACCOUNT_ID)
+                  and (:P19_SOURCE_ID is null or ls.id = :P19_SOURCE_ID)
+                  and (:P19_STATUS_ID is null or slsc.id = :P19_STATUS_ID)
+                ```
+            pageItemsToSubmit: [
+                P19_SEARCH
+                P19_TERRITORY_ID
+                P19_ACCOUNT_ID
+                P19_SOURCE_ID
+                P19_STATUS_ID
+                P19_DISPLAY_AS
+            ]
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: report_region
+            customAttributes: style="display: none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+        }
+        messages {
+            whenNoDataFound: No leads found
+        }
+
+        column ACCOUNT_NAME (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 5
+            }
+        )
+
+        column ACTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Action
+                alignment: center
+            }
+            layout {
+                sequence: 9
+                columnAlignment: center
+            }
+            security {
+                authorizationScheme: @contribution-rights
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column LEAD_DETAILS (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column LEAD_PRIORITY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Priority
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+        )
+
+        column LEAD_SOURCE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 11
+            }
+        )
+
+        column LEAD_STATUS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 8
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Lead
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 133
+                    items: {
+                        P133_ID: #ID#
+                    }
+                    clearCache: 133
+                    action: resetPagination
+                }
+                linkText: #NAME#
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column OPPORTUNITY_ID (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 12
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column TERRITORY_NAME (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Account Territory
+            }
+            layout {
+                sequence: 6
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 10
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+    )
+
+    region page-settings (
+        name: Page Settings
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @leads
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P19_ACCOUNT_ID (
+        type: selectList
+        label {
+            label: Account
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @accounts
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 40
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P19_DISPLAY_AS (
+        type: radioGroup
+        label {
+            label: Display as
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: sharedComponent
+            lov: @pill-display-as
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @page-settings
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: CARDS
+        }
+        sessionState {
+            storage: user
+        }
+        security {
+            encryptSessionState: false
+            escapeSpecialChars: false
+        }
+    )
+
+    pageItem P19_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search Leads
+        }
+    )
+
+    pageItem P19_SORT (
+        type: selectList
+        label {
+            label: Sort
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Product;NAME,Updated;UPDATED
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 70
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: NAME
+        }
+        sessionState {
+            storage: user
+        }
+    )
+
+    pageItem P19_SOURCE_ID (
+        type: selectList
+        label {
+            label: Source
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lead_source display,
+                  id return
+                from eba_sales_lead_sources
+                order by display
+                ```
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 50
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P19_STATUS_ID (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select status_code display,
+                  id return
+                from eba_sales_lead_status_codes
+                order by display_order
+                ```
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 60
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P19_TERRITORY_ID (
+        type: selectList
+        label {
+            label: Account Territory
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @territory
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 30
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Lead
+        layout {
+            sequence: 20
+            region: @leads
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 29
+                clearCache: 29
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset (
+        buttonName: Reset
+        label: Reset
+        layout {
+            sequence: 30
+            region: @filters
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: reset_button
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 40
+            region: @leads-grid
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction convert-lead-dialog-closed (
+        name: Convert Lead dialog closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 63
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var display = $v('P19_DISPLAY_AS');
+                    
+                    if (display === 'CARDS') {
+                      $('#cards_region').trigger('apexrefresh');
+                    } else if (display === 'REPORT') {
+                      $('#report_region').trigger('apexrefresh');
+                    } else if (display === 'GRID') {
+                      $('#grid_region').trigger('apexrefresh');
+                    }
+                    
+                    
+                    apex.message.showPageSuccess('Lead Converted.');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction create-lead-dialog-closed (
+        name: Create Lead dialog closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @create
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var display = $v('P19_DISPLAY_AS');
+                    
+                    if (display === 'CARDS') {
+                      $('#cards_region').trigger('apexrefresh');
+                    } else if (display === 'REPORT') {
+                      $('#report_region').trigger('apexrefresh');
+                    } else if (display === 'GRID') {
+                      $('#grid_region').trigger('apexrefresh');
+                    }
+                    
+                    apex.message.showPageSuccess('Lead Created.');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 19
+        }
+    )
+
+)
+

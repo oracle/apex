@@ -1,0 +1,282 @@
+lov data-load-charset (
+    name: DATA_LOAD_CHARSET
+    source {
+        location: staticValues
+    }
+
+    entry arabic-iso (
+        sequence: 1
+        display: Arabic ISO-8859-6
+        return: iso-8859-6
+    )
+
+    entry arabic-windows (
+        sequence: 1
+        display: Arabic Windows 1256
+        return: windows-1256
+    )
+
+    entry chinese-big (
+        sequence: 1
+        display: Chinese Big5
+        return: big5
+    )
+
+    entry chinese-gbk (
+        sequence: 1
+        display: Chinese GBK
+        return: gbk
+    )
+
+    entry cyrilic-iso (
+        sequence: 1
+        display: Cyrilic ISO-8859-5
+        return: iso-8859-5
+    )
+
+    entry cyrilic-koi8-r (
+        sequence: 1
+        display: Cyrilic KOI8-R
+        return: koi8-r
+    )
+
+    entry cyrilic-koi8-u (
+        sequence: 1
+        display: Cyrilic KOI8-U
+        return: koi8-u
+    )
+
+    entry cyrilic-windows (
+        sequence: 1
+        display: Cyrilic Windows 1251
+        return: windows-1251
+    )
+
+    entry eastern-european-iso (
+        sequence: 1
+        display: Eastern European ISO-8859-2
+        return: iso-8859-2
+    )
+
+    entry eastern-european-windows (
+        sequence: 1
+        display: Eastern European Windows 1250
+        return: windows-1250
+    )
+
+    entry greek-iso (
+        sequence: 1
+        display: Greek ISO-8859-7
+        return: iso-8859-7
+    )
+
+    entry greek-windows (
+        sequence: 1
+        display: Greek Windows 1253
+        return: windows-1253
+    )
+
+    entry hebrew-iso-8859-8-i (
+        sequence: 1
+        display: Hebrew ISO-8859-8-i
+        return: iso-8859-8-i
+    )
+
+    entry hebrew-windows (
+        sequence: 1
+        display: Hebrew Windows 1255
+        return: windows-1255
+    )
+
+    entry japanese-euc (
+        sequence: 1
+        display: Japanese EUC
+        return: euc-jp
+    )
+
+    entry japanese-shift-jis (
+        sequence: 1
+        display: Japanese Shift JIS
+        return: shift_jis
+    )
+
+    entry korean-euc (
+        sequence: 1
+        display: Korean EUC
+        return: euc-kr
+    )
+
+    entry northern-european-iso (
+        sequence: 1
+        display: Northern European ISO-8859-4
+        return: iso-8859-4
+    )
+
+    entry northern-european-windows (
+        sequence: 1
+        display: Northern European Windows 1257
+        return: windows-1257
+    )
+
+    entry southern-european-iso (
+        sequence: 1
+        display: Southern European ISO-8859-3
+        return: iso-8859-3
+    )
+
+    entry thai-tis (
+        sequence: 1
+        display: Thai TIS-620
+        return: tis-620
+    )
+
+    entry turkish-iso (
+        sequence: 1
+        display: Turkish ISO-8859-9
+        return: iso-8859-9
+    )
+
+    entry turkish-windows (
+        sequence: 1
+        display: Turkish Windows 1254
+        return: windows-1254
+    )
+
+    entry unicode-utf (
+        sequence: 1
+        display: Unicode UTF-8
+        return: utf-8
+    )
+
+    entry unicode-utf-16-big-endian (
+        sequence: 1
+        display: Unicode UTF-16 Big Endian
+        return: utf-16be
+    )
+
+    entry unicode-utf-16-little-endian (
+        sequence: 1
+        display: Unicode UTF-16 Little Endian
+        return: utf-16le
+    )
+
+    entry us-ascii (
+        sequence: 1
+        display: US-ASCII
+        return: us-ascii
+    )
+
+    entry vietnamese-windows (
+        sequence: 1
+        display: Vietnamese Windows 1258
+        return: windows-1258
+    )
+
+    entry western-european-iso (
+        sequence: 1
+        display: Western European ISO-8859-1
+        return: iso-8859-1
+    )
+
+    entry western-european-windows (
+        sequence: 1
+        display: Western European Windows 1252
+        return: windows-1252
+    )
+
+)
+
+lov data-load-option (
+    name: DATA_LOAD_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry copy-and-paste (
+        sequence: 20
+        display: Copy and Paste
+        return: PASTE
+    )
+
+    entry upload-file-comma-separated-csv-or-tab-delimited (
+        sequence: 10
+        display: Upload file, comma separated (*.csv) or tab delimited
+        return: UPLOAD
+    )
+
+)
+
+lov date-format-opt (
+    name: DATE_FORMAT_OPT
+    source {
+        location: staticValues
+    }
+
+    entry provide-custom-formats-for-uploaded-columns (
+        sequence: 20
+        display: Provide custom formats for uploaded columns
+        return: N
+    )
+
+    entry use-application-standard-format-masks (
+        sequence: 10
+        display: Use application standard format masks
+        return: Y
+    )
+
+)
+
+lov date-format-option (
+    name: DATE_FORMAT_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+
+lov departments (
+    name: DEPARTMENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from   eba_demo_load_dept
+            order by 1
+            ```
+    }
+)
+
+lov employees (
+    name: EMPLOYEES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from   eba_demo_load_emp
+            order by 1
+            ```
+    }
+)
+
+lov first-row-option (
+    name: FIRST_ROW_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+

@@ -1,0 +1,948 @@
+page 4015 (
+    name: Initiative Approval Entry
+    alias: INITIATIVE-APPROVAL-ENTRY
+    title: Initiative Approval Entry
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @approvals
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region existing-initiative-approval-chain (
+        name: Existing Initiative Approval Chain
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.approval_seq,
+                        case when c.active_yn = 'N' 
+                            then 'Inactive - '
+                            end ||
+                        case when c.alternate_team_member_id is not null and   
+                                 (c.alternate_start_date <= sysdate or c.alternate_start_date is null) and 
+                                 (c.alternate_end_date+1 > sysdate or c.alternate_end_date is null)
+                            then 'Alternate - '||
+                                 (select last_name||', '||first_name||' ('||lower(email)||')'
+                                    from sp_team_members
+                                   where id = c.alternate_team_member_id)
+                            else tm.last_name||', '||tm.first_name||' ('||lower(tm.email)||')' 
+                            end  reviewer
+                  from sp_initiative_approval_chain c,
+                       sp_team_members tm,
+                       SP_INITIATIVE_APPROVALS a
+                 where a.id = :P4015_INITIATIVE_APPROVAL_ID
+                   and c.initiative_approval_id = a.id
+                   and c.team_member_id = tm.id
+                   order by c.approval_seq
+                ```
+            pageItemsToSubmit: P4015_INITIATIVE_APPROVAL_ID
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+
+        column APPROVAL_SEQ (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Approval Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column REVIEWER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Reviewer
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region initiative-approval-entry (
+        name: Initiative Approval Entry
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_INITIATIVE_APPROVAL_CHAIN
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P4015_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: ACTIVE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Setting inactive prevents new assignments but does affect any already assigned.  To set back to active, the &NOMENCLATURE_INITIATIVE. Approval Types option under Admin must be used (because inactive assignees are hidden within Configuration).
+        }
+    )
+
+    pageItem P4015_ALTERNATE_END_DATE (
+        type: datePicker
+        label {
+            label: Alternate End Date
+            alignment: left
+        }
+        settings {
+            minDate: static
+            minStatic: &P4015_INIT_ALTERNATE_END_DATE.
+        }
+        layout {
+            sequence: 80
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: ALTERNATE_END_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+        help {
+            helpText: If left blank, the Alternate Assignee will be used until the alternate is removed.
+        }
+    )
+
+    pageItem P4015_ALTERNATE_START_DATE (
+        type: datePicker
+        label {
+            label: Alternate Start Date
+            alignment: left
+        }
+        settings {
+            minDate: static
+            minStatic: &P4015_INIT_ALTERNATE_START_DATE.
+        }
+        layout {
+            sequence: 70
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: ALTERNATE_START_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+        help {
+            helpText: If left blank, the Alternate Assignee will be used immediately.
+        }
+    )
+
+    pageItem P4015_ALTERNATE_TEAM_MEMBER_ID (
+        type: selectOne
+        label {
+            label: Alternate Assignee
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-member-contribs-and-admins
+        }
+        layout {
+            sequence: 90
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: ALTERNATE_TEAM_MEMBER_ID
+            dataType: number
+        }
+        help {
+            helpText: This user will be assigned to do Approvals (instead of the Assignee) during the timeframe identified (or indefinitely if there is no timeframe).  This does not affect any approvals already assigned.
+        }
+    )
+
+    pageItem P4015_APPROVAL_SEQ (
+        type: numberField
+        label {
+            label: Approval Sequence
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: APPROVAL_SEQ
+            dataType: number
+        }
+    )
+
+    pageItem P4015_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @initiative-approval-entry
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4015_INITIATIVE_APPROVAL_ID (
+        type: selectOne
+        label {
+            label: "Initiative Approval "
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.INITIATIVE ||' - '|| t.approval_type d,
+                       a.id r
+                  from SP_INITIATIVE_APPROVALS a,
+                       sp_approval_types t,
+                       sp_initiatives i
+                 where a.initiative_id = i.id
+                   and a.approval_type_id = t.id
+                ```
+        }
+        layout {
+            sequence: 40
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: INITIATIVE_APPROVAL_ID
+            dataType: number
+        }
+    )
+
+    pageItem P4015_INIT_ALTERNATE_END_DATE (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @initiative-approval-entry
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+        help {
+            helpText: If left blank, the Alternate Assignee will be used until the alternate is removed.
+        }
+    )
+
+    pageItem P4015_INIT_ALTERNATE_START_DATE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @initiative-approval-entry
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+        help {
+            helpText: If left blank, the Alternate Assignee will be used immediately.
+        }
+    )
+
+    pageItem P4015_TEAM_MEMBER_ID (
+        type: selectOne
+        label {
+            label: Assignee
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-member-contribs-and-admins
+        }
+        layout {
+            sequence: 60
+            region: @initiative-approval-entry
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @initiative-approval-entry
+            column: TEAM_MEMBER_ID
+            dataType: number
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P4015_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4015_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4015_ID
+        }
+    )
+
+    dynamicAction active-to-n (
+        name: active to N
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P4015_ACTIVE_YN
+        }
+        clientSideCondition {
+            type: item=value
+            item: P4015_ACTIVE_YN
+            value: N
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_approval_chain
+                 where team_member_id = :P4015_TEAM_MEMBER_ID
+                   and status in ('PENDING','CLARIFICATION-REQUESTED')
+                ```
+        }
+
+        action native-alert (
+            action: alert
+            settings {
+                message: This person has pending approvals - inactivating them only affect future assignments.
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction hide-existing-chain-for-new (
+        name: hide existing chain for new
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @existing-initiative-approval-chain
+            }
+            execution {
+                sequence: 10
+            }
+            clientSideCondition {
+                type: itemIsNull
+                item: P4015_INITIATIVE_APPROVAL_ID
+            }
+        )
+
+    )
+
+    dynamicAction when-ia-changes (
+        name: when IA changes
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P4015_INITIATIVE_APPROVAL_ID
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @existing-initiative-approval-chain
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @existing-initiative-approval-chain
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation alt-end-alt-start (
+        name: alt end >= alt start
+        execution {
+            sequence: 60
+        }
+        validation {
+            plsqlExpression: :P4015_ALTERNATE_END_DATE >= :P4015_ALTERNATE_START_DATE
+        }
+        error {
+            errorMessage: Alternate End Date must be the same or after the Alternate Start Date.
+            associatedItem: @P4015_ALTERNATE_END_DATE
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P4015_ALTERNATE_START_DATE is not null and
+                :P4015_ALTERNATE_END_DATE is not null
+                ```
+        }
+    )
+
+    validation alternate-cannot-already-be-alternate (
+        name: Alternate cannot already be alternate
+        execution {
+            sequence: 80
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain
+                 where initiative_approval_id = :P4015_INITIATIVE_APPROVAL_ID
+                   and alternate_team_member_id = :P4015_ALTERNATE_TEAM_MEMBER_ID
+                   and active_yn = 'Y'
+                   and id != :P4015_ID
+                ```
+        }
+        error {
+            errorMessage: Alternate Assignee is already an alternate assignee within this approval chain.
+            associatedItem: @P4015_ALTERNATE_TEAM_MEMBER_ID
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4015_ALTERNATE_TEAM_MEMBER_ID
+        }
+    )
+
+    validation alternate-cannot-be-in-approval-chain (
+        name: Alternate cannot be in approval chain
+        execution {
+            sequence: 70
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain
+                 where initiative_approval_id = :P4015_INITIATIVE_APPROVAL_ID
+                   and team_member_id = :P4015_ALTERNATE_TEAM_MEMBER_ID
+                   and active_yn = 'Y'
+                ```
+        }
+        error {
+            errorMessage: Alternate Assignee is already an active assignee within this approval chain.
+            associatedItem: @P4015_ALTERNATE_TEAM_MEMBER_ID
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4015_ALTERNATE_TEAM_MEMBER_ID
+        }
+    )
+
+    validation cannot-delete-only-approver-if-type-is-active (
+        name: cannot delete only approver (if type is active)
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approvals a,
+                       sp_initiative_approval_chain c
+                 where a.id = c.initiative_approval_id    
+                   and a.active_yn = 'Y'
+                   and c.active_yn = 'Y'
+                   and c.id != :P4015_ID
+                   and c.initiative_approval_id = :P4015_INITIATIVE_APPROVAL_ID
+                ```
+        }
+        error {
+            errorMessage: Cannot delete only active reviewer of active approval type.
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    validation cannot-delete-with-active-approvals (
+        name: cannot delete with active approvals
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_approval_chain
+                 where team_member_id = :P4015_TEAM_MEMBER_ID
+                ```
+        }
+        error {
+            errorMessage: Cannot delete reviewer with active approvals pending.
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    validation cannot-inactivate-only-approver-if-type-is-active (
+        name: cannot inactivate only approver (if type is active)_1
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approvals a,
+                       sp_initiative_approval_chain c
+                 where a.id = c.initiative_approval_id    
+                   and a.active_yn = 'Y'
+                   and c.active_yn = 'Y'
+                   and c.id != :P4015_ID
+                   and c.initiative_approval_id = :P4015_INITIATIVE_APPROVAL_ID
+                ```
+        }
+        error {
+            errorMessage: Cannot inactivate only active reviewer of active approval type.
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+            type: item!=value
+            item: P4015_ACTIVE_YN
+            value: Y
+        }
+    )
+
+    validation no-dup-approval-seq (
+        name: no dup approval seq
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain
+                 where initiative_approval_id = :P4015_INITIATIVE_APPROVAL_ID
+                   and approval_seq = :P4015_APPROVAL_SEQ
+                   and (:P4015_ID is null or :P4015_ID != id)
+                ```
+        }
+        error {
+            errorMessage: Must use unique approval sequence
+            associatedItem: @P4015_APPROVAL_SEQ
+        }
+    )
+
+    validation no-dups (
+        name: no dups
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain
+                 where initiative_approval_id = :P4015_INITIATIVE_APPROVAL_ID
+                   and team_member_id = :P4015_TEAM_MEMBER_ID
+                   and (:P4015_ID is null or :P4015_ID != id)
+                ```
+        }
+        error {
+            errorMessage: Duplicate entry found.
+        }
+    )
+
+    computation p4015-alternate-end-date (
+        itemName: P4015_ALTERNATE_END_DATE
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P4015_ALTERNATE_TEAM_MEMBER_ID
+        }
+    )
+
+    computation p4015-alternate-start-date (
+        itemName: P4015_ALTERNATE_START_DATE
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P4015_ALTERNATE_TEAM_MEMBER_ID
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 11756734846431114917
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-initiative-approval-entry (
+        name: Initialize form Initiative Approval Entry
+        type: formInitialization
+        formRegion: @initiative-approval-entry
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 11756733990929114915
+        }
+    )
+
+    process process-form-initiative-approval-entry (
+        name: Process form Initiative Approval Entry
+        type: formAutoRowProcessing
+        formRegion: @initiative-approval-entry
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 11756734362975114916
+        }
+    )
+
+    process set-init-start-and-end-dates-used-for-date-pickers (
+        name: set init start and end dates (used for date pickers)
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P4015_ID is not null then
+                    for c1 in (   
+                        select to_char(alternate_start_date,'YYYYMMDDHH24MI') alt_start_date, 
+                               to_char(alternate_end_date,'YYYYMMDDHH24MI') alt_end_date
+                          from sp_initiative_approval_chain
+                         where id = :P4015_ID
+                    ) loop
+                        :P4015_INIT_ALTERNATE_START_DATE := nvl(c1.alt_start_date,'+0d');
+                        :P4015_INIT_ALTERNATE_END_DATE := nvl(c1.alt_end_date,'+0d');
+                    end loop;
+                else
+                    :P4015_INIT_ALTERNATE_START_DATE := '+0d';
+                    :P4015_INIT_ALTERNATE_END_DATE := '+0d';
+                end if;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 18554017273694382027
+        }
+    )
+
+)
+

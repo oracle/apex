@@ -1,0 +1,369 @@
+page 123 (
+    name: Screen Names
+    alias: SCREEN-NAMES1
+    title: Screen Names
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .t-ContextualInfo .t-Button--link {
+              --a-button-line-height: 1rem;
+              --a-button-border-radius: 0;
+              --a-button-font-weight: normal;
+            }
+            
+            .t-ContextualInfo .t-Button--link:hover {
+              text-decoration: none;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @users
+        }
+        layout {
+            sequence: 2
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P123_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region users (
+        name: "Users "
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    t.ID,
+                    t.FIRST_NAME||' '||t.last_name name,
+                    t.location,
+                    t.country_id,
+                    lower(t.TAGS) tags,
+                    t.app_role,
+                    t.UPDATED,
+                    t.created,
+                    t.email,
+                    t.competencies,
+                    t.email_domain,
+                    t.photo,
+                    t.photo_mimetype,
+                    t.screen_name,
+                    case when t.screen_name is not null 
+                         then '@'||t.screen_name||
+                              ' <button type="button" title="Copy Screen Name" aria-label="Copy Screen Name" data-clipboard-source="'||
+                              t.screen_name||
+                              '" class="t-Button t-Button--noLabel t-Button--icon t-Button--link padding-none">'||
+                              '<span class="fa fa-copy" aria-hidden="true"></span>'||'</button>'
+                         end screen_name_disp
+                from SP_TEAM_MEMBERS t
+                where nvl(t.IS_CURRENT_YN,'Y') = 'Y' and
+                      (nvl(:P123_require_screen_Name,'Y') = 'N' or t.screen_name is not null)
+                
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: 2
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME!HTML.
+            description:
+                ```html
+                &EMAIL. {if COUNTRY/}<br />-  &COUNTRY.{endif/}&COUNTRY!HTML.
+                {if TAGS/}<br />Tags: &TAGS.{endif/}
+                {if GROUP_MEMBERSHIP/}<br />Groups: &GROUP_MEMBERSHIP.{endif/}
+                {if SCREEN_NAME/}<br />Screen Name: @&SCREEN_NAME.{endif/}
+                ```
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: blobColumn
+                blobColumn: PHOTO
+                filenameColumn: NAME
+                mimeTypeColumn: PHOTO_MIMETYPE
+                lastUpdatedColumn: UPDATED
+            }
+        }
+
+        column APP_ROLE (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: APP_ROLE
+                dataType: varchar2
+            }
+        )
+
+        column COMPETENCIES (
+            layout {
+                sequence: 330
+            }
+            source {
+                databaseColumn: COMPETENCIES
+                dataType: varchar2
+            }
+        )
+
+        column COUNTRY_ID (
+            layout {
+                sequence: 370
+            }
+            source {
+                databaseColumn: COUNTRY_ID
+                dataType: number
+            }
+        )
+
+        column CREATED (
+            layout {
+                sequence: 310
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column EMAIL (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: EMAIL
+                dataType: varchar2
+            }
+        )
+
+        column EMAIL_DOMAIN (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMAIL_DOMAIN
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column LOCATION (
+            layout {
+                sequence: 300
+            }
+            source {
+                databaseColumn: LOCATION
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column PHOTO (
+            layout {
+                sequence: 280
+            }
+            source {
+                databaseColumn: PHOTO
+                dataType: blob
+            }
+        )
+
+        column PHOTO_MIMETYPE (
+            layout {
+                sequence: 290
+            }
+            source {
+                databaseColumn: PHOTO_MIMETYPE
+                dataType: varchar2
+            }
+        )
+
+        column SCREEN_NAME (
+            layout {
+                sequence: 360
+            }
+            source {
+                databaseColumn: SCREEN_NAME
+                dataType: varchar2
+            }
+        )
+
+        column SCREEN_NAME_DISP (
+            layout {
+                sequence: 380
+            }
+            source {
+                databaseColumn: SCREEN_NAME_DISP
+                dataType: varchar2
+            }
+        )
+
+        column TAGS (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
+    )
+
+    pageItem P123_REQUIRE_SCREEN_NAME (
+        type: switch
+        label {
+            label: Has Screen Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @users
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    dynamicAction on-change-of-screen-name (
+        name: on change of screen name
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P123_REQUIRE_SCREEN_NAME
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P123_REQUIRE_SCREEN_NAME
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @users
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p123-require-screen-name (
+        itemName: P123_REQUIRE_SCREEN_NAME
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: Y
+        }
+    )
+
+)
+

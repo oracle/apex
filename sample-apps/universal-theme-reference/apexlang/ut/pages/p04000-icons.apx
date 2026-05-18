@@ -1,0 +1,1251 @@
+page 4000 (
+    name: Icons
+    alias: ICONS
+    title: Icons - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: dm-Page
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        fileUrls: [
+            #APP_FILES#demo/icons.js
+            #APP_FILES#demo/iconSearch.js
+        ]
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            apex.jQuery("#P4000_SEARCH").on("keyup",function(){apex.theme42demo.renderIcons({debounce: 250, filterString: this.value});});
+            var returnIcon = function(c){return;};
+            ```
+        executeWhenPageLoads: apex.theme42demo.renderIcons({});
+    }
+    css {
+        inline:
+            ```css
+            .highlight {
+                background-color: #ffef9a;
+                color: #635c34;
+                padding: 2px 0;
+                box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset, 0 1px 1px -1px rgba(0, 0, 0, 0.1);
+                border-radius: 2px;
+                transition: .1s ease;
+            }
+            .icon-list {
+                max-height: 280px;
+                overflow: auto;
+                white-space: pre-line;
+                font-family: monospace;
+                padding: 8px;
+                background: rgba(0,0,0,.1);
+                border: 1px solid rgba(0,0,0,.1);
+                border-radius: 4px;
+            }
+            
+            .dm-Icon {
+              display: inline-block; }
+            
+            .dm-Icon--page {
+              width: 16rem;
+              height: 10.25rem;
+              display: block;
+              margin: 1.5rem auto; }
+              .dm-Icon--page + .t-Button {
+                display: block;
+                margin: 0 auto; }
+              .apex-theme-vita-dark .dm-Icon--page {
+                filter: invert(0.75); }
+              .u-RTL .dm-Icon--page {
+                transform: scaleX(-1); }
+            
+            .dm-Logo {
+              width: 12.5rem;
+              height: 12.5rem;
+              display: block;
+              margin: 0 auto;
+              background-color: transparent !important;
+              transition: transform 2s 0.5s cubic-bezier(0.77, 0, 0.175, 1); }
+              .dm-Logo:hover {
+                transform: rotate(359deg) scale(1.5); }
+            
+            .dm-IconDialog .t-DialogRegion-body {
+              min-height: 25rem; }
+            
+            .dm-IconDialog-sizes {
+              text-align: center;
+              border-bottom: 1px solid #F0F0F0;
+              -webkit-margin-after: .75rem;
+                      margin-block-end: .75rem;
+              -webkit-padding-after: .75rem;
+                      padding-block-end: .75rem; }
+              .dm-IconDialog-sizes .t-Icon {
+                vertical-align: bottom;
+                margin: .5rem .75rem; }
+            
+            .dm-IconDialog-icon {
+              float: left;
+              -webkit-margin-end: .5rem;
+                      margin-inline-end: .5rem; }
+              .u-RTL .dm-IconDialog-icon {
+                float: right; }
+              .dm-IconDialog-icon span {
+                font-size: 3rem; }
+            
+            .dm-IconDialog-header {
+              background-color: #404040;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+              color: #FFF;
+              padding: 1rem; }
+            
+            .dm-IconDialog-builder {
+              padding: .5rem .75rem; }
+            
+            .dm-IconDialog-title {
+              overflow: hidden;
+              line-height: 3rem;
+              margin: 0; }
+            
+            .dm-IconDialog-preview {
+              text-align: center;
+              display: flex;
+              height: 11rem;
+              background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI0ZGRiI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNGOEY4RjgiPjwvcmVjdD4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNGOEY4RjgiPjwvcmVjdD4KPC9zdmc+");
+              background-size: 1rem;
+              background-position: 50%;
+              border: 1px solid #F8F8F8; }
+              .apex-theme-vita-dark .dm-IconDialog-preview {
+                background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMDAwIj48L3JlY3Q+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjMTExIj48L3JlY3Q+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiMxMTEiPjwvcmVjdD48L3N2Zz4=");
+                border-color: rgba(255, 255, 255, 0.1); }
+              .dm-IconDialog-preview span {
+                margin: auto;
+                transition: 0.2s cubic-bezier(0.77, 0, 0.175, 1); }
+            
+            .dm-IconDialog-code {
+              margin: 0;
+              text-align: center;
+              font-size: .75rem;
+              line-height: 1rem;
+              color: var(--ut-component-text-subtitle-color); }
+            
+            .dm-IconDialog-resetButton {
+              opacity: .5;
+              transition: .2s ease; }
+              .dm-IconDialog-resetButton:hover {
+                opacity: 1; }
+            
+            .dm-IconDialog-infoWrap {
+              -webkit-margin-before: 1.5rem;
+                      margin-block-start: 1.5rem;
+              padding: 0 .25rem; }
+            
+            .dm-IconDialog-info + .dm-IconDialog-info {
+              -webkit-margin-before: 1.5rem;
+                      margin-block-start: 1.5rem;
+              -webkit-margin-after: .75rem;
+                      margin-block-end: .75rem; }
+            
+            .dm-IconDialog-infoTitle {
+              font-weight: var(--a-base-font-weight-bold, 700);
+              font-size: .875rem;
+              line-height: 1.25rem;
+              -webkit-padding-before: .375rem;
+                      padding-block-start: .375rem;
+              -webkit-padding-after: .375rem;
+                      padding-block-end: .375rem; }
+            
+            .dm-IconDialog-infoBody code {
+              font-size: .6875rem;
+              line-height: 1rem;
+              background-color: #F0F0F0;
+              border-radius: .125rem;
+              padding: .5rem;
+              display: block;
+              -webkit-margin-after: .5rem;
+                      margin-block-end: .5rem;
+              white-space: pre-wrap;
+              min-height: 3rem; }
+            
+            .dm-IconDialog-infoBody small {
+              font-size: .6875rem;
+              line-height: 1rem;
+              color: var(--ut-component-text-muted-color);
+              display: block; }
+            
+            .apex-theme-vita-dark .dm-IconDialog-infoBody code {
+              background-color: rgba(0, 0, 0, 0.95); }
+            
+            .dm-Search:empty:before {
+              content: 'No Results';
+              font-size: .875rem;
+              text-align: start;
+              padding: 1rem 0;
+              color: rgba(0, 0, 0, 0.5);
+              display: block; }
+            
+            input#P4000_SEARCH {
+              background: #FFF;
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+              border: 1px solid rgba(0, 0, 0, 0.075); }
+              .apex-theme-vita-dark input#P4000_SEARCH {
+                background-color: #000;
+                border-color: rgba(255, 255, 255, 0.075); }
+            
+            #P4000_SIZE.apex-item-group--rc {
+              margin: 0; }
+            
+            .dm-Search-category {
+              display: block;
+              background: #FFF;
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+              border: 1px solid rgba(0, 0, 0, 0.075);
+              border-radius: .125rem;
+              padding: 1rem;
+              -webkit-margin-after: 1rem;
+                      margin-block-end: 1rem; }
+              .apex-theme-vita-dark .dm-Search-category {
+                background-color: rgba(0, 0, 0, 0.5);
+                border-color: rgba(255, 255, 255, 0.075); }
+            
+            .dm-Search-title {
+              text-transform: capitalize;
+              -webkit-margin-after: 0;
+                      margin-block-end: 0;
+              padding: .5rem;
+              font-weight: var(--a-base-font-weight-semibold, 500); }
+            
+            .dm-Search-list {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              clear: both;
+              overflow: hidden; }
+            
+            .dm-Search-list li {
+              width: 25%;
+              float: left;
+             }
+              .u-RTL .dm-Search-list li {
+                float: right; }
+              @media (max-width: 767px) {
+                .dm-Search-list li {
+                  width: 33.33%; } }
+              @media (max-width: 639px) {
+                .dm-Search-list li {
+                  width: 50%; } }
+            
+            .dm-Search-result {
+              display: block;
+              color: var(--ut-component-text-subtitle-color);
+              padding: .25rem;
+              cursor: pointer;
+              border-radius: .125rem;
+              overflow: hidden; }
+              .dm-Search-result:focus {
+                outline: none;
+                box-shadow: 0 0 0 1px var(--ut-palette-primary, #0572CE) inset;
+                background-color: #FFF; }
+                .apex-theme-vita-dark .dm-Search-result:focus {
+                  background-color: rgba(0, 0, 0, 0.5); }
+              .dm-Search-result:hover {
+                background-color: #FFF;
+                box-shadow: 0 0 0 1px var(--ut-palette-primary, #0572CE) inset, var(--ut-shadow-sm); }
+                .apex-theme-vita-dark .dm-Search-result:hover {
+                  background-color: rgba(0, 0, 0, 0.5); }
+            
+            .dm-Search-icon {
+              float: left;
+              padding: .5rem;
+              -webkit-padding-end: 0;
+                      padding-inline-end: 0; }
+              .u-RTL .dm-Search-icon {
+                float: right; }
+            
+            .dm-Search-icon .t-Icon {
+              transform-origin: left;
+              vertical-align: top;
+              line-height: 1.5rem; }
+              .u-RTL .dm-Search-icon .t-Icon {
+                transform-origin: right; }
+            
+            .dm-Search-info {
+              overflow: hidden;
+              padding: .5rem; }
+            
+            .dm-Search-class {
+              font-size: .875rem;
+              line-height: 1.5rem;
+              display: block;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis; }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-font-apex (
+        name: About Font APEX
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>What is Font APEX?</h3>
+                <p>Font APEX is the icon library for Oracle APEX and Universal Theme.  It was originally designed as a replacement for Font Awesome 4.*, the web's leading icon library, and therefore contains almost all of the Font Awesome icons, re-drawn originally on a 16x16 grid as line-icons.  We wanted to make it a seamless switch to go from Font Awesome to Font APEX, and therefore use the same "fa" prefix for the icons, making it easier than ever to move to entirely new icon library.</p>
+                
+                <p>Font APEX 2 expands upon the original Font APEX by providing the complete set of Font APEX icons at a larger size.  There are now two families of icons in Font APEX: small and large. Small icons are based on a 16x16 grid and ideally suited for buttons and menus. Large icons are based on a 32x32 grid and well suited for places where you need to provide a larger graphic, such as cards, media lists, and hero regions.</p>
+                
+                <p>Many APEX components will automatically use the large or small icons based on the context (such as Template Options), so all you need to do is focus on the icon you want.  For example, when using Cards, the Block and Featured template option will automatically show the larger versions of icons where the Basic and Compact template options will use icons from the smaller set.</p>
+                
+                <p>There are over 1200 icons in Font APEX, and there are 25 modifiers you can place on top of any existing icons so you can customize any icon to fit your needs.</p>
+                
+                <h3>Change Log</h3>
+                <p><b>Font APEX 2.2</b> was released as part of APEX 21.1 and includes 95 new icons for medical apps, map markers, and additional file types, as well as 16 updates to existing icons.  See full list below:</p>
+                <p><b>New Icons</b></p>
+                <div class="icon-list margin-bottom-md">fa-2d-mode
+                fa-3d-mode
+                fa-404
+                fa-4k
+                fa-abacus
+                fa-accessor-more
+                fa-accessor-one
+                fa-accordion
+                fa-alarm-check
+                fa-alarm-clock
+                fa-alarm-minus
+                fa-alarm-plus
+                fa-alarm-snooze
+                fa-alarm-times
+                fa-analytics
+                fa-badge
+                fa-badge-check
+                fa-badge-dollar
+                fa-badge-percent
+                fa-biohazard
+                fa-bug-slash
+                fa-file-brackets
+                fa-file-csv
+                fa-file-json
+                fa-file-medical
+                fa-file-prescription
+                fa-file-signature
+                fa-flag-pennant
+                fa-flag-pennant-o
+                fa-flag-swallowtail
+                fa-flag-swallowtail-o
+                fa-frown
+                fa-heat-map
+                fa-line-map
+                fa-location
+                fa-location-arrow-solid
+                fa-location-circle
+                fa-location-circle-solid
+                fa-location-slash
+                fa-map-marker-camera
+                fa-map-marker-camera-o
+                fa-map-marker-check
+                fa-map-marker-check-o
+                fa-map-marker-face-frown
+                fa-map-marker-face-frown-o
+                fa-map-marker-face-meh
+                fa-map-marker-face-meh-o
+                fa-map-marker-face-smile
+                fa-map-marker-face-smile-o
+                fa-map-marker-s
+                fa-map-marker-shine
+                fa-map-marker-shine-o
+                fa-map-marker-slash
+                fa-map-marker-slash-o
+                fa-map-markers
+                fa-map-markers-o
+                fa-map-pin-circle
+                fa-map-pin-circle-o
+                fa-map-pin-heart
+                fa-map-pin-heart-o
+                fa-map-pin-triangle
+                fa-map-pin-triangle-o
+                fa-medical-mask
+                fa-medication
+                fa-medication-pill
+                fa-medication-pill-bottle
+                fa-medication-pills
+                fa-meh
+                fa-nurse
+                fa-podium
+                fa-prescription
+                fa-prescription-sheet
+                fa-presentation
+                fa-radiation
+                fa-size-l
+                fa-size-m
+                fa-size-s
+                fa-size-xl
+                fa-size-xs
+                fa-size-xxl
+                fa-smile
+                fa-sort-amount-asc-alt
+                fa-sort-amount-desc-alt
+                fa-syringe
+                fa-tasks-alt
+                fa-text-color
+                fa-traffic-light
+                fa-traffic-light-go
+                fa-traffic-light-stop
+                fa-user-slash
+                fa-users-alt
+                fa-vial
+                fa-vials
+                fa-workflow
+                fa-x-ray</div>
+                
+                <p><b>Updated Icons</b></p>
+                <div class="icon-list">bug
+                crosshairs
+                frown-o
+                location-arrow
+                map-marker
+                meh-o
+                pause-circle
+                pause-circle-o
+                play-circle
+                play-circle-o
+                smile-o
+                sort-amount-asc
+                sort-amount-desc
+                stop-circle
+                stop-circle-o
+                user-md</div>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-dialog-size600x400
+            ]
+        }
+        advanced {
+            htmlDomId: about_font_apex
+            regionDisplaySelector: true
+        }
+    )
+
+    region icon-builder (
+        name: Icon Builder
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @icon-builder-dialog
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-IconDialog-builder
+        }
+    )
+
+    region icon-builder-dialog (
+        name: Icon Builder Dialog
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-dialog-size720x480
+            ]
+            cssClasses: dm-IconDialog
+        }
+        advanced {
+            htmlDomId: icon_dialog
+            regionDisplaySelector: true
+        }
+    )
+
+    region icon-form (
+        name: Icon Form
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @icon-builder
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    region icon-instructions (
+        name: Icon Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="dm-IconDialog-info row">
+                    <span class="dm-IconDialog-infoTitle col col-3">HTML <button type="button" title="Copy HTML Markup" class="t-Button t-Button--icon t-Button--tiny t-Button--link t-Button--iconLeft" data-clipboard-source="#icon_code"><span aria-hidden="true" class="t-Icon t-Icon--left fa fa-synonym"></span>Copy</button></span>
+                    <div class="dm-IconDialog-infoBody col col-9">
+                        <code id="icon_code"></code>
+                    </div>
+                </div>
+                <div class="dm-IconDialog-info row">
+                    <span class="dm-IconDialog-infoTitle col col-3">Icon <button type="button" title="Copy Icon Class" class="t-Button t-Button--icon t-Button--tiny t-Button--link t-Button--iconLeft" data-clipboard-source="#icon_classes"><span aria-hidden="true" class="t-Icon t-Icon--left fa fa-synonym"></span>Copy</button> </span>
+                    <div class="dm-IconDialog-infoBody col col-9">
+                        <code id="icon_classes"></code>
+                        <small>Enter in the Icon property for Buttons, Regions, and other components.</small>
+                    </div>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @icon-builder
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-IconDialog-infoWrap
+        }
+    )
+
+    region icon-preview (
+        name: Icon Preview
+        type: staticContent
+        source {
+            htmlCode: <div id="icon_preview" class="dm-IconDialog-preview"><span></span></div>
+        }
+        layout {
+            sequence: 20
+            parentRegion: @icon-builder
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region icons (
+        name: Icons
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: dm-Search
+        }
+        advanced {
+            htmlDomId: icons
+            regionDisplaySelector: true
+        }
+    )
+
+    region icons-2 (
+        name: Icons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-lg fa-apex u-color-9
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-sm
+            ]
+        }
+    )
+
+    pageItem P4000_ANIMATION (
+        type: selectList
+        label {
+            label: Animation
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @font-animations
+            displayExtraValues: false
+            nullDisplayValue: Static
+        }
+        layout {
+            sequence: 30
+            region: @icon-form
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P4000_FA_SIZE (
+        type: radioGroup
+        label {
+            label: Size
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Small;SMALL,Large;LARGE
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @icon-form
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P4000_ICONCLASS (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @icon-builder-dialog
+            slot: regionBody
+        }
+    )
+
+    pageItem P4000_ICON_SIZE (
+        type: radioGroup
+        label {
+            label: Scale
+            alignment: left
+        }
+        settings {
+            noOfCols: 5
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:1x;null,2x;fa-2x,3x;fa-3x,4x;fa-4x,5x;fa-5x
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @icon-form
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            used: always
+        }
+        default {
+            type: static
+            staticValue: null
+        }
+    )
+
+    pageItem P4000_MODIFIER (
+        type: selectList
+        label {
+            label: Modifier
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues:
+                ```
+                STATIC2:
+                25 Percent;fam-25-percent,
+                50 Percent;fam-50-percent,
+                75 Percent;fam-75-percent,
+                100 Percent;fam-100-percent,
+                Arrow Down;fam-arrow-down,
+                Arrow Left;fam-arrow-left,
+                Arrow Right;fam-arrow-right,
+                Arrow Up;fam-arrow-up,
+                Blank;fam-blank,
+                Check;fam-check,
+                Circle;fam-circle,
+                Clock;fam-clock,
+                Ellipsis H;fam-ellipsis-h,
+                Ellipsis V;fam-ellipsis-v,
+                Heart;fam-heart,
+                Information;fam-information,
+                Minus;fam-minus,
+                Pause;fam-pause,
+                Play;fam-play,
+                Plus;fam-plus,
+                Sleep;fam-sleep,
+                Star;fam-star,
+                Stop;fam-stop,
+                Warning;fam-warning,
+                X;fam-x
+                ```
+            displayExtraValues: false
+            nullDisplayValue: None
+        }
+        layout {
+            sequence: 50
+            region: @icon-form
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P4000_MODIFIER_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues:
+                ```
+                STATIC2:
+                Success;fam-is-success,
+                Warning;fam-is-warning,
+                Danger;fam-is-danger,
+                Info;fam-is-info,
+                Disabled;fam-is-disabled
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 60
+            region: @icon-form
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            used: always
+        }
+        default {
+            type: static
+            staticValue: fam-is-success
+        }
+    )
+
+    pageItem P4000_ROTATE (
+        type: selectList
+        label {
+            label: Rotate
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Rotate 90;fa-rotate-90,Rotate 180;fa-rotate-180,Rotate 270;fa-rotate-270,Flip Horizontal;fa-flip-horizontal,Flip Vertical;fa-flip-vertical
+            displayExtraValues: false
+            nullDisplayValue: Normal
+        }
+        layout {
+            sequence: 40
+            region: @icon-form
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P4000_SEARCH (
+        type: textField
+        label {
+            label: Search Icons
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search Font APEX Icons...
+        }
+        advanced {
+            cssClasses: t-Form-searchField
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P4000_SIZE (
+        type: radioGroup
+        label {
+            label: Size
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Small;SMALL,Large;LARGE
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @search
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: SMALL
+        }
+    )
+
+    button about (
+        buttonName: ABOUT
+        label: About Font APEX
+        layout {
+            sequence: 10
+            region: @icons-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-info-circle
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button reset-icon (
+        buttonName: RESET_ICON
+        label: Reset Icon
+        layout {
+            sequence: 10
+            region: @icon-preview
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--small
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            cssClasses: dm-IconDialog-resetButton
+            icon: fa-refresh
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction apply-modifier-to-icon (
+        name: Apply Modifier to Icon
+        execution {
+            sequence: 30
+            eventScope: dynamic
+        }
+        when {
+            selectionType: items
+            items: [
+                P4000_ICON_SIZE
+                P4000_ANIMATION
+                P4000_ROTATE
+                P4000_MODIFIER
+                P4000_MODIFIER_STATUS
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme42demo.renderIconPreview();
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction cancel-enter (
+        name: Cancel Enter
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P4000_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.browserEvent.keyCode == 13
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-about-dialog (
+        name: Open About Dialog
+        execution {
+            sequence: 80
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @about
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @about-font-apex
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction reset-icon-settings (
+        name: Reset Icon Settings
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @reset-icon
+        }
+
+        action native-clear (
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: [
+                    P4000_ANIMATION
+                    P4000_ROTATE
+                    P4000_MODIFIER
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $s('P4000_ICON_SIZE','null');
+                    apex.theme42demo.renderIconPreview();
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-icon-size (
+        name: Set Icon Size
+        execution {
+            sequence: 100
+        }
+        when {
+            selectionType: items
+            items: P4000_FA_SIZE
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $s('P4000_SIZE',$v('P4000_FA_SIZE'));
+                    apex.theme42demo.renderIconPreview();
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-icon-preview-dialog (
+        name: Show Icon Preview Dialog
+        execution {
+            sequence: 20
+            eventScope: dynamic
+            staticContainer: #icons
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .dm-Search-result
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var $j = apex.jQuery,
+                        iconClass = $j(this.triggeringElement).find('.dm-Search-class').text();
+                    $s('P4000_ICONCLASS',iconClass);
+                    $j("#icon_dialog").dialog({
+                        title: "Icon: " + iconClass
+                    }).dialog("open");
+                    apex.theme42demo.renderIconPreview();
+                    $j('#P4000_ICON_SIZE').focus();
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction toggle-icon-size (
+        name: Toggle Icon Size
+        execution {
+            sequence: 90
+        }
+        when {
+            selectionType: items
+            items: P4000_SIZE
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var size = $v('P4000_SIZE'),
+                        icons$ = $( '#icons' ),
+                        L_CLASS = 'force-fa-lg';
+                    if ( size === 'LARGE' ) {
+                        icons$.addClass( L_CLASS );
+                    } else {
+                        icons$.removeClass( L_CLASS );
+                    }
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: $v('P4000_SIZE');
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P4000_FA_SIZE
+            }
+            execution {
+                sequence: 40
+            }
+        )
+
+    )
+
+    dynamicAction toggle-modifier-status (
+        name: Toggle Modifier Status
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P4000_MODIFIER
+        }
+        clientSideCondition {
+            type: itemIsNull
+            item: P4000_MODIFIER
+        }
+
+        action native-clear (
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: P4000_MODIFIER_STATUS
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P4000_MODIFIER_STATUS
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P4000_MODIFIER_STATUS
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

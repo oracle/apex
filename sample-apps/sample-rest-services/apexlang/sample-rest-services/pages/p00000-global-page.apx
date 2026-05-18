@@ -1,0 +1,18 @@
+page 0 (
+    name: Global Page
+
+    region new (
+        name: New
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: footer
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

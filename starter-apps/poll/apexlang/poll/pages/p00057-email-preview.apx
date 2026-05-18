@@ -1,0 +1,151 @@
+page 57 (
+    name: Email Preview
+    alias: EMAIL-PREVIEW
+    title: Email Preview
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/minimal-no-navigation
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body-3
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region show-template (
+        name: Show Template
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_poll_url   varchar2(4000);
+                   l_body       clob;
+                   l_subject    varchar2(4000);
+                   l_html_body  clob;
+                   l_text_body  clob;
+                begin
+                
+                l_poll_url := '<a href="#">'||apex_escape.html(:POLL_NAME)||'</a>';
+                                                                     
+                l_body := replace(:P72_INVITE_BODY,'#POLL_LINK#',l_poll_url);
+                   
+                for c1 in (
+                    select case when :P57_METHOD = 'INVITE'
+                                then nvl(apex_escape.html(:P72_INVITE_SUBJECT),'Please Share Your Opinion on '||:POLL_NAME) 
+                                else nvl(apex_escape.html(:P1072_REMINDER_SUBJECT),'Reminder: Please Share Your Opinion on '||:POLL_NAME) 
+                                end invite_subject, 
+                           case when :P57_METHOD = 'INVITE'
+                                then nvl(apex_escape.html(:P72_INVITE_BODY),'<p>Please take #POLL_LINK#.</p>
+                '||
+                           case when authentication_req_yn = 'N'
+                                then apex_lang.message('UNAUTH_MSG') end ||
+                '<p>Thanks in advance for your participation!</p>
+                <p>Best Regards,</p>
+                <p>The '||apex_escape.html(:APPLICATION_TITLE)||' Team</p>') 
+                                else nvl(apex_escape.html(:P1072_REMINDER_BODY),'<p>Please take #POLL_LINK#.</p>
+                '||
+                           case when authentication_req_yn = 'N'
+                                then apex_lang.message('UNAUTH_MSG') end ||
+                '<p>Thanks in advance for your participation!</p>
+                <p>Best Regards,</p>
+                <p>The '||apex_escape.html(:APPLICATION_TITLE)||' Team</p>') end invite_body
+                      from eba_qpoll_polls
+                     where id = :POLL_ID
+                ) loop
+                
+                   apex_mail.prepare_template (
+                      p_static_id       => 'INVITE',
+                      p_placeholders    => '{' || 
+                                           '    "SUBJECT":'           || apex_json.stringify( c1.invite_subject ) || 
+                                           '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                           '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                              :APP_PATH || '/f?p=' || :APP_ID || ':optout',
+                                                                                              apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                           '   ,"BODY":'  || apex_json.stringify( replace(c1.invite_body,'#POLL_LINK#','<a href="#">'||:POLL_NAME||'</a>') ) || 
+                                           '}' , 
+                      p_application_id  => :APP_ID,
+                      p_subject         => l_subject,
+                      p_html            => l_html_body,
+                      p_text            => l_text_body );
+                      
+                   sys.htp.p(l_html_body);
+                   
+                end loop;
+                      
+                end;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body-3
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: show-template
+        }
+    )
+
+    pageItem P57_METHOD (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Close Preview
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:window.close();
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

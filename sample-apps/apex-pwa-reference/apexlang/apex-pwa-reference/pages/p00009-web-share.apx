@@ -1,0 +1,664 @@
+page 9 (
+    name: Web Share
+    alias: WEB-SHARE
+    title: Web Share - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .t-Comments-instructions {
+                margin: 24px 0px 0px 0px;
+                text-align: center;
+                font-weight: bold;
+            }
+            
+            .image-wrap {
+                display: flex;
+                flex-flow: column;
+            }
+            
+            .img-installer {
+                width: 100%;
+                border-radius: 5px;
+            }
+            
+            .img-installer-mobile {
+                width: 100%;
+                border-radius: 5px;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        enableMetaTags: true
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region compatibility (
+        name: Compatibility
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This table shows the supported combinations of operating systems and browsers for the Web Share feature.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                
+                <p>Note: Using the Web Share dynamic action on a browser that does not support Web Share API will result in the associated button being hidden on the page. APEX does this to avoid having a button that can't be actioned.</p>
+                ```
+        }
+        layout {
+            sequence: 1
+            parentRegion: @sharing-apex-content
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region edit-dynamic-action (
+        name: Edit Dynamic Action
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @sharing-apex-content
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region edit-meta-tag (
+        name: Edit Meta Tag
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @meta-tags
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        accessibility {
+            landmarkLabel: Meta tags Examples
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @edit-meta-tag
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/edit-meta-tag.jpeg
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @edit-dynamic-action
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/da-share.jpeg
+        }
+    )
+
+    region image-3 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @sharing-an-apex-page-on-safari-desktop
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/da-share-macos.png
+        }
+    )
+
+    region image-4 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @sharing-an-apex-page-on-ios
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/da-share-ios.png
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In <strong>Page Designer</strong> check that your page is public (no authentication)</li>
+                    <li>In the page attributes, under <strong>Advanced</strong> turn on <strong>Enable Meta Tags</strong></li>
+                    <li>A new section will appear in the <strong>Page Designer Rendering Tree</strong></li>
+                    <li>Add your <strong>Meta Tag</strong> name and value pairs</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @meta-tags
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions Meta tags
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In <strong>Page Designer</strong> create a new button</li>
+                    <li>Create a new <strong>Dynamic Action</strong> on the button's click event</li>
+                    <li>Change the <strong>Action</strong> to <strong>Share</strong></li>
+                    <li>Use the property editor to configure whether to share the current page, URL or File(s)</li>
+                </ol>
+                <ul>
+                    <li style="list-style-type: none;">The shared content can be static or reside in session state items</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @sharing-apex-content
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions Sharing APEX Content
+        }
+    )
+
+    region instructions-3 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>Run application and tap on the <strong>button</strong> or the <strong>element</strong> that triggers the dynamic action</li>
+                    <li>A share sheet should appear</li>
+                    <li>Click on the application or contact you want to share the content with</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @examples
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions Sharing APEX Content
+        }
+    )
+
+    region instructions-4 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>On iOS, tap on the <strong>button</strong> or the <strong>element</strong> that triggers the dynamic action</li>
+                    <li>An iOS share sheet should appear</li>
+                    <li>Tap on the application or contact you want to share the content with</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @examples
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions Sharing APEX Content
+        }
+    )
+
+    region meta-tags (
+        name: Meta tags
+        type: staticContent
+        source {
+            htmlCode: <p class="col-8">Meta tags are pieces of information about a web page that allows other systems to read a summary of the page content. Sharing APEX pages is more convenient when the content of that page can be previewed on other social media platforms. APEX allows to define meta tags for public-facing APEX pages directly from Page Designer.</p>
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sharing-an-apex-page-on-ios (
+        name: Sharing an APEX page on iOS
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @examples
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region sharing-an-apex-page-on-safari-desktop (
+        name: Sharing an APEX page on Safari Desktop
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @examples
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region sharing-apex-content (
+        name: Sharing APEX Content
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    The <strong>Share</strong> dynamic action lets you easily share data from
+                    your APEX app to other apps on the current device. When a user triggers
+                    the Share action, their device's native share sheet appears to let them
+                    pick contacts or other apps as the share destination.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button share (
+        buttonName: SHARE
+        label: Share
+        layout {
+            sequence: 50
+            region: @demo
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+                t-Button--padLeft
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction onclick-share (
+        name: onClick SHARE
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @share
+        }
+
+        action native-share (
+            action: share
+            settings {
+                title: Sharing a page title
+                text: Sharing an APEX page to the world!
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction onpageload (
+        name: onPageLoad
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: !navigator.canShare
+        }
+
+        action hide-region-demo (
+            name: Hide Region Demo
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @demo
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    metaTag description (
+        value: Sharing an APEX page to the world
+    )
+
+    metaTag og-image (
+        name: og:image
+        value: #APP_FILES#img/da-share.png
+    )
+
+    metaTag twitter-image (
+        name: twitter:image
+        value: #APP_FILES#img/da-share.png
+    )
+
+)
+

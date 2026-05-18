@@ -1,0 +1,129 @@
+customAttribute attribute_01 (
+    apexlangName: itemContainingPositionXValue
+    attribute: 1
+    name: Item containing Position X value:
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: itemContainingPositionYValue
+    attribute: 2
+    name: Item containing Position Y value:
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: coordinateSystem
+    attribute: 3
+    name: Coordinate System
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 30
+    }
+    default {
+        value: WGS84
+    }
+    help {
+        helpText: "SRID of the coordinate values. Choose between <b>WGS84</b> (standard latitude/longitude) and the Coordinate System (projection) of the map. "
+    }
+
+    entry longitudeLatitudeWgs84 (
+        sequence: 10
+        display: Longitude/Latitude (WGS84)
+        return: WGS84
+    )
+
+    entry useMapRegionCoordinateSystem (
+        sequence: 20
+        display: Use Map Region Coordinate System
+        return: MAP
+    )
+
+)
+
+customAttribute attribute_04 (
+    apexlangName: markerStyle
+    attribute: 4
+    name: Marker Style:
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 40
+    }
+    default {
+        value: gray
+    }
+
+    entry blue (
+        sequence: 20
+        display: Blue
+        return: blue
+    )
+
+    entry gray (
+        sequence: 10
+        display: Gray
+        return: gray
+    )
+
+    entry green (
+        sequence: 40
+        display: Green
+        return: green
+    )
+
+    entry purple (
+        sequence: 50
+        display: Purple
+        return: purple
+    )
+
+    entry red (
+        sequence: 30
+        display: Red
+        return: red
+    )
+
+    entry yellow (
+        sequence: 60
+        display: Yellow
+        return: yellow
+    )
+
+)
+
+customAttribute attribute_05 (
+    apexlangName: markerTitle
+    attribute: 5
+    name: Marker Title
+    validation {
+        maxLength: 50
+    }
+    appearance {
+        sequence: 50
+    }
+    builder {
+        displayWidth: 15
+    }
+    default {
+        value: The Position!
+    }
+)
+

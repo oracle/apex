@@ -1,0 +1,797 @@
+page 10200 (
+    name: Project Completeness Scales
+    alias: PROJECT-COMPLETENESS-SCALES
+    title: &NOMENCLATURE_PROJECT. Completeness Scales
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region information (
+        name: Information
+        type: staticContent
+        source {
+            htmlCode: Each &NOMENCLATURE_PROJECT. can select a scale.  Scales are defaulted at the &NOMENCLATURE_INITIATIVE. level.  Upto a maximum of 5 scales labled A through E are available.  Each of the scales can be customized.  Each scale defines a percent complete from 0% to 100% in 10% increments.
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--textContent
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region project-scales (
+        name: Project Scales
+        type: interactiveReport
+        source {
+            location: localDatabase
+            tableName: SP_PROJECT_SCALES
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 10210
+                items: {
+                    P10210_SCALE_LETTER: #SCALE_LETTER#
+                }
+                clearCache: 10210
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 144726777714273195036
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 278
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 288
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column IS_ACTIVE_YN (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Active
+            }
+            lov {
+                lov: @yn-yesno
+            }
+            layout {
+                sequence: 38
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column MIN_PC_FOR_STATUS (
+            type: plainText
+            heading {
+                heading: Min % Complete for Status
+                alignment: end
+            }
+            layout {
+                sequence: 48
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #MIN_PC_FOR_STATUS#%
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: BE
+            }
+        )
+
+        column PC0_DESC (
+            type: plainText
+            heading {
+                heading: 0% Complete Desc
+            }
+            layout {
+                sequence: 68
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column PC0_LABEL (
+            type: plainText
+            heading {
+                heading: 0% Complete Label
+            }
+            layout {
+                sequence: 58
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column PC100_DESC (
+            type: plainText
+            heading {
+                heading: 100% Complete Desc
+            }
+            layout {
+                sequence: 268
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BD
+            }
+        )
+
+        column PC100_LABEL (
+            type: plainText
+            heading {
+                heading: 100% Complete Label
+            }
+            layout {
+                sequence: 258
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BC
+            }
+        )
+
+        column PC10_DESC (
+            type: plainText
+            heading {
+                heading: 10% Complete Desc
+            }
+            layout {
+                sequence: 88
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AL
+            }
+        )
+
+        column PC10_LABEL (
+            type: plainText
+            heading {
+                heading: 10% Complete Label
+            }
+            layout {
+                sequence: 78
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column PC20_DESC (
+            type: plainText
+            heading {
+                heading: 20% Complete Desc
+            }
+            layout {
+                sequence: 108
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AN
+            }
+        )
+
+        column PC20_LABEL (
+            type: plainText
+            heading {
+                heading: 20% Complete Label
+            }
+            layout {
+                sequence: 98
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AM
+            }
+        )
+
+        column PC30_DESC (
+            type: plainText
+            heading {
+                heading: 30% Complete Desc
+            }
+            layout {
+                sequence: 128
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AP
+            }
+        )
+
+        column PC30_LABEL (
+            type: plainText
+            heading {
+                heading: 30% Complete Label
+            }
+            layout {
+                sequence: 118
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AO
+            }
+        )
+
+        column PC40_DESC (
+            type: plainText
+            heading {
+                heading: 40% Complete Desc
+            }
+            layout {
+                sequence: 148
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AR
+            }
+        )
+
+        column PC40_LABEL (
+            type: plainText
+            heading {
+                heading: 40% Complete Label
+            }
+            layout {
+                sequence: 138
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AQ
+            }
+        )
+
+        column PC50_DESC (
+            type: plainText
+            heading {
+                heading: 50% Complete Desc
+            }
+            layout {
+                sequence: 168
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AT
+            }
+        )
+
+        column PC50_LABEL (
+            type: plainText
+            heading {
+                heading: 50% Complete Label
+            }
+            layout {
+                sequence: 158
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AS
+            }
+        )
+
+        column PC60_DESC (
+            type: plainText
+            heading {
+                heading: 60% Complete Desc
+            }
+            layout {
+                sequence: 188
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AV
+            }
+        )
+
+        column PC60_LABEL (
+            type: plainText
+            heading {
+                heading: 60% Complete Label
+            }
+            layout {
+                sequence: 178
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AU
+            }
+        )
+
+        column PC70_DESC (
+            type: plainText
+            heading {
+                heading: 70% Complete Desc
+            }
+            layout {
+                sequence: 208
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AX
+            }
+        )
+
+        column PC70_LABEL (
+            type: plainText
+            heading {
+                heading: 70% Complete Label
+            }
+            layout {
+                sequence: 198
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AW
+            }
+        )
+
+        column PC80_DESC (
+            type: plainText
+            heading {
+                heading: 80% Complete Desc
+            }
+            layout {
+                sequence: 228
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AZ
+            }
+        )
+
+        column PC80_LABEL (
+            type: plainText
+            heading {
+                heading: 80% Complete Label
+            }
+            layout {
+                sequence: 218
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AY
+            }
+        )
+
+        column PC90_DESC (
+            type: plainText
+            heading {
+                heading: 90% Complete Desc
+            }
+            layout {
+                sequence: 248
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BB
+            }
+        )
+
+        column PC90_LABEL (
+            type: plainText
+            heading {
+                heading: 90% Complete Label
+            }
+            layout {
+                sequence: 238
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BA
+            }
+        )
+
+        column SCALE_LETTER (
+            type: plainText
+            heading {
+                heading: Scale Letter
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                primaryKey: true
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column SCALE_NAME (
+            type: plainText
+            heading {
+                heading: Scale Name
+            }
+            layout {
+                sequence: 28
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 298
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 308
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Project Scales
+        }
+
+        savedReport 274414919 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn IS_ACTIVE_YN (
+                sequence: 4
+            )
+
+            displayColumn MIN_PC_FOR_STATUS (
+                sequence: 3
+            )
+
+            displayColumn PC0_LABEL (
+                sequence: 5
+            )
+
+            displayColumn PC100_LABEL (
+                sequence: 15
+            )
+
+            displayColumn PC10_LABEL (
+                sequence: 6
+            )
+
+            displayColumn PC20_LABEL (
+                sequence: 7
+            )
+
+            displayColumn PC30_LABEL (
+                sequence: 8
+            )
+
+            displayColumn PC40_LABEL (
+                sequence: 9
+            )
+
+            displayColumn PC50_LABEL (
+                sequence: 10
+            )
+
+            displayColumn PC60_LABEL (
+                sequence: 11
+            )
+
+            displayColumn PC70_LABEL (
+                sequence: 12
+            )
+
+            displayColumn PC80_LABEL (
+                sequence: 13
+            )
+
+            displayColumn PC90_LABEL (
+                sequence: 14
+            )
+
+            displayColumn SCALE_LETTER (
+                sequence: 1
+            )
+
+            displayColumn SCALE_NAME (
+                sequence: 2
+            )
+
+            displayColumn UPDATED (
+                sequence: 16
+            )
+
+            sort (
+                column: SCALE_LETTER
+                sort {
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: PROJECTS
+            )
+
+        )
+
+    )
+
+    button reset (
+        buttonName: reset
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10200
+                clearCache: 10200
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dc (
+        name: DC
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @project-scales
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @project-scales
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @project-scales
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,1045 @@
+page 12 (
+    name: Timeline
+    alias: TIMELINE
+    title: &APPLICATION_TITLE. - Timeline
+    pageGroup: @public
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .t-Badge.apex-cal-default { background-color: #2578CF; border-color: #2578CF; color: #FFFFFF; }
+            .t-Badge.apex-cal-black { background-color: #303030; border-color: #303030; color: #FFFFFF; }
+            .t-Badge.apex-cal-blue { background-color: #4183D7; border-color: #4183D7; color: #FFFFFF; }
+            .t-Badge.apex-cal-bluesky { background-color: #6BB9F0; border-color: #6BB9F0; color: #404040; }
+            .t-Badge.apex-cal-brown { background-color: #D88935; border-color: #D88935; color: #404040; }
+            .t-Badge.apex-cal-cyan { background-color: #1ABC9C; border-color: #1ABC9C; color: #404040; }
+            .t-Badge.apex-cal-darkblue { background-color: #1F5F97; border-color: #1F5F97; color: #FFFFFF; }
+            .t-Badge.apex-cal-gray { background-color: #A0A0A0; border-color: #A0A0A0; color: #404040; }
+            .t-Badge.apex-cal-green { background-color: #2ECC71; border-color: #2ECC71; color: #404040; }
+            .t-Badge.apex-cal-lime { background-color: #28A346; border-color: #28A346; color: #FFFFFF; }
+            .t-Badge.apex-cal-orange { background-color: #F39C12; border-color: #F39C12; color: #404040; }
+            .t-Badge.apex-cal-red { background-color: #D91E18; border-color: #D91E18; color: #FFFFFF; }
+            .t-Badge.apex-cal-silver { background-color: #BDC3C7; border-color: #BDC3C7; color: #404040; }
+            .t-Badge.apex-cal-white { background-color: #F0F0F0; border-color: #F0F0F0; color: #404040; }
+            .t-Badge.apex-cal-yellow { background-color: #F1C40F; border-color: #F1C40F; color: #404040; }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This is the timeline of future events page. It shows all upcoming events that match your current filter settings. To change your filter values, click the <strong>Update Filters</strong> button, make your changes and then click the <strong>Set</strong> button.
+    }
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region calendars (
+        name: Calendars
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d
+                  from
+                (
+                select 'Default' d,
+                       1 ob
+                  from dual
+                 where exists (select 1 from eba_ca_events
+                                where calendar_id is null)
+                 and   (   nvl(:CALENDARS_FILTER,'0') = '0'
+                        or instr(:CALENDARS_FILTER, '-1') > 0
+                       )
+                union
+                select short_name ||' - '|| calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d,
+                       2 ob
+                  from eba_ca_calendars c
+                  where (   (     nvl(:CALENDARS_FILTER,'0') = '0' 
+                              and  (   c.public_view_yn = 'Y'
+                                    or exists (select 'x'
+                                               from eba_ca_users u
+                                               where u.username = :APP_USER
+                                               and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                                      or (access_level_id = 3 and restricted_to is null)
+                                                     )
+                                               )
+                                   ) 
+                              )
+                           or instr(':'||:CALENDARS_FILTER||':',':'||nvl(calendar_id,'-1')||':') > 0
+                          )
+                )
+                 order by ob, d
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @filters
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @include-multiple-calendars
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column D (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Calendars
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region contact-email (
+        name: Contact Email
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select nvl(:CONTACT_EMAIL, '- All Contacts -') contact_email
+                from dual
+                ```
+        }
+        layout {
+            sequence: 90
+            parentRegion: @filters
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 'x' from
+                eba_ca_events where contact_email is not null;
+                ```
+        }
+        config {
+            buildOption: @include-external-internal-event-types
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CONTACT_EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Contact Email
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region event-types (
+        name: Event Types
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select listagg(a.event_type, ' ') within group (order by a.type_name) event_types
+                from (select type_name,
+                       case when display_color is not null
+                            then '<span class="t-Badge t-Badge--basic t-Badge--small apex-cal-'||apex_escape.html(lower(cp.color_name))||'">'|| 
+                                 apex_escape.html(type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null) ) || '</span>'
+                            else '<span class="t-Badge t-Badge--basic t-Badge--small">'|| 
+                                 apex_escape.html(type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null) ) || '</span>'
+                            end event_type
+                from eba_ca_event_types et
+                ,    eba_ca_color_prefs cp
+                where et.color_pref_id = cp.id
+                and   (:EXTERNAL_INTERNAL_BO = 'Exclude'
+                       or (   nvl(internal_yn, 'N') = 'N'
+                           or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                          )
+                      )
+                and   (   nvl(:EVENT_TYPES_FILTER,'0') = '0' 
+                       or instr(':'||:EVENT_TYPES_FILTER||':',':'||nvl(type_id,'-1')||':') > 0
+                      )
+                ) a
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @filters
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_CA_EVENT_TYPES
+                ```
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EVENT_TYPES (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Event Types
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region notifications (
+        name: Notifications
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id, 
+                       nvl(lower(NOTIFICATION_TYPE),'yellow') as ALERT_TYPE, 
+                       NOTIFICATION_NAME alert_title, 
+                       NOTIFICATION_DESCRIPTION alert_desc,
+                       '' alert_action
+                  from EBA_CA_NOTIFICATIONS
+                 where (DISPLAY_FROM is null or DISPLAY_FROM <= current_date) and
+                       (DISPLAY_UNTIL is null or DISPLAY_UNTIL >= current_date)
+                 order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/alerts
+            templateOptions: #DEFAULT#
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ALERT_ACTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Alert Action
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_DESC (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Alert Desc
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TITLE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Alert Title
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ALERT_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Alert Type
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region timeline-of-future-events (
+        name: Timeline of Future Events
+        type: plugin/timelineAndStatusList
+        source {
+            sqlQuery:
+                ```sql
+                select e.event_id id
+                ,      case when :MULTIPLE_CAL_BO = 'Include' then nvl(c.short_name, 'Default') ||': ' end ||e.event_name ||
+                           case when exists (select 1 from EBA_CA_FILES
+                                             where event_id = e.event_id)
+                                then ' (a)'
+                           end title
+                ,      'f?p='||:app_id||':3:'||:app_session||':::3:LAST_VIEW,P3_EVENT_ID:12,'||e.event_id link
+                ,      case when et.display_color is not null then
+                         'apex-cal-'||
+                         (select lower(cp.color_name) from eba_ca_color_prefs cp where cp.bg_color = et.display_color)
+                       else 
+                         'apex-cal-default'
+                       end color_class
+                ,      et.type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null) event_type
+                ,      e.event_date_time
+                ,      case when display_time='N' then '' 
+                            when to_char(e.EVENT_DATE_TIME,'MI') = '00' then 
+                                 ltrim(to_char(e.EVENT_DATE_TIME,'HHam'),'0')
+                            else 
+                                 ltrim(to_char(e.EVENT_DATE_TIME,'HH:MIam'),'0')
+                            end ||
+                       case when display_time='N' then '' 
+                            when e.duration = 0  then '(0 mins)'
+                            when e.duration = .25 then '(15 mins)'
+                            when e.duration = .5 then '(30 mins)'
+                            when e.duration = .75 then '(45 mins)'
+                            when e.duration = 1 then '(1 hr)'
+                            when e.duration > 1 then to_char(trunc(e.duration)) || ' hrs'
+                              || case when e.duration - trunc(e.duration) = 0  then ')'
+                                      when e.duration - trunc(e.duration) = .25 then ' 15 mins)'
+                                      when e.duration - trunc(e.duration) = .5 then ' 30 mins)'
+                                      when e.duration - trunc(e.duration) = .75 then ' 45 mins)'
+                                 end
+                       end  time
+                ,      e.EVENT_DESC
+                ,      e.LOCATION
+                ,      e.CONTACT_PERSON
+                ,      e.tags
+                ,      e.CREATED_BY|| ' - '||apex_util.get_since(e.created_on) created
+                ,      e.display_time
+                ,      e.LINK_NAME_1, e.LINK_NAME_2, e.LINK_NAME_3
+                ,      e.LINK_URL_1, e.LINK_URL_2, e.LINK_URL_3
+                from eba_ca_events e
+                ,    eba_ca_event_types et
+                ,    eba_ca_calendars c
+                where e.EVENT_DATE_TIME >= decode(e.display_time,'N', trunc(sysdate),cast(sysdate-(e.duration/24) as timestamp))
+                and   e.type_id = et.type_id (+)
+                and   e.calendar_id = c.calendar_id (+)
+                and   (   nvl(:EVENT_TYPES_FILTER,'0') = '0' 
+                       or instr(':'||:EVENT_TYPES_FILTER||':', ':'||nvl(e.type_id,'-1')||':') > 0
+                      )
+                and   (   :MULTIPLE_CAL_BO = 'Exclude' 
+                       or (    nvl(:CALENDARS_FILTER,'0') = '0' 
+                           and (   e.calendar_id is null
+                                or c.public_view_yn = 'Y'
+                                or exists (select 'x'
+                                           from eba_ca_users u
+                                           where u.username = :APP_USER
+                                           and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                                  or (access_level_id = 3 and restricted_to is null)
+                                                 )
+                                          )
+                               ) 
+                          )
+                       or instr(:CALENDARS_FILTER,nvl(e.calendar_id,'-1')) > 0
+                      )
+                and   (   :EXTERNAL_INTERNAL_BO = 'Exclude'
+                       or (:CONTACT_EMAIL is null
+                           or instr(upper(e.contact_email), :CONTACT_EMAIL) > 0
+                          )
+                      )
+                and   (   :EXTERNAL_INTERNAL_BO = 'Exclude'
+                       or (   nvl(et.internal_yn, 'N') = 'N'
+                           or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                          )
+                      )
+                order by case when nvl(display_time,'Y')='N' then trunc(e.EVENT_DATE_TIME) else e.EVENT_DATE_TIME end
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            groupByColumn: EVENT_DATE_TIME
+            statusColumn: EVENT_TYPE
+            titleColumn: TITLE
+            linkColumn: LINK
+            firstValue: TIME
+            secondValue: TAGS
+            thirdValue: LOCATION
+            fourthValue: CONTACT_PERSON
+            primaryDescription: EVENT_DESC
+            colorColumn: COLOR_CLASS
+            colorLabel: EVENT_TYPE
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        messages {
+            whenNoDataFound: No calendar events found
+        }
+
+        column COLOR_CLASS (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Color class
+            }
+            layout {
+                sequence: 250
+            }
+        )
+
+        column CONTACT_PERSON (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Contact Person
+            }
+            layout {
+                sequence: 110
+            }
+        )
+
+        column CREATED (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 230
+            }
+        )
+
+        column DISPLAY_TIME (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Display Time
+            }
+            layout {
+                sequence: 150
+            }
+        )
+
+        column EVENT_DATE_TIME (
+            source {
+                dataType: TIMESTAMP_TZ
+            }
+            heading {
+                heading: Event Date Time
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column EVENT_DESC (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Event Desc
+            }
+            layout {
+                sequence: 90
+            }
+        )
+
+        column EVENT_TYPE (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Event Type
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column ID (
+            source {
+                dataType: NUMBER
+            }
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column LINK (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 220
+            }
+        )
+
+        column LINK_NAME_1 (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link Name 1
+            }
+            layout {
+                sequence: 160
+            }
+        )
+
+        column LINK_NAME_2 (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link Name 2
+            }
+            layout {
+                sequence: 170
+            }
+        )
+
+        column LINK_NAME_3 (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link Name 3
+            }
+            layout {
+                sequence: 180
+            }
+        )
+
+        column LINK_URL_1 (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link Url 1
+            }
+            layout {
+                sequence: 190
+            }
+        )
+
+        column LINK_URL_2 (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link Url 2
+            }
+            layout {
+                sequence: 200
+            }
+        )
+
+        column LINK_URL_3 (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Link Url 3
+            }
+            layout {
+                sequence: 210
+            }
+        )
+
+        column LOCATION (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 100
+            }
+        )
+
+        column TAGS (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 120
+            }
+        )
+
+        column TIME (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Time
+            }
+            layout {
+                sequence: 240
+            }
+        )
+
+        column TITLE (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    region timezone (
+        name: Timezone
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                 "TIMEZONE"
+                
+                 
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        settings {
+            expandShortcuts: true
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Event
+        layout {
+            sequence: 20
+            region: @breadcrumbs
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10
+                clearCache: 10
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button filter (
+        buttonName: FILTER
+        label: Update Filters
+        layout {
+            sequence: 10
+            region: @filters
+            slot: rightOfTitle
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconRight
+                t-Button--gapLeft
+            ]
+            icon: fa-wrench
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 5
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-timeline (
+        name: Refresh Timeline
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                P12_EVENT_TYPE
+                P12_CONTACT
+            ]
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @timeline-of-future-events
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-timeline-for-create (
+        name: Refresh Timeline for Create
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @create
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Event added.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @timeline-of-future-events
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-timeline-for-filter (
+        name: Refresh Timeline for Filter
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @filter
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Filters applied.');
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @event-types
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @calendars
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-3 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @contact-email
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-4 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @filters
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 12
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 12
+                successMessage: false
+            }
+        }
+        comments {
+            comments: Created 06-APR-2012 12:09 by MIKE
+        }
+    )
+
+)
+

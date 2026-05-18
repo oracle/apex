@@ -1,0 +1,527 @@
+page 12 (
+    name: File
+    alias: FILE
+    title: File
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region application-features-demonstrated-on-this-page (
+        name: Application features demonstrated on this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span style="infoTextRegion">
+                <p>
+                This page shows how to:
+                <ol style="margin: 8px 24px;">
+                  <li>Upload a file to an application table's BLOB column</li>
+                  <li>Download from a PL/SQL Generated Link</li>
+                </ol>
+                <a name="upload_file"></a><br />
+                <p><strong>Upload a file to an application table's BLOB column</strong></p>
+                <ul style="margin: 8px 24px;">
+                  <li>Add an unconditional page rendering page process</li>
+                  <li>Choose "Data Manipulation" and click "Next"</li>
+                  <li>Select the default, "Automated Row Fetch", then click "Next"</li>
+                  <li>Give the process a name, "Fetch Row from EBA_DEMO_FILES" (for example), change the processing point to "On load - After Header" and click "Next"</li>
+                  <li>Enter the table name of the application's "files" table, the APEX page item id of the page item that references the file being uploaded, and the column name of the blob column in the afore assigned application "files" table and click "Next"</li>
+                  <li>Optionally add a success and/or error message, click "Create Process"</li>
+                  <li>Create an "HTML" region (for holding your file upload form element)</li>
+                  <li>Create a hidden page item that will hold the primary key id value of the row that holds the file (e.g, P12_ID)<span style="font-weight:bold;font-size:13px;color:red;">*</span></li>
+                  <li>Now create a "File Browse" page item in the same region as the above page items, ensure the "Storage Type" value is set to "BLOB column specified in Item Source attribute"</li>
+                  <li>Define the application tables' column names for holding, MIME Type, Filename, Character Set, and BLOB Last Updated, and then click, "Next"</li>
+                  <li>Then click, "Create Item"<span style="font-weight:bold;font-size:13px;color:red;">*</span></li>
+                  <li>Create the other hidden page items that will store the filename, mimetype, and character set meta data<span style="font-weight:bold;font-size:13px;color:red;">*</span></li>
+                  <li>If your application's files table has a description (or comments) column, add a textarea page item for capturing this information<span style="font-weight:bold;font-size:13px;color:red;">*</span></li>
+                  <li>Now create an unconditional page processing process</li>
+                  <li>Choose "Data Manipulation" and click "Next"</li>
+                  <li>Give the process a name, "Process Row from EBA_DEMO_FILES" (for example), change the processing point to "On Submit - After Computations and Validations" and click "Next"</li>
+                  <li>Enter the table name of the application's "files" table, the APEX page item id of the page item that references the file being uploaded, and the column name of the blob column in the application's "files" table and then click "Create Item"</li>
+                  <li>Create the Cancel, Delete, Apply Changes, and Create buttons (see implementation of buttons on this page)</li>
+                  <li>Now create a conditional page processing process</li>
+                  <li>Choose "Session State" and click "Next"</li>
+                  <li>Select "Clear Cache for all Items on Pages (PageID,PageID,PageID)" and click "Next"</li>
+                  <li>Give it a name of "reset page", leave the other defaulted values, click "Next"</li>
+                  <li>Enter the current page id and then click "Next"</li>
+                  <li>Optionally add Success and/or Error Messages and then click "Next"</li>
+                  <li>Change the "When Button Pressed" condition to use the "Delete" button, leave all other options set to their default values and click "Create Process"</li>
+                </ul>
+                <span style="font-weight:bold;font-size:13px;color:red;">*</span> Be sure to set the identified page item's "Source Type" as "Database Column" and assign their "Source value or expression" as the corresponding column name in the application's "files" table.
+                <br /><a name="download_link"></a><br />
+                <p><strong>Download from a PL/SQL Generated Link</strong></p>
+                <ul style="margin: 8px 24px;">
+                  <li>If you are editing an existing file, you will see a link to download the file you are editing. This is generated from P12_DOWNLOAD_LINK (Display-Only) page item.</li>
+                  <li>This item uses PL/SQL and the apex_util.get_blob_file_src() function to generate the link for the end-user to download the file</li>
+                </ul>
+                </p>
+                </span>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region file (
+        name: File
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    pageItem P12_DOWNLOAD_LINK (
+        type: displayOnly
+        label {
+            label: Download
+            alignment: left
+        }
+        settings {
+            basedOn: plsql
+            plsqlCode:
+                ```plsql
+                begin
+                  sys.htp.p('<a href="' || apex_util.get_blob_file_src('P12_FILE_BLOB',:P12_ID,:P12_PROJECT_ID) || '">'||apex_escape.html(:P12_FILENAME)||'</a>');
+                end;
+                ```
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 70
+            region: @file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P12_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_FILENAME (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @file
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILENAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_FILE_BLOB (
+        type: fileUpload
+        label {
+            label: File Blob
+            alignment: left
+        }
+        display {
+            downloadLinkText: Download
+        }
+        storage {
+            mimeTypeColumn: FILE_MIMETYPE
+            filenameColumn: FILENAME
+            charSetColumn: FILE_CHARSET
+            bobLastUpdatedColumn: UPDATED
+        }
+        layout {
+            sequence: 60
+            region: @file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        advanced {
+            postText: <p><em>Files must be under 15M in size.</em></p>
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_BLOB
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P12_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_FILE_CHARSET (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @file
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_CHARSET
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_FILE_COMMENTS (
+        type: textField
+        label {
+            label: File Comments
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 80
+            region: @file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_COMMENTS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_FILE_MIMETYPE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @file
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FILE_MIMETYPE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @file
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P12_PROJECT_ID (
+        type: selectList
+        label {
+            label: Project
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select project||' '||task_name d, id from eba_demo_file_projects order by 1
+            nullDisplayValue: - Select Project -
+        }
+        layout {
+            sequence: 20
+            region: @file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PROJECT_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add File
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P12_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P12_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P12_ID
+        }
+    )
+
+    validation p12-file-blob (
+        name: P12_FILE_BLOB
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P12_FILE_BLOB
+        }
+        error {
+            errorMessage: Please select a file to upload.
+            associatedItem: @P12_FILE_BLOB
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+            type: itemIsNull
+            item: P12_ID
+        }
+    )
+
+    process fetch-row-from-eba-demo-files (
+        name: Fetch Row from EBA_DEMO_FILES
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_FILES
+            pkColumn: ID
+            pkItem: P12_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3241241078129246539
+        }
+    )
+
+    process process-row-of-eba-demo-files (
+        name: Process Row of EBA_DEMO_FILES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_FILES
+            pkColumn: ID
+            pkItem: P12_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 3241241300585246540
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 3241241507881246540
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+

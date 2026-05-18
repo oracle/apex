@@ -1,0 +1,102 @@
+plugin contentRowSimple (
+    name: Content Row Simple
+    staticId: CONTENT_ROW
+    templateComponent {
+        availableAs: [
+            partial
+            report
+        ]
+        partial:
+            ```html
+            {if APEX$IS_LAZY_LOADING/}
+              <div class="t-ContentRow-wrap" aria-hidden="true">
+                {if ?SELECTION%assigned/}<div class="t-ContentRow-selection is-placeholder"></div>{endif/}
+                {if DISPLAY_BADGE/}
+                  <div class="t-ContentRow-badge #BADGE_COL_WIDTH!ATTR#">
+                    {with/}
+                      LABEL:=
+                      VALUE:=
+                      SIZE:=#BADGE_SIZE#
+                      SHAPE:=#BADGE_SHAPE#
+                    {apply THEME$BADGE/}
+                  </div>
+                {endif/}
+                {if DISPLAY_AVATAR/}
+                  <div class="t-ContentRow-avatar">
+                    {with/}
+                      SHAPE:=#AVATAR_SHAPE#
+                      SIZE:=#AVATAR_SIZE#
+                    {apply THEME$AVATAR/}
+                  </div>
+                {endif/}
+                <div class="t-ContentRow-body">
+                  <div class="t-ContentRow-content">
+                    {if ?OVERLINE%assigned/}<div class="t-ContentRow-overline is-placeholder"></div>{endif/}
+                    {if ?TITLE%assigned/}<div class="t-ContentRow-title is-placeholder"></div>{endif/}
+                    {if ?DESCRIPTION%assigned/}<div class="t-ContentRow-description is-placeholder"></div>{endif/}
+                  </div>
+                  {if ?MISC%assigned/}<div class="t-ContentRow-misc is-placeholder"></div>{endif/}
+                  {if ?PRIMARY_ACTIONS%assigned/}<div class="t-ContentRow-actions is-placeholder"></div>{endif/}
+                </div>
+              </div>
+            {else/}
+              {if ?FULL_ROW_LINK/}<a class="t-ContentRow-fullLink" href="#FULL_ROW_LINK!ATTR#" #FULL_ROW_LINK_ATTR!RAW#></a>{endif/}
+              <div class="t-ContentRow-wrap">
+                {if ?SELECTION%assigned/}<div class="t-ContentRow-selection">#SELECTION!RAW#</div>{endif/}
+                {if DISPLAY_BADGE/}
+                  <div class="t-ContentRow-badge #BADGE_COL_WIDTH!ATTR#">
+                    {with/}
+                      LABEL_DISPLAY:=#BADGE_LABEL_DISPLAY#
+                      LABEL:=#BADGE_LABEL#
+                      VALUE:=#BADGE_VALUE#
+                      ICON:=#BADGE_ICON#
+                      STATE:=#BADGE_STATE#
+                      SIZE:=#BADGE_SIZE#
+                      STYLE:=#BADGE_STYLE#
+                      SHAPE:=#BADGE_SHAPE#
+                    {apply THEME$BADGE/}
+                  </div>
+                {endif/}
+                {if DISPLAY_AVATAR/}
+                  <div class="t-ContentRow-avatar" aria-hidden="true">
+                    {with/}
+                      TYPE:=#AVATAR_TYPE#
+                      IMAGE:=#AVATAR_IMAGE#
+                      IMAGE_ALT:=#AVATAR_IMAGE_ALT#
+                      INITIALS:=#AVATAR_INITIALS#
+                      ICON:=#AVATAR_ICON#
+                      SHAPE:=#AVATAR_SHAPE#
+                      SIZE:=#AVATAR_SIZE#
+                      LINK:=#AVATAR_LINK#
+                      LINK_ATTR:=#AVATAR_LINK_ATTR!RAW#
+                    {apply THEME$AVATAR/}
+                  </div>
+                {endif/}
+                <div class="t-ContentRow-body">
+                  <div class="t-ContentRow-content">
+                    {if ?OVERLINE/}<div class="t-ContentRow-overline">#OVERLINE!RAW#</div>{endif/}
+                    {if ?TITLE/}<h3 class="t-ContentRow-title">{if ?TITLE_LINK/}<a href="#TITLE_LINK!ATTR#" #TITLE_LINK_ATTR!RAW#>{endif/}#TITLE!RAW#{if ?TITLE_LINK/}</a>{endif/}</h3>{endif/}
+                    {if ?DESCRIPTION/}<div class="t-ContentRow-description">#DESCRIPTION!RAW#</div>{endif/}
+                  </div>
+                  {if ?MISC%assigned/}<div class="t-ContentRow-misc">#MISC!RAW#</div>{endif/}
+                  {if ?PRIMARY_ACTIONS/}<div class="t-ContentRow-actions">#PRIMARY_ACTIONS#</div>{endif/}
+                </div>
+              </div>
+            {endif/}
+            
+            ```
+        reportBody: <ul class="t-ContentRow{if ?STYLE/} #STYLE!ATTR#{endif/}{if ?ALIGN/} #ALIGN!ATTR#{endif/}{if APPLY_THEME_COLORS/} u-colors{endif/} #APEX$COMPONENT_CSS_CLASSES#">#APEX$ROWS#</ul>
+        reportRow: <li class="t-ContentRow-item{if ?ITEM_CLASSES/} #ITEM_CLASSES#{endif/}" #APEX$ROW_IDENTIFICATION#>#APEX$PARTIAL#</li>
+        numberOfLazyLoadingSkeletons: 3
+    }
+    component {
+        standardAttributes: regionTemplateAttr
+    }
+    advanced {
+        quickPick: true
+    }
+    information {
+        helpText: Display content in a formatted row with a title, description, and more. Supports avatars and badges. Available for a single row or as a report with multiple rows.
+    }
+)
+

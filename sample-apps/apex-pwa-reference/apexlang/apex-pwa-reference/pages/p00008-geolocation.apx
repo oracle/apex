@@ -1,0 +1,725 @@
+page 8 (
+    name: Geolocation
+    alias: GEOLOCATION
+    title: Geolocation - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: let lSpinner$;
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region compatibility (
+        name: Compatibility
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This table shows the supported combinations of operating systems and browsers for the Geolocation feature.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @get-current-position
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region data-type (
+        name: Data Type
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    The <strong>Get Current Position</strong> dynamic action can be used to return the data in three different ways.
+                    Choose between returning the GeoJSON to a page item, Latitude and Longitude to a page item, or full object to a JavaScript function.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 21
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        source {
+            htmlCode: <p>Tap the <strong>Geolocate</strong> button to find your current position. Your browser may ask your permission to provide this information to the page. This app doesn't save that information anywhere.</p>
+        }
+        layout {
+            sequence: 41
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            htmlDomId: demo1
+            regionDisplaySelector: true
+        }
+    )
+
+    region edit-dynamic-action (
+        name: Edit Dynamic Action
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @get-current-position
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: staticContent
+        layout {
+            sequence: 31
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region geojson (
+        name: GeoJSON
+        type: staticContent
+        source {
+            htmlCode: <p>Returns a JSON with all the location content:</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @data-type
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region geojson-code (
+        name: GeoJSON Code
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>{
+                    "latitude":20.7195718,
+                    "longitude":-103.4363326,
+                    "altitude":null,
+                    "accuracy":16.452,
+                    "altitudeAccuracy":null,
+                    "heading":null,
+                    "speed":null
+                }</code>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @geojson
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    region get-current-position (
+        name: Get Current Position
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    Use the <strong>Get Current Position</strong> dynamic action to fetch
+                    the device's current location.
+                </p>
+                
+                <p class="col-8">
+                    It can return latitude and longitude, or a GeoJSON object, into page items
+                    or a custom JavaScript function can receive a Geolocation object as a parameter.
+                    The accuracy of the geolocation depends on the user's device.
+                </p>
+                
+                <p class="col-8">
+                    For privacy reasons, each user is asked for permission upon the first use of
+                    this dynamic action. If the user denies permission, the Geolocation returned
+                    is null so your application should handle that possibility gracefully.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 1
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @ios-requesting-permission
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/geolocation-request-ios.png
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @ios-returning-geolocation
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/geolocation-done-ios.png
+        }
+    )
+
+    region image-3 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @edit-dynamic-action
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/da-get-current-position.jpeg
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In <strong>Page Designer</strong> add two items: <strong>P1_LATITUDE</strong> and <strong>P1_LONGITUDE</strong></li>
+                    <li>Create a <strong>Button</strong></li>
+                    <li>Add a <strong>Dynamic Action</strong> to the button click event</li>
+                    <li>Change the <strong>Action</strong> to <strong>Get Current Position</strong></li>
+                    <li>Set the Return Type to <strong>Latitude and Longitude</strong></li>
+                    <li>Set the Latitude Item to <strong>P1_LATITUDE</strong> to return latitude into it</li>
+                    <li>Set the Longitude Item to <strong>P1_LONGITUDE</strong> to return longitude into it</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @get-current-position
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Get Current Position Instructions
+        }
+    )
+
+    region ios-requesting-permission (
+        name: iOS requesting permission
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @examples
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region ios-returning-geolocation (
+        name: iOS returning geolocation
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @examples
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region item-container (
+        name: Item Container
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @demo
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/item-container
+            templateOptions: [
+                #DEFAULT#
+                t-ItemContainer--stackMobile
+                t-ItemContainer--alignStretch
+            ]
+        }
+    )
+
+    region javascript-function (
+        name: JavaScript Function
+        type: staticContent
+        source {
+            htmlCode: <p>Returns full Geolocation object to a custom JavaScript function:</p>
+        }
+        layout {
+            sequence: 40
+            parentRegion: @data-type
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region javascript-function-code (
+        name: JavaScript Function Code
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>function( position, event ) {
+                    apex.debug.log( position, event );
+                }</code>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @javascript-function
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    region latitude-and-longitude (
+        name: Latitude and Longitude
+        type: staticContent
+        source {
+            htmlCode: <p>Returns Latitude and Longitude in separated values:</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @data-type
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region latitude-and-longitude-code (
+        name: Latitude and Longitude Code
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>P1_LATITUDE: 20.7195613
+                P1_LONGITUDE: -103.4363368
+                </code>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @latitude-and-longitude
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    pageItem P1_LATITUDE (
+        type: textField
+        label {
+            label: Latitude
+            alignment: left
+        }
+        settings {
+            disabled: true
+        }
+        layout {
+            sequence: 10
+            region: @demo
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P1_LONGITUDE (
+        type: textField
+        label {
+            label: Longitude
+            alignment: left
+        }
+        settings {
+            disabled: true
+        }
+        layout {
+            sequence: 30
+            region: @item-container
+            slot: item
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    button get-current-position (
+        buttonName: GET_CURRENT_POSITION
+        label: Geolocate
+        layout {
+            sequence: 40
+            region: @item-container
+            slot: buttonEnd
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction onclick-get-current-position (
+        name: onClick GET_CURRENT_POSITION
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @get-current-position
+        }
+
+        action native-get-current-position (
+            action: getCurrentPosition
+            settings {
+                returnType: latitudeAndLongitude
+                latitudeItem: P1_LATITUDE
+                longitudeItem: P1_LONGITUDE
+                enableHighAccuracy: true
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: lSpinner$ = apex.util.showSpinner( $( "#demo1" ) );
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code-2 (
+            action: executeJsCode
+            settings {
+                jsCode: lSpinner$.remove();
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

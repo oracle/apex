@@ -1,0 +1,443 @@
+page 10 (
+    name: Always Signed In
+    alias: ALWAYS-SIGNED-IN
+    title: Always Signed In - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .t-Comments-instructions {
+                text-align: center;
+                font-weight: bold;
+            }
+            
+            .image-wrap {
+                display: flex;
+                flex-flow: column;
+            }
+            
+            .img-installer-mobile {
+                width: 100%;
+                border-radius: 5px;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region apex-admin-instance (
+        name: APEX Admin Instance
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @manage-instance
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region apex-authentication-login (
+        name: apex_authentication.login
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>APEX_AUTHENTICATION.LOGIN ( 
+                    p_username              IN VARCHAR2, 
+                    p_password              IN VARCHAR2,
+                    <strong>p_set_persistent_auth   IN BOOLEAN  DEFAULT FALSE</strong> ); 
+                </code>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @using-the-api
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        accessibility {
+            landmarkLabel: Code for apex_authentication.login
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region example (
+        name: Example
+        type: staticContent
+        source {
+            htmlCode: <p>Without <strong>persistent authentication</strong>, APEX login screens typically contain a <strong>Remember Username</strong> checkbox. With <strong>persistent authentication</strong>, users see a <strong>Remember me</strong> checkbox instead.</p>
+        }
+        layout {
+            sequence: 60
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: Persistent Authentication Example
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @login-page-default
+            slot: regionBody
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/login-normal.jpeg
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @login-page-with-pwa
+            slot: regionBody
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/login-pwa.jpeg
+        }
+    )
+
+    region image-3 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @apex-admin-instance
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/persistent-auth-admin.jpeg
+        }
+    )
+
+    region increased-engagement (
+        name: Increased engagement
+        type: staticContent
+        source {
+            htmlCode: <p>Let your users to choose to stay signed in and get them back into your app faster. When their session expires, a new one is automatically created.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @overview
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>Sign in to your APEX instance as admin</li>
+                    <li>Go to <strong>Manage Instance</strong></li>
+                    <li>Go to <strong>Security</strong></li>
+                    <li>Set <strong>Allow Persistent Auth</strong> to <strong>Yes</strong></li>
+                    <li>Set the <strong>lifetime</strong> duration for the automatic session renewal, in days</li>
+                </ol>
+                <ul>
+                    <li style="list-style-type: none;"><em class="u-flex">Note: apex.oracle.com has this enabled for demo purposes</em></li>
+                </ul>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @manage-instance
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Persistent authentication Instructions
+        }
+    )
+
+    region login-page-default (
+        name: Login page (Default)
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @example
+            slot: subRegions
+            columnSpan: 4
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region login-page-with-pwa (
+        name: Login page with PWA
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @example
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 4
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region manage-instance (
+        name: Manage Instance
+        type: staticContent
+        source {
+            htmlCode: <p><strong>Persistent authentication</strong> has to be enabled at the instance level.</p>
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Your customers launch your PWA app and start working immediately with the <strong>persistent authentication</strong> setting.
+                    Users sign in once and stay signed in for a fixed period of time.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region secured-by-default (
+        name: Secured by default
+        type: staticContent
+        source {
+            htmlCode: <p>The persistent authentication settings are configurable through the APEX admin instance and it can be disabled at any moment, giving you control over your system.</p>
+        }
+        layout {
+            sequence: 20
+            parentRegion: @overview
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region using-the-api (
+        name: Using the API
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    The persistent authentication is enabled for new PWAs. Change your existing
+                    applications to use persistent authentication through the extended
+                    apex_authentication.login API.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @overview
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+)
+

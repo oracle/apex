@@ -1,0 +1,427 @@
+page 5 (
+    name: Sales
+    title: Sales
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .elap-time h2.t-HeroRegion-title {
+              display: none;
+            }
+            
+            .elap-time h1.t-HeroRegion-title {
+              font-size: 7.2rem;
+              font-weight: 300;
+              line-height: 1;
+            }
+            
+            .elap-time .t-HeroRegion-col {
+            }
+            
+            .elap-time.t-HeroRegion {
+              border: 1px solid rgba(0,0,0,.15);
+            }
+            
+            span.t-HeroRegion-icon.t-Icon.fa.fa-clock-o:before {font-size: 42px;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 90
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sales-dashboard (
+        name: Sales Dashboard
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select sum(nvl(quantity,0)) units_sold,
+                       sum(nvl(quantity,0)*nvl(item_price,0)) sales,
+                       count(*) transactions
+                from oow_demo_sales_history sh
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        comments {
+            comments:
+                ```
+                SELECT json_value(SALES_DATA, '$.PRODUCT_ID') x
+                 FROM OOW_DEMO_SALES_HISTORY;
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-BadgeList--xlarge
+                t-BadgeList--dash
+                t-BadgeList--fixed
+            ]
+        }
+
+        column SALES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Sales
+            }
+            layout {
+                sequence: 10
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990
+            }
+        )
+
+        column TRANSACTIONS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Transactions
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column UNITS_SOLD (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Units Sold
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+    )
+
+    region sales-over-time (
+        name: Sales Over Time
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select to_char(DATE_OF_SALE,'YYYY.MM.DD') sale_date, 
+                       sum( QUANTITY*ITEM_PRICE) total_sales
+                from #OWNER#.oow_demo_sales_history
+                group by to_char(DATE_OF_SALE,'YYYY.MM.DD')
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: lineWithArea
+        }
+        title {
+            title: Daily Sales
+        }
+        chartLayout {
+            height: 480
+        }
+        settings {
+            timeAxisType: mixedFrequency
+            zoomAndScroll: liveScrollOnly
+        }
+        legend {
+            show: false
+        }
+
+        series sales-over-time (
+            name: Sales Over Time
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: SALE_DATE
+                value: TOTAL_SALES
+            }
+            line {
+                type: curved
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    button generate-transaction (
+        buttonName: generate_transaction
+        label: Generate Transaction
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-gear
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button refresh (
+        buttonName: refresh
+        label: Refresh
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction gen-xaction-refresh-content (
+        name: gen xaction refresh content
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @generate-transaction
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                    oow_demo_gen_data_pkg.exec_n_transactions(1);
+                    end;
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sales-over-time
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sales-dashboard
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction generate-orders (
+        name: Generate Orders
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P5_AUTO_GENERATE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                    oow_demo_gen_data_pkg.generate_transaction;
+                    end;
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-regions (
+        name: refresh regions
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @refresh
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sales-dashboard
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sales-over-time
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

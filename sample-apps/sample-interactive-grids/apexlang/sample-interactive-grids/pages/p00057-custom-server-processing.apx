@@ -1,0 +1,930 @@
+page 57 (
+    name: Custom Server Processing
+    alias: CUSTOM-SERVER-PROCESSING
+    title: Custom Server Processing
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            $("button[data-action=save]").after($("#save-button"));
+            $("#save-button").css("margin-left", "4px");
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region basic-editing (
+        name: Basic Editing
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       RATING,
+                       ONLEAVE,
+                       NOTES,
+                       DEPTNO
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 4434393465765436133
+        }
+
+        savedReport 14507 (
+            visibility: primary
+            view {
+                chart: true
+                default: grid
+                rowsPerPage: 10
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 136
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 187
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 147
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 114
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 109
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 108
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 91
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    width: 125
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 150
+                    sequence: 12
+                }
+            )
+
+            displayColumn (
+                column: @RATING
+                layout {
+                    width: 144
+                    sequence: 9
+                }
+            )
+
+            sort (
+                column: @ENAME
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+            chart {
+                type: bar
+                label: @ENAME
+                value: @SAL
+                valueAggregation: sum
+            }
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select DNAME as d, DEPTNO as r from EBA_DEMO_IG_DEPT order by 1
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            settings {
+                navigationListFor: month
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: radioGroup
+            heading {
+                heading: Job
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-jobs
+                displayNullValue: false
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select ENAME as d, EMPNO as r from EBA_DEMO_IG_EMP order by 1
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textarea
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                width: 60
+                height: 4
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: switch
+            heading {
+                heading: On Leave
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column RATING (
+            type: plugin/modernStarRating
+            heading {
+                heading: Rating
+            }
+            settings {
+                numberOfStars: 5
+                useComponentDefaults: false
+                icon: fa-thumbs-up
+                activeStarColor: #FA4F00
+                inactiveStarColor: #B8B8B8
+                tooltipTemplate: Rating: #VALUE#
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: RATING
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-custom-server-processing (
+        name: Overview: Custom Server Processing
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows how to use custom PL/SQL logic for processing submitted rows. Instead of the standard "Save Interactive Grid Data" processes you can create your own PL/SQL process which does custom logic. Make sure to set the Editable Grid attribute to the Interactive Grid region you want the process to work on.  Your code will be called for each submitted row. The column values are available as bind variables using colon syntax (e.g. :EMPNO).</p>
+                <p>This example page contains the standard process as well as a custom PL/SQL process. While the standard process maintains the base table, the custom logic maintains a DML log within an APEX collection. So, within one APEX session, the log shows which changes have been made to the interactive grid. For a new session, the log will be cleared. Of course, such a log could also be maintained in a persistent table.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region update-log (
+        name: Update log
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    case when c012 = 'D' then 'Delete'
+                         when c012 = 'C' then 'Create'
+                         when c012 = 'U' then 'Update' end as operation,
+                    d001 as time_stamp,
+                    c001 as empno,
+                    c002 as ename,
+                    c003 as job,
+                    c004 as hiredate,
+                    c005 as sal,
+                    c006 as comm,
+                    c007 as mgr,
+                    c008 as deptno,
+                    c009 as onleave,
+                    c010 as notes,
+                    c011 as rating
+                from apex_collections
+                where collection_name = 'IG_OPERATIONS'
+                order by d001 desc    
+                
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: <p>The upload log persists for the lifetime of the Application Express session.</p>
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+
+        column COMM (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Department ID
+                alignment: end
+            }
+            layout {
+                sequence: 11
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Hiredate
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Manager ID
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NOTES (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 13
+            }
+        )
+
+        column ONLEAVE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: On Leave
+                alignment: center
+            }
+            layout {
+                sequence: 12
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPERATION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Operation
+                alignment: center
+            }
+            layout {
+                sequence: 2
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RATING (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Rating
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TIME_STAMP (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: When
+                alignment: center
+            }
+            layout {
+                sequence: 1
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 31
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 56
+                action: resetPagination
+            }
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 10
+            region: @basic-editing
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: save-button
+        }
+    )
+
+    process maintain-log (
+        name: Maintain log
+        type: executeCode
+        editableRegion: @basic-editing
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                  if not apex_collection.collection_exists( p_collection_name => 'IG_OPERATIONS' ) then
+                     apex_collection.create_collection( p_collection_name => 'IG_OPERATIONS' );
+                  end if;
+                
+                  apex_collection.add_member(
+                      p_collection_name => 'IG_OPERATIONS', 
+                      p_d001 => sysdate,
+                      p_c001 => :EMPNO,
+                      p_c002 => :ENAME,
+                      p_c003 => :JOB,
+                      p_c004 => :HIREDATE,
+                      p_c005 => :SAL,
+                      p_c006 => :COMM,
+                      p_c007 => :MGR,
+                      p_c008 => :DEPTNO,
+                      p_c009 => :ONLEAVE, 
+                      p_c010 => :NOTES,
+                      p_c011 => :RATING, 
+                      p_c012 => :APEX$ROW_STATUS
+                  );
+                 end;
+                
+                
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 1863235105700192079
+        }
+    )
+
+    process save-interactive-grid-data (
+        name: " - Save Interactive Grid Data"
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @basic-editing
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 1870447516257637483
+        }
+    )
+
+)
+

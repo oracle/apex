@@ -1,0 +1,1937 @@
+page 49 (
+    name: Two Page Master Detail - Detail
+    alias: TWO-PAGE-MASTER-DETAIL-DETAIL
+    title: Two Page Master Detail - Detail
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            var htmldb_ch_message='"OK_TO_GET_NEXT_PREV_PK_VALUE"';
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region audit-details (
+        name: Audit Details
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @project-details-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P49_ROWID
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--compactTitle
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <strong>&P49_ROWID_COUNT.</strong>
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+                margin-left-md
+                margin-right-md
+            ]
+        }
+    )
+
+    region comments (
+        name: Comments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.id comment_id
+                , 'u-color-' || ora_hash(c.created_by, 29) || ' u-color-' || ora_hash(c.created_by, 29) || '-bd' icon_modifier
+                , c.comment_text
+                , c.created comment_date
+                ,  apex_string.get_initials(c.created_by) user_icon
+                , c.created_by user_name
+                , apex_page.get_url(p_page => 13, p_items => 'P13_ID', p_values => id) actions
+                , null attribute_1
+                , null attribute_2
+                , null attribute_3
+                , null attribute_4
+                from eba_demo_md_comments c
+                where c.project_id = :P49_ID
+                order by c.created
+                ```
+            pageItemsToSubmit: P49_ID
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: comments
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                11
+                49
+            ]
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+            showNullValuesAs: &nbsp;
+        }
+        messages {
+            whenNoDataFound: No comments for this project.
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 7
+            }
+            columnFormatting {
+                htmlExpression: <a href="#ACTIONS#" class="t-Button t-Button--small t-Button--simple">Edit</a>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Comment date
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Comment id
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment text
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Icon modifier
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: User icon
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: User name
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region milestones (
+        name: Milestones
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select m.id
+                , m.project_id
+                , m.name
+                , m.description
+                , m.due_date
+                , (select count(*)
+                   from eba_demo_md_tasks t
+                   where t.milestone_id = m.id
+                  ) tasks
+                from eba_demo_md_milestones m
+                where m.project_id = :P49_ID
+                ```
+            pageItemsToSubmit: P49_ID
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No milestones for this project.
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+            addButtonLabel: Add Milestone
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 649654729201155245
+        }
+
+        savedReport 14416 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    frozen: true
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    frozen: true
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT_ID
+                layout {
+                    frozen: true
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    frozen: true
+                    width: 221
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    width: 423
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @DUE_DATE
+                layout {
+                    width: 93
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @TASKS
+                layout {
+                    width: 78
+                    sequence: 8
+                }
+            )
+
+            sort (
+                column: @DUE_DATE
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column DESCRIPTION (
+            type: textField
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 70
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column DUE_DATE (
+            type: datePickerJquery
+            heading {
+                heading: Due Date
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: DUE_DATE
+                dataType: date
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+            default {
+                duplicateCopiesExistingValue: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                valueRequired: true
+                maxLength: 255
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column PROJECT_ID (
+            type: hidden
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+            }
+            default {
+                type: item
+                item: P49_ID
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column TASKS (
+            type: textField
+            heading {
+                heading: Tasks
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: TASKS
+                dataType: number
+                queryOnly: true
+            }
+            readOnly {
+                type: always
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+    )
+
+    region project-details (
+        name: Project Details
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region project-details-2 (
+        name: Project Details
+        type: form
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_MD_PROJECTS
+            includeRowidColumn: true
+            orderByClause: CREATED
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region tasks (
+        name: Tasks
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.id
+                , t.project_id
+                , t.name
+                , t.description
+                , t.is_complete_yn
+                , t.milestone_id
+                , t.assignee
+                , t.start_date
+                , t.end_date
+                , (select count('x')
+                   from eba_demo_md_task_todos td
+                   where td.task_id = t.id
+                  ) todos
+                , (select count('x')
+                   from eba_demo_md_task_links l
+                   where l.task_id = t.id
+                  ) links
+                from eba_demo_md_tasks t
+                where t.project_id = :P49_ID
+                ```
+            pageItemsToSubmit: P49_ID
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No tasks for this project.
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+            addButtonLabel: Add Task
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 784391498197810203
+        }
+
+        savedReport 14417 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    frozen: true
+                    sequence: 0
+                }
+            )
+
+            displayColumn (
+                column: @ID
+                layout {
+                    frozen: true
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT_ID
+                layout {
+                    frozen: true
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @NAME
+                layout {
+                    frozen: true
+                    width: 236
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNEE
+                layout {
+                    width: 147
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @MILESTONE_ID
+                layout {
+                    show: false
+                    width: 229
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    show: false
+                    width: 541
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @START_DATE
+                layout {
+                    width: 84
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @END_DATE
+                layout {
+                    width: 80
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @IS_COMPLETE_YN
+                layout {
+                    width: 103
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @TODOS
+                layout {
+                    width: 109
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @LINKS
+                layout {
+                    width: 103
+                    sequence: 11
+                }
+            )
+
+            sort (
+                column: @START_DATE
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: @END_DATE
+                sort {
+                    nulls: last
+                    sequence: 2
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ASSIGNEE (
+            type: selectList
+            heading {
+                heading: Assignee
+            }
+            lov {
+                type: sharedComponent
+                lov: @team-members
+                displayExtraValues: false
+                nullDisplayValue: - Select Assignee -
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ASSIGNEE
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column DESCRIPTION (
+            type: textField
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column END_DATE (
+            type: datePickerJquery
+            heading {
+                heading: End date
+            }
+            layout {
+                sequence: 100
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: END_DATE
+                dataType: date
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+            default {
+                duplicateCopiesExistingValue: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column IS_COMPLETE_YN (
+            type: switch
+            heading {
+                heading: Completed?
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: IS_COMPLETE_YN
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column LINKS (
+            type: link
+            heading {
+                heading: Links
+                alignment: end
+            }
+            layout {
+                sequence: 130
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 22
+                    items: {
+                        P22_TASK_ID: &ID.
+                        P22_PROJECT_ID: &PROJECT_ID.
+                    }
+                    clearCache: 22
+                    action: resetPagination
+                }
+            }
+            source {
+                databaseColumn: LINKS
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        column MILESTONE_ID (
+            type: selectList
+            heading {
+                heading: Milestone
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select name || ' [' || due_date || ']' as display
+                    , id as return
+                    from eba_demo_md_milestones
+                    where project_id = :P49_ID
+                    order by due_date
+                    ```
+                displayExtraValues: false
+                nullDisplayValue: - Select Milestone -
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: MILESTONE_ID
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                valueRequired: true
+                maxLength: 255
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column PROJECT_ID (
+            type: hidden
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+            }
+            default {
+                type: item
+                item: P49_ID
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column START_DATE (
+            type: datePickerJquery
+            heading {
+                heading: Start date
+            }
+            layout {
+                sequence: 90
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: START_DATE
+                dataType: date
+            }
+        )
+
+        column TODOS (
+            type: link
+            heading {
+                heading: To Dos
+                alignment: end
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 14
+                    items: {
+                        P14_TASK_ID: &ID.
+                        P14_PROJECT_ID: &PROJECT_ID.
+                    }
+                    clearCache: 14
+                    action: resetPagination
+                }
+            }
+            source {
+                databaseColumn: TODOS
+                dataType: number
+                queryOnly: true
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    pageItem P49_COMPLETED_DATE (
+        type: datePicker
+        label {
+            label: Completed Date
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @project-details-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        source {
+            formRegion: @project-details-2
+            column: COMPLETED_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_CREATED (
+        type: displayOnly
+        label {
+            label: Created
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @project-details-2
+            column: CREATED
+            dataType: timestampWithTimeZone
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_CREATED_BY (
+        type: selectList
+        label {
+            label: Created By
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username
+        }
+        layout {
+            sequence: 130
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @project-details-2
+            column: CREATED_BY
+            dataType: varchar2
+            queryOnly: true
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 220
+            region: @project-details-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @project-details-2
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_ID (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @project-details-2
+            slot: regionBody
+        }
+        source {
+            formRegion: @project-details-2
+            column: ID
+            dataType: number
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 180
+            region: @project-details-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @project-details-2
+            column: NAME
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_PROJECT_LEAD (
+        type: selectList
+        label {
+            label: Project Lead
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @team-members
+            displayExtraValues: false
+            nullDisplayValue: - Select Project Lead -
+        }
+        layout {
+            sequence: 190
+            region: @project-details-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @project-details-2
+            column: PROJECT_LEAD
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_ROWID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @project-details-2
+            slot: regionBody
+        }
+        source {
+            formRegion: @project-details-2
+            column: ROWID
+            dataType: varchar2
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_ROWID_COUNT (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @project-details-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: This item is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+    pageItem P49_ROWID_NEXT (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @project-details-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: This item is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+    pageItem P49_ROWID_PREV (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @project-details-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: This item is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+    pageItem P49_STATUS_CD (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @status
+            displayExtraValues: false
+            nullDisplayValue: - Select Status -
+        }
+        layout {
+            sequence: 200
+            region: @project-details-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @project-details-2
+            column: STATUS_CD
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_UPDATED (
+        type: displayOnly
+        label {
+            label: Updated
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @project-details-2
+            column: UPDATED
+            dataType: timestampWithTimeZone
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P49_UPDATED_BY (
+        type: selectList
+        label {
+            label: Updated By
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username
+        }
+        layout {
+            sequence: 140
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @project-details-2
+            column: UPDATED_BY
+            dataType: varchar2
+            queryOnly: true
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-comment (
+        buttonName: ADD_COMMENT
+        label: Add comment
+        layout {
+            sequence: 10
+            region: @comments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                items: {
+                    P13_PROJECT_ID: &P49_ID.
+                }
+                clearCache: 13
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: add-comment
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 48
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 60
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P49_ROWID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 40
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P49_ROWID
+        }
+    )
+
+    button get-next-rowid (
+        buttonName: GET_NEXT_ROWID
+        label: Next
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+                t-Button--gapRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P49_ROWID_NEXT
+        }
+        comments {
+            comments: This button is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+    button get-previous-rowid (
+        buttonName: GET_PREVIOUS_ROWID
+        label: Previous
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P49_ROWID_PREV
+        }
+        comments {
+            comments: This button is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 50
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P49_ROWID
+        }
+    )
+
+    dynamicAction comment-region-dialog-closed (
+        name: Comment Region - Dialog Closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @comments
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @comments
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-completed-date (
+        name: Show Completed Date
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P49_STATUS_CD
+        }
+        clientSideCondition {
+            type: item=value
+            item: P49_STATUS_CD
+            value: COMPLETED
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P49_COMPLETED_DATE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P49_COMPLETED_DATE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction tasks-region-dialog-closed (
+        name: Tasks Region - Dialog Closed
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @tasks
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @tasks
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: item
+            itemName: APP_PAGE_ID
+        }
+    )
+
+    process initialize-form-two-page-master-detail-detail (
+        name: Initialize form Two Page Master Detail - Detail
+        type: formInitialization
+        formRegion: @project-details-2
+        navigation {
+            nextPkItems: P49_ROWID_NEXT
+            prevPkItems: P49_ROWID_PREV
+            currentRowTotalItem: P49_ROWID_COUNT
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 179752609119869446
+        }
+    )
+
+    process milestones-save-interactive-grid-data (
+        name: Milestones - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @milestones
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Milestone(s) saved: Inserted = #MRI_COUNT#, Updated = #MRU_COUNT#, Deleted = #MRD_COUNT#.<br />
+        }
+        advanced {
+            executionMappingIdentifier: 4619999023093396016
+        }
+    )
+
+    process process-form-project-details (
+        name: Process form Project Details
+        type: formAutoRowProcessing
+        formRegion: @project-details-2
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 187613168633572707
+        }
+    )
+
+    process tasks-save-interactive-grid-data (
+        name: Tasks - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @tasks
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Task(s) saved: Inserted = #MRI_COUNT#, Updated = #MRU_COUNT#, Deleted = #MRD_COUNT#.<br />
+        }
+        advanced {
+            executionMappingIdentifier: 4619998625745396012
+        }
+    )
+
+    branch (
+        name: Go To Page 48
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    branch (
+        name: Go To Page 49
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 49
+                items: {
+                    P49_ROWID: &P49_ROWID_NEXT.
+                }
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @get-next-rowid
+        }
+        comments {
+            comments: This button is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+    branch (
+        name: Go To Page 49
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 49
+                items: {
+                    P49_ROWID: &P49_ROWID_PREV.
+                }
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @get-previous-rowid
+        }
+        comments {
+            comments: This button is needed for Get Next or Previous Primary Key Value process.
+        }
+    )
+
+)
+

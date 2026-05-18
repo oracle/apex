@@ -1,0 +1,15 @@
+customAttribute attribute_01 (
+    apexlangName: regionStaticId
+    attribute: 1
+    name: Region Static ID
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: <p>Provide the Region Static ID.</p>
+    }
+)
+

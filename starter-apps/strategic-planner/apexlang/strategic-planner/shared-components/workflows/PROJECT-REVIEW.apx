@@ -1,0 +1,780 @@
+workflow PROJECT-REVIEW (
+    name: Project Review
+    title: &P_APPROVAL_TYPE. Review for &P_NOMENCLATURE_PROJECT. "&P_PROJECT_NAME."
+
+    parameter P_APPROVAL_TYPE (
+        label {
+            label: P_APPROVAL_TYPE
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_APP_ID (
+        label {
+            label: P_APP_ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_APP_NAME (
+        label {
+            label: P_APP_NAME
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_NOMENCLATURE_PROJECT (
+        label {
+            label: P_NOMENCLATURE_PROJECT
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_PROJECT_APPROVAL_ID (
+        label {
+            label: P_PROJECT_APPROVAL_ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_PROJECT_ID (
+        label {
+            label: P_PROJECT_ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_PROJECT_LINK (
+        label {
+            label: P_PROJECT_LINK
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_PROJECT_NAME (
+        label {
+            label: P_PROJECT_NAME
+        }
+        validation {
+            required: true
+        }
+    )
+
+    parameter P_SUBMITTER_TM_ID (
+        label {
+            label: P_SUBMITTER_TM_ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+    )
+
+    version 1.2 (
+        settings {
+            state: active
+        }
+
+        activity New (
+            name: Start
+            type: workflowStart
+            layout {
+                sequence: 10
+            }
+            advanced {
+                diagram: {"position":{"x":70,"y":850},"z":1}
+            }
+
+            connection (
+                name: Submit Request
+                activity {
+                    to: @identify-next-reviewer
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"66.667%\",\"dy\":\"50%\",\"rotate\":true}},\"target\":{},\"vertices\":[],\"z\":13,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_2 (
+            name: End
+            type: workflowEnd
+            layout {
+                sequence: 120
+            }
+            advanced {
+                diagram: {"position":{"x":1210,"y":1370},"z":12}
+            }
+        )
+
+        activity New_3 (
+            name: Approve?
+            type: switch
+            switch {
+                type: checkWorkflowVar
+            }
+            compare {
+                compareVar: V_APPROVAL_STATUS
+            }
+            layout {
+                sequence: 60
+            }
+            advanced {
+                diagram: {"position":{"x":1140,"y":970},"z":6}
+            }
+
+            connection (
+                name: Rejected
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: =
+                    value: REJECTED
+                }
+                activity {
+                    to: @grab-data-for-rejection
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"bottom\",\"args\":{\"dx\":0,\"dy\":-10}},\"target\":{},\"vertices\":[],\"z\":24,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: Approved
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: =
+                    value: APPROVED
+                }
+                activity {
+                    to: @identify-next-reviewer
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50.003%\",\"dy\":\"0.019%\",\"rotate\":true}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"100%\",\"dy\":\"33.333%\",\"rotate\":true}},\"vertices\":[{\"x\":1250,\"y\":870},{\"x\":530,\"y\":870}],\"z\":25,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity another-review (
+            name: Is there another Review?
+            type: switch
+            condition {
+                sqlQuery:
+                    ```sql
+                    select 1 
+                      from sp_project_approval_chain
+                     where project_approval_id = :P_PROJECT_APPROVAL_ID
+                       and status = 'PENDING'
+                    ```
+            }
+            layout {
+                sequence: 30
+            }
+            advanced {
+                diagram: {"position":{"x":250,"y":980},"z":3}
+            }
+
+            connection (
+                name: another review
+                condition {
+                    when: true
+                }
+                activity {
+                    to: @grab-data-for-review-notif
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":22,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: no more reviews
+                condition {
+                    when: false
+                }
+                activity {
+                    to: @approve-review
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"bottom\",\"args\":{\"dx\":0,\"dy\":-10}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":23,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity approval-notif (
+            name: Notify Approval to Submitter (and project owner)
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    sp_util.assignment_notification (
+                        p_team_member_id    => :P_SUBMITTER_TM_ID,
+                        p_app_name          => :P_APP_NAME,
+                        p_app_id            => :P_APP_ID,
+                        p_project_id        => :P_PROJECT_ID,
+                        p_link              => :P_PROJECT_LINK,
+                        p_view_what         => :P_NOMENCLATURE_PROJECT,
+                        p_title             => :V_EMAIL_SUBJECT,
+                        p_email_contents    => :V_EMAIL_BODY,
+                        p_notification_type => 'APPROVAL' );
+                    
+                    for c1 in (
+                        select owner_id
+                          from sp_projects
+                         where id = :P_PROJECT_ID
+                           and owner_id is not null
+                    ) loop
+                        if c1.owner_id != :P_SUBMITTER_TM_ID then
+                            sp_util.assignment_notification (
+                                p_team_member_id    => c1.owner_id,
+                                p_app_name          => :P_APP_NAME,
+                                p_app_id            => :P_APP_ID,
+                                p_project_id        => :P_PROJECT_ID,
+                                p_link              => :P_PROJECT_LINK,
+                                p_view_what         => :P_NOMENCLATURE_PROJECT,
+                                p_title             => :V_EMAIL_SUBJECT,
+                                p_email_contents    => :V_EMAIL_BODY,
+                                p_notification_type => 'APPROVAL' );
+                        end if;
+                    end loop;
+                    ```
+            }
+            layout {
+                sequence: 90
+            }
+            advanced {
+                diagram: {"position":{"x":250,"y":1370},"z":9}
+            }
+
+            connection (
+                name: Send Approval
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"16.667%\",\"dy\":\"66.667%\",\"rotate\":true}},\"vertices\":[],\"z\":19,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity approve-review (
+            name: Approve Request
+            type: invokeApi
+            invoke {
+                package: SP_APPROVALS
+                procedureOrFunction: APPROVE_REQUEST
+            }
+            layout {
+                sequence: 70
+            }
+            advanced {
+                diagram: {"position":{"x":250,"y":1130},"z":7}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @grab-data-for-approval
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"83.333%\",\"rotate\":true}},\"target\":{},\"vertices\":[],\"z\":17,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_project_approval_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: P_PROJECT_APPROVAL_ID
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+        )
+
+        activity grab-data-for-approval (
+            name: Grab data for Approval Notif
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    :V_EMAIL_SUBJECT := :P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' Approved for '||:P_APPROVAL_TYPE;
+                    
+                    :V_EMAIL_BODY := :P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' was just approved for '||:P_APPROVAL_TYPE;
+                    ```
+            }
+            layout {
+                sequence: 80
+            }
+            advanced {
+                diagram: {"position":{"x":250,"y":1250},"z":8}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @approval-notif
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"bottom\",\"args\":{\"dx\":0,\"dy\":-10}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":18,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity grab-data-for-rejection (
+            name: Grab data for Rejection Notif
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    :V_EMAIL_SUBJECT := :P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' Rejected for '||:P_APPROVAL_TYPE;
+                    
+                    for c1 in (
+                        select comments
+                          from sp_project_approval_chain
+                         where project_approval_id = :P_PROJECT_APPROVAL_ID
+                           and status = 'REJECTED'
+                           and final_yn = 'Y'
+                    ) loop
+                        :V_EMAIL_BODY := :P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' was just rejected for '||:P_APPROVAL_TYPE||'.<br/>'||
+                                          'Comments: '|| c1.comments;
+                    end loop;
+                    ```
+            }
+            layout {
+                sequence: 100
+            }
+            advanced {
+                diagram: {"position":{"x":1130,"y":1110},"z":10}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @rejection-notif
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":20,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity grab-data-for-review-notif (
+            name: Grab data for Reviewer Notif
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    :V_EMAIL_SUBJECT := 'Workflow Approval Request, '||:P_APPROVAL_TYPE||' review needed for '||:P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME;
+                    
+                    for c1 in (
+                        select justification
+                          from sp_project_approvals
+                         where id = :P_PROJECT_APPROVAL_ID
+                    ) loop
+                        :V_EMAIL_BODY := '<strong>Workflow pending your approval</strong><br/><br/>'||:P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' requires your review for '||:P_APPROVAL_TYPE||'.<br/>'||
+                                         'Justification: '|| substr(c1.justification,1,3000);
+                    end loop;
+                    ```
+            }
+            layout {
+                sequence: 40
+            }
+            advanced {
+                diagram: {"position":{"x":570,"y":980},"z":4}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @request-review
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":15,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity identify-next-reviewer (
+            name: Identify Next Reviewer
+            type: invokeApi
+            invoke {
+                package: SP_APPROVALS
+                procedureOrFunction: IDENTIFY_NEXT_REVIEWER
+            }
+            layout {
+                sequence: 20
+            }
+            advanced {
+                diagram: {"position":{"x":250,"y":850},"z":2}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @another-review
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":14,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter p_project_approval_chain_id (
+                parameter {
+                    direction: out
+                    dataType: number
+                }
+                value {
+                    item: V_PROJECT_APPROVAL_CHAIN_ID
+                }
+                advanced {
+                    displaySequence: 20
+                }
+            )
+
+            parameter p_project_approval_id (
+                parameter {
+                    dataType: number
+                }
+                value {
+                    type: item
+                    item: P_PROJECT_APPROVAL_ID
+                }
+                advanced {
+                    displaySequence: 10
+                }
+            )
+
+            parameter p_reviewer_email (
+                parameter {
+                    direction: out
+                }
+                value {
+                    item: V_REVIEWER_EMAIL
+                }
+                advanced {
+                    displaySequence: 30
+                }
+            )
+
+            parameter p_reviewer_tm_id (
+                parameter {
+                    direction: out
+                    dataType: number
+                }
+                value {
+                    item: V_REVIEWER_TM_ID
+                }
+                advanced {
+                    displaySequence: 40
+                }
+            )
+
+        )
+
+        activity rejection-notif (
+            name: Notify about Rejection
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    sp_util.assignment_notification (
+                        p_team_member_id    => :P_SUBMITTER_TM_ID,
+                        p_app_name          => :P_APP_NAME,
+                        p_app_id            => :P_APP_ID,
+                        p_project_id        => :P_PROJECT_ID,
+                        p_link              => :P_PROJECT_LINK,
+                        p_view_what         => :P_NOMENCLATURE_PROJECT,
+                        p_title             => :V_EMAIL_SUBJECT,
+                        p_email_contents    => :V_EMAIL_BODY,
+                        p_notification_type => 'APPROVAL' );
+                    ```
+            }
+            layout {
+                sequence: 110
+            }
+            advanced {
+                diagram: {"position":{"x":1140,"y":1240},"z":11}
+            }
+
+            connection (
+                name: Send Rejection Email
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"66.667%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":21,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity request-review (
+            name: Request Review
+            type: humanTaskCreate
+            humanTask {
+                definition: @REVIEW-PROJECT
+                taskIdItem: V_WORKFLOW_TASK_ID
+                detailsPkItem: V_PROJECT_APPROVAL_CHAIN_ID
+            }
+            result {
+                outcome: V_APPROVAL_STATUS
+            }
+            layout {
+                sequence: 50
+            }
+            advanced {
+                diagram: {"position":{"x":850,"y":980},"z":5}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_3
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50.003%\",\"dy\":\"66.66%\",\"rotate\":true}},\"vertices\":[],\"z\":16,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter (
+                name: @P_APP_ID
+                value {
+                    type: item
+                    item: P_APP_ID
+                }
+            )
+
+            parameter (
+                name: @P_APP_NAME
+                value {
+                    type: item
+                    item: P_APP_NAME
+                }
+            )
+
+            parameter (
+                name: @P_APPROVAL_TYPE
+                value {
+                    type: item
+                    item: P_APPROVAL_TYPE
+                }
+            )
+
+            parameter (
+                name: @V_EMAIL_BODY
+                value {
+                    type: item
+                    item: V_EMAIL_BODY
+                }
+            )
+
+            parameter (
+                name: @V_EMAIL_SUBJECT
+                value {
+                    type: item
+                    item: V_EMAIL_SUBJECT
+                }
+            )
+
+            parameter (
+                name: @P_NOMENCLATURE_PROJECT
+                value {
+                    type: item
+                    item: P_NOMENCLATURE_PROJECT
+                }
+            )
+
+            parameter (
+                name: @V_PROJECT_APPROVAL_CHAIN_ID
+                value {
+                    type: item
+                    item: V_PROJECT_APPROVAL_CHAIN_ID
+                }
+            )
+
+            parameter (
+                name: @P_PROJECT_ID
+                value {
+                    type: item
+                    item: P_PROJECT_ID
+                }
+            )
+
+            parameter (
+                name: @P_PROJECT_LINK
+                value {
+                    type: item
+                    item: P_PROJECT_LINK
+                }
+            )
+
+            parameter (
+                name: @P_PROJECT_NAME
+                value {
+                    type: item
+                    item: P_PROJECT_NAME
+                }
+            )
+
+            parameter (
+                name: @P_REVIEWER_EMAIL
+                value {
+                    type: item
+                    item: V_REVIEWER_EMAIL
+                }
+            )
+
+            parameter (
+                name: @P_REVIEWER_TM_ID
+                value {
+                    type: item
+                    item: V_REVIEWER_TM_ID
+                }
+            )
+
+        )
+
+        variable APPROVER (
+            label {
+                label: Approver
+            }
+        )
+
+        variable TASK_OUTCOME (
+            label {
+                label: TaskOutcome
+            }
+        )
+
+        variable V_APPROVAL_STATUS (
+            label {
+                label: V_APPROVAL_STATUS
+            }
+        )
+
+        variable V_EMAIL_BODY (
+            label {
+                label: V_EMAIL_BODY
+            }
+        )
+
+        variable V_EMAIL_SUBJECT (
+            label {
+                label: V_EMAIL_SUBJECT
+            }
+        )
+
+        variable V_PROJECT_APPROVAL_CHAIN_ID (
+            label {
+                label: V_PROJECT_APPROVAL_CHAIN_ID
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        variable V_REVIEWER_EMAIL (
+            label {
+                label: V_REVIEWER_EMAIL
+            }
+        )
+
+        variable V_REVIEWER_TM_ID (
+            label {
+                label: V_REVIEWER_TM_ID
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        variable V_WORKFLOW_TASK_ID (
+            label {
+                label: V_WORKFLOW_TASK_ID
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        participant (
+            name: admin query
+            type: admin
+            value {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select user_name_lc
+                      from APEX_APPL_ACL_USERS
+                     where APPLICATION_ID = :APP_ID
+                       and role_names = 'Administrator'
+                    ```
+            }
+        )
+
+        participant (
+            name: owner
+            value {
+                staticValue: SHARON.KENNEDY@ORACLE.COM
+            }
+        )
+
+        participant (
+            name: admin query upper
+            type: admin
+            value {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select upper(user_name_lc)
+                      from APEX_APPL_ACL_USERS
+                     where APPLICATION_ID = :APP_ID
+                       and role_names = 'Administrator'
+                    ```
+            }
+        )
+
+    )
+
+)
+

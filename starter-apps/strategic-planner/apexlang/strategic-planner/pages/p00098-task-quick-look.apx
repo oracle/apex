@@ -1,0 +1,1398 @@
+page 98 (
+    name: Task Quick Look
+    alias: TASK-QUICK-LOOK
+    title: Quick Look
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region comments (
+        name: Comments
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ic.ID,
+                       -- Display Columns
+                       tm.initials user_icon,
+                       apex_util.get_since(ic.created) comment_date,
+                       tm.first_name || ' ' || tm.last_name user_name,
+                       --
+                       ic.body_html comment_text,
+                       null actions,
+                       ' ' attribute_1,
+                       ' ' attribute_2,
+                       ' ' attribute_3,
+                       ' ' attribute_4,
+                       'u-color-'||ora_hash(ic.created_by,45) icon_modifier,
+                       --
+                       --
+                       --
+                       decode(ic.private_yn,null,null,'N',null,'Y',' Private Comment') private_comment_label,
+                       --
+                       -- Data Columns
+                       --
+                       ic.BODY,
+                       ic.BODY_HTML,
+                       ic.AUTHOR_ID,
+                       --
+                       ic.CREATED,
+                       ic.CREATED_BY,
+                       ic.UPDATED,
+                       ic.UPDATED_BY,
+                       tm.id team_member_id
+                  from sp_task_comments ic, 
+                       sp_team_members tm
+                where ic.author_id = tm.id and
+                      ic.task_id = :P98_TASK_ID and  
+                      (nvl(ic.private_yn,'N') = 'N' or lower(ic.created_by) = lower(:APP_USER) )
+                order by created desc
+                ```
+            pageItemsToSubmit: P98_TASK_ID
+        }
+        layout {
+            sequence: 110
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: COMMENTS
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_task_comments
+                 where task_id = :P98_TASK_ID 
+                   and (nvl(private_yn,'N') = 'N' or lower(created_by) = lower(:APP_USER))
+                ```
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No comments
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 190
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                authorizationScheme: @contribution-rights
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+                alignment: center
+            }
+            layout {
+                sequence: 200
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+                alignment: center
+            }
+            layout {
+                sequence: 210
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+                alignment: center
+            }
+            layout {
+                sequence: 220
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+                alignment: center
+            }
+            layout {
+                sequence: 230
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AUTHOR_ID (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Author Id
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Body
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY_HTML (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Body Html
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+                alignment: center
+            }
+            layout {
+                sequence: 160
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+                alignment: center
+            }
+            layout {
+                sequence: 180
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
+                    #COMMENT_TEXT#
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Created By
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+                alignment: center
+            }
+            layout {
+                sequence: 240
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIVATE_COMMENT_LABEL (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Private Comment Label
+            }
+            layout {
+                sequence: 260
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: User ID
+            }
+            layout {
+                sequence: 250
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Updated By
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Icon
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: User Name
+                alignment: center
+            }
+            layout {
+                sequence: 170
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region documents (
+        name: Documents
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       d.DOCUMENT_FILENAME || case when important_yn = 'Y' then ' (Important)' end document_filename,
+                       'added by '||lower(created_by) ||' '||apex_util.get_since(created) created_details
+                  from SP_TASK_DOCUMENTS d
+                 where task_id = :P98_TASK_ID
+                order by created desc
+                ```
+            pageItemsToSubmit: P98_TASK_ID
+        }
+        layout {
+            sequence: 100
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_TASK_DOCUMENTS
+                 where task_id = :P98_TASK_ID
+                ```
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: No documents found
+        }
+        heading {
+            type: none
+        }
+
+        column CREATED_DETAILS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Created Details
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DOCUMENT_FILENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Document
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    page: 505
+                    items: {
+                        P505_ID: #ID#
+                        P502_TASK_ID: &P98_ID.
+                        P505_PREV_PAGE: 502
+                    }
+                    clearCache: 505
+                }
+                linkText: #DOCUMENT_FILENAME#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region links (
+        name: Links
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.id, 
+                       case when lower(l.link_url) not like 'http%' then 'http://' end || l.link_url link_url,
+                       l.created, 
+                       l.updated, 
+                       decode(
+                           greatest(length(l.link_url),80),
+                           length(l.link_url),
+                           substr(l.link_url,1,37)||'...'||substr(l.link_url,length(l.link_url)-40),
+                           l.link_url
+                           ) link_url_display
+                from SP_task_LINKS l 
+                where task_id = :P98_TASK_ID
+                order by created desc
+                ```
+            pageItemsToSubmit: P98_TASK_ID
+        }
+        layout {
+            sequence: 90
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_task_LINKS
+                 where task_id = :P98_TASK_ID
+                ```
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: No links found
+        }
+        heading {
+            type: none
+        }
+
+        column CREATED (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column LINK_URL (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: <a href="#LINK_URL#" target="_blank">#LINK_URL_DISPLAY#</a>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_URL_DISPLAY (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+    )
+
+    region p98-task-type (
+        name: &P98_TASK_TYPE.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with today as (select trunc(sysdate) day from dual)
+                select r.ID,
+                       (select project from sp_projects where id = r.project_id) project,
+                       r.project_id,
+                       (select task_type from sp_task_types rt where rt.id = r.task_sub_type_id) task_type,
+                       r.task task,
+                       (select case when first_name is not null or last_name is not null
+                                    then first_name||' '||last_name
+                                    else email
+                                    end
+                               from sp_team_members t where t.id = r.owner_id) the_owner,
+                       r.impact,
+                       s.status,
+                       r.start_date,
+                       r.target_complete,
+                       case when s.indicates_complete_yn = 'N' and
+                                 r.target_complete is not null
+                            then least(5, trunc(r.target_complete) - trunc(r.target_complete, 'iw') + 1)
+                                 - least(5, today.day - trunc(today.day, 'iw') + 1)
+                                 + (trunc(r.target_complete, 'iw') - trunc(today.day, 'iw')) * 5 / 7
+                       end weekdays_left,
+                       r.updated,
+                       r.description,
+                       p.friendly_identifier fi,
+                       p.project_url_name pn
+                  from sp_tasks r,
+                       sp_task_statuses s,
+                       today,
+                       SP_PROJECTS p
+                 where r.id = :P98_TASK_ID
+                   and r.status_id = s.id
+                   and r.project_id = p.id
+                ```
+            pageItemsToSubmit: [
+                P98_TASK_ID
+                APP_USER_ID
+            ]
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column DESCRIPTION (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 170
+            }
+        )
+
+        column FI (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column IMPACT (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Impact
+            }
+            layout {
+                sequence: 70
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_tasks
+                     where id = :P98_ID
+                       and impact is not null
+                    ```
+            }
+        )
+
+        column PN (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FI#
+                        PN: #PN#
+                    }
+                    clearCache: 3
+                }
+                linkText: #PROJECT#
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column START_DATE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: fmDD fmMonth, YYYY
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 110
+            }
+        )
+
+        column TARGET_COMPLETE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+        )
+
+        column TASK (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Task
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 502
+                    items: {
+                        P502_TASK_ID: #ID#
+                        P502_PREV_PAGE: 3
+                        P502_PROJECT_ID: #PROJECT_ID#
+                    }
+                    clearCache: 502
+                }
+                linkText: #TASK#
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_tasks
+                     where id = :P98_TASK_ID
+                       and task is not null
+                    ```
+            }
+        )
+
+        column TASK_TYPE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 502
+                    items: {
+                        P502_TASK_ID: #ID#
+                        P502_PREV_PAGE: 3
+                        P502_PROJECT_ID: #PROJECT_ID#
+                    }
+                    clearCache: 502
+                }
+                linkText: #TASK_TYPE#
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_tasks
+                     where id = :P98_TASK_ID
+                       and task_sub_type_id is not null
+                    ```
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column WEEKDAYS_LEFT (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Weekdays Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 140
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    region tags (
+        name: Tags
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(replace(TAGS,',',', ')) tags
+                  from SP_tasks
+                 where id = :P98_TASK_ID
+                   and tags is not null
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks
+                 where id = :P98_TASK_ID
+                   and tags is not null
+                ```
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: No tags found
+        }
+        heading {
+            type: none
+        }
+
+        column TAGS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    pageItem P98_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @p98-task-type
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P98_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @p98-task-type
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P98_TASK_TYPE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @p98-task-type
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button close (
+        buttonName: Close
+        label: Close
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button details (
+        buttonName: Details
+        label: View Details
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-package
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 502
+                items: {
+                    P502_TASK_ID: &P98_TASK_ID.
+                    P502_PROJECT_ID: &P98_PROJECT_ID.
+                    P502_PREV_PAGE: 3
+                }
+                clearCache: 502
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button edit (
+        buttonName: Edit
+        label: Edit
+        layout {
+            sequence: 40
+            region: @p98-task-type
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 501
+                items: {
+                    P501_ID: &P98_TASK_ID.
+                }
+                clearCache: 501
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t, sp_task_types tt
+                 where t.id = :P98_TASK_ID
+                   and t.task_type_id = tt.id
+                   and tt.STATIC_ID not in ('MILESTONE','REVIEW')
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-milestone (
+        buttonName: Edit-milestone
+        label: Edit
+        layout {
+            sequence: 60
+            region: @p98-task-type
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 508
+                items: {
+                    P508_ID: &P98_TASK_ID.
+                }
+                clearCache: 508
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t, sp_task_types tt
+                 where t.id = :P98_TASK_ID
+                   and t.task_type_id = tt.id
+                   and tt.STATIC_ID = 'MILESTONE'
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-review (
+        buttonName: Edit-review
+        label: Edit
+        layout {
+            sequence: 50
+            region: @p98-task-type
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 509
+                items: {
+                    P509_ID: &P98_TASK_ID.
+                }
+                clearCache: 509
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t, sp_task_types tt
+                 where t.id = :P98_TASK_ID
+                   and t.task_type_id = tt.id
+                   and tt.STATIC_ID = 'REVIEW'
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button task-history (
+        buttonName: task_history
+        label: History
+        layout {
+            sequence: 20
+            region: @p98-task-type
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-clock-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 507
+                items: {
+                    P507_TASK_ID: &P98_TASK_ID.
+                }
+                clearCache: 507
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: close dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @close
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction links-in-comments-in-new-tab (
+        name: links in comments in new tab
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    computation p98-project-id (
+        itemName: P98_PROJECT_ID
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project_id
+                  from sp_tasks
+                 where id = :P98_TASK_ID
+                ```
+        }
+    )
+
+    computation p98-task-type (
+        itemName: P98_TASK_TYPE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select tt.task_type 
+                  from sp_tasks t,
+                       sp_task_types tt
+                 where t.id = :P98_TASK_ID
+                   and t.task_type_id = tt.id
+                ```
+        }
+    )
+
+)
+

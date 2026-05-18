@@ -1,0 +1,367 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry add-remove-class-error (
+        name: Add/Remove Class (Error)
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry add-remove-class-focus (
+        name: Add/Remove Class (Focus)
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry administration-2 (
+        name: Administration
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry debounce-and-throttle (
+        name: Debounce and Throttle
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry delete-and-refresh (
+        name: Delete and Refresh
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry disable-enable (
+        name: Disable/Enable
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry edit (
+        name: Edit
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @disable-enable
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry edit-2 (
+        name: Edit
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @hide-show
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry edit-3 (
+        name: Edit
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @add-remove-class-error
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry edit-4 (
+        name: Edit
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @add-remove-class-focus
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry edit-5 (
+        name: Edit
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @set-values-sql
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry edit-6 (
+        name: Edit
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @set-values-pl-sql
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry edit-7 (
+        name: Edit
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry execute-pl-sql-code (
+        name: Execute PL/SQL Code
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry filter-and-refresh (
+        name: Filter and Refresh
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry hide-show (
+        name: Hide/Show
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry refresh (
+        name: Refresh
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry set-values-pl-sql (
+        name: Set Values (PL/SQL)
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry set-values-sql (
+        name: Set Values (SQL)
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry shuttle-refresh (
+        name: Shuttle Refresh
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry stripe-report (
+        name: Stripe Report
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry timer (
+        name: Timer
+        pageNumber: 16
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+)
+

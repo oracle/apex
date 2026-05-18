@@ -1,0 +1,1340 @@
+page 4001 (
+    name: Workflow Details
+    title: Workflow Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+    }
+    config {
+        buildOption: @approvals
+    }
+
+    region activities (
+        name: Activities
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select activity_id,
+                       type,
+                       name,
+                       state,
+                       error_message,
+                       due_on,
+                       retry_count,
+                       start_time,
+                       end_time,
+                       initcap(state) as badge_text,
+                       case state
+                           when 'WAITING'    then 'danger'
+                           when 'COMPLETED'  then 'success'
+                           when 'TERMINATED' then 'warning'
+                           when 'FAULTED'    then 'danger'
+                       end as badge_state,
+                       ( select max(workflow_id)
+                           from apex_workflows w
+                          where w.parent_workflow_id = :P4001_WORKFLOW_ID
+                            and w.parent_activity_id = a.activity_id ) as invoked_workflow_id
+                  from apex_workflow_activities a
+                 where workflow_id = :P4001_WORKFLOW_ID
+                 order by start_time
+                ```
+            pageItemsToSubmit: P4001_WORKFLOW_ID
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME.
+            description: &ERROR_MESSAGE.
+            miscellaneous:
+                ```html
+                {case STATE/}
+                    {when COMPLETED/}
+                        &{APEX.WORKFLOW.COMPLETED_SINCE 0=&END_TIME.}.
+                    {otherwise/}
+                        &{APEX.WORKFLOW.STARTED_SINCE 0=&START_TIME.}.
+                {endcase/}
+                {if DUE_ON/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span>
+                    &{APEX.WORKFLOW.DUE_SINCE 0=&DUE_ON.}.
+                {endif/}
+                {if RETRY_COUNT/}
+                    {case RETRY_COUNT/}
+                        {when 0/}
+                        {when 1/}
+                        <span role="separator" aria-label="&middot;"> &middot; </span>
+                            &{APEX.WORKFLOW.RETRY_COUNT.EQUALS_ONE 0=&RETRY_COUNT.}.
+                        {otherwise/}
+                        <span role="separator" aria-label="&middot;"> &middot; </span>
+                            &{APEX.WORKFLOW.RETRY_COUNT.NOT_EQUALS_ONE 0=&RETRY_COUNT.}.
+                    {endcase/}
+                {endif/}
+                ```
+            displayBadge: true
+        }
+        plugin-badge {
+            label: Status
+            value: BADGE_TEXT
+            state: BADGE_STATE
+            style: outline
+        }
+        pagination {
+            entitiesPerPage: 10
+        }
+
+        column ACTIVITY_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIVITY_ID
+                dataType: number
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_TEXT (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: BADGE_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column DUE_ON (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: DUE_ON
+                dataType: timestampWithTimeZone
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column END_TIME (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: END_TIME
+                dataType: timestampWithTimeZone
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column ERROR_MESSAGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ERROR_MESSAGE
+                dataType: varchar2
+            }
+        )
+
+        column INVOKED_WORKFLOW_ID (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: INVOKED_WORKFLOW_ID
+                dataType: number
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column RETRY_COUNT (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: RETRY_COUNT
+                dataType: number
+            }
+        )
+
+        column START_TIME (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: START_TIME
+                dataType: timestampWithTimeZone
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column STATE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: STATE
+                dataType: varchar2
+            }
+        )
+
+        column TYPE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TYPE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+                linkAttributes: class="audit" data-id="&ACTIVITY_ID." aria-haspopup="dialog"
+            }
+            serverSideCondition {
+                type: itemIsNull
+                item: INVOKED_WORKFLOW_ID
+            }
+        )
+
+        action action-2 (
+            position: titleLink
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 4001
+                    items: {
+                        P4001_WORKFLOW_ID: &INVOKED_WORKFLOW_ID.
+                    }
+                    clearCache: 4001
+                    action: resetPagination
+                }
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: INVOKED_WORKFLOW_ID
+            }
+        )
+
+    )
+
+    region activity-audit (
+        name: Activity Audit
+        type: themeTemplateComponent/comments
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select created_by,
+                       created_on,
+                       action,
+                       display_msg
+                  from apex_workflow_audit
+                 where workflow_id         = :P4001_WORKFLOW_ID
+                   and current_activity_id = :P4001_ACTIVITY_ID
+                 order by audit_id
+                ```
+            pageItemsToSubmit: [
+                P4001_WORKFLOW_ID
+                P4001_ACTIVITY_ID
+            ]
+        }
+        layout {
+            sequence: 80
+            parentRegion: @activities
+            slot: regionBody
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-dialog-size600x400
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            commentText: DISPLAY_MSG
+            userName: CREATED_BY
+            date: CREATED_ON
+            displayAvatar: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column ACTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ACTION
+                dataType: varchar2
+            }
+        )
+
+        column CREATED_BY (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: CREATED_BY
+                dataType: varchar2
+            }
+        )
+
+        column CREATED_ON (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: CREATED_ON
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column DISPLAY_MSG (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: DISPLAY_MSG
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 200
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--stickToBottom
+                t-ButtonRegion--slimPadding
+                margin-bottom-none
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region history (
+        name: History
+        type: themeTemplateComponent/comments
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select display_msg,
+                       created_by,
+                       created_on
+                  from apex_workflow_audit
+                 where workflow_id = :P4001_WORKFLOW_ID
+                   and current_activity_id is null
+                 order by audit_id desc
+                ```
+            pageItemsToSubmit: P4001_WORKFLOW_ID
+        }
+        layout {
+            sequence: 120
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            commentText: DISPLAY_MSG
+            userName: CREATED_BY
+            date: CREATED_ON
+            displayAvatar: false
+            applyThemeColors: false
+        }
+
+        column CREATED_BY (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: CREATED_BY
+                dataType: varchar2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column CREATED_ON (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: CREATED_ON
+                dataType: date
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column DISPLAY_MSG (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: DISPLAY_MSG
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region parameters (
+        name: Parameters
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select label,
+                       display_value
+                  from apex_workflow_variables
+                 where workflow_id = :P4001_WORKFLOW_ID
+                   and variable_type = 'PARAMETER'
+                 order by label
+                ```
+            pageItemsToSubmit: P4001_WORKFLOW_ID
+        }
+        layout {
+            sequence: 110
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &LABEL.
+            title: &DISPLAY_VALUE.
+        }
+        pagination {
+            entitiesPerPage: 10
+        }
+
+        column DISPLAY_VALUE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: DISPLAY_VALUE
+                dataType: varchar2
+            }
+        )
+
+        column LABEL (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+    )
+
+    region subject (
+        name: Subject
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select title,
+                       workflow_def_name,
+                       initiator,
+                       created_ago,
+                       badge_text,
+                       badge_state
+                  from table ( apex_workflow.get_workflows (
+                                   p_context     => 'SINGLE_WORKFLOW',
+                                   p_workflow_id => :P4001_WORKFLOW_ID ) );
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: partial
+        }
+        settings {
+            title: &TITLE.
+            description:
+                ```html
+                <strong>&WORKFLOW_DEF_NAME!HTML.</strong>
+                {if INITIATOR/}
+                    <span role="separator" aria-label="&middot;"> &middot; </span>
+                    &{APEX.WORKFLOW.INITIATED_BY_USER_SINCE 0=&INITIATOR!HTML. 1=&CREATED_AGO.}.
+                {endif/}
+                ```
+            displayBadge: true
+        }
+        plugin-badge {
+            label: State
+            value: BADGE_TEXT
+            state: BADGE_STATE
+            size: medium
+            columnWidth: auto
+        }
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_TEXT (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE_TEXT
+                dataType: varchar2
+            }
+        )
+
+        column CREATED_AGO (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: CREATED_AGO
+                dataType: varchar2
+            }
+        )
+
+        column INITIATOR (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: INITIATOR
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        column WORKFLOW_DEF_NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: WORKFLOW_DEF_NAME
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region variables (
+        name: Variables
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select static_id,
+                       label,
+                       display_value
+                  from apex_workflow_variables
+                 where workflow_id = :P4001_WORKFLOW_ID
+                   and variable_type = 'VARIABLE'
+                 order by label
+                ```
+            pageItemsToSubmit: P4001_WORKFLOW_ID
+        }
+        layout {
+            sequence: 90
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: VARIABLES
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &LABEL.
+            title: &DISPLAY_VALUE.
+        }
+        pagination {
+            entitiesPerPage: 10
+        }
+
+        column DISPLAY_VALUE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DISPLAY_VALUE
+                dataType: varchar2
+            }
+        )
+
+        column LABEL (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column STATIC_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: STATIC_ID
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region workflow-diagram (
+        name: Workflow Diagram
+        type: workflowDiagram
+        layout {
+            sequence: 130
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        settings {
+            workflowId: P4001_WORKFLOW_ID
+        }
+    )
+
+    pageItem P4001_ACTIVITY_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            encryptSessionState: false
+        }
+    )
+
+    pageItem P4001_PARENT_WORKFLOW_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select parent_workflow_id from apex_workflows where workflow_id = :P4001_WORKFLOW_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4001_WORKFLOW_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Close
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button cancel-activity-audit (
+        buttonName: CANCEL_ACTIVITY_AUDIT
+        label: Close
+        layout {
+            sequence: 10
+            region: @activity-audit
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button resume (
+        buttonName: RESUME
+        label: Resume
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-play-circle u-success-text
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_workflow.is_allowed (
+                    p_instance_id => :P4001_WORKFLOW_ID,
+                    p_operation   => apex_workflow.c_workflow$_op_resume )
+                ```
+        }
+    )
+
+    button retry (
+        buttonName: RETRY
+        label: Retry
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-redo-alt
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_workflow.is_allowed (
+                    p_instance_id => :P4001_WORKFLOW_ID,
+                    p_operation   => apex_workflow.c_workflow$_op_retry )
+                ```
+        }
+    )
+
+    button suspend (
+        buttonName: SUSPEND
+        label: Suspend
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-pause-circle u-warning-text
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_workflow.is_allowed (
+                    p_instance_id => :P4001_WORKFLOW_ID,
+                    p_operation   => apex_workflow.c_workflow$_op_suspend )
+                ```
+        }
+    )
+
+    button terminate (
+        buttonName: TERMINATE
+        label: Terminate
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-times u-danger-text
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_workflow.is_allowed (
+                    p_instance_id => :P4001_WORKFLOW_ID,
+                    p_operation   => apex_workflow.c_workflow$_op_terminate )
+                ```
+        }
+    )
+
+    button to-parent-workflow (
+        buttonName: TO_PARENT_WORKFLOW
+        label: To Parent Workflow
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-arrow-left-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4001
+                items: {
+                    P4001_WORKFLOW_ID: &P4001_PARENT_WORKFLOW_ID.
+                }
+                clearCache: 4001
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P4001_PARENT_WORKFLOW_ID
+        }
+    )
+
+    dynamicAction activity-audit (
+        name: Activity Audit
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: a.audit
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @activity-audit
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @activity-audit
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: apex.jQuery(this.triggeringElement).attr("data-id")
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P4001_ACTIVITY_ID
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction cancel-activity-audit (
+        name: Cancel Activity Audit
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel-activity-audit
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @activity-audit
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction disable-enable-update-button (
+        name: Disable/Enable Update Button
+        execution {
+            sequence: 60
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P4001_NEW_VALUE
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: apex.items.P4001_NEW_VALUE.value != apex.items.P4001_CURRENT_VALUE.value
+        }
+    )
+
+    dynamicAction edit-variable (
+        name: Edit Variable
+        execution {
+            sequence: 30
+            eventScope: dynamic
+            staticContainer: #VARIABLES
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: a.variable
+        }
+
+        action native-set-focus (
+            action: setFocus
+            affectedElements {
+                selectionType: items
+                items: P4001_NEW_VALUE
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: apex.jQuery(this.triggeringElement).attr("data-id")
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P4001_VARIABLE_ID
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-2 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: apex.jQuery(this.triggeringElement).attr("data-label")
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P4001_VARIABLE_LABEL
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value-3 (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: apex.jQuery(this.triggeringElement).attr("data-value")
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: [
+                    P4001_CURRENT_VALUE
+                    P4001_NEW_VALUE
+                ]
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 9356465559635672071
+        }
+    )
+
+    process resume (
+        name: Resume
+        type: workflow
+        action {
+            type: resume
+        }
+        workflowInstance {
+            workflowIdItem: P4001_WORKFLOW_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Workflow resumed
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 16188957934309039220
+        }
+        serverSideCondition {
+            whenButtonPressed: @resume
+        }
+    )
+
+    process retry (
+        name: Retry
+        type: workflow
+        action {
+            type: retry
+        }
+        workflowInstance {
+            workflowIdItem: P4001_WORKFLOW_ID
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Workflow retried
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 16188958788370039228
+        }
+        serverSideCondition {
+            whenButtonPressed: @retry
+        }
+    )
+
+    process suspend (
+        name: Suspend
+        type: workflow
+        action {
+            type: suspend
+        }
+        workflowInstance {
+            workflowIdItem: P4001_WORKFLOW_ID
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Workflow suspended
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 16188958127618039222
+        }
+        serverSideCondition {
+            whenButtonPressed: @suspend
+        }
+    )
+
+    process terminate (
+        name: Terminate
+        type: workflow
+        action {
+            type: terminate
+        }
+        workflowInstance {
+            workflowIdItem: P4001_WORKFLOW_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Workflow terminated
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 16188958567800039226
+        }
+        serverSideCondition {
+            whenButtonPressed: @terminate
+        }
+    )
+
+)
+

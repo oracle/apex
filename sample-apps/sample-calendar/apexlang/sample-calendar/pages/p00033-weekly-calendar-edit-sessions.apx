@@ -1,0 +1,234 @@
+page 33 (
+    name: Weekly Calendar: Edit Sessions
+    alias: WEEKLY-CALENDAR-EDIT-SESSIONS
+    title: Weekly Calendar: Edit Sessions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This is a standard Oracle APEX calendar region component showing a <b>weekly</b> view on events with a time component. This region component is well-suited for displaying conference or similar type schedules. In this example, you can select existing events to edit and date ranges in the calendar to create new events.</p>
+                <p>To have the edit dialog open upon clicking an existing event, navigate to the calendar components <b>Edit Link</b> attribute. Fill out the dialog to navigate to an application page containing the edit form and make sure to pass a primary key (which must be returned by your SQL query).</p>
+                <p>To have the edit dialog open upon selecting an empty date range (in order to create a new event), navigate to the calendar attribute <b>Create Link</b>. Fill out the dialog to navigate to the form page. The selected start and end timestamps must be passed to the form using the substitutions <b>&amp;APEX$NEW_START_DATE.</b> and <b>&amp;APEX$NEW_END_DATE.</b>.
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region items-container (
+        name: Items Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region sessions (
+        name: Sessions
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                   id,
+                   case when speaker is not null then 
+                       title || ' (' || speaker || ')' 
+                       else title
+                   end as title,
+                   speaker,
+                   start_date,
+                   end_date,
+                   case
+                      when status       = 'INACTIVE' then  'apex-cal-gray'
+                      when session_type = 'BREAK'    then  'apex-cal-silver'
+                      when session_type = 'BUSINESS' then  'apex-cal-orange'
+                      when session_type = 'GENERAL'  then  'apex-cal-blue'
+                      when session_type = 'TECHNICAL' then 'apex-cal-green'
+                      when session_type = 'HANDS_ON' then 'apex-cal-lime'
+                   end as css_class
+                from eba_demo_cal_sessions
+                where status='ACTIVE' or :P33_SHOW_INACTIVE='Y'
+                
+                ```
+            pageItemsToSubmit: P33_SHOW_INACTIVE
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            displayColumn: TITLE
+            startDateColumn: START_DATE
+            endDateColumn: END_DATE
+            showTime: true
+            calendarViewsAndNavigation: [
+                week
+                day
+                list
+                navigation
+            ]
+            createLink: {
+                page: 301
+                items: {
+                    P301_START_DATE: &APEX$NEW_START_DATE.
+                    P301_END_DATE: &APEX$NEW_END_DATE.
+                }
+                clearCache: 301
+                action: resetPagination
+            }
+            viewEditLink: {
+                page: 301
+                items: {
+                    P301_ID: &ID.
+                }
+                action: resetPagination
+            }
+            cssClass: CSS_CLASS
+        }
+        performance {
+            lazyLoading: true
+        }
+    )
+
+    pageItem P33_SHOW_INACTIVE (
+        type: switch
+        label {
+            label: Show Inactive Sessions
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @items-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    dynamicAction change-show-inactive-sessions (
+        name: Change Show Inactive Sessions
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P33_SHOW_INACTIVE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction dialog-closed-refresh-calendar (
+        name: Dialog Closed: Refresh Calendar
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @sessions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sessions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

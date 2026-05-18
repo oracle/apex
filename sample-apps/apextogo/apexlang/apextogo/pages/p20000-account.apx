@@ -1,0 +1,228 @@
+page 20000 (
+    name: Account
+    alias: ACCOUNT
+    title: Account
+    pageGroup: @user-settings
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+            js-dialog-class-t-Drawer--md
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: This page contains a list of settings applicable to the current application user.
+    }
+    config {
+        buildOption: @feature-user-settings
+    }
+
+    region actions (
+        name: Actions
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--stacked
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region settings (
+        name: Settings
+        type: list
+        source {
+            list: @user-settings
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                t-MediaList--showIcons
+                t-MediaList--showBadges
+                u-colors
+            ]
+        }
+    )
+
+    region user-info (
+        name: User Info
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select nvl( :P11_NAME, :APP_USER ) USER_NAME,
+                       nvl( :P11_EMAIL, :APP_USER || '@domain.com' ) EMAIL
+                  from sys.dual
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select *
+                  from apex_application_temp_files
+                 where name = :P11_PROFILE_PIC
+                ```
+        }
+        componentAppearance {
+            layout: horizontal
+        }
+        card {
+            cssClasses: a-CardView--noUI
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression: <h3 class="a-CardView-title">&USER_NAME.</h3>
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: <h4 class="a-CardView-subTitle u-textLower">&EMAIL.</h4>
+        }
+        iconAndBadge {
+            iconSource: iconClass
+            iconCssClasses: fa-user fa-2x
+        }
+    )
+
+    region user-info-2 (
+        name: User Info
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select *
+                  from apex_application_temp_files
+                 where name = :P11_PROFILE_PIC
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select *
+                  from apex_application_temp_files
+                 where name = :P11_PROFILE_PIC
+                ```
+        }
+        componentAppearance {
+            layout: horizontal
+        }
+        card {
+            cssClasses: a-CardView--noUI
+            primaryKeyColumn1: ID
+        }
+        title {
+            advancedFormatting: true
+            htmlExpression: <h3 class="a-CardView-title">&P11_NAME.</h3>
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression: <h4 class="a-CardView-subTitle u-textLower">&P11_EMAIL.</h4>
+        }
+        iconAndBadge {
+            iconSource: imageBlobColumn
+            imageColumn: BLOB_CONTENT
+        }
+    )
+
+    button sign-out (
+        buttonName: SIGN_OUT
+        label: Sign Out
+        layout {
+            sequence: 10
+            region: @actions
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--simple
+                t-Button--iconLeft
+                t-Button--stretch
+            ]
+            icon: fa-sign-out
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    branch (
+        name: Go To Page &LOGOUT_URL.
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @sign-out
+        }
+    )
+
+)
+

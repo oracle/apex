@@ -1,0 +1,446 @@
+page 24 (
+    name: Details
+    alias: POLL-DETAILS1
+    title: Details
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/wizard-modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region details (
+        name: Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    ID,
+                    ROW_KEY,
+                    poll_name || ' - '|| row_key ||
+                       case when poll_or_quiz = 'Q'
+                            then ' ('||apex_lang.message('QUIZ_INITCAP')||')' 
+                            end POLL_NAME,
+                    POLL_DETAILS,
+                    STATUS_ID,
+                    status_id poll_status,
+                    p.use_sections_yn,
+                    p.authentication_req_yn,
+                    p.invite_only_yn,
+                    p.ANONYMOUS_YN,
+                    p.can_update_answers_yn,
+                    case when p.score_type in ('C','A') and p.enable_score_yn = 'Y' then apex_lang.message('SCORE_'||p.score_type) end score_type,
+                    p.ALL_VIEW_RESULTS_YN,
+                    p.START_TIME,
+                    p.STOP_TIME,
+                    null take_url
+                from EBA_QPOLL_POLLS p
+                where p.id = :POLL_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: wizardBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+                t-Report--hideNoPagination
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ALL_VIEW_RESULTS_YN (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Invitees View Results
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ANONYMOUS_YN (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Anonymize
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and anonymous_yn = 'Y'
+                    ```
+            }
+        )
+
+        column AUTHENTICATION_REQ_YN (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Login Required
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CAN_UPDATE_ANSWERS_YN (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Can Update Answers
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and authentication_req_yn = 'Y'
+                    ```
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 14
+            }
+        )
+
+        column INVITE_ONLY_YN (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Invite Only
+            }
+            lov {
+                type: sharedComponent
+                lov: @no-yes-n-y
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_DETAILS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Poll Details
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column POLL_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Poll Name
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column POLL_STATUS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Poll Status
+                alignment: center
+            }
+            lov {
+                type: sharedComponent
+                lov: @poll-statuses
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 15
+            }
+        )
+
+        column SCORE_TYPE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Score Type
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 
+                    from EBA_QPOLL_POLLS
+                    where id = :POLL_ID
+                      and score_type in ('C','A')
+                      and enable_score_yn = 'Y'
+                    ```
+            }
+        )
+
+        column START_TIME (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Started
+            }
+            layout {
+                sequence: 11
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and START_TIME is not null
+                       and status_id in (3,4)
+                    ```
+            }
+        )
+
+        column STATUS_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 16
+            }
+        )
+
+        column STOP_TIME (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Ended
+            }
+            layout {
+                sequence: 12
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and status_id = 4
+                       and STOP_TIME is not null
+                    ```
+            }
+        )
+
+        column TAKE_URL (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Poll URL
+            }
+            layout {
+                sequence: 13
+            }
+            columnFormatting {
+                htmlExpression: &P24_TAKE_URL.
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                    from EBA_QPOLL_POLLS p
+                    where id = :POLL_ID
+                    and status_id in (2,3)
+                    ```
+            }
+        )
+
+        column USE_SECTIONS_YN (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Use Sections
+                alignment: center
+            }
+            lov {
+                type: sharedComponent
+                lov: @no-yes-n-y
+            }
+            layout {
+                sequence: 4
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and use_sections_yn = 'Y'
+                    ```
+            }
+        )
+
+    )
+
+    pageItem P24_TAKE_URL (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    computation p24-take-url (
+        itemName: P24_TAKE_URL
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select authentication_req_yn
+                     from eba_qpoll_polls
+                    where id = :POLL_ID
+                ) loop
+                   if c1.authentication_req_yn = 'N' then 
+                      return 'This poll is not authenticated thus each invitee gets a unique URL';
+                   else
+                      return :APP_PATH||apex_util.prepare_url(p_url => 'f?p='||:APP_ID||':500:0::::LPOLL_ID:'||:POLL_ID,
+                                                               p_checksum_type => '1',
+                                                               p_plain_url => TRUE);
+                   end if;
+                end loop;
+                ```
+        }
+    )
+
+)
+

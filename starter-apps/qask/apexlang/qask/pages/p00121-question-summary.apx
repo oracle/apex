@@ -1,0 +1,1211 @@
+page 121 (
+    name: Question Summary
+    alias: QUESTION-SUMMARY
+    title: Question Summary
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #APP_FILES#jquery.qrcode.min.js
+        executeWhenPageLoads:
+            ```javascript-browser
+            	jQuery('#qr_code').qrcode({
+                    render	: "table",
+            		text	: '&P121_QR_URL!RAW.'
+            	});
+            ```
+    }
+    css {
+        inline:
+            ```css
+            :root {
+                --a-button-gap-x: 1rem;
+            }
+            
+            .qr-container {
+                min-height: 348px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+            #qr_code {
+                padding: 8px;
+                background-color: white;
+            }
+            .qr-container h2 {
+                margin: 0 0 16px 0;
+                font-weight: 700;
+            }
+            
+            .t-BadgeList + .t-Report-pagination {
+                display: none;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @host
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments: Displays bar chart results of the previous question and provides a link to ask a new question
+    }
+
+    region answers-by-participant (
+        name: Answers by Participant
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region answers-by-participant-2 (
+        name: Answers by Participant
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.name,
+                       r.email,
+                       r.apex_session,
+                       r.user_agent,
+                       r.x_forwarded_for,
+                       r.remote_addr,
+                       a.answer_id,
+                       a.answer_text,
+                       a.comment_text,
+                       a.created_on created
+                  from qask_responses r,
+                       qask_response_answers a
+                 where r.session_id = :P121_SESSION_ID
+                   and r.id = a.response_id (+)
+                   and :P121_QUESTION_ID = a.question_id (+)
+                order by r.id, a.answer_text
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @answers-by-participant
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 167588812772572898518
+        }
+
+        column ANSWER_ID (
+            type: hidden
+            heading {
+                heading: Answer Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column ANSWER_TEXT (
+            type: plainText
+            heading {
+                heading: Answer
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column APEX_SESSION (
+            type: plainText
+            heading {
+                heading: Session ID
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column COMMENT_TEXT (
+            type: plainText
+            heading {
+                heading: Comment Text
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+            serverSideCondition {
+                type: expression
+                language: sql
+                sqlExpression: :P121_ASK_FOR_COMMENTS_YN = 'Y'
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 50
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :P121_RESP_EMAIL_REQUIRED_YN = 'Y'
+            }
+        )
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :P121_RESP_NAME_REQUIRED_YN = 'Y'
+            }
+        )
+
+        column REMOTE_ADDR (
+            type: plainText
+            heading {
+                heading: Remote Address
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column USER_AGENT (
+            type: plainText
+            heading {
+                heading: User Agent
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column X_FORWARDED_FOR (
+            type: plainText
+            heading {
+                heading: X Forwarded For
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Answers by Participant
+        }
+
+        savedReport 300483001 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ANSWER_TEXT (
+                sequence: 4
+            )
+
+            displayColumn APEX_SESSION (
+                sequence: 1
+            )
+
+            displayColumn COMMENT_TEXT (
+                sequence: 5
+            )
+
+            displayColumn CREATED (
+                sequence: 6
+            )
+
+            displayColumn EMAIL (
+                sequence: 3
+            )
+
+            displayColumn NAME (
+                sequence: 2
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region bar-chart (
+        name: Bar chart
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P121_ANSWER_TYPE
+            value: FREEFORM
+        }
+        chartLayout {
+            height: 400
+        }
+        legend {
+            show: false
+        }
+
+        series answers (
+            name: answers
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select qa.answer_text, 
+                           (select count(*) 
+                              from qask_response_answers a 
+                             where :P121_QUESTION_ID = a.question_id
+                               and a.answer_id = qa.id) answer_count
+                       from qask_session_questions q, 
+                            qask_sess_question_answers qa
+                      where q.session_id = :P121_SESSION_ID
+                        and q.id = qa.question_id
+                        and q.id = :P121_QUESTION_ID
+                    order by qa.answer_number
+                    ```
+            }
+            columnMapping {
+                label: ANSWER_TEXT
+                value: ANSWER_COUNT
+            }
+            performance {
+                maxRowsToProcess: 100000
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title {
+                fontSize: 18
+            }
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            majorTicks {
+                minStep: 1
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P121_SESSION_STATUS = 'OPEN' and
+                qask_util.get_session_owner(p_session_id => :P121_SESSION_ID) = :APP_USER
+                ```
+        }
+    )
+
+    region p121-question-number-p121-question (
+        name: &P121_QUESTION_NUMBER.. &P121_QUESTION.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select (select count(unique response_id) 
+                          from qask_responses r,
+                               qask_response_answers a
+                         where r.session_id = :P121_SESSION_ID
+                           and r.id = a.response_id
+                           and a.question_id = :P121_QUESTION_ID) respondents,
+                       ROUND(length_seconds/60) || ' minutes' question_open
+                  from qask_session_questions
+                 where session_id = :P121_SESSION_ID
+                   and id = :P121_QUESTION_ID
+                ```
+            pageItemsToSubmit: [
+                P121_SESSION_CODE
+                P121_QUESTION_NUMBER
+            ]
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+            cssClasses: js-refresh-region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column QUESTION_OPEN (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Question Open
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+        )
+
+        column RESPONDENTS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Responses
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    region pie-chart (
+        name: Pie chart
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P121_ANSWER_TYPE
+            value: FREEFORM
+        }
+        chart {
+            type: pie
+        }
+        chartLayout {
+            height: 500
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+        legend {
+            show: false
+        }
+
+        series answers (
+            name: answers
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select qa.answer_text, 
+                           (select count(*) 
+                              from qask_response_answers a 
+                             where :P121_QUESTION_ID = a.question_id
+                               and a.answer_id = qa.id) answer_count
+                       from qask_session_questions q, 
+                            qask_sess_question_answers qa
+                      where q.session_id = :P121_SESSION_ID
+                        and q.id = qa.question_id
+                        and q.id = :P121_QUESTION_ID
+                    order by qa.answer_number
+                    ```
+            }
+            columnMapping {
+                label: ANSWER_TEXT
+                value: ANSWER_COUNT
+            }
+            label {
+                show: true
+                displayAs: labelPercentageValue
+            }
+            performance {
+                maxRowsToProcess: 100000
+            }
+        )
+
+    )
+
+    region results (
+        name: Results
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region session-qr (
+        name: Session QR
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="qr-container">
+                    <h2 class="u-tC">Scan QR code to participate!</h2>
+                    <div id="qr_code"></div>
+                    <h2 class="u-tC">&P121_SESSION_CODE.</h2>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 11
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+                margin-bottom-none
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P121_QUESTION_STATUS = 'OPEN' and
+                :P121_SESSION_STATUS = 'OPEN'
+                ```
+        }
+    )
+
+    pageItem P121_ANSWER_TYPE (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_ASK_FOR_COMMENTS_YN (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_NEXT_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_PREV_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_QR_URL (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_QUESTION (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_QUESTION_FILE (
+        type: displayImage
+        label {
+            alignment: left
+        }
+        settings {
+            basedOn: blobColSql
+            sqlQuery:
+                ```sql
+                select question_file
+                  from qask_session_questions
+                 where id = :P121_QUESTION_ID
+                ```
+        }
+        layout {
+            sequence: 140
+            region: @p121-question-number-p121-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_session_questions
+                 where id = :P121_QUESTION_ID
+                   and question_filename is not null
+                ```
+        }
+    )
+
+    pageItem P121_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_QUESTION_NUMBER (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_QUESTION_STATUS (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_RESP_EMAIL_REQUIRED_YN (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_RESP_NAME_REQUIRED_YN (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_SESSION_CODE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_SESSION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_SESSION_NAME (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P121_SESSION_STATUS (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @results
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button ask-new-question (
+        buttonName: ask_new_question
+        label: Ask New Question
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+            cssClasses: [
+                w260
+                padding-md
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 112
+                items: {
+                    P112_SESSION_ID: &P121_SESSION_ID.
+                }
+                clearCache: 112
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button close-session (
+        buttonName: close_session
+        label: Close Session
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+            cssClasses: [
+                w260
+                padding-md
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next-question (
+        buttonName: next_question
+        label: Next Question
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--mobileHideLabel
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 121
+                items: {
+                    P121_SESSION_ID: &P121_SESSION_ID.
+                    P121_QUESTION_ID: &P121_NEXT_QUESTION_ID.
+                }
+                clearCache: 121
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P121_NEXT_QUESTION_ID
+        }
+    )
+
+    button previous-question (
+        buttonName: previous_question
+        label: Previous Question
+        layout {
+            sequence: 1
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--mobileHideLabel
+                t-Button--iconLeft
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 121
+                items: {
+                    P121_SESSION_ID: &P121_SESSION_ID.
+                    P121_QUESTION_ID: &P121_PREV_QUESTION_ID.
+                }
+                clearCache: 121
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P121_PREV_QUESTION_ID
+        }
+    )
+
+    computation p121-next-question-id (
+        itemName: P121_NEXT_QUESTION_ID
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_next_question_id (
+                    p_session_id  => :P121_SESSION_ID,
+                    p_question_id => :P121_QUESTION_ID,
+                    p_status      => 'ANY' );
+                ```
+        }
+    )
+
+    computation p121-prev-question-id (
+        itemName: P121_PREV_QUESTION_ID
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return qask_util.get_prev_question_id (
+                    p_session_id  => :P121_SESSION_ID,
+                    p_question_id => :P121_QUESTION_ID,
+                    p_status      => 'ANY' );
+                ```
+        }
+    )
+
+    computation p121-qr-url (
+        itemName: P121_QR_URL
+        execution {
+            sequence: 70
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    x  varchar2(4000);
+                begin 
+                    x := apex_page.get_url (
+                           p_page => 'home',
+                           p_session => 0,
+                           p_items => 'P1_CODE',
+                           p_values => :P121_SESSION_CODE );
+                    x := substr(x,1,instr(x,'&')-1);
+                
+                    return rtrim(owa_util.get_cgi_env('HTTP_REFERER'),'/') || x;
+                end;
+                ```
+        }
+    )
+
+    process close-session (
+        name: Close Session
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.close_session (
+                    p_session_id => :P121_SESSION_ID );
+                
+                    
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 70667560092865095692
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+        }
+    )
+
+    process get-question-details (
+        name: get question details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_dont_need  varchar2(4000);
+                begin
+                qask_util.get_question_details (
+                    p_question_id          => :P121_QUESTION_ID,
+                    p_question_number      => :P121_QUESTION_NUMBER,
+                    p_question_status      => :P121_QUESTION_STATUS,
+                    p_question             => :P121_QUESTION,
+                    p_answer_type          => :P121_ANSWER_TYPE,
+                    p_ask_for_comments_yn  => :P121_ASK_FOR_COMMENTS_YN,
+                    p_question_explanation => l_dont_need );
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 63879910059550505326
+        }
+    )
+
+    process get-session-details (
+        name: get session details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_dont_need  varchar2(4000);
+                begin
+                qask_util.get_session_details (
+                    p_session_id             => :P121_SESSION_ID,
+                    p_session_name           => :P121_SESSION_NAME,
+                    p_session_code           => :P121_SESSION_CODE,
+                    p_purpose                => l_dont_need,
+                    p_resp_name_required_yn  => :P121_RESP_NAME_REQUIRED_YN,
+                    p_resp_email_required_yn => :P121_RESP_EMAIL_REQUIRED_YN,
+                    p_session_status         => :P121_SESSION_STATUS );
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 71221539264747456307
+        }
+    )
+
+    branch (
+        name: after close session
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 120
+                items: {
+                    P120_SESSION_ID: &P121_SESSION_ID.
+                }
+                clearCache: 120
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+        }
+    )
+
+)
+

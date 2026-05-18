@@ -1,0 +1,50 @@
+lov eba-ut-chart-projects-project (
+    name: EBA_UT_CHART_PROJECTS.PROJECT
+    source {
+        tableName: EBA_UT_CHART_PROJECTS
+    }
+    columnMapping {
+        return: ID
+        display: PROJECT
+        defaultSort: PROJECT
+    }
+)
+
+lov font-animations (
+    name: FONT_ANIMATIONS
+    source {
+        location: staticValues
+    }
+
+    entry flash (
+        sequence: 30
+        display: Flash
+        return: fa-anim-flash
+    )
+
+    entry horizontal-shake (
+        sequence: 40
+        display: Horizontal Shake
+        return: fa-anim-horizontal-shake
+    )
+
+    entry spin (
+        sequence: 10
+        display: Spin
+        return: fa-anim-spin
+    )
+
+    entry spin-in-steps (
+        sequence: 20
+        display: Spin in Steps
+        return: fa-anim-spin-step
+    )
+
+    entry vertical-shake (
+        sequence: 50
+        display: Vertical Shake
+        return: fa-anim-vertical-shake
+    )
+
+)
+

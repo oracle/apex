@@ -1,0 +1,253 @@
+page 402 (
+    name: Colors
+    alias: COLORS
+    title: Colors - &APP_TITLE.
+    pageGroup: @design
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .color-blocks {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+              -webkit-margin-after: 1.5rem;
+                      margin-block-end: 1.5rem; }
+            
+            .color-blocks--large .color-block {
+              width: 33.33%; }
+            
+            .color-block {
+              text-align: center;
+              height: 4rem;
+              display: flex;
+              align-items: center;
+              width: 20%;
+              justify-content: center;
+              flex: auto;
+              border: 4px solid transparent;
+              background-clip: padding-box; }
+            
+            .color-cell-block {
+              display: block;
+              padding: .5rem;
+              text-align: center;
+              border-radius: .125rem; }
+            
+            .color-border {
+              border-width: 1px;
+              border-style: solid;
+              padding: .5rem; }
+            
+            .colors-table .t-Report-report {
+              table-layout: fixed; }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region general-colors (
+        name: General Colors
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>General colors are used for adding color accents to several application components such as Charts, Cards, and and more.</p>
+                
+                <p>There are 15 primary colors which are modified to become slightly lighter or darker to create a total of 45 color options. You can customize these colors by modifying the Color Palette within Theme Roller.</p>
+                
+                <p><strong>Primary Colors</strong></p>
+                
+                <div class="color-blocks">
+                  <div class="color-block u-color-1">1</div>
+                  <div class="color-block u-color-2">2</div>
+                  <div class="color-block u-color-3">3</div>
+                  <div class="color-block u-color-4">4</div>
+                  <div class="color-block u-color-5">5</div>
+                  <div class="color-block u-color-6">6</div>
+                  <div class="color-block u-color-7">7</div>
+                  <div class="color-block u-color-8">8</div>
+                  <div class="color-block u-color-9">9</div>
+                  <div class="color-block u-color-10">10</div>
+                  <div class="color-block u-color-11">11</div>
+                  <div class="color-block u-color-12">12</div>
+                  <div class="color-block u-color-13">13</div>
+                  <div class="color-block u-color-14">14</div>
+                  <div class="color-block u-color-15">15</div>
+                </div>
+                
+                <p><strong>Primary Colors - Lighter</strong></p>
+                
+                <div class="color-blocks">
+                  <div class="color-block u-color-16">16</div>
+                  <div class="color-block u-color-17">17</div>
+                  <div class="color-block u-color-18">18</div>
+                  <div class="color-block u-color-19">19</div>
+                  <div class="color-block u-color-20">20</div>
+                  <div class="color-block u-color-21">21</div>
+                  <div class="color-block u-color-22">22</div>
+                  <div class="color-block u-color-23">23</div>
+                  <div class="color-block u-color-24">24</div>
+                  <div class="color-block u-color-25">25</div>
+                  <div class="color-block u-color-26">26</div>
+                  <div class="color-block u-color-27">27</div>
+                  <div class="color-block u-color-28">28</div>
+                  <div class="color-block u-color-29">29</div>
+                  <div class="color-block u-color-30">30</div>
+                </div>
+                
+                <p><strong>Primary Colors - Darker</strong></p>
+                <div class="color-blocks">
+                  <div class="color-block u-color-31">31</div>
+                  <div class="color-block u-color-32">32</div>
+                  <div class="color-block u-color-33">33</div>
+                  <div class="color-block u-color-34">34</div>
+                  <div class="color-block u-color-35">35</div>
+                  <div class="color-block u-color-36">36</div>
+                  <div class="color-block u-color-37">37</div>
+                  <div class="color-block u-color-38">38</div>
+                  <div class="color-block u-color-39">39</div>
+                  <div class="color-block u-color-40">40</div>
+                  <div class="color-block u-color-41">41</div>
+                  <div class="color-block u-color-42">42</div>
+                  <div class="color-block u-color-43">43</div>
+                  <div class="color-block u-color-44">44</div>
+                  <div class="color-block u-color-45">45</div>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region introduction (
+        name: Introduction
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Universal Theme uses a consistent set of colors across the included components. These colors can be grouped into two palettes: <strong>General Colors</strong> and <strong>Stateful Colors</strong>.</p>
+                <p>You can learn how to use these colors in your own custom UI components by viewing the <a href="f?p=&APP_ID.:6302:&APP_SESSION.">CSS modifier classes</a> in the <a href="f?p=&APP_ID.:6000:&APP_SESSION.">Reference</a> section.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region stateful-colors (
+        name: Stateful Colors
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Stateful colors are used for convey additional meaning for a given UI component. For example, you may choose to color a warning alert with a yellow tint.</p>
+                
+                <p>There are 6 stateful colors: normal, hot, informational, danger, warning, and success. You may customize these colors by modifying the Status Colors within Theme Roller.</p>
+                
+                <div class="color-blocks color-blocks--large">
+                  <div class="color-block u-normal">Normal State</div>
+                  <div class="color-block u-hot">Hot State</div>
+                  <div class="color-block u-info">Info State</div>
+                </div>
+                <div class="color-blocks color-blocks--large">
+                  <div class="color-block u-danger">Danger State</div>
+                  <div class="color-block u-warning">Warning</div>
+                  <div class="color-block u-success">Success</div>
+                </div>
+                
+                <p><strong>Note:</strong> Color alone should not be used to convey information as it may not always be accessible.</strong></p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

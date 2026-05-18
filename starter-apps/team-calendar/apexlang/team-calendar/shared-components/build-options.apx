@@ -1,0 +1,48 @@
+buildOption include-external-internal-event-types (
+    name: Include External / Internal Event Types
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments:
+            ```
+            Differentiate between events that can be viewed by the public (external) and those that can only be viewed by those entered into the Access Control List (internal).
+            This option requires the Access Control Scope to be set to 'Reader access for any authenticated user'. By populating the Contact Email on events with the relevant addresses from users listed in the Access Control List, the Contact can be used to search for events specifically for that person.
+            ```
+    }
+)
+
+buildOption include-multiple-calendars (
+    name: Include Multiple Calendars
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: "Determine whether multiple calendars can be defined, and events can be entered against the different calendars. Administrators can optionally define which calendars a specific user can view and edit. "
+    }
+)
+
+buildOption show-time (
+    name: Show Time
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Select whether time will be displayed on calendar entries. If included, the calendar will also show Week and Day views.
+    }
+)
+
+buildOption show-updates (
+    name: Show Updates
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Enable or disable the display of event updates.
+    }
+)
+

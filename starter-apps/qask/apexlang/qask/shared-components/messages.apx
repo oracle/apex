@@ -1,0 +1,63 @@
+textMessage ACCESS_REQUESTS (
+    message {
+        text: Access Requests
+        language: en
+    }
+)
+
+textMessage ACCESS_REQUESTS_RESTRICTED_BY_EMAIL_DOMAIN (
+    message {
+        text: Access requests are restricted by email domain.
+        language: en
+    }
+)
+
+textMessage APEX.AUTHENTICATION.LOGIN_THROTTLE.COUNTER (
+    message {
+        text: Please wait <span id="apex_login_throttle_sec">%0</span> seconds to verify again.
+        language: en
+    }
+)
+
+textMessage APEX.AUTHENTICATION.LOGIN_THROTTLE.ERROR (
+    message {
+        text: The verification attempt has been blocked.
+        language: en
+    }
+)
+
+textMessage EMAIL_DOMAIN_NOT_ALLOWED (
+    message {
+        text: Email Domain not allowed.
+        language: en
+    }
+)
+
+textMessage INVALID_CREDENTIALS (
+    message {
+        text: Invalid verification code
+        language: en
+    }
+)
+
+textMessage UPDATE_SETTINGS_TO_RESTRICT_TO_THESE_DOMAINS (
+    message {
+        text: Update settings if you wish to restrict to these domains.
+        language: en
+    }
+)
+
+textMessage USERS_AND_ACCESS_REQUESTS_RESTRICTED_BY_EMAIL_DOMAIN (
+    message {
+        text: Users and Access requests are restricted by email domain.
+        language: en
+    }
+)
+
+textMessage USERS_RESTRICTED_BY_EMAIL_DOMAIN (
+    message {
+        text: Users are restricted by email domain.
+        language: en
+    }
+)
+

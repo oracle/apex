@@ -1,0 +1,82 @@
+app CLOUD-APPS-REST-EXPLORER (
+    name: Oracle Cloud Apps REST Data Source Explorer
+    version: 26.1.0
+    group: @utility-apps
+    logo {
+        type: imageAndText
+        imageUrl: #APP_FILES#icons/app-icon-256-rounded.png
+        text: Oracle Cloud Apps Data Source Explorer
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/top-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-tabLike
+        ]
+        listPosition: top
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        usersCanChooseThemeStyle: true
+        autoDismissSuccessMessages: true
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    javaScript {
+        fileUrls: #APP_FILES#app#MIN#.js
+    }
+    css {
+        fileUrls: #APP_FILES#app#MIN#.css
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+    }
+    sessionStateProtection {
+        checksumSalt: 191267E648626775AD12CBD628FE40F1B62D2AB1C285E14CE60ADCD799BA79D4
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        installable: true
+    }
+    runtime {
+        allowFeedback: true
+        accessibleReadOnlyItems: false
+    }
+    advanced {
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c)2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown 
+            at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Oracle Cloud Apps Data Source Explorer
+        }
+    )
+
+)
+

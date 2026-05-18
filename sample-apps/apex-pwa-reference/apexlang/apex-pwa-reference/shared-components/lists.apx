@@ -1,0 +1,316 @@
+list advanced (
+    name: Advanced
+
+    entry offline-fallback (
+        label: Offline Fallback
+        icon {
+            imageIconCssClasses: fa-power-off
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry service-worker (
+        label: Service Worker
+        icon {
+            imageIconCssClasses: fa-server
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry install-app (
+        label: Install App
+        icon {
+            imageIconCssClasses: fa-cloud-download
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #action$a-pwa-install
+            }
+        }
+        userDefinedAttributes {
+            2: a-pwaInstall
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-accessor-more
+        }
+        layout {
+            sequence: 120
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                5
+                11
+                20
+            ]
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry always-signed-in (
+        label: Always Signed In
+        icon {
+            imageIconCssClasses: fa-lock
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry app-icon (
+        label: App Icon
+        icon {
+            imageIconCssClasses: fa-apex
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry appearance (
+        label: Appearance
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry faq (
+        label: FAQ
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 130
+        }
+        isCurrent {
+            type: pages
+            pages: 100
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry geolocation (
+        label: Geolocation
+        icon {
+            imageIconCssClasses: fa-location-arrow-o
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry getting-started (
+        label: Getting Started
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry installation (
+        label: Installation
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry offline-fallback (
+        label: Offline Fallback
+        icon {
+            imageIconCssClasses: fa-power-off
+        }
+        layout {
+            sequence: 110
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry push-notifications (
+        label: Push Notifications
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 75
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry roadmap (
+        label: Roadmap
+        icon {
+            imageIconCssClasses: fa-road
+        }
+        layout {
+            sequence: 140
+        }
+        isCurrent {
+            type: pages
+            pages: 101
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry service-worker (
+        label: Service Worker
+        icon {
+            imageIconCssClasses: fa-server
+        }
+        layout {
+            sequence: 70
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry web-share (
+        label: Web Share
+        icon {
+            imageIconCssClasses: fa-mail-forward
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: pages
+            pages: 9
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+)
+

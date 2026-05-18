@@ -1,0 +1,26 @@
+shortcut DELETE_CONFIRM_MSG (
+    source {
+        type: jsEscapeSingleQuotes
+        text: Would you like to perform this delete action?
+    }
+)
+
+shortcut TIMEZONE (
+    source {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+              l_url varchar2(1000);
+              l_tz  varchar2(1000);
+            begin
+              l_url := apex_util.prepare_url( 'f?p=' || :APP_ID || ':76:' || :APP_SESSION );
+              l_tz  := nvl( apex_escape.html( apex_util.get_session_time_zone ),'unknown' );
+            
+              return '<p>'||'Dates and Times are displayed in the '||
+                     '<a href="' || l_url || '">' || l_tz || '</a> timezone.</p>';
+            end;
+            ```
+    }
+)
+

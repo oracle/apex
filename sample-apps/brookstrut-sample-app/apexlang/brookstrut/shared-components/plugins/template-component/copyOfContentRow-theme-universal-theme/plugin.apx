@@ -1,0 +1,49 @@
+plugin copyOfContentRow (
+    name: Copy of Content Row
+    staticId: THEME_42$CONTENT_ROW77208
+    theme: @universal-theme
+    templateComponent {
+        availableAs: [
+            partial
+            report
+        ]
+        partial:
+            ```html
+              <div class="t-ContentRow-wrap">
+            
+                  <div class="t-ContentRow-badge #BADGE_COL_WIDTH!ATTR#">
+                    {with/}
+                      LABEL:=
+                      VALUE:=
+                      SIZE:=#BADGE_SIZE#
+                      SHAPE:=#BADGE_SHAPE#
+                    {apply THEME$BADGE/}
+                  </div>
+            
+                <div class="t-ContentRow-body">
+                  <div class="t-ContentRow-content">
+                    <div class="t-ContentRow-overline">#OVERLINE!RAW#</div>
+                    <h3 class="t-ContentRow-title"><a href="#TITLE_LINK!ATTR#" #TITLE_LINK_ATTR!RAW#>#TITLE!RAW#</a></h3>
+                    <div class="t-ContentRow-description">#DESCRIPTION!RAW#</div>
+                  </div>
+            
+                </div>
+              </div>
+            
+            
+            ```
+        reportBody: <ul class="t-ContentRow{if ?STYLE/} #STYLE!ATTR#{endif/}{if ?ALIGN/} #ALIGN!ATTR#{endif/}{if APPLY_THEME_COLORS/} u-colors{endif/} #APEX$COMPONENT_CSS_CLASSES#">#APEX$ROWS#</ul>
+        reportRow: <li class="t-ContentRow-item{if ?ITEM_CLASSES/} #ITEM_CLASSES#{endif/}" #APEX$ROW_IDENTIFICATION#>#APEX$PARTIAL#</li>
+        numberOfLazyLoadingSkeletons: 3
+    }
+    component {
+        standardAttributes: regionTemplateAttr
+    }
+    advanced {
+        quickPick: true
+    }
+    information {
+        helpText: Display content in a formatted row with a title, description, and more. Supports avatars and badges. Available for a single row or as a report with multiple rows.
+    }
+)
+

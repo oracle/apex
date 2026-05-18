@@ -1,0 +1,32 @@
+supportingObject (
+    prerequisites {
+        freeSpace: 100
+        systemPrivileges: [
+            createProcedure
+            createTable
+            createTrigger
+            createView
+        ]
+    }
+    installation {
+        objectNames: [
+            EBA_DEMO_CHART_TASKS
+            EBA_DEMO_CHART_PROJECTS
+            EBA_DEMO_CHART_EMP
+            EBA_DEMO_CHART_DEPT
+            EBA_DEMO_CHART_POPULATION
+            EBA_DEMO_CHART_STOCKS
+            EBA_DEMO_CHART_GRADES
+            EBA_DEMO_CHART_SAMPLES
+            EBA_DEMO_CHART_SAMPLE_NAMES
+            EBA_DEMO_CHART_SAMPLE_DATA
+        ]
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    advanced {
+        includeInAppExport: true
+    }
+)
+

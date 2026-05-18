@@ -1,0 +1,636 @@
+page 13 (
+    name: Invitation Details
+    alias: INVITATION-DETAILS
+    title: Invitation Details
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region email-body (
+        name: Email Body
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_poll_url   varchar2(4000);
+                   l_body       clob;
+                   l_subject    varchar2(4000);
+                   l_html_body  clob;
+                   l_text_body  clob;
+                begin
+                
+                l_poll_url := '<a href="#">'||apex_escape.html(:POLL_NAME)||'</a>';
+                                                                     
+                l_body := replace(:P72_INVITE_BODY,'#POLL_LINK#',l_poll_url);
+                   
+                for c1 in (
+                    select
+                        sent_time,
+                        subject,
+                        apex_escape.html(text_body) message
+                    from
+                        eba_qpoll_emails
+                    where
+                        id = :P13_EMAIL_ID
+                    and
+                        poll_id = :P13_POLL_ID
+                ) loop
+                
+                   apex_mail.prepare_template (
+                      p_static_id       => 'INVITE',
+                      p_placeholders    => '{' || 
+                                           '    "SUBJECT":'           || apex_json.stringify( c1.subject ) || 
+                                           '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                           '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                              :APP_PATH || '/f?p=' || :APP_ID || ':optout',
+                                                                                              apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                           '   ,"BODY":'  || apex_json.stringify( replace(c1.message,'#POLL_LINK#','<a href="#">'||:POLL_NAME||'</a>') ) || 
+                                           '}' , 
+                      p_application_id  => :APP_ID,
+                      p_subject         => l_subject,
+                      p_html            => l_html_body,
+                      p_text            => l_text_body );
+                      
+                   return l_html_body;
+                   
+                end loop;
+                      
+                end;
+                ```
+            pageItemsToSubmit: [
+                P13_EMAIL_ID
+                P13_POLL_ID
+            ]
+        }
+        layout {
+            sequence: 75
+            parentRegion: @invitation-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_emailS
+                 where id = :P13_EMAIL_ID
+                   and poll_id = :P13_POLL_ID
+                ```
+        }
+    )
+
+    region email-details (
+        name: Email Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       subject,
+                       sent_time,
+                       sent_to,
+                       cc,
+                       lower(sent_by) sent_by
+                  from eba_qpoll_emailS
+                 where id = :P13_EMAIL_ID
+                   and poll_id = :P13_POLL_ID
+                ```
+        }
+        layout {
+            sequence: 65
+            parentRegion: @invitation-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_emailS
+                 where id = :P13_EMAIL_ID
+                   and poll_id = :P13_POLL_ID
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: " - "
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CC (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: CC
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from eba_qpoll_emails
+                     where id = :P13_EMAIL_ID
+                       and poll_id = :P13_POLL_ID
+                       and cc is not null
+                    ```
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column SENT_BY (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Sent From
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SENT_TIME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Sent
+            }
+            layout {
+                sequence: 3
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SENT_TO (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Sent To
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SUBJECT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Subject
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region invitation-details (
+        name: Invitation Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            customAttributes: style="width: 1000px;"
+        }
+    )
+
+    region invitation-details-2 (
+        name: Invitation Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.respondent_email,
+                       p.poll_name,
+                       ci.community_name,
+                       lower(i.created_by) invitation_sent_by,
+                       i.created  invitation_sent,
+                       decode(i.email_sent, 'YES', 'Email',
+                              'REMINDER_SENT', 'Reminder',
+                              'OPTED_OUT','Opted Out',
+                              'PREVIOUSLY_SENT','Previously Sent',
+                              'MANUAL_INVITE', 'Manual Invite',
+                              i.email_sent) invite_method,
+                       (select max(created)
+                          from eba_qpoll_results r
+                         where r.poll_id = p.id
+                           and r.IS_VALID_YN = 'Y'
+                           and r.respondent_id = i.respondent_id) response_date,
+                       :P13_INVITE_URL poll_url
+                  from eba_qpoll_polls p,
+                       eba_qpoll_comm_invites ci,
+                       eba_qpoll_invites i
+                 where p.id = :P13_POLL_ID
+                   and p.id = ci.poll_id
+                   and ci.id = i.comm_invite_id
+                   and i.id = :P13_INVITE_ID
+                ```
+        }
+        layout {
+            sequence: 45
+            parentRegion: @invitation-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: " - "
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMMUNITY_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Community
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from eba_qpoll_polls p,
+                           eba_qpoll_comm_invites ci,
+                           eba_qpoll_invites i
+                     where p.id = :P13_POLL_ID
+                       and p.id = ci.poll_id
+                       and ci.id = i.comm_invite_id
+                       and i.id = :P13_INVITE_ID
+                       and ci.community_name is not null
+                    ```
+            }
+        )
+
+        column INVITATION_SENT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Invited
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: fmDay, fmDD fmMonth, YYYY  HH24:MI
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITATION_SENT_BY (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Invited By
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITE_METHOD (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Method
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Poll
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column POLL_URL (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Poll URL
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RESPONDENT_EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Invitee
+            }
+            layout {
+                sequence: 1
+            }
+            columnFormatting {
+                htmlExpression: <strong>#RESPONDENT_EMAIL#</strong>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RESPONSE_DATE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Responded
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region no-email-in-history (
+        name: No Email in History
+        type: staticContent
+        source {
+            htmlCode: There is no email in the history matching this.  The email log was likely purged.
+        }
+        layout {
+            sequence: 55
+            parentRegion: @invitation-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_emailS
+                 where id = :P13_EMAIL_ID
+                   and poll_id = :P13_POLL_ID
+                ```
+        }
+    )
+
+    pageItem P13_EMAIL_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @invitation-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_INVITE_ID (
+        type: hidden
+        layout {
+            sequence: 15
+            region: @invitation-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_INVITE_URL (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @invitation-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_POLL_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @invitation-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    dynamicAction load-email (
+        name: Load Email
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P13_EMAIL_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P13_EMAIL_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    openModal("view_email");
+                    $("#view_email").parent().width("700px");
+                    ```
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p13-invite-url (
+        itemName: P13_INVITE_URL
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                 select i.respondent_id, p.authentication_req_yn
+                  from eba_qpoll_polls p,
+                       eba_qpoll_comm_invites ci,
+                       eba_qpoll_invites i
+                 where p.id = :P13_POLL_ID
+                   and p.id = ci.poll_id
+                   and ci.id = i.comm_invite_id
+                   and i.id = :P13_INVITE_ID
+                ) loop
+                   return :APP_PATH||apex_util.prepare_url(p_url => 'f?p='||:APP_ID||':'||case when c1.authentication_req_yn='Y'
+                                                                                                    then '500'
+                                                                                                    else '50' end||':0::::LPOLL_ID,PID:' ||:P13_POLL_ID||','||c1.respondent_id,
+                                                      p_checksum_type => '1',
+                                                      p_plain_url => TRUE);
+                end loop;
+                ```
+        }
+    )
+
+)
+

@@ -1,0 +1,1899 @@
+page 2 (
+    name: Customer Details
+    alias: CUSTOMER-DETAILS
+    title: Customer Details
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <script language="JavaScript" type="text/javascript">
+            <!--
+            
+             htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+            
+            function open_url(url) {
+                window.open(url);
+                return ;
+            }
+            
+            //-->
+            </script>
+            <style>
+            .shuttle select {width: 350px}
+            </style>
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 60
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region classification (
+        name: Classification
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region customer-details (
+        name: Customer Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            htmlDomId: CUSTOMERS
+        }
+    )
+
+    region logo (
+        name: Logo
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region project (
+        name: Project
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P2_ANNUAL_RECURRING_REVENUE (
+        type: numberField
+        label {
+            label: ARR
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 180
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANNUAL_RECURRING_REVENUE
+            used: always
+        }
+        help {
+            helpText: Annual Recurring Revenue (ARR) is a measure of revenue; it is typically used by companies that sell subscriptions or services.
+        }
+        config {
+            buildOption: @annual-recurring-revenue-arr
+        }
+    )
+
+    pageItem P2_CATEGORY_ID (
+        type: selectList
+        label {
+            label: Category
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @active-categories-p
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 60
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CATEGORY_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_COUNTRY_ID (
+        type: selectList
+        label {
+            label: Country
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @countries-p
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        cascadingLov {
+            parentItems: P2_GEOGRAPHY_ID
+        }
+        layout {
+            sequence: 90
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COUNTRY_ID
+            used: always
+        }
+        config {
+            buildOption: @countries
+        }
+    )
+
+    pageItem P2_CURRENCY (
+        type: textField
+        label {
+            label: Currency
+            alignment: left
+        }
+        layout {
+            sequence: 190
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 20
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CURRENCY
+            used: always
+        }
+        default {
+            type: static
+            staticValue: USD
+        }
+        help {
+            helpText: Monitory values are to be in this currency.  Default is United States Dollars (USD).
+        }
+    )
+
+    pageItem P2_CUSTOMER_ACCOUNT_NUMBER (
+        type: textField
+        label {
+            label: Account Number
+            alignment: left
+        }
+        layout {
+            sequence: 180
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_ACCOUNT_NUMBER
+            used: always
+        }
+    )
+
+    pageItem P2_CUSTOMER_NAME (
+        type: textField
+        label {
+            label: Customer Name
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_NAME
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P2_CUSTOMER_PROFILE (
+        type: textarea
+        label {
+            label: Customer Description
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 5
+        }
+        validation {
+            maxLength: 99999999999
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CUSTOMER_PROFILE
+            used: always
+        }
+    )
+
+    pageItem P2_DISCOUNT_LEVEL (
+        type: numberField
+        label {
+            label: Discount
+            alignment: left
+        }
+        settings {
+            minValue: 0
+            maxValue: 100
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 200
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--postTextBlock
+            ]
+            width: 30
+        }
+        advanced {
+            postText: %
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISCOUNT_LEVEL
+            used: always
+        }
+        config {
+            buildOption: @discount-percentage
+        }
+    )
+
+    pageItem P2_DUNS (
+        type: textField
+        label {
+            label: DUNS #
+            alignment: left
+        }
+        layout {
+            sequence: 190
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DUNS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter unique nine-digit identification sequence of Customer's Business.
+        }
+    )
+
+    pageItem P2_FACEBOOK (
+        type: textField
+        label {
+            label: Facebook
+            alignment: left
+        }
+        settings {
+            subtype: url
+        }
+        layout {
+            sequence: 230
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: FACEBOOK
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_GEOGRAPHY_ID (
+        type: selectList
+        label {
+            label: Geography
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @geography
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 80
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: GEOGRAPHY_ID
+            used: always
+        }
+        config {
+            buildOption: @geography
+        }
+    )
+
+    pageItem P2_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @customer-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_INDUSTRY_ID (
+        type: selectList
+        label {
+            label: Industry
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p2-industry-id-lookup
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 70
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: INDUSTRY_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: The industry in which this particular customer belongs to
+        }
+    )
+
+    pageItem P2_LINKEDIN (
+        type: textField
+        label {
+            label: LinkedIn
+            alignment: left
+        }
+        settings {
+            subtype: url
+        }
+        layout {
+            sequence: 220
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LINKEDIN
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_LOGO (
+        type: displayImage
+        label {
+            label: Logo
+            alignment: left
+        }
+        settings {
+            filenameColumn: LOGO_NAME
+            blobLastUpdatedColumn: LOGO_LASTUPD
+        }
+        layout {
+            sequence: 460
+            region: @logo
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            customAttributes: style="max-width:500px;max-height:250px;"
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LOGO_BLOB
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_LOGO_NAME
+        }
+    )
+
+    pageItem P2_LOGO_BLOB (
+        type: fileUpload
+        label {
+            label: Image/File
+            alignment: left
+        }
+        storage {
+            mimeTypeColumn: LOGO_MIMETYPE
+            filenameColumn: LOGO_NAME
+            charSetColumn: LOGO_CHARSET
+            bobLastUpdatedColumn: LOGO_LASTUPD
+        }
+        layout {
+            sequence: 450
+            region: @logo
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LOGO_BLOB
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            inlineHelpText: Attachments must be under 15M in size.
+            helpText: Select the logo image/file for this customer.
+        }
+    )
+
+    pageItem P2_LOGO_MIMETYPE (
+        type: displayOnly
+        label {
+            label: Mimetype
+            alignment: left
+        }
+        layout {
+            sequence: 440
+            region: @logo
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LOGO_MIMETYPE
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_LOGO_MIMETYPE
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Logo's MIME Type.
+        }
+    )
+
+    pageItem P2_LOGO_NAME (
+        type: displayOnly
+        label {
+            label: Filename
+            alignment: left
+        }
+        layout {
+            sequence: 430
+            region: @logo
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: LOGO_NAME
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_LOGO_NAME
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Logo's File Name.
+        }
+    )
+
+    pageItem P2_MARQUEE_CUSTOMER_YN (
+        type: selectList
+        label {
+            label: Marquee Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @marquee
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 110
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MARQUEE_CUSTOMER_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_NUMBER_OF_USERS (
+        type: numberField
+        label {
+            label: Number of Users
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 160
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: NUMBER_OF_USERS
+            used: always
+        }
+        help {
+            helpText: Enter the number of users / employees.
+        }
+        config {
+            buildOption: @number-of-users
+        }
+    )
+
+    pageItem P2_PARENT_CUSTOMER_ID (
+        type: popupLov
+        label {
+            label: Parent
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @customers
+            displayExtraValues: false
+            nullDisplayValue: - No Parent -
+        }
+        layout {
+            sequence: 40
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: PARENT_CUSTOMER_ID
+            used: always
+        }
+    )
+
+    pageItem P2_REFERENCABLE (
+        type: selectList
+        label {
+            label: Publicly Referenceable
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @referencable
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 470
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REFERENCABLE
+            used: always
+        }
+        default {
+            type: static
+            staticValue: No
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Would this customer give us a good reference?
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P2_REFERENCE_PHASE_ID (
+        type: selectList
+        label {
+            label: Reference Phase
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @reference-phase
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 490
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REFERENCE_PHASE_ID
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_ID
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P2_REFERENCE_TYPES (
+        type: checkboxGroup
+        label {
+            label: Reference Types
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @reference-types
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 480
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQueryMultipleValues
+            sqlQuery:
+                ```sql
+                select listagg(rt.id,':') within group (order by rt.reference_type) types
+                from eba_cust_reference_types rt,
+                    eba_cust_customer_reftype_ref ref
+                where rt.id = ref.reference_type_id
+                    and ref.customer_id = :P2_ID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_ID
+        }
+        help {
+            helpText: In what ways would this customer be willing to be a reference?
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P2_REF_RECRUITMENT_OWNER (
+        type: textField
+        label {
+            label: Recruitment Owner
+            alignment: left
+        }
+        layout {
+            sequence: 500
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: REF_RECRUITMENT_OWNER
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_ID
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    pageItem P2_REGION_TITLE (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @customer-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_REQUEST (
+        type: hidden
+        layout {
+            sequence: 420
+            region: @breadcrumbs
+            slot: regionBody
+        }
+        source {
+            type: item
+            item: P2_REQUEST
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_ROW_KEY (
+        type: displayOnly
+        label {
+            label: Customer Unique ID:
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROW_KEY
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_ID
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_SALES_CHANNEL_ID (
+        type: selectList
+        label {
+            label: Sales Channel
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select  CHANNEL, id from EBA_CUST_SALES_CHANNEL order by 1
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 130
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SALES_CHANNEL_ID
+            used: always
+        }
+    )
+
+    pageItem P2_SIC (
+        type: textField
+        label {
+            label: SIC
+            alignment: left
+        }
+        layout {
+            sequence: 200
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SIC
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Standard Industry Code of the Customer.
+        }
+    )
+
+    pageItem P2_STATUS_ID (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @active-statuses-p
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 50
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: @customer-status
+        }
+    )
+
+    pageItem P2_STOCK_SYMBOL (
+        type: textField
+        label {
+            label: Stock Symbol
+            alignment: left
+        }
+        layout {
+            sequence: 170
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 16
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STOCK_SYMBOL
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter Stock Symbol of the Customer.
+        }
+    )
+
+    pageItem P2_STRATEGIC_CUST_PROG (
+        type: selectList
+        label {
+            label: SCP Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @y-or-n
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 120
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STRATEGIC_CUSTOMER_PROGRAM_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        config {
+            buildOption: @strategic-customer-program
+        }
+    )
+
+    pageItem P2_SUMMARY (
+        type: textarea
+        label {
+            label: Project Summary
+            alignment: left
+        }
+        layout {
+            sequence: 180
+            region: @project
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 80
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SUMMARY
+            used: always
+        }
+    )
+
+    pageItem P2_TAGS (
+        type: popupLov
+        label {
+            label: Tags
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select tag
+                  from eba_cust_tags_type_sum
+                 where content_type = 'CUSTOMER'
+                 order by 1
+                
+                ```
+        }
+        layout {
+            sequence: 170
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TAGS
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            inlineHelpText: Enter tags separated by commas
+            helpText: Provide tags for this particular customers
+        }
+    )
+
+    pageItem P2_TOTAL_CONTRACT_VALUE (
+        type: numberField
+        label {
+            label: TCV
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 170
+            region: @customer-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TOTAL_CONTRACT_VALUE
+            used: always
+        }
+        help {
+            helpText: Total Contract Value (TCV) is a metric that represents the value of one-time and recurring charges. The TCV does not include usage charges.
+        }
+        config {
+            buildOption: @total-contract-value-tcv
+        }
+    )
+
+    pageItem P2_TWITTER (
+        type: textField
+        label {
+            label: Twitter
+            alignment: left
+        }
+        settings {
+            subtype: url
+        }
+        layout {
+            sequence: 240
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TWITTER
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_TYPE_ID (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @type
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 50
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TYPE_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select a type.
+        }
+    )
+
+    pageItem P2_USE_CASE_ID (
+        type: selectList
+        label {
+            label: Use Case
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @use-case
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 150
+            region: @project
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USE_CASE_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select a use case.
+        }
+        config {
+            buildOption: @customer-use-case
+        }
+    )
+
+    pageItem P2_WEB_SITE (
+        type: textField
+        label {
+            label: Web Site
+            alignment: left
+        }
+        settings {
+            subtype: url
+        }
+        layout {
+            sequence: 210
+            region: @classification
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 80
+        }
+        validation {
+            maxLength: 1000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: WEB_SITE
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Enter the URL of the Customer's Web site.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumbs
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Customer
+        layout {
+            sequence: 40
+            region: @breadcrumbs
+            slot: create
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @breadcrumbs
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumbs
+            slot: create
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    validation facebook-must-be-a-url-starting-with-http (
+        name: Facebook Must Be a URL starting with http
+        execution {
+            sequence: 70
+        }
+        validation {
+            plsqlExpression: substr(:P2_FACEBOOK, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P2_FACEBOOK
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_FACEBOOK
+        }
+    )
+
+    validation linkedin-must-be-a-url-starting-with-http (
+        name: LinkedIn Must Be a URL starting with http
+        execution {
+            sequence: 80
+        }
+        validation {
+            plsqlExpression: substr(:P2_LINKEDIN, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P2_LINKEDIN
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_LINKEDIN
+        }
+    )
+
+    validation no-customer-cycles (
+        name: No Customer Cycles
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from (  select c.id
+                        from eba_cust_customers c
+                        start with c.id = :P2_PARENT_CUSTOMER_ID
+                        connect by prior parent_customer_id = id
+                    ) x
+                where x.id = :P2_ID
+                ```
+        }
+        error {
+            errorMessage: #LABEL# cannot be circular
+            associatedItem: @P2_PARENT_CUSTOMER_ID
+        }
+    )
+
+    validation p2-category-id-must-be-number (
+        name: P2_CATEGORY_ID must be number
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNumeric
+            item: P2_CATEGORY_ID
+        }
+        error {
+            errorMessage: Category Id must be number.
+            associatedItem: @P2_CATEGORY_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    validation p2-status-id-must-be-number (
+        name: P2_STATUS_ID must be number
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemIsNumeric
+            item: P2_STATUS_ID
+        }
+        error {
+            errorMessage: Status Id must be number.
+            associatedItem: @P2_STATUS_ID
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    validation twitter-must-be-a-url-starting-with-http (
+        name: Twitter Must Be a URL starting with http
+        execution {
+            sequence: 90
+        }
+        validation {
+            plsqlExpression: substr(:P2_TWITTER, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P2_TWITTER
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_TWITTER
+        }
+    )
+
+    validation unique-account-number (
+        name: Unique Account Number
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_cust_customers
+                where id <> :P2_ID
+                    and customer_account_number = :P2_CUSTOMER_ACCOUNT_NUMBER
+                ```
+        }
+        error {
+            errorMessage: #LABEL# already associated with another customer.
+            associatedItem: @P2_CUSTOMER_ACCOUNT_NUMBER
+        }
+    )
+
+    validation valid-characters-in-tags (
+        name: Valid Characters in Tags
+        execution {
+            sequence: 50
+        }
+        validation {
+            plsqlExpression: "not regexp_like( :P2_TAGS, '[:;#\\/\\\\\\?\\&]' )"
+        }
+        error {
+            errorMessage: Tags may not contain the following characters: : ; \ / ? &
+            associatedItem: @P2_TAGS
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
+        }
+    )
+
+    validation website-must-be-a-url-starting-with-http (
+        name: Website Must Be a URL starting with http
+        execution {
+            sequence: 60
+        }
+        validation {
+            plsqlExpression: substr(:P2_WEB_SITE, 1, 4) = 'http'
+        }
+        error {
+            errorMessage: Please provide a URL that begins with, "http".
+            associatedItem: @P2_WEB_SITE
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_WEB_SITE
+        }
+    )
+
+    process fetch-row-from-eba-cust-customers (
+        name: Fetch Row from EBA_CUST_CUSTOMERS
+        type: autoRowFetch
+        source {
+            tableName: EBA_CUST_CUSTOMERS
+            pkColumn: ID
+            pkItem: P2_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 17798800069712218306
+        }
+    )
+
+    process process-row-of-eba-cust-customers (
+        name: Process Row of EBA_CUST_CUSTOMERS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CUST_CUSTOMERS
+            pkColumn: ID
+            pkItem: P2_ID
+            returnKeyIntoItem: P2_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CUST_CUSTOMERS.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 17798800170231218306
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    branch (
+        name: Go To CUSTOMERS after delete
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: CUSTOMERS
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: goto edit customer on create
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 50
+                items: {
+                    P50_ID: &P2_ID.
+                }
+                clearCache: 50
+                action: resetPagination
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: &LAST_VIEW.
+                request: &P2_REQUEST.
+            }
+            saveStateBeforeBranching: true
+        }
+    )
+
+)
+

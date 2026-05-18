@@ -1,0 +1,406 @@
+page 5 (
+    name: Restaurant
+    alias: RESTAURANT
+    title: Restaurant
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Hero */
+            .c-HeroCard {
+              --a-cv-placeholder-color: transparent; /* Hide Placeholders */
+              --a-cv-background-color: transparent; /* Remove Hero Card Background */
+              --a-cv-border-width: 0px; /* Remove Hero Card Borders */
+              --a-cv-shadow: none; /* Remove Hero Card Shadow */
+              --a-cv-icon-image-border-radius: .5rem;
+              --a-cv-icon-image-size: 6rem;
+            
+              min-block-size: 16.875rem; /* Set Initial Hero Card Size */
+            }
+            
+            /* Hero Card Icon */
+            .c-HeroCard .a-CardView-iconImg {
+              margin-block-start: -5rem;
+              position: relative;
+              box-shadow: var(--ut-body-background-color) 0 0 0 .25rem;
+            }
+            
+            /* Set Hero Card Grid */
+            .a-CardView-items--grid {
+              grid-template-columns: auto;
+              padding: 0;
+            }
+            
+            /* Set Max-Height for Hero Card Image */
+            .c-HeroCard .a-CardView-media {
+              max-block-size: 10rem;
+            }
+            
+            /* Show Only First Hero Card */
+            .c-HeroCard .is-placeholder li:not(:first-child) {
+              display: none;
+            }
+            
+            /* Content Row */
+            .t-ContentRow-wrap {
+              flex-direction: row-reverse; /* Flip Order of Avatar */
+            }
+            
+            /* Content Row Actions */
+            .t-ContentRow-actions {
+              align-self: flex-end;
+              position: absolute;
+              inset-block-end: .375rem;
+              inset-inline-end: .25rem;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region restaurant-information (
+        name: Restaurant Information
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id,
+                       r.hero_url as image,
+                       r.logo_url as icon,
+                       r.name as name,
+                       c.name as category,
+                       r.rating,
+                       r.delivery_time,
+                       r.delivery_fee
+                  from sample_restaurant r,
+                       sample_restaurant_categories c
+                 where c.id = r.category_id
+                   and r.id = :P5_RESTAURANT_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: fullWidthContent
+            rowCssClasses: margin-none
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: #DEFAULT#
+            cssClasses: c-HeroCard
+        }
+        card {
+            cssClasses: a-CardView--noUI
+        }
+        title {
+            column: NAME
+        }
+        subtitle {
+            advancedFormatting: true
+            htmlExpression:
+                ```html
+                <div class="a-CardView-subTitle">
+                  <div class="margin-bottom-sm">&CATEGORY.</div>
+                  <div><span class="fa fa-star u-alignBaseline" aria-hidden="true"></span> &RATING. &bull; {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min</div>
+                </div>
+                ```
+        }
+        iconAndBadge {
+            iconSource: imageUrl
+            imageUrl: #APP_FILES#&ICON.
+            iconCssClasses: u-color-14-bg
+            iconPosition: top
+        }
+        media {
+            source: imageUrl
+            url: #APP_FILES#&IMAGE.
+            position: first
+            appearance: widescreen
+            sizing: cover
+        }
+        messages {
+            whenNoDataFound: No details found!
+            noDataFoundIcon: fa-emoji-grin-sweat
+        }
+    )
+
+    region restaurant-items (
+        name: Restaurant Items
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id,
+                       image_url as image,
+                       name,
+                       description,
+                       price,
+                       rating
+                  from sample_restaurant_items
+                 order by dbms_random.value
+                 fetch first 6 rows only
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-top-none
+            ]
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &NAME.
+            description:
+                ```html
+                <div>$&PRICE. &bull; <span class="fa fa-thumbs-up u-alignBaseline" aria-hidden="true"></span> &RATING.</div>
+                <div>&DESCRIPTION.</div>
+                ```
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: url
+                url: #APP_FILES#&IMAGE.
+            }
+            size: medium
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column IMAGE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: IMAGE
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column PRICE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: PRICE
+                dataType: number
+            }
+        )
+
+        column RATING (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: RATING
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: fullRowLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 7
+                    items: {
+                        P7_ITEM_ID: &ID.
+                        P7_ITEM_NAME: &NAME.
+                    }
+                    clearCache: 7
+                }
+                linkAttributes: aria-label="&NAME."
+            }
+        )
+
+        action add (
+            position: primaryActions
+            template: button
+            label: Add
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 7
+                    items: {
+                        P7_ITEM_ID: &ID.
+                        P7_ITEM_NAME: &NAME.
+                    }
+                    clearCache: 7
+                }
+            }
+            appearance {
+                displayType: icon
+                icon: fa-plus
+                hot: true
+                cssClasses: [
+                    padding-sm
+                    t-Button--tiny
+                ]
+            }
+        )
+
+    )
+
+    pageItem P5_RESTAURANT_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    dynamicAction send-push-notification (
+        name: Send Push Notification
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_pwa.has_push_subscription
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    apex_pwa.send_push_notification (
+                        p_user_name      => :APP_USER,
+                        p_title          => 'Offer Available',
+                        p_body           => 'Buy 1, Get 1 Free. Complete your order!',
+                        p_icon_url       => apex_mail.get_instance_url || '#APP_FILES#icons/app-icon-512.png' );
+                    apex_pwa.push_queue;
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction update-cart-badge-on-dialog-close (
+        name: Update Cart Badge on Dialog Close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @restaurant-items
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: parseInt(this.data.P7_SHOPPING_CART_ITEMS) > 0
+        }
+
+        action remove-cart-badge (
+            name: Remove Cart Badge
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Update Badge Text
+                    apex.jQuery( '.js-shopping-cart-item .t-Button-badge' ).text( '' );
+                    
+                    // Update Icon
+                    apex.jQuery( '.js-shopping-cart-item .t-Icon' ).toggleClass( 'fa-cart-full fa-cart-empty' );
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action update-cart-badge (
+            name: Update Cart Badge
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    // Update Badge Text
+                    apex.jQuery( '.js-shopping-cart-item .t-Button-badge' ).text( this.data.P7_SHOPPING_CART_ITEMS );
+                    
+                    // Update Icon
+                    apex.jQuery( '.js-shopping-cart-item .t-Icon' ).toggleClass( 'fa-cart-empty fa-cart-full' );
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

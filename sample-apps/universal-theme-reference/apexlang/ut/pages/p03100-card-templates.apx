@@ -1,0 +1,604 @@
+page 3100 (
+    name: Card Templates
+    alias: CARD-TEMPLATES
+    title: Card Templates
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region cards-as-a-list-template (
+        name: Cards as a List Template
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            icon: fa-bars
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region cards-as-a-report-template (
+        name: Cards as a Report Template
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            icon: fa-table
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region cards-list (
+        name: Cards List
+        type: list
+        source {
+            list: @ut-sample-cards-list
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+        componentAppearance {
+            listTemplate: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--displaySubtitle
+                t-Cards--featured t-Cards--block force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--cols
+                t-Cards--desc-2ln
+                t-Cards--animColorFill
+            ]
+            cssClasses: dm-TemplateOption-previewTarget
+        }
+    )
+
+    region cards-report (
+        name: Cards Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                  id,
+                  project card_title,
+                  upper(substr(project,0,2)) card_initials,
+                  null card_text,
+                  null card_subtext,
+                  'fa-cloud' card_icon, 
+                  lower(created_by) created_by,
+                  created,
+                  lower(updated_by) updated_by,
+                  updated
+                from eba_UT_chart_projects
+                order by 2
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: Demo2
+        }
+        reportLayout {
+            numberOfRows: 4
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--featured t-Cards--block force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--cols
+                t-Cards--animColorFill
+            ]
+            cssClasses: dm-TemplateOption-previewTarget
+            showNullValuesAs: -
+        }
+
+        column CARD_ICON (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Card Icon
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 5
+            }
+            columnFormatting {
+                htmlExpression: Updated #UPDATED#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 4
+            }
+            columnFormatting {
+                htmlExpression: Created by #CREATED_BY# (#CREATED#)
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+    )
+
+    region column-aliases (
+        name: Column Aliases
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <dl class="t-AVPList  t-AVPList--leftAligned">
+                  <dt class="t-AVPList-label">#CARD_MODIFIERS#</dt><dd class="t-AVPList-value">Card CSS Class</dd>
+                  <dt class="t-AVPList-label">#CARD_COLOR#</dt><dd class="t-AVPList-value">Card Color Class</dd>
+                  <dt class="t-AVPList-label">#CARD_ICON#</dt><dd class="t-AVPList-value">Icon</dd>
+                  <dt class="t-AVPList-label">#CARD_INITIALS#</dt><dd class="t-AVPList-value">Initials</dd>
+                  <dt class="t-AVPList-label">#CARD_TITLE#</dt><dd class="t-AVPList-value">Title</dd>
+                  <dt class="t-AVPList-label">#CARD_LINK#</dt><dd class="t-AVPList-value">Link</dd>
+                  <dt class="t-AVPList-label">#CARD_SUBTITLE#</dt><dd class="t-AVPList-value">Subtitle</dd>
+                  <dt class="t-AVPList-label">#CARD_TEXT#</dt><dd class="t-AVPList-value">Description text</dd>
+                  <dt class="t-AVPList-label">#CARD_SUBTEXT#</dt><dd class="t-AVPList-value">Secondary description text</dd>
+                </dl>
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @cards-as-a-report-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @cards-as-a-list-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo List Template
+        }
+    )
+
+    region demo-2 (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @cards-as-a-report-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Demo Report Template
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 10
+            parentRegion: @cards-as-a-list-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+            ]
+        }
+        accessibility {
+            landmarkLabel: List Template Instructions
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 10
+            parentRegion: @cards-as-a-report-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+            ]
+        }
+        accessibility {
+            landmarkLabel: Report Template Instructions
+        }
+        settings {
+            staticId: Demo2
+        }
+    )
+
+    region list-custom-attributes (
+        name: List Custom Attributes
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <dl class="t-AVPList  t-AVPList--leftAligned">
+                  <dt class="t-AVPList-label">#A01#</dt><dd class="t-AVPList-value">Description</dd>
+                  <dt class="t-AVPList-label">#A02#</dt><dd class="t-AVPList-value">Secondary Information</dd>
+                  <dt class="t-AVPList-label">#A03#</dt><dd class="t-AVPList-value">Initials</dd>
+                  <dt class="t-AVPList-label">#A04#</dt><dd class="t-AVPList-value">List Item CSS Classes</dd>
+                  <dt class="t-AVPList-label">#A05#</dt><dd class="t-AVPList-value">Link Attributes</dd>
+                  <dt class="t-AVPList-label">#A06#</dt><dd class="t-AVPList-value">Card Color Class</dd>
+                  <dt class="t-AVPList-label">#A07#</dt><dd class="t-AVPList-value">Subtitle</dd>
+                </dl>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @cards-as-a-list-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Cards are useful for presenting a variety of information in small blocks and can be heavily customized. They can be displayed in three styles, with icons or initials, and you can control the layout. With Universal Theme, you can style both <strong>Lists</strong> or <strong>Classic Reports</strong> regions to appear as cards by setting the appropriate template.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region sample-sql-query (
+        name: Sample SQL Query
+        type: plugin/regionSourceCode
+        layout {
+            sequence: 50
+            parentRegion: @cards-as-a-report-template
+            slot: subRegions
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        settings {
+            regionStaticId: Demo2
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 60
+            parentRegion: @cards-as-a-list-template
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Template Options List
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region template-options-2 (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 40
+            parentRegion: @cards-as-a-report-template
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Template Options Report
+        }
+        settings {
+            staticId: Demo2
+        }
+    )
+
+)
+

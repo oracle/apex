@@ -1,0 +1,382 @@
+page 30 (
+    name: Top Users
+    alias: TOP-USERS
+    title: Top Users
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                t-Form
+                t-Form--floatLeft
+            ]
+        }
+    )
+
+    region top-users (
+        name: Top Users
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                lower(USERID)                   as THE_USER,
+                count(*)                        as PAGE_EVENTS,
+                median(ELAP)                    as MEDIAN_ELAPSED,
+                sum(NUM_ROWS)                   as ROWS_FETCHED,
+                sum(decode(IR_SEARCH,null,0,1)) as IR_SEARCHES,
+                sum(decode(SQLERRM,null,0,1))   as ERRORS,
+                sum(CONTENT_LENGTH)             as CONTENT_SERVED,
+                max(time_stamp)                 as MOST_RECENT
+                from apex_activity_log l
+                where flow_id = :app_id
+                and time_stamp > sysdate - to_number(:P30_TIMEFRAME,'9999999990.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')
+                group by lower(userid)
+                order by most_recent desc
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToYOfZ
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        searchBar {
+            rowsPerPageSelector: true
+        }
+        actionsMenu {
+            rowsPerPage: false
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1652587544061460476
+        }
+
+        column CONTENT_SERVED (
+            type: plainText
+            heading {
+                heading: Content Served
+                alignment: end
+            }
+            layout {
+                sequence: 15
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column ERRORS (
+            type: plainText
+            heading {
+                heading: Errors
+                alignment: end
+            }
+            layout {
+                sequence: 14
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column IR_SEARCHES (
+            type: plainText
+            heading {
+                heading: Ir Searches
+                alignment: end
+            }
+            layout {
+                sequence: 13
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column MEDIAN_ELAPSED (
+            type: plainText
+            heading {
+                heading: Median Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 11
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column MOST_RECENT (
+            type: plainText
+            heading {
+                heading: Most Recent
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PAGE_EVENTS (
+            type: plainText
+            heading {
+                heading: Page Events
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ROWS_FETCHED (
+            type: plainText
+            heading {
+                heading: Rows Fetched
+                alignment: end
+            }
+            layout {
+                sequence: 12
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column THE_USER (
+            type: plainText
+            heading {
+                heading: The User
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        savedReport 7177149 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CONTENT_SERVED (
+                sequence: 7
+            )
+
+            displayColumn ERRORS (
+                sequence: 6
+            )
+
+            displayColumn IR_SEARCHES (
+                sequence: 5
+            )
+
+            displayColumn MEDIAN_ELAPSED (
+                sequence: 3
+            )
+
+            displayColumn MOST_RECENT (
+                sequence: 8
+            )
+
+            displayColumn PAGE_EVENTS (
+                sequence: 2
+            )
+
+            displayColumn ROWS_FETCHED (
+                sequence: 4
+            )
+
+            displayColumn THE_USER (
+                sequence: 1
+            )
+
+            sort (
+                column: PAGE_EVENTS
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: "Page Events"
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P30_TIMEFRAME (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @timeframe
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: 1
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @top-users
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 30
+                clearCache: [
+                    38
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

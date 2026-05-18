@@ -1,0 +1,237 @@
+page 115 (
+    name: US States and Large Airports
+    alias: US-STATES-AND-LARGE-AIRPORTS
+    title: &APP_NAME. - US States and Large Airports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This map visualizes US states as a <em>Polygon</em>) layer and the large airports (with more than 50,000 commercial operations) as a <em>Point</em> layer on top. 
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region states-and-large-airports (
+        name: States and Large Airports
+        type: map
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: airport-map-region
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -90
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+        componentAdvanced {
+            customSvgStyles:
+                ```
+                [
+                    {
+                        "name": "Airport",
+                        "width": 20,
+                        "height": 20,
+                        "paint-order": "stroke",
+                        "viewBox": "0 0 20 20",
+                        "elements": [
+                            {
+                                "type": "path",
+                                "d": "M10,2A6.006,6.006,0,0,0,4,8c0,3.652,5.4,9.587,5.631,9.838a.5.5,0,0,0,.738,0C10.6,17.587,16,11.652,16,8A6.006,6.006,0,0,0,10,2Z"
+                            },
+                            {
+                                "type":"path",
+                                "d": "M12.942,5.942,11.783,7.1l.655,2.836a.5.5,0,0,1-.317.583.509.509,0,0,1-.171.03.5.5,0,0,1-.445-.273l-.978-1.92-.986.986.123,1.1a.5.5,0,0,1-.972.213L8.354,9.646,7.342,9.308a.5.5,0,0,1-.33-.582.509.509,0,0,1,.543-.39l1.1.123.986-.986L7.723,6.5a.5.5,0,0,1,.34-.933l2.836.655,1.159-1.159a.625.625,0,0,1,.884.884Z",
+                                "fill":"#ffffff",
+                                "stroke": "none"
+                            }
+                        ]
+                    }
+                ]
+                
+                
+                ```
+        }
+
+        layer large-airports (
+            name: Large Airports
+            layout {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select
+                        ID,
+                        IATA_CODE,
+                        AIRPORT_TYPE,
+                        AIRPORT_NAME,
+                        CITY,
+                        STATE_NAME,
+                        --ACTIVATION_DATE,
+                        to_char(ACTIVATION_DATE_DT,'fmDDfm-MON-YYYY') as ACTIVATION_DATE,
+                        ELEVATION,
+                        DIST_CITY_TO_AIRPORT,
+                        LAND_AREA_COVERED,
+                        COMMERCIAL_OPS,
+                        to_char(COMMERCIAL_OPS,'999G999G999G999') as com_ops_fmtd,
+                        AIR_TAXI_OPS,
+                        to_char(AIR_TAXI_OPS,'999G999G999G999') as air_ops_fmtd,
+                        GEOMETRY
+                    from 
+                        eba_sample_map_airports
+                    where
+                        commercial_ops > 50000
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            pointObjects {
+                shape: Airport
+                shapeScale: 1.5
+            }
+            appearance {
+                fillColor: #ff0000
+                strokeColor: #ffffff
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression: &AIRPORT_NAME. (&IATA_CODE.)
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <h3>&AIRPORT_NAME. (&IATA_CODE.)</h3>
+                    <p><strong>&CITY., &STATE_NAME.</strong><br>
+                    {if ACTIVATION_DATE/}
+                    Activation Date: &ACTIVATION_DATE.<br>
+                    {endif/}
+                    {if COMMERCIAL_OPS/}
+                    Commercial Operations: &COM_OPS_FMTD.<br>
+                    {endif/}
+                    {if AIR_TAXI_OPS/}
+                    Taxi Operations: &AIR_OPS_FMTD.<br>
+                    {endif/}
+                    ```
+            }
+        )
+
+        layer us-states (
+            name: US States
+            layerType: polygons
+            layout {
+                sequence: 10
+            }
+            source {
+                tableName: EBA_SAMPLE_MAP_SIMPLE_STATES
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                fillColor: #808080
+                fillOpacity: .5
+                strokeColor: #ffffff
+            }
+            tooltip {
+                column: NAME
+            }
+            messages {
+                whenNoDataFound: No States found.
+            }
+        )
+
+    )
+
+    dynamicAction on-click-point (
+        name: On Click Point
+        execution {
+            sequence: 10
+        }
+        when {
+            event: region/map/spatialmapobjectclick
+            selectionType: region
+            region: @states-and-large-airports
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    const { lng, lat } = this.data;
+                    
+                    apex.region("airport-map-region").call( "getMapObject" ).flyTo({ 
+                        center: [ lng, lat ],
+                        screenSpeed: 0.8
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

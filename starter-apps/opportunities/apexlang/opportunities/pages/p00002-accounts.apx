@@ -1,0 +1,1766 @@
+page 2 (
+    name: Accounts
+    alias: ACCOUNTS
+    title: Accounts
+    pageGroup: @accounts
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            // standard, cacheable elements
+            var timeout = 0; // used for debounce on search
+            var CONTAINER_SEL = '.t-Form-fieldContainer';
+            var pagePrefix = 'P' + $('#pFlowStepId').val();
+            var displayAsId = pagePrefix + '_DISPLAY_AS';
+            var $displayAs = $('#' + displayAsId);
+            var $body = $('.t-PageBody');
+            var $search = $('#' + pagePrefix + '_SEARCH');
+            var $sort = $('#' + pagePrefix + '_SORT');
+            var $reset = $('#reset_button');
+            var $cardsReg = $('#cards_region');
+            var $reportReg = $('#report_region');
+            var $gridReg = $('#grid_region');
+            
+            // custom items (will vary by page)
+            var $territory = $('#' + pagePrefix + '_TERRITORY_ID');
+            var $keyAccounts = $('#' + pagePrefix + '_KEY');
+            
+            function showLeftColumn() {
+              $body
+                .removeClass('t-PageBody--hideLeft')
+                .addClass('t-PageBody--showLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+            
+            function hideLeftColumn() {
+              $body
+                .removeClass('t-PageBody--showLeft')
+                .addClass('t-PageBody--hideLeft');
+                
+              // Takes 200ms to hide column
+              setTimeout(function() {
+                // Ensure column headers align correctly
+                $(window).trigger('apexwindowresized');
+              }, 250);
+            }
+              
+            // applyFilters triggers the refresh event on the correct region
+            function applyFilters() {
+              var display = $v(displayAsId);
+              
+              if (display === 'CARDS') {
+                $cardsReg.trigger('apexrefresh');
+              } else if (display === 'REPORT') {
+                $reportReg.trigger('apexrefresh');
+              } else if (display === 'GRID') {
+                $gridReg.trigger('apexrefresh');
+              }
+            }
+            
+            // toggleRegionDisplay is similar to applyFilters except that it also
+            // takes into account what regions or items need to be displayed or hidden
+            function toggleRegionDisplay(refresh) {
+              var display = $v(displayAsId);
+              
+              refresh = (refresh === false) ? false : true;
+              
+              if (display === 'CARDS') {
+                $reportReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                $sort.closest(CONTAINER_SEL).show();
+            
+                if (refresh) {
+                  $cardsReg.trigger('apexrefresh');
+                }
+                
+                $cardsReg.show();
+              } else if (display === 'REPORT') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $gridReg.hide();
+            
+                showLeftColumn();
+            
+                if (refresh) {
+                  $reportReg.trigger('apexrefresh');
+                }
+            
+                $reportReg.show();
+              } else if (display === 'GRID') {
+                $sort.closest(CONTAINER_SEL).hide();
+                $cardsReg.hide();
+                $reportReg.hide();
+            
+                hideLeftColumn();
+            
+                if (refresh) {
+                  $gridReg.trigger('apexrefresh');
+                }
+            
+                $gridReg.show();
+              }
+            }
+              
+            function debounceSearch(e) {
+                /*
+                 * Prevent search for following keys:
+                 * TAB:     9
+                 * SHIFT:   16
+                 * LEFT:    37
+                 * RIGHT:   39
+                 */
+                if ( e.which === 9 || e.which === 16 || e.which === 37 || e.which === 39 ) {
+                    return false;
+                }
+                clearTimeout(timeout);
+                timeout = setTimeout(applyFilters, 250);
+            }
+              
+            function preventSubmitOnEnter(e) {
+              if (e.which === 13) {
+                return false;
+              }
+            }
+            
+            function resetFilters() {
+              $search.val(null);
+              $territory.val(null);
+              $keyAccounts.val(null);
+              
+              $sort.val('NAME');
+            
+              applyFilters();
+            }
+            
+            // standard search event bindings
+            $search.keydown(preventSubmitOnEnter);
+            $search.keyup(debounceSearch);
+            
+            // dynamic event bindings (will vary by filter page)
+            $territory.change(applyFilters);
+            $keyAccounts.change(applyFilters);
+            
+            // standard display, sort, reset event bindings
+            $displayAs.change(toggleRegionDisplay);
+            $sort.change(applyFilters);
+            $reset.click(resetFilters);
+              
+            toggleRegionDisplay(false);
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .t-Card-initials {
+              font-size: 14px;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            
+            Use the filters on the left to show different results in the region on the right. The right region can be displayed in one of three ways (Cards View, Report View, and Customizable Grid) by using the display-mode buttons located just to the left of the <strong>Create Account</strong> button. Filters are not displayed in the Customizable Grid view.
+            ```
+    }
+
+    region account-cards (
+        name: Account Cards
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_accounts as (
+                  select c.id,
+                    c.row_key,
+                    c.customer_name,
+                    c.customer_description,
+                    c.customer_stock_symb,
+                    case c.customer_is_key_account_yn
+                      when 'Y' then 'Yes'
+                      when 'N' then 'No'
+                    end key_account,
+                    c.tags,
+                    c.updated,
+                    (
+                      select count(*)
+                      from eba_sales_deals dx
+                      where dx.customer_id = c.id
+                        and dx.deal_probability > 0
+                        and dx.deal_probability < 100
+                    ) open_deals,
+                    (
+                      select count(*)
+                      from eba_sales_deals
+                      where customer_id = c.id
+                        and deal_close_date < sysdate
+                        and deal_probability != 0
+                        and deal_probability != 100
+                    ) past_due_deals,
+                    (
+                      select count(*) 
+                      from eba_sales_leads 
+                      where account_id = c.id
+                        and lead_status_id not in (1, 5)
+                    ) open_leads,
+                    case 
+                      when c.default_rep_id is not null
+                      then (
+                        select max(rep_last_name
+                          ||', '
+                          || rep_first_name) d
+                        from eba_sales_salesreps sr
+                        where sr.id = c.default_rep_id
+                      )
+                    end default_rep
+                  from eba_sales_customers c
+                  left join eba_sales_territories t
+                    on c.customer_territory_id = t.id
+                  where :P2_DISPLAY_AS = 'CARDS'
+                    and (:P2_TERRITORY_ID is null or t.id = :P2_TERRITORY_ID)
+                    and (:P2_KEY is null or customer_is_key_account_yn = :P2_KEY)
+                ),
+                card_details as (
+                  select customer_name card_title,
+                    null card_icon,
+                    row_key card_initials,
+                    null card_text,
+                    coalesce(customer_description, 'No description provided') card_text_p1,
+                    'Deals: ' || to_char(open_deals,'999G999G999G990') || ' open' ||
+                      case 
+                        when past_due_deals != 0
+                        then ', ' || to_char(past_due_deals,'999G999G999G990') || ' past due'
+                      end card_text_p2,
+                    'Leads: ' || to_char(past_due_deals,'999G999G999G990') || ' open'card_text_p3,
+                    apex_util.prepare_url(
+                      'f?p=' ||
+                      :APP_ID ||
+                      ':94:' ||
+                      :APP_SESSION ||
+                      ':::94:P94_ID:' ||
+                      id
+                    ) card_link,
+                    updated card_subtext,
+                    open_deals,
+                    past_due_deals,
+                    open_leads
+                  from base_accounts
+                )
+                select *
+                from card_details
+                where (
+                  :P2_SEARCH is null
+                    or instr(upper(card_title), upper(:P2_SEARCH)) > 0
+                    or instr(upper(card_initials), upper(:P2_SEARCH)) > 0
+                    or instr(upper(card_text_p1), upper(:P2_SEARCH)) > 0
+                    or instr(upper(card_text_p2), upper(:P2_SEARCH)) > 0
+                    or instr(upper(card_text_p3), upper(:P2_SEARCH)) > 0
+                    or instr(upper('Updated: ' || apex_util.get_since(card_subtext)), upper(:P2_SEARCH)) > 0
+                )
+                order by
+                  case :P2_SORT
+                    when 'NAME' then card_title
+                  end,
+                  case :P2_SORT
+                    when 'OPEN_DEALS' then open_deals
+                  end desc,
+                  case :P2_SORT
+                    when 'PAST_DUE' then past_due_deals
+                  end desc,
+                  case :P2_SORT
+                    when 'OPEN_LEADS' then open_leads
+                  end desc,
+                  case :P2_SORT
+                    when 'UPDATED' then card_subtext
+                  end desc
+                ```
+            pageItemsToSubmit: [
+                P2_SEARCH
+                P2_TERRITORY_ID
+                P2_KEY
+                P2_DISPLAY_AS
+                P2_SORT
+            ]
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: cards_region
+            customAttributes: style="display: none"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--basic
+                t-Cards--3cols
+                t-Cards--animColorFill
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No accounts found
+        }
+
+        column CARD_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Card icon
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_INITIALS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card initials
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: Updated: #CARD_SUBTEXT#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 3
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    #CARD_TEXT_P1#<br >
+                    <small>
+                    #CARD_TEXT_P2#<br />
+                    #CARD_TEXT_P3#<br />
+                    </small>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P1 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card text p1
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P2 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Card text p2
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT_P3 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Card text p3
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPEN_DEALS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Open deals
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OPEN_LEADS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Open leads
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PAST_DUE_DEALS (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Past due deals
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region accounts (
+        name: Accounts
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+    )
+
+    region accounts-grid (
+        name: Accounts Grid
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.id,
+                  c.row_key,
+                  c.customer_name,
+                  t.territory_name,
+                  c.customer_territory_id,
+                  c.customer_industry_id as industry,
+                  case c.customer_is_key_account_yn
+                    when 'Y' then 'Yes'
+                    when 'N' then 'No'
+                  end customer_is_key_account_yn,
+                  c.tags,
+                  (
+                    select count(*)
+                    from eba_sales_links
+                    where account_id = c.id
+                  ) links,
+                  (
+                    select count(*)
+                    from eba_sales_files
+                    where account_id = c.id
+                  ) attachments,
+                  (
+                    select count(*)
+                    from eba_sales_comments
+                    where account_id = c.id
+                  ) comments,
+                  (
+                    select count(*)
+                    from eba_sales_verifications
+                    where cust_id = c.id
+                  ) validations,
+                  (
+                    select max(created)
+                    from eba_sales_verifications
+                    where cust_id = c.id
+                  ) last_validation,
+                  (
+                    select count(*)
+                    from eba_sales_clicks
+                    where cust_id = c.id
+                      and view_timestamp >= sysdate - 90
+                  ) views_90_days,
+                    (   select count(distinct(app_username))
+                        from eba_sales_clicks
+                        where cust_id = c.id
+                            and view_timestamp >= sysdate - 90 ) users_90_days,
+                  c.created,
+                  c.created_by,
+                  c.updated,
+                  c.updated_by,
+                  (
+                    select count(*)
+                    from eba_sales_deals dx
+                    where dx.customer_id = c.id
+                      and dx.deal_probability > 0
+                      and dx.deal_probability < 100
+                  ) open_deals,
+                  (
+                    select count(*)
+                    from eba_sales_deals
+                    where customer_id = c.id
+                      and deal_close_date < sysdate
+                      and deal_probability != 0
+                      and deal_probability != 100
+                  ) past_due,
+                  (
+                    select count(*) 
+                    from eba_sales_leads 
+                    where account_id = c.id
+                  ) leads
+                from eba_sales_customers c
+                left join eba_sales_territories t
+                  on c.customer_territory_id = t.id
+                where :P2_DISPLAY_AS = 'GRID'
+                ```
+            pageItemsToSubmit: P2_DISPLAY_AS
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: grid_region
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 721310740748153140
+        }
+
+        column ATTACHMENTS (
+            type: plainText
+            heading {
+                heading: Attachments
+                alignment: end
+            }
+            layout {
+                sequence: 160
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column COMMENTS (
+            type: plainText
+            heading {
+                heading: Comments
+                alignment: end
+            }
+            layout {
+                sequence: 170
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column CUSTOMER_IS_KEY_ACCOUNT_YN (
+            type: plainText
+            heading {
+                heading: Key Account
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: link
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_ID: #ID#
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column CUSTOMER_TERRITORY_ID (
+            type: hidden
+            heading {
+                heading: Customer territory id
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column INDUSTRY (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Industry
+            }
+            lov {
+                lov: @industries
+            }
+            layout {
+                sequence: 220
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column LAST_VALIDATION (
+            type: plainText
+            heading {
+                heading: Last Validation
+            }
+            layout {
+                sequence: 190
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: S
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column LEADS (
+            type: link
+            heading {
+                heading: Leads
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 19
+                    items: {
+                        P19_DISPLAY_AS: GRID
+                        IR_ACCOUNT_ID: #ID#
+                    }
+                    clearCache: [
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #LEADS#
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column LINKS (
+            type: plainText
+            heading {
+                heading: Links
+                alignment: end
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column OPEN_DEALS (
+            type: plainText
+            heading {
+                heading: Open Opp.
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PAST_DUE (
+            type: plainText
+            heading {
+                heading: Past Due Opp.
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column ROW_KEY (
+            type: plainText
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column TERRITORY_NAME (
+            type: plainText
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Territories'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: &APP_DATE_TIME_FMT.
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column USERS_90_DAYS (
+            type: plainText
+            heading {
+                heading: 90 Day Users
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: U
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VALIDATIONS (
+            type: plainText
+            heading {
+                heading: Validations
+                alignment: end
+            }
+            layout {
+                sequence: 180
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Validations'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column VIEWS_90_DAYS (
+            type: plainText
+            heading {
+                heading: 90 Day Views
+                alignment: end
+            }
+            layout {
+                sequence: 200
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: T
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Usage Metrics'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        page {
+            width: 8.5
+            height: 11
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        columnHeadings {
+            fontWeight: normal
+            backgroundColor: #9bafde
+        }
+        columns {
+            backgroundColor: #efefef
+        }
+
+        savedReport 7219182 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CUSTOMER_IS_KEY_ACCOUNT_YN (
+                sequence: 4
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 1
+            )
+
+            displayColumn LEADS (
+                sequence: 7
+            )
+
+            displayColumn OPEN_DEALS (
+                sequence: 5
+            )
+
+            displayColumn PAST_DUE (
+                sequence: 6
+            )
+
+            displayColumn ROW_KEY (
+                sequence: 2
+            )
+
+            displayColumn TERRITORY_NAME (
+                sequence: 3
+            )
+
+        )
+
+    )
+
+    region accounts-report (
+        name: Accounts Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with base_accounts as (
+                  select c.id,
+                    c.row_key,
+                    c.customer_name,
+                    t.territory_name,
+                    c.customer_territory_id,
+                    c.customer_industry_id as industry,
+                    c.updated,
+                    (
+                      select count(*)
+                      from eba_sales_deals dx
+                      where dx.customer_id = c.id
+                        and dx.deal_probability > 0
+                        and dx.deal_probability < 100
+                    ) open_deals,
+                    (
+                      select count(*)
+                      from eba_sales_deals
+                      where customer_id = c.id
+                        and deal_close_date < sysdate
+                        and deal_probability != 0
+                        and deal_probability != 100
+                    ) past_due,
+                    (
+                      select count(*) 
+                      from eba_sales_leads 
+                      where account_id = c.id
+                    ) leads
+                  from eba_sales_customers c
+                  left join eba_sales_territories t
+                    on c.customer_territory_id = t.id
+                  where :P2_DISPLAY_AS = 'REPORT'
+                    and (:P2_TERRITORY_ID is null or t.id = :P2_TERRITORY_ID)
+                    and (:P2_KEY is null or customer_is_key_account_yn = :P2_KEY)
+                )
+                select *
+                from base_accounts
+                where (
+                  :P2_SEARCH is null
+                    or instr(upper(customer_name), upper(:P2_SEARCH)) > 0
+                    or instr(upper(row_key), upper(:P2_SEARCH)) > 0
+                    or instr(upper(territory_name), upper(:P2_SEARCH)) > 0
+                    or instr(upper(apex_util.get_since(updated)), upper(:P2_SEARCH)) > 0
+                    or instr(open_deals, upper(:P2_SEARCH)) > 0
+                    or instr(past_due, upper(:P2_SEARCH)) > 0
+                    or instr(leads, upper(:P2_SEARCH)) > 0
+                )
+                ```
+            pageItemsToSubmit: [
+                P2_DISPLAY_AS
+                P2_TERRITORY_ID
+                P2_KEY
+                P2_SEARCH
+            ]
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: report_region
+            customAttributes: style="display: none"
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No accounts found
+        }
+
+        column CUSTOMER_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_ID: #ID#
+                    }
+                    action: resetPagination
+                }
+                linkText: #CUSTOMER_NAME#
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column CUSTOMER_TERRITORY_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column INDUSTRY (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Industry
+            }
+            lov {
+                type: sharedComponent
+                lov: @industries
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column LEADS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Leads
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 19
+                    items: {
+                        P19_DISPLAY_AS: GRID
+                        IR_ACCOUNT_ID: #ID#
+                    }
+                    clearCache: [
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #LEADS#
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: wwv_flow_utilities.is_build_option_enabled('Leads')
+            }
+        )
+
+        column OPEN_DEALS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Open Opp.
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+        )
+
+        column PAST_DUE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Past due
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+        column TERRITORY_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Territory
+            }
+            layout {
+                sequence: 7
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    apex_util.get_build_option_status(
+                      p_application_id    => :APP_ID,
+                      p_build_option_name => 'Territories'
+                    ) = 'INCLUDE'
+                    ```
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 9
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
+    region filters (
+        name: Filters
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    region page-settings (
+        name: Page Settings
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @accounts
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P2_DISPLAY_AS (
+        type: radioGroup
+        label {
+            label: Display as
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: sharedComponent
+            lov: @pill-display-as
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @page-settings
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: CARDS
+        }
+        sessionState {
+            storage: user
+        }
+        security {
+            escapeSpecialChars: false
+        }
+    )
+
+    pageItem P2_KEY (
+        type: selectList
+        label {
+            label: Key Accounts
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes;Y,No;N
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 40
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P2_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 10
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search Accounts
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P2_SORT (
+        type: selectList
+        label {
+            label: Sort
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Account;NAME,Open Deals;OPEN_DEALS,Past Due Deals;PAST_DUE,Open Leads;OPEN_LEADS,Updated;UPDATED
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 60
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: NAME
+        }
+        sessionState {
+            storage: user
+        }
+    )
+
+    pageItem P2_TERRITORY_ID (
+        type: selectList
+        label {
+            label: Territory
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @territory
+            displayExtraValues: false
+            nullDisplayValue: - All -
+        }
+        layout {
+            sequence: 30
+            region: @filters
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Account
+        layout {
+            sequence: 20
+            region: @accounts
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                clearCache: 3
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @filters
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+        advanced {
+            htmlDomId: reset_button
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 30
+            region: @accounts-grid
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var display = $v('P2_DISPLAY_AS');
+                    
+                    if (display === 'CARDS') {
+                      $('#cards_region').trigger('apexrefresh');
+                    } else if (display === 'REPORT') {
+                      $('#report_region').trigger('apexrefresh');
+                    } else if (display === 'GRID') {
+                      $('#grid_region').trigger('apexrefresh');
+                    }
+                    
+                    apex.message.showPageSuccess('Account Created.');
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 2
+        }
+    )
+
+)
+

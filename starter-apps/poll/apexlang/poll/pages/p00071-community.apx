@@ -1,0 +1,707 @@
+page 71 (
+    name: Community
+    alias: COMMUNITY
+    title: Community
+    pageGroup: @communities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .uReportList {
+                margin: 0;
+                list-style: none;
+            }
+            .uReportList li {
+                margin: 0 0 4px 0;
+            }
+            .check_icon {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                line-height: 16px;
+                background: #69B86B;
+                color: #FFF;
+                text-align: center;
+                border-radius: 4px;
+                font-size: 15px;
+                border: 1px solid green;
+                text-shadow: 0 -1px 0 rgba(0,0,0,.15);
+                vertical-align: top;
+                margin-right: 4px;
+            }
+            .valid_user {
+                display: inline-block;
+                padding: 4px 8px 4px 4px;
+                border: 1px solid #D0D0D0;
+                border-radius: 3px;
+                line-height: 20px;
+                background-color: #F8F8F8;
+                color: #404040;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: <p>Verify the Community information below, including any "Additional Email Addresses" you may have provided on the previous page. If everything looks correct, press the <strong>Add Community / Members</strong> button to create your new community.</p>
+    }
+
+    region create-community (
+        name: Create Community
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        headerAndFooter {
+            footerText: <br><br>
+        }
+    )
+
+    region email-addresses-to-be-added-to-this-community (
+        name: Email addresses to be added to this Community
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select lower(c001) ename
+                  from apex_collections
+                 where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            features: advancedFormatting
+            textFormatting: <span class="valid_user"><span class="check_icon">&#10004;</span>&ENAME.</span>
+        }
+    )
+
+    region exceptions (
+        name: Exceptions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c001 username, c002 reason
+                  from apex_collections
+                 where collection_name = 'EBA_QPOLL_RESPONDENT_INVALID'
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 100
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 100000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No invalid email addresses found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column REASON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Reason
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Email Address / Text
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region footer (
+        name: footer
+        type: staticContent
+        layout {
+            sequence: 100
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region invalid-count (
+        name: Invalid Count
+        type: plugin/translatedMessage
+        source {
+            sqlQuery:
+                ```sql
+                select
+                    :P71_VALID_COUNT valid_count,
+                    :P71_INVALID_COUNT invalid_count
+                from
+                    dual
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from apex_collections
+                where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                    and :P71_INVALID_COUNT > 0
+                ```
+        }
+        settings {
+            textMessage: ABOUT_TO_CREATE_RESP_COMM_INVLD
+            substitutionColumn00: VALID_COUNT
+            substitutionColumn11: INVALID_COUNT
+        }
+    )
+
+    region no-valid-emails-exist-page-info (
+        name: No Valid Emails Exist - Page Info
+        type: staticContent
+        source {
+            htmlCode: <p>The list of respondent email addresses provided on the previous page found no valid email addresses and &P71_INVALID_COUNT. invalid email addresses.</p>
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_collections
+                 where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                ```
+        }
+    )
+
+    region valid-count (
+        name: Valid Count
+        type: plugin/translatedMessage
+        source {
+            sqlQuery: select :P71_VALID_COUNT valid_count from dual
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from apex_collections
+                where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                  and :P71_INVALID_COUNT = 0
+                ```
+        }
+        settings {
+            textMessage: ABOUT_TO_CREATE_RESP_COMM
+            substitutionColumn00: VALID_COUNT
+        }
+    )
+
+    pageItem P71_COMMUNITY_FROM (
+        type: textField
+        label {
+            label: Copy Respondents From
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @create-community
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select name from EBA_QPOLL_RESP_COMMUNITIES where id = :P70_COMMUNITY_ID
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -1
+                0
+            ]
+        }
+        readOnly {
+            type: always
+        }
+    )
+
+    pageItem P71_COMMUNITY_NAME (
+        type: displayOnly
+        label {
+            label: Community Name
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @create-community
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: expression
+            plsqlExpression: :P70_COMMUNITY_NAME
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -2
+                0
+            ]
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_COMMUNITY_TO (
+        type: textField
+        label {
+            label: Copy Respondents To
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @create-community
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select name from EBA_QPOLL_RESP_COMMUNITIES where id = :P70_COMMUNITY_ID_TO
+            used: always
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P70_COMMUNITY_ACTION
+            list: [
+                -1
+                0
+            ]
+        }
+        readOnly {
+            type: always
+        }
+    )
+
+    pageItem P71_INVALID_COUNT (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from apex_collections
+                 where collection_name = 'EBA_QPOLL_RESPONDENT_INVALID'
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P71_VALID_COUNT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select count(*)
+                  from apex_collections
+                 where collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                ```
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @footer
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+                clearCache: [
+                    70
+                    71
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button finish (
+        buttonName: FINISH
+        label: Add Community / Members
+        layout {
+            sequence: 30
+            region: @footer
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 20
+            region: @footer
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process add-respondents (
+        name: Add Respondents
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_to_community_id    number;
+                    l_from_community_id  number;
+                    l_respondent_id      number;
+                    l_in_community       varchar2(1);
+                begin
+                    if :P70_COMMUNITY_ACTION in ('-2','0') and :P70_COMMUNITY_NAME is not null then
+                        -- Creating New Community
+                        insert into EBA_QPOLL_RESP_COMMUNITIES
+                        (name)
+                        values
+                        (:P70_COMMUNITY_NAME) returning id into l_to_community_id;
+                    end if;
+                
+                    if :P70_COMMUNITY_ACTION = '-1' and :P70_COMMUNITY_ID_TO is not null then
+                        -- Copying Community to another community
+                        l_from_community_id := :P70_COMMUNITY_ID;
+                        l_to_community_id   := :P70_COMMUNITY_ID_TO;
+                    else
+                        -- Copying Community to a new community
+                        l_from_community_id := :P70_COMMUNITY_ID;
+                    end if;
+                
+                    if :P70_COMMUNITY_ACTION in ('-1','0') then
+                        -- Copy Respondents
+                        insert into eba_qpoll_resp_comm_ref (respondent_id, community_id)
+                        select
+                            rsp.id             as respondent_id,
+                            l_to_community_id  as community_id
+                        from
+                            eba_qpoll_resp_comm_ref rcl,
+                            eba_qpoll_respondents rsp,
+                            EBA_QPOLL_RESP_COMMUNITIES rc
+                        where
+                            rsp.id = rcl.respondent_id
+                        and
+                            rc.id = rcl.community_id
+                        and
+                            rcl.community_id = l_from_community_id;
+                    end if;
+                
+                    if :P70_COMMUNITY_ACTION = -3 then
+                        -- Add Respondent
+                        insert into eba_qpoll_resp_comm_ref
+                        (respondent_id, community_id)
+                        values
+                        (:P70_RESPONDENT_ID, :P70_COMMUNITY_ID_TO);
+                    end if;
+                
+                    -- Dont do this for adding a single respondent to an existing community
+                    if :P70_COMMUNITY_ACTION != -3 then
+                        -- Handle Additional Respondents for entire communities
+                        for c in
+                        (
+                            select
+                                lower(c001) as respondent
+                            from
+                                apex_collections
+                            where
+                                collection_name = 'EBA_QPOLL_RESPONDENT_VALID'
+                        )
+                        loop
+                            begin
+                                select decode(r.id, null, 'N', 'Y')
+                                  into l_in_community
+                                  from eba_qpoll_respondents r,
+                                       eba_qpoll_resp_comm_ref ref
+                                 where upper(r.email) = upper(c.respondent)
+                                   and r.id = ref.respondent_id
+                                   and ref.community_id = l_to_community_id;
+                            exception
+                                when no_data_found then
+                                    l_in_community := 'N';
+                            end;
+                
+                            begin
+                                select r.id
+                                  into l_respondent_id
+                                  from eba_qpoll_respondents r
+                                 where lower(r.email) = lower(c.respondent);
+                            exception
+                                when no_data_found then
+                                    l_respondent_id := null;
+                            end;
+                
+                            if l_respondent_id is null then
+                                insert into eba_qpoll_respondents
+                                (email)
+                                values
+                                (lower(c.respondent)) returning id into l_respondent_id;
+                            end if;
+                
+                            if l_in_community = 'N' and :P70_COMMUNITY_ACTION != -5 then
+                                insert into eba_qpoll_resp_comm_ref
+                                (respondent_id, community_id)
+                                values
+                                (l_respondent_id, nvl(l_to_community_id,:P70_COMMUNITY_ID_TO));
+                            end if;
+                        end loop;
+                    end if;
+                
+                    ---------------------
+                    -- delete collections
+                    --
+                    wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_RESPONDENT_INVALID');
+                    wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_RESPONDENT_VALID');
+                    wwv_flow_collection.DELETE_COLLECTION('EBA_QPOLL_RESPONDENT_CREATE');
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Community information stored successfully.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 13921362474492248602
+        }
+        serverSideCondition {
+            whenButtonPressed: @finish
+        }
+    )
+
+    process close (
+        name: Close
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 4534126493666855903
+        }
+        serverSideCondition {
+            whenButtonPressed: @finish
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 20
+            point: validating
+        }
+        behavior {
+            target: {
+                page: 70
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @previous
+        }
+    )
+
+)
+

@@ -1,0 +1,1132 @@
+page 112 (
+    name: Ask Question
+    alias: ASK-QUESTION
+    title: Ask Question
+    pageGroup: @session-management
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #APP_FILES#jquery.qrcode.min.js
+        executeWhenPageLoads:
+            ```javascript-browser
+            jQuery('#qr_code').qrcode({
+                render	: "table",
+                text	: '&P112_SESSION_URL!RAW.'
+            });
+            ```
+    }
+    css {
+        inline:
+            ```css
+            :root {
+                --a-button-gap-x: 1rem;
+                --ut-field-label-font-weight: 700;
+                
+                /* autocomplete overrides */
+                --a-menu-background-color: var(--a-button-background-color);
+                --ut-cardlist-background-color: var(--a-button-background-color);
+                --a-menu-padding-y:	0rem;
+                --oj-collection-list-row-height: 0;
+                --oj-collection-list-cell-padding-vertical: 0.5rem;
+            }
+            .qr-container {
+                min-height: 348px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+            #qr_code {
+                padding: 8px;
+                background-color: white;
+            }
+            .qr-container h2 {
+                margin: 0 0 16px 0;
+                font-weight: 700;
+            }
+            
+            .t-BadgeList + .t-Report-pagination {
+                display: none;
+            }
+            
+            
+            
+            @media (max-width: 990px) {
+                .region-question-details,
+                .region-qr {
+                    max-width: 100%;
+                    padding-inline-end: 0;
+                    padding-inline-start: 0;
+                }
+            }
+            
+            @media (max-width: 639px) {
+                .t-ButtonRegion {
+                    background-color: white;
+                    margin-bottom: 0;
+                    border-top: 1px solid rgba(0,0,0,.1);
+                    padding: 16px !important;
+                }
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @host
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @p112-session-code-p112-session-name
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--stickToBottom
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+            cssClasses: padding-none
+        }
+    )
+
+    region comment-container (
+        name: Comment Container
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @question-p112-question-number
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+                margin-top-none
+            ]
+        }
+    )
+
+    region custom-answers-containers (
+        name: Custom Answers Containers
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @question-p112-question-number
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region p112-session-code-p112-session-name (
+        name: &P112_SESSION_CODE. - &P112_SESSION_NAME.
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+    )
+
+    region question-p112-question-number (
+        name: Question &P112_QUESTION_NUMBER.
+        type: form
+        source {
+            location: localDatabase
+            tableName: QASK_SESSION_QUESTIONS
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            columnCssClasses: region-question-details
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+            icon: fa-clipboard-check
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region session-qr (
+        name: Session QR
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="qr-container">
+                    <!--<h2 class="u-tC">Scan QR code to participate!</h2> -->
+                    <h3 class="u-tC">Scan QR code to participate</3>
+                    <div id="qr_code"></div>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 35
+            slot: body
+            columnSpan: 4
+            columnCssClasses: region-qr
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: item=value
+            item: P112_SESSION_STATUS
+            value: Y
+        }
+    )
+
+    pageItem P112_ANSWERS (
+        type: textarea
+        label {
+            label: Custom Answers (enter one answer per line)
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @custom-answers-containers
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 80
+            height: 7
+        }
+        default {
+            type: static
+            staticValue:
+                ```
+                Answer 1
+                Answer 2
+                ```
+        }
+        help {
+            helpText: Enter your custom answers, one per line.
+        }
+    )
+
+    pageItem P112_ANSWER_SET_ID (
+        type: selectList
+        label {
+            label: Answer Set
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with a as (select answer_set_id, 
+                                  listagg(answer_text, ', ') within group (order by display_order) answers
+                             from qask_aset_answers
+                            group by answer_set_id) 
+                select s.answer_set_name || 
+                          ' ('||substr(a.answers,1,100)||case when length(a.answers) > 100 then '...' end ||')' d, 
+                       s.id r
+                  from qask_answer_sets s, a
+                 where s.id = a.answer_set_id
+                 order by 1
+                ```
+            nullDisplayValue: Custom Answers
+        }
+        layout {
+            sequence: 130
+            region: @question-p112-question-number
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @question-p112-question-number
+            column: ANSWER_SET_ID
+            dataType: number
+        }
+        help {
+            helpText: Select a standard set of answers for your question (or provide custom answers below).
+        }
+    )
+
+    pageItem P112_ANSWER_TYPE (
+        type: radioGroup
+        label {
+            label: Answer Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @answer-type
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 110
+            region: @question-p112-question-number
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: SINGLE
+        }
+        help {
+            helpText: Indicate whether the participants will select just one answer, multiple answers of if you want the response to be free form text (in which case you do not need to supply answers to display).
+        }
+    )
+
+    pageItem P112_ASK_FOR_COMMENTS_YN (
+        type: switch
+        label {
+            label: Ask For Comments?
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @comment-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @question-p112-question-number
+            column: ASK_FOR_COMMENTS_YN
+            dataType: varchar2
+        }
+        help {
+            helpText: If you Ask for Comments, a text field will be displayed to gather additional information from your participants.  Make sure you explain what you want filled in here in your question (or question explanation).
+        }
+    )
+
+    pageItem P112_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_QUESTION (
+        type: textField
+        label {
+            label: Question
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @question-p112-question-number
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @question-p112-question-number
+            column: QUESTION
+            dataType: varchar2
+        }
+        help {
+            helpText: The question that will be asked.  Remember to include a question mark at the end (if appropriate).
+        }
+    )
+
+    pageItem P112_QUESTION_EXPLANATION (
+        type: textarea
+        label {
+            label: Question Explanation
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @question-p112-question-number
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 2
+        }
+        source {
+            formRegion: @question-p112-question-number
+            column: QUESTION_EXPLANATION
+            dataType: clob
+        }
+        sessionState {
+            dataType: clob
+        }
+        help {
+            helpText: Additional details you may need to share to further explain the question.
+        }
+    )
+
+    pageItem P112_QUESTION_FILENAME (
+        type: imageUpload
+        label {
+            label: Image
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        cropping {
+            allowCropping: true
+        }
+        resizeTo {
+            maxWidth: 600
+            maxHeight: 600
+        }
+        layout {
+            sequence: 100
+            region: @question-p112-question-number
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        help {
+            helpText: Drag and drop a file containing an image to display below your question.  This can be used to ask things like "What animal is this?".
+        }
+    )
+
+    pageItem P112_QUESTION_NUMBER (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_SESSION_CODE (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_SESSION_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_SESSION_NAME (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_SESSION_STATUS (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P112_SESSION_URL (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @question-p112-question-number
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button ask-question (
+        buttonName: ASK_QUESTION
+        label: Ask Question
+        layout {
+            sequence: 40
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: ASK_QUESTION
+        }
+    )
+
+    button close-session (
+        buttonName: close_session
+        label: Close Session
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: Are you sure you want to close this session.
+        }
+    )
+
+    dynamicAction change-button-name (
+        name: change button name
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_sessions
+                 where id = :P112_SESSION_ID
+                   and session_status = 'STAGED'
+                ```
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.item("ASK_QUESTION").setValue("Add Question");
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction when-change-answer-type (
+        name: when change answer type
+        execution {
+            sequence: 5
+        }
+        when {
+            selectionType: items
+            items: P112_ANSWER_TYPE
+        }
+
+        action hide-answer-set-for-freeform (
+            name: hide answer set for FREEFORM
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWER_SET_ID
+            }
+            execution {
+                sequence: 100
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: FREEFORM
+            }
+        )
+
+        action hide-answer-set-for-multi (
+            name: hide answer set for MULTI
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWER_SET_ID
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: MULTI
+            }
+        )
+
+        action hide-answers-for-freeform (
+            name: hide answers for FREEFORM
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWERS
+            }
+            execution {
+                sequence: 90
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: FREEFORM
+            }
+        )
+
+        action hide-comments-for-multi (
+            name: hide comments for MULTI
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P112_ASK_FOR_COMMENTS_YN
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: MULTI
+            }
+        )
+
+        action show-answer-set-for-single (
+            name: show answer set for SINGLE
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWER_SET_ID
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: SINGLE
+            }
+        )
+
+        action show-answers-for-multi (
+            name: show answers for MULTI
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWERS
+            }
+            execution {
+                sequence: 50
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: MULTI
+            }
+        )
+
+        action show-answers-for-single (
+            name: show answers for SINGLE
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWERS
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: SINGLE
+            }
+        )
+
+        action show-comments-for-freeform (
+            name: show comments for FREEFORM
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P112_ASK_FOR_COMMENTS_YN
+            }
+            execution {
+                sequence: 80
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: FREEFORM
+            }
+        )
+
+        action show-comments-for-single (
+            name: show comments for SINGLE
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P112_ASK_FOR_COMMENTS_YN
+            }
+            execution {
+                sequence: 30
+            }
+            clientSideCondition {
+                type: item=value
+                item: P112_ANSWER_TYPE
+                value: SINGLE
+            }
+        )
+
+    )
+
+    dynamicAction when-select-answer-set (
+        name: when select answer set
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P112_ANSWER_SET_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P112_ANSWER_SET_ID
+        }
+
+        action hide-answer (
+            name: hide answer
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWERS
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action show-answer (
+            name: show answer
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P112_ANSWERS
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    validation check-for-freeform-answer-set-or-answer (
+        name: check for FREEFORM, answer set or answer
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: :P112_ANSWER_SET_ID is not null or :P112_ANSWERS is not null
+        }
+        error {
+            errorMessage: Answers must be provided
+            associatedItem: @P112_ANSWERS
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+            type: item!=value
+            item: P112_ANSWER_TYPE
+            value: FREEFORM
+        }
+    )
+
+    validation p112-session-id-is-not-null (
+        name: P112_SESSION_ID is not null
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P112_SESSION_ID
+        }
+        error {
+            errorMessage: Session is null, expecting a value
+        }
+    )
+
+    validation question-required-when-adding-question (
+        name: Question required when adding question
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P112_QUESTION
+        }
+        error {
+            errorMessage: Question must have some value.
+            associatedItem: @P112_QUESTION
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+        }
+    )
+
+    process close-session (
+        name: close session
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P112_SESSION_ID is null then 
+                     raise_application_error(-20111,'Session is null, expecting a value');
+                end if;
+                
+                qask_util.close_session (
+                    p_session_id => :P112_SESSION_ID);
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Session &P112_SESSION_CODE. Closed
+        }
+        error {
+            errorMessage: Unable to close session
+        }
+        advanced {
+            executionMappingIdentifier: 47739499955547703374
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+            type: item=value
+            item: P112_SESSION_STATUS
+            value: OPEN
+        }
+    )
+
+    process create-question (
+        name: create question
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P112_ID := qask_util.add_question (
+                    p_session_id                 => :P112_SESSION_ID,
+                    p_question_number            => :P112_QUESTION_NUMBER,
+                    p_question                   => :P112_QUESTION,
+                    p_answer_set_id              => :P112_ANSWER_SET_ID,
+                    p_answers                    => :P112_ANSWERS,
+                    p_answer_type                => :P112_ANSWER_TYPE,
+                    p_ask_for_comments_yn        => case when :P112_ANSWER_TYPE != 'MULTI' then :P112_ASK_FOR_COMMENTS_YN else 'N' end,
+                    p_question_explanation       => :P112_QUESTION_EXPLANATION,
+                    p_question_filename          => :P112_QUESTION_FILENAME
+                );
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 47739499549291703373
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+        }
+    )
+
+    process load-details (
+        name: load Details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_dont_need  varchar2(4000);
+                    x            varchar2(4000);
+                begin 
+                
+                    qask_util.get_session_details (
+                        p_session_id             => :P112_SESSION_ID,
+                        p_session_name           => :P112_SESSION_NAME,
+                        p_session_code           => :P112_SESSION_CODE,
+                        p_purpose                => l_dont_need,
+                        p_resp_name_required_yn  => l_dont_need,
+                        p_resp_email_required_yn => l_dont_need,
+                        p_session_status         => :P112_SESSION_STATUS );
+                
+                    :P112_QUESTION_NUMBER := qask_util.get_next_question_number (p_session_id => :P112_SESSION_ID);
+                
+                    x := apex_page.get_url (
+                           p_page => 'home',
+                           p_session => 0,
+                           p_items => 'P1_CODE',
+                           p_values => :P112_SESSION_CODE );
+                    x := substr(x,1,instr(x,'&')-1);
+                
+                    :P112_SESSION_URL := rtrim(owa_util.get_cgi_env('HTTP_REFERER'),'/') || x;
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 20591543185037265102
+        }
+    )
+
+    process when-answer-set-clear-answers (
+        name: when answer set, clear answers
+        type: executeCode
+        source {
+            plsqlCode: :P112_ANSWERS := null;
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 12028455869147620433
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+            type: itemIsNotNull
+            item: P112_ANSWER_SET_ID
+        }
+    )
+
+    process when-freeform-clear-answers-and-answerset (
+        name: when freeform, clear answers and answerset
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P112_ANSWERS := null;
+                :P112_ANSWER_SET_ID := null;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 57262746865551183341
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+            type: item=value
+            item: P112_ANSWER_TYPE
+            value: FREEFORM
+        }
+    )
+
+    branch (
+        name: ask another (for staged
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 112
+                items: {
+                    P112_SESSION_ID: &P112_SESSION_ID.
+                }
+                clearCache: 112
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+            type: item=value
+            item: P112_SESSION_STATUS
+            value: STAGED
+        }
+    )
+
+    branch (
+        name: close session when open
+        execution {
+            sequence: 50
+        }
+        behavior {
+            target: {
+                page: 100
+                items: {
+                    P100_SESSION_STATUS: Closed
+                }
+                clearCache: [
+                    100
+                    112
+                ]
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+        }
+    )
+
+    branch (
+        name: branch to question
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 113
+                items: {
+                    P113_QUESTION_ID: &P112_ID.
+                    P113_SESSION_ID: &P112_SESSION_ID.
+                }
+                clearCache: 113
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-question
+        }
+    )
+
+    branch (
+        name: close session when staged
+        execution {
+            sequence: 40
+        }
+        behavior {
+            target: {
+                page: 100
+                items: {
+                    P100_SESSION_STATUS: Drafted
+                }
+                clearCache: [
+                    100
+                    112
+                ]
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+            type: item=value
+            item: P112_SESSION_STATUS
+            value: STAGED
+        }
+    )
+
+)
+

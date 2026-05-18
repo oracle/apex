@@ -1,0 +1,72 @@
+event com_oracle_oramapshtml5_circleclear (
+    name: map_circletool_clear
+)
+
+event com_oracle_oramapshtml5_circlefinish (
+    name: map_circletool_finish
+)
+
+event com_oracle_oramapshtml5_circlestart (
+    name: map_circletool_start
+)
+
+event com_oracle_oramapshtml5_distanceclear (
+    name: map_distance_clear
+)
+
+event com_oracle_oramapshtml5_distancefinish (
+    name: map_distance_finish
+)
+
+event com_oracle_oramapshtml5_distancestart (
+    name: map_distance_start
+)
+
+event com_oracle_oramapshtml5_foiclick (
+    name: map_foi_click
+)
+
+event com_oracle_oramapshtml5_mapchanged (
+    name: map_changed
+)
+
+event com_oracle_oramapshtml5_mapinitialized (
+    name: map_initialized
+)
+
+event com_oracle_oramapshtml5_maprecenter (
+    name: map_center_changed
+)
+
+event com_oracle_oramapshtml5_mapzoomchanged (
+    name: map_zoomlevel_changed
+)
+
+event com_oracle_oramapshtml5_mousedblclick (
+    name: map_mouse_dbl_click
+)
+
+event com_oracle_oramapshtml5_mouseleftclick (
+    name: map_mouse_left_click
+)
+
+event com_oracle_oramapshtml5_mouserightclick (
+    name: map_mouse_right_click
+)
+
+event com_oracle_oramapshtml5_redlineclear (
+    name: map_redlinetool_clear
+)
+
+event com_oracle_oramapshtml5_redlinefinish (
+    name: map_redline_finish
+)
+
+event com_oracle_oramapshtml5_redlinepoint (
+    name: map_redlinetool_pointadded
+)
+
+event com_oracle_oramapshtml5_redlinestart (
+    name: map_redlinetool_start
+)
+

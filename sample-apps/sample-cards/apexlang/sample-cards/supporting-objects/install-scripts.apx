@@ -1,0 +1,171 @@
+installScript eba_demo_card_pkg (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: eba-demo-card-pkg.sql
+    }
+)
+
+installScript "emp adams" (
+    execution {
+        sequence: 180
+    }
+    script {
+        contentFile: emp-adams.sql
+    }
+)
+
+installScript "emp allen" (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: emp-allen.sql
+    }
+)
+
+installScript "emp blake" (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: emp-blake.sql
+    }
+)
+
+installScript "emp dept tables" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: emp-dept-tables.sql
+    }
+)
+
+installScript "emp diana" (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: emp-diana.sql
+    }
+)
+
+installScript "emp james" (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: emp-james.sql
+    }
+)
+
+installScript "emp jones" (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: emp-jones.sql
+    }
+)
+
+installScript "emp king" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: emp-king.sql
+    }
+)
+
+installScript "emp martin" (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: emp-martin.sql
+    }
+)
+
+installScript "emp mee" (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: emp-mee.sql
+    }
+)
+
+installScript "emp sari" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: emp-sari.sql
+    }
+)
+
+installScript "emp sarita" (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: emp-sarita.sql
+    }
+)
+
+installScript "emp susan" (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: emp-susan.sql
+    }
+)
+
+installScript "emp thea" (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: emp-thea.sql
+    }
+)
+
+installScript "emp wei" (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: emp-wei.sql
+    }
+)
+
+installScript "load dept data" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: load-dept-data.sql
+    }
+)
+
+installScript "random image" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: random-image.sql
+    }
+)
+
+installScript "vehicle speed" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: vehicle-speed.sql
+    }
+)
+

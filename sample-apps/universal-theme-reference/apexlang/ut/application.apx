@@ -1,0 +1,213 @@
+app UT (
+    name: Universal Theme 26.1 Reference
+    version: 26.1.0
+    group: @universal-theme
+    logo {
+        type: text
+        text: Universal Theme
+    }
+    navigation {
+        homeUrl: {
+            page: 500
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @ut-application-navigation
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    javaScript {
+        fileUrls: [
+            #APP_FILES#demo/demo.js
+            #PRISMJS_DIRECTORY#prism#MIN#.js
+        ]
+    }
+    authentication {
+        scheme: @application-express
+        publicUser: HTMLDB_PUBLIC_USER
+    }
+    authorization {
+        runOnPublicPages: true
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 75BAAC4002F8CA56EF54FD242CCE7719B1AB85BE339E930260B3EC8EA3879365
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        maxSessionLength: 28800
+    }
+    globalization {
+        primaryLanguage: en-us
+        documentDirection: leftToRight
+        autoCsvEncoding: false
+    }
+    progressiveWebApp {
+        installable: true
+        appDescription: Reference application for Oracle APEX Universal Theme.
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments: Created 08/12/2004 11:25:08 AM
+    }
+
+    pwaShortcut components (
+        name: Components
+        sequence: 30
+        shortcut {
+            target: {
+                page: 3000
+            }
+            description: Components Section
+        }
+        comments {
+            comments: -
+        }
+    )
+
+    pwaShortcut design (
+        name: Design
+        sequence: 20
+        shortcut {
+            target: {
+                page: 400
+            }
+            description: Design Section
+        }
+        comments {
+            comments: -
+        }
+    )
+
+    pwaShortcut getting-started (
+        name: Getting Started
+        sequence: 10
+        shortcut {
+            target: {
+                page: 500
+            }
+            description: Getting Started Page - Initial Page
+        }
+        comments {
+            comments: -
+        }
+    )
+
+    pwaShortcut icons (
+        name: Icons
+        sequence: 40
+        shortcut {
+            target: {
+                page: 4000
+            }
+            description: Icons Section
+        }
+        comments {
+            comments: -
+        }
+    )
+
+    pwaShortcut reference (
+        name: Reference
+        sequence: 50
+        shortcut {
+            target: {
+                page: 6000
+            }
+            description: Reference Section
+        }
+        comments {
+            comments: -
+        }
+    )
+
+    pwaScreenshot screenshot-1-png (
+        label: Screenshot-1.png
+        layout {
+            sequence: 10
+        }
+        screenshot {
+            url: pwa/Screenshot-1.png
+        }
+    )
+
+    pwaScreenshot screenshot-2-png (
+        label: Screenshot-2.png
+        layout {
+            sequence: 20
+        }
+        screenshot {
+            url: pwa/Screenshot-2.png
+        }
+    )
+
+    pwaScreenshot screenshot-3-png (
+        label: Screenshot-3.png
+        layout {
+            sequence: 30
+        }
+        screenshot {
+            url: pwa/Screenshot-3.png
+        }
+    )
+
+    pwaScreenshot screenshot-4-png (
+        label: Screenshot-4.png
+        layout {
+            sequence: 40
+        }
+        screenshot {
+            url: pwa/Screenshot-4.png
+        }
+    )
+
+    pwaScreenshot screenshot-5-png (
+        label: Screenshot-5.png
+        layout {
+            sequence: 50
+        }
+        screenshot {
+            url: pwa/Screenshot-5.png
+        }
+    )
+
+)
+

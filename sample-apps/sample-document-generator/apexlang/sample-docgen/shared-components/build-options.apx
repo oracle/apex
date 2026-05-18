@@ -1,0 +1,17 @@
+buildOption commented-out (
+    name: Commented Out
+)
+
+buildOption feature-about-page (
+    name: Feature: About Page
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ABOUT_PAGE
+    }
+    comments {
+        comments: About this application page.
+    }
+)
+

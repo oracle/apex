@@ -1,0 +1,595 @@
+page 15 (
+    name: Remove Extraneous Characters
+    alias: REMOVE-EXTRANEOUS-CHARACTERS
+    title: Remove Extraneous Characters
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @enable-scrubbing-respondent-emails
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region character-to-scrub (
+        name: Character to scrub
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @remove-extraneous-characters
+            slot: subRegions
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: SCRUB
+        }
+    )
+
+    region matching-data (
+        name: Matching Data
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'Total Number of Bad Respondents' l, count(*) cnt
+                  from eba_qpoll_respondents
+                 where ascii(substr(email,1,1)) = :P15_CHAR_TO_SCRUB
+                union all
+                select 'Number with Matching Good Records' l, count(*) cnt
+                  from eba_qpoll_respondents
+                 where ascii(substr(email,1,1)) = :P15_CHAR_TO_SCRUB
+                   and substr(email,2) in (select email
+                                             from eba_qpoll_respondents)
+                union all
+                select 'Number Bad Community Records' l, count(*) cnt
+                  from eba_qpoll_resp_comm_ref c,
+                       eba_qpoll_respondents r
+                 where c.respondent_id = r.id
+                   and ascii(substr(r.email,1,1)) = :P15_CHAR_TO_SCRUB
+                union all
+                select 'Number Bad Community Records with Good Matches' l, count(*) cnt
+                  from eba_qpoll_resp_comm_ref c,
+                       eba_qpoll_respondents r
+                 where c.respondent_id = r.id
+                   and ascii(substr(r.email,1,1)) = :P15_CHAR_TO_SCRUB
+                   and substr(r.email,2) in (select email
+                                               from eba_qpoll_respondents)
+                union all
+                select 'Number Bad Respondents not in Communities' l, count(*) cnt
+                  from eba_qpoll_respondents
+                 where ascii(substr(email,1,1)) = :P15_CHAR_TO_SCRUB
+                   and id not in (select respondent_id
+                                    from eba_qpoll_resp_comm_ref)
+                union all
+                select 'Number Invitations with Bad Respondents' l, count(*) cnt
+                  from eba_qpoll_invites i,
+                       eba_qpoll_respondents r
+                 where i.respondent_id = r.id
+                   and ascii(substr(r.email,1,1)) = :P15_CHAR_TO_SCRUB
+                union all
+                select 'Number Opt Out with Bad Respondents' l, count(*) cnt
+                  from eba_qpoll_email_opt_out i,
+                       eba_qpoll_respondents r
+                 where i.respondent_id = r.id
+                   and ascii(substr(r.email,1,1)) = :P15_CHAR_TO_SCRUB
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @remove-extraneous-characters
+            slot: subRegions
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P15_CHAR_TO_SCRUB is not null and
+                nvl(:REQUEST,'null') != 'SCRUB'
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-row
+            templateOptions: #DEFAULT#
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column CNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column L (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region remove-extraneous-characters (
+        name: Remove Extraneous Characters
+        type: staticContent
+        source {
+            htmlCode: <p>Removes leading, non-displayed characters from Respondent email addresses that may have been injected during creation using copy and paste.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body-3
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--warning
+                t-Alert--horizontal
+            ]
+            cssClasses: infoTextRegion
+        }
+    )
+
+    region updates-done (
+        name: Updates done
+        type: staticContent
+        layout {
+            sequence: 25
+            parentRegion: @remove-extraneous-characters
+            slot: subRegions
+        }
+        serverSideCondition {
+            type: request=Value
+            value: SCRUB
+        }
+    )
+
+    pageItem P15_CHAR_TO_SCRUB (
+        type: textField
+        label {
+            label: ASCII Character to Scrub
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 10
+            region: @character-to-scrub
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 8
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        default {
+            type: static
+            staticValue: 49824
+        }
+    )
+
+    pageItem P15_COMM_REF_CNT (
+        type: displayOnly
+        label {
+            label: Community References Updated
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @updates-done
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_INVITE_CNT (
+        type: displayOnly
+        label {
+            label: Invitations Updates
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 35
+            region: @updates-done
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_MATCHING_RESP_CNT (
+        type: displayOnly
+        label {
+            label: Matching Respondents Removed
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @updates-done
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_NON_MATCH_RESP_CNT (
+        type: displayOnly
+        label {
+            label: Non-matching Respondents Updated
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 50
+            region: @updates-done
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                clearCache: 15
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: SCRUB
+        }
+    )
+
+    button ok (
+        buttonName: OK
+        label: OK
+        layout {
+            sequence: 20
+            region: @updates-done
+            slot: bottom
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 15
+                clearCache: 15
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button p15-go (
+        buttonName: P15_GO
+        label: Go
+        layout {
+            sequence: 20
+            region: @character-to-scrub
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: P15_GO
+        }
+    )
+
+    button scrub-data (
+        buttonName: SCRUB_DATA
+        label: Scrub Data
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_respondents
+                 where ascii(substr(email,1,1)) = :P15_CHAR_TO_SCRUB
+                   and :P15_CHAR_TO_SCRUB is not null
+                   and nvl(:REQUEST,'null') != 'SCRUB'
+                ```
+        }
+    )
+
+    process scrub-data (
+        name: Scrub data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_comm_ref_cnt        number := 0;
+                   l_invite_cnt          number := 0;
+                   l_matching_resp_cnt   number := 0;
+                   l_non_match_resp_cnt  number := 0;
+                   l_fixed_yn            varchar2(1) := 'N';
+                begin
+                
+                -- all bad respondents
+                for c1 in (
+                   select id bad_id, email bad_email
+                     from eba_qpoll_respondents
+                   where ascii(substr(email,1,1)) = :P15_CHAR_TO_SCRUB
+                ) loop
+                   -- find matching good respondent
+                   for c2 in (
+                      select r2.id good_id, r2.email good_email
+                        from eba_qpoll_respondents r2
+                      where r2.email = substr(c1.bad_email,2)
+                   ) loop
+                      -- check if bad respondent in communities
+                      for c3 in (
+                         select id, community_id
+                           from eba_qpoll_resp_comm_ref
+                         where c1.bad_id = respondent_id
+                      ) loop
+                         -- put good matching person in community
+                         insert into eba_qpoll_resp_comm_ref
+                            (community_id, respondent_id)
+                         values
+                            (c3.community_id, c2.good_id);
+                
+                         l_comm_ref_cnt := l_comm_ref_cnt + 1;
+                
+                         -- take bad respondent out of community
+                         delete from eba_qpoll_resp_comm_ref
+                          where id = c3.id;
+                
+                      end loop;
+                
+                      -- check if bad respondent in invites
+                      for c3 in (
+                         select id
+                           from eba_qpoll_invites
+                         where c1.bad_id = respondent_id
+                      ) loop
+                         -- update invite
+                         update eba_qpoll_invites
+                            set respondent_id = c2.good_id,
+                                respondent_email = c2.good_email
+                          where id = c3.id;
+                
+                         l_invite_cnt := l_invite_cnt + 1;
+                      end loop;
+                
+                      -- check if bad respondent in email history
+                      for c3 in (
+                         select id
+                           from eba_qpoll_emails
+                         where c1.bad_id = respondent_id
+                      ) loop
+                         -- update invite
+                         update eba_qpoll_emails
+                            set respondent_id = c2.good_id
+                          where id = c3.id;
+                
+                         l_invite_cnt := l_invite_cnt + 1;
+                      end loop;
+                
+                      -- check if bad respondent opted out
+                      for c3 in (
+                         select id
+                           from eba_qpoll_email_opt_out
+                         where c1.bad_id = respondent_id
+                      ) loop
+                         -- check if good respondent opted out
+                         l_fixed_yn := 'N';
+                         for c4 in (
+                            select id
+                              from eba_qpoll_email_opt_out
+                             where respondent_id = c2.good_id
+                         ) loop
+                            -- remove bad opt out
+                            delete from eba_qpoll_email_opt_out
+                             where id = c3.id;
+                
+                            l_fixed_yn := 'Y';
+                         end loop;
+                
+                         if l_fixed_yn = 'N' then
+                            -- update remaining opt outs
+                            update eba_qpoll_email_opt_out
+                               set respondent_id = c2.good_id
+                             where id = c3.id;
+                         end if;
+                      end loop;
+                
+                      --  remove bad matching respondent
+                      delete from eba_qpoll_respondents
+                       where id = c1.bad_id;
+                
+                      l_matching_resp_cnt := l_matching_resp_cnt + 1;
+                
+                   end loop;
+                end loop;
+                
+                -- update remaining bad respondents
+                for c1 in (
+                   select id 
+                     from eba_qpoll_respondents
+                    where ascii(substr(email,1,1)) = :P15_CHAR_TO_SCRUB
+                ) loop
+                   update eba_qpoll_respondents
+                      set email = substr(email,2)
+                    where id = c1.id;
+                
+                   l_non_match_resp_cnt := l_non_match_resp_cnt + 1;
+                end loop;
+                
+                :P15_COMM_REF_CNT       := l_comm_ref_cnt;
+                :P15_INVITE_CNT         := l_invite_cnt;
+                :P15_MATCHING_RESP_CNT  := l_matching_resp_cnt;
+                :P15_NON_MATCH_RESP_CNT := l_non_match_resp_cnt;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Data scrubbed.
+        }
+        advanced {
+            executionMappingIdentifier: 14030465376450242488
+        }
+        serverSideCondition {
+            whenButtonPressed: @scrub-data
+        }
+    )
+
+    branch (
+        name: submit
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 15
+                request: SCRUB
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @scrub-data
+        }
+    )
+
+)
+

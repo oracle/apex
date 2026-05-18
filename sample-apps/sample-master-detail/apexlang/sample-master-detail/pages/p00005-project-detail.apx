@@ -1,0 +1,677 @@
+page 5 (
+    name: Project Detail
+    alias: PROJECT-DETAIL
+    title: Project Detail
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region audit-details (
+        name: Audit Details
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @edit-eba-demo-md-projects
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_ID
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region edit-eba-demo-md-projects (
+        name: Edit EBA_DEMO_MD_PROJECTS
+        type: form
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_MD_PROJECTS
+            includeRowidColumn: true
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P5_COMPLETED_DATE (
+        type: datePicker
+        label {
+            label: Completed Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @edit-eba-demo-md-projects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: COMPLETED_DATE
+            dataType: date
+        }
+        security {
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_CREATED (
+        type: displayOnly
+        label {
+            label: Created
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: CREATED
+            dataType: timestampWithTimeZone
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_CREATED_BY (
+        type: selectList
+        label {
+            label: Created By
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username
+        }
+        layout {
+            sequence: 120
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @edit-eba-demo-md-projects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 70
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+    )
+
+    pageItem P5_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @edit-eba-demo-md-projects
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+    )
+
+    pageItem P5_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @edit-eba-demo-md-projects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: NAME
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_PROJECT_LEAD (
+        type: selectList
+        label {
+            label: Project Lead
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @team-members
+            displayExtraValues: false
+            nullDisplayValue: - Select Project Lead -
+        }
+        layout {
+            sequence: 40
+            region: @edit-eba-demo-md-projects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: PROJECT_LEAD
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_STATUS_CD (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @status
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @edit-eba-demo-md-projects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: STATUS_CD
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_UPDATED (
+        type: displayOnly
+        label {
+            label: Updated
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: UPDATED
+            dataType: timestampWithTimeZone
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    pageItem P5_UPDATED_BY (
+        type: selectList
+        label {
+            label: Updated By
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username
+        }
+        layout {
+            sequence: 140
+            region: @audit-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-eba-demo-md-projects
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+        help {
+            helpText: No help available for this page item.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create Project
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P5_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-completed-date (
+        name: Show Completed Date
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P5_STATUS_CD
+        }
+        clientSideCondition {
+            type: item=value
+            item: P5_STATUS_CD
+            value: COMPLETED
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P5_COMPLETED_DATE
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            affectedElements {
+                selectionType: items
+                items: P5_COMPLETED_DATE
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P5_COMPLETED_DATE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation completed-date-is-not-forward-dated (
+        name: Completed Date is not Forward Dated
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: :P5_COMPLETED_DATE <= sysdate
+        }
+        error {
+            errorMessage: #LABEL# can not be forward dated.
+            associatedItem: @P5_COMPLETED_DATE
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P5_COMPLETED_DATE
+        }
+    )
+
+    validation completed-date-is-not-null (
+        name: Completed Date is Not Null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P5_COMPLETED_DATE
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+        }
+        serverSideCondition {
+            type: item=value
+            item: P5_STATUS_CD
+            value: Completed
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 11
+        }
+        advanced {
+            executionMappingIdentifier: 3940932549034126531
+        }
+    )
+
+    process fetch-row-from-eba-demo-md-projects (
+        name: Fetch Row from EBA_DEMO_MD_PROJECTS
+        type: formInitialization
+        formRegion: @edit-eba-demo-md-projects
+        execution {
+            sequence: 1
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 48358397272748028964
+        }
+    )
+
+    process process-row-of-eba-demo-md-projects (
+        name: Process Row of EBA_DEMO_MD_PROJECTS
+        type: formAutoRowProcessing
+        formRegion: @edit-eba-demo-md-projects
+        target {
+            returnPksAfterInsert: false
+        }
+        execution {
+            sequence: 1
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 48358397342960028964
+        }
+    )
+
+)
+

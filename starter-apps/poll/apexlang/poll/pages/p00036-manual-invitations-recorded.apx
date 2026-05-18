@@ -1,0 +1,295 @@
+page 36 (
+    name: Manual Invitations Recorded
+    alias: MANUAL-INVITATIONS-RECORDED
+    title: Manual Invitations Recorded
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            section.uSuccessRegion p.desc {
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: normal;
+            margin-bottom: 16px;
+            color: #404040;
+            text-align: left;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region community-invitations (
+        name: Community Invitations
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select decode(email_sent,'YES','Emails Sent',
+                                         'OPTED_OUT','Opted Out',
+                                         'PREVIOUSLY_SENT','Previously Sent',
+                                         'MANUAL_INVITE','Manual Invites',
+                                         email_sent) email_sent, count(*) cnt
+                  from eba_qpoll_invites
+                 where comm_invite_id = :P72_COMM_INVITE_ID
+                    or comm_invite_id = :P72_COMM_INVITE_ID2
+                group by email_sent
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @invitations-recorded
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_invites
+                 where comm_invite_id = :P72_COMM_INVITE_ID
+                    or comm_invite_id = :P72_COMM_INVITE_ID2
+                ```
+        }
+        componentAppearance {
+            templateType: predefined
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: No community invites found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: none
+        }
+
+        column CNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMAIL_SENT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region invitations-recorded (
+        name: Invitations Recorded
+        type: staticContent
+        source {
+            htmlCode: <p class="desc">The number of manual invitations recorded is below.  You can invite more or view the links to pass onto the users.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body-3
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region other (
+        name: Other
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @invitations-recorded
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P36_OTHER_INVITEES_MSG (
+        type: displayOnly
+        label {
+            alignment: left
+        }
+        settings {
+            format: html
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 10
+            region: @other
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: item
+            item: P72_OTHER_INVITEES_MSG
+            used: always
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button invite-more (
+        buttonName: INVITE_MORE
+        label: Invite More
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 72
+                items: {
+                    P72_POLL_ID: &P72_POLL_ID.
+                    P72_INVITE_METHOD: &P72_INVITE_METHOD.
+                }
+                clearCache: 72
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from EBA_QPOLL_RESP_COMMUNITIES
+                where id not in
+                      (select community_id
+                         from eba_qpoll_comm_invites
+                        where poll_id = :P72_POLL_ID)
+                ```
+        }
+    )
+
+    button view-links (
+        buttonName: VIEW_LINKS
+        label: View Invitations
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16
+                items: {
+                    IR_POLL_ID: &P72_POLL_ID.
+                    IRC_COMM_INVITE_ID: &P72_COMM_INVITE_ID.
+                }
+                clearCache: [
+                    CIR
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-poll (
+        buttonName: VIEW_POLL
+        label: Manage Poll
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+                items: {
+                    LPOLL_ID: &P72_POLL_ID.
+                }
+                clearCache: 100
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

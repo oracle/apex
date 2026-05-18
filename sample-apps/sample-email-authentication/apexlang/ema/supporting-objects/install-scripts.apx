@@ -1,0 +1,45 @@
+installScript "create first user" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: create-first-user.sql
+    }
+)
+
+installScript "create tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+
+installScript "default settings" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: default-settings.sql
+    }
+)
+
+installScript "package body" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: package-body.sql
+    }
+)
+
+installScript "package spec" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: package-spec.sql
+    }
+)
+

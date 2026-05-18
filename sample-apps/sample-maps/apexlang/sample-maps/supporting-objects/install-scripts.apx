@@ -1,0 +1,36 @@
+installScript "Create Spatial Indexes" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: create-spatial-indexes.sql
+    }
+)
+
+installScript "Load Data Procedure" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: load-data-procedure.sql
+    }
+)
+
+installScript "Table EBA_SAMPLE_MAP_AIRPORTS" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: table-eba-sample-map-airports.sql
+    }
+)
+
+installScript "Table EBA_SAMPLE_MAP_STATES" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: table-eba-sample-map-states.sql
+    }
+)
+

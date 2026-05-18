@@ -1,0 +1,1004 @@
+page 17 (
+    name: Employee Self Review Details
+    title: Employee Self Review Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    readOnly {
+        type: expression
+        plsqlExpression: :P17_APPRAISAL_ID_PROVIDED = 'Y' or :P17_EXPECTING_INPUT_FROM != :APP_USER
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 210
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--stickToBottom
+                t-ButtonRegion--slimPadding
+                margin-bottom-none
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region employee-self-review (
+        name: Employee Self Review
+        type: form
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_APPR_APPRAISALS
+        }
+        layout {
+            sequence: 110
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        readOnly {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                apex_approval.is_allowed (
+                    p_task_id   => :P17_TASK_ID,
+                    p_operation => apex_approval.c_task_op_claim )
+                ```
+        }
+    )
+
+    region subject (
+        name: Subject
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_result clob;
+                begin
+                    select to_clob(replace(replace(replace('
+                            <div class="a-CardView has-title has-badge">
+                              <div class="a-CardView-header">
+                                <div class="a-CardView-headerBody">
+                                  <h3 class="a-CardView-title">#SUBJECT#</h3>
+                                </div>
+                                <div class="a-CardView-badge #BADGE_CSS_CLASSES#" title="#BADGE_TEXT#">
+                                  <span class="a-CardView-badgeValue">#BADGE_TEXT#</span>
+                                </div>
+                              </div>
+                            </div>',
+                           '#SUBJECT#'          , subject          ),
+                           '#BADGE_TEXT#'       , badge_text       ),
+                           '#BADGE_CSS_CLASSES#', badge_css_classes) )
+                      into l_result
+                      from table ( apex_approval.get_tasks (
+                                       p_context => 'SINGLE_TASK',
+                                       p_task_id => :P17_TASK_ID ) );
+                
+                    return l_result;
+                exception
+                    when no_data_found then
+                        return l_result;
+                end;
+                ```
+            pageItemsToSubmit: P17_TASK_ID
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: item=value
+            item: P17_EMPNO
+            value: &CURRENT_USER_EMPNO.
+        }
+    )
+
+    pageItem P17_APPRAISAL_DATE (
+        type: displayOnly
+        label {
+            label: Appraisal Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @employee-self-review
+            column: APPRAISAL_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_APPRAISAL_ID_PROVIDED (
+        type: hidden
+        layout {
+            sequence: 120
+            slot: contentBody
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_APPRAISAL_PERIOD (
+        type: displayOnly
+        label {
+            label: Appraisal Period
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_DATE_ORIGINATED (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: DATE_ORIGINATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_EMPNO (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: EMPNO
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_EMP_ACHIEVEMENTS (
+        type: markdownEditor
+        label {
+            label: Self Review - My Achievements
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee-self-review
+            column: EMP_ACHIEVEMENTS
+            dataType: varchar2
+        }
+        readOnly {
+            type: item!=value
+            item: P17_STATUS
+            value: ORIGINATED
+        }
+    )
+
+    pageItem P17_EMP_DEVELOPMENT_GOALS (
+        type: markdownEditor
+        label {
+            label: Self Review -  Development Goals
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee-self-review
+            column: EMP_DEVELOPMENT_GOALS
+            dataType: varchar2
+        }
+        readOnly {
+            type: item!=value
+            item: P17_STATUS
+            value: ORIGINATED
+        }
+    )
+
+    pageItem P17_ENAME (
+        type: displayOnly
+        label {
+            label: Employee
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P17_APPRAISAL_ID_PROVIDED = 'Y' or :P17_EMPNO != :CURRENT_USER_EMPNO
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_EXPECTING_INPUT_FROM (
+        type: hidden
+        layout {
+            sequence: 130
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_INPUT_COMPLETED (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: INPUT_COMPLETED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_MANAGER_COMPLETED (
+        type: hidden
+        layout {
+            sequence: 170
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: MANAGER_COMPLETED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_MGR_APPRAISAL (
+        type: markdownEditor
+        label {
+            label: Manager Appraisal Comments
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @employee-self-review
+            column: MGR_APPRAISAL
+            dataType: varchar2
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P17_STATUS
+            list: [
+                SUBMITTED
+                MGR_SUBMITTED
+                VP_REVIEWED
+                COMPLETED
+            ]
+        }
+        readOnly {
+            type: itemIsNotInColonDelimitedList
+            item: P17_STATUS
+            list: SUBMITTED
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_MGR_OBJECTIVES (
+        type: markdownEditor
+        label {
+            label: Manager's Objectives Comments
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @employee-self-review
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @employee-self-review
+            column: MGR_OBJECTIVES
+            dataType: varchar2
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P17_STATUS
+            list: [
+                SUBMITTED
+                MGR_SUBMITTED
+                VP_REVIEWED
+                COMPLETED
+            ]
+        }
+        readOnly {
+            type: itemIsNotInColonDelimitedList
+            item: P17_STATUS
+            list: SUBMITTED
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_ORIGINATOR (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: ORIGINATOR
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_PERIOD_END (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: PERIOD_END
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_PERIOD_START (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: PERIOD_START
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_STATUS (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: STATUS
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P17_SUCCESS_MESSAGE (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            sessionStateProtection: restricted
+            encryptSessionState: false
+        }
+    )
+
+    pageItem P17_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        sessionState {
+            storage: request
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            encryptSessionState: false
+        }
+    )
+
+    pageItem P17_VP_REVIEW_DATE (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @employee-self-review
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee-self-review
+            column: VP_REVIEW_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+        serverSideCondition {
+            type: item=value
+            item: P17_APPRAISAL_ID_PROVIDED
+            value: N
+        }
+    )
+
+    button close (
+        buttonName: CLOSE
+        label: Close
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+        serverSideCondition {
+            type: item=value
+            item: P17_APPRAISAL_ID_PROVIDED
+            value: Y
+        }
+    )
+
+    button complete (
+        buttonName: COMPLETE
+        label: Complete
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--success
+                t-Button--iconLeft
+            ]
+            icon: fa-box-arrow-out-east
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P17_APPRAISAL_ID_PROVIDED = 'N' and
+                apex_approval.is_allowed (
+                    p_task_id   => :P17_TASK_ID,
+                    p_operation => apex_approval.c_task_op_complete )
+                ```
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P17_APPRAISAL_ID_PROVIDED = 'N' and
+                apex_approval.is_allowed (
+                    p_task_id   => :P17_TASK_ID,
+                    p_operation => apex_approval.c_task_op_complete )
+                ```
+        }
+    )
+
+    dynamicAction cancel (
+        name: Cancel
+        execution {
+            sequence: 220
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction on-click-ok (
+        name: On Click Ok
+        execution {
+            sequence: 230
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @close
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-comments (
+        name: Refresh - Comments
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P17_ALL_COMMENTS
+        }
+    )
+
+    dynamicAction refresh-history (
+        name: Refresh - History
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P17_ALL_HISTORY
+        }
+    )
+
+    computation p17-appraisal-id-provided (
+        itemName: P17_APPRAISAL_ID_PROVIDED
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: expression
+            plsqlExpression: CASE WHEN :P17_ID IS NOT NULL THEN 'Y' ELSE 'N' END
+        }
+    )
+
+    computation p17-ename (
+        itemName: P17_ENAME
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select ename
+                from eba_demo_appr_emp
+                where empno = :P17_EMPNO
+                ```
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P17_APPRAISAL_ID_PROVIDED = 'Y' or :P17_EMPNO != :CURRENT_USER_EMPNO
+        }
+    )
+
+    computation p17-expecting-input-from (
+        itemName: P17_EXPECTING_INPUT_FROM
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select actual_owner
+                from apex_tasks
+                where task_id = :P17_TASK_ID
+                ```
+        }
+    )
+
+    computation p17-id (
+        itemName: P17_ID
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select detail_pk
+                from apex_tasks
+                where task_id = :P17_TASK_ID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P17_ID
+        }
+    )
+
+    process appraisal-region-automatic-dml (
+        name: Appraisal Region Automatic DML
+        type: formAutoRowProcessing
+        formRegion: @employee-self-review
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Evaluation Saved
+        }
+        advanced {
+            executionMappingIdentifier: 577228043266818443
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: COMPLETE,SAVE
+        }
+    )
+
+    process claim (
+        name: Claim
+        type: humanTaskManage
+        action {
+            type: claim
+        }
+        humanTask {
+            taskIdItem: P17_TASK_ID
+        }
+        execution {
+            sequence: 10
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 581442455966425842
+        }
+        config {
+            buildOption: @commented-out
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 160
+        }
+        successMessage {
+            successMessage: &P17_SUCCESS_MESSAGE.
+        }
+        advanced {
+            executionMappingIdentifier: 581447911597425846
+        }
+        serverSideCondition {
+            type: requestIsNotContainedInValue
+            value: CLAIM,SET_PRIORITY,SET_DUE,INVITE_PARTICIPANT,REMOVE_PARTICIPANT,RENEW,UPDATE_PARAMETER,SAVE
+        }
+    )
+
+    process complete (
+        name: Complete
+        type: humanTaskManage
+        action {
+            type: completeWithoutOutcome
+        }
+        humanTask {
+            taskIdItem: P17_TASK_ID
+        }
+        execution {
+            sequence: 30
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 581442871574425842
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete
+        }
+    )
+
+    process compute-appraisal-period (
+        name: Compute Appraisal Period
+        type: invokeApi
+        invoke {
+            package: EBA_DEMO_APPR
+            procedureOrFunction: APPRAISAL_PERIOD
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 849663032812009438
+        }
+
+        parameter (
+            type: functionResult
+            value {
+                item: P17_APPRAISAL_PERIOD
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+        parameter p_end_date (
+            parameter {
+                dataType: date
+            }
+            value {
+                type: item
+                item: P17_PERIOD_END
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_start_date (
+            parameter {
+                dataType: date
+            }
+            value {
+                type: item
+                item: P17_PERIOD_START
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+    )
+
+    process initialize-form-employee-self-review-details (
+        name: Initialize form Employee Self Review Details
+        type: formInitialization
+        formRegion: @employee-self-review
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 577226397710818426
+        }
+    )
+
+    process set-success-message (
+        name: Set Success Message
+        type: executeCode
+        source {
+            plsqlCode: :P17_SUCCESS_MESSAGE := apex_application.g_print_success_message;
+        }
+        execution {
+            sequence: 150
+        }
+        error {
+            errorMessage: #SQLERRM_TEXT#
+        }
+        advanced {
+            executionMappingIdentifier: 581447525311425846
+        }
+    )
+
+    branch (
+        name: Reload Dialog
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &APP_PAGE_ID.
+                items: {
+                    P17_TASK_ID: &P17_TASK_ID.
+                }
+            }
+        }
+    )
+
+)
+

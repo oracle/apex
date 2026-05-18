@@ -1,0 +1,183 @@
+page 7 (
+    name: Background Image
+    alias: BACKGROUND-IMAGE
+    title: &APP_NAME. - Background Image
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Cards regions can be sourced by REST Data Sources.  This page uses <a href="&MOVIEDB_API." title="Movie Database API" target="_blank">The Movie Database (TMDb) API</a> as a REST Data Source.</p>
+                
+                <p>This page displays movie posters as a Cards region's Media background.  It also displays the same movie poster image as each card's icon (for an overlay effect).</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-film
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region background-image (
+        name: Background Image
+        type: cards
+        source {
+            location: restSource
+            restSource: @Movie_Database
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-CardsRegion--styleA
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+
+        parameter (
+            name: @language
+            value {
+                type: staticValue
+                staticValue: en-US
+            }
+        )
+
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: RELEASE_DATE
+        }
+        body {
+            column: OVERVIEW
+        }
+        secondaryBody {
+            column: MEDIA_TYPE
+        }
+        iconAndBadge {
+            iconSource: imageUrl
+            imageUrl: https://image.tmdb.org/t/p/w500&POSTER_PATH.
+            iconPosition: top
+            iconDescription: &TITLE!ATTR.
+            badgeColumn: VOTE_AVERAGE
+            badgeLabel: Rating:
+        }
+        media {
+            source: imageUrl
+            url: https://image.tmdb.org/t/p/w500&POSTER_PATH.
+            position: background
+            sizing: cover
+            imageDescription: &TITLE!ATTR.
+        }
+        pagination {
+            type: page
+            cardsPerPage: 20
+        }
+
+        action action (
+            label: Add to List
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                hot: true
+            }
+        )
+
+        action action-2 (
+            label: Add to Favorite
+            layout {
+                position: secondary
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                displayType: icon
+                icon: fa-heart-o
+            }
+        )
+
+        action action-3 (
+            label: Share
+            layout {
+                position: secondary
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                displayType: icon
+                icon: fa-share-alt
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

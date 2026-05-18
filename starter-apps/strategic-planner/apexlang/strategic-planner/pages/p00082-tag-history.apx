@@ -1,0 +1,141 @@
+page 82 (
+    name: Tag History
+    alias: TAG-HISTORY
+    title: Tag History
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region tag-changes (
+        name: Tag Changes
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select sp_tag_diff(apex_escape.html(old_value),apex_escape.html(new_value)) tag_changes,
+                       apex_util.get_since(CHANGED_ON) || ' - '|| CHANGED_BY  changed
+                  from SP_PROJECT_HISTORY
+                 where project_id = :P82_ID and 
+                       attribute_column = 'TAGS' and 
+                       (
+                           upper(replace(old_value,' ',null)) != upper(replace(new_value,' ',null)) or
+                           old_value is null
+                       )
+                order by CHANGED_ON desc
+                ```
+            pageItemsToSubmit: P82_ID
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+        messages {
+            whenNoDataFound: None Found
+        }
+        heading {
+            type: none
+        }
+
+        column CHANGED (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Changed
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TAG_CHANGES (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Tag Changes
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+    )
+
+    pageItem P82_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @tag-changes
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    process log (
+        name: log
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_log.log_interaction(
+                    p_project_id => :P82_ID);
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1436909259686951738
+        }
+    )
+
+)
+

@@ -1,0 +1,33 @@
+emailTemplate STORE_ORDER_SUMMARY (
+    name: STORE ORDER SUMMARY
+    emailSubject: Store Order Summary Report
+    htmlFormat {
+        header:
+            ```html
+            <html>
+              <head>
+                <style>
+                  body { font-family: arial, sans-serif; font-size: 14px; }
+                  table { border-collapse: collapse; width: 100%; }
+                  th, td { border: 1px solid #dddddd; padding: 8px; text-align: left; }
+                  th { background-color: #f2f2f2; }
+                </style>
+              </head>
+            ```
+        body:
+            ```html
+             <body>
+                <h2>Store Order Summary Report</h2>
+                <p>Dear User,</p>
+                <p>The ETL process has completed successfully. Below is the summary of orders per store:</p>
+                    #ORDER_SUMMARY_TABLE!RAW#
+                <p>Thank you</p>
+              </body>
+            ```
+        footer: </html>
+    }
+    advanced {
+        versionNumber: 2
+    }
+)
+

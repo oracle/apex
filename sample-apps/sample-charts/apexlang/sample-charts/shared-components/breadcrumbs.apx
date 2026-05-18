@@ -1,0 +1,650 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry 3d-effect (
+        name: 3D Effect
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry area (
+        name: Area
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry bar (
+        name: Bar
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry box-plot (
+        name: Box Plot
+        pageNumber: 41
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry bubble (
+        name: Bubble
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry chart-links (
+        name: Chart Links
+        pageNumber: 49
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+    )
+
+    entry combination (
+        name: Combination
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry customizing-data-labels (
+        name: Customizing Data Labels
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry customizing-tooltip-labels (
+        name: Customizing Tooltip Labels
+        pageNumber: 48
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    entry dashboard (
+        name: Dashboard
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry dashboard-pies (
+        name: Dashboard - Pies
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-densification (
+        name: Data Densification
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry declarative-font-formatting (
+        name: Declarative Font Formatting
+        pageNumber: 45
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+    )
+
+    entry dynamic-actions (
+        name: Dynamic Actions
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry employees-report (
+        name: Employees Report
+        pageNumber: 29
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @bar
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry formatting-values (
+        name: Formatting Values
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry funnel (
+        name: Funnel
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry gantt (
+        name: Gantt
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry help (
+        name: Help
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @home
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-report (
+        name: Interactive Report
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pie
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry javascript-code-customizations (
+        name: JavaScript Code Customizations
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry jet-plug-in (
+        name: JET Plug-in
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry jet-plug-in-component (
+        name: JET Plug-in Component
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry line (
+        name: Line
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry line-with-area (
+        name: Line with Area
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 27
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry pie (
+        name: Pie
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry polar (
+        name: Polar
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry pyramid (
+        name: Pyramid
+        pageNumber: 43
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry radar (
+        name: Radar
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry range (
+        name: Range
+        pageNumber: 23
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry reference (
+        name: Reference
+        pageNumber: 28
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry scatter (
+        name: Scatter
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry series-color (
+        name: Series Color
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry sorting (
+        name: Sorting
+        pageNumber: 42
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry stack-grouping (
+        name: Stack Grouping
+        pageNumber: 44
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+    )
+
+    entry status-meter-gauge (
+        name: Status Meter Gauge
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry stock (
+        name: Stock
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry tasks-per-project (
+        name: Tasks per Project
+        pageNumber: 47
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pie
+        }
+        link {
+            target: {
+                page: 47
+            }
+        }
+    )
+
+    entry time-axis (
+        name: Time Axis
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry y2-axis (
+        name: Y2 Axis
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry zoom-scroll (
+        name: Zoom & Scroll
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+)
+

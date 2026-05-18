@@ -1,0 +1,51 @@
+pageGroup accounts (
+    name: Accounts
+)
+
+pageGroup acl (
+    name: ACL
+    description {
+        description: Access Control List
+    }
+)
+
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup competition (
+    name: Competition
+)
+
+pageGroup contacts (
+    name: Contacts
+)
+
+pageGroup help (
+    name: Help
+)
+
+pageGroup home (
+    name: Home
+)
+
+pageGroup leads (
+    name: Leads
+)
+
+pageGroup opportunities (
+    name: Opportunities
+)
+
+pageGroup products (
+    name: Products
+)
+
+pageGroup reports (
+    name: Reports
+)
+
+pageGroup territories (
+    name: Territories
+)
+

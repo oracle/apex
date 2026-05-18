@@ -1,0 +1,440 @@
+plugin ganttChart (
+    name: Gantt Chart
+    staticId: COM.ORACLE.APEX.GANTT_CHART
+    type: region
+    component {
+        standardAttributes: [
+            regionSourceIsSqlQuery
+            escapeSpecialCharsRegionAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            procedure render_header_rows( p_period in varchar2, p_start_date in date,
+                    p_num_periods in number );
+            
+            function render (
+                    p_region              in apex_plugin.t_region,
+                    p_plugin              in apex_plugin.t_plugin,
+                    p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result
+            is
+                l_region_source varchar2(32767) := p_region.source;
+                l_bind_list apex_plugin_util.t_bind_list;
+            
+                -- It's better to have named variables instead of using the generic ones,
+                -- makes the code more readable. We are using the same defaults for the
+                -- required attributes as in the plug-in attribute configuration, because
+                -- they can still be null. Keep them in sync!
+                c_summary_element_col        constant varchar2(255) := p_region.attribute_01;
+                c_terminal_element_col       constant varchar2(255) := p_region.attribute_02;
+                c_terminal_element_alt_col   constant varchar2(255) := p_region.attribute_03;
+                c_terminal_element_style_col constant varchar2(255) := p_region.attribute_04;
+                c_terminal_element_start_col constant varchar2(255) := p_region.attribute_05;
+                c_terminal_element_end_col   constant varchar2(255) := p_region.attribute_06;
+            
+                c_summary_link_target  constant varchar2(255) := p_region.attribute_07;
+                c_terminal_link_target constant varchar2(255) := p_region.attribute_08;
+            
+                c_period_type_page_item       constant varchar2(255) := p_region.attribute_09;
+                c_period_start_date_page_item constant varchar2(255) := p_region.attribute_10;
+                c_periods_per_type            constant varchar2(255) := p_region.attribute_11;
+            
+                l_summ_element_col_no       pls_integer;
+                l_term_element_col_no       pls_integer;
+                l_term_element_alt_col_no   pls_integer;
+                l_term_element_style_col_no pls_integer;
+                l_term_element_start_col_no pls_integer;
+                l_term_element_end_col_no   pls_integer;
+                l_column_value_list apex_plugin_util.t_column_value_list2;
+            
+                l_summ_element       varchar2(4000);
+                l_term_element       varchar2(4000);
+                l_term_element_alt   varchar2(4000);
+                l_term_element_style varchar2(4000);
+                l_term_element_start date;
+                l_term_element_end   date;
+                l_summ_link          varchar2(4000);
+                l_term_link          varchar2(4000);
+            
+                l_period_type       varchar2(1);
+                l_period_start_date date;
+                l_period_end_date   date;
+                l_period_lengths    apex_application_global.vc_arr2;
+                l_num_periods       number;
+            
+                l_cs          number;
+                l_current     varchar2(4000) := 'X';
+                l_short       varchar2(64) := '';
+                l_start_cell  number;
+                l_label       varchar2(512) := '';
+            begin
+                -- Get the appropriate values from the page items, if supplied.
+                l_period_type := nvl( v(c_period_type_page_item), 'M' );
+                l_period_start_date := nvl( v(c_period_start_date_page_item), trunc(current_date));
+                if c_periods_per_type is not null then
+                    l_period_lengths := apex_util.string_to_table( c_periods_per_type );
+                else
+                    l_period_lengths := apex_util.string_to_table( '30:22:18:8' );
+                end if;
+            
+                -- CSS for the Gantt Chart
+                apex_css.add_file (
+                    p_name => 'com_oracle_apex_gantt_chart',
+                    p_directory => p_plugin.file_prefix );
+            
+                case l_period_type
+                    when 'D' then
+                        l_num_periods := l_period_lengths(1);
+                        l_period_end_date := l_period_start_date + l_num_periods - 1;
+                    when 'W' then
+                        l_num_periods := l_period_lengths(2);
+                        l_period_end_date := l_period_start_date + 7*(l_num_periods - 1);
+                    when 'M' then
+                        l_num_periods := l_period_lengths(3);
+                        l_period_end_date := add_months(l_period_start_date, l_num_periods - 1);
+                    when 'Q' then
+                        l_num_periods := l_period_lengths(4);
+                        l_period_end_date := add_months(l_period_start_date, 3*(l_num_periods - 1));
+                end case;
+            
+                -- Wrap the user's SQL so that we only get the rows we actually care about.
+                l_region_source := 'select * from (' || rtrim(l_region_source, ' ;') || ') ' ||
+                                   'where "' || c_terminal_element_start_col || '" <= to_date(:apex$_end_date,   ''YYYYMMDD'')' ||
+                                   '  and "' || c_terminal_element_end_col   || '" >= to_date(:apex$_start_date, ''YYYYMMDD'')';
+            
+                l_bind_list(1).name  := 'apex$_start_date';
+                l_bind_list(1).value := to_char(l_period_start_date,'YYYYMMDD');
+                l_bind_list(2).name  := 'apex$_end_date';
+                l_bind_list(2).value := to_char(l_period_end_date,'YYYYMMDD');
+            
+                -- Read the data based on the region source query
+                l_column_value_list := apex_plugin_util.get_data2 (
+                                           p_sql_statement  => l_region_source,
+                                           p_min_columns    => 4,
+                                           p_max_columns    => null,
+                                           p_component_name => p_region.name,
+                                           p_bind_list      => l_bind_list
+                                           );
+            
+                -- Get the actual column# for faster access and also verify that the data type
+                -- of the column matches with what we are looking for
+                l_summ_element_col_no         := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Parent Element Column',
+                                                    p_column_alias      => c_summary_element_col,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => true,
+                                                    p_data_type         => apex_plugin_util.c_data_type_varchar2 );
+            
+                l_term_element_col_no       := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Child Element Column',
+                                                    p_column_alias      => c_terminal_element_col,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => true,
+                                                    p_data_type         => apex_plugin_util.c_data_type_varchar2 );
+            
+                l_term_element_alt_col_no   := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Child Element Alt. Name Column',
+                                                    p_column_alias      => c_terminal_element_alt_col,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => false,
+                                                    p_data_type         => apex_plugin_util.c_data_type_varchar2 );
+            
+                l_term_element_style_col_no := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Child Element Style Column',
+                                                    p_column_alias      => c_terminal_element_style_col,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => false,
+                                                    p_data_type         => apex_plugin_util.c_data_type_varchar2 );
+            
+                l_term_element_start_col_no := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Child Element Start Column',
+                                                    p_column_alias      => c_terminal_element_start_col,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => true,
+                                                    p_data_type         => apex_plugin_util.c_data_type_date );
+            
+                l_term_element_end_col_no   := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => 'Child Element End Column',
+                                                    p_column_alias      => c_terminal_element_end_col,
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => true,
+                                                    p_data_type         => apex_plugin_util.c_data_type_date );
+            
+                -- Generate the top part of the Gantt chart.
+                render_header_rows(
+                    p_period => l_period_type,
+                    p_start_date => l_period_start_date,
+                    p_num_periods => l_num_periods );
+            
+                -- Ensure that a tbody tag is open, since we close it when starting a new project.
+                sys.htp.p('<tbody class="hideMe">');
+            
+                -- It's time to emit the selected data
+                for l_row_num in 1 .. l_column_value_list(1).value_list.count loop
+                    -- Set the column values of our current row so that apex_plugin_util.replace_substitutions
+                    -- can do substitutions for columns contained in the region source query.
+                    apex_plugin_util.set_component_values (
+                        p_column_value_list => l_column_value_list,
+                        p_row_num           => l_row_num );
+                
+                    -- get the summary element label
+                    l_summ_element := apex_plugin_util.escape (
+                                   apex_plugin_util.get_value_as_varchar2 (
+                                       p_data_type => l_column_value_list(l_summ_element_col_no).data_type,
+                                       p_value     => l_column_value_list(l_summ_element_col_no).value_list(l_row_num) ),
+                                   p_region.escape_output );
+            
+                    -- get the terminal element label
+                    l_term_element := apex_plugin_util.escape (
+                                   apex_plugin_util.get_value_as_varchar2 (
+                                       p_data_type => l_column_value_list(l_term_element_col_no).data_type,
+                                       p_value     => l_column_value_list(l_term_element_col_no).value_list(l_row_num) ),
+                                   p_region.escape_output );
+            
+                    -- get the terminal element alternate label if it exists
+                    if l_term_element_alt_col_no is not null then
+                        l_term_element_alt := apex_escape.html_attribute (
+                                       apex_plugin_util.get_value_as_varchar2 (
+                                           p_data_type => l_column_value_list(l_term_element_alt_col_no).data_type,
+                                           p_value     => l_column_value_list(l_term_element_alt_col_no).value_list(l_row_num) )
+                                       );
+                    end if;
+            
+                    -- get the terminal element style if it exists
+                    if l_term_element_style_col_no is not null then
+                        l_term_element_style := apex_escape.html_attribute (
+                                       apex_plugin_util.get_value_as_varchar2 (
+                                           p_data_type => l_column_value_list(l_term_element_style_col_no).data_type,
+                                           p_value     => l_column_value_list(l_term_element_style_col_no).value_list(l_row_num) )
+                                       );
+                    end if;
+            
+                    -- get the terminal element start date
+                    l_term_element_start := l_column_value_list(l_term_element_start_col_no).value_list(l_row_num).date_value;
+            
+                    -- get the terminal element end date
+                    l_term_element_end   := l_column_value_list(l_term_element_end_col_no).value_list(l_row_num).date_value;
+            
+                    -- get the summary element link target if it does exist
+                    if c_summary_link_target is not null then
+                        l_summ_link := apex_util.prepare_url (
+                                            apex_plugin_util.replace_substitutions (
+                                                p_value  => c_summary_link_target,
+                                                p_escape => false ));
+                    end if;
+            
+                    -- get the terminal element link target if it does exist
+                    if c_terminal_link_target is not null then
+                        l_term_link := apex_util.prepare_url (
+                                            apex_plugin_util.replace_substitutions (
+                                                p_value  => c_terminal_link_target,
+                                                p_escape => false ));
+                    end if;
+            
+                    if l_term_element_start > l_period_end_date or l_term_element_end < l_period_start_date then
+                        -- Ignore the entry if it falls outside of the current window.
+                        -- This should never happen, since we're wrapping the user's SQL, but better safe than sorry.
+                        null;
+                    else
+                        if l_summ_element <> l_current then
+                            l_current := l_summ_element;
+                            if length(l_summ_element) > 50 then
+                                l_short := substr(l_summ_element,1,50)||'...';
+                            else
+                                l_short := l_summ_element;
+                            end if;
+                            sys.htp.p('</tbody> <tbody>');
+                            sys.htp.p('<tr><th id="gantt_labels_'||l_row_num||'"><a href="'
+                                ||case when l_summ_link is not null then apex_escape.html_attribute(l_summ_link) else '#' end
+                                ||'">'||l_short||'</a>'
+                                ||'</th>');
+                        else
+                            sys.htp.p('<tr><th id="gantt_labels_'||l_row_num||'"></th>');
+                        end if;
+                        -- Put in the row data here.
+                        case l_period_type
+                            when 'D' then
+                                if l_term_element_start <= l_period_start_date then l_start_cell := 1; else
+                                    l_start_cell := 1 + trunc(l_term_element_start) - trunc(l_period_start_date);
+                                end if;
+                                l_cs := 2 + (trunc(l_term_element_end) - trunc(l_period_start_date) - l_start_cell);
+                            when 'W' then
+                                if l_term_element_start <= l_period_start_date then l_start_cell := 1; else
+                                    l_start_cell := ceil((1 + l_term_element_start - l_period_start_date) / 7);
+                                end if;
+                                l_cs := 1 + ceil((l_term_element_end - l_period_start_date) / 7) - l_start_cell;
+                            when 'M' then
+                                if l_term_element_start <= l_period_start_date then l_start_cell := 1; else
+                                    l_start_cell := 1 + months_between(last_day(l_term_element_start),last_day(l_period_start_date));
+                                end if;
+                                l_cs := 2 + (months_between(last_day(l_term_element_end),last_day(l_period_start_date))) - l_start_cell;
+                            when 'Q' then
+                                if l_term_element_start <= l_period_start_date then l_start_cell := 1; else
+                                    l_start_cell := 1 + (ceil(extract(month from l_term_element_start)/3)
+                                            + 4*(extract(year from l_term_element_start) - extract(year from l_period_start_date)))
+                                        - ceil(extract(month from l_period_start_date)/3);
+                                end if;
+                                l_cs := 2 + (ceil(extract(month from l_term_element_end)/3)
+                                        + 4*(extract(year from l_term_element_end) - extract(year from l_period_start_date)))
+                                    - ceil(extract(month from l_period_start_date)/3)
+                                    - l_start_cell;
+                        end case;
+                        if l_start_cell + l_cs > l_num_periods + 1 then
+                            l_cs := l_num_periods + 1 - l_start_cell;
+                        end if;
+                        if l_start_cell > 1 then
+                            for c in 1..l_start_cell - 1 loop
+                                sys.htp.p('<td headers="sub_date'||to_char(c - 1)||'"></td>');
+                            end loop;
+                        end if;
+                        if l_cs > 1 then
+                            sys.htp.p('<td colspan="'||l_cs||'" headers="');
+                            for c in 0..l_cs - 1 loop
+                                sys.htp.p('sub_date'||to_char((l_start_cell - 1) + c)||'');
+                            end loop;
+                            sys.htp.p('">');
+                        else
+                            sys.htp.p('<td colspan="'||l_cs||'" headers="sub_date'||to_char(l_start_cell - 1)||'">');
+                        end if;
+                        l_label := substr(l_term_element,1,greatest(l_cs * 15,l_num_periods));
+                        if length(l_label) < length(l_term_element) then
+                            l_label := l_label || '...';
+                        end if;
+                        sys.htp.prn('<a href="'
+                                ||case when l_term_link is not null then apex_escape.html_attribute(l_term_link) else '#' end
+                                ||'" title="'||l_term_element_alt||'"'
+                            ||' class="'||l_term_element_style||'">');
+                        sys.htp.prn( l_label||'</a></td>' );
+                        if l_start_cell + l_cs < l_num_periods then
+                            for c in l_start_cell+l_cs..l_num_periods loop
+                                sys.htp.p('<td headers="sub_date'||to_char(c - 1)||'"></td>');
+                            end loop;
+                        end if;
+            
+                        sys.htp.p('</tr>');
+                    end if;
+                end loop;
+                sys.htp.p('</tbody>');
+                sys.htp.p('</table>');
+            
+                return null;
+            end render;
+            
+            -- Procedure: render_header_rows
+            -- Generate the top section of the Gantt chart.
+            procedure render_header_rows( p_period in varchar2, p_start_date in date,
+                    p_num_periods in number ) is
+                l_current    varchar2(30) := 'X';
+                l_cs         number;
+            begin
+                sys.htp.p('<table cellspacing="0" cellpadding="0" class="apex-gantt-chart" summary="Gantt Chart">');
+                sys.htp.p('<thead>');
+                sys.htp.p('<tr>');
+                -- First column is reserved for the labels.
+                sys.htp.p('<th id="toplabels"> </th>');
+                case p_period
+                    when 'D' then
+                        for d in 0..p_num_periods-1 loop
+                            if to_char(p_start_date + d,'Month YYYY') <> l_current then
+                                l_current := to_char(p_start_date + d,'Month YYYY');
+                                l_cs := last_day(p_start_date+d) - greatest(last_day(add_months(p_start_date+d,-1)),p_start_date-1);
+                                if l_cs > p_num_periods - d then
+                                    l_cs := p_num_periods - d;
+                                end if;
+                                sys.htp.p('<th class="topLevelDate" colspan="'||l_cs||'" id="top_date'||d||'">'||l_current||'</th>');
+                            end if;
+                        end loop;
+                        sys.htp.p('</tr>');
+                        sys.htp.p('<tr>');
+                        -- First column is reserved for the labels.
+                        sys.htp.p('<th id="sublabels"> </th>');
+                        for d in 0..p_num_periods-1 loop
+                            sys.htp.p('<th class="subLevelDate" id="sub_date'||d||'">'||to_char(p_start_date + d,'DD')||'</th>');
+                        end loop;
+                    when 'W' then
+                        for d in 0..p_num_periods-1 loop
+                            if to_char(p_start_date + (d*7),'Month YYYY') <> l_current then
+                                l_current := to_char(p_start_date + (d*7),'Month YYYY');
+                                l_cs := to_number(to_char(last_day(p_start_date + (d*7)),'IW'))
+                                    - to_number(to_char(p_start_date + (d*7),'IW')) + 1;
+                                if l_cs > p_num_periods - d then
+                                    l_cs := p_num_periods - d;
+                                end if;
+                                sys.htp.p('<th class="topLevelDate" colspan="'||l_cs||'" id="top_date'||d||'">'||l_current||'</th>');
+                            end if;
+                        end loop;
+                        sys.htp.p('</tr>');
+                        sys.htp.p('<tr>');
+                        -- First column is reserved for the labels.
+                        sys.htp.p('<th id="sublabels"> </th>');
+                        for d in 0..p_num_periods-1 loop
+                            sys.htp.p('<th class="subLevelDate" id="sub_date'||d||'">'||to_char(p_start_date + (d*7),'DD')
+                                ||'-'||to_char(p_start_date + (d*7)+6, 'DD')||'</th>');
+                        end loop;
+                    when 'M' then
+                        for d in 0..p_num_periods-1 loop
+                            if to_char(add_months(p_start_date, d),'YYYY') <> l_current then
+                                l_current := to_char(add_months(p_start_date, d),'YYYY');
+                                l_cs := 12 - to_number(to_char(add_months(p_start_date, d),'MM')) + 1;
+                                if l_cs > p_num_periods - d then
+                                    l_cs := p_num_periods - d;
+                                end if;
+                                sys.htp.p('<th class="topLevelDate" colspan="'||l_cs||'" id="top_date'||d||'">'||l_current||'</th>');
+                            end if;
+                        end loop;
+                        sys.htp.p('</tr>');
+                        sys.htp.p('<tr>');
+                        -- First column is reserved for the labels.
+                        sys.htp.p('<th id="sublabels"> </th>');
+                        for d in 0..p_num_periods-1 loop
+                            sys.htp.p('<th class="subLevelDate" id="sub_date'||d||'">'||to_char(add_months(p_start_date, d),'Month')||'</th>');
+                        end loop;
+                    when 'Q' then
+                        for d in 0..p_num_periods-1 loop
+                            if to_char(add_months(p_start_date, d*3),'YYYY') <> l_current then
+                                l_current := to_char(add_months(p_start_date, d*3),'YYYY');
+                                l_cs := 4 - floor((to_number(to_char(add_months(p_start_date, d*3),'MM'))-1)/3);
+                                if l_cs > p_num_periods - d then
+                                    l_cs := p_num_periods - d;
+                                end if;
+                                sys.htp.p('<th class="topLevelDate" colspan="'||l_cs||'" id="top_date'||d||'">'||l_current||'</th>');
+                            end if;
+                        end loop;
+                        sys.htp.p('</tr>');
+                        sys.htp.p('<tr>');
+                        -- First column is reserved for the labels.
+                        sys.htp.p('<th id="sublabels"> </th>');
+                        for d in 0..p_num_periods-1 loop
+                            sys.htp.p('<th class="subLevelDate" id="sub_date'||d||'">Q'
+                                ||floor((to_number(to_char(add_months(p_start_date, d*3),'fmMM'))+2)/3)
+                                ||'</th>');
+                        end loop;
+                end case;
+                sys.htp.p('</tr>');
+                sys.htp.p('</thead>');
+            end render_header_rows;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    information {
+        version: 5.0.1
+        aboutUrl: http://apex.oracle.com/plugins
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        validation {
+            required: true
+        }
+        sqlQuery {
+            minColumns: 4
+        }
+    )
+
+)
+

@@ -1,0 +1,260 @@
+page 48 (
+    name: Tags
+    alias: TAGS
+    title: Tags
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            This page shows tags with click through to tag references.
+            
+            
+            ```
+    }
+
+    region account-tags (
+        name: Account Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, 
+                  tag_count
+                from eba_sales_tags_type_sum
+                where content_type = 'ACCOUNT'
+                  and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            linkTarget: {
+                page: 2
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region contact-tags (
+        name: Contact Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, 
+                  tag_count
+                from eba_sales_tags_type_sum
+                where content_type = 'CONTACT'
+                  and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            linkTarget: {
+                page: 23
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region lead-tags (
+        name: Lead Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, 
+                  tag_count
+                from eba_sales_tags_type_sum
+                where content_type = 'LEAD'
+                  and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            linkTarget: {
+                page: 2
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region opportunity-tags (
+        name: Opportunity Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, 
+                  tag_count
+                from eba_sales_tags_type_sum
+                where content_type = 'DEAL'
+                  and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            linkTarget: {
+                page: 1
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region product-tags (
+        name: Product Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, 
+                  tag_count
+                from eba_sales_tags_type_sum
+                where content_type = 'PRODUCT'
+                  and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            linkTarget: {
+                page: 23
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region territory-tags (
+        name: Territory Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, 
+                  tag_count
+                from eba_sales_tags_type_sum
+                where content_type = 'TERRITORY'
+                  and tag_count > 0
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+        }
+        config {
+            buildOption: @territories
+        }
+        settings {
+            linkTarget: {
+                page: 1
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+            }
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+)
+

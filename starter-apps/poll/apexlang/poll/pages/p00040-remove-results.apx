@@ -1,0 +1,417 @@
+page 40 (
+    name: Remove Results
+    alias: REMOVE-RESULTS
+    title: Remove Results
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region button (
+        name: button
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region delete-results (
+        name: Delete Results
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select apex_item.checkbox2(p_idx => 1, p_value => r.id, p_item_id => 'cb_' || r.id, p_item_label => 'cb_' || r.id) id, 
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where p.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community,
+                       case when p.anonymous_yn = 'Y' then 'anonymous' else lower(r.EMAIL) end email, 
+                       nvl(r.is_valid_yn,'Y') is_valid,
+                       r.preactive_yn,
+                       r.created, 
+                       r.updated
+                from EBA_QPOLL_RESULTS r,
+                     eba_qpoll_polls p
+                where p.id = :POLL_ID
+                  and p.id = r.POLL_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            includeActionsMenu: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 2588652188599624375
+        }
+
+        column COMMUNITY (
+            type: plainText
+            heading {
+                heading: Community
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 71
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Respondent
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Select
+                alignment: center
+            }
+            layout {
+                sequence: 82
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column IS_VALID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Valid?
+            }
+            lov {
+                lov: @no-yes-n-y
+            }
+            layout {
+                sequence: 41
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column PREACTIVE_YN (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Preactive?
+            }
+            lov {
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 31
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 81
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        savedReport 25886657 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn COMMUNITY (
+                sequence: 2
+            )
+
+            displayColumn CREATED (
+                sequence: 6
+            )
+
+            displayColumn EMAIL (
+                sequence: 3
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn IS_VALID (
+                sequence: 4
+            )
+
+            displayColumn PREACTIVE_YN (
+                sequence: 5
+            )
+
+            displayColumn UPDATED (
+                sequence: 7
+            )
+
+            sort (
+                column: COMMUNITY
+                sort {
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: EMAIL
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 5
+            region: @button
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 10
+            region: @button
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction toggle-delete-button (
+        name: Toggle Delete Button
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: region
+            region: @delete-results
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: "$(\"input[type=checkbox]\").is(\":checked\") === true"
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: button
+                button: @delete
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: button
+                button: @delete
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process delete-results (
+        name: delete results
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for i in 1..apex_application.g_f01.count loop
+                   for c1 in (
+                      select id
+                        from eba_qpoll_results
+                       where poll_id = :POLL_ID
+                         and id = apex_application.g_f01(i)
+                   ) loop
+                      delete from eba_qpoll_result_details
+                       where result_id = c1.id;
+                      delete from eba_qpoll_results
+                       where poll_id = :POLL_ID
+                         and id = apex_application.g_f01(i);
+                   end loop;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Response(s) deleted.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 9474883566854689000
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+)
+

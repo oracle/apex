@@ -1,0 +1,33 @@
+validation "Database Version is 12.2.0.1 or higher" (
+    execution {
+        sequence: 10
+    }
+    validation {
+        type: expression
+        plsqlExpression: sys.dbms_db_version.version > 12 or ( sys.dbms_db_version.version = 12 and sys.dbms_db_version.release = 2 )
+    }
+    error {
+        errorMessage: This sample application requires Oracle Database 12.2 or higher.
+    }
+)
+
+validation "SDO_GEOMETRY is available" (
+    execution {
+        sequence: 20
+    }
+    validation {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select 1 
+              from sys.all_objects
+             where owner       = 'MDSYS'
+               and object_name = 'SDO_GEOMETRY'
+               and object_type = 'TYPE'
+            ```
+    }
+    error {
+        errorMessage: The SDO_GEOMETRY data type is not available in this database.
+    }
+)
+

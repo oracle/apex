@@ -1,0 +1,63 @@
+page 10 (
+    name: About
+    alias: ABOUT
+    title: About qAsk
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All application help text can be accessed from this page. The links in the "Documentation" region give a much more in-depth explanation of the application's features and functionality.
+    }
+    config {
+        buildOption: @feature-about-page
+    }
+
+    region about-qask (
+        name: About qAsk
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>qAsk is used to run a Q&A session.  It can be used during a lecture or class to gauge understanding of material, interests of a crowd or solicit feedback.  No account is needed for participation - a QR code is scanned to join a Session.</p>
+                
+                <p><b>Who can host qAsk sessions and how do they login?</b><br/>
+                To Host a qAsk Session, you must be a named user of the system.  If Account Requests are allowed, there will be a prompt on the home page (Host a Q&A Session) to request access.  If you are already a user, you click Sign In and provide your email address and a verification code will be sent to you.  Once you enter that code, you will then have access to see your existing sessions and create new ones.</p>
+                <p>qAsk Sessions can be created in real-time or they can be created ahead of time and then the questions can be progressed through.  You can create a session from scratch or copy an existing session.  Questions can be single choice, multiple choice or freeform text.</p>
+                
+                <p><b>Who can participate as a user of qAsk session?</b><br/>
+                To participate in a qAsk Session, you scan the QR code displayed with your phone camera and follow it to the qAsk home page where the Session Code will be pre-populated.  Click the Join button and if there is currently an open question, it will be presented to you.  Alternatively, you can navigate to qAsk and enter the session code of the session to join.</p>
+                
+                <p><b>Can some users respond at a later time?</b><br/>
+                Questions are only available for end users until the Host closes the question or closes the session.  If a session is left open for too long, it will automatically be closed (controlled by a setting under Admnistration).</p>
+                
+                <p><b>How can I share the results of qAsk session?</b><br/>
+                If a session is shared, any Host can view the results of the session.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h1
+                t-ContentBlock--lightBG
+            ]
+        }
+    )
+
+)
+

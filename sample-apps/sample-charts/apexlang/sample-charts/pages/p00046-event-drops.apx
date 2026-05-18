@@ -1,0 +1,347 @@
+page 46 (
+    name: Event Drops
+    alias: EVENT-DROPS
+    title: Event Drops
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Line charts, using Oracle JET Data Visualizations, can be customized to render as an <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=eventDrops" target="_blank">Event Drops</a> chart. Event Drop charts are useful for visualizing event occurrences over a given timeline, across multiple series.  This chart type is recommended for visualizing mixed frequency time data.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-scatter-chart
+        }
+    )
+
+    region event-drops-chart-sales (
+        name: Event Drops Chart - Sales
+        type: chart
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: sales
+            regionDisplaySelector: true
+        }
+        chart {
+            type: line
+        }
+        chartAppearance {
+            stack: true
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            timeAxisType: mixedFrequency
+            zoomAndScroll: delayed
+        }
+        overview {
+            show: false
+        }
+        tooltip {
+            showValue: false
+        }
+        legend {
+            position: top
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                    
+                    var yAxisLineRefs    = [],
+                        seriesNamesArray = [];
+                    
+                    // Setup a callback function which gets called when data is retrieved, it allows to manipulate the series
+                    options.dataFilter = function( data ) {
+                        
+                        for ( var i = 0; i < data.series.length; i++ ) {
+                            
+                            for ( var j = 0; j < data.series[ i ].items.length; j++ ) {
+                                // Set series 'value' to unique index associated with the series e.g. Series 0: value = 0; Series 1: value = 1; etc
+                                data.series[ i ].items[ j ].value = i;
+                            } 
+                            
+                            // Create reference lines to separate each series
+                            yAxisLineRefs.push({ 
+                                type: 'line', 
+                                color: 'rgba(196,206,215,1)', 
+                                value: i + 0.5 
+                            });
+                           
+                            // Array of series names, for use in eventNames function
+                            seriesNamesArray.push( data.series[ i ].name );
+                        }
+                
+                        return data;
+                    };
+                    
+                    this.seriesName = seriesNamesArray;
+                    
+                    // Function to convert series value with series name - for use in setting yAxis.tickLabel via a 'After Refresh' Dynamic Action
+                    this.eventNamesFn = { 
+                        format: function( value ) {
+                            return (value < seriesName.length) ? seriesName [ value ] : "";
+                        }
+                    };
+                    
+                    // Set additional yAxis attributes
+                    $.extend ( options.yAxis, { 
+                        referenceObjects: yAxisLineRefs
+                    } );
+                    
+                    // Set chart initialization options
+                    return options;
+                }
+                ```
+        }
+
+        series customer-sales (
+            name: Customer Sales
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select sales_date, 
+                           quantity, 
+                           customer
+                      from eba_demo_chart_orders
+                    ```
+            }
+            columnMapping {
+                seriesName: CUSTOMER
+                label: SALES_DATE
+                value: QUANTITY
+            }
+            line {
+                style: dotted
+                type: none
+            }
+            marker {
+                show: true
+                shape: circle
+            }
+        )
+
+        axis x (
+            name: x
+            title: Date of Sales
+            title {
+                fontStyle: italic
+                fontSize: 16
+            }
+            value {
+                format: dateFull
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Customers
+            title {
+                fontStyle: italic
+                fontSize: 16
+            }
+            value {
+                min: -0.5
+                max: 5.5
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y-2 (
+            name: y2
+            title: Y2 Axis Title
+            minorTicks {
+                show: false
+            }
+            dualYAxes {
+                show: true
+                splitterPosition: 0.7
+            }
+        )
+
+    )
+
+    region event-drops-chart-sales-information (
+        name: Event Drops Chart - Sales Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to render an Event Drops chart, based upon a declaratively created Line chart.<p/><br/>
+                
+                <strong>Static ID</strong> - set a static ID for the region, <strong>sales</strong> in this example, to be used in a Dynamic Action JavaScript reference.<p/>
+                <strong>Chart Type</strong> - set to <strong>Line</strong>.  Use the declarative options to define a Line chart, as you normally would.<p/>
+                <strong>Line Type</strong> - Set this series-level attribute to <strong>None</strong>, so no lines will be visible for the chart series.<p/>
+                <strong>Marker</strong> - Set the series-level attribute <strong>Show</strong> to <strong>Yes</strong>, and <strong>Shape</strong> to <strong>Circle</strong>, or another shape of your choosing.<p/>
+                <strong>Time Axis Type</strong> - Set this chart-level attribute to <strong>Mixed Frequency</strong><p/>
+                <strong>Major Tick and Minor Tick</strong> - set these axis-level attributes to <strong>Off</strong>, so that no bar are visible on the chart.<p/> 
+                <strong>Source SQL Query</strong> - 
+                
+                <pre></pre>
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data, in order to customize it to meet the requirements of the Event Drops chart:<br/>
+                
+                <pre>
+                function( options ) {
+                    
+                    var yAxisLineRefs    = [],
+                        seriesNamesArray = [];
+                    
+                    // Setup a callback function which gets called when data is retrieved, it allows to manipulate the series
+                    options.dataFilter = function( data ) {
+                        
+                        for ( var i = 0; i < data.series.length; i++ ) {
+                            
+                            for ( var j = 0; j < data.series[ i ].items.length; j++ ) {
+                                // Set series 'value' to unique index associated with the series e.g. Series 0: value = 0; Series 1: value = 1; etc
+                                data.series[ i ].items[ j ].value = i;
+                            } 
+                            
+                            // Create reference line to separate each series
+                            yAxisLineRefs.push({ 
+                                type: 'line', 
+                                color: 'rgba(196,206,215,1)', 
+                                value: i + 0.5 
+                            });
+                           
+                            // Array of series names, for use in eventNames function
+                            seriesNamesArray.push( data.series[ i ].name );
+                        }
+                
+                        return data;
+                    };
+                    
+                    this.seriesName = seriesNamesArray;
+                    
+                    // Function to convert series value with series name - for use in setting yAxis.tickLabel via a 'After Refresh' Dynamic Action
+                    this.eventNamesFn = { 
+                        format: function( value ) {
+                            return seriesName [ value ];
+                        }
+                    };
+                    
+                    // Set additional yAxis attributes
+                    $.extend ( options.yAxis, { 
+                        referenceObjects: yAxisLineRefs 
+                    } );
+                    
+                    // Set chart initialization options
+                    return options;
+                }
+                </pre><p/>
+                
+                <strong>Dynamic Action</strong> - Define an After Refresh dynamic action, with one True action that will Execute JavaScript Code:<p/>
+                <pre>
+                apex.region('sales').widget().ojChart('option','yAxis.tickLabel.converter', eventNamesFn );
+                </pre>
+                
+                For more information on the Event Drops chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=eventDrops" target="_blank">Event Drops</a> example.
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    dynamicAction set-custom-y-axis-tick-label-converter (
+        name: Set Custom y-axis Tick Label Converter
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @event-drops-chart-sales
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region('sales').widget().ojChart('option','yAxis.tickLabel.converter', eventNamesFn );
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

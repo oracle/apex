@@ -1,0 +1,96 @@
+lov emp-jobs (
+    name: EMP_JOBS
+    source {
+        location: staticValues
+    }
+
+    entry analyst (
+        sequence: 5
+        display: Analyst
+        return: ANALYST
+    )
+
+    entry clerk (
+        sequence: 1
+        display: Clerk
+        return: CLERK
+    )
+
+    entry manager (
+        sequence: 4
+        display: Manager
+        return: MANAGER
+    )
+
+    entry president (
+        sequence: 3
+        display: President
+        return: PRESIDENT
+    )
+
+    entry salesman (
+        sequence: 2
+        display: Salesman
+        return: SALESMAN
+    )
+
+)
+
+lov people-categories (
+    name: PEOPLE_CATEGORIES
+    source {
+        location: staticValues
+    }
+
+    entry arts (
+        sequence: 2
+        display: Arts
+        return: A
+    )
+
+    entry business-law (
+        sequence: 3
+        display: Business & Law
+        return: B_L
+    )
+
+    entry politics (
+        sequence: 4
+        display: Politics
+        return: P
+    )
+
+    entry science-technology (
+        sequence: 1
+        display: Science & Technology
+        return: S_T
+    )
+
+    entry sports (
+        sequence: 5
+        display: Sports
+        return: S
+    )
+
+)
+
+lov people-gender (
+    name: PEOPLE_GENDER
+    source {
+        location: staticValues
+    }
+
+    entry female (
+        sequence: 2
+        display: Female
+        return: F
+    )
+
+    entry male (
+        sequence: 1
+        display: Male
+        return: M
+    )
+
+)
+

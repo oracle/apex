@@ -1,0 +1,21 @@
+textMessage APEX.AUTHENTICATION.LOGIN_THROTTLE.COUNTER (
+    message {
+        text: Please wait <span id="apex_login_throttle_sec">%0</span> seconds to verify again.
+        language: en
+    }
+)
+
+textMessage APEX.AUTHENTICATION.LOGIN_THROTTLE.ERROR (
+    message {
+        text: The verification attempt has been blocked.
+        language: en
+    }
+)
+
+textMessage INVALID_CREDENTIALS (
+    message {
+        text: Invalid verification code
+        language: en
+    }
+)
+

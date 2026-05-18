@@ -1,0 +1,792 @@
+page 31 (
+    name: Validation
+    alias: VALIDATION
+    title: Validation
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview-validation (
+        name: Overview: Validation
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This example demonstrates validation and a few additional column types. 
+                </p>
+                <ul>
+                <li>The ID column is included as a display only column so it can be seen but not edited.</li>
+                <li>The ICON column is read-only and displays the chosen Avatar and color as an icon. Any columns expressions that cannot be updated
+                must have the Source: Query Only set to Yes.</li>
+                <li>The Name column is set to Required. This will be checked on the client as well as the server. Required columns are indicated with a red triangle in the column header (when in edit mode). Remove the name (or leave it blank when adding a row) to see how the validation error is reported.
+                Required is the only validation done on the client by default. See also <a href="f?p=&APP_ID.:51:&SESSION.:">Advanced Client Validation</a>.</li>
+                <li>This time the Hire Date uses an inline Date Picker. It is required. A validation is added to make sure it is in the past.</li>
+                <li>A row validation is added so that the Commission must be less than 1.5 times the Salary.</li>
+                <li>The PIN column is added to demonstrate the Password item type. This may not be commonly used in a grid but it is supported.</li>
+                <li>The Avatar Color column demonstrates the Color Picker item type.</li>
+                <li>The Tags column stores multiple values. It uses the Checkbox item type. You can try other types that work with multiple values such as List Manager, Shuttle, or Select List (multiple).</li>
+                </ul>
+                <p>Interactive Grid gives you control over how columns are initialized when a new row is added or a row is duplicated. In this case the Name, Hire Date, and PIN are not copied. A default is chosen for Avatar and Color. Note that sorting etc. is disabled for the Icon and PIN columns.
+                </p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region validation (
+        name: Validation
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       nvl(FLEX2, 'fa-user') as ICON,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       ONLEAVE,
+                       NOTES,
+                       DEPTNO,
+                       FLEX1 as PIN,
+                       FLEX2 as AVATAR,
+                       FLEX3 as COLOR,
+                       FLEX4 as TAGS
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: emp
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1402009553919945135
+        }
+
+        savedReport 6239269 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ICON
+                layout {
+                    frozen: true
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    frozen: true
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    frozen: true
+                    width: 58
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    frozen: true
+                    width: 75
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 67
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 86
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 64.9
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 69.9
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    width: 98
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    sequence: 12
+                }
+            )
+
+            displayColumn (
+                column: @PIN
+                layout {
+                    width: 56
+                    sequence: 13
+                }
+            )
+
+            displayColumn (
+                column: @AVATAR
+                layout {
+                    sequence: 14
+                }
+            )
+
+            displayColumn (
+                column: @COLOR
+                layout {
+                    sequence: 15
+                }
+            )
+
+            displayColumn (
+                column: @TAGS
+                layout {
+                    width: 125.36699999999999
+                    sequence: 16
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column AVATAR (
+            type: selectList
+            heading {
+                heading: Avatar
+            }
+            lov {
+                type: staticValues
+                staticValues:
+                    ```
+                    STATIC:Ambulance;fa-ambulance,Bicycle;fa-bicycle,Bus;fa-bus,Car;fa-car,Jet;fa-fighter-jet,Motorcycle;fa-motorcycle,Plane;fa-plane,Rocket;fa-rocket,Ship;fa-ship,Shuttle;fa-space-shuttle,Subway;fa-subway,Taxi;fa-taxi,Train;fa-train,Truck;fa-truck
+                    
+                    ```
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: AVATAR
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: fa-plane
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column COLOR (
+            type: colorPicker
+            heading {
+                heading: Avatar Color
+            }
+            layout {
+                sequence: 160
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: COLOR
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: #0000AA
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: selectList
+            heading {
+                heading: Department
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select DNAME as d, DEPTNO as r from EBA_DEMO_IG_DEPT order by 1
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column EMPNO (
+            type: displayOnly
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                valueRequired: true
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            default {
+                duplicateCopiesExistingValue: false
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hire Date
+            }
+            settings {
+                show: inline
+                navigationListFor: year
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+            default {
+                duplicateCopiesExistingValue: false
+            }
+        )
+
+        column ICON (
+            type: htmlExpression
+            heading {
+                alternativeLabel: Avatar
+            }
+            settings {
+                htmlExpression: <span class="fa &ICON." style="color: &COLOR.;"></span>
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+                queryOnly: true
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column JOB (
+            type: selectList
+            heading {
+                heading: Job
+            }
+            lov {
+                type: sharedComponent
+                lov: @emp-jobs
+                displayNullValue: false
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column MGR (
+            type: selectList
+            heading {
+                heading: Manager
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select ENAME as d, EMPNO as r from EBA_DEMO_IG_EMP where JOB = 'MANAGER' or JOB = 'PRESIDENT' order by 1
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column NOTES (
+            type: textarea
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                width: 60
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column ONLEAVE (
+            type: checkbox
+            heading {
+                heading: On Leave
+                alignment: center
+            }
+            layout {
+                sequence: 110
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: N
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column PIN (
+            type: password
+            heading {
+                heading: PIN
+            }
+            layout {
+                sequence: 140
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: PIN
+                dataType: varchar2
+            }
+            default {
+                duplicateCopiesExistingValue: false
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        column TAGS (
+            type: checkboxGroup
+            heading {
+                heading: Tags
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC:Punctual,Innovative,Motivated,Resourceful,Knowledgeable
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+            advanced {
+                htmlDomId: C_TAGS
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 36
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 30
+                action: resetPagination
+            }
+        }
+    )
+
+    validation comm-limit (
+        name: Comm limit
+        execution {
+            sequence: 30
+        }
+        validation {
+            editableRegion: @validation
+            language: sql
+            sqlExpression: :COMM is null or to_number(:COMM) < 1.5 * to_number(:SAL)
+        }
+        error {
+            errorMessage: Commission must be less than 1.5 times the Salary
+        }
+    )
+
+    validation hire-date-in-past (
+        name: hire date in past
+        execution {
+            sequence: 20
+        }
+        validation {
+            editableRegion: @validation
+            language: sql
+            sqlExpression: to_date(:HIREDATE) < SYSDATE
+        }
+        error {
+            errorMessage: #COLUMN_HEADER# must be in the past.
+            associatedColumn: HIREDATE
+        }
+    )
+
+    process save-interactive-grid-data (
+        name: " - Save Interactive Grid Data"
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @validation
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 705887027763698339
+        }
+    )
+
+)
+

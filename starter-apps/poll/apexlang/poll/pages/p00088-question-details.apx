@@ -1,0 +1,3443 @@
+page 88 (
+    name: Question Details
+    alias: QUESTION-DETAILS
+    title: Question Details
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region add-question (
+        name: Add Question
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            htmlDomId: ADDQ
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region canned-answers (
+        name: Canned Answers
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ANSWER_01 display, 1 d, apex_item.radiogroup(p_idx => 1, p_value => answer_01, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_01,' ','_'), p_item_label => 'rg_' || replace(answer_01,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_01_score', p_item_label => 'answer_01_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_01 is not null
+                union all
+                select ANSWER_02 display, 2 d, apex_item.radiogroup(p_idx => 1, p_value => answer_02, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_02,' ','_'), p_item_label => 'rg_' || replace(answer_02,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_02_score', p_item_label => 'answer_02_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_02 is not null
+                union all
+                select ANSWER_03 display, 3 d, apex_item.radiogroup(p_idx => 1, p_value => answer_03, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_03,' ','_'), p_item_label => 'rg_' || replace(answer_03,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_03_score', p_item_label => 'answer_03_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_03 is not null
+                union all
+                select ANSWER_04 display, 4 d, apex_item.radiogroup(p_idx => 1, p_value => answer_04, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_04,' ','_'), p_item_label => 'rg_' || replace(answer_04,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_04_score', p_item_label => 'answer_04_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_04 is not null
+                union all
+                select ANSWER_05 display, 5 d, apex_item.radiogroup(p_idx => 1, p_value => answer_05, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_05,' ','_'), p_item_label => 'rg_' || replace(answer_05,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_05_score', p_item_label => 'answer_05_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_05 is not null
+                union all
+                select ANSWER_06 display, 6 d, apex_item.radiogroup(p_idx => 1, p_value => answer_06, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_06,' ','_'), p_item_label => 'rg_' || replace(answer_06,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_06_score', p_item_label => 'answer_06_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_06 is not null
+                union all
+                select ANSWER_07 display, 7 d, apex_item.radiogroup(p_idx => 1, p_value => answer_07, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_07,' ','_'), p_item_label => 'rg_' || replace(answer_07,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_07_score', p_item_label => 'answer_07_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_07 is not null
+                union all
+                select ANSWER_08 display, 8 d, apex_item.radiogroup(p_idx => 1, p_value => answer_08, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_08,' ','_'), p_item_label => 'rg_' || replace(answer_08,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_08_score', p_item_label => 'answer_08_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_08 is not null
+                union all
+                select ANSWER_09 display, 9 d, apex_item.radiogroup(p_idx => 1, p_value => answer_09, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_09,' ','_'), p_item_label => 'rg_' || replace(answer_09,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_09_score', p_item_label => 'answer_09_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_09 is not null
+                union all
+                select ANSWER_10 display, 10 d, apex_item.radiogroup(p_idx => 1, p_value => answer_10, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_10,' ','_'), p_item_label => 'rg_' || replace(answer_10,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_10_score', p_item_label => 'answer_10_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_10 is not null
+                union all
+                select ANSWER_11 display, 11 d, apex_item.radiogroup(p_idx => 1, p_value => answer_11, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_11,' ','_'), p_item_label => 'rg_' || replace(answer_11,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_11_score', p_item_label => 'answer_11_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_11 is not null
+                union all
+                select ANSWER_12 display, 12 d, apex_item.radiogroup(p_idx => 1, p_value => answer_12, p_selected_value => :P88_CORRECT_ANSWER, p_item_id => 'rg_' || replace(answer_12,' ','_'), p_item_label => 'rg_' || replace(answer_12,' ','_')) correct, 
+                       apex_item.select_list_from_lov(p_idx => 2, p_value => 0, p_lov => 'SCORE', p_show_null => 'NO', p_item_id => 'answer_12_score', p_item_label => 'answer_12_score') score
+                from EBA_QPOLL_CANNED_ANSWERS
+                where CODE = :P88_QUESTION_TYPE and ANSWER_12 is not null
+                order by 2
+                ```
+            pageItemsToSubmit: [
+                P88_QUESTION_TYPE
+                P88_CORRECT_ANSWER
+                P88_SHOW_ENABLE_SCORING
+                P88_ENABLE_SCORE_YN
+            ]
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+            ]
+        }
+        headerAndFooter {
+            headerText: <h3>Define Answers</h3>
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CORRECT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Correct?
+                alignment: center
+            }
+            layout {
+                sequence: 3
+                columnAlignment: center
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: P88_POLL_OR_QUIZ
+                value: Q
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column D (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Sequence
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DISPLAY (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Value
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SCORE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Score
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression:
+                    ```plsql
+                    :P88_SHOW_ENABLE_SCORING = 'Y' and
+                    nvl(:P88_ENABLE_SCORE_YN,'N') = 'Y'
+                    ```
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+    )
+
+    region correct-answer (
+        name: Correct Answer
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+            ]
+        }
+        headerAndFooter {
+            headerText: <h3>Define Correct Answer</h3>
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS
+                 where id = :POLL_ID
+                   and poll_or_quiz = 'Q'
+                ```
+        }
+    )
+
+    region currently-closed (
+        name: currently closed
+        type: staticContent
+        source {
+            htmlCode: This Poll is currently closed.  It is not advised to add or modify questions.
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+                t-Alert--removeHeading js-removeLandmark
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                   and status_id = 4
+                ```
+        }
+    )
+
+    region currently-published (
+        name: currently published
+        type: staticContent
+        source {
+            htmlCode: This Poll is currently published.  It is not advised to add or modify questions.
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+                t-Alert--removeHeading js-removeLandmark
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                   and status_id = 3
+                ```
+        }
+    )
+
+    region custom-answers (
+        name: Custom Answers
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+                margin-top-md
+            ]
+            renderComponents: belowContent
+        }
+        headerAndFooter {
+            headerText: <h4>Answers</h4>
+        }
+    )
+
+    region display-question-image (
+        name: Display Question Image
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   c integer := 0;
+                begin
+                   for c2 in (
+                      select image_height, image_width
+                        from EBA_QPOLL_QUESTIONS
+                       where id = :P88_ID
+                         and image_filename is not null
+                   ) loop
+                      c := c + 1;
+                      sys.htp.p('<p><img src="'||apex_util.get_blob_file_src('P88_IMAGE_BLOB',:P88_ID)||'"');
+                      if c2.image_height is not null then
+                         sys.htp.p(' height="'|| apex_escape.html(c2.image_height) ||'"');
+                      end if;
+                      if c2.image_width is not null then
+                         sys.htp.p(' width="'|| apex_escape.html(c2.image_width) ||'"');
+                      end if;
+                      sys.htp.p(' /></p>');
+                   end loop;
+                   if c = 0 then
+                       sys.htp.p('<p>No image has been selected click the <strong>choose file</strong> button to add an image.</p>');
+                   end if;
+                end;
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                        from EBA_QPOLL_QUESTIONS
+                where id = :P88_ID and NVL(dbms_lob.getlength(IMAGE_BLOB),0) > 0
+                ```
+        }
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P88_ANSWER_01 (
+        type: textField
+        label {
+            label: 1
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 170
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_01
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_01_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 1 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 180
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_01_SCORE (
+        type: selectList
+        label {
+            label: Answer 1 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 190
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_01_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_02 (
+        type: textField
+        label {
+            label: 2
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 200
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_02
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_02_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 2 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 210
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_02_SCORE (
+        type: selectList
+        label {
+            label: Answer 2 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 220
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_02_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_03 (
+        type: textField
+        label {
+            label: 3
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 230
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_03
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_03_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 3 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 240
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_03_SCORE (
+        type: selectList
+        label {
+            label: Answer 3 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 250
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_03_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_04 (
+        type: textField
+        label {
+            label: 4
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 260
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_04
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_04_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 4 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 270
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_04_SCORE (
+        type: selectList
+        label {
+            label: Answer 4 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 280
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_04_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_05 (
+        type: textField
+        label {
+            label: 5
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 290
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_05
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_05_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 5 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 300
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_05_SCORE (
+        type: selectList
+        label {
+            label: Answer 5 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 310
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_05_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_06 (
+        type: textField
+        label {
+            label: 6
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 320
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_06
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_06_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 6 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 330
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_06_SCORE (
+        type: selectList
+        label {
+            label: Answer 6 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 340
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_06_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_07 (
+        type: textField
+        label {
+            label: 7
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 350
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_07
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_07_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 7 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 360
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_07_SCORE (
+        type: selectList
+        label {
+            label: Answer 7 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 370
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_07_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_08 (
+        type: textField
+        label {
+            label: 8
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 380
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_08
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_08_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 8 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 390
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_08_SCORE (
+        type: selectList
+        label {
+            label: Answer 8 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 400
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_08_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_09 (
+        type: textField
+        label {
+            label: 9
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 410
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_09
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_09_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 9 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 420
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_09_SCORE (
+        type: selectList
+        label {
+            label: Answer 9 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 430
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_09_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_10 (
+        type: textField
+        label {
+            label: 10
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 440
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_10
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_10_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 10 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 450
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_10_SCORE (
+        type: selectList
+        label {
+            label: Answer 10 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 460
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_10_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_11 (
+        type: textField
+        label {
+            label: 11
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 470
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_11
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_11_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 11 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 480
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_11_SCORE (
+        type: selectList
+        label {
+            label: Answer 11 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 490
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_11_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_ANSWER_12 (
+        type: textField
+        label {
+            label: 12
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 500
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 50
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_12
+            used: always
+        }
+    )
+
+    pageItem P88_ANSWER_12_CORRECT (
+        type: checkboxGroup
+        label {
+            label: Answer 12 is Correct
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Correct;Y
+        }
+        layout {
+            sequence: 510
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    pageItem P88_ANSWER_12_SCORE (
+        type: selectList
+        label {
+            label: Answer 12 Score
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @score
+            displayNullValue: false
+        }
+        layout {
+            sequence: 520
+            region: @custom-answers
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 3
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ANSWER_12_SCORE
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+    )
+
+    pageItem P88_CAN_ADD_QUESTION (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_CORRECT_ANSWER (
+        type: textField
+        label {
+            label: Correct Answer
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 530
+            region: @correct-answer
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: CORRECT_ANSWER
+            used: always
+        }
+    )
+
+    pageItem P88_DISPLAY_SEQUENCE (
+        type: numberField
+        label {
+            label: Sequence
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 70
+            region: @add-question
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 8
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISPLAY_SEQUENCE
+            used: always
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_next_seq number := 0;
+                begin
+                
+                    select nvl(max(display_sequence), l_next_seq) + 10
+                      into l_next_seq
+                      from eba_qpoll_questions 
+                     where poll_id = :POLL_ID;
+                
+                    return l_next_seq;
+                
+                exception
+                    when others then
+                        return l_next_seq + 10;
+                end;
+                ```
+        }
+    )
+
+    pageItem P88_ENABLE_SCORE_YN (
+        type: selectList
+        label {
+            label: Scoring Enabled
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @yes-no-y-n
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 60
+            region: @add-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENABLE_SCORE_YN
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P18_POLL_OR_QUIZ
+            value: P
+        }
+    )
+
+    pageItem P88_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_IMAGE_BLOB (
+        type: fileUpload
+        label {
+            label: Image
+            alignment: left
+        }
+        display {
+            downloadLinkText: Download Question Image &nbsp;
+        }
+        storage {
+            mimeTypeColumn: IMAGE_MIMETYPE
+            filenameColumn: IMAGE_FILENAME
+            charSetColumn: IMAGE_CHARSET
+            bobLastUpdatedColumn: IMAGE_LAST_UPDATED
+        }
+        layout {
+            sequence: 80
+            region: @add-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_BLOB
+            used: always
+        }
+        readOnly {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                        from EBA_QPOLL_QUESTIONS
+                where id = :P88_ID and NVL(dbms_lob.getlength(IMAGE_BLOB),0) > 0
+                ```
+        }
+    )
+
+    pageItem P88_IMAGE_HEIGHT (
+        type: numberField
+        label {
+            label: Image Height
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @add-question
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_HEIGHT
+            used: always
+        }
+    )
+
+    pageItem P88_IMAGE_WIDTH (
+        type: numberField
+        label {
+            label: Width
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 100
+            region: @add-question
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 4
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_WIDTH
+            used: always
+        }
+    )
+
+    pageItem P88_MANDATORY_YN (
+        type: switch
+        label {
+            label: Mandatory
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @add-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MANDATORY_YN
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: P
+        }
+        help {
+            helpText: If a question is mandatory, it will be highlighted to the user as required.  The user can submit a response without answering the question but they will be warned that they did not respond to a mandatory question and the user's results will not be displayed as a valid result.
+        }
+    )
+
+    pageItem P88_POLL_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: POLL_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: &POLL_ID.
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_POLL_OR_QUIZ (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @add-question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_QUESTION (
+        type: textarea
+        label {
+            label: Question
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @add-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+            height: 3
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: QUESTION
+            used: always
+        }
+    )
+
+    pageItem P88_QUESTION_TYPE (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @dynamic-answer-type
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @add-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: QUESTION_TYPE
+            used: always
+        }
+        default {
+            type: static
+            staticValue: RADIO_GROUP
+        }
+    )
+
+    pageItem P88_SECTION_ID (
+        type: selectList
+        label {
+            label: Section
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select title, id
+                  from eba_qpoll_sections
+                 where poll_id = :POLL_ID
+                 order by display_sequence, title
+                ```
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 20
+            region: @add-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SECTION_ID
+            used: always
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_USE_SECTIONS_YN
+            value: Y
+        }
+    )
+
+    pageItem P88_SHOW_ENABLE_SCORING (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @add-question
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENABLE_SCORE_YN
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_USE_CUSTOM_ANSWERS_YN (
+        type: hidden
+        layout {
+            sequence: 540
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USE_CUSTOM_ANSWERS_YN
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P88_USE_SECTIONS_YN (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button add-another (
+        buttonName: ADD_ANOTHER
+        label: Add and Add Another
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P88_ID
+        }
+    )
+
+    button add-question (
+        buttonName: ADD_QUESTION
+        label: Add Question
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P88_ID
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P88_ID
+        }
+    )
+
+    button remove-image (
+        buttonName: REMOVE_IMAGE
+        label: Remove Question Image
+        layout {
+            sequence: 10
+            region: @display-question-image
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P88_ID
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: Close Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction handle-scoring (
+        name: handle scoring
+        execution {
+            sequence: 80
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_SHOW_ENABLE_SCORING
+            value: Y
+        }
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P88_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction hide-canned-for-text-and-textarea (
+        name: hide canned for text and textarea
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P88_QUESTION_TYPE
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P88_QUESTION_TYPE
+            list: [
+                TEXT
+                TEXTAREA
+            ]
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @canned-answers
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P88_ANSWERS
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P88_ANSWERS
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-correct-answer (
+        name: show hide correct answer
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P88_QUESTION_TYPE
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P88_QUESTION_TYPE
+            list: [
+                TEXTAREA
+                TEXT
+            ]
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @correct-answer
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @correct-answer
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-custom-answers (
+        name: show hide custom answers
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P88_QUESTION_TYPE
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P88_QUESTION_TYPE
+            list: [
+                RADIO_GROUP
+                " PICK_TWO"
+                " CHECKBOX"
+                " STACK"
+                " ALLOCATION"
+            ]
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @custom-answers
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @canned-answers
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @custom-answers
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show-2 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @canned-answers
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-enable-scoring-for-question-types (
+        name: show/hide enable scoring for question types
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P88_QUESTION_TYPE
+        }
+        clientSideCondition {
+            type: itemIsInList
+            item: P88_QUESTION_TYPE
+            list: [
+                TEXTAREA
+                TEXT
+                CHECKBOX
+            ]
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: items
+                items: P88_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-enable (
+            action: enable
+            affectedElements {
+                selectionType: items
+                items: P88_ENABLE_SCORE_YN
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-scores (
+        name: show/hide scores
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P88_ENABLE_SCORE_YN
+        }
+        clientSideCondition {
+            type: item=value
+            item: P88_ENABLE_SCORE_YN
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P88_ANSWER_01_SCORE
+                    P88_ANSWER_02_SCORE
+                    P88_ANSWER_03_SCORE
+                    P88_ANSWER_04_SCORE
+                    P88_ANSWER_05_SCORE
+                    P88_ANSWER_06_SCORE
+                    P88_ANSWER_07_SCORE
+                    P88_ANSWER_08_SCORE
+                    P88_ANSWER_09_SCORE
+                    P88_ANSWER_10_SCORE
+                    P88_ANSWER_11_SCORE
+                    P88_ANSWER_12_SCORE
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @canned-answers
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @canned-answers
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P88_ANSWER_01_SCORE
+                    P88_ANSWER_02_SCORE
+                    P88_ANSWER_03_SCORE
+                    P88_ANSWER_04_SCORE
+                    P88_ANSWER_05_SCORE
+                    P88_ANSWER_06_SCORE
+                    P88_ANSWER_07_SCORE
+                    P88_ANSWER_08_SCORE
+                    P88_ANSWER_09_SCORE
+                    P88_ANSWER_10_SCORE
+                    P88_ANSWER_11_SCORE
+                    P88_ANSWER_12_SCORE
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction show-new-answers (
+        name: Show new answers
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P88_QUESTION_TYPE
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @canned-answers
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation ensure-unique-display-sequence (
+        name: Ensure Unique Display Sequence
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select display_sequence
+                  from eba_qpoll_questions 
+                 where POLL_ID = :POLL_ID
+                   and display_sequence = :P88_DISPLAY_SEQUENCE;
+                ```
+        }
+        error {
+            errorMessage: The provided sequence number is already in use for this poll's questions. Please use a different sequence number.
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-question
+        }
+    )
+
+    validation for-pick-need-to-provide-answers (
+        name: For pick, need to provide answers
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if :P88_ANSWER_01 is not null or
+                   :P88_ANSWER_02 is not null or
+                   :P88_ANSWER_03 is not null or
+                   :P88_ANSWER_04 is not null or
+                   :P88_ANSWER_05 is not null or
+                   :P88_ANSWER_06 is not null or
+                   :P88_ANSWER_07 is not null or
+                   :P88_ANSWER_08 is not null or
+                   :P88_ANSWER_09 is not null or
+                   :P88_ANSWER_10 is not null or
+                   :P88_ANSWER_11 is not null or
+                   :P88_ANSWER_12 is not null
+                then return true;
+                else return false;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: Must provide answers to display.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :REQUEST in ('ADD_QUESTION','SAVE') and
+                :P88_QUESTION_TYPE in ('RADIO_GROUP','CHECKBOX','STACK','ALLOCATION')
+                ```
+        }
+    )
+
+    validation for-pick-one-can-only-pick-one (
+        name: For pick one, can only pick one
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if nvl(length(:P88_ANSWER_01_CORRECT),0) + nvl(length(:P88_ANSWER_02_CORRECT),0) +
+                   nvl(length(:P88_ANSWER_03_CORRECT),0) + nvl(length(:P88_ANSWER_04_CORRECT),0) +
+                   nvl(length(:P88_ANSWER_05_CORRECT),0) + nvl(length(:P88_ANSWER_06_CORRECT),0) +
+                   nvl(length(:P88_ANSWER_07_CORRECT),0) + nvl(length(:P88_ANSWER_08_CORRECT),0) +
+                   nvl(length(:P88_ANSWER_09_CORRECT),0) + nvl(length(:P88_ANSWER_10_CORRECT),0) +
+                   nvl(length(:P88_ANSWER_11_CORRECT),0) + nvl(length(:P88_ANSWER_12_CORRECT),0) > 1
+                then return false;
+                else return true;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: Can only select one correct answer.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P88_POLL_OR_QUIZ = 'Q' and
+                :P88_QUESTION_TYPE = 'RADIO_GROUP'
+                ```
+        }
+    )
+
+    validation p88-correct-answer-not-null (
+        name: P88_CORRECT_ANSWER not null
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P88_CORRECT_ANSWER
+        }
+        error {
+            errorMessage: Correct Answer must be provided for Polls that are quizzes.
+            associatedItem: @P88_CORRECT_ANSWER
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    computation p88-can-add-question (
+        itemName: P88_CAN_ADD_QUESTION
+        execution {
+            sequence: 60
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   c  number  := 0;
+                begin
+                
+                for c1 in (
+                   select count(*) cnt
+                     from EBA_QPOLL_QUESTIONS
+                    where POLL_ID = :POLL_ID
+                ) loop
+                  c := c1.cnt;
+                end loop;
+                
+                if c >= 20 then
+                   return 'N';
+                else
+                   return 'Y';
+                end if;
+                
+                end;
+                ```
+        }
+    )
+
+    computation p88-correct-answer (
+        itemName: P88_CORRECT_ANSWER
+        execution {
+            sequence: 60
+            point: afterSubmit
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_correct_answer  varchar2(4000);
+                begin
+                
+                   if :P88_QUESTION_TYPE in ('TEXT', 'TEXTAREA') then
+                      l_correct_answer := :P88_CORRECT_ANSWER;
+                   elsif :P88_QUESTION_TYPE = 'CHECKBOX' then
+                       l_correct_answer := eba_qpoll_quiz.delim_answers (
+                                              p_answer_01 => case when :P88_ANSWER_01_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_01 end,
+                                              p_answer_02 => case when :P88_ANSWER_02_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_02 end,
+                                              p_answer_03 => case when :P88_ANSWER_03_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_03 end,
+                                              p_answer_04 => case when :P88_ANSWER_04_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_04 end,
+                                              p_answer_05 => case when :P88_ANSWER_05_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_05 end,
+                                              p_answer_06 => case when :P88_ANSWER_06_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_06 end,
+                                              p_answer_07 => case when :P88_ANSWER_07_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_07 end,
+                                              p_answer_08 => case when :P88_ANSWER_08_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_08 end,
+                                              p_answer_09 => case when :P88_ANSWER_09_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_09 end,
+                                              p_answer_10 => case when :P88_ANSWER_10_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_10 end,
+                                              p_answer_11 => case when :P88_ANSWER_11_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_11 end,
+                                              p_answer_12 => case when :P88_ANSWER_12_CORRECT = 'Y'
+                                                                  then :P88_ANSWER_12 end );
+                   elsif :P88_QUESTION_TYPE = 'RADIO_GROUP' then
+                      if :P88_ANSWER_01_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_01;
+                      elsif :P88_ANSWER_02_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_02;
+                      elsif :P88_ANSWER_03_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_03;
+                      elsif :P88_ANSWER_04_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_04;
+                      elsif :P88_ANSWER_05_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_05;
+                      elsif :P88_ANSWER_06_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_06;
+                      elsif :P88_ANSWER_07_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_07;
+                      elsif :P88_ANSWER_08_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_08;
+                      elsif :P88_ANSWER_09_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_09;
+                      elsif :P88_ANSWER_10_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_10;
+                      elsif :P88_ANSWER_11_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_11;
+                      elsif :P88_ANSWER_12_CORRECT = 'Y' then
+                         l_correct_answer := :P88_ANSWER_12;
+                      end if;
+                   elsif :P88_QUESTION_TYPE = 'PICK_TWO' then
+                      null; -- not implemented yet
+                   else
+                      for i in 1..apex_application.g_f01.count loop
+                         l_correct_answer := apex_application.g_f01(i);
+                      end loop;
+                   end if;
+                
+                   return l_correct_answer;
+                
+                end;
+                ```
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    computation p88-enable-score-yn (
+        itemName: P88_ENABLE_SCORE_YN
+        execution {
+            sequence: 60
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+            staticValue: N
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P88_SHOW_ENABLE_SCORING = 'N' or 
+                :P88_QUESTION_TYPE in ('TEXTAREA','TEXT','CHECKBOX','STACK','ALLOCATION')
+                ```
+        }
+    )
+
+    computation p88-poll-or-quiz (
+        itemName: P88_POLL_OR_QUIZ
+        execution {
+            sequence: 60
+            point: afterHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select poll_or_quiz
+                from EBA_QPOLL_POLLS
+                where id = :POLL_ID
+                ```
+        }
+    )
+
+    process add-question (
+        name: add question
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                  l_image_filename      varchar2(400);
+                  l_image_mimetype      varchar2(255);
+                  l_image_blob          blob;
+                  l_image_last_updated  date;
+                begin
+                  
+                if :P88_IMAGE_BLOB is not null then
+                  select filename,
+                         mime_type,
+                         blob_content,
+                         created_on
+                    into l_image_filename,
+                         l_image_mimetype,
+                         l_image_blob,
+                         l_image_last_updated
+                    from apex_application_temp_files
+                   where name = :P88_IMAGE_BLOB;
+                end if;
+                
+                apex_debug.message('before insert into EBA_QPOLL_QUESTIONS');
+                
+                insert into EBA_QPOLL_QUESTIONS
+                (POLL_ID, 
+                SECTION_ID,
+                DISPLAY_SEQUENCE,
+                QUESTION_TYPE,
+                QUESTION, 
+                mandatory_yn,
+                answer_01,
+                answer_02,
+                answer_03,
+                answer_04,
+                answer_05,
+                answer_06,
+                answer_07,
+                answer_08,
+                answer_09,
+                answer_10,
+                answer_11,
+                answer_12,
+                correct_answer,
+                enable_score_yn,
+                answer_01_score,
+                answer_02_score,
+                answer_03_score,
+                answer_04_score,
+                answer_05_score,
+                answer_06_score,
+                answer_07_score,
+                answer_08_score,
+                answer_09_score,
+                answer_10_score,
+                answer_11_score,
+                answer_12_score,
+                image_height,
+                image_width,
+                image_filename,
+                image_mimetype,
+                image_blob,
+                image_last_updated
+                )
+                values
+                (:POLL_ID,
+                :P88_SECTION_ID,
+                :P88_DISPLAY_SEQUENCE,
+                :P88_QUESTION_TYPE,
+                :P88_QUESTION, 
+                case when :P88_POLL_OR_QUIZ = 'Q' then 'N' else :P88_MANDATORY_YN end,
+                :P88_ANSWER_01,
+                :P88_ANSWER_02,
+                :P88_ANSWER_03,
+                :P88_ANSWER_04,
+                :P88_ANSWER_05,
+                :P88_ANSWER_06,
+                :P88_ANSWER_07,
+                :P88_ANSWER_08,
+                :P88_ANSWER_09,
+                :P88_ANSWER_10,
+                :P88_ANSWER_11,
+                :P88_ANSWER_12,
+                :P88_CORRECT_ANSWER,
+                :P88_ENABLE_SCORE_YN,
+                :P88_ANSWER_01_SCORE,
+                :P88_ANSWER_02_SCORE,
+                :P88_ANSWER_03_SCORE,
+                :P88_ANSWER_04_SCORE,
+                :P88_ANSWER_05_SCORE,
+                :P88_ANSWER_06_SCORE,
+                :P88_ANSWER_07_SCORE,
+                :P88_ANSWER_08_SCORE,
+                :P88_ANSWER_09_SCORE,
+                :P88_ANSWER_10_SCORE,
+                :P88_ANSWER_11_SCORE,
+                :P88_ANSWER_12_SCORE,
+                :P88_IMAGE_HEIGHT,
+                :P88_IMAGE_WIDTH,
+                l_image_filename,
+                l_image_mimetype,
+                l_image_blob,
+                l_image_last_updated
+                 );
+                commit;
+                
+                apex_debug.message('after insert into EBA_QPOLL_QUESTIONS');
+                
+                if :P88_IMAGE_BLOB is not null then
+                    delete from apex_application_temp_files
+                     where name = :P88_IMAGE_BLOB;
+                    commit;
+                end if;
+                
+                :P88_QUESTION := null;
+                :P88_ANSWER_01 := null;
+                :P88_ANSWER_02 := null;
+                :P88_ANSWER_03 := null;
+                :P88_ANSWER_04 := null;
+                :P88_ANSWER_05 := null;
+                :P88_ANSWER_06 := null;
+                :P88_ANSWER_07 := null;
+                :P88_ANSWER_08 := null;
+                :P88_ANSWER_09 := null;
+                :P88_ANSWER_10 := null;
+                :P88_ANSWER_11 := null;
+                :P88_ANSWER_12 := null;
+                :P88_ANSWER_01_CORRECT := null;
+                :P88_ANSWER_02_CORRECT := null;
+                :P88_ANSWER_03_CORRECT := null;
+                :P88_ANSWER_04_CORRECT := null;
+                :P88_ANSWER_05_CORRECT := null;
+                :P88_ANSWER_06_CORRECT := null;
+                :P88_ANSWER_07_CORRECT := null;
+                :P88_ANSWER_08_CORRECT := null;
+                :P88_ANSWER_09_CORRECT := null;
+                :P88_ANSWER_10_CORRECT := null;
+                :P88_ANSWER_11_CORRECT := null;
+                :P88_ANSWER_12_CORRECT := null;
+                :P88_CORRECT_ANSWER := null;
+                :P88_ANSWER_01_SCORE := null;
+                :P88_ANSWER_02_SCORE := null;
+                :P88_ANSWER_03_SCORE := null;
+                :P88_ANSWER_04_SCORE := null;
+                :P88_ANSWER_05_SCORE := null;
+                :P88_ANSWER_06_SCORE := null;
+                :P88_ANSWER_07_SCORE := null;
+                :P88_ANSWER_08_SCORE := null;
+                :P88_ANSWER_09_SCORE := null;
+                :P88_ANSWER_10_SCORE := null;
+                :P88_ANSWER_11_SCORE := null;
+                :P88_ANSWER_12_SCORE := null;
+                :P88_IMAGE_BLOB      := null;
+                :P88_IMAGE_HEIGHT    := null;
+                :P88_IMAGE_WIDTH     := null;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Question added!
+        }
+        error {
+            errorMessage: Could not add question.
+        }
+        advanced {
+            executionMappingIdentifier: 8242050105477887340
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: 'ADD_QUESTION','ADD_ANOTHER'
+        }
+    )
+
+    process clear-answers-if-now-canned-answers (
+        name: clear answers if now canned answers
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P88_ANSWER_01 := null;
+                :P88_ANSWER_02 := null;
+                :P88_ANSWER_03 := null;
+                :P88_ANSWER_03 := null;
+                :P88_ANSWER_04 := null;
+                :P88_ANSWER_06 := null;
+                :P88_ANSWER_07 := null;
+                :P88_ANSWER_08 := null;
+                :P88_ANSWER_09 := null;
+                :P88_ANSWER_10 := null;
+                :P88_ANSWER_11 := null;
+                :P88_ANSWER_12 := null;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 567800745762907523
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P88_QUESTION_TYPE like 'RANGE_%' or
+                :P88_QUESTION_TYPE in ('YES_NO','TRUE_FALSE','GRADE','INTUITIVE','LIKE','LOW_HIGH','HOT_COLD','MOSCOW')
+                ```
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 8226102786031283831
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if :REQUEST = 'ADD_ANOTHER' then
+                   return FALSE;
+                end if;
+                
+                for c1 in (
+                   select count(*) cnt
+                     from eba_qpoll_questions
+                    where poll_id = :POLL_ID
+                ) loop
+                   if c1.cnt > 1 and :REQUEST != 'REMOVE_IMAGE' then
+                      return TRUE;
+                   end if;
+                end loop;
+                
+                return FALSE;
+                    
+                ```
+        }
+    )
+
+    process fetch-row-from-eba-qpoll-questions (
+        name: Fetch Row from EBA_QPOLL_QUESTIONS
+        type: autoRowFetch
+        source {
+            tableName: EBA_QPOLL_QUESTIONS
+            pkColumn: ID
+            pkItem: P88_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8242518514295913135
+        }
+    )
+
+    process process-row-of-eba-qpoll-questions (
+        name: Process Row of EBA_QPOLL_QUESTIONS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_QPOLL_QUESTIONS
+            pkColumn: ID
+            pkItem: P88_ID
+            supportedOperations: [
+                update
+                delete
+            ]
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 8242687244668595604
+        }
+    )
+
+    process remove-image (
+        name: remove image
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                update EBA_QPOLL_QUESTIONS
+                set IMAGE_BLOB = null, IMAGE_CHARSET  = null, IMAGE_MIMETYPE = null, IMAGE_FILENAME = null, IMAGE_LAST_UPDATED = null
+                where id = :P88_ID;
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        successMessage {
+            successMessage: Question Image has been successfully removed.
+        }
+        advanced {
+            executionMappingIdentifier: 8248253543319461254
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-image
+        }
+    )
+
+    process set-correct-answer-checkboxes (
+        name: set correct answer checkboxes
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_delim  varchar2(1);
+                begin
+                   if :P88_QUESTION_TYPE = 'CHECKBOX' then
+                      l_delim := substr(:P88_CORRECT_ANSWER,1,1);
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_01||l_delim) > 0 then
+                         :P88_ANSWER_01_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_02||l_delim) > 0 then
+                         :P88_ANSWER_02_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_03||l_delim) > 0 then
+                         :P88_ANSWER_03_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_04||l_delim) > 0 then
+                         :P88_ANSWER_04_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_05||l_delim) > 0 then
+                         :P88_ANSWER_05_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_06||l_delim) > 0 then
+                         :P88_ANSWER_06_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_07||l_delim) > 0 then
+                         :P88_ANSWER_07_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_08||l_delim) > 0 then
+                         :P88_ANSWER_08_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_09||l_delim) > 0 then
+                         :P88_ANSWER_09_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_10||l_delim) > 0 then
+                         :P88_ANSWER_10_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_11||l_delim) > 0 then
+                         :P88_ANSWER_11_CORRECT := 'Y';
+                      end if;
+                      if instr(:P88_CORRECT_ANSWER,l_delim||:P88_ANSWER_12||l_delim) > 0 then
+                         :P88_ANSWER_12_CORRECT := 'Y';
+                      end if;
+                   elsif :P88_USE_CUSTOM_ANSWERS_YN = 'Y' and :P88_QUESTION_TYPE not in ('TEXT','TEXTAREA') then
+                      if :P88_ANSWER_01 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_01_CORRECT := 'Y';
+                      elsif :P88_ANSWER_02 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_02_CORRECT := 'Y';
+                      elsif :P88_ANSWER_03 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_03_CORRECT := 'Y';
+                      elsif :P88_ANSWER_04 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_04_CORRECT := 'Y';
+                      elsif :P88_ANSWER_05 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_05_CORRECT := 'Y';
+                      elsif :P88_ANSWER_06 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_06_CORRECT := 'Y';
+                      elsif :P88_ANSWER_07 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_07_CORRECT := 'Y';
+                      elsif :P88_ANSWER_08 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_08_CORRECT := 'Y';
+                      elsif :P88_ANSWER_09 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_09_CORRECT := 'Y';
+                      elsif :P88_ANSWER_10 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_10_CORRECT := 'Y';         
+                      elsif :P88_ANSWER_11 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_11_CORRECT := 'Y';         
+                      elsif :P88_ANSWER_12 = :P88_CORRECT_ANSWER then
+                         :P88_ANSWER_12_CORRECT := 'Y';                  
+                      end if;
+                   end if;
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8242584911139092060
+        }
+        serverSideCondition {
+            type: item=value
+            item: P88_POLL_OR_QUIZ
+            value: Q
+        }
+    )
+
+    process set-poll-or-quiz-and-show-enable-scoring (
+        name: set POLL_OR_QUIZ and SHOW_ENABLE_SCORING
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                   select poll_or_quiz, score_type, use_sections_yn
+                     from EBA_QPOLL_POLLS
+                    where id = :POLL_ID
+                ) loop
+                   :P88_POLL_OR_QUIZ := c1.poll_or_quiz;
+                
+                   if c1.poll_or_quiz ='Q' or c1.score_type = 'N' then
+                      :P88_SHOW_ENABLE_SCORING :=  'N';
+                   else
+                      :P88_SHOW_ENABLE_SCORING :=  'Y';
+                   end if;
+                   
+                   :P88_USE_SECTIONS_YN := c1.use_sections_yn;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8242398936894539680
+        }
+    )
+
+    process set-score-for-canned-answers (
+        name: set score for canned answers
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for i in 1..apex_application.g_f02.count loop
+                   if i = 1 then
+                      :P88_ANSWER_01_SCORE := apex_application.g_f02(i);
+                   elsif i = 2 then
+                      :P88_ANSWER_02_SCORE := apex_application.g_f02(i);
+                   elsif i = 3 then
+                      :P88_ANSWER_03_SCORE := apex_application.g_f02(i);
+                   elsif i = 4 then
+                      :P88_ANSWER_04_SCORE := apex_application.g_f02(i);
+                   elsif i = 5 then
+                      :P88_ANSWER_05_SCORE := apex_application.g_f02(i);
+                   elsif i = 6 then
+                      :P88_ANSWER_06_SCORE := apex_application.g_f02(i);
+                   elsif i = 7 then
+                      :P88_ANSWER_07_SCORE := apex_application.g_f02(i);
+                   elsif i = 8 then
+                      :P88_ANSWER_08_SCORE := apex_application.g_f02(i);
+                   elsif i = 9 then
+                      :P88_ANSWER_09_SCORE := apex_application.g_f02(i);
+                   elsif i = 10 then
+                      :P88_ANSWER_10_SCORE := apex_application.g_f02(i);
+                   elsif i = 11 then
+                      :P88_ANSWER_11_SCORE := apex_application.g_f02(i);
+                   elsif i = 12 then
+                      :P88_ANSWER_12_SCORE := apex_application.g_f02(i);
+                   end if;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 8242389881164490206
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-question
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P88_SHOW_ENABLE_SCORING = 'Y' and
+                :P88_ENABLE_SCORE_YN = 'Y' and
+                :P88_QUESTION_TYPE not in ('RADIO_GROUP', 'PICK_TWO', 'CHECKBOX','TEXTAREA', 'TEXT', 'STACK','ALLOCATION')
+                ```
+        }
+    )
+
+    branch (
+        name: ADD_ANOTHER
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 88
+                items: {
+                    P88_POLL_ID: &P88_POLL_ID.
+                    P88_SECTION_ID: &P88_SECTION_ID.
+                }
+                clearCache: 88
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @add-another
+        }
+    )
+
+    branch (
+        name: for first question
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 100
+                action: resetPagination
+            }
+        }
+    )
+
+    branch (
+        name: return to page
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: &APP_PAGE_ID.
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-image
+        }
+    )
+
+)
+

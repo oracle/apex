@@ -1,0 +1,564 @@
+page 97 (
+    name: Most Viewed Projects
+    alias: MOST-VIEWED-PROJECTS
+    title: Most Viewed &NOMENCLATURE_PROJECTS.
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            
+            .a-CardView-iconWrap,
+            .a-CardView-badge { align-self: flex-start; }
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: true
+            displayChartForTopNValues: 10
+        }
+
+        facet P97_AREA (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_AREA.
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: AREA
+            }
+        )
+
+        facet P97_INITIATIVE (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_INITIATIVE.
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: INITIATIVE
+            }
+        )
+
+        facet P97_MONTH_ADDED (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT. Added
+            }
+            lov {
+                type: distinctValues
+                sortDirection: desc
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: MONTH_ADDED
+            }
+        )
+
+        facet P97_PCT_COMPLETE (
+            type: checkboxGroup
+            label {
+                label: % Complete
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PCT_COMPLETE
+            }
+        )
+
+        facet P97_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: TEAM_MEMBER,PROJECT,INITIATIVE,THE_OWNER,PRIORITY
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                       p.id PROJECT_ID,
+                       p.CREATED,
+                       to_char(p.created,'YYYY.MM') month_added,
+                       replace(p.project,':',' ') project,
+                       replace(i.initiative,':',' ') initiative,
+                       --
+                       (select 'P'||x.PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       --
+                       p.PCT_COMPLETE,
+                       replace(a.area,':',' ') area,
+                       p.FRIENDLY_IDENTIFIER,
+                       p.PROJECT_URL_NAME,
+                       null attributes,
+                       --
+                       decode(p.release_id,
+                          null, decode(p.TARGET_COMPLETE,null,'No Target',to_char(p.TARGET_COMPLETE,'DD-MON-YYYY')),
+                          (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.RELEASE_ID)) release,
+                       --
+                       p.PROJECT_SIZE,
+                       --
+                       -- project interactions, aka project views
+                       --
+                       (select count(distinct l.APP_USER) 
+                        from   sp_proj_interactions_log l
+                        where  l.project_id = p.id and
+                               l.PAGE_RENDERED > sysdate -90 ) team_members,
+                       --
+                       -- project interactions, aka project views
+                       --
+                       (select count(*) interactions
+                        from   sp_proj_interactions_log l
+                        where  l.project_id = p.id and
+                               l.PAGE_RENDERED > sysdate -90 ) interactions,
+                       --
+                       -- project last interaction
+                       --
+                       (select max(PAGE_RENDERED) 
+                        from   sp_proj_interactions_log l
+                        where  l.project_id = p.id and
+                               l.PAGE_RENDERED > sysdate -90 )  last_interaction
+                  from 
+                       sp_projects p,
+                       sp_initiatives i,
+                       sp_areas a
+                where  
+                       p.initiative_id = i.id and
+                       i.area_id = a.id and
+                       nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                       p.DUPLICATE_OF_PROJECT_ID is null
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column AREA (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 53
+            }
+        )
+
+        column ATTRIBUTES (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Attributes
+            }
+            layout {
+                sequence: 33
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="sp-tags-container">
+                        <span class="sp-tag">#PRIORITY#</span>
+                        <span class="sp-tag">#PROJECT_SIZE#</span>
+                        <span class="sp-tag">#PCT_COMPLETE#%</span>
+                        <span class="sp-tag">#RELEASE#</span>
+                    </div>
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 173
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 113
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 63
+            }
+        )
+
+        column INTERACTIONS (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Interactions
+                alignment: end
+            }
+            layout {
+                sequence: 133
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column LAST_INTERACTION (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Last Interaction
+                alignment: end
+            }
+            layout {
+                sequence: 193
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+        )
+
+        column MONTH_ADDED (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 103
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 93
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 73
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 23
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 163
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 123
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 153
+            }
+        )
+
+        column TEAM_MEMBERS (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Team Members
+                alignment: end
+            }
+            layout {
+                sequence: 183
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 97
+                clearCache: 97
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

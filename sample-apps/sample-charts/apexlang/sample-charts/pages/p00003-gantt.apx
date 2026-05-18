@@ -1,0 +1,730 @@
+page 3 (
+    name: Gantt
+    alias: GANTT
+    title: Gantt
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Gantt charts, using Oracle JET, are showcased on this page.  Explore the wide range of attributes declaratively available with our native JavaScript-based solution, to format and customize your gantt charts.</p><br/>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-gantt-chart
+        }
+    )
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region gantt-chart (
+        name: Gantt Chart
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @multiple-tasks-per-row
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: gantt
+        }
+        chartLayout {
+            height: 400
+        }
+        settings {
+            showHorizontalGrid: true
+            showVerticalGrid: true
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showRow: false
+            showBaseline: false
+        }
+        messages {
+            whenNoDataFound: Select a start and end date, to render the gantt chart
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (options) {
+                    options.dataFilter = function( data ) {
+                      
+                        // Change message during rendering when no data found i.e. data.series array is empty
+                        if ( $.isEmptyObject ( data ) ) {  
+                            data = $.extend( data, {translations: {labelInvalidData: 'No data found' } }) ;
+                        }
+                        return data;
+                    };
+                   return options;
+                }
+                ```
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select id                            task_id,
+                           task_name                     task_name,
+                           parent_task                   parent_task_id,
+                           start_date                    task_start_date,
+                           end_date                      task_end_date,
+                           decode(status,'Closed',1,
+                                         'Open',0.6,
+                                         'On-Hold',0.1,
+                                         'Pending',0)    status,
+                           start_date-2                  baseline_start,
+                           end_date+3                    baseline_end,
+                           SYSDATE-200                   GANTT_START,
+                           SYSDATE+10                    GANTT_END
+                    from eba_demo_chart_tasks
+                    start with parent_task is null
+                    connect by prior id = parent_task
+                    order siblings by task_name
+                    
+                    ```
+                pageItemsToSubmit: [
+                    P3_START_DATE
+                    P3_END_DATE
+                ]
+            }
+            timeline {
+                startDateSourceType: databaseColumn
+                startDateColumn: GANTT_START
+                endDateSourceType: databaseColumn
+                endDateColumn: GANTT_END
+            }
+            columnMapping {
+                rowId: PARENT_TASK_ID
+                rowName: TASK_NAME
+                taskId: TASK_ID
+                taskName: TASK_NAME
+                taskStartDate: TASK_START_DATE
+                taskEndDate: TASK_END_DATE
+                progress: STATUS
+                baselineStartDate: BASELINE_START
+                baselineEndDate: BASELINE_END
+            }
+            viewport {
+                startDateSourceType: item
+                startDateItem: P3_START_DATE
+                endDateSourceType: item
+                endDateItem: P3_END_DATE
+            }
+            appearance {
+                taskCssClasses: u-color-22
+                progressCssClasses: u-color-11
+                baselineCssClasses: u-color-43
+            }
+            label {
+                show: true
+                taskLabelPosition: innerStart
+            }
+        )
+
+        axis major (
+            name: major
+            timeScale {
+                scale: months
+            }
+        )
+
+        axis minor (
+            name: minor
+            timeScale {
+                scale: weeks
+            }
+            value {
+                format: dateMedium
+            }
+        )
+
+    )
+
+    region gantt-controls (
+        name: Gantt Controls
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @multiple-tasks-per-row
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        headerAndFooter {
+            headerText: To render the gantt chart, select a start and end date.  Any tasks within the date range selected will be rendered on the chart.
+        }
+    )
+
+    region multiple-tasks-information (
+        name: Multiple Tasks Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates how to customize a Gantt chart's colors, using Universal Theme color css classes, and the setting of the chart start and end dates based upon page items.<p/><p/>
+                
+                <strong>Start Date Source Type</strong> - Set this series-level attribute to 'Item', and select the page item to be used for setting the start date of the gantt chart.  This is a required setting in order to render the chart.<br/>
+                <strong>End Date Source Type</strong> - Set this series-level attribute to 'Item', and select the page item to be used for setting the end date of the gantt chart. This is a required setting in order to render the chart.<p/>
+                
+                <strong>Task CSS Classes</strong> - Use this series-level attribute to customize the color of tasks bars<br/>
+                <strong>Progress CSS Classes</strong> - Use this series-level attribute to customize the color of progress bars<br/>
+                <strong>Baseline CSS Classes</strong> - Use this series-level attribute to customize the color of baseline bars<br/>
+                
+                <p>
+                For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.
+                </p>
+                <p>
+                For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://apex.oracle.com/pls/apex/f?p=42:6302:::NO:::" target="_blank">Color and Status Modifiers</a> page.
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @multiple-tasks-per-row
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region multiple-tasks-per-row (
+        name: Multiple Tasks per Row
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region single-task-information (
+        name: Single Task Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates the rendering of a Gantt chart with a single task per row of the chart, and a JavaScript customization to apply a Reference Object.  The Reference Object is displayed as a thin red line, marking today's date.  The chart settings in use are as follows:<p/><p/>
+                
+                <strong>Show Row Axis</strong> - set to <strong>Yes</strong>, to render the left section of the Gantt. For this example, the value of Task Name is displayed. The text rendered in this region is dependent upon the column mappings defined at series-level.  By default, the Task Name will be rendered.  However, if the Row Name column mapping is set, its associated text will be rendered for the given row of the chart.<p/>
+                <strong>Tooltip Settings</strong> - The new <strong>Show Row</strong> attribute has been set to No, to prevent a 'Row' entry being displayed in a task tooltip.  By default, a tooltip displays an entry for 'Row' and 'Label'.  The 'Label' displays the value for the Task Name column.  When the Row Name column mapping is set, 'Row' displays the value for the Row Name column.  However, when that column mapping is not set, 'Row' will display the value for the Task Name column. <p/>
+                
+                <strong>Task Appearance</strong> - the Tasks rendered on this example differ in appearance, with some being displayed as blue lines with start/end dates, while others are displayed as gray diamond-shaped markers.  The difference in appearance is due to how JET interprets the Task 'type'. Normal tasks are rendered as the blue lines, while Milestones are rendered as gray diamond-shaped markers. As outlined in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html#RowTask" target="_blank">type</a> property of the RowTask type definition in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html" target="_blank">ojGantt</a> API, if Task Start Date and Task End Date values are specified and unequal, then the assumption is that the task type is "normal".  Otherwise, the type is assumed to be "milestone".<p/>
+                
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  Any chart initialization changes, to attributes such as the chart y-axis, type, or orientation, can also be made.  The JavaScript Code should follow a template similar to the following:<br/>
+                
+                <pre>
+                function( options ) {
+                
+                    var event = new Date();
+                    // Define Reference Object line on the chart
+                    var constantLine = [ { value: event.toISOString() } ];
+                    
+                    // Set the referenceObjects option as part of the chart initialization
+                    options.referenceObjects = constantLine;
+                    
+                    return options;
+                }
+                </pre><p/>
+                <strong>Tooltip Options</strong> - Use the chart-level Tooltip attributes to declaratively choose what information should be displayed in the Gantt chart tooltip. This chart only displays the Row, Label, and Progress information, by setting the <strong>Show Row</strong>, <strong>Show Label</strong> and <strong>Show Progress</strong> attributes.<br/> 
+                <p>
+                For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.
+                </p>
+                <p>
+                For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=gantt&demo=multipleTasks" target="_blank">Gantt Chart: Multiple Tasks Per Row</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @single-task-per-row-reference-object-via-javascript-code
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region single-task-per-row-reference-object-via-javascript-code (
+        name: Single Task per Row (Reference Object via JavaScript Code)
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: gantt
+            regionDisplaySelector: true
+        }
+        chart {
+            type: gantt
+        }
+        chartLayout {
+            height: 400
+        }
+        settings {
+            showHorizontalGrid: true
+            showVerticalGrid: true
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showRow: false
+            showBaseline: false
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                
+                    var event = new Date();
+                    // Define Reference Object line on the chart
+                    var constantLine = [ { value: event.toISOString() } ];
+                    
+                    // Set the referenceObjects option as part of the chart initialization
+                    options.referenceObjects = constantLine;
+                    
+                    return options;
+                }
+                ```
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select task_name    task_name,
+                           id           task_id,
+                           start_date   task_start_date,
+                           end_date     task_end_date,
+                           decode(status,'Closed',1,'Open',0.6,'On-Hold',0.1,'Pending',0) status,
+                           (select min(start_date) -5 from eba_demo_chart_tasks) gantt_start_date,
+                           (select max(end_date) from eba_demo_chart_tasks)  gantt_end_date
+                    from eba_demo_chart_tasks
+                    order by id asc
+                    ```
+            }
+            timeline {
+                startDateSourceType: databaseColumn
+                startDateColumn: GANTT_START_DATE
+                endDateSourceType: databaseColumn
+                endDateColumn: GANTT_END_DATE
+            }
+            columnMapping {
+                taskId: TASK_ID
+                taskName: TASK_NAME
+                taskStartDate: TASK_START_DATE
+                taskEndDate: TASK_END_DATE
+                progress: STATUS
+            }
+        )
+
+        axis major (
+            name: major
+            showAxis: false
+            timeScale {
+                scale: months
+            }
+        )
+
+        axis minor (
+            name: minor
+            timeScale {
+                scale: months
+            }
+            zoomScale {
+                days: false
+                weeks: false
+                months: false
+                quarters: false
+            }
+        )
+
+    )
+
+    region tasks-per-employee-not-hierarchical (
+        name: Tasks per Employee ( not hierarchical )
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: gantt
+        }
+        chartLayout {
+            height: 400
+        }
+        settings {
+            showHorizontalGrid: true
+            showVerticalGrid: true
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showBaseline: false
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                
+                    var event = new Date();
+                    // Define Reference Object line on the chart
+                    var constantLine = [ { value: event.toISOString() } ];
+                    
+                    // Set the referenceObjects option as part of the chart initialization
+                    options.referenceObjects = constantLine;
+                    
+                    return options;
+                }
+                ```
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                        select ASSIGNED_TO employee ,  
+                               task_name    task_name,  
+                               id           task_id,  
+                               parent_task  parent_task,  
+                               start_date   task_start_date,  
+                               end_date     task_end_date,  
+                               decode(status,'Closed',1,'Open',0.6,'On-Hold',0.1,'Pending',0) status,  
+                               (select min(start_date) from eba_demo_chart_tasks) gantt_start_date,  
+                               (select max(end_date) from eba_demo_chart_tasks)  gantt_end_date  
+                        from eba_demo_chart_tasks  
+                        start with parent_task is null  
+                        connect by prior id = parent_task  
+                        order siblings by task_name  
+                    ```
+            }
+            timeline {
+                startDateSourceType: databaseColumn
+                startDateColumn: GANTT_START_DATE
+                endDateSourceType: databaseColumn
+                endDateColumn: GANTT_END_DATE
+            }
+            columnMapping {
+                rowName: EMPLOYEE
+                taskId: TASK_ID
+                taskName: TASK_NAME
+                taskStartDate: TASK_START_DATE
+                taskEndDate: TASK_END_DATE
+                progress: STATUS
+            }
+            label {
+                show: true
+                taskLabelPosition: start
+            }
+        )
+
+        axis major (
+            name: major
+            timeScale {
+                scale: months
+            }
+        )
+
+        axis minor (
+            name: minor
+            timeScale {
+                scale: days
+            }
+            zoomScale {
+                hours: true
+                months: false
+                quarters: false
+            }
+        )
+
+    )
+
+    pageItem P3_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @gantt-controls
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            columnSpan: 2
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    pageItem P3_MAX_END_DATE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @gantt-controls
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select SYSDATE+10 from dual
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_MIN_START_DATE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @gantt-controls
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select SYSDATE-125 from dual
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P3_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @gantt-controls
+            slot: regionBody
+            alignment: left
+            columnSpan: 2
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 4000
+        }
+    )
+
+    button p3-go (
+        buttonName: P3_GO
+        label: Go
+        layout {
+            sequence: 50
+            region: @gantt-controls
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 1
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: P3_GO
+            customAttributes: style="margin: 8px 0 0 8px;"
+        }
+    )
+
+    dynamicAction refresh-chart (
+        name: Refresh chart
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @p3-go
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @gantt-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

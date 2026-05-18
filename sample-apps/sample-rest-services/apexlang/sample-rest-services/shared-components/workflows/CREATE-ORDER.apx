@@ -1,0 +1,359 @@
+workflow CREATE_ORDER (
+    name: Creating Order
+    title: Creating Order
+
+    parameter PRODUCT_ID (
+        label {
+            label: PRODUCT_ID
+        }
+        parameter {
+            dataType: number
+        }
+        validation {
+            required: true
+        }
+        default {
+            value: 1
+        }
+    )
+
+    version 1.O (
+        settings {
+            state: active
+        }
+
+        activity FETCH_PRODUCT_DATA (
+            name: Fetch Product Data
+            type: invokeApi
+            invoke {
+                type: restSource
+                restSource: @eba_rest_product_workflows
+                operation: @fetch-single-product
+            }
+            layout {
+                sequence: 30
+            }
+            advanced {
+                diagram: {"position":{"x":-270,"y":100},"z":3}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_6
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"0%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":10,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter (
+                name: @id
+                value {
+                    type: item
+                    item: PRODUCT_ID
+                }
+            )
+
+            parameter (
+                name: @product-details
+                parameter {
+                    ignoreOutput: false
+                }
+                value {
+                    type: item
+                    item: PRODUCT_DETAILS
+                }
+            )
+
+            parameter (
+                name: @product-name
+                parameter {
+                    ignoreOutput: false
+                }
+                value {
+                    type: item
+                    item: PRODUCT_NAME
+                }
+            )
+
+        )
+
+        activity New (
+            name: Start
+            type: workflowStart
+            layout {
+                sequence: 10
+            }
+            advanced {
+                diagram: {"position":{"x":-390,"y":100},"z":1}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @FETCH_PRODUCT_DATA
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":9,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_1 (
+            name: Creating New Order
+            type: invokeApi
+            invoke {
+                type: restSource
+                restSource: @post
+                operation: @post
+            }
+            layout {
+                sequence: 50
+            }
+            advanced {
+                diagram: {"position":{"x":500,"y":100},"z":5}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_3
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":12,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            parameter (
+                name: @content-type
+                value {
+                    type: restSourceDefault
+                }
+            )
+
+            parameter (
+                name: @id
+                value {
+                    type: item
+                    item: PRODUCT_ID
+                }
+            )
+
+            parameter (
+                name: @product-details
+                value {
+                    type: item
+                    item: PRODUCT_DETAILS
+                }
+            )
+
+            parameter (
+                name: @product-name
+                value {
+                    type: item
+                    item: PRODUCT_NAME
+                }
+            )
+
+            parameter (
+                name: @user-id
+                value {
+                    type: item
+                    item: USER_EMAIL
+                }
+            )
+
+        )
+
+        activity New_2 (
+            name: End
+            type: workflowEnd
+            layout {
+                sequence: 20
+            }
+            advanced {
+                diagram: {"position":{"x":1030,"y":100},"z":2}
+            }
+        )
+
+        activity New_3 (
+            name: Send Email
+            type: sendEMail
+            emailHeader {
+                from: &USER_EMAIL.
+                to: &USER_EMAIL.
+            }
+            emailContent {
+                subject: Order Recieved
+                bodyPlainText: Order recieved.
+            }
+            layout {
+                sequence: 60
+            }
+            advanced {
+                diagram: {"position":{"x":770,"y":100},"z":6}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":13,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_4 (
+            name: is data fetched?
+            type: switch
+            switch {
+                type: checkWorkflowVar
+            }
+            compare {
+                compareVar: PRODUCT_NAME
+            }
+            layout {
+                sequence: 70
+            }
+            advanced {
+                diagram: {"position":{"x":160,"y":100},"z":7}
+            }
+
+            connection (
+                name: Yes
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: isNotNull
+                }
+                activity {
+                    to: @New_1
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"right\",\"args\":{\"dx\":-10,\"dy\":0}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"9.091%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":14,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: No
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: isNull
+                }
+                activity {
+                    to: @New_5
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"top\",\"args\":{\"dx\":0,\"dy\":10}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":15,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_5 (
+            name: Product Data  is Not Fetched
+            type: workflowEnd
+            endState {
+                endState: terminated
+            }
+            layout {
+                sequence: 80
+            }
+            advanced {
+                diagram: {"position":{"x":240,"y":-90},"z":8}
+            }
+        )
+
+        activity New_6 (
+            name: Pending State
+            type: wait
+            timeout {
+                timeoutType: static
+                staticValue: PT5S
+            }
+            layout {
+                sequence: 40
+            }
+            advanced {
+                diagram: {"position":{"x":30,"y":100},"z":4}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_4
+                }
+                advanced {
+                    diagram: "{\"source\":{\"name\":\"right\",\"args\":{\"dx\":-10,\"dy\":0}},\"target\":{\"name\":\"topLeft\",\"args\":{\"dx\":\"4.55%\",\"dy\":\"50%\",\"rotate\":true}},\"vertices\":[],\"z\":11,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        variable PRODUCT_DETAILS (
+            label {
+                label: PRODUCT_DETAILS
+            }
+            parameter {
+                dataType: clob
+            }
+            value {
+                type: item
+                item: PRODUCT_DETAILS
+            }
+        )
+
+        variable PRODUCT_NAME (
+            label {
+                label: PRODUCT_NAME
+            }
+            value {
+                type: item
+                item: PRODUCT_NAME
+            }
+        )
+
+        variable USER_EMAIL (
+            label {
+                label: USER_EMAIL
+            }
+            value {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select email
+                      from apex_workspace_apex_users
+                     where user_name = v('APP_USER')
+                    ```
+            }
+        )
+
+        participant (
+            name: Admin
+            type: admin
+            value {
+                type: expression
+                plsqlExpression: v('APP_USER')
+            }
+        )
+
+        participant (
+            name: Owner
+            value {
+                type: expression
+                plsqlExpression: v('APP_USER')
+            }
+        )
+
+    )
+
+)
+

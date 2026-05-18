@@ -1,0 +1,300 @@
+page 12140 (
+    name: Configure External Person Link
+    alias: CONFIGURE-EXTERNAL-PERSON-LINK
+    title: Configure External Person Link
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: noArgumentsSupported
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            <p>Select the appropriate choice for any authenticated users.<br> 
+            Selecting <strong>No</strong> makes the application more secure as only specified users can access the application. 
+            However, if your application has a large user community then maintaining users may be onerous, and you may prefer to choose <strong>Yes</strong> and only enter application Administrators, and possibly Contributors.<br>
+            If you select <strong>Yes</strong> then you must also select how users not included in the users list are treated.</p>
+            <p>Select between requiring email addresses and any alphanumeric value for Usernames.<br>
+            Generally, you should set this setting to <strong>E-mail Address</strong> if your application uses (or will be configured to use) a centralized authentication scheme such as Oracle Access Manager, or SSO.</p>
+            <p><em><strong>Note:</strong> This application supports the following 3 access levels: Reader, Contributor, and Administrator.
+            <ul>
+              <li><strong>Readers</strong> have read-only access to all information and can also view reports.</li>
+              <li><strong>Contributors</strong> can create, edit and delete information and view reports.</li>
+              <li><strong>Administrators</strong>, in addition to Contributors capability, can also perform configuration of the application by accessing the Administration section of the application.</li>
+            </ul>
+            </em></p>
+            ```
+    }
+    config {
+        buildOption: @access-control
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region configure-external-person-link (
+        name: Configure External Person Link
+        type: staticContent
+        source {
+            htmlCode: If both a link and domain are provided, a link of "External Directory" will display on the detailed person pages whenever a person's email address is within the specified domain.  The Link must contain #EMAIL#, which will then be substituted with the person's email.
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P12140_EXTERNAL_PERSON_LINK (
+        type: textField
+        label {
+            label: External Person Link
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @configure-external-person-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody: return apex_app_setting.get_value('EXTERNAL_PERSON_LINK');
+        }
+    )
+
+    pageItem P12140_EXT_PERSON_LINK_DOMAIN (
+        type: textField
+        label {
+            label: Domain used for
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @configure-external-person-link
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            type: functionBody
+            plsqlFunctionBody: return apex_app_setting.get_value('EXTERNAL_PERSON_LINK_DOMAIN');
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation domain-not-contains (
+        name: domain not contains @
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                (:P12140_EXT_PERSON_LINK_DOMAIN is not null and 
+                 :P12140_EXTERNAL_PERSON_LINK is not null) 
+                or
+                (:P12140_EXT_PERSON_LINK_DOMAIN is null and 
+                 :P12140_EXTERNAL_PERSON_LINK is null)
+                ```
+        }
+        error {
+            errorMessage: Domain should not contain the @ sign
+            associatedItem: @P12140_EXT_PERSON_LINK_DOMAIN
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P12140_EXT_PERSON_LINK_DOMAIN
+        }
+    )
+
+    validation link-must-have-email (
+        name: link must have #EMAIL#
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: instr(:P12140_EXTERNAL_PERSON_LINK,'#EMAIL#') > 0
+        }
+        error {
+            errorMessage: Link must contain #EMAIL#
+            associatedItem: @P12140_EXTERNAL_PERSON_LINK
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P12140_EXTERNAL_PERSON_LINK
+        }
+    )
+
+    validation must-have-both-or-neither (
+        name: Must have both (or neither)
+        execution {
+            sequence: 30
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                (:P12140_EXT_PERSON_LINK_DOMAIN is not null and 
+                 :P12140_EXTERNAL_PERSON_LINK is not null) 
+                or
+                (:P12140_EXT_PERSON_LINK_DOMAIN is null and 
+                 :P12140_EXTERNAL_PERSON_LINK is null)
+                ```
+        }
+        error {
+            errorMessage: Must provide both a link and domain
+            displayLocation: inlineInNotification
+        }
+    )
+
+    process close (
+        name: CLOSE
+        type: closeDialog
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 1381326829780723947
+        }
+    )
+
+    process set-settings (
+        name: Set Settings
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_link   varchar2(4000) := apex_app_setting.get_value('EXTERNAL_PERSON_LINK');
+                    l_domain varchar2(4000) := apex_app_setting.get_value('EXTERNAL_PERSON_LINK_DOMAIN');
+                begin
+                
+                apex_app_setting.set_value (
+                    p_name  => 'EXTERNAL_PERSON_LINK',
+                    p_value => :P12140_EXTERNAL_PERSON_LINK );
+                
+                apex_app_setting.set_value (
+                    p_name  => 'EXTERNAL_PERSON_LINK_DOMAIN',
+                    p_value => :P12140_EXT_PERSON_LINK_DOMAIN );
+                
+                if not sp_value_compare.is_equal(l_link,:P12140_EXTERNAL_PERSON_LINK) then
+                    sp_util.add_app_log(
+                        p_activity => 'Updated External Person Link', 
+                        p_details  => substr('changed from "'|| l_link ||'"" to "'||:P12140_EXTERNAL_PERSON_LINK||'"',1,4000) );
+                end if;
+                
+                if not sp_value_compare.is_equal(l_domain,:P12140_EXT_PERSON_LINK_DOMAIN) then
+                    sp_util.add_app_log(
+                        p_activity => 'Updated External Person Link Domain', 
+                        p_details  => substr('changed from "'|| l_domain ||'"" to "'||:P12140_EXT_PERSON_LINK_DOMAIN||'"',1,4000) );
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Settings saved.
+        }
+        advanced {
+            executionMappingIdentifier: 4458439452072979790
+        }
+        serverSideCondition {
+            whenButtonPressed: @apply-changes
+        }
+    )
+
+)
+

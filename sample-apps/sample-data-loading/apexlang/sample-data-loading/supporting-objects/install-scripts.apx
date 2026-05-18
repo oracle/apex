@@ -1,0 +1,36 @@
+installScript "Create Tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+
+installScript eba_demo_data_load (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: eba-demo-data-load.sql
+    }
+)
+
+installScript "seed sample data" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: seed-sample-data.sql
+    }
+)
+

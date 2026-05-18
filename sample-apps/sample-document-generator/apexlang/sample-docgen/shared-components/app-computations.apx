@@ -1,0 +1,11 @@
+appComputation workspace-schema (
+    itemName: WORKSPACE_SCHEMA
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: expression
+        plsqlExpression: sys_context('USERENV','CURRENT_SCHEMA')
+    }
+)
+

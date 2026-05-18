@@ -1,0 +1,14 @@
+authorization oracle-text-is-available (
+    name: Oracle Text is available
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return eba_demo_ig_text_pkg.text_is_available;
+    }
+    error {
+        errorMessage: Oracle Text is not available in this workspace.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

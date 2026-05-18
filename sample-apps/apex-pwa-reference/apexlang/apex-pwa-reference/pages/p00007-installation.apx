@@ -1,0 +1,1031 @@
+page 7 (
+    name: Installation
+    alias: INSTALLATION
+    title: Installation - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region advanced (
+        name: Advanced
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    The PWA installation experience can be enhanced with additional meaningful content 
+                    such as app screenshots and app description. 
+                    They add to the installation prompt visuals, reminding users of typical application stores UI.
+                    App screenshots should serve as a preview of the content of the application, to incentivize users
+                    to install the app and experience it for themselves.
+                    Manage screenshots and description from the APEX Builder Progressive Web App attributes page.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 1050
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: Advanced
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region android-container (
+        name: Android container
+        type: staticContent
+        layout {
+            sequence: 80
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region compatibility (
+        name: Compatibility
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This table shows the supported combinations of operating systems and browsers for the PWA Screenshots feature.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @pwa-screenshots-container
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region compatibility-2 (
+        name: Compatibility
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    This table shows the supported combinations of operating systems and
+                    browsers for the PWA installation feature.
+                
+                </p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region desktop-container (
+        name: Desktop container
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region edit-description (
+        name: Edit Description
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @pwa-description-container
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    All devices, from desktop to mobile, offer a tailored web app installation experience. 
+                    See examples below for a preview of the feature.
+                </p>
+                
+                <p class="col-8">
+                    Desktop users can find the <strong><span class="t-Icon fa fa-cloud-download" aria-hidden="true"></span> Install App</strong> button in the navigation bar to trigger the installation process. 
+                    Mobile users can find the same button, except it will display as only an icon.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 1040
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        accessibility {
+            landmarkLabel: PWA Screenshots Example
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @edit-description
+            slot: regionBody
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/edit-description.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-10 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @installing-an-apex-pwa-on-ios
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-ios4.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-11 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @installing-an-apex-pwa-on-ios
+            slot: regionBody
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-ios1.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-12 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @installing-an-apex-pwa-on-ios
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-ios2.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @managing-screenshots
+            slot: subRegions
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/edit-screenshots.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-3 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @installing-an-apex-pwa-on-android
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-android3.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-4 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @installing-an-apex-pwa-on-android
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-android4.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-5 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @installing-an-apex-pwa-on-android
+            slot: regionBody
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-android1.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-6 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @installing-an-apex-pwa-on-android
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-android2.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-7 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @installing-an-apex-pwa-on-desktop
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/install-macos2.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-8 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @installing-an-apex-pwa-on-desktop
+            slot: regionBody
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/install-macos1.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-9 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @installing-an-apex-pwa-on-ios
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: padding-none
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/installing-ios3.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region installing-an-apex-pwa-on-android (
+        name: Installing an APEX PWA on Android
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @android-container
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Example Android Installation
+        }
+    )
+
+    region installing-an-apex-pwa-on-desktop (
+        name: Installing an APEX PWA on Desktop
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @desktop-container
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Example Desktop Installation
+        }
+    )
+
+    region installing-an-apex-pwa-on-ios (
+        name: Installing an APEX PWA on iOS
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @ios-container
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Example iOS Installation
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>
+                        In <strong>App Builder</strong> go to <strong>Shared Components</strong>
+                    </li>
+                    <li>
+                        Go to <strong>Progressive Web App</strong>
+                    </li>
+                    <li>
+                        Turn on <strong>Enable Progressive Web App</strong> and <strong>Installable</strong>
+                    </li>
+                    <li>
+                        In <strong>App Description</strong>, enter a short description for the application
+                    </li>
+                    <li>
+                        Click <strong>Apply Changes</strong>
+                    </li>
+                    <li>
+                        The app description will be displayed to users when they install your PWA
+                    </li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @pwa-description-container
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions PWA Description
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>
+                        In the <strong>App Builder</strong> go to <strong>Shared Components</strong>
+                    </li>
+                    <li>
+                        Go to <strong>Progressive Web App</strong>
+                    </li>
+                    <li>
+                        Turn on <strong>Enable Progressive Web App</strong> and <strong>Installable</strong>
+                    </li>
+                    <li>
+                        Click <strong>Add Screenshot</strong> button
+                    </li>
+                    <li>
+                        Type a description for the screenshot
+                    </li>
+                    <li>
+                        Upload your <strong>Screenshot</strong> file
+                    </li>
+                    <li>
+                        Click <strong>Create</strong>
+                    </li>
+                    <li>
+                        The screenshot will be displayed to users when installing the PWA
+                    </li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @pwa-screenshots-container
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions PWA Screenshots
+        }
+    )
+
+    region instructions-3 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>
+                        Run your application
+                    </li>
+                    <li>
+                        In the top navigation bar, tap the <span class="t-Icon fa fa-cloud-download"></span> icon
+                    <li>
+                        Tap <strong>Install</strong> on the confirmation box
+                    </li>
+                    <li>
+                        Your APEX app is now installed on your Android device and appears on the home screen
+                    </li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @android-container
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions Android Installation
+        }
+    )
+
+    region instructions-4 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>
+                        Run your application
+                    </li>
+                    <li>
+                        In the top navigation bar, click the <strong>Install App</strong> entry
+                    <li>
+                        Click <strong>Install</strong> on the confirmation box
+                    </li>
+                    <li>
+                        Your APEX app is now installed on your desktop, appears in the app launcher, and can be pinned to the dock
+                    </li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @desktop-container
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions Desktop Installation
+        }
+    )
+
+    region instructions-5 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>
+                        Run your application
+                    </li>
+                    <li>
+                        In the top navigation bar, tap the <span class="t-Icon fa fa-cloud-download"></span> icon
+                    <li>
+                        Tap <strong>Next</strong>
+                    </li>
+                    <li>
+                        Follow the simple instructions
+                    </li>
+                    <li>
+                        Your APEX app is now installed on your iOS device and appears on the home screen
+                    </li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @ios-container
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Instructions iOS Installation
+        }
+    )
+
+    region ios-container (
+        name: iOS container
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @examples
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region managing-screenshots (
+        name: Managing Screenshots
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @pwa-screenshots-container
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    APEX PWAs allow any APEX application to be installed on any device, 
+                    creating a deep integration with the operating system and providing remarkable accessibility.
+                </p>
+                
+                <p>
+                    An APEX PWA is the most convenient gateway to your app: users can launch it using a home screen icon, 
+                    enjoy a full-screen experience in a dedicated window, and effortlessly locate it on their device. 
+                    To attract the widest audience, APEX delivers a smooth, user-friendly installation process, 
+                    encouraging users to intuitively adopt your app.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region pwa-description-container (
+        name: PWA Description container
+        type: staticContent
+        layout {
+            sequence: 1030
+            parentRegion: @advanced
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region pwa-screenshots-container (
+        name: PWA Screenshots container
+        type: staticContent
+        layout {
+            sequence: 1020
+            parentRegion: @advanced
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+)
+

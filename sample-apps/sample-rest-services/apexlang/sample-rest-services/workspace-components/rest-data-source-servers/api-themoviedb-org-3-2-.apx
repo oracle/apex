@@ -1,0 +1,7 @@
+restDataSourceServer api_themoviedb_org_3_2_ (
+    name: api-themoviedb-org-3 (2)
+    endpointUrl {
+        url: https://api.themoviedb.org/3
+    }
+)
+

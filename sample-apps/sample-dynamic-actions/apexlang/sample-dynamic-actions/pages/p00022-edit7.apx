@@ -1,0 +1,598 @@
+page 22 (
+    name: Edit
+    alias: EDIT7
+    title: Edit
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    css {
+        inline:
+            ```css
+            .ui-slider {
+                width: 180px;
+                margin: 8px;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page contains two dynamic actions called 'SALARY HIGH' and 'CALC COMMISSION'.</p><p>'SALARY HIGH' fires whenever the value of the 'Salary' slider has changed and checks if the salary is greater than 5000. If the salary is greater than 5000 the salary display field is set to red. If the salary is less than or equal to 5000 the salary display field is set to green.</p><p>'CALC COMMISSION' does a similar job as in the 'Set Value (PL/SQL)' example (firing an AJAX call to retrieve the commission and highlighting the 'Commission' page item), only this time, it is being fired when the value of the 'Salary' slider changes.</p>
+                <p>'SALARY HIGH' uses one native action ('Add Class') in combination with an event raised by one plug-in item type ('Slider').</p>
+                <p>'CALC COMMISSION' uses one native action ('Set Value' with a 'Set Type' of 'PL/SQL Function Body') and one plug-in action ('Highlight').</p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region maintain-employee (
+        name: Maintain Employee
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P22_COMM (
+        type: numberField
+        label {
+            label: Commission
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMM
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_DEPTNO (
+        type: selectList
+        label {
+            label: Department
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p22-eba-demo-da-emp-deptno
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEPTNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_EMPNO (
+        type: textField
+        label {
+            label: Employee Number
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMPNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_ENAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENAME
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_HIREDATE (
+        type: datePicker
+        label {
+            label: Hire date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: HIREDATE
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_JOB (
+        type: selectList
+        label {
+            label: Job
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p22-eba-demo-da-emp-job
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: JOB
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_MGR (
+        type: popupLov
+        label {
+            label: Manager
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @p22-eba-demo-da-emp-mgr
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MGR
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_ROWID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @maintain-employee
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROWID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P22_SAL (
+        type: plugin/slider
+        label {
+            label: Salary
+            alignment: left
+        }
+        settings {
+            maximumValue: 10000
+            step: 100
+            valueSuffix: " "
+        }
+        layout {
+            sequence: 70
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SAL
+            used: always
+        }
+        security {
+            encryptSessionState: false
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 21
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P22_ROWID
+        }
+    )
+
+    dynamicAction calc-commission (
+        name: CALC COMMISSION
+        execution {
+            sequence: 20
+        }
+        when {
+            event: item/plugin-slider/slidechange
+            selectionType: items
+            items: P22_SAL
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlFunctionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                        l_multiplier number := 0;
+                    begin
+                        -- determine multiplier based on job
+                        case :P22_JOB
+                            when 'ANALYST'      then l_multiplier := .1;
+                            when 'CLERK'        then l_multiplier := .2;
+                            when 'MANAGER'      then l_multiplier := .3;
+                            when 'PRESIDENT'    then l_multiplier := .4;
+                            when 'SALESMAN'     then l_multiplier := .3;
+                            else                     l_multiplier := .1;
+                        end case;
+                        -- return commission, which is calculated by multiplying salary my multiplier
+                        return :P22_SAL * l_multiplier;
+                    end;
+                    ```
+                itemsToSubmit: [
+                    P22_JOB
+                    P22_SAL
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P22_COMM
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action plugin-com-oracle-apex-highlight (
+            action: plugin/highlight
+            settings {
+                color: #E5FFCC
+                speed: slow
+            }
+            affectedElements {
+                selectionType: items
+                items: P22_COMM
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction salary-high (
+        name: SALARY HIGH
+        execution {
+            sequence: 10
+        }
+        when {
+            event: item/plugin-slider/slidechange
+            selectionType: items
+            items: P22_SAL
+        }
+        clientSideCondition {
+            type: item>value
+            item: P22_SAL
+            value: 5000
+        }
+
+        action native-set-css (
+            action: setStyle
+            settings {
+                styleName: color
+                value: red
+            }
+            affectedElements {
+                selectionType: domObject
+                domObject: P22_SAL_display
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-set-css-2 (
+            action: setStyle
+            settings {
+                styleName: color
+                value: green
+            }
+            affectedElements {
+                selectionType: domObject
+                domObject: P22_SAL_display
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    process fetch-row-from-eba-demo-da-emp (
+        name: Fetch Row from EBA_DEMO_DA_EMP
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P22_ROWID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2668715744985111427
+        }
+    )
+
+    process process-row-of-eba-demo-da-emp (
+        name: Process Row of EBA_DEMO_DA_EMP
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P22_ROWID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 2668715953187111431
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 2668716142349111431
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+)
+

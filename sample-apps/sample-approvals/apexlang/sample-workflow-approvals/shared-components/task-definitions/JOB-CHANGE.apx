@@ -1,0 +1,119 @@
+taskDefinition JOB_CHANGE (
+    name: Job Change
+    type: approval
+    task {
+        subject: Job Change for &INITCAP_ENAME. from &JOB. to &P_NEW_JOB.
+    }
+    deadline {
+        dueOnType: interval
+        interval: P2D
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select ename, job, initcap(ename) as initcap_ename, 
+                   apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') as demo_notification_email
+            from eba_demo_appr_emp where empno = :APEX$TASK_PK
+            ```
+    }
+    advanced {
+        detailsPage: {
+            page: 2
+            items: {
+                P2_TASK_ID: &TASK_ID.
+            }
+            clearCache: 2
+            action: resetPagination
+        }
+    }
+
+    parameter P_NEW_JOB (
+        label: New Job
+    )
+
+    action notify-employee (
+        name: Notify Employee
+        type: sendEMail
+        emailHeader {
+            to: &DEMO_NOTIFICATION_EMAIL.
+        }
+        emailTemplate {
+            emailTemplate: @JOB_CHANGE_NOTIFICATION
+            placeholderValues:
+                ```
+                {
+                    "P_JOB_BEFORE":"&JOB.",
+                    "P_JOB_AFTER":"&P_NEW_JOB.",
+                    "P_ENAME":"&ENAME."
+                }
+                ```
+        }
+        execution {
+            onEvent: complete
+            outcome: approved
+            sequence: 20
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') is not null
+        }
+    )
+
+    action on-approve (
+        name: On Approve
+        type: executeCode
+        source {
+            plsqlCode: update eba_demo_appr_emp set job = :P_NEW_JOB where empno = :APEX$TASK_PK;
+        }
+        execution {
+            onEvent: complete
+            outcome: approved
+            sequence: 10
+        }
+    )
+
+    action push-email-queue-for-sample (
+        name: Push Email Queue for Sample
+        type: executeCode
+        source {
+            plsqlCode: apex_mail.push_queue;
+        }
+        execution {
+            onEvent: complete
+            outcome: approved
+            sequence: 30
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: DEMO_NOTIFICATION_EMAIL
+        }
+    )
+
+    participant (
+        value {
+            staticValue: JANE
+        }
+    )
+
+    participant (
+        value {
+            staticValue: STEVE
+        }
+    )
+
+    participant (
+        value {
+            staticValue: BO
+        }
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+)
+

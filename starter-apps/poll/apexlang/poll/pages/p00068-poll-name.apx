@@ -1,0 +1,1670 @@
+page 68 (
+    name: &POLL_NAME.
+    alias: POLL-NAME
+    title: &POLL_NAME.
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigationMenu {
+        overrideUserInterfaceLevel: true
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#plugins/com.oracle.apex.html5_bar_chart/1.0/com_oracle_apex_html5_bar_chart.css
+        inline:
+            ```css
+            .permalink { margin: 10px; text-align: center;}
+            .permalink a {color: #606060; font: 11px/12px Arial, sans-serif;}
+            
+            
+            
+            .lp-Question-title {
+              font-size: 20px;
+              line-height: 36px;
+              display: block;
+              color: #202020;
+              margin-bottom: 8px;
+              font-weight: bold;
+            }
+            
+            .lp-Question {
+              display: block;
+              padding: 12px;
+              border: 1px solid #D0D0D0;
+              background-color: #FFFFFF;
+              border-radius: 2px;
+              margin-bottom: 16px;
+              overflow: hidden;
+              -webkit-transition: background-color .2s;
+              transition: background-color .2s;
+            }
+            .lp-Question:hover {
+              background-color: #F8F8F8;
+            }
+            .lp-Question * {
+              -webkit-box-sizing: border-box;
+              -moz-box-sizing: border-box;
+              box-sizing: border-box;
+            }
+            .lp-Question-questionText {
+              font-size: 16px;
+              font-weight: bold;
+              line-height: 20px;
+              color: #202020;
+              margin-bottom: 8px;
+            }
+            .lp-Question-inputRadio,
+            .lp-Question-inputCheckbox {
+              display: block;
+              margin-bottom: 4px;
+              margin-left: 16px;
+            }
+            .lp-Question-inputCheckbox {
+              width: 30%;
+              float: left;
+            }
+            .lp-Question-inputRadio input,
+            .lp-Question-inputCheckbox input {
+              display: inline-block;
+              margin: 4px 0;
+              padding: 0;
+              vertical-align: top;
+            }
+            .lp-Question-inputTextarea textarea {
+              border: 1px solid #C0C0C0;
+              border-radius: 2px;
+              box-shadow: 0 1px 2px rgba(0,0,0,.1) inset;
+              font-size: 14px;
+              line-height: 20px;
+              width: 100%;
+              padding: 8px;
+            }
+            .lp-Question input[type=radio]:checked + .lp-Question-label,
+            .lp-Question input[type=checkbox]:checked + .lp-Question-label  {
+              font-weight: bold;
+              border-color: #A0BADA;
+              background-color: #DBEBFF;
+              margin-left: 8px;
+              padding: 4px 8px;
+              color: #202020;
+            }
+            .lp-Question-label {
+              display: inline-block;
+              font-size: 14px;
+              line-height: 1;
+              vertical-align: top;
+              margin: 0 4px;
+              border: 1px solid transparent;
+              padding: 4px 4px;
+              border-radius: 2px;
+              color: #404040;
+            }
+            .a-TextResponse li {
+                margin: 0 0 0 24px;
+                font-size: 14px;
+                line-height: 20px;
+                color: #404040;
+            }
+            
+            
+            /* Project Status */
+            .proj-status-label {
+              display: inline-block;
+            }
+            .proj-status-color {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                vertical-align: top;
+                border-radius: 100%;
+                margin-right: 8px;
+                box-shadow: 0 0 0 1px rgba(0,0,0,.1) inset;
+            }
+            
+            body div.cbc table.cbc th span.cbc_label {
+            max-width: 100%; 
+            }
+            
+            
+            /* Make page more responsive */
+            
+            @media only screen and (max-width: 640px) {
+            section.uRegionFrame>div.uFrameContent {
+              display: block;
+            }
+            #uOneCol div.uFrameContent > div.uFrameSide {
+                display: block;
+                width: auto;
+                padding-top: 8px;
+                border-top: 1px solid #AAA;
+                border-left: none;
+            }
+            #uOneCol div.uFrameContent > div.uFrameMain {
+                display: block;
+            }
+            #uOneCol div.uFrameSide > div.uniqueKey {
+                width: 80%;
+            }
+            }
+            
+            
+            ```
+    }
+    security {
+        authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region chart (
+        name: Chart
+        type: chart
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--noIcon
+                t-Alert--warning
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from EBA_QPOLL_QUESTIONS
+                 where id = :P68_QUESTION_ID
+                   and question_type not in ('TEXT','TEXTAREA','STACK','ALLOCATION')
+                ```
+        }
+        chart {
+            type: donut
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            show: false
+        }
+
+        series results (
+            name: Results
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select answer, count(*) c
+                    from
+                    (
+                    select  d.ANSWER_01 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d,  EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_01 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select d.ANSWER_02 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_02 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_03 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_03 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_04 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_04 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_05 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_05 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_06 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_06 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_07 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_07 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_08 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_08 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_09 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_09 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_10 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_10 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_11 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_11 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                        union all
+                        select  d.ANSWER_12 answer, r.apex_user, r.created
+                        from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                        where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                              r.poll_id = :POLL_ID and d.answer_12 is not null and
+                              nvl(r.is_valid_yn,'Y') = 'Y'
+                    ) x
+                    group by answer
+                    ```
+            }
+            columnMapping {
+                label: ANSWER
+                value: C
+            }
+            label {
+                show: true
+                position: outsideSlice
+                displayAs: labelPercentageValue
+            }
+        )
+
+    )
+
+    region details (
+        name: Details
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select  1 seq, d.ANSWER_01 answer, 
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d,  EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_01 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  2 seq, d.ANSWER_02 answer, 
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_02 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  3 seq, d.ANSWER_03 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_03 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  4 seq, d.ANSWER_04 answer, 
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_04 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  5 seq, d.ANSWER_05 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_05 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  6 seq, d.ANSWER_06 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_06 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  7 seq, d.ANSWER_07 answer, 
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_07 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  8 seq, d.ANSWER_08 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_08 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  9 seq, d.ANSWER_09 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_09 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  10 seq, d.ANSWER_10 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_10 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  11 seq, d.ANSWER_09 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_11 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                union all
+                select  12 seq, d.ANSWER_10 answer,  
+                        case when :P68_ANONYMOUS_YN = 'Y' then 'anonymous' else r.email end apex_user, 
+                        r.created,
+                        decode(answer_correct_yn,'Y',apex_lang.message('YES'),apex_lang.message('NO')) CORRECT,
+                       (select c.community_name
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where r.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = :P68_QUESTION_ID and
+                          r.poll_id = :POLL_ID and d.answer_12 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        searchBar {
+            reportsSelectList: false
+        }
+        actionsMenu {
+            includeActionsMenu: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 1331283401516988490
+        }
+
+        column ANSWER (
+            type: plainText
+            heading {
+                heading: Answer
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column APEX_USER (
+            type: plainText
+            heading {
+                heading: Respondent
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column COMMUNITY (
+            type: plainText
+            heading {
+                heading: Community
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_comm_invites
+                     where poll_id = :POLL_ID
+                    ```
+            }
+        )
+
+        column CORRECT (
+            type: plainText
+            heading {
+                heading: Correct
+            }
+            layout {
+                sequence: 42
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: POLL_OR_QUIZ
+                value: Q
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 22
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+            enableUsersTo {
+                hide: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column SEQ (
+            type: hidden
+            heading {
+                heading: Answer Sequence
+            }
+            layout {
+                sequence: 32
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        savedReport 13312888 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ANSWER (
+                sequence: 1
+            )
+
+            displayColumn APEX_USER (
+                sequence: 2
+            )
+
+            displayColumn COMMUNITY (
+                sequence: 3
+            )
+
+            displayColumn CREATED (
+                sequence: 4
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region hide-nobody (
+        name: hide nobody
+        type: staticContent
+        source {
+            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if apex_authentication.is_authenticated then
+                   return false;
+                else
+                   return true;
+                end if;
+                ```
+        }
+    )
+
+    region question (
+        name: "Question "
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_found boolean := false;
+                   c       integer := 0;
+                   a       integer := 0;
+                   l_max   number;
+                   l_Pct2  number;
+                   l_label         wwv_flow_global.vc_arr2;
+                   l_answer_score  wwv_flow_global.vc_arr2;
+                   l_answer        wwv_flow_global.vc_arr2;
+                   l_count         wwv_flow_global.n_arr;
+                   l_respondents integer := 0;
+                   l_app_id varchar2(255) := :APP_ID;
+                   l_app_session varchar2(255) := :APP_SESSION;
+                   l_correct_answer_yn  varchar2(1) := 'N';
+                   l_responses     APEX_APPLICATION_GLOBAL.VC_ARR2;
+                   l_answers       APEX_APPLICATION_GLOBAL.VC_ARR2;
+                   m integer;
+                   l_num_answers integer;
+                   l_a_count integer;
+                   x integer;
+                   y integer;
+                   t integer;
+                
+                   procedure paint_stack (
+                	  p_count           in number    default null, 
+                      p_pct             in number    default null, 
+                      p_label           in varchar2  default null)
+                   is 
+                   begin
+                     sys.htp.p('<li class="a-BarChart-item"><h3 class="a-BarChart-label">');
+                     sys.htp.prn(p_count||'. ');
+                     sys.htp.prn(apex_escape.html(p_label));
+                     sys.htp.prn('</h3><span class="a-BarChart-barLink"><div class="a-BarChart-bar"><div class="a-BarChart-filled" style="width: ');
+                     sys.htp.prn(p_pct||'%;"></div></div></span><span class="a-BarChart-value">'||p_pct||'%</li>');
+                   end;
+                
+                   procedure paint_answer (
+                      p_count           in number    default null, 
+                      p_pct             in number    default null, 
+                      p_label           in varchar2  default null,
+                      p_correct_answer  in varchar2  default null) 
+                   is
+                   begin
+                      if p_label is not null then
+                        l_pct2 := round(100 * (p_count/l_respondents));
+                        sys.htp.p('<li class="a-BarChart-item">');
+                        sys.htp.p('<h3 class="a-BarChart-label">');
+                        if p_correct_answer = 'Y' then
+                           sys.htp.p('<span class="fa fa-check"></span> ');
+                        end if;
+                        sys.htp.prn(apex_escape.html(p_label));
+                        sys.htp.prn('</h3>');
+                        sys.htp.prn('<span class="a-BarChart-barLink">');
+                        sys.htp.p('<div class="a-BarChart-bar"><div class="a-BarChart-filled" style="width: '||to_char(l_pct2)||'%;"></div></div>');
+                        sys.htp.p('</span>');
+                        sys.htp.p('<span class="a-BarChart-value">'||to_char(p_count)||' ('||to_char(l_pct2)||'%)<span class="u-VisuallyHidden">('||to_char(l_pct2)||'%)</span></span>');
+                        sys.htp.p('</li>');
+                      end if;
+                   end;
+                
+                begin
+                
+                --
+                -- count respondents
+                --
+                for c1 in (
+                select count(*) c , 
+                       count(distinct APEX_USER) respondents, 
+                       min(created) first_submission,
+                       max(created) last_submission
+                from EBA_QPOLL_RESULTS
+                where poll_id = :POLL_ID  and
+                      nvl(is_valid_yn,'Y') = 'Y') loop
+                l_respondents := c1.c;
+                end loop;
+                
+                if l_respondents = 0 then
+                  sys.htp.p('This poll has no responses.');
+                  
+                else
+                
+                
+                --
+                -- query questions
+                --
+                
+                
+                for c2 in (
+                  select
+                      q.ID question_id,
+                      q.QUESTION,
+                      q.CREATED,
+                      q.UPDATED,
+                      q.display_sequence, 
+                      q.QUESTION_TYPE,
+                      q.mandatory_yn,
+                      case when q.mandatory_yn = 'N' then
+                           (select count(*)
+                              from eba_qpoll_results r,
+                                   eba_qpoll_result_details d
+                             where r.poll_id = :POLL_ID
+                               and r.id = d.result_id
+                               and d.question_id = q.id
+                               and nvl(r.is_valid_yn,'Y') = 'Y'
+                               and d.answer_01 is not null) end cnt_answers,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_01,q.answer_01),q.answer_01) answer_01,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_02,q.answer_02),q.answer_02) answer_02,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_03,q.answer_03),q.answer_03) answer_03,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_04,q.answer_04),q.answer_04) answer_04,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_05,q.answer_05),q.answer_05) answer_05,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_06,q.answer_06),q.answer_06) answer_06,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_07,q.answer_07),q.answer_07) answer_07,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_08,q.answer_08),q.answer_08) answer_08,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_09,q.answer_09),q.answer_09) answer_09,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_10,q.answer_10),q.answer_10) answer_10,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_11,q.answer_11),q.answer_11) answer_11,
+                      nvl(decode(USE_CUSTOM_ANSWERS_YN,'N',a.answer_12,q.answer_12),q.answer_12) answer_12,
+                      answer_01_score,
+                      answer_02_score,
+                      answer_03_score,
+                      answer_04_score,
+                      answer_05_score,
+                      answer_06_score,
+                      answer_07_score,
+                      answer_08_score,
+                      answer_09_score,
+                      answer_10_score,
+                      answer_11_score,
+                      answer_12_score,
+                      q.correct_answer,
+                      q.use_custom_answers_yn,
+                      p.score_type,
+                      q.enable_score_yn q_enable_score,
+                      p.enable_score_yn p_enable_score
+                  from EBA_QPOLL_QUESTIONS q,
+                       EBA_QPOLL_CANNED_ANSWERS a,
+                       EBA_QPOLL_POLLS p
+                  where q.poll_id = p.id and
+                       q.question_type = a.code(+) and
+                       p.id = :POLL_ID and
+                       q.id = :P68_QUESTION_ID
+                  order by display_sequence, q.id
+                ) loop
+                
+                if    c2.answer_12 is not null then l_num_answers := 12; 
+                elsif c2.answer_11 is not null then l_num_answers := 11;
+                elsif c2.answer_10 is not null then l_num_answers := 10; 
+                elsif c2.answer_09 is not null then l_num_answers := 9; 
+                elsif c2.answer_08 is not null then l_num_answers := 8; 
+                elsif c2.answer_07 is not null then l_num_answers := 7; 
+                elsif c2.answer_06 is not null then l_num_answers := 6; 
+                elsif c2.answer_05 is not null then l_num_answers := 5; 
+                elsif c2.answer_04 is not null then l_num_answers := 4; 
+                elsif c2.answer_03 is not null then l_num_answers := 3; 
+                elsif c2.answer_02 is not null then l_num_answers := 2; 
+                else l_num_answers := 1; 
+                end if;
+                
+                sys.htp.p('<div class="lp-Question">');
+                sys.htp.p('<p class="lp-Question-questionText"><strong>Q'||apex_escape.html(:P68_QUESTION_NBR)||': '||apex_escape.html(c2.question));
+                
+                -- this needs to be changed to something better
+                if c2.mandatory_yn = 'Y' then 
+                   sys.htp.p(' *');
+                end if;
+                
+                sys.htp.prn('</strong></p>');
+                
+                for c3 in (
+                   select image_height, image_width
+                     from eba_qpoll_questions
+                    where id = c2.question_id
+                      and image_filename is not null
+                ) loop
+                   sys.htp.p('<p><img src="'||apex_util.get_blob_file_src('P18_IMAGE_BLOB',c2.question_id)||'"');
+                   if c3.image_height is not null then
+                      sys.htp.p(' height="'|| apex_escape.html(c3.image_height) ||'"');
+                   end if;
+                   if c3.image_width is not null then
+                      sys.htp.p(' width="'|| apex_escape.html(c3.image_width) ||'"');
+                   end if;
+                   sys.htp.p(' /></p>');
+                end loop;
+                
+                -- if quiz, show average per question
+                if :POLL_OR_QUIZ = 'Q' then
+                   for c4 in (
+                      select count(*) total_cnt, sum(decode(d.answer_correct_yn,'Y',1,0)) total_right
+                        from eba_qpoll_result_details d,
+                             eba_qpoll_results r
+                       where d.question_id = :P68_QUESTION_ID
+                         and r.id = d.result_id
+                         and r.poll_id = :POLL_ID
+                   ) loop
+                      sys.htp.p('<p>Average Score: '|| round(((c4.total_right/c4.total_cnt)*100),1) || ' %</p>');
+                   end loop;
+                end if;
+                
+                -- if scored poll, show average/cumulative per question
+                if c2.score_type = 'A' and c2.p_enable_score = 'Y' and c2.q_enable_score = 'Y' then
+                   for c4 in (
+                      select round(avg(d.score),1) avg_score
+                        from eba_qpoll_result_details d,
+                             eba_qpoll_results r
+                       where d.question_id = c2.question_id
+                         and r.id = d.result_id
+                         and r.poll_id = :POLL_ID
+                         and d.score is not null
+                   ) loop
+                      sys.htp.p('<p>Average Score: '|| c4.avg_score || '</p>');
+                   end loop;
+                elsif c2.score_type = 'C' and c2.p_enable_score = 'Y' and c2.q_enable_score = 'Y' then
+                   for c4 in (
+                      select round(sum(d.score),1) sum_score
+                        from eba_qpoll_result_details d,
+                             eba_qpoll_results r
+                       where d.question_id = c2.question_id
+                         and r.id = d.result_id
+                         and r.poll_id = :POLL_ID
+                         and d.score is not null
+                   ) loop
+                      sys.htp.p('<p>Cumulative Score: '|| c4.sum_score || '</p>');
+                   end loop;
+                end if;
+                
+                -- if quiz and textarea, show correct answer
+                if :POLL_OR_QUIZ = 'Q' and c2.QUESTION_TYPE in ('TEXT','TEXTAREA') then
+                      sys.htp.p('<p>Correct Answer: '|| apex_escape.html(c2.correct_answer) || '</p>');
+                end if;
+                
+                -- if optional, show number that answered
+                if c2.mandatory_yn = 'N' and c2.cnt_answers < l_respondents then
+                   sys.htp.p('<p>' || c2.cnt_answers || ' out of ' || l_respondents || ' answered this question.</p>');
+                end if;
+                
+                --
+                -- query answer responses 
+                --
+                -- removed textarea, should only include detailed report
+                if c2.QUESTION_TYPE in ('TEXT') then 
+                    --
+                    -- show each answer
+                    --
+                    sys.htp.p('<ul class="a-TextResponse">');
+                    for c3 in (
+                    select 
+                         d.id, 
+                         d.QUESTION, 
+                         d.display_sequence, 
+                         d.ANSWER_01 answer,
+                         r.apex_user,
+                         r.created
+                    from EBA_QPOLL_RESULT_DETAILS d, 
+                         EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and 
+                          d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and
+                          d.answer_01 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    order by r.created, r.apex_user
+                    ) loop
+                      sys.htp.p('<li>');
+                      if lower(trim(c3.answer)) = lower(c2.correct_answer) then
+                         sys.htp.p('<span class="fa fa-check"></span> ');
+                      end if;
+                      sys.htp.p(apex_escape.html(c3.answer));
+                      sys.htp.p('</li>');
+                    end loop; -- c3
+                    sys.htp.p('</ul>');
+                
+                elsif c2.QUESTION_TYPE = 'STACK' then
+                    l_a_count := 0;
+                    for z in 1..12 loop l_answers(z) := '0'; end loop;
+                
+                    for c3 in (
+                	    select d.ANSWER_01 answer
+                          from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                         where d.result_id = r.id and 
+                               d.question_id = c2.question_id and
+                               r.poll_id = :POLL_ID and
+                               d.answer_01 is not null and
+                               nvl(r.is_valid_yn,'Y') = 'Y'
+                         order by r.created, r.apex_user
+                    ) loop
+                        l_a_count := l_a_count + 1;
+                        if not regexp_like(replace(c3.answer,',','0'),'[0-9]') then
+                           sys.htp.p('BAD DATA AS STACK RANK RESULT: ' || apex_escape.html(c3.answer) ||'<br/>');
+                        else 
+                           l_responses := APEX_UTIL.STRING_TO_TABLE(c3.answer,',');
+                           m := l_responses.count;
+                           FOR z IN 1..m LOOP
+                               x := (l_num_answers - z);
+                               x := x * x;
+                               y := to_number(l_responses(z));
+                               l_answers(y) := to_char(to_number(l_answers(y)) + x);
+                               -- sys.htp.p('<br>Debug: Rank order='||z||', points='||x||', Question#='||y||', l_answers(y)='||l_answers(y)||', c3.answer='||c3.answer);
+                           END LOOP;
+                        end if;
+                    end loop;
+                    t := 0;
+                    for z in 1..12 loop if to_number(l_answers(z)) > t then t := to_number(l_answers(z)); end if; end loop;
+                    if t != 0 then for z in 1..12 loop l_answers(z) := trunc(100 * (to_number(l_answers(z)) / t)); end loop; end if;
+                    sys.htp.prn('<ul class="a-BarChart a-BarChart--classic">');
+                    m := l_num_answers;
+                    if m > 0 then paint_stack( 1,l_answers( 1),c2.answer_01); end if;
+                    if m > 1 then paint_stack( 2,l_answers( 2),c2.answer_02); end if;
+                    if m > 2 then paint_stack( 3,l_answers( 3),c2.answer_03); end if;
+                    if m > 3 then paint_stack( 4,l_answers( 4),c2.answer_04); end if;
+                    if m > 4 then paint_stack( 5,l_answers( 5),c2.answer_05); end if;
+                    if m > 5 then paint_stack( 6,l_answers( 6),c2.answer_06); end if;
+                    if m > 6 then paint_stack( 7,l_answers( 7),c2.answer_07); end if;
+                    if m > 7 then paint_stack( 8,l_answers( 8),c2.answer_08); end if;
+                    if m > 8 then paint_stack( 9,l_answers( 9),c2.answer_09); end if;
+                    if m > 9 then paint_stack(10,l_answers(10),c2.answer_10); end if;
+                    if m >10 then paint_stack(11,l_answers(11),c2.answer_11); end if;
+                    if m >11 then paint_stack(12,l_answers(12),c2.answer_12); end if;
+                    sys.htp.prn('</ul>');
+                
+                    sys.htp.p('<h3 class="a-BarChart-label">Point allocation by rank: ');
+                    for j in 1..l_num_answers loop
+                       if j > 1 then sys.htp.prn(', '); end if;
+                       sys.htp.prn(to_char(j)||' = '||to_char((l_num_answers - j)*(l_num_answers - j)));
+                    end loop;
+                    sys.htp.p('</h3>');
+                    sys.htp.prn('</div>');
+                
+                
+                
+                elsif c2.QUESTION_TYPE = 'ALLOCATION' then
+                    l_a_count := 0;
+                    for z in 1..12 loop l_answers(z) := '0'; end loop;
+                    for c3 in (
+                	    select d.ANSWER_01 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, 
+                         EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and 
+                          d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and
+                          d.answer_01 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    order by r.created, r.apex_user) loop
+                        l_a_count := l_a_count + 1;
+                        l_responses := APEX_UTIL.STRING_TO_TABLE(c3.answer,',');
+                        m := l_responses.count;
+                        FOR z IN 1..m LOOP
+                            y := to_number(l_responses(z));
+                            l_answers(z) := to_number(NVL(l_answers(z),0)) + y;
+                        END LOOP;
+                    end loop;
+                    for z in 1..m loop if to_number(l_answers(z)) > 0 then l_answers(z) := trunc(to_number(l_answers(z)/l_a_count)); end if; end loop;
+                
+                    sys.htp.prn('<ul class="a-BarChart a-BarChart--classic">');
+                    if m > 0 then paint_stack( 1,l_answers( 1),c2.answer_01); end if;
+                    if m > 1 then paint_stack( 2,l_answers( 2),c2.answer_02); end if;
+                    if m > 2 then paint_stack( 3,l_answers( 3),c2.answer_03); end if;
+                    if m > 3 then paint_stack( 4,l_answers( 4),c2.answer_04); end if;
+                    if m > 4 then paint_stack( 5,l_answers( 5),c2.answer_05); end if;
+                    if m > 5 then paint_stack( 6,l_answers( 6),c2.answer_06); end if;
+                    if m > 6 then paint_stack( 7,l_answers( 7),c2.answer_07); end if;
+                    if m > 7 then paint_stack( 8,l_answers( 8),c2.answer_08); end if;
+                    if m > 8 then paint_stack( 9,l_answers( 9),c2.answer_09); end if;
+                    if m > 9 then paint_stack(10,l_answers(10),c2.answer_10); end if;
+                    if m >10 then paint_stack(11,l_answers(11),c2.answer_11); end if;
+                    if m >11 then paint_stack(12,l_answers(12),c2.answer_12); end if;
+                    sys.htp.prn('</ul>');
+                    sys.htp.prn('</div>');
+                
+                elsif c2.QUESTION_TYPE != 'TEXTAREA' then
+                    --
+                    -- show chart of aggregated answers
+                    --
+                    a := 0;
+                    l_max := 0;
+                    for c3 in (
+                    select answer, count(*) c
+                    from 
+                    (
+                    select  d.ANSWER_01 answer
+                    from EBA_QPOLL_RESULT_DETAILS d,  EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_01 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_02 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_02 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_03 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_03 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_04 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_04 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_05 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_05 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_06 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_06 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_07 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_07 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_08 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_08 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_09 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_09 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_10 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_10 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_11 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_11 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    union all
+                    select  d.ANSWER_12 answer
+                    from EBA_QPOLL_RESULT_DETAILS d, EBA_QPOLL_RESULTS r
+                    where d.result_id = r.id and d.question_id = c2.question_id and
+                          r.poll_id = :POLL_ID and d.answer_12 is not null and
+                          nvl(r.is_valid_yn,'Y') = 'Y'
+                    ) x
+                    group by answer
+                    order by 2 desc
+                    ) loop
+                        a := a + 1;
+                        l_label(a) := c3.answer;
+                        l_count(a) := c3.c;
+                        if c3.c > l_max then 
+                           l_max := c3.c; 
+                        end if;
+                    end loop; 
+                   
+                    sys.htp.p('<ul class="a-BarChart a-BarChart--classic">');
+                
+                    l_answer(1) := c2.answer_01;
+                    l_answer(2) := c2.answer_02;
+                    l_answer(3) := c2.answer_03;
+                    l_answer(4) := c2.answer_04;
+                    l_answer(5) := c2.answer_05;
+                    l_answer(6) := c2.answer_06;
+                    l_answer(7) := c2.answer_07;
+                    l_answer(8) := c2.answer_08;
+                    l_answer(9) := c2.answer_09;
+                    l_answer(10) := c2.answer_10;
+                    l_answer(11) := c2.answer_11;
+                    l_answer(12) := c2.answer_12;
+                
+                    l_answer_score(1) := c2.answer_01_score;
+                    l_answer_score(2) := c2.answer_02_score;
+                    l_answer_score(3) := c2.answer_03_score;
+                    l_answer_score(4) := c2.answer_04_score;
+                    l_answer_score(5) := c2.answer_05_score;
+                    l_answer_score(6) := c2.answer_06_score;
+                    l_answer_score(7) := c2.answer_07_score;
+                    l_answer_score(8) := c2.answer_08_score;
+                    l_answer_score(9) := c2.answer_09_score;
+                    l_answer_score(10) := c2.answer_10_score;
+                    l_answer_score(11) := c2.answer_11_score;
+                    l_answer_score(12) := c2.answer_12_score;
+                    
+                    for m in 1..12 loop
+                        if l_answer(m) is null then exit; end if;
+                        l_found := false;
+                        for j in 1..a loop
+                            if l_answer(m) = l_label(j) then
+                               if :POLL_OR_QUIZ = 'Q' then
+                                  l_correct_answer_yn := 'N';
+                                  if c2.question_type = 'CHECKBOX' then
+                                     if instr(c2.correct_answer, 
+                                        substr(c2.correct_answer,1,1)||l_label(j)||substr(c2.correct_answer,1,1)) > 0 then
+                                        l_correct_answer_yn := 'Y';
+                                     end if;
+                                  elsif c2.use_custom_answers_yn = 'Y' then
+                                     if lower(l_label(j)) = lower(c2.correct_answer) then
+                                        l_correct_answer_yn := 'Y';
+                                     end if;
+                                  else
+                                     if l_label(j) = c2.correct_answer then
+                                        l_correct_answer_yn := 'Y';
+                                     end if;
+                                  end if;
+                                end if;
+                                paint_answer (
+                                   p_count => l_count(j), 
+                                   p_pct   => l_pct2, 
+                                   p_label => l_label(j) || case when c2.score_type in ('A','C') and c2.p_enable_score = 'Y' and
+                                                             c2.q_enable_score = 'Y' then ' (score:'||l_answer_score(m)||')' end,
+                                   p_correct_answer => l_correct_answer_yn );
+                                l_found := true;
+                                exit;
+                            end if;
+                        end loop; 
+                        if not l_found then
+                           if :POLL_OR_QUIZ = 'Q' then
+                              l_correct_answer_yn := 'N';
+                              if c2.question_type = 'CHECKBOX' then
+                                 if instr(c2.correct_answer, 
+                                    substr(c2.correct_answer,1,1)||l_answer(m)||substr(c2.correct_answer,1,1)) > 0 then
+                                    l_correct_answer_yn := 'Y';
+                                 end if;
+                              elsif c2.use_custom_answers_yn = 'Y' then
+                                 if lower(l_answer(m)) = lower(c2.correct_answer) then
+                                    l_correct_answer_yn := 'Y';
+                                 end if;
+                              else
+                                  if l_answer(m) = c2.correct_answer then
+                                     l_correct_answer_yn := 'Y';
+                                  end if;
+                              end if;
+                            end if;
+                            paint_answer (
+                              p_count => 0, 
+                              p_pct   => 0, 
+                              p_label => l_answer(m) || case when c2.score_type in ('A','C') and c2.p_enable_score = 'Y' and
+                                                        c2.q_enable_score = 'Y' then ' (score:'||l_answer_score(m)||')' end,
+                              p_correct_answer => l_correct_answer_yn );
+                        end if;
+                    end loop;
+                
+                    sys.htp.p('</div>');
+                end if;
+                
+                if c = 20 then
+                   exit;
+                end if;
+                
+                end loop; -- c2
+                
+                end if;
+                exception when others then 
+                sys.htp.p('unexpected error '||apex_escape.html(sqlerrm));
+                end;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: answers-region
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P68_ANONYMOUS_YN (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @hidden-items
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select anonymous_yn
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_NEXT_QID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_PREV_QID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P68_QUESTION_NBR (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+                t-Button--pillEnd
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 68
+                items: {
+                    P68_QUESTION_ID: &P68_NEXT_QID.
+                }
+                clearCache: 68
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P68_NEXT_QID
+        }
+    )
+
+    button next-disabled (
+        buttonName: NEXT_DISABLED
+        label: Next
+        layout {
+            sequence: 60
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+                t-Button--pillEnd
+            ]
+            cssClasses: is-disabled
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P68_NEXT_QID
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--pillStart
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 68
+                items: {
+                    P68_QUESTION_ID: &P68_PREV_QID.
+                }
+                clearCache: 68
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P68_PREV_QID
+        }
+    )
+
+    button previous-disabled (
+        buttonName: PREVIOUS_DISABLED
+        label: Previous
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--pillStart
+            ]
+            cssClasses: is-disabled
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P68_PREV_QID
+        }
+    )
+
+    button refresh-results (
+        buttonName: REFRESH_RESULTS
+        label: Refresh Results
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--gapRight
+            ]
+            icon: fa-refresh
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p68-next-qid (
+        itemName: P68_NEXT_QID
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_next_one  varchar2(1) := 'N';
+                begin
+                
+                for c1 in (
+                  select ID question_id
+                  from EBA_QPOLL_QUESTIONS
+                  where poll_id = :POLL_ID
+                  order by display_sequence, id
+                ) loop
+                
+                   if l_next_one = 'Y' then
+                      return c1.question_id;
+                   end if;
+                
+                   if c1.question_id = :P68_QUESTION_ID
+                      then l_next_one := 'Y';
+                   end if;
+                
+                end loop;
+                
+                end;
+                ```
+        }
+    )
+
+    computation p68-prev-qid (
+        itemName: P68_PREV_QID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   c           number := 0;
+                   l_prev_qid  number;
+                begin
+                
+                for c1 in (
+                  select ID question_id
+                  from EBA_QPOLL_QUESTIONS
+                  where POLL_ID = :POLL_ID
+                  order by display_sequence, id
+                ) loop
+                
+                   c := c + 1;
+                
+                   if c1.question_id = :P68_QUESTION_ID then
+                      :P68_QUESTION_NBR := c;
+                      return l_prev_qid;
+                   end if;
+                
+                   l_prev_qid := c1.question_id;
+                
+                end loop;
+                
+                end;
+                ```
+        }
+    )
+
+)
+

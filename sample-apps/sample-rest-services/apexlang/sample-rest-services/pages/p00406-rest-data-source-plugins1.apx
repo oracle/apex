@@ -1,0 +1,560 @@
+page 406 (
+    name: REST Data Source Plugins
+    alias: REST-DATA-SOURCE-PLUGINS1
+    title: REST Data Source Plugins
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                  <p>
+                    This page integrates a custom <strong>REST Data Source Plugin</strong> the invoke
+                    REST APIs of <strong>The Movie Database (TMDb) API</strong>. To start searching,
+                    type keywords into the Interactive Report search bar.
+                
+                    This approach highlights how a <strong>REST Source Plugin</strong> can provide 
+                    an implementation for specific behavior of a REST API, like pagination,
+                    filtering or behavior for specific parameter values.
+                  </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('TMDB_APIKEY') = 'YES'
+        }
+    )
+
+    region rest-data-source-plugins-results (
+        name: Rest Data Source Plugins Results
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @eba_movie_plug
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('TMDB_APIKEY') = 'YES'
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: Please enter keywords to search for movies.
+        }
+        advanced {
+            savedReportMappingIdentifier: 10959547933966107
+        }
+
+        column ADULT (
+            type: hidden
+            heading {
+                heading: Adult
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column BACKDROP_PATH (
+            type: plainText
+            heading {
+                heading: Backdrop Path
+            }
+            layout {
+                sequence: 120
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div>
+                      {if BACKDROP_PATH  /}
+                          <img src="https://image.tmdb.org/t/p/w45#BACKDROP_PATH#" alt="Movie Backdrop" />
+                      {else/}
+                          <p>No Backdrop</p>
+                      {endif/}
+                    </div>
+                    
+                    
+                    
+                    
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column GENRE_IDS (
+            type: hidden
+            heading {
+                heading: Genre Ids
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: CLOB
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column ORIGINAL_LANGUAGE (
+            type: plainText
+            heading {
+                heading: Original Language
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ORIGINAL_TITLE (
+            type: hidden
+            heading {
+                heading: Original Title
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column OVERVIEW (
+            type: plainText
+            heading {
+                heading: Overview
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column POPULARITY (
+            type: plainText
+            heading {
+                heading: Popularity
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column POSTER_PATH (
+            type: plainText
+            heading {
+                heading: Poster Path
+            }
+            layout {
+                sequence: 90
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <img src="https://image.tmdb.org/t/p/w45#POSTER_PATH#" alt="Movie Poster" onerror="this.outerHTML='No image available';" />
+                    
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column RELEASE_DATE (
+            type: plainText
+            heading {
+                heading: Release Date
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 30
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column VIDEO (
+            type: hidden
+            heading {
+                heading: Video
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column VOTE_AVERAGE (
+            type: plainText
+            heading {
+                heading: Vote Average
+            }
+            layout {
+                sequence: 110
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if #VOTE_AVERAGE# >= 4/}
+                      ★★★★★
+                    {else/}
+                      ★★★☆☆
+                    {endif/}
+                    
+                    ```
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column VOTE_COUNT (
+            type: plainText
+            heading {
+                heading: Vote Count
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 35729 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ADULT (
+                sequence: 2
+            )
+
+            displayColumn BACKDROP_PATH (
+                sequence: 11
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn ORIGINAL_LANGUAGE (
+                sequence: 13
+            )
+
+            displayColumn ORIGINAL_TITLE (
+                sequence: 12
+            )
+
+            displayColumn OVERVIEW (
+                sequence: 5
+            )
+
+            displayColumn POPULARITY (
+                sequence: 6
+            )
+
+            displayColumn POSTER_PATH (
+                sequence: 8
+            )
+
+            displayColumn RELEASE_DATE (
+                sequence: 9
+            )
+
+            displayColumn TITLE (
+                sequence: 3
+            )
+
+            displayColumn VIDEO (
+                sequence: 4
+            )
+
+            displayColumn VOTE_AVERAGE (
+                sequence: 10
+            )
+
+            displayColumn VOTE_COUNT (
+                sequence: 7
+            )
+
+        )
+
+        parameter (
+            name: @query
+            value {
+                type: null
+            }
+        )
+
+    )
+
+    region web-credentials-not-provided (
+        name: Web Credentials Not provided
+        type: staticContent
+        source {
+            htmlCode: This page relies on a REST Data Source. You need to provide your own API key for <strong>themoviedb.org</strong>. Go to administration and set your own api key in the Manage web credentials page
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('TMDB_APIKEY') = 'NO'
+        }
+    )
+
+    pageItem P406_MOVIE (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: body
+        }
+        default {
+            type: static
+            staticValue: batman
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 407
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 405
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button set-api-key (
+        buttonName: Set_API_Key
+        label: Set API Key
+        layout {
+            sequence: 10
+            region: @web-credentials-not-provided
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 503
+                items: {
+                    P304_SOURCE: 406
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

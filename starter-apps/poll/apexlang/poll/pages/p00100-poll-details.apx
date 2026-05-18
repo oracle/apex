@@ -1,0 +1,3001 @@
+page 100 (
+    name: Poll Details
+    alias: POLL-DETAILS
+    title: Poll Details
+    pageGroup: @polls
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .center-button {
+                padding: 8px;
+            }
+            .center-button .uButton {
+                display: block;
+                margin: 0 8px;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Use this page to manage the selected poll. You can edit the attributes to change who can take the poll and if login will be required.  You can Invite users to take the poll, and view the results.
+    }
+
+    region average-score (
+        name: Average Score
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    round(avg(score),1) "Average Score"
+                from
+                    EBA_QPOLL_RESULTS r
+                where
+                    poll_id = :POLL_ID
+                and nvl(r.is_valid_yn,'Y') = 'Y'
+                and score is not null
+                ```
+        }
+        layout {
+            sequence: 130
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: average_score
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_QUESTIONS q,
+                       EBA_QPOLL_POLLS p,
+                       EBA_QPOLL_RESULTS r
+                  where q.poll_id = p.id and
+                        p.id = :POLL_ID and
+                        p.score_type in ('A','C') and 
+                        p.enable_score_yn = 'Y' and
+                        q.enable_score_yn = 'Y' and
+                        r.poll_id = p.id and
+                        nvl(r.is_valid_yn,'Y') = 'Y' and
+                        r.score is not null
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column "Average Score" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Average Score
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        headerAndFooter {
+            footerText: &P100_POLL_STATUS.
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region community-invitations (
+        name: Community Invitations
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    v1.num_responses,
+                    v1.num_requests,
+                    v1.invite_date,
+                    case when v1.num_requests = 0 then null
+                         else to_char((v1.num_responses/v1.num_requests) * 100,'999G999G999G990')||'%'
+                         end as pct_responded,
+                    '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':16:'||:APP_SESSION||':::RIR,CIR:IR_POLL_ID,IR_COMM_INVITE_ID:'||:POLL_ID||','||comm_invite_id)||'">'
+                        ||apex_escape.html(v1.community_name)||'</a>' community_name,
+                    invite_method
+                from
+                (
+                    select ID comm_invite_id,
+                           community_name,
+                           (select count(unique(r.respondent_id)) 
+                              from eba_qpoll_results r,
+                                   eba_qpoll_invites i
+                             where r.poll_id = :POLL_ID
+                               and r.IS_VALID_YN = 'Y'
+                               and i.comm_invite_id = c.id
+                               and r.respondent_id = i.respondent_id ) num_responses,
+                           (select count(unique respondent_email)
+                              from eba_qpoll_invites 
+                             where comm_invite_id = c.id) num_requests,
+                           created invite_date,
+                           initcap(invite_method) invite_method
+                      from eba_qpoll_comm_invites c
+                     where poll_id = :POLL_ID
+                       and community_name is not null
+                ) v1
+                order by v1.invite_date desc nulls last, upper(v1.community_name)
+                ```
+        }
+        layout {
+            sequence: 110
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites 
+                 where poll_id = :POLL_ID
+                   and community_name is not null
+                ```
+        }
+        reportLayout {
+            numberOfRows: 10000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: no invitations found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMMUNITY_NAME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Community
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column INVITE_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Sent
+            }
+            layout {
+                sequence: 1
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITE_METHOD (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Method
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NUM_REQUESTS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Invitations
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NUM_RESPONSES (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Responses
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PCT_RESPONDED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Response Rate
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region hidden-items (
+        name: Hidden Items
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region individual-invitations (
+        name: Individual Invitations
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '<a href="'||apex_util.prepare_url('f?p='||:APP_ID||':16:'||:APP_SESSION||':::RIR,CIR:IR_POLL_ID,IR_INVITE_ID:'||:POLL_ID||','||i.id)
+                        ||'">'||apex_escape.html(i.respondent_email)||'</a>' invitee,
+                    nvl((select 'Yes' 
+                         from eba_qpoll_results r
+                         where r.poll_id = :POLL_ID
+                             and r.IS_VALID_YN = 'Y'
+                             and r.respondent_id = i.respondent_id ),'No') responded,
+                    c.created invite_date,
+                    initcap(c.invite_method) invite_method
+                from eba_qpoll_comm_invites c,
+                    eba_qpoll_invites i
+                where c.poll_id = :POLL_ID
+                    and c.id = i.comm_invite_id
+                    and c.community_name is null
+                order by c.created desc, upper(i.respondent_email)
+                ```
+        }
+        layout {
+            sequence: 120
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites 
+                 where poll_id = :POLL_ID
+                   and community_name is null
+                ```
+        }
+        reportLayout {
+            numberOfRows: 10000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--inline
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: no invitations found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column INVITEE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Invitee
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column INVITE_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Sent
+            }
+            layout {
+                sequence: 1
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INVITE_METHOD (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Method
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RESPONDED (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Responded
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: P100_ANONYMOUS_YN
+                value: N
+            }
+        )
+
+    )
+
+    region invites (
+        name: Invites
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c "Unique Invitations"
+                from
+                (
+                select count (unique respondent_id) c
+                  from eba_qpoll_comm_invites c,
+                       eba_qpoll_invites i
+                 where c.poll_id = :POLL_ID
+                   and c.id = i.comm_invite_id
+                )
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: invites
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites
+                 where poll_id = :POLL_ID
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column "Unique Invitations" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Unique Invitations
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 16
+                    items: {
+                        IR_POLL_ID: &POLL_ID.
+                    }
+                    clearCache: [
+                        16
+                        RIR
+                        CIR
+                    ]
+                    action: resetPagination
+                }
+                linkText: #Unique Invitations#
+            }
+        )
+
+    )
+
+    region main-content (
+        name: Main Content
+        type: staticContent
+        layout {
+            sequence: 140
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region menu (
+        name: Menu
+        type: list
+        source {
+            list: @edit-poll-menu
+        }
+        layout {
+            sequence: 10
+            parentRegion: @right-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: actions
+        }
+        componentAppearance {
+            listTemplate: @/menu-popup
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region no-invitations (
+        name: No Invitations
+        type: staticContent
+        source {
+            htmlCode: <p>Your poll is Invite Only but you have not invited anyone to take it.  Use the Invite button on the right to send invitations.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_qpoll_polls
+                 where id = :POLL_ID
+                   and invite_only_yn = 'Y'
+                   and status_id = 3
+                   and not exists (select 1
+                                     from eba_qpoll_comm_invites
+                                    where poll_id = :POLL_ID)
+                   and nvl(:REQUEST,'OLD') != 'NEW'
+                ```
+        }
+    )
+
+    region no-questions-yet (
+        name: no questions yet
+        type: staticContent
+        source {
+            htmlCode: No questions defined yet.
+        }
+        layout {
+            sequence: 80
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+            ]
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if :P100_USE_SECTIONS_YN = 'Y' then
+                   for c1 in (
+                      select count(*) c
+                        from EBA_QPOLL_SECTIONS
+                       where POLL_ID = :POLL_ID
+                   ) loop
+                      if c1.c = 0 then
+                         return FALSE;
+                      end if;
+                   end loop;
+                end if;
+                
+                for c1 in (
+                   select count(*) c
+                     from EBA_QPOLL_QUESTIONS
+                    where POLL_ID = :POLL_ID
+                ) loop
+                   if c1.c = 0 then
+                      return TRUE;
+                   end if;
+                end loop;
+                
+                return FALSE;
+                ```
+        }
+    )
+
+    region no-sections-yet (
+        name: no sections yet
+        type: staticContent
+        source {
+            htmlCode: No sections defined yet.
+        }
+        layout {
+            sequence: 70
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+            ]
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if :P100_USE_SECTIONS_YN = 'Y' then
+                   for c1 in (
+                      select count(*) c
+                        from EBA_QPOLL_SECTIONS
+                       where POLL_ID = :POLL_ID
+                   ) loop
+                      if c1.c = 0 then
+                         return TRUE;
+                      end if;
+                   end loop;
+                end if;
+                return FALSE;
+                ```
+        }
+    )
+
+    region not-invited (
+        name: Not Invited
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select email,
+                       created
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and IS_VALID_YN = 'Y'
+                   and respondent_id not in (select i.respondent_id
+                                               from eba_qpoll_comm_invites c,
+                                                    eba_qpoll_invites i
+                                              where c.poll_id = :POLL_ID
+                                                and c.id = i.comm_invite_id)
+                order by created desc, upper(email)
+                ```
+        }
+        layout {
+            sequence: 130
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and IS_VALID_YN = 'Y'
+                   and respondent_id not in (select i.respondent_id
+                                               from eba_qpoll_comm_invites c,
+                                                    eba_qpoll_invites i
+                                              where c.poll_id = :POLL_ID
+                                                and c.id = i.comm_invite_id)
+                ```
+        }
+        reportLayout {
+            numberOfRows: 10000
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: " - "
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: no invitations found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Responded
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMAIL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Respondent
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region outstanding-invitations (
+        name: Outstanding Invitations
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                if :OUTSTANDING_INVITES = 1 then
+                   sys.htp.p('<p class="u-tC" style="font-size: 11px"><a href="'||apex_util.prepare_url('f?p='||:APP_ID||':16:'||:APP_SESSION||'::NO:RIR,CIR:IR_HAS_RESPONDED,IR_POLL_ID:No,'||:POLL_ID)||'">'||:OUTSTANDING_INVITES||' Oustanding Invitation</a></p>');
+                else
+                   sys.htp.p('<p class="u-tC" style="font-size: 11px"><a href="'||apex_util.prepare_url('f?p='||:APP_ID||':16:'||:APP_SESSION||'::NO:RIR,CIR:IR_HAS_RESPONDED,IR_POLL_ID:No,'||:POLL_ID)||'">'||:OUTSTANDING_INVITES||' Oustanding Invitations</a></p>');
+                end if;
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @right-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: oustanding_invitations
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites
+                 where poll_id = :POLL_ID
+                   and nvl(:OUTSTANDING_INVITES,0) > 0
+                ```
+        }
+    )
+
+    region published (
+        name: Published!
+        type: staticContent
+        source {
+            htmlCode: <p>Now that your poll has been published, you can send invitations to pre-defined communities and/or individuals using the Invite button on the right.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--success
+            ]
+        }
+        serverSideCondition {
+            type: request=Value
+            value: NEW
+        }
+    )
+
+    region questions (
+        name: Questions
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    q.ID,
+                    s.title,
+                    q.QUESTION,
+                    q.CREATED,
+                    q.UPDATED,
+                    q.display_sequence, 
+                    q.mandatory_yn,
+                    case when q.QUESTION_TYPE in ('TEXTAREA','TEXT') then null
+                         else decode(USE_CUSTOM_ANSWERS_YN,
+                           'N', a.answer_01||
+                                decode(a.answer_02,null,null,', '||a.answer_02)||
+                                decode(a.answer_03,null,null,', '||a.answer_03)||
+                                decode(a.answer_04,null,null,', '||a.answer_04)||
+                                decode(a.answer_05,null,null,', '||a.answer_05)||
+                                decode(a.answer_06,null,null,', '||a.answer_06)||
+                                decode(a.answer_07,null,null,', '||a.answer_07)||
+                                decode(a.answer_08,null,null,', '||a.answer_08)||
+                                decode(a.answer_09,null,null,', '||a.answer_09)||
+                                decode(a.answer_10,null,null,', '||a.answer_10)||
+                                decode(a.answer_11,null,null,', '||a.answer_11)||
+                                decode(a.answer_12,null,null,', '||a.answer_12),
+                           q.answer_01||
+                                decode(q.answer_02,null,null,', '||q.answer_02)||
+                                decode(q.answer_03,null,null,', '||q.answer_03)||
+                                decode(q.answer_04,null,null,', '||q.answer_04)||
+                                decode(q.answer_05,null,null,', '||q.answer_05)||
+                                decode(q.answer_06,null,null,', '||q.answer_06)||
+                                decode(q.answer_07,null,null,', '||q.answer_07)||
+                                decode(q.answer_08,null,null,', '||q.answer_08)||
+                                decode(q.answer_09,null,null,', '||q.answer_09)||
+                                decode(q.answer_10,null,null,', '||q.answer_10)||
+                                decode(q.answer_11,null,null,', '||q.answer_11)||
+                                decode(q.answer_12,null,null,', '||q.answer_12)) end answers,
+                    case when p.POLL_OR_QUIZ = 'Q' and question_type = 'CHECKBOX'
+                         then eba_qpoll_quiz.delim_answers_disp(q.correct_answer)
+                         else q.correct_answer
+                         end correct_answer,
+                    decode(q.QUESTION_TYPE,
+                       'RADIO_GROUP','Pick One',
+                       'CHECKBOX','Pick Many',
+                       'PICK_TWO','Pick Two',
+                       'ALLOCATION','Allocate $100',
+                       'STACK','Stack Rank',
+                       'TEXTAREA','Free form text',
+                       'TEXT','Text field',
+                       'Canned Answers') question_type,
+                     USE_CUSTOM_ANSWERS_YN 
+                from eba_qpoll_polls p,
+                     EBA_QPOLL_QUESTIONS q,
+                     EBA_QPOLL_CANNED_ANSWERS a,
+                     eba_qpoll_sections s
+                where p.id = :POLL_ID and
+                     p.id = q.POLL_ID and
+                     q.question_type = a.code(+) and
+                     q.section_id = s.id (+)
+                order by s.display_sequence, s.title nulls last, q.display_sequence
+                ```
+        }
+        layout {
+            sequence: 90
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            htmlDomId: questions_report
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_QUESTIONS
+                 where POLL_ID = :POLL_ID
+                ```
+        }
+        reportLayout {
+            numberOfRows: 20
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: No questions.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column ANSWERS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Answers
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CORRECT_ANSWER (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Correct Answer
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and POLL_OR_QUIZ = 'Q'
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column MANDATORY_YN (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Mandatory?
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no-y-n
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and POLL_OR_QUIZ = 'P'
+                    ```
+            }
+        )
+
+        column QUESTION (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Question
+            }
+            layout {
+                sequence: 4
+            }
+            link {
+                target: {
+                    page: 88
+                    items: {
+                        P88_ID: #ID#
+                        P88_POLL_ID: &POLL_ID.
+                    }
+                    clearCache: 88
+                    action: resetPagination
+                }
+                linkText: #QUESTION#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column QUESTION_TYPE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Section
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: P100_USE_SECTIONS_YN
+                value: Y
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+        column USE_CUSTOM_ANSWERS_YN (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 11
+            }
+        )
+
+    )
+
+    region quiz-average (
+        name: Quiz Average
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    round(avg(grade),1) ||'%' "Average Score"
+                from
+                    EBA_QPOLL_RESULTS r
+                where
+                    poll_id = :POLL_ID
+                and nvl(r.is_valid_yn,'Y') = 'Y'
+                ```
+        }
+        layout {
+            sequence: 110
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: quiz_average
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and :POLL_OR_QUIZ = 'Q'
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column "Average Score" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Average Score
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 50
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites c
+                 where poll_id = :POLL_ID
+                 union
+                select 1
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and nvl(is_valid_yn,'Y') = 'Y'
+                ```
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region respondents (
+        name: Respondents
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.id, 
+                       case when p.anonymous_yn = 'Y' then 'anonymous' else lower(r.EMAIL) end email, 
+                       round(r.grade,1) || case when r.grade is not null then ' %' end grade, 
+                       r.score,
+                       r.created, 
+                       r.updated,
+                       r.preactive_yn,
+                       (select listagg(c.community_name,', ') within group (order by c.community_name)
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where p.id = c.poll_id
+                           and c.id = i.comm_invite_id
+                           and r.respondent_id = i.respondent_id) community
+                from EBA_QPOLL_RESULTS r,
+                     eba_qpoll_polls p
+                where p.id = :POLL_ID
+                  and p.id = r.POLL_ID
+                  and nvl(r.is_valid_yn,'Y') = 'Y'
+                order by 3 desc
+                ```
+        }
+        layout {
+            sequence: 100
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            htmlDomId: respondents
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from EBA_QPOLL_RESULTS r,
+                     eba_qpoll_polls p
+                where p.id = :POLL_ID
+                  and p.id = r.POLL_ID
+                  and nvl(r.is_valid_yn,'Y') = 'Y'
+                ```
+        }
+        reportLayout {
+            numberOfRows: 20
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--inline
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+        }
+        performance {
+            maxRowsToProcess: 5000
+        }
+        messages {
+            whenNoDataFound: "No responses have been submitted. "
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMMUNITY (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Communities
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from eba_qpoll_comm_invites
+                     where poll_id = :POLL_ID
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Submitted
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMAIL (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Respondent
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_RESULT_ID: #ID#
+                    }
+                    clearCache: 73
+                }
+                linkText: #EMAIL#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column GRADE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Score
+                alignment: end
+            }
+            layout {
+                sequence: 4
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: item=value
+                item: POLL_OR_QUIZ
+                value: Q
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column PREACTIVE_YN (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Test Data
+            }
+            lov {
+                type: sharedComponent
+                lov: @no-yes-n-y
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from eba_qpoll_results
+                      where poll_id = :POLL_ID and
+                            preactive_yn = 'Y'
+                    ```
+            }
+        )
+
+        column SCORE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Score
+                alignment: end
+            }
+            layout {
+                sequence: 5
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from EBA_QPOLL_QUESTIONS q,
+                           EBA_QPOLL_POLLS p
+                      where q.poll_ID = p.id and
+                            p.id = :POLL_ID and
+                            p.score_type in ('A','C') and 
+                            p.enable_score_yn = 'Y' and
+                            q.enable_score_yn = 'Y'
+                    ```
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Updated
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from eba_qpoll_polls
+                     where id = :POLL_ID
+                       and can_update_answers_yn = 'Y'
+                    ```
+            }
+        )
+
+    )
+
+    region response-rate (
+        name: Response Rate1
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select round((i.num_responses/i.num_requests) * 100) ||'%' "Response Rate"
+                from
+                (
+                 select
+                        (select count (unique r.respondent_id)
+                           from eba_qpoll_results r,
+                                eba_qpoll_comm_invites c,
+                                eba_qpoll_invites i
+                          where r.poll_id = :POLL_ID
+                            and r.IS_VALID_YN = 'Y'
+                            and c.poll_id = :POLL_ID
+                            and c.id = i.comm_invite_id 
+                            and r.respondent_id = i.respondent_id ) num_responses,
+                        (select count (unique respondent_id)
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where c.poll_id = :POLL_ID
+                           and c.id = i.comm_invite_id) num_requests
+                    from dual
+                ) i
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: response_rate_a
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites 
+                 where poll_id = :POLL_ID
+                   and :P100_ANONYMOUS_YN = 'N'
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column "Response Rate" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Response Rate
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region response-rate-2 (
+        name: Response Rate2
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select least(round((i.num_responses/i.num_requests) * 100),100) ||'%' "Response Rate"
+                from
+                (
+                 select
+                        (select count (*)
+                           from eba_qpoll_results r
+                          where r.poll_id = :POLL_ID
+                            and r.IS_VALID_YN = 'Y' ) num_responses,
+                        (select count (unique respondent_id)
+                          from eba_qpoll_comm_invites c,
+                               eba_qpoll_invites i
+                         where c.poll_id = :POLL_ID
+                           and c.id = i.comm_invite_id) num_requests
+                    from dual
+                ) i
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            htmlDomId: response_rate_b
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites 
+                 where poll_id = :POLL_ID
+                   and :P100_ANONYMOUS_YN = 'Y'
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column "Response Rate" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Response Rate
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region results (
+        name: Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c "Responses"
+                from
+                (
+                select count(*) c
+                  from EBA_QPOLL_RESULTS 
+                 where POLL_ID = :POLL_ID
+                   and nvl(is_valid_yn,'Y') = 'Y'
+                )
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: results
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and nvl(is_valid_yn,'Y') = 'Y'
+                ```
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column Responses (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Responses
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 66
+                    items: {
+                        LPOLL_ID: &POLL_ID.
+                    }
+                    clearCache: 66
+                    action: resetPagination
+                }
+                linkText: #Responses#
+            }
+        )
+
+    )
+
+    region right-content (
+        name: Right Content
+        type: staticContent
+        layout {
+            sequence: 150
+            slot: body
+            startNewRow: false
+            columnSpan: 2
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sections (
+        name: Sections
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id, title, section_text, CREATED, display_sequence sequence
+                from EBA_QPOLL_SECTIONS
+                where POLL_ID = :POLL_ID
+                order by display_sequence, title
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @main-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hiddenOverflow
+            ]
+        }
+        advanced {
+            htmlDomId: sections_report
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_SECTIONS
+                 where POLL_ID = :POLL_ID
+                ```
+        }
+        reportLayout {
+            numberOfRows: 22
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--inline
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: No sections have been defined for this poll yet.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column CREATED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column SECTION_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Section Text
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SEQUENCE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Sequence
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TITLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 38
+                    items: {
+                        P38_ID: #ID#
+                    }
+                    clearCache: 38
+                }
+                linkText: #TITLE#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region side-buttons (
+        name: Side Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @right-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region summary (
+        name: Summary
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @right-content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: summary
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites
+                 where poll_id = :POLL_ID
+                union
+                select 1
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and nvl(is_valid_yn,'Y') = 'Y'
+                union
+                select 1
+                  from eba_qpoll_results
+                 where poll_id = :POLL_ID
+                   and nvl(is_valid_yn,'Y') = 'Y'
+                   and preactive_yn = 'Y'
+                   and eba_qpoll.get_access_role (
+                           p_app_id   => :APP_ID,
+                           p_username => :APP_USER) in ('CONTRIBUTOR','ADMINISTRATOR')
+                ```
+        }
+    )
+
+    region test-data (
+        name: Test Data
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    count(*) "Test Responses"
+                from
+                    EBA_QPOLL_RESULTS r
+                where
+                    poll_id = :POLL_ID
+                and nvl(r.is_valid_yn,'Y') = 'Y'
+                and preactive_yn = 'Y'
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @summary
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            renderComponents: belowContent
+        }
+        advanced {
+            htmlDomId: test_data
+        }
+        security {
+            authorizationScheme: @can-delete-test-data
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--large
+                t-BadgeList--fixed
+                t-BadgeList--circular
+            ]
+            showNullValuesAs: -
+        }
+
+        column "Test Responses" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Test Responses
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    pageItem P100_ANONYMOUS_YN (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @hidden-items
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_POLL_STATUS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P100_USE_SECTIONS_YN (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @questions
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button actions (
+        buttonName: ACTIONS
+        label: Actions
+        layout {
+            sequence: 10
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+                t-Button--iconRight
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+            cssClasses: js-menuButton
+            icon: fa-angle-down
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            customAttributes: data-menu="actions_menu"
+        }
+    )
+
+    button add-question (
+        buttonName: ADD_QUESTION2
+        label: Add Question
+        layout {
+            sequence: 10
+            region: @no-questions-yet
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 88
+                items: {
+                    P88_POLL_ID: &POLL_ID.
+                }
+                clearCache: 88
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-question-2 (
+        buttonName: ADD_QUESTION
+        label: Add Question
+        layout {
+            sequence: 10
+            region: @questions
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 88
+                items: {
+                    P88_POLL_ID: &POLL_ID.
+                }
+                clearCache: 88
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_qpoll_polls
+                 where id = :POLL_ID
+                   and status_id = 4
+                ```
+        }
+    )
+
+    button add-section (
+        buttonName: ADD_SECTION2
+        label: Add Section
+        layout {
+            sequence: 10
+            region: @no-sections-yet
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 38
+                items: {
+                    P38_POLL_ID: &POLL_ID.
+                }
+                clearCache: 38
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button add-section-2 (
+        buttonName: ADD_SECTION
+        label: Add Section
+        layout {
+            sequence: 20
+            region: @sections
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 38
+                items: {
+                    P38_POLL_ID: &POLL_ID.
+                }
+                clearCache: 38
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_qpoll_polls
+                 where id = :POLL_ID
+                   and status_id = 4
+                ```
+        }
+    )
+
+    button delete-test-data (
+        buttonName: DELETE_TEST_DATA
+        label: Delete Test Data
+        layout {
+            sequence: 10
+            region: @test-data
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+                t-Button--stretch
+            ]
+            icon: fa-trash-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 82
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button invite (
+        buttonName: INVITE
+        label: Invite
+        layout {
+            sequence: 40
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+            icon: fa-send
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 72
+                items: {
+                    P72_POLL_ID: &POLL_ID.
+                }
+                clearCache: 72
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from EBA_QPOLL_POLLS p
+                where id = :POLL_ID
+                and status_id = 3
+                ```
+        }
+    )
+
+    button non-respondents (
+        buttonName: non-respondents
+        label: Non-Respondents
+        layout {
+            sequence: 20
+            region: @respondents
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16
+                items: {
+                    IR_POLL_ID: &POLL_ID.
+                    IR_HAS_RESPONDED: No
+                }
+                clearCache: [
+                    CIR
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_comm_invites
+                 where poll_id = :POLL_ID
+                   and nvl(:OUTSTANDING_INVITES,0) > 0
+                ```
+        }
+    )
+
+    button preview (
+        buttonName: Preview
+        label: Preview
+        layout {
+            sequence: 20
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+            icon: fa-eye
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 67
+                clearCache: 67
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS
+                 where id = :POLL_ID
+                   and status_id in (1,2)
+                   and exists (select 1 from EBA_QPOLL_QUESTIONS
+                                where POLL_ID = :POLL_ID)
+                ```
+        }
+    )
+
+    button publish (
+        buttonName: Publish
+        label: Publish
+        layout {
+            sequence: 30
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+            icon: fa-box-arrow-out-east
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 5
+                clearCache: 5
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS
+                 where id = :POLL_ID
+                   and status_id in (1,2)
+                   and exists (select 1 from EBA_QPOLL_QUESTIONS
+                                where POLL_ID = :POLL_ID)
+                ```
+        }
+    )
+
+    button reminder (
+        buttonName: REMINDER
+        label: Send Reminders
+        layout {
+            sequence: 50
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1072
+                items: {
+                    P1072_POLL_ID: &POLL_ID.
+                }
+                clearCache: 1072
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from eba_qpoll_polls p,
+                       eba_qpoll_comm_invites c,
+                       eba_qpoll_invites i
+                 where p.id = :POLL_ID
+                   and p.status_id = 3
+                   and p.id = c.poll_id
+                   and c.id = i.comm_invite_id
+                   and i.respondent_id not in
+                       (select respondent_id
+                          from eba_qpoll_results
+                         where poll_id = :POLL_ID
+                           and IS_VALID_YN = 'Y')
+                ```
+        }
+    )
+
+    button response-has-errors (
+        buttonName: RESPONSE_HAS_ERRORS
+        label: Response Has Errors
+        layout {
+            sequence: 80
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 50
+                clearCache: 50
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @response-has-errors
+        }
+    )
+
+    button take-poll (
+        buttonName: TAKE_POLL
+        label: Take Poll
+        layout {
+            sequence: 60
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 50
+                clearCache: 50
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @can-take-poll
+        }
+    )
+
+    button update-response (
+        buttonName: UPDATE_RESPONSE
+        label: Update Response
+        layout {
+            sequence: 70
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 50
+                clearCache: 50
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @can-update-your-response
+        }
+    )
+
+    button view-invitations (
+        buttonName: VIEW_INVITATIONS
+        label: View Community Invitations
+        layout {
+            sequence: 30
+            region: @community-invitations
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16
+                items: {
+                    IR_POLL_ID: &POLL_ID.
+                }
+                clearCache: RIR
+                request: COMM
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-invitations-2 (
+        buttonName: VIEW_INVITATIONS2
+        label: View Individual Invitations
+        layout {
+            sequence: 40
+            region: @individual-invitations
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 16
+                items: {
+                    IR_POLL_ID: &POLL_ID.
+                }
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+                request: IND
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-results (
+        buttonName: view_results
+        label: View Results
+        layout {
+            sequence: 90
+            region: @side-buttons
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--stretch
+                t-Button--padBottom
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 66
+                items: {
+                    LPOLL_ID: &POLL_ID.
+                }
+                clearCache: 66
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from EBA_QPOLL_RESULTS
+                where poll_id = :POLL_ID
+                  and nvl(is_valid_yn,'Y') = 'Y'
+                ```
+        }
+    )
+
+    dynamicAction refresh-after-actions-add-question (
+        name: Refresh after actions - add question
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #actions_menu
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data.dialogPageId === 88
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @questions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-actions-add-section (
+        name: Refresh after actions - add section
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #actions_menu
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data.dialogPageId === 38
+        }
+        comments {
+            comments: need to add p38 & 48
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sections
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-actions-edit-poll (
+        name: Refresh after actions - edit poll
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: #actions_menu
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data.dialogPageId === 48
+        }
+        comments {
+            comments: need to add p38 & 48
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-deleting-test-data (
+        name: Refresh after Deleting Test Data
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @delete-test-data
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: jquerySelector
+                jquerySelector: #respondents, #test_data, #quiz_average, #average_score
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-questions (
+        name: Refresh after questions
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @questions
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @questions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-respondents (
+        name: Refresh after respondents
+        execution {
+            sequence: 70
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @respondents
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @respondents
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-sections (
+        name: Refresh after sections
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @sections
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @sections
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @questions
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-question-added-from-no-questions-yet (
+        name: when question added from no questions yet
+        execution {
+            sequence: 90
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @no-questions-yet
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @questions
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @no-questions-yet
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    process load-details (
+        name: Load Details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                select status_id, use_sections_yn, anonymous_yn
+                  from EBA_QPOLL_POLLS
+                 where id = :POLL_ID
+                ) loop
+                   :P100_POLL_STATUS     := case c1.status_id when 1 then 'Being Authored'
+                                                              when 2 then 'Testing'
+                                                              when 3 then 'Published'
+                                                              when 4 then 'Completed' end;
+                   :P100_USE_SECTIONS_YN := c1.use_sections_yn;
+                   :P100_ANONYMOUS_YN    := c1.anonymous_yn;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6525712953526334
+        }
+    )
+
+)
+

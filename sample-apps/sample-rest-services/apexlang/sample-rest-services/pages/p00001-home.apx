@@ -1,0 +1,138 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample REST Services
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+        browserCache: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                
+                The <strong>Sample REST Services</strong> application is a comprehensive Oracle APEX REST Data integration and visualization demo, showcasing how APEX can efficiently consume, manipulate, and display data from <strong>RESTful services</strong>. It serves as a reference application for exploring various techniques for integrating external REST APIs with Oracle APEX, handling data dynamically, and enhancing user experience with different presentation formats.
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region rest-data-source-use-cases (
+        name: Rest Data Source Use Cases
+        type: list
+        source {
+            list: @home
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: navigation
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+                t-MediaList--iconsRounded
+            ]
+        }
+    )
+
+    region sample-rest-services (
+        name: Sample REST Services
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Access and use external <strong>REST services</strong> in your applications.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @sample-rest-services
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 100
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    branch (
+        name: "go welcome page "
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 2
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_Value('REMOTE_SERVER_INITIALIZED') = 'NO'
+        }
+    )
+
+)
+

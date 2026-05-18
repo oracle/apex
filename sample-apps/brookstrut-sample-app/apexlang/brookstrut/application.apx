@@ -1,0 +1,100 @@
+app BROOKSTRUT (
+    name: Brookstrut Sample App
+    version: 26.1.0
+    group: @sample-applications
+    logo {
+        type: text
+        text: Brookstrut Sample App
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--classic
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+    }
+    javaScript {
+        includeLegacyJavascript: 18
+        includeJqueryMigrate: true
+    }
+    authentication {
+        scheme: @apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+        runOnBackgroundJob: false
+        sourceForRoleOrGroupSchemes: authenticationScheme
+    }
+    security {
+        deepLinking: true
+        referrerPolicy: strictOriginWhenCrossOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        bookmarkHashFunction: sha1
+        checksumSalt: 37FEB2C9022D01DA387D1F55A9135263A65396CA4B2902FDAAF18B0E3E2C24DD
+        acceptPre202UrlChecksums: false
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        sessionStateCommits: immediate
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        installable: true
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    runtime {
+        accessibleReadOnlyItems: false
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments:
+            ```
+            1.0.18 -> 1.0.19: Fixed translation issue on "Timeframe (4 weeks)" LOV
+            1.0.19 -> 1.0.20: Replaced mixed case column aliases in select statement for "Top Users" Interactive report
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Brookstrut Sample App
+        }
+    )
+
+)
+

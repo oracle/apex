@@ -1,0 +1,27 @@
+actionPosition avatarLink (
+    name: Avatar Link
+    staticId: AVATAR_LINK
+    sequence: 10
+)
+
+actionPosition fullRowLink (
+    name: Full Row Link
+    staticId: FULL_ROW_LINK
+    sequence: 40
+)
+
+actionPosition primaryActions (
+    name: Primary Actions
+    staticId: PRIMARY_ACTIONS
+    sequence: 20
+    position {
+        type: template
+    }
+)
+
+actionPosition titleLink (
+    name: Title Link
+    staticId: TITLE_LINK
+    sequence: 30
+)
+

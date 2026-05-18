@@ -1,0 +1,303 @@
+page 110 (
+    name: Build Options
+    alias: BUILD-OPTIONS
+    title: Build Options
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+            t-Dialog--noPadding
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: Enable and disable various features and functionality within the application. Change the "Yes"/"No" values below and then click the <strong>Apply Changes</strong> to activate your changes.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region buttons-2 (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region feature-configuration (
+        name: Feature Configuration
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select build_option_id id,
+                  case
+                    when build_option_name in ('Agreements','Competitors', 'Contacts', 'Leads', 'Products', 'Territories', 'Support Amounts', 'Account Locations')
+                    then 'Module'
+                    when build_option_name in ('Validations', 'Usage Metrics')
+                    then 'Widget'
+                    when build_option_name in ('Opportunity Amount Set at Product Level', 'Product Level Close Dates')
+                    then 'Other'
+                  end feature_type,
+                  build_option_name feature_name, 
+                  component_comment feature_comment,
+                  apex_item.hidden(1, build_option_id) ||
+                    apex_item.hidden(2, build_option_status) || 
+                    apex_item.switch ( 
+                       p_idx => 3,
+                       p_value => build_option_status,
+                       p_on_value => 'Include',
+                       p_on_label => 'Yes',
+                       p_off_value => 'Exclude',
+                       p_off_label => 'No',
+                       p_item_id => 'BO_OPT_' || rownum,
+                       p_item_label => apex_escape.html(build_option_name) || ': Is Enabled',
+                       p_attributes => 'style="white-space:pre;"') enabled,
+                  last_updated_on updated,
+                  lower(last_updated_by) updated_by
+                from apex_application_build_options bo
+                where application_id = :APP_ID
+                  and build_option_name in ('Agreements','Competitors', 'Contacts', 'Opportunity Amount Set at Product Level', 'Product Level Close Dates', 'Leads', 'Products', 'Territories', 'Validations', 'Usage Metrics', 'Support Amounts', 'Account Locations')
+                order by feature_type, build_option_name
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: feature_config_region
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+        breakFormatting {
+            breakColumns: col1
+        }
+
+        column ENABLED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Enabled
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column FEATURE_COMMENT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Comment
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FEATURE_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Feature
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FEATURE_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 4
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+            advanced {
+                cellWidth: 128
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+            advanced {
+                cellWidth: 128
+            }
+        )
+
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 10
+            region: @buttons-2
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process update (
+        name: Update
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for i in 1..apex_application.g_f01.count loop
+                    for c1 in ( select application_id, build_option_name, build_option_status
+                                from apex_application_build_options
+                                where apex_application.g_f01(i) = build_option_id
+                                   and application_Id = :APP_ID) loop
+                        if c1.build_option_status != apex_application.g_f03(i) then
+                            apex_util.set_build_option_status(  p_application_id => :APP_ID,
+                                                                p_id => apex_application.g_f01(i),
+                                                                p_build_status => upper(apex_application.g_f03(i)) );
+                        end if;
+                        if c1.build_option_name = 'Opportunity Amount Set at Product Level' and upper(apex_application.g_f03(i)) = 'EXCLUDE' then
+                            :AMT_HDR := 'Amount';
+                        elsif c1.build_option_name = 'Opportunity Amount Set at Product Level' and upper(apex_application.g_f03(i)) = 'INCLUDE' then
+                            :AMT_HDR := 'Annual Recurring Revenue';
+                        end if;
+                    end loop;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Feature Configuration Saved.
+        }
+        advanced {
+            executionMappingIdentifier: 6627668954217805480
+        }
+    )
+
+)
+

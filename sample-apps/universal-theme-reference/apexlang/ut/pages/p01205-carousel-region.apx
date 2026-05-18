@@ -1,0 +1,549 @@
+page 1205 (
+    name: Region - Carousel
+    alias: CAROUSEL-REGION
+    title: Carousel Region - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-positions (
+        name: Button Positions
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region carousel-region (
+        name: Carousel Region
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/carousel-container
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hiddenOverflow
+            ]
+        }
+        accessibility {
+            landmarkLabel: Carousel
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+    )
+
+    region carousel-region-with-buttons (
+        name: Carousel Region with Buttons
+        type: staticContent
+        layout {
+            sequence: 370
+            parentRegion: @button-positions
+            slot: subRegions
+        }
+        appearance {
+            template: @/carousel-container
+            templateOptions: [
+                #DEFAULT#
+                t-Region--carouselSlide
+                js-cycle10s
+                t-Region--hiddenOverflow
+            ]
+        }
+        accessibility {
+            landmarkLabel: Carousel with Buttons
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 20
+            slot: body
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Show off one sub region at a time. For example, displaying a report and a chart, a slideshow, or different views of the same data.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-a (
+        name: Region A
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region A</h3>
+                ```
+        }
+        layout {
+            sequence: 420
+            parentRegion: @carousel-region
+            slot: slides
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-color-1
+                h200
+                u-flex
+                u-justify-content-center
+                u-align-items-center
+            ]
+        }
+    )
+
+    region region-a-2 (
+        name: Region A
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region A</h3>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @carousel-region-with-buttons
+            slot: slides
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-color-7
+                h200
+                u-flex
+                u-justify-content-center
+                u-align-items-center
+            ]
+        }
+    )
+
+    region region-b (
+        name: Region B
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region B</h3>
+                ```
+        }
+        layout {
+            sequence: 430
+            parentRegion: @carousel-region
+            slot: slides
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-color-2
+                h200
+                u-flex
+                u-justify-content-center
+                u-align-items-center
+            ]
+        }
+    )
+
+    region region-b-2 (
+        name: Region B
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region B</h3>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @carousel-region-with-buttons
+            slot: slides
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-color-8
+                h200
+                u-flex
+                u-justify-content-center
+                u-align-items-center
+            ]
+        }
+    )
+
+    region region-c (
+        name: Region C
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region C</h3>
+                ```
+        }
+        layout {
+            sequence: 440
+            parentRegion: @carousel-region
+            slot: slides
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-color-3
+                h200
+                u-flex
+                u-justify-content-center
+                u-align-items-center
+            ]
+        }
+    )
+
+    region region-c-2 (
+        name: Region C
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region C</h3>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @carousel-region-with-buttons
+            slot: slides
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                u-color-9
+                h200
+                u-flex
+                u-justify-content-center
+                u-align-items-center
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: plugin/previewTemplateOptions
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    button btn-bp-chg (
+        buttonName: BTN_BP_CHG
+        label: Change
+        layout {
+            sequence: 60
+            region: @carousel-region-with-buttons
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-close (
+        buttonName: BTN_BP_CLOSE
+        label: Close
+        layout {
+            sequence: 70
+            region: @carousel-region-with-buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-coy (
+        buttonName: BTN_BP_COY
+        label: Copy
+        layout {
+            sequence: 20
+            region: @carousel-region-with-buttons
+            slot: copy
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-create (
+        buttonName: BTN_BP_CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @carousel-region-with-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-del (
+        buttonName: BTN_BP_DEL
+        label: Delete
+        layout {
+            sequence: 80
+            region: @carousel-region-with-buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-edit (
+        buttonName: BTN_BP_EDIT
+        label: Edit
+        layout {
+            sequence: 50
+            region: @carousel-region-with-buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-help (
+        buttonName: BTN_BP_HELP
+        label: Help
+        layout {
+            sequence: 10
+            region: @carousel-region-with-buttons
+            slot: help
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-next (
+        buttonName: BTN_BP_NEXT
+        label: Next
+        layout {
+            sequence: 30
+            region: @carousel-region-with-buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button btn-bp-prev (
+        buttonName: BTN_BP_PREV
+        label: Previous
+        layout {
+            sequence: 90
+            region: @carousel-region-with-buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+)
+

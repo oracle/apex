@@ -1,0 +1,1512 @@
+page 160 (
+    name: Kanban Board
+    alias: KANBAN-BOARD
+    title: Kanban Board
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: [
+            #DEFAULT#
+            t-PageBody--noContentPadding
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyTableHeader#MIN#.js?v=#APEX_VERSION#
+    }
+    css {
+        inline:
+            ```css
+            /* Set background when kanban is there */
+            :root:has(.kb-Layout) {
+              --ut-body-main-background-color: #fff;
+            }
+            
+            /* Clip overflow */
+            .kb-Layout {
+              --ut-focus-outline: var(--ut-link-text-color) solid 2px;
+              --ut-focus-outline-offset: -1px;
+            
+              overflow: clip;
+            }
+            
+            /* Row layout */
+            .kb-RowHeader,
+            .kb-Row {
+              display: grid;
+              grid-template-columns: repeat(5, 1fr);
+              border-bottom-width: var(--ut-component-border-width);
+              border-bottom-style: solid;
+              border-bottom-color: var(--ut-component-border-color);
+            }
+            
+            /* Headers */
+            .kb-RowHeader {
+              position: sticky;
+              background-color: #eee;
+              top: var(--js-page-title-height);
+              z-index: 2;
+              width: ;
+            }
+            
+            .kb-RowHeader .kb-Column {
+              font-size: .675rem;
+              line-height: 1rem;
+              font-weight: 400;
+              text-transform: uppercase;
+              text-align: start;
+              padding-inline: .5rem;
+              padding-block: .5rem;
+              position: relative;
+            }
+            
+            .kb-RowHeader .kb-Column:not(:first-child):before {
+              content: '';
+              position: absolute;
+              background-color: #ddd;
+              inline-size: var(--ut-component-border-width);
+              inset-block: 0;
+              inset-inline-start: 0;
+            }
+            
+            /* Groups */
+            .kb-Group {
+              position: sticky;
+              top: calc(var(--js-page-title-height) + 2rem + 1px);
+              z-index: 3;
+              font-size: .875rem;
+              line-height: 1rem;
+              font-weight: 700;
+              margin: 0;
+            }
+            
+            .kb-Group-label {
+              display: inline-block;
+              background-color: var(--ut-body-main-background-color);
+              padding-inline: .5rem;
+              padding-block: .5rem;
+              margin-block-end: -.5rem;
+              inline-size: 20%;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+            }
+            
+            .kb-Cell {
+              min-inline-size: 0;
+              display: flex;
+              flex-direction: column;
+              gap: .25rem;
+              padding: .5rem;
+              min-block-size: 4rem;
+            }
+            
+            .kb-Cell:not(:first-child):before {
+              content: '';
+              position: absolute;
+              background-color: #ddd;
+              inline-size: var(--ut-component-border-width);
+              inset-block: 0;
+              margin-inline-start: -.5rem;
+            }
+            
+            /* Card */
+            .kb-Card {
+              border-width: var(--ut-component-border-width);
+              border-style: solid;
+              border-color: var(--ut-component-border-color);
+              border-radius: .25rem;
+              /* var(--ut-component-border-radius); */
+              background-color: var(--kb-card-background, var(--ut-component-background-color));
+              color: var(--ut-component-text-default-color);
+              padding: 8px;
+              display: flex;
+              flex-direction: column;
+              gap: .25rem;
+              cursor: move;
+            }
+            
+            .kb-Card:hover {
+              border-color: rgba(22, 21, 19, .4);
+            }
+            
+            .kb-Card:focus:not(:focus-visible) {
+              outline: none !important;
+            }
+            
+            /* Hide Empty Cards */
+            .kb-Card:has(.kb-Card-title:empty) {
+              display: none !important;
+            }
+            
+            .kb-Card-title {
+              font-size: .75rem;
+              font-weight: var(--a-base-font-weight-semibold, 500);
+              line-height: 1rem;
+              color: var(--ut-component-text-title-color);
+              margin: 0;
+            
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              -webkit-line-clamp: 2;
+            }
+            
+            /* .kb-Card-title:before {
+              background-color: var(--kb-emphasis-background-color, var(--ut-component-border-color));
+              display: inline-block;
+              inline-size: .5rem;
+              block-size: .5rem;
+              border-radius: .5rem;
+              margin-inline-end: .25rem;
+              content: '';
+              vertical-align: baseline;
+            } */
+            
+            .kb-Card-attributes {
+              font-size: .6875rem;
+              color: var(--ut-component-text-muted-color);
+              display: flex;
+              flex-wrap: wrap;
+              gap: .5rem;
+              align-items: center;
+            }
+            
+            .kb-Card-badges {
+              --ut-badge-padding-x: .375rem;
+              --ut-badge-height: 1rem;
+              --ut-badge-line-height: .75rem;
+              --ut-badge-font-size: .6875rem;
+              --ut-badge-icon-size: .75rem;
+              --ut-badge-border-radius: .25rem;
+              --ut-badge-subtle-background-color: rgba(0, 0, 0, .075);
+            
+              flex-grow: 1;
+            }
+            
+            .kb-Badge--priority {
+              --ut-badge-background-color: var(--kb-emphasis-background-color);
+              --ut-badge-text-color: var(--kb-emphasis-text-color);
+              --ut-badge-font-weight: 700;
+            }
+            
+            .kb-Badge--priority .t-Badge-icon {
+              display: none;
+            }
+            
+            .kb-Badge--release,
+            .kb-Badge--percent {
+              --ut-badge-background-color: transparent;
+              --ut-badge-text-color: currentColor;
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-100) {
+              --ut-badge-font-weight: 700;
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-100) .t-Badge-icon:before {
+              content: '\f058';
+              color: var(--a-palette-success);
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-0) {
+              --ut-badge-font-weight: 700;
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-0) .t-Badge-icon:before {
+              content: '\f071';
+              color: var(--a-palette-danger);
+            }
+            
+            .kb-Badge--percent {
+              margin-inline-start: auto;
+            }
+            
+            /* Droppable */
+            .kb-Droppable {
+              background-color: rgba(0, 0, 0, .08);
+            }
+            
+            .kb-Cell.kb-Droppable {
+              border-radius: var(--ut-component-border-radius);
+            }
+            
+            /* States */
+            .kb-Card--p1 {
+              --kb-card-background: #FFEAE8;
+              --kb-emphasis-background-color: #D83F2A;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p2 {
+              --kb-card-background: #FCEDDA;
+              --kb-emphasis-background-color: #AE650E;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p3 {
+              --kb-card-background: #E4F4D4;
+              --kb-emphasis-background-color: #518324;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p4 {
+              --kb-card-background: #E5F1F5;
+              --kb-emphasis-background-color: #457D95;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p5 {
+              --kb-card-background: #F3ECF8;
+              --kb-emphasis-background-color: #876D94;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Blank {display:none;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @kanban
+    }
+    comments {
+        comments: #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyTableHeader#MIN#.js?v=#APEX_VERSION#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 120
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+                t-BreadcrumbRegion--headingFontAlt
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region kanban-board (
+        name: Kanban Board
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                  x.focus_area_name focus_area,
+                  y.id,
+                  y.project project,
+                  x.column_id,
+                  y.priority,
+                  case y.priority
+                  when 1 then 'kb-Card--p1'
+                  when 2 then 'kb-Card--p2'
+                  when 3 then 'kb-Card--p3'
+                  when 4 then 'kb-Card--p4'
+                  when 5 then 'kb-Card--p5'
+                  else null end p_style,
+                  y.kb_stack_rank,
+                  y.project_size,
+                  y.effort_days,
+                  y.weight,
+                  y.pct_complete,
+                  decode(y.release,'NA','N','Y') release_dependent_yn,
+                  y.status_scale,
+                  x.focus_area_id,
+                  y.release,
+                  nvl(y.name,'(No Owner)') name,
+                  nvl2(y.id,null,'kb-Blank') display,
+                  row_number() over(PARTITION BY x.focus_area_id ORDER BY x.focus_area,x.column_id,y.kb_stack_rank,y.id) row_split,
+                  row_number() over(PARTITION BY x.focus_area_id,x.column_id ORDER BY x.focus_area,x.column_id,y.kb_stack_rank,y.id) column_split,
+                  'apex.navigation.redirect('''||
+                  apex_util.prepare_url(p_url => 'f?p=' || :APP_ID || ':36:' || :APP_SESSION || '::NO::P36_ID:' || y.id)||''')' as link,
+                  -- Display Attributes
+                  null attrs,
+                  case
+                  (select count(*) from APEX_APPL_ACL_USER_ROLES where role_static_id in ('CONTRIBUTOR', 'ADMINISTRATOR') and application_id = :app_id and user_name = :app_user)
+                    when 0 then null
+                    else 'kb-Sortable' end sortable
+                from 
+                ------------------------------------------------
+                -- Inline view that lays out the Kanban Board --
+                ------------------------------------------------
+                (select * from
+                      -------------
+                      -- Columns --
+                      -------------
+                      (select 
+                         column_value column_id
+                       FROM TABLE(apex_string.split(nvl(:p160_kb_column_id,'1:2:3:4:5'),':'))) columns
+                       cross join
+                      ------------
+                      -- Groups --
+                      ------------
+                      (select 
+                        focus_area||(select ' ('||stm.first_name||' '||stm.last_name||')' from SP_TEAM_MEMBERS stm where stm.id = fa.development_owner_id) focus_area_name,
+                        focus_area,
+                        to_char(id) focus_area_id
+                      from
+                        sp_initiative_focus_areas fa
+                      where fa.initiative_id = :P160_INITIATIVE_ID
+                        and active_yn = 'Y'
+                      --------------------------------------------------
+                      -- Create a sudo group for unallocated projects --
+                      -------------------------------------------------- 
+                      union all select 'Unallocated', 'Unallocated', 'Unallocated' from dual) groups) x
+                  --------------------------------------------------------
+                  -- An inline view of all the projects is outer joined --
+                  -- to the Kanban Board                                --
+                  --------------------------------------------------------
+                  left join (
+                      select 
+                           case 
+                             when pct_complete between 10 and 20 then 1
+                             when pct_complete = 30 then 2
+                             when pct_complete = 40 then 3
+                             when pct_complete between 50 and 70 then 4
+                             when pct_complete between 80 and 100 then 5
+                           end column_id,
+                           case 
+                              when sp.release_id is not null then re.release_train||' '||re.release
+                              else 'NA' end release,
+                           to_char(sp.id) as id,
+                           sp.project,
+                           sp.tags,
+                           sp.kb_stack_rank,
+                           pp.priority,
+                           ps.project_size,
+                           ps.effort_days,
+                           pp.priority * ps.effort_days weight,
+                           sp.pct_complete,
+                           sp.status_scale,
+                           nvl(to_char(sp.focus_area_id),'Unallocated') focus_area_id,
+                           (select tm.first_name||' '||tm.last_name from sp_team_members tm where sp.owner_id = tm.id) name
+                      from sp_projects sp
+                      inner join sp_project_priorities pp on sp.priority_id = pp.id
+                      inner join sp_project_sizes ps on sp.project_size = ps.project_size 
+                      left outer join sp_release_trains re on sp.release_id = re.id
+                      ----------------------------------------
+                      -- Predicates to filter projects only --
+                      ----------------------------------------
+                      where sp.pct_complete > 0 
+                        and sp.archived_yn = 'N' 
+                        and sp.duplicate_of_project_id is null
+                        and sp.initiative_id = :P160_INITIATIVE_ID
+                        --and sp.status_scale = 'A'
+                        and (pp.priority in (select column_value from table(apex_string.split(:p160_kb_priority,':'))) or :p160_kb_priority is null)
+                        and (sp.project_size in (select column_value from table(apex_string.split(:p160_kb_project_size,':')))  or :p160_kb_project_size is null)
+                        and ((select count(*) from table(apex_string.split(sp.tags,',')) t1 inner join table(apex_string.split(:P160_KB_TAGS,':')) t2 on t1.column_value = t2.column_value) > 0  or :p160_kb_tags is null)
+                        and ((sp.release_id is null and sp.pct_complete < 100)
+                              or (sp.release_id is not null and (sysdate < release_target_date or re.id is null)))
+                        or sp.id is null
+                  ) y on x.focus_area_id = y.focus_area_id 
+                     and x.column_id = y.column_id
+                     and (y.release in (select column_value from table(apex_string.split(:p160_kb_release,':'))) or :p160_kb_release is null)
+                     and (y.pct_complete in (select column_value from table(apex_string.split(:p160_kb_pct_complete,':'))) or :p160_kb_pct_complete is null)
+                     and (nvl(y.name,'$$NULL$$') in (select column_value from table(apex_string.split(:p160_kb_name,':'))) or :p160_kb_name is null)
+                     and (instr(upper(y.project||y.name||x.focus_area||y.tags||y.project_size), upper(:P160_KB_SEARCH), 1,1) > 0 or :P160_KB_SEARCH is null)
+                ----------------------------------------------------
+                -- Predicates that filter both board and projects --
+                ----------------------------------------------------
+                where (x.focus_area in (select column_value from table(apex_string.split(:p160_kb_focus_area,':'))) or :p160_kb_focus_area is null)
+                order by x.focus_area, x.column_id, kb_stack_rank, y.id
+                ```
+            pageItemsToSubmit: [
+                P160_KB_PCT_COMPLETE
+                P160_KB_SEARCH
+                P160_KB_RELEASE
+                P160_KB_TAGS
+                P160_KB_NAME
+                P160_KB_PRIORITY
+                P160_KB_PROJECT_SIZE
+                P160_KB_FOCUS_AREA
+                P160_KB_COLUMN_ID
+                P160_KB_VIEWS
+            ]
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 1000
+        }
+        componentAppearance {
+            template: @kanban-board
+            templateOptions: #DEFAULT#
+        }
+        performance {
+            lazyLoading: true
+        }
+        heading {
+            type: plsqlFunctionBody
+            plsqlFunctionBody: return 'New:Architecting:Ready:In-Progress:Dev Done';
+        }
+
+        column ATTRS (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <span class="kb-Card-author" title="Assigned">#NAME#</span>
+                    
+                    <div class="t-Badges kb-Card-badges">
+                      <span class="t-Badge kb-Badge--priority" role="status" aria-label="Priority: P#PRIORITY#" title="Priority: P#PRIORITY#">
+                        <span class="t-Badge-icon fa fa-exclamation-diamond" aria-hidden="true"></span>
+                        <span class="t-Badge-value">P#PRIORITY#</span>
+                      </span>
+                      <span class="t-Badge t-Badge--subtle kb-Badge--size" role="status" aria-label="Project Size: #PROJECT_SIZE#" title="Project Size: #PROJECT_SIZE#">
+                        <span class="t-Badge-icon fa fa-expand" aria-hidden="true"></span>
+                        <span class="t-Badge-value">#PROJECT_SIZE#</span>
+                      </span>
+                      <span class="t-Badge kb-Badge--release" role="status" aria-label="Release: #RELEASE#" title="Release: #RELEASE#">
+                        <span class="t-Badge-icon fa fa-cube" aria-hidden="true"></span><span class="t-Badge-value">#RELEASE#</span>
+                        {case RELEASE_DEPENDENT_YN/}
+                        {when N/}
+                        <span class="t-Badge-icon fa fa-asterisk" aria-hidden="true"></span>
+                        {when Y/}
+                        <span class="t-Badge-icon fa fa-check" aria-hidden="true"></span>
+                        {endcase/}    
+                      </span>
+                      <span class="t-Badge kb-Badge--percent" id="#ID#-pct-complete" role="status" aria-label="Complete: #PCT_COMPLETE#%" title="Complete: #PCT_COMPLETE#%">
+                        <span class="t-Badge-icon fa fa-pie-chart-#PCT_COMPLETE#" aria-hidden="true"></span>
+                        <span class="t-Badge-value">#PCT_COMPLETE#%</span>
+                      </span>
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                    
+                      lv_count number;
+                    
+                    begin
+                      select count(*) into lv_count
+                      from table(apex_string.split(:p160_kb_column_id,':'))
+                      where column_value = 2; 
+                      
+                      if lv_count > 0 or :p160_kb_column_id is null then 
+                        return true;
+                      else
+                        return false;
+                      end if;
+                    
+                    end;
+                    ```
+            }
+        )
+
+        column COLUMN_ID (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Column Id
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                    
+                      lv_count number;
+                    
+                    begin
+                      select count(*) into lv_count
+                      from table(apex_string.split(:p160_kb_column_id,':'))
+                      where column_value = 4; 
+                      
+                      if lv_count > 0 or :p160_kb_column_id is null then 
+                        return true;
+                      else
+                        return false;
+                      end if;
+                    
+                    end;
+                    ```
+            }
+        )
+
+        column COLUMN_SPLIT (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column DISPLAY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column EFFORT_DAYS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                    
+                      lv_count number;
+                    
+                    begin
+                      select count(*) into lv_count
+                      from table(apex_string.split(:p160_kb_column_id,':'))
+                      where column_value = 1; 
+                      
+                      if lv_count > 0 or :p160_kb_column_id is null then 
+                        return true;
+                      else
+                        return false;
+                      end if;
+                    
+                    end;
+                    ```
+            }
+        )
+
+        column FOCUS_AREA_ID (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 200
+            }
+            serverSideCondition {
+                type: never
+            }
+            comments {
+                comments:
+                    ```
+                    declare
+                    
+                      lv_count number;
+                    
+                    begin
+                      select count(*) into lv_count
+                      from table(apex_string.split(:p160_kb_column_id,':'))
+                      where column_value = 2; 
+                      
+                      if lv_count > 0 or :p160_kb_column_id is null then 
+                        return true;
+                      else
+                        return false;
+                      end if;
+                    
+                    end;
+                    ```
+            }
+        )
+
+        column KB_STACK_RANK (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 230
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Priority
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                    
+                      lv_count number;
+                    
+                    begin
+                      select count(*) into lv_count
+                      from table(apex_string.split(:p160_kb_column_id,':'))
+                      where column_value = 5; 
+                      
+                      if lv_count > 0 or :p160_kb_column_id is null then 
+                        return true;
+                      else
+                        return false;
+                      end if;
+                    
+                    end;
+                    ```
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                    
+                      lv_count number;
+                    
+                    begin
+                      select count(*) into lv_count
+                      from table(apex_string.split(:p160_kb_column_id,':'))
+                      where column_value = 3; 
+                      
+                      if lv_count > 0 or :p160_kb_column_id is null then 
+                        return true;
+                      else
+                        return false;
+                      end if;
+                    
+                    end;
+                    ```
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column P_STYLE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 190
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column RELEASE_DEPENDENT_YN (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 220
+            }
+        )
+
+        column ROW_SPLIT (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column SORTABLE (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 240
+            }
+        )
+
+        column STATUS_SCALE (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column WEIGHT (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 100
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu about-kanban (
+                label: About Kanban
+                layout {
+                    sequence: 120
+                }
+                behavior {
+                    target: {
+                        page: 163
+                    }
+                }
+                appearance {
+                    icon: fa-info
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 60
+                }
+            )
+
+            menu comp_menu_entry-2 (
+                type: separator
+                layout {
+                    sequence: 110
+                }
+            )
+
+            menu control-chart (
+                label: Control Chart
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 162
+                        items: {
+                            P162_INITIATIVE_ID: &P160_INITIATIVE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-scatter-chart
+                }
+                config {
+                    buildOption: @releases
+                }
+            )
+
+            menu cumulative-flow (
+                label: Cumulative Flow
+                layout {
+                    sequence: 80
+                }
+                behavior {
+                    target: {
+                        page: 161
+                        items: {
+                            P161_INITIATIVE_ID: &P160_INITIATIVE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-line-area-chart
+                }
+                config {
+                    buildOption: @releases
+                }
+            )
+
+            menu nomenclature-projects-interactive-report (
+                label: &NOMENCLATURE_PROJECTS. Interactive Report
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 86
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu planning-board (
+                label: Planning Board
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 164
+                        items: {
+                            P164_INITIATIVE_ID: &P160_INITIATIVE_ID.
+                        }
+                    }
+                }
+                appearance {
+                    icon: fa-gantt-chart
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 130
+                }
+                behavior {
+                    target: {
+                        page: 160
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 140
+                }
+                behavior {
+                    target: {
+                        page: 160
+                        items: {
+                            P160_INITIATIVE_ID: &P160_INITIATIVE_ID.
+                        }
+                        clearCache: 160
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+        )
+
+        action add-nomenclature-project (
+            position: primaryActions
+            template: button
+            label: Add &NOMENCLATURE_PROJECT.
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 104
+                    items: {
+                        P104_INITIATIVE: &P160_INITIATIVE_ID.
+                    }
+                    clearCache: [
+                        104
+                        24
+                    ]
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-plus
+                hot: true
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+    )
+
+    pageItem P160_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 130
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P160_DRAG_COLUMN_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+    )
+
+    pageItem P160_DRAG_FOCUS_AREA_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+    )
+
+    pageItem P160_DRAG_ITEM_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+    )
+
+    pageItem P160_DROP_COLUMN_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+    )
+
+    pageItem P160_DROP_FOCUS_AREA_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+    )
+
+    pageItem P160_INITIATIVE (
+        type: hidden
+        layout {
+            sequence: 150
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P160_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P160_SR_ABOVE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 100
+            slot: body
+        }
+    )
+
+    pageItem P160_SR_BELOW (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 120
+            slot: body
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 94
+                items: {
+                    P94_AREA_ID: &P160_AREA_ID.
+                    P94_INITIATIVE_ID: &P160_INITIATIVE_ID.
+                }
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction add-project-dialog-close (
+        name: Add Project Dialog Close
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @kanban-board
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction drag-drop (
+        name: Drag & Drop
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @kanban-board
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                      var originCellID, originRowID, originColumnID, originID;
+                    
+                      $(".kb-Sortable").sortable({
+                        connectWith: ".kb-Cell",
+                    
+                        start: function(event, ui) {
+                          // Store the ID of the cell and row where the item was originally dragged from
+                          originCellID   = ui.item.closest('.kb-Cell').attr('id');
+                          originColumnID = ui.item.closest('.kb-Cell').attr('data-id');
+                          originRowID    = ui.item.closest('.kb-Row').attr('id');
+                          originID       = ui.item.attr('id');
+                        },
+                    
+                        stop: function(event, ui) {
+                          // Find the ID of the cell and row where the item is dropped
+                          var parentCellID   = ui.item.closest('.kb-Cell').attr('id');
+                          var parentColumnID = ui.item.closest('.kb-Cell').attr('data-id');
+                          var parentRowID    = ui.item.closest('.kb-Row').attr('id');
+                    
+                          // Get the Stack Rank of the divs above and below the current div (if any)
+                          var aboveItem = ui.item.prev().attr('id');
+                          var belowItem = ui.item.next().attr('id');
+                    
+                          $s('P160_SR_ABOVE',(aboveItem ? aboveItem : "None"));
+                          $s('P160_SR_BELOW',(belowItem ? belowItem : "None"));
+                          $s('P160_DRAG_COLUMN_ID',originColumnID);
+                          $s('P160_DRAG_FOCUS_AREA_ID',originRowID);
+                          $s('P160_DRAG_ITEM_ID',originID);
+                          $s('P160_DROP_COLUMN_ID',parentColumnID);
+                          $s('P160_DROP_FOCUS_AREA_ID',parentRowID);
+                    
+                      
+                          // Log the details in the console
+                          console.log("Origin ID: " + originID);
+                          console.log("Origin cell ID: " + originCellID);
+                          console.log("Origin row ID: " + originRowID);
+                          console.log("Origin Column ID: " + originColumnID);
+                          console.log("Dropped in cell ID: " + parentCellID);
+                          console.log("Dropped in row ID: " + parentRowID);
+                          console.log("Dropped in Column ID: " + parentColumnID);
+                          console.log("Above div ID: " + (aboveItem ? aboveItem : "None"));
+                          console.log("Below div ID: " + (belowItem ? belowItem : "None"));
+                      
+                    
+                        }
+                        
+                      }).disableSelection();
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction drop-item (
+        name: Drop Item
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P160_DROP_FOCUS_AREA_ID
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    declare
+                    
+                      insufficient_data exception;
+                      lv_stack_rank number;
+                    
+                    begin
+                    
+                    if :P160_DRAG_FOCUS_AREA_ID is null 
+                      or :P160_DROP_FOCUS_AREA_ID is null 
+                      or :P160_DRAG_ITEM_ID is null 
+                      or :P160_DRAG_COLUMN_ID is null 
+                      or :P160_DROP_COLUMN_ID is null 
+                      or :P160_INITIATIVE_ID is null
+                      or :P160_SR_ABOVE is null
+                      or :P160_SR_BELOW is null then
+                      raise insufficient_data;
+                    end if;
+                    
+                    if :P160_SR_ABOVE != 'None' and :P160_SR_BELOW != 'None' then
+                    
+                      select sum(kb_stack_rank) / 2 into lv_stack_rank from sp_projects
+                      where initiative_id = :P160_INITIATIVE_ID and id in (:P160_SR_ABOVE,:P160_SR_BELOW);
+                    
+                      update sp_projects set kb_stack_rank = lv_stack_rank
+                      where id = :P160_DRAG_ITEM_ID and initiative_id = :P160_INITIATIVE_ID;
+                    
+                    elsif :P160_SR_ABOVE = 'None' and :P160_SR_BELOW != 'None' then
+                    
+                      select kb_stack_rank -1 into lv_stack_rank from sp_projects
+                      where initiative_id = :P160_INITIATIVE_ID and id = :P160_SR_BELOW;
+                    
+                      update sp_projects set kb_stack_rank = lv_stack_rank
+                      where id = :P160_DRAG_ITEM_ID and initiative_id = :P160_INITIATIVE_ID;
+                    
+                    elsif :P160_SR_ABOVE != 'None' and :P160_SR_BELOW = 'None' then
+                    
+                      select kb_stack_rank +1 into lv_stack_rank from sp_projects
+                      where initiative_id = :P160_INITIATIVE_ID and id = :P160_SR_ABOVE;
+                    
+                      update sp_projects set kb_stack_rank = lv_stack_rank 
+                      where id = :P160_DRAG_ITEM_ID and initiative_id = :P160_INITIATIVE_ID;
+                    
+                    end if;
+                    
+                    
+                    if :P160_DRAG_FOCUS_AREA_ID != :P160_DROP_FOCUS_AREA_ID then
+                      update sp_projects
+                      set focus_area_id = decode(:P160_DROP_FOCUS_AREA_ID,'Unallocated',null,:P160_DROP_FOCUS_AREA_ID)
+                      where id = :P160_DRAG_ITEM_ID and initiative_id = :P160_INITIATIVE_ID;
+                    end if;
+                    
+                    if :P160_DRAG_COLUMN_ID != :P160_DROP_COLUMN_ID then
+                      update sp_projects
+                      set pct_complete = decode(:P160_DROP_COLUMN_ID,1,20,2,30,3,40,4,50,5,80)
+                      where id = :P160_DRAG_ITEM_ID and initiative_id = :P160_INITIATIVE_ID;
+                    end if;
+                    
+                    exception
+                    
+                      when insufficient_data then RAISE_APPLICATION_ERROR(-20001, 'Insufficient Data!');  
+                      
+                    end;
+                    ```
+                itemsToSubmit: [
+                    P160_SR_ABOVE
+                    P160_SR_BELOW
+                    P160_DROP_FOCUS_AREA_ID
+                    P160_DROP_COLUMN_ID
+                    P160_DRAG_ITEM_ID
+                    P160_DRAG_COLUMN_ID
+                    P160_DRAG_FOCUS_AREA_ID
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var lPct; 
+                    var lCls;
+                    
+                    if ($v('P160_DRAG_COLUMN_ID') != $v('P160_DROP_COLUMN_ID')) {
+                      switch ($v('P160_DROP_COLUMN_ID')) {
+                        case "1":
+                          lPct = "20%";
+                          lCls = "t-Badge-icon fa fa-pie-chart-20";
+                          break;
+                        case "2":
+                           lPct = "30%";
+                          lCls = "t-Badge-icon fa fa-pie-chart-30";
+                          break;
+                        case "3":
+                          lPct = "40%";
+                          lCls = "t-Badge-icon fa fa-pie-chart-40";
+                          break;
+                        case "4":
+                          lPct = "50%";
+                          lCls = "t-Badge-icon fa fa-pie-chart-50";
+                          break;
+                        case "5":
+                          lPct = "80%";
+                          lCls = "t-Badge-icon fa fa-pie-chart-80";
+                      }
+                    
+                      $('#'+$v('P160_DRAG_ITEM_ID')+'-pct-complete').find('.t-Badge-value').text(lPct);
+                      $('#'+$v('P160_DRAG_ITEM_ID')+'-pct-complete').find('.t-Badge-icon').attr('Class',lCls);
+                    
+                      apex.message.showPageSuccess('Project Move Success');
+                    
+                    }
+                    
+                    
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+            serverSideCondition {
+                type: inlineValidationErrorsNotDisplayed
+            }
+        )
+
+    )
+
+    dynamicAction edit-project-dialog-close (
+        name: Edit Project Dialog Close
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @kanban-board
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @kanban-board
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process set-items (
+        name: set Items
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                ---------------------------------------------
+                -- Set items for breadcrumb and navication --
+                ---------------------------------------------
+                select initiative, area_id
+                into :P160_INITIATIVE, :P160_AREA_ID
+                from   sp_initiatives i
+                where  id = :P160_INITIATIVE_ID;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 15381615865746187598
+        }
+    )
+
+)
+

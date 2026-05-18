@@ -1,0 +1,189 @@
+page 109 (
+    name: User
+    alias: USER
+    title: &NOMENCLATURE_USERS.
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                A &NOMENCLATURE_USER. is someone who can be assigned to a &NOMENCLATURE_PROJECT. or other responsiblity. 
+                &NOMENCLATURE_USERS. can be, but are not required to be, users of this application.  
+                By defining a &NOMENCLATURE_USER. you are defining someone to assign something to.
+                A &NOMENCLATURE_USERS. application role determines their privileges in this application.
+                A &NOMENCLATURE_USER. can be a administator, contributor, or reader or no privilege at all.  
+                Contributors can create content, and readers can only view content. 
+                Contributors can create other users. 
+                </p>
+                <p>
+                    Examples of what a &NOMENCLATURE_USER. can be associated with:
+                    <ul>
+                        <li>&NOMENCLATURE_AREA. owner</li>
+                        <li>&NOMENCLATURE_INITIATIVE. owner</li>
+                        <li>&NOMENCLATURE_PROJECT. owner</li>
+                        <li>&NOMENCLATURE_PROJECT. contributor</li>
+                        <li>&NOMENCLATURE_PROJECT. reviewer</li>
+                        <li>&NOMENCLATURE_PROJECT. comment author</li>
+                        <li>Activity owner</li>
+                        <li>Release owner</li>
+                    </ul>
+                </p>
+                <p>
+                     Click the dot-dot-dot actions menu control to perform other functions related to &NOMENCLATURE_USERS..
+                </p>
+                
+                <br />
+                <br />
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-container (
+        name: button container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button what-is-a-initiative (
+        buttonName: what_is_a_initiative
+        label: About &NOMENCLATURE_INITIATIVES.
+        layout {
+            sequence: 30
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 106
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-a-release (
+        buttonName: what_is_a_release
+        label: About Releases
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 108
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    button what-is-activity (
+        buttonName: what_is_activity
+        label: About Activities
+        layout {
+            sequence: 50
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 110
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-an-area (
+        buttonName: what_is_an_area
+        label: About &NOMENCLATURE_AREAS.
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 105
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

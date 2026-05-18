@@ -1,0 +1,685 @@
+list admin-reports (
+    name: Admin Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 28
+                clearCache: 28
+            }
+        }
+        userDefinedAttributes {
+            1: View page views by user in a monthly calendar
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 29
+                clearCache: 29
+            }
+        }
+        userDefinedAttributes {
+            1: Report page view for this application
+            2: &P33_PAGE_VIEWS.
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 30
+                clearCache: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Report user activity for this application
+            2: &P33_USER_COUNT.
+        }
+    )
+
+)
+
+list administration (
+    name: Administration
+
+    entry feedback-preference (
+        label: Feedback Preference
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: Enable or disable Feedback for the application
+            2: &P33_FEEDBACK_STATUS.
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 26
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Re-create or remove sample data delivered with this application.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+
+list desktop-navigation-bar (
+    name: Desktop Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 102
+                items: {
+                    P102_APPLICATION_ID: &APP_ID.
+                    P102_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 102
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: nvl(:ENABLE_FEEDBACK,'NO') = 'YES'
+        }
+    )
+
+    entry log-out (
+        label: Log Out
+        layout {
+            sequence: 35
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry activity-calendar (
+        label: Activity Calendar
+        layout {
+            sequence: 120
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry drill-down (
+        label: Drill Down
+        icon {
+            imageIconCssClasses: fa-clone
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                48
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        layout {
+            sequence: 80
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 1
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        layout {
+            sequence: 130
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry report-and-marquee (
+        label: Report and Marquee
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                5
+                11
+                31
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry reports (
+        label: Reports
+        layout {
+            sequence: 110
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 24
+                anchor: adminReports
+            }
+        }
+    )
+
+    entry sample-data (
+        label: Sample Data
+        layout {
+            sequence: 90
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 26
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry side-by-side (
+        label: Side by Side
+        icon {
+            imageIconCssClasses: fa-layout-header-sidebar-left
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry stacked (
+        label: Stacked
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry stacked-with-sub-detail (
+        label: Stacked with Sub Detail
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        layout {
+            sequence: 100
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 27
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        layout {
+            sequence: 140
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+)
+
+list master-detail-pages (
+    name: Master Detail Pages
+
+    entry drill-down (
+        label: Drill Down
+        icon {
+            imageIconCssClasses: fa-clone
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                48
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+        userDefinedAttributes {
+            1: Consists of a report page that drills down to a page where the selected master is standard form items, and the detail tables use editable Interactive Grids.
+        }
+    )
+
+    entry report-and-marquee (
+        label: Report and Marquee
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                5
+                11
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Consists of a report page that drills down to a marquee page. On the marquee page each of the detail tables are shown using a classic report.
+        }
+    )
+
+    entry side-by-side (
+        label: Side by Side
+        icon {
+            imageIconCssClasses: fa-layout-header-sidebar-left
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: A single page master-detail utilizing side by side layout and report regions with modal edit windows.
+        }
+    )
+
+    entry stacked (
+        label: Stacked
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: A single page master-detail utilizing editable Interactive Grids.
+        }
+    )
+
+    entry stacked-with-sub-detail (
+        label: Stacked with Sub Detail
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: A single page master-detail-subdetail utilizing editable Interactive Grids.
+        }
+    )
+
+)
+
+list project-actions (
+    name: Project Actions
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 13
+                items: {
+                    P13_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 13
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 23
+                items: {
+                    P23_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 23
+            }
+        }
+    )
+
+    entry add-milestone (
+        label: Add Milestone
+        icon {
+            imageIconCssClasses: fa-flag-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 7
+                items: {
+                    P7_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 7
+            }
+        }
+    )
+
+    entry add-task (
+        label: Add Task
+        icon {
+            imageIconCssClasses: fa-check-square-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 9
+                items: {
+                    P9_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 9
+            }
+        }
+    )
+
+    entry add-to-do (
+        label: Add To Do
+        icon {
+            imageIconCssClasses: fa-list
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+                items: {
+                    P15_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 15
+            }
+        }
+    )
+
+)
+
+list task-actions (
+    name: Task Actions
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 23
+                items: {
+                    P23_PROJECT_ID: &P31_PROJECT_ID.
+                    P23_TASK_ID: &P31_TASK_ID.
+                }
+                clearCache: 23
+            }
+        }
+    )
+
+    entry add-to-do (
+        label: Add To Do
+        icon {
+            imageIconCssClasses: fa-list
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+                items: {
+                    P15_PROJECT_ID: &P31_PROJECT_ID.
+                    P15_TASK_ID: &P31_TASK_ID.
+                }
+                clearCache: 15
+            }
+        }
+    )
+
+)
+

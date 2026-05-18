@@ -1,0 +1,43 @@
+appProcess post-image (
+    name: POST_IMAGE
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            excm_util.upload_rte_image (
+                p_file_base64  => apex_application.g_clob_01,
+                p_filename     => apex_application.g_x02,
+                p_mimetype     => apex_application.g_x03,
+                p_image_ref_id => json_value(apex_application.g_x01, '$.imageRefId') );
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+
+appProcess set-get-image-prefix (
+    name: set GET_IMAGE_PREFIX
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            apex_app_setting.set_value(
+                p_name  => 'GET_IMAGE_PREFIX',
+                p_value => substr(APEX_UTIL.HOST_URL('SCRIPT'),length(APEX_UTIL.HOST_URL())+1));
+            ```
+    }
+    execution {
+        sequence: 1
+        point: newSession
+    }
+    serverSideCondition {
+        type: expression
+        plsqlExpression: nvl(apex_app_setting.get_value (p_name  => 'GET_IMAGE_PREFIX'),'x') != substr(APEX_UTIL.HOST_URL('SCRIPT'),length(APEX_UTIL.HOST_URL())+1)
+    }
+)
+

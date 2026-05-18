@@ -1,0 +1,526 @@
+page 11 (
+    name: Update or Delete Affects
+    alias: UPDATE-OR-DELETE-AFFECTS
+    title: Update or Delete Affects
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: You will only see this page when you're updating a recurring event. Choose whether or not the changes you made on the previous page applies to all events, future events, or only the initial event. Click the <strong>Apply Changes</strong> button to save your changes. Click the <strong>Cancel</strong> button toleave this page and not make any changes to your event(s).
+    }
+
+    region associated-events (
+        name: Associated Events
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select to_char(EVENT_DATE_TIME,'&APP_DATE_FORMAT.') ||
+                          case when event_id = :P10_EVENT_ID
+                               then ' *'
+                               end event_date,
+                       event_name,
+                       to_char(EVENT_DATE_TIME,'&APP_TIME_FORMAT.') || ' - ' ||
+                       to_char(to_date(to_char(EVENT_DATE_TIME,
+                                       '&APP_DATE_FORMAT.'||'&APP_TIME_FORMAT.'),
+                               '&APP_DATE_FORMAT.'||'&APP_TIME_FORMAT.')
+                                +(duration/24),'&APP_TIME_FORMAT.') ||
+                       ' (' ||
+                       case when duration = .5 then '30 mins'
+                            when duration = 1 then '1 hr'
+                            when duration > 1 then to_char(duration) || ' hrs'
+                            end ||
+                       ')' event_time
+                  from EBA_CA_EVENTS
+                 where series_id = :P10_SERIES_ID
+                 order by EVENT_DATE_TIME
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @update-event-s
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            footerText: * selected event
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+            showNullValuesAs: " - "
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No associated events found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EVENT_DATE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Date
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TIME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Time
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 60
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region remove-event-s (
+        name: Remove Event(s)
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        serverSideCondition {
+            type: item=value
+            item: P11_REQUEST_TYPE
+            value: D
+        }
+    )
+
+    region scope (
+        name: Scope
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @update-event-s
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P11_REQUEST_TYPE
+            value: D
+        }
+    )
+
+    region update-event-s (
+        name: Update Event(s)
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P11_REQUEST_TYPE
+            value: D
+        }
+    )
+
+    pageItem P11_DEL_REQUEST (
+        type: radioGroup
+        label {
+            label: Delete Affects:
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @upd-request-afo
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @remove-event-s
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: A
+        }
+        help {
+            helpText: Identify which events you want this delete to affect.
+        }
+    )
+
+    pageItem P11_REQUEST_TYPE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @scope
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11_UPD_REQUEST (
+        type: radioGroup
+        label {
+            label: Updates Affect:
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @upd-request-afo
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @scope
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        help {
+            helpText: Identify which events you want this update to affect.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P11_REQUEST_TYPE
+            value: D
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P11_REQUEST_TYPE
+            value: D
+        }
+    )
+
+    process delete (
+        name: Delete
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                EBA_ca_api.delete_event (
+                   p_event_id       => :P10_EVENT_ID,
+                   --
+                   p_delete_request => :P11_DEL_REQUEST );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Event(s) deleted.
+        }
+        error {
+            errorMessage: Error deleting Event(s).
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8500991211589465513
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process update (
+        name: Update
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_type_id         number;
+                   l_new_event_type  varchar2(60);
+                   l_display_time    varchar2(1);
+                begin
+                
+                if :P10_TYPE_ID = '-1' then
+                   l_type_id        := null;
+                   l_new_event_type := :P10_NEW_EVENT_TYPE;
+                else
+                   l_type_id        := :P10_TYPE_ID;
+                   l_new_event_type := null;
+                end if;
+                
+                if :P10_SUPPRESS_TIME = 'Y' then
+                   l_display_time := 'N';
+                else
+                   l_display_time := 'Y';
+                end if;
+                
+                EBA_ca_api.update_event (
+                   p_event_id        => :P10_EVENT_ID,
+                   p_event_name      => :P10_EVENT_NAME,
+                   p_type_id         => l_type_id,
+                   p_calendar_id     => :P10_CALENDAR_ID,
+                   p_new_event_type  => l_new_event_type,
+                   p_new_color_pref_id  => :P10_NEW_COLOR_PREF_ID,
+                   p_new_internal_yn    => :P10_NEW_INTERNAL_YN,
+                   p_event_date_time => to_date(:P10_EVENT_DATE_D||:P10_EVENT_START_TIME_D,
+                                               '&APP_DATE_FORMAT.&APP_TIME_FORMAT.'),
+                   p_duration        => :P10_DURATION,
+                   p_event_desc      => :P10_EVENT_DESC,
+                   p_contact_person  => :P10_CONTACT_PERSON,
+                   p_contact_email   => :P10_CONTACT_EMAIL,
+                   p_display_time    => l_display_time,
+                   p_location        => :P10_LOCATION,
+                   p_link_name_1     => :P10_LINK_NAME_1,
+                   p_link_url_1      => :P10_LINK_URL_1,
+                   p_link_name_2     => :P10_LINK_NAME_2,
+                   p_link_url_2      => :P10_LINK_URL_2,
+                   p_link_name_3     => :P10_LINK_NAME_3,
+                   p_link_url_3      => :P10_LINK_URL_3,
+                   --
+                   p_recur_flag      => :P10_RECUR_FLAG,
+                   p_recur_freq      => :P10_RECUR_FREQ,
+                   p_recur_end_date  => to_date(:P10_RECUR_END_DATE||:P10_EVENT_START_TIME_D,
+                                               '&APP_DATE_FORMAT.&APP_TIME_FORMAT.'), 
+                   --
+                   p_update_request => :P11_UPD_REQUEST,
+                   p_tags           => :P10_TAGS );
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Event(s) updated.
+        }
+        error {
+            errorMessage: Error updating Event(s).
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8500991009346465513
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        name: Go Home
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: Go To Home
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 1
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

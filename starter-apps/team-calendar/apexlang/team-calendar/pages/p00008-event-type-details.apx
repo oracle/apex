@@ -1,0 +1,516 @@
+page 8 (
+    name: Event Type Details
+    alias: EVENT-TYPE-DETAILS
+    title: Event Type Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region event-type-details (
+        name: Event Type Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region hidden (
+        name: hidden
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+    )
+
+    region recommended-colors (
+        name: Recommended Colors
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <br />Blue
+                <br />Border:     #C1CFE6
+                <br />Background: #E6ECF3
+                <br />
+                <br />Red
+                <br />Border:     #F1B8BA
+                <br />Background: #FAE1E2
+                <br />
+                <br />Yellow
+                <br />Border:     #E7EDB9
+                <br />Background: #F5F8E2
+                <br />
+                <br />Green
+                <br />Border:     #C2E1C8
+                <br />Background: #E5F3E8
+                <br />
+                <br />Teal
+                <br />Border:     #B1ECEB
+                <br />Background: #DEF7F7
+                <br />
+                <br />Purple
+                <br />Border:     #C0B7EC
+                <br />Background: #E4E1F7
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    pageItem P8_BORDER_COLOR (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @hidden
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: BORDER_COLOR
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Events are typically displayed in black.  You can override that color by assigning a display color by event type.
+        }
+    )
+
+    pageItem P8_COLOR_PREF_ID (
+        type: selectList
+        label {
+            label: Color Preference
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @color-preference
+            nullDisplayValue: - Select Color Preference -
+        }
+        layout {
+            sequence: 30
+            region: @event-type-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COLOR_PREF_ID
+            used: always
+        }
+    )
+
+    pageItem P8_DISPLAY_COLOR (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @hidden
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISPLAY_COLOR
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Events are typically displayed in black.  You can override that color by assigning a display color by event type.
+        }
+    )
+
+    pageItem P8_INTERNAL_YN (
+        type: selectList
+        label {
+            label: External / Internal
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:External;N,Internal Only;Y
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @event-type-details
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: INTERNAL_YN
+            used: always
+        }
+        config {
+            buildOption: @include-external-internal-event-types
+        }
+    )
+
+    pageItem P8_TYPE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @event-type-details
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TYPE_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P8_TYPE_NAME (
+        type: textField
+        label {
+            label: Event Type
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @event-type-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 48
+        }
+        validation {
+            valueRequired: true
+            maxLength: 60
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TYPE_NAME
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Event Type
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P8_TYPE_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P8_TYPE_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P8_TYPE_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation no-related-events-before-delete (
+        name: no related events before delete
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from EBA_ca_events
+                 where :P8_TYPE_ID = type_id
+                ```
+        }
+        error {
+            errorMessage: Cannot delete Event Type - it is related to Events.
+            associatedItem: @P8_TYPE_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    validation p8-event-type-unique (
+        name: P8_EVENT_TYPE unique
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from EBA_ca_event_types
+                 where lower(:P8_TYPE_NAME) = lower(type_name)
+                   and (:P8_TYPE_ID != type_id or :P8_TYPE_ID is null)
+                ```
+        }
+        error {
+            errorMessage: Type already exists.
+            associatedItem: @P8_TYPE_NAME
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 1696197230489451787
+        }
+    )
+
+    process fetch-row-from-eba-ca-event-types (
+        name: Fetch Row from EBA_CA_EVENT_TYPES
+        type: autoRowFetch
+        source {
+            tableName: EBA_CA_EVENT_TYPES
+            pkColumn: TYPE_ID
+            pkItem: P8_TYPE_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        error {
+            errorMessage: Unable to fetch row.
+        }
+        advanced {
+            executionMappingIdentifier: 8920388831892394953
+        }
+    )
+
+    process process-row-of-eba-ca-event-types (
+        name: Process Row of EBA_CA_EVENT_TYPES
+        type: autoRowProcessing
+        target {
+            tableName: EBA_CA_EVENT_TYPES
+            pkColumn: TYPE_ID
+            pkItem: P8_TYPE_ID
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        error {
+            errorMessage: Unable to process row of table EBA_CA_EVENT_TYPES.
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8920388933160394954
+        }
+    )
+
+    process set-colors (
+        name: set colors
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                select 
+                   BG_COLOR,
+                   TEXT_COLOR
+                from EBA_CA_COLOR_PREFS
+                where id = :P8_COLOR_PREF_ID) loop
+                :P8_DISPLAY_COLOR := c1.TEXT_COLOR;
+                :P8_BORDER_COLOR := c1.BG_COLOR;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 3274394295685075025
+        }
+    )
+
+)
+

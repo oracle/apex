@@ -1,0 +1,486 @@
+page 501 (
+    name: Load Full Dataset
+    alias: LOAD-FULL-DATASET
+    title: &APP_NAME. - Load Full Dataset
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                Use this page to load full airport and US state boundary data into this sample application. If your database can connect to the internet, the application can download directly from GitHub. Otherwise, download the JSON files from GitHub using your browser, and upload them here afterwards.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region airports-data (
+        name: Airports Data
+        type: staticContent
+        source {
+            htmlCode: Airports Data is fully loaded.
+        }
+        layout {
+            sequence: 30
+            parentRegion: @status-airports
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--success
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_sample_map_airports
+                having count(*)>1000
+                ```
+        }
+    )
+
+    region airports-data-2 (
+        name: Airports Data
+        type: staticContent
+        source {
+            htmlCode: Use this page to load the full US Airports dataset to the Sample Application.
+        }
+        layout {
+            sequence: 40
+            parentRegion: @status-airports
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_sample_map_airports
+                having count(*)<1000
+                ```
+        }
+    )
+
+    region file-items (
+        name: File Items
+        type: staticContent
+        source {
+            htmlCode: <p>Download the <strong>states-full.json</strong> and <strong>airports-full.json</strong> files from <strong><a href="https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/" target="_blank">https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/</a></strong> and upload here.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @load-full-dataset
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--hiddenOverflow
+            ]
+        }
+    )
+
+    region from-github (
+        name: From GitHub
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @load-full-dataset
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--hiddenOverflow
+            ]
+        }
+    )
+
+    region load-full-dataset (
+        name: Load Full Dataset
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                t-Form--stretchInputs
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region states-data (
+        name: States Data
+        type: staticContent
+        source {
+            htmlCode: US States Data is fully loaded.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @status-states
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--success
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    region states-data-2 (
+        name: States Data
+        type: staticContent
+        source {
+            htmlCode: Use this page to load US States boundaries to the Sample Application.
+        }
+        layout {
+            sequence: 30
+            parentRegion: @status-states
+            slot: subRegions
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    region status-airports (
+        name: Status Airports
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region status-states (
+        name: Status States
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P501_AIRPORTS_FILE (
+        type: fileUpload
+        label {
+            label: Airports Data
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 20
+            region: @file-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P501_PROXY_OVERRIDE (
+        type: textField
+        label {
+            label: Use Proxy Server
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @from-github
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P501_SOURCE (
+        type: radioGroup
+        label {
+            label: Load Data From
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Upload Files;FILE,Directly from GitHub;GITHUB
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @load-full-dataset
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: FILE
+        }
+    )
+
+    pageItem P501_STATES_FILE (
+        type: fileUpload
+        label {
+            label: US States Data
+            alignment: left
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 10
+            region: @file-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    button load (
+        buttonName: LOAD
+        label: Load Dataset
+        layout {
+            sequence: 30
+            region: @/breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-download
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction load-from (
+        name: Load From
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P501_SOURCE
+        }
+        clientSideCondition {
+            type: item=value
+            item: P501_SOURCE
+            value: FILE
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @from-github
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @file-items
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @from-github
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show-2 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @file-items
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process load-full-dataset (
+        name: Load Full Dataset
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    eba_sample_map_load_data(
+                        p_load_from          => :P501_SOURCE,
+                        p_states_file_name   => :P501_STATES_FILE,
+                        p_airports_file_name => :P501_AIRPORTS_FILE,
+                        p_proxy_override     => :P501_PROXY_OVERRIDE );
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Data loaded.
+        }
+        advanced {
+            executionMappingIdentifier: 1551167601831006133
+        }
+        serverSideCondition {
+            whenButtonPressed: @load
+        }
+    )
+
+    branch (
+        name: Go To Page 1
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 1
+                clearCache: 501
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @load
+        }
+    )
+
+)
+

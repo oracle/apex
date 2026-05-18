@@ -1,0 +1,126 @@
+page 500 (
+    name: Getting Started
+    alias: GETTING-STARTED
+    title: Getting Started - &APP_TITLE.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: <p>Universal Theme is a responsive, versatile, and customizable user interface for your APEX apps. It is designed uniquely for Oracle APEX to make it easy for developers to build beautiful, modern applications, at any scale, for any purpose, that work on any device.</p>
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region explore-universal-theme (
+        name: Explore Universal Theme
+        type: list
+        source {
+            list: @ut-get-started-navigation
+        }
+        layout {
+            sequence: 50
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--featured force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--3cols
+                t-Cards--hideBody
+                t-Cards--iconsRounded
+                t-Cards--animColorFill
+            ]
+        }
+    )
+
+    region getting-started (
+        name: Getting Started
+        type: staticContent
+        source {
+            htmlCode: <p>It is easy to get started using Universal Theme. Just follow the Create Application wizard to get something up and running. From here you can start to build out your application, start customizing it using Template Options and Theme Roller, and learn all about it in this very app.</p>
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region oracle-apex-universal-theme (
+        name: Oracle APEX Universal Theme
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: app-sample-universal-theme
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

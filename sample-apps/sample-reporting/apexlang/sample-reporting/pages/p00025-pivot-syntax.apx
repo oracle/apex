@@ -1,0 +1,238 @@
+page 25 (
+    name: Pivot Syntax
+    alias: PIVOT-SYNTAX
+    title: Pivot Syntax
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline: .highlight {background-color: yellow;}
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This report highlights the use of the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e25554/analysis.htm#BCFHHHHF" target="_blank"><strong>PIVOT operator</strong></a>.  This operator takes data in separate rows, aggregates it, and converts it into columns.  Expand the <strong>SQL Source</strong> region to see the SQL syntax.</p>
+                <p>Note that in APEX 5.0, the <strong>PIVOT</strong> functionality was added to interactive reports.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region pivot-query-syntax (
+        name: Pivot Query Syntax
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select * from (
+                    select project, status
+                    from eba_demo_ir_projects
+                )
+                pivot
+                (
+                    count(status)
+                    for status in ('Open' as "Open",'Closed' as "Closed",'Pending' as "Pending",'On-Hold' as "On-Hold")
+                )
+                order by project
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: QUERY
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            showNullValuesAs: -
+        }
+        pagination {
+            type: setPaginationSelectList
+        }
+
+        column Closed (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Closed
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column On-Hold (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: On-hold
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column Open (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Open
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column Pending (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Pending
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 10
+            parentRegion: @pivot-query-syntax
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: QUERY
+            highlightTermPageItem: P25_OPERATOR
+        }
+    )
+
+    pageItem P25_OPERATOR (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @about-this-page
+            slot: regionBody
+        }
+        source {
+            type: staticValue
+            staticValue: PIVOT
+            used: always
+        }
+        default {
+            type: static
+            staticValue: PIVOT
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

@@ -1,0 +1,179 @@
+restDataSource prod_odata (
+    name: EBA_REST_ODATA_PRODUCT
+    source {
+        type: odataRestService
+        remoteServer: @OData_Flexible_Remote_Server
+        urlPathPrefix: Northwind.svc/
+    }
+    settings {
+        resourcePath: Products
+        supportedOdataOptions: [
+            returnSortedResults
+            returnOnlySpecificCols
+            rowSearch
+            resultsPagination
+        ]
+        supportedOdataFilters: [
+            contains
+            startsWith
+            in
+            endsWith
+        ]
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    dataProfile {
+        name: PROD_ODATA
+        rowSelector: value
+    }
+
+    dataProfileColumn categoryid (
+        columnName: CATEGORYID
+        source {
+            sequence: 3
+            dataType: number
+        }
+        parsing {
+            pathExpression: CategoryID
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn discontinued (
+        columnName: DISCONTINUED
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: Discontinued
+        }
+        advanced {
+            sourceDataType: boolean
+        }
+    )
+
+    dataProfileColumn productid (
+        columnName: PRODUCTID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: ProductID
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn productname (
+        columnName: PRODUCTNAME
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: ProductName
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn quantityperunit (
+        columnName: QUANTITYPERUNIT
+        source {
+            sequence: 10
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: QuantityPerUnit
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn reorderlevel (
+        columnName: REORDERLEVEL
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: ReorderLevel
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn supplierid (
+        columnName: SUPPLIERID
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: SupplierID
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn unitprice (
+        columnName: UNITPRICE
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: UnitPrice
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn unitsinstock (
+        columnName: UNITSINSTOCK
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: UnitsInStock
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn unitsonorder (
+        columnName: UNITSONORDER
+        source {
+            sequence: 9
+            dataType: number
+        }
+        parsing {
+            pathExpression: UnitsOnOrder
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+)
+

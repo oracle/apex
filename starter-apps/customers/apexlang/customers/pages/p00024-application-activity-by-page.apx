@@ -1,0 +1,544 @@
+page 24 (
+    name: Application Activity by Page
+    alias: APPLICATION-ACTIVITY-BY-PAGE
+    title: Application Activity by Page
+    pageGroup: @reports
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region application-activity-by-page (
+        name: Application Activity by Page
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                step_id            Page,
+                (select page_name from apex_application_pages p where p.page_id = l.step_id and p.application_id = :app_id) page_name,
+                min(ELAP)        min_Elapsed,
+                avg(ELAP)        avg_Elapsed,
+                median(elap)     median_elapsed,
+                max(elap)        max_elapsed,
+                sum(nvl(NUM_ROWS,0))    total_rows,
+                --sum(IR_SEARCH)   total_ir_searches,
+                sum(decode(SQLERRM,null,0,1) )   Errors,
+                sum(decode(page_mode,'P',1,0)) partial_page_views,
+                sum(decode(page_mode,'D',1,0)) full_page_views,
+                count(*) page_views,
+                count(*) * median(elap) weighted_performance,
+                count(distinct userid) distinct_users,
+                count(distinct session_id) application_sessions
+                from apex_activity_log l
+                where 
+                    flow_id = :app_id
+                    and time_stamp > sysdate - to_number(:P24_TIMEFRAME,'9999999990.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')
+                    and userid is not null
+                group by step_id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 10000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 890649929638570409
+        }
+
+        column APPLICATION_SESSIONS (
+            type: plainText
+            heading {
+                heading: Application Sessions
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column AVG_ELAPSED (
+            type: plainText
+            heading {
+                heading: Avg Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 17
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D9999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column DISTINCT_USERS (
+            type: plainText
+            heading {
+                heading: Distinct Users
+                alignment: end
+            }
+            layout {
+                sequence: 29
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column ERRORS (
+            type: plainText
+            heading {
+                heading: Errors
+                alignment: end
+            }
+            layout {
+                sequence: 22
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column FULL_PAGE_VIEWS (
+            type: plainText
+            heading {
+                heading: Full Page Views
+                alignment: end
+            }
+            layout {
+                sequence: 24
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column MAX_ELAPSED (
+            type: plainText
+            heading {
+                heading: Max Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 19
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D9999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column MEDIAN_ELAPSED (
+            type: plainText
+            heading {
+                heading: Median Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 18
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D9999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column MIN_ELAPSED (
+            type: plainText
+            heading {
+                heading: Min Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 16
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D9999
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column PAGE (
+            type: plainText
+            heading {
+                heading: Page
+                alignment: end
+            }
+            layout {
+                sequence: 15
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PAGE_NAME (
+            type: plainText
+            heading {
+                heading: Page Name
+            }
+            layout {
+                sequence: 26
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column PAGE_VIEWS (
+            type: plainText
+            heading {
+                heading: Page Views
+                alignment: end
+            }
+            layout {
+                sequence: 25
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column PARTIAL_PAGE_VIEWS (
+            type: plainText
+            heading {
+                heading: Partial Page Views
+                alignment: end
+            }
+            layout {
+                sequence: 23
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column TOTAL_ROWS (
+            type: plainText
+            heading {
+                heading: Total Rows
+                alignment: end
+            }
+            layout {
+                sequence: 27
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column WEIGHTED_PERFORMANCE (
+            type: plainText
+            heading {
+                heading: Weighted Performance
+                alignment: end
+            }
+            layout {
+                sequence: 28
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D99
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        savedReport 8906515 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn APPLICATION_SESSIONS (
+                sequence: 8
+            )
+
+            displayColumn DISTINCT_USERS (
+                sequence: 7
+            )
+
+            displayColumn ERRORS (
+                sequence: 6
+            )
+
+            displayColumn MEDIAN_ELAPSED (
+                sequence: 3
+            )
+
+            displayColumn PAGE (
+                sequence: 1
+            )
+
+            displayColumn PAGE_NAME (
+                sequence: 2
+            )
+
+            displayColumn PAGE_VIEWS (
+                sequence: 4
+            )
+
+            displayColumn WEIGHTED_PERFORMANCE (
+                sequence: 5
+            )
+
+            sort (
+                column: WEIGHTED_PERFORMANCE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: PAGE_VIEWS
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: TIMESTAMP
+                sort {
+                    direction: desc
+                    sequence: 3
+                }
+            )
+
+            sort (
+                column: "View"
+                sort {
+                    direction: desc
+                    sequence: 4
+                }
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--hiddenOverflow
+            ]
+        }
+    )
+
+    pageItem P24_TIMEFRAME (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        settings {
+            pageActionOnSelection: submitPage
+        }
+        lov {
+            type: sharedComponent
+            lov: @timeframe-4-weeks
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 00001.0000000000
+        }
+        default {
+            type: static
+            staticValue: 00001.0000000000
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @application-activity-by-page
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

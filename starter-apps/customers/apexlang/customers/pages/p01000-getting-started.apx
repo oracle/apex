@@ -1,0 +1,985 @@
+page 1000 (
+    name: Getting Started
+    alias: GETTING-STARTED
+    title: Getting Started
+    appearance {
+        pageTemplate: @/minimal-no-navigation
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .step-container { max-width: 768px; margin: 1.6rem auto }
+            .step-container .t-HeroRegion:not(.t-HeroRegion--featured) .t-HeroRegion-wrap { padding: 0 }
+            .t-Alert--info .t-Alert-icon { vertical-align: top }
+            .t-Alert--horizontal .t-Alert-title { line-height: 2.8rem }
+            .content-well { background: rgba(0, 0, 0, .05); border-radius: 2px; padding: 1.6rem }
+            .users-table .t-Report-report thead { display: none }
+            .users-table .t-Report-cell { padding: 0.8rem 0; font-size: 1.4rem; line-height: 1.5 }
+            .cta-button {padding: 16px 32px; font-size: 16px;}
+            .t-Card-info {
+              margin-top: 0;
+            }
+            
+            .t-Card-desc {
+              display: none;
+            }
+            
+            .t-Card-title {
+              font-weight: 400;
+            }
+            .apex-item-yes-no {white-space:pre;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: Use this items on this page to configure the app.
+    }
+
+    region access-control (
+        name: Access Control
+        type: staticContent
+        source {
+            htmlCode: <p>Access Control enables you to control the level of access users have to the application.  Your user account is automatically configured as an Administrator.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-1
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region acl-level (
+        name: ACL Level
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @access-control
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region application-options (
+        name: Application Options
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-4
+        }
+        headerAndFooter {
+            footerText: <p>Additional options are available, to view and set these navigate to the build option console under administration.</p>
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from apex_application_build_options
+                 where application_id = :APP_ID
+                   and eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+                ```
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+            cssClasses: step-container
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region feature-configuration (
+        name: Feature Configuration
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                    build_option_id ID, 
+                    build_option_name build_option, 
+                    build_option_status, 
+                    apex_item.hidden(p_idx => 1, p_value => build_option_id) ||
+                    apex_item.hidden(p_idx => 2, p_value => build_option_status) ||
+                    apex_item.switch ( 
+                       p_idx => 3,
+                       p_value => build_option_status,
+                       p_on_value => 'Include',
+                       p_on_label => 'Yes',
+                       p_off_value => 'Exclude',
+                       p_off_label => 'No',
+                       p_item_id => 'BO_OPT_' || rownum,
+                       p_item_label => apex_escape.html(build_option_name) || ': Is Enabled',
+                       p_attributes => 'style="white-space:pre;"') toggle_build_option,
+                    component_comment,
+                    last_updated_on updated,
+                    lower(last_updated_by) updated_by
+                from
+                    apex_application_build_options bo
+                where
+                    application_id = :APP_ID
+                and
+                    build_option_name in ('Competitors', 'Contacts', 'Feedback', 'Geography', 'Partners')
+                order by
+                    2 asc
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @application-options
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 500
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+            showNullValuesAs: -
+        }
+
+        column BUILD_OPTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Feature
+            }
+            layout {
+                sequence: 2
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <strong>#BUILD_OPTION#</strong><br>
+                    #COMPONENT_COMMENT#
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BUILD_OPTION_STATUS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column COMPONENT_COMMENT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 5
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column TOGGLE_BUILD_OPTION (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Enabled
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 6
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 7
+            }
+        )
+
+    )
+
+    region first-time-setup-completed (
+        name: First Time Setup Completed
+        type: staticContent
+        source {
+            htmlCode: The first time setup has already been completed for &APPLICATION_TITLE..
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'NO'
+        }
+    )
+
+    region introduction-wizard (
+        name: Introduction Wizard
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: step-container
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region sample-data (
+        name: Sample Data
+        type: staticContent
+        source {
+            htmlCode: Loading Sample Data will enable you to explore the functionality of the app with pre-populated sample data.
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-3
+            renderComponents: belowContent
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region users (
+        name: Users
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            cssClasses: step-container
+            icon: fa-number-2
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    region users-2 (
+        name: Users
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    apex_util.prepare_url( 'f?p=' || :APP_ID || ':192:' || :APP_SESSION
+                                          || '::::P192_USERNAME,P192_ACCESS_LEVEL_ID,P192_SEQUENCE:'
+                                          || lower(apex_escape.html(c001)) || ',' || n001 || ',' || seq_id ) as card_link,
+                    lower(c001) as username,
+                    case n001 
+                        when 3 then 'Administrator' 
+                        when 2 then 'Contributor' 
+                        when 1 then 'Reader'
+                        when 0 then 'Pending Approval'
+                        when -99 then 'No Access'
+                    end as card_subtext,
+                    case n001 
+                        when 3 then 'fa-user-wrench' 
+                        when 2 then 'fa-user-edit' 
+                        when 1 then 'fa-user'
+                        when 0 then 'fa-user-clock'
+                        when -99 then 'fa-user-ban'
+                    end as card_icon,
+                    case n001 
+                        when 3 then 'u-color-15' 
+                        when 2 then 'u-color-4' 
+                        when 1 then 'u-color-1'
+                        when 0 then 'u-color-7'
+                        when -99 then 'u-color-9'
+                    end as card_color,
+                    rownum,
+                    lower(c001) card_title,
+                    null card_text
+                from
+                    apex_collections
+                where
+                    collection_name = 'NEW_USERS'
+                order by n001 desc, c001
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @users
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 500
+        }
+        componentAppearance {
+            template: @/cards
+            templateOptions: [
+                #DEFAULT#
+                t-Cards--compact
+                t-Cards--displayIcons
+                t-Cards--4cols
+                t-Cards--animColorFill
+            ]
+            cssClasses: users-table
+        }
+
+        column CARD_COLOR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Card color
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_ICON (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Card icon
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_LINK (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Card link
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_SUBTEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Card subtext
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TEXT (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Card text
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CARD_TITLE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Card title
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROWNUM (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Username
+            }
+            layout {
+                sequence: 1
+            }
+            columnFormatting {
+                htmlExpression: <a href="#CARD_LINK#" role="button" class="t-Button t-Button--icon t-Button--noUI t-Button--iconLeft"><span aria-hidden="true" class="t-Icon t-Icon--left fa #CARD_ICON#" title="#USERNAME# - #CARD_SUBTEXT#"></span>#USERNAME#</a>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region welcome-to-application-title (
+        name: Welcome to &APPLICATION_TITLE.
+        type: staticContent
+        source {
+            htmlCode: Please take a moment to complete this first time setup.
+        }
+        layout {
+            sequence: 10
+            parentRegion: @introduction-wizard
+            slot: subRegions
+        }
+        appearance {
+            template: @/hero
+            templateOptions: t-HeroRegion--noPadding
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-192.png
+        }
+    )
+
+    pageItem P1000_ACL_CONFIG (
+        type: radioGroup
+        label {
+            label: Access Control Level
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-control-scope
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @acl-level
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: PUBLIC_READONLY
+        }
+    )
+
+    pageItem P1000_LOAD_SAMPLE_YN (
+        type: radioGroup
+        label {
+            label: Load Sample Data
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes - Load Sample Data;Y,No - Do Not Load Sample Data;N
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @sample-data
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+    )
+
+    pageItem P1000_USERNAME_FORMAT (
+        type: radioGroup
+        label {
+            label: Username Format
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @username-format
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @acl-level
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value ('USERNAME_FORMAT')
+            used: always
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:APP_USER,'@') > 0
+        }
+    )
+
+    button add-user (
+        buttonName: ADD_USER
+        label: Add User
+        layout {
+            sequence: 10
+            region: @users-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-user-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 192
+                clearCache: 192
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            customAttributes: style="margin-top:10px;"
+        }
+    )
+
+    button complete (
+        buttonName: COMPLETE
+        label: Complete Setup
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--iconRight
+            ]
+            cssClasses: cta-button
+            icon: fa-check-circle
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'YES'
+        }
+    )
+
+    button ok (
+        buttonName: OK
+        label: Continue
+        layout {
+            sequence: 10
+            region: @first-time-setup-completed
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: CUSTOMERS
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('FIRST_RUN') = 'NO'
+        }
+    )
+
+    dynamicAction refresh-on-edit (
+        name: Refresh on edit
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @users-2
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @users-2
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process add-current-user-to-collection (
+        name: Add Current User to Collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.add_member(
+                    p_collection_name => 'NEW_USERS',
+                    p_c001            => lower(:APP_USER),
+                    p_n001            => 3);
+                ```
+        }
+        execution {
+            sequence: 30
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1162453552983581228
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_collection.collection_member_count(p_collection_name => 'NEW_USERS') = 0
+        }
+    )
+
+    process create-new-users-collection (
+        name: Create NEW_USERS Collection
+        type: executeCode
+        source {
+            plsqlCode: apex_collection.create_or_truncate_collection(p_collection_name => 'NEW_USERS');
+        }
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1162453079925581227
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody: return not apex_collection.collection_exists(p_collection_name => 'NEW_USERS');
+        }
+    )
+
+    process process-page-data (
+        name: Process Page Data
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    -- Enable ACL
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_ENABLED',
+                        p_preference_value => 'Y' );
+                    
+                    -- Set ACL Scope
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'ACCESS_CONTROL_SCOPE',
+                        p_preference_value => :P1000_ACL_CONFIG );
+                
+                    -- Define Username Preference
+                    if instr(:APP_USER,'@') > 0 then
+                        eba_cust_fw.set_preference_value (
+                            p_preference_name  => 'USERNAME_FORMAT',
+                            p_preference_value => :P1000_USERNAME_FORMAT );
+                    end if;
+                    
+                    -- Add Users
+                    begin
+                        insert into eba_cust_users
+                        (username, access_level_id, account_locked)
+                        select
+                                c001 as username,
+                                n001 as access_level_id,
+                                'N'  as account_locked
+                            from
+                                apex_collections
+                            where
+                                collection_name = 'NEW_USERS'
+                            and
+                                lower(c001) not in (select distinct lower(username) from eba_cust_users);
+                    exception
+                      when others then
+                        null;
+                    end;
+                
+                    -- Get rid of the collection
+                    apex_collection.delete_collection(p_collection_name => 'NEW_USERS');
+                
+                    -- Load Sample Data
+                    if :P1000_LOAD_SAMPLE_YN = 'Y' then
+                        eba_cust_sample_data.create_sample_data();
+                    end if;
+                
+                    -- Set Build Options
+                    for i in 1..apex_application.g_f01.count
+                    loop
+                        for c1 in ( select application_id, build_option_name, build_option_status
+                                    from apex_application_build_options
+                                    where apex_application.g_f01(i) = build_option_id
+                                       and application_Id = :APP_ID)
+                        loop
+                            if c1.build_option_status != apex_application.g_f03(i) then
+                                apex_util.set_build_option_status(  p_application_id => :APP_ID,
+                                                                    p_id => apex_application.g_f01(i),
+                                                                    p_build_status => upper(apex_application.g_f03(i)) );
+                            end if;
+                        end loop;
+                    end loop;
+                
+                    -- Set First Run to No
+                    eba_cust_fw.set_preference_value (
+                        p_preference_name  => 'FIRST_RUN',
+                        p_preference_value => 'NO' );
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Access Control has been enabled, defined users have been added, and application settings have been successfully updated.
+        }
+        advanced {
+            executionMappingIdentifier: 1162454768937581229
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete
+        }
+    )
+
+    process reset-user-collection (
+        name: Reset User Collection
+        type: executeCode
+        source {
+            plsqlCode: apex_collection.truncate_collection(p_collection_name => 'NEW_USERS');
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1162454292308581228
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :REQUEST = 'CC' and apex_collection.collection_exists(p_collection_name => 'NEW_USERS')
+        }
+    )
+
+    process set-username-format-based-on-current-user-s-username (
+        name: Set Username Format based on current user's username
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if instr(:APP_USER,'@') > 0 then
+                    eba_cust_fw.set_preference_value ('USERNAME_FORMAT','EMAIL');
+                else
+                    eba_cust_fw.set_preference_value ('USERNAME_FORMAT','STRING');
+                end if;
+                ```
+        }
+        execution {
+            sequence: 40
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1162453917442581228
+        }
+    )
+
+    branch (
+        name: Go To Page HOME
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: CUSTOMERS
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete
+        }
+    )
+
+)
+

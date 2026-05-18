@@ -1,0 +1,295 @@
+page 9999 (
+    name: Sign In
+    alias: LOGIN
+    title: APEXToGo - Sign In
+    appearance {
+        pageTemplate: @/login
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* Setting the Logo to be Larger on Mobile */
+            .c-SplashBox {
+              --ut-xs-hero-region-icon-container-size: 8rem;
+              --ut-xs-hero-region-title-font-size: 2rem;
+              --ut-xs-hero-region-title-line-height: 2.5rem;
+              --ut-hero-region-icon-container-size: 8rem;
+              --ut-hero-region-icon-size: 4rem;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region app-name (
+        name: &APP_NAME.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--featured t-HeroRegion--centered
+            ]
+            cssClasses: [
+                c-SplashBox
+                mxw480
+                margin-auto
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-192.png
+        }
+    )
+
+    region background-image (
+        name: Background Image
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: backgroundImage
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        image {
+            fileUrl: #APP_FILES#background.jpg
+        }
+    )
+
+    pageItem P9999_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+            alignment: left
+            columnCssClasses: [
+                mxw320
+                margin-auto
+            ]
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                margin-top-none
+                margin-bottom-sm
+            ]
+            icon: fa-user
+            valuePlaceholder: Enter any value
+        }
+        validation {
+            maxLength: 100
+        }
+        sessionState {
+            storage: request
+        }
+    )
+
+    button signin (
+        buttonName: SIGNIN
+        label: Sign In
+        layout {
+            sequence: 30
+            slot: contentBody
+            column: 5
+            columnSpan: 4
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+                t-Button--gapTop
+            ]
+            cssClasses: [
+                mxw320
+                margin-auto
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process clear-page-s-cache (
+        name: Clear Page(s) Cache
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 9100937433095607
+        }
+    )
+
+    process get-username-cookie (
+        name: Get Username Cookie
+        type: executeCode
+        source {
+            plsqlCode: :P9999_USERNAME := apex_authentication.get_login_username_cookie;
+        }
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 1900328694468886401
+        }
+    )
+
+    process login (
+        name: Login
+        type: invokeApi
+        invoke {
+            package: APEX_AUTHENTICATION
+            procedureOrFunction: LOGIN
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 9100440405095602
+        }
+
+        parameter p_password (
+            value {
+                type: null
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+        parameter p_set_persistent_auth (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: staticValue
+                staticValue: true
+            }
+            advanced {
+                displaySequence: 40
+            }
+        )
+
+        parameter p_username (
+            value {
+                type: functionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    if :P9999_USERNAME is not null then
+                        return :P9999_USERNAME;
+                    else
+                        return 'demo' || :APP_SESSION;
+                    end if;
+                    ```
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+    )
+
+    process set-username-cookie (
+        name: Set Username Cookie
+        type: invokeApi
+        invoke {
+            package: APEX_AUTHENTICATION
+            procedureOrFunction: SEND_LOGIN_USERNAME_COOKIE
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 9101018424095608
+        }
+
+        parameter p_consent (
+            parameter {
+                dataType: boolean
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 30
+            }
+        )
+
+        parameter p_cookie_name (
+            parameter {
+                hasDefault: true
+            }
+            value {
+                type: apiDefault
+            }
+            advanced {
+                displaySequence: 20
+            }
+        )
+
+        parameter p_username (
+            value {
+                type: item
+                item: P9999_USERNAME
+            }
+            advanced {
+                displaySequence: 10
+            }
+        )
+
+    )
+
+    branch (
+        name: Go To Page 4
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+)
+

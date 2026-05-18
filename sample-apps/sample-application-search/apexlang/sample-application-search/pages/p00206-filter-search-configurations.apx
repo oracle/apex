@@ -1,0 +1,319 @@
+page 206 (
+    name: Filter Search Configurations
+    alias: FILTER-SEARCH-CONFIGURATIONS
+    title: Filter Search Configurations
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to refine search results using <em>filters</em> to narrow down the results.</p>
+                <p>In this example, you can check the <strong>Stores checkbox</strong> to show only the results from the <em>Store Search Configuration,</em> or check the <strong>Products checkbox</strong> to show only the results from the <em>Product Search Configuration</em>.</p>
+                <p>To test this functionality, start typing your search term (or "<strong>Sea</strong>" for example) and try filtering the results.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @search-results-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Products and Stores
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        source {
+            pageItemsToSubmit: P206_CHECK_GRP
+        }
+        layout {
+            sequence: 50
+            parentRegion: @search-results-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: t-ResultsRegion--iconMd
+        }
+        accessibility {
+            useLandmark: false
+        }
+        settings {
+            searchPageItem: P206_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Enter a query to search for products or stores.
+            noResultsFoundMessage: No products or stores found.
+        }
+
+        searchSource product-search-configuration (
+            name: Product Search Configuration
+            searchConfig: @product
+            layout {
+                sequence: 20
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :P206_CHECK_GRP like '%P%'
+            }
+        )
+
+        searchSource store-search-configuration (
+            name: Store Search Configuration
+            searchConfig: @store
+            layout {
+                sequence: 10
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :P206_CHECK_GRP like '%S%'
+            }
+        )
+
+    )
+
+    region search-results-container (
+        name: Search Results Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P206_CHECK_GRP (
+        type: checkboxGroup
+        label {
+            label: Search Within
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Search Products;P,Search Stores;S
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+        default {
+            type: static
+            staticValue: P:S
+        }
+    )
+
+    pageItem P206_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Enter your search term, e.g. 'Sea'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 207
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 204
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction check (
+        name: Check
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P206_CHECK_GRP
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 20
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P206_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

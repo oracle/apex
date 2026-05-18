@@ -1,0 +1,14 @@
+table.apex-gantt-chart thead th.topLevelDate{font:bold 14px/14px Arial,sans-serif;text-align:left;color:#333;padding:5px;width:200px}
+table.apex-gantt-chart thead th.subLevelDate{font:normal 11px/12px Arial,sans-serif;color:#707070;width:80px;text-align:left;padding:0 5px 5px 5px;white-space:nowrap}
+table.apex-gantt-chart thead th.subLevelDate.beginTopLevelDate{border-left:1px solid #DDD}
+table.apex-gantt-chart tbody tr:first-child th,table.apex-gantt-chart tbody tr:first-child td{border-top:1px solid #AAA}
+table.apex-gantt-chart tbody tr:first-child td{padding-top:2px}
+table.apex-gantt-chart tbody th{padding:5px;font:bold 11px/12px Arial,sans-serif;text-align:left;width:200px}
+table.apex-gantt-chart tbody th a{color:#333;text-decoration:none;white-space:nowrap}
+table.apex-gantt-chart tbody th a:hover{text-decoration:underline}
+table.apex-gantt-chart tbody td{border-left:1px solid #EEE;padding:0 2px 2px 2px}
+table.apex-gantt-chart tbody td a{display:block;padding:0;font:normal 11px/22px Arial,sans-serif;color:#333;text-indent:5px;background:#F0F0F0;border:1px solid #AAA;text-decoration:none;-webkit-border-radius:3px;-moz-border-radius:3px;-ms-border-radius:3px;border-radius:3px;-webkit-transition:all,0.1s;-moz-transition:all,0.1s;-ms-transition:all,0.1s;transition:all,0.1s;white-space: nowrap;}
+table.apex-gantt-chart tbody td a span{display:block;font:normal 12px/22px Arial,sans-serif;text-decoration:none;text-indent:0}
+table.apex-gantt-chart tbody td a span.spanPrev{float:left;padding-left:5px}
+table.apex-gantt-chart tbody td a span.spanNext{float:right;padding-right:5px}
+table.apex-gantt-chart tbody td a:hover{background-color:#E0E0E0;text-decoration:underline}

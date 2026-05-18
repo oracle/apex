@@ -1,0 +1,8 @@
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup session-management (
+    name: Session Management
+)
+

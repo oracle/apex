@@ -1,0 +1,679 @@
+list all-maps (
+    name: All Maps
+
+    entry circle-search (
+        label: Circle Search
+        icon {
+            imageIconCssClasses: fa-circle-o
+        }
+        layout {
+            sequence: 1050
+        }
+        isCurrent {
+            type: pages
+            pages: 122
+        }
+        link {
+            target: {
+                page: 122
+                clearCache: 122
+            }
+        }
+        userDefinedAttributes {
+            1: Draw a circle onto a map and find all airports within that circle.
+            2: map-screenshots/circle-search.jpg
+        }
+    )
+
+    entry clickable-map (
+        label: Clickable Map
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 1020
+        }
+        isCurrent {
+            type: pages
+            pages: 111
+        }
+        link {
+            target: {
+                page: 111
+                clearCache: 111
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize airport data using <em>map markers</em>.
+            2: map-screenshots/clickable-map.jpg
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 1040
+        }
+        isCurrent {
+            type: pages
+            pages: 120
+        }
+        link {
+            target: {
+                page: 120
+                clearCache: 120
+            }
+        }
+        userDefinedAttributes {
+            1: Provide powerful analysis on airport data using <em>Faceted Search</em>.
+            2: map-screenshots/faceted-search.jpg
+        }
+    )
+
+    entry heat-map (
+        label: Heat Map
+        icon {
+            imageIconCssClasses: fa-heat-map
+        }
+        layout {
+            sequence: 1080
+        }
+        isCurrent {
+            type: pages
+            pages: 110
+        }
+        link {
+            target: {
+                page: 110
+                clearCache: 110
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize airport data as a <em>heat map</em>.
+            2: map-screenshots/heat-map.jpg
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry legacy-oracle-maps-plug-in (
+        label: Legacy Oracle Maps Plug-In
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 4100
+        }
+        isCurrent {
+            type: pages
+            pages: 201
+        }
+        link {
+            target: {
+                page: 201
+                clearCache: 201
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize Spatial data using the Plug-In from the (legacy) Sample Geolocation Showcase.
+            2: map-screenshots/legacy.jpg
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry map-and-report (
+        label: Map and Report
+        icon {
+            imageIconCssClasses: fa-arrows-h
+        }
+        layout {
+            sequence: 1060
+        }
+        isCurrent {
+            type: pages
+            pages: 123
+        }
+        link {
+            target: {
+                page: 123
+                clearCache: 123
+            }
+        }
+        userDefinedAttributes {
+            1: Connect a map to a report (or other) component.
+            2: map-screenshots/map-and-report.jpg
+        }
+    )
+
+    entry nearest-neighbor-search (
+        label: Nearest Neighbor Search
+        icon {
+            imageIconCssClasses: fa-line-map
+        }
+        layout {
+            sequence: 1070
+        }
+        isCurrent {
+            type: pages
+            pages: 124
+        }
+        link {
+            target: {
+                page: 124
+                clearCache: 124
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Show nearest neighbors to a clicked position on the map.
+            2: map-screenshots/nearest-neighbor.jpg
+        }
+    )
+
+    entry search-and-show (
+        label: Search and Show
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 1030
+        }
+        isCurrent {
+            type: pages
+            pages: 121
+        }
+        link {
+            target: {
+                page: 121
+                clearCache: 121
+            }
+        }
+        userDefinedAttributes {
+            1: Search for an airport within an Interactive Report, and visualize it on a map.
+            2: map-screenshots/search-and-show.jpg
+        }
+    )
+
+    entry us-states-and-large-airports (
+        label: US States and Large Airports
+        icon {
+            imageIconCssClasses: fa-map-markers-o
+        }
+        layout {
+            sequence: 4090
+        }
+        isCurrent {
+            type: pages
+            pages: 115
+        }
+        link {
+            target: {
+                page: 115
+                clearCache: 115
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize US state boundaries and large airports on one map.
+            2: map-screenshots/us-states-and-large-airports.jpg
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry us-states-extruded (
+        label: US States (extruded)
+        icon {
+            imageIconCssClasses: fa-3d-mode
+        }
+        layout {
+            sequence: 4070
+        }
+        isCurrent {
+            type: pages
+            pages: 113
+        }
+        link {
+            target: {
+                page: 113
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize US states as extruded 3D polygons, based on a value.
+            2: map-screenshots/us-states-extruded.jpg
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry us-states-flat (
+        label: US States (flat)
+        icon {
+            imageIconCssClasses: fa-2d-mode
+        }
+        layout {
+            sequence: 4060
+        }
+        isCurrent {
+            type: pages
+            pages: 112
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize US states as flat polygons.
+            2: map-screenshots/us-states-flat.jpg
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry us-states-with-links (
+        label: US States with Links
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 4080
+        }
+        isCurrent {
+            type: pages
+            pages: 114
+        }
+        link {
+            target: {
+                page: 114
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize US states as a clickable map.
+            2: map-screenshots/us-states-with-links.jpg
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+)
+
+list desktop-navigation-bar (
+    name: Desktop Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 20
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry circle-search (
+        label: Circle Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 1050
+        }
+        isCurrent {
+            type: pages
+            pages: 122
+        }
+        link {
+            target: {
+                page: 122
+            }
+        }
+    )
+
+    entry clickable-map (
+        label: Clickable Map
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 1020
+        }
+        isCurrent {
+            type: pages
+            pages: 111
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 1040
+        }
+        isCurrent {
+            type: pages
+            pages: 120
+        }
+        link {
+            target: {
+                page: 120
+                items: {
+                    P120_AIRPORT_TYPE: AIRPORT
+                }
+            }
+        }
+    )
+
+    entry heat-map (
+        label: Heat Map
+        icon {
+            imageIconCssClasses: fa-heat-map
+        }
+        layout {
+            sequence: 1080
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry legacy-oracle-maps-plug-in (
+        label: Legacy Oracle Maps Plug-In
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 2060
+        }
+        isCurrent {
+            type: pages
+            pages: 201
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry load-full-dataset (
+        label: Load Full Dataset
+        icon {
+            imageIconCssClasses: fa-download
+        }
+        layout {
+            sequence: 2070
+        }
+        isCurrent {
+            type: pages
+            pages: 501
+        }
+        link {
+            target: {
+                page: 501
+            }
+        }
+    )
+
+    entry map-and-report (
+        label: Map and Report
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 1060
+        }
+        isCurrent {
+            type: pages
+            pages: 123
+        }
+        link {
+            target: {
+                page: 123
+            }
+        }
+    )
+
+    entry nearest-neighbor-search (
+        label: Nearest Neighbor Search
+        icon {
+            imageIconCssClasses: fa-line-map
+        }
+        layout {
+            sequence: 1070
+        }
+        isCurrent {
+            type: pages
+            pages: 124
+        }
+        link {
+            target: {
+                page: 124
+            }
+        }
+    )
+
+    entry search-and-show (
+        label: Search and Show
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 1030
+        }
+        isCurrent {
+            type: pages
+            pages: 121
+        }
+        link {
+            target: {
+                page: 121
+            }
+        }
+    )
+
+    entry us-states-and-large-airports (
+        label: US States and Large Airports
+        icon {
+            imageIconCssClasses: fa-map-markers-o
+        }
+        layout {
+            sequence: 2040
+        }
+        isCurrent {
+            type: pages
+            pages: 115
+        }
+        link {
+            target: {
+                page: 115
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry us-states-extruded (
+        label: US States (extruded)
+        icon {
+            imageIconCssClasses: fa-3d-mode
+        }
+        layout {
+            sequence: 2020
+        }
+        isCurrent {
+            type: pages
+            pages: 113
+        }
+        link {
+            target: {
+                page: 113
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry us-states-flat (
+        label: US States (flat)
+        icon {
+            imageIconCssClasses: fa-2d-mode
+        }
+        layout {
+            sequence: 2010
+        }
+        isCurrent {
+            type: pages
+            pages: 112
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+    entry us-states-with-links (
+        label: US States with Links
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 2030
+        }
+        isCurrent {
+            type: pages
+            pages: 114
+        }
+        link {
+            target: {
+                page: 114
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_sample_map_states
+        }
+    )
+
+)
+
+list main-menu (
+    name: Main Menu
+)
+

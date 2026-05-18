@@ -1,0 +1,8 @@
+event com_oracle_oramapshtml5_locerror (
+    name: HTML5 Location error
+)
+
+event com_oracle_oramapshtml5_locsuccess (
+    name: HTML5 Location received
+)
+

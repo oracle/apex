@@ -1,0 +1,106 @@
+app SAMPLE-VECTOR-SEARCH (
+    name: Sample Vector Search
+    version: 26.1.0
+    logo {
+        type: text
+        text: Sample Vector Search
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            t-TreeNav--styleA
+            js-navCollapsed--hidden
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        addBuiltWithApexToFooter: false
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+    }
+    security {
+        runtimeApiUsage: [
+            modifyThisApp
+            modifyWorkspaceRepository
+        ]
+    }
+    sessionStateProtection {
+        checksumSalt: 5D05AD0CF4A918EFA266F2A1CC8AC701B172A1BDD047E3D375796E4EC053CEF9
+    }
+    runtime {
+        allowFeedback: true
+    }
+    advanced {
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Vector Search
+        }
+    )
+
+    appSetting AI_PROVIDER (
+        value {
+            staticValue: NONE
+            onUpgradeKeepValue: true
+        }
+        validation {
+            validValues: OPENAI,OCI,NONE
+        }
+    )
+
+    appSetting AI_PROVIDER_INITIALIZED (
+        value {
+            staticValue: NO
+        }
+        validation {
+            validValues: YES,NO
+        }
+    )
+
+    appSetting WC_STATUS (
+        value {
+            staticValue: VOID
+            onUpgradeKeepValue: true
+        }
+        validation {
+            validValues: ENTERED,VOID
+        }
+    )
+
+)
+

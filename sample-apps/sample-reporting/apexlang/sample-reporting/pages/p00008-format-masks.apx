@@ -1,0 +1,340 @@
+page 8 (
+    name: Format Masks
+    alias: FORMAT-MASKS
+    title: Format Masks
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This report uses the <strong>SINCE</strong> and <strong>DD-MON-YYYY</strong> date format masks.  It uses a <strong>999G999G999G999G999G990D00</strong> numeric format mask, the <strong>G</strong> represents the thousands separator and the <strong>D</strong> is the decimal separator.  The inline basic bar graph uses the <strong>PCT_GRAPH:CFDEF0:144485:150</strong> format masks.  To edit format masks, edit the report attributes, then edit a specific report column, and set the <strong>Number / Date Format</strong> attribute.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region format-mask-example-report (
+        name: Format Mask Example Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select	
+                       PROJECT,
+                       START_DATE,
+                       END_DATE,
+                       STATUS,
+                       BUDGET,
+                       round(100*p.budget/tb.max_budget) graph
+                from EBA_DEMO_IR_PROJECTS p,
+                     (select max(budget) max_budget from EBA_DEMO_IR_PROJECTS) tb
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: format_mask
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2400785730662121848
+        }
+
+        column BUDGET (
+            type: plainText
+            heading {
+                heading: 999G999G999G999G999G990D00 mask
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: DD-MON-YYYY mask
+            }
+            layout {
+                sequence: 3
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column GRAPH (
+            type: percentGraph
+            heading {
+                heading: PCT_GRAPH mask
+            }
+            layout {
+                sequence: 8
+            }
+            appearance {
+                backgroundColor: #CFDEF0
+                foregroundColor: #144485
+                barWidth: 150
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PROJECT (
+            type: plainText
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: SINCE mask
+            }
+            layout {
+                sequence: 2
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        savedReport 24007980 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn BUDGET (
+                sequence: 5
+            )
+
+            displayColumn END_DATE (
+                sequence: 3
+            )
+
+            displayColumn GRAPH (
+                sequence: 6
+            )
+
+            displayColumn MAX_BUDGET (
+                sequence: 7
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn START_DATE (
+                sequence: 2
+            )
+
+            displayColumn STATUS (
+                sequence: 4
+            )
+
+            sort (
+                column: BUDGET
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: PROJECT
+                sort {
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: COST
+                sort {
+                    direction: desc
+                    sequence: 3
+                }
+            )
+
+        )
+
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 20
+            parentRegion: @container
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: format_mask
+        }
+    )
+
+)
+

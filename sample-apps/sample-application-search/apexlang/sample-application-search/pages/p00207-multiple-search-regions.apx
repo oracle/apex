@@ -1,0 +1,333 @@
+page 207 (
+    name: Multiple Search Regions
+    alias: MULTIPLE-SEARCH-REGIONS
+    title: Multiple Search Regions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region cancelled-orders (
+        name: Cancelled Orders
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @search-results-container
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                margin-top-sm
+            ]
+        }
+    )
+
+    region complete-orders (
+        name: Complete Orders
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @search-results-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                margin-top-sm
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to add <em>multiple regions</em> of the Search type to a single page. Each region can use different or the same search configurations, and all regions will perform a search based on the same input field simultaneously.</p>
+                <p>In this example, two Search regions are created, each referencing a different search configuration.</p>
+                <p>Type a keyword to search (such as "<strong>gary</strong>"). This will show all relevant Complete orders in the left region and Cancelled orders in the right region.</p>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @search-results-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Orders
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 10
+            parentRegion: @complete-orders
+            slot: subRegions
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: [
+                t-ResultsRegion--boxed
+                t-ResultsRegion--iconMd
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        settings {
+            searchPageItem: P207_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: No search conducted.
+            noResultsFoundMessage:
+                ```html
+                No completed order found.
+                
+                ```
+        }
+
+        searchSource complete-orders-search-configuration (
+            name: Complete Orders Search Configuration
+            searchConfig: @complete_orders_search_configuration
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region search-results-2 (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 10
+            parentRegion: @cancelled-orders
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: [
+                t-ResultsRegion--boxed
+                t-ResultsRegion--iconMd
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        settings {
+            searchPageItem: P207_SEARCH
+        }
+        sort {
+            overallSort: lastModified
+            sortSortDirection: descending
+        }
+        messages {
+            noQueryEnteredMessage: No search conducted.
+            noResultsFoundMessage:
+                ```html
+                No cancelled orders found.
+                
+                ```
+        }
+
+        searchSource cancelled-orders-search-configuration (
+            name: Cancelled Orders Search Configuration
+            searchConfig: @cancelled_orders_search_configuration
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region search-results-container (
+        name: Search Results Container
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P207_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Enter your search term, e.g. 'gary'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 300
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 206
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P207_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

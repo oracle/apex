@@ -1,0 +1,30 @@
+appProcess check-for-email-from (
+    name: check for email_from
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            if eba_ema_util.get_setting (p_name => 'from_email') is null then
+               apex_util.redirect_url(apex_page.get_url(
+                                               p_application => :APP_ID,
+                                               p_page        => '10010',
+                                               p_session     => :APP_SESSION ));
+            end if;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: currentPageNotInList
+        pages: [
+            9998
+            9999
+            10010
+        ]
+    }
+    security {
+        authorizationScheme: @administrator
+    }
+)
+

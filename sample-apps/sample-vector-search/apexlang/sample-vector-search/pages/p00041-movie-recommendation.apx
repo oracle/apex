@@ -1,0 +1,258 @@
+page 41 (
+    name: Movie Recommendation
+    alias: MOVIE-RECOMMENDATION
+    title: Movie Recommendation
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-movie-recommendation (
+        name: About Movie Recommendation
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The dropdown menu allows selecting a movie to <strong>find similar movies</strong> based on its title, moviedescription, and actors in descending order. Click on the movies to view detailed information about them.</p>
+                
+                <p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--textContent
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: complementary
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region content (
+        name: Content
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Select Movie Recommendation
+        }
+    )
+
+    region search-results-oci (
+        name: Search Results OCI
+        type: search
+        source {
+            pageItemsToSubmit: P41_SEARCH
+        }
+        layout {
+            sequence: 20
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: CURRENT_AI_PROVIDER
+            value: OCI
+        }
+        settings {
+            searchPageItem: P41_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Select a movie to find similar ones.
+            noResultsFoundMessage: No similar movies found.
+        }
+
+        searchSource movie-recommendation (
+            name: Movie Recommendation
+            searchConfig: @OCI_MOVIE_RECOMMENDATION
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region search-results-openai (
+        name: Search Results OPENAI
+        type: search
+        source {
+            pageItemsToSubmit: P41_SEARCH
+        }
+        layout {
+            sequence: 30
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: CURRENT_AI_PROVIDER
+            value: OPENAI
+        }
+        settings {
+            searchPageItem: P41_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Select a movie to find similar ones.
+            noResultsFoundMessage: No similar movies found.
+        }
+
+        searchSource movie-recommendation (
+            name: Movie Recommendation
+            searchConfig: @OPENAI_MOVIE_RECOMMENDATION
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P41_SEARCH (
+        type: selectOne
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select title, 
+                       moviedescription
+                  from eba_vector_moviedata;
+                ```
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 30
+        }
+    )
+
+    dynamicAction submit-page (
+        name: Submit Page
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P41_SEARCH
+        }
+
+        action refresh-search-results-oci (
+            name: Refresh Search Results OCI
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results-oci
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh-search-results-openai (
+            name: Refresh Search Results OpenAI
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results-openai
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

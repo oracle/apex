@@ -1,0 +1,613 @@
+page 18 (
+    name: Delete and Refresh
+    alias: DELETE-AND-REFRESH
+    title: Delete and Refresh
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region employees (
+        name: Employees
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT e.ROWID
+                ,      e.EMPNO ID
+                ,      e.EMPNO
+                ,      e.ENAME
+                ,      e.JOB
+                ,      m.ename MGR
+                ,      e.HIREDATE
+                ,      e.SAL
+                ,      e.COMM
+                ,      d.dname DEPTNO
+                FROM EBA_DEMO_DA_EMP e
+                ,    EBA_DEMO_DA_EMP m
+                ,    EBA_DEMO_DA_DEPT d
+                WHERE e.mgr = m.empno (+)
+                AND   e.deptno = d.deptno (+)
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        searchBar {
+            reportsSelectList: false
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        heading {
+            fixedTo: none
+        }
+        advanced {
+            savedReportMappingIdentifier: 2024603024458718042
+        }
+
+        column COMM (
+            type: plainText
+            heading {
+                heading: Commission
+                alignment: end
+            }
+            layout {
+                sequence: 8
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column DEPTNO (
+            type: plainText
+            heading {
+                heading: Department
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column EMPNO (
+            type: plainText
+            heading {
+                heading: Employee #
+                alignment: end
+            }
+            layout {
+                sequence: 2
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column ENAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column HIREDATE (
+            type: plainText
+            heading {
+                heading: Hire date
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ID (
+            type: link
+            heading {
+                heading: Delete
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    type: url
+                    url: #
+                }
+                linkText: <span class="t-Icon fa fa-trash-o" aria-hidden="true"></span>
+                linkAttributes: id="#ID#" class="delete t-Button t-Button--danger t-Button--simple t-Button--small" title="Delete Employee: #ENAME#"
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column JOB (
+            type: plainText
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column MGR (
+            type: plainText
+            heading {
+                heading: Manager
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            heading {
+                heading: Rowid
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: OTHER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column SAL (
+            type: plainText
+            heading {
+                heading: Salary
+                alignment: end
+            }
+            layout {
+                sequence: 7
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        savedReport 20246041 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 8
+            )
+
+            displayColumn DEPTNO (
+                sequence: 9
+            )
+
+            displayColumn EMPNO (
+                sequence: 2
+            )
+
+            displayColumn ENAME (
+                sequence: 3
+            )
+
+            displayColumn HIREDATE (
+                sequence: 6
+            )
+
+            displayColumn ID (
+                sequence: 1
+            )
+
+            displayColumn JOB (
+                sequence: 4
+            )
+
+            displayColumn MGR (
+                sequence: 5
+            )
+
+            displayColumn SAL (
+                sequence: 7
+            )
+
+        )
+
+        savedReport 20246043 (
+            visibility: alternativeDefault
+            name: Salesmen Report
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 7
+            )
+
+            displayColumn CURRENT_TIMESTAMP (
+                sequence: 9
+            )
+
+            displayColumn DEPTNO (
+                sequence: 8
+            )
+
+            displayColumn ENAME (
+                sequence: 2
+            )
+
+            displayColumn HIREDATE (
+                sequence: 5
+            )
+
+            displayColumn ID (
+                sequence: 10
+            )
+
+            displayColumn JOB (
+                sequence: 3
+            )
+
+            displayColumn MGR (
+                sequence: 4
+            )
+
+            displayColumn ROWEMPNO (
+                sequence: 1
+            )
+
+            displayColumn SAL (
+                sequence: 6
+            )
+
+            filter ir-condition (
+                column: JOB
+                value: SALESMAN
+            )
+
+        )
+
+        savedReport 20246046 (
+            visibility: alternativeDefault
+            name: High Paid Staff
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn COMM (
+                sequence: 7
+            )
+
+            displayColumn CURRENT_TIMESTAMP (
+                sequence: 9
+            )
+
+            displayColumn DEPTNO (
+                sequence: 8
+            )
+
+            displayColumn ENAME (
+                sequence: 2
+            )
+
+            displayColumn HIREDATE (
+                sequence: 5
+            )
+
+            displayColumn ID (
+                sequence: 10
+            )
+
+            displayColumn JOB (
+                sequence: 3
+            )
+
+            displayColumn MGR (
+                sequence: 4
+            )
+
+            displayColumn ROWEMPNO (
+                sequence: 1
+            )
+
+            displayColumn SAL (
+                sequence: 6
+            )
+
+            sort (
+                column: SAL
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: SAL
+                operator: >=
+                value: 5000
+            )
+
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how dynamic actions can be used to provide AJAX based delete row functionality. In the example, clicking on any of the 'Delete' icons for any employee will result in that record being deleted from the database.</p>
+                <p>To achieve this, the page contains one dynamic action called 'DELETE EMP'. This fires when the user clicks on any of the 'Delete' icons and has the following six 'True Actions' that handle the delete:
+                <ul style="margin: 8px 24px;">
+                <li>'Confirm' to confirm the user really wants to delete.</li>
+                <li>'Set Value' of a hidden item to the 'empno' value to delete.</li>
+                <li>'Execute PL/SQL Code' to delete the record</li>
+                <li>'Refresh' the report region.</li>
+                <li>'Notification' to display a 'Employee deleted' message.</li>
+                <li>'Cancel Event' to stop the browser's default handling of refreshing the entire page that would occur after a link is clicked.</li></ul></p>
+                <p>It uses five native actions ('Confirm', 'Set Value', 'Execute PL/SQL Code', 'Refresh' and 'Cancel Event') and one plug-in action ('Notification').</p>
+                ```
+        }
+        layout {
+            sequence: 3
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+    )
+
+    region server-side-refresh (
+        name: Server Side - Refresh 2
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P18_EMPNO (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @employees
+            slot: regionBody
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @employees
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    RIR
+                    &APP_PAGE_ID.
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction delete-emp (
+        name: DELETE EMP
+        execution {
+            sequence: 10
+            eventScope: dynamic
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: a.delete
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Are you sure you want to delete this employee?
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                        -- If the person to be deleted is a manager, move all of his/her employees
+                        -- up a level.
+                        update eba_demo_da_emp e1
+                        set e1.mgr = ( select e2.mgr from eba_demo_da_emp e2 where e2.empno = :P18_EMPNO )
+                        where e1.mgr = :P18_EMPNO;
+                    
+                        delete from eba_demo_da_emp where empno = :P18_EMPNO;
+                        commit;
+                    end;
+                    ```
+                itemsToSubmit: P18_EMPNO
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: alert("Employee #"+$v("P18_EMPNO")+" removed.");
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @employees
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.id
+            }
+            affectedElements {
+                selectionType: items
+                items: P18_EMPNO
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,95 @@
+taskDefinition LAPTOP_APPROVAL (
+    name: Laptop Approval
+    type: approval
+    task {
+        subject: &LAPTOP_TYPE. Laptop Request for &ENAME.
+    }
+    deadline {
+        dueOnType: schedulerExpression
+        schedulerExpression: FREQ=MINUTELY;INTERVAL=2
+        expirationPolicy: renew
+        maxRenewalCount: 2
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select ename,
+                   case laptop_type when 'MAC' then 'MacBook Pro' when 'WIN' then 'Lenovo T490' end as laptop_type,
+                   apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') as demo_notification_email 
+            from eba_demo_appr_laptop_requests lr
+            left outer join eba_demo_appr_emp e on e.empno = lr.empno
+            where lr.id = :APEX$TASK_PK
+            ```
+    }
+    advanced {
+        detailsPage: {
+            page: 2
+            items: {
+                P2_TASK_ID: &TASK_ID.
+            }
+            clearCache: 2
+            action: resetPagination
+        }
+    }
+
+    action before-expire-send-reminder-email-to-approver (
+        name: Before Expire: Send Reminder Email to Approver
+        type: sendEMail
+        emailHeader {
+            to: &DEMO_NOTIFICATION_EMAIL.
+        }
+        emailContent {
+            subject: Laptop Request for &ENAME. Requires Your Review
+            bodyPlainText: Hi &APEX$TASK_OWNER., please check your "My Approvals" inbox. The laptop request for &ENAME. requires your review and will expire shortly and be assigned to a colleague if you are unable to review it in a timely manner. Thanks for your kind attention to this matter.
+            bodyHtml:
+                ```html
+                <p>Hi &APEX$TASK_OWNER., please check your "My Approvals" inbox. The laptop request for &ENAME. requires your review 
+                    and will expire shortly and be assigned to a colleague if you are unable to review it in a
+                    timely manner. Thanks for your kind attention to this matter.</p>
+                ```
+        }
+        execution {
+            onEvent: beforeExpire
+            beforeExpirationInterval: PT1M
+            sequence: 30
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('DEMO_NOTIFICATION_EMAIL') is not null
+        }
+    )
+
+    action push-email-queue-for-sample (
+        name: Push Email Queue for Sample
+        type: executeCode
+        source {
+            plsqlCode: apex_mail.push_queue;
+        }
+        execution {
+            onEvent: beforeExpire
+            beforeExpirationInterval: PT1M
+            sequence: 40
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: DEMO_NOTIFICATION_EMAIL
+        }
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            staticValue: PAT
+        }
+    )
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: eba_demo_appr.get_laptop_approver(:APEX$TASK_RENEWAL_COUNT)
+        }
+    )
+
+)
+

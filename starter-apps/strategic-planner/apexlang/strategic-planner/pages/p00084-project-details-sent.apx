@@ -1,0 +1,64 @@
+page 84 (
+    name: Project Details Sent
+    alias: PROJECT-DETAILS-SENT
+    title: &NOMENCLATURE_PROJECT. Details Sent
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @ai-project-summaries
+    }
+
+    region details-sent (
+        name: Details Sent
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select prompt_sent, details_sent
+                      from sp_project_ai_summaries
+                     where id = :P84_ID
+                ) loop
+                
+                    return apex_markdown.to_html ( p_markdown => c1.details_sent );
+                
+                end loop;
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P84_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @details-sent
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

@@ -1,0 +1,19 @@
+authorization team-members (
+    name: Team Members
+    type: existsSqlQuery
+    settings {
+        sqlQuery:
+            ```sql
+            select 1
+            from eba_demo_md_team_members
+            where upper(username) = upper(:APP_USER)
+            ```
+    }
+    error {
+        errorMessage: You must be a team member to use this application.
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

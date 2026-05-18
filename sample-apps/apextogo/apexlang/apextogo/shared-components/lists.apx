@@ -1,0 +1,202 @@
+list navigation-bar (
+    name: Navigation Bar
+
+    entry cart (
+        label: Cart
+        icon {
+            imageIconCssClasses: &SHOPPING_CART_ICON.
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 8
+                clearCache: 8
+            }
+        }
+        userDefinedAttributes {
+            1: &SHOPPING_CART_ITEMS.
+            2: js-shopping-cart-item
+        }
+    )
+
+    entry install-app (
+        label: Install App
+        icon {
+            imageIconCssClasses: fa-cloud-download
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #action$a-pwa-install
+            }
+        }
+        userDefinedAttributes {
+            2: a-pwaInstall
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry account (
+        label: Account
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 20000
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry orders (
+        label: Orders
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry search (
+        label: Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #action$open-search
+            }
+        }
+    )
+
+)
+
+list user-settings (
+    name: User Settings
+    config {
+        buildOption: @feature-user-settings
+    }
+
+    entry faq (
+        label: FAQ
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry manage-account (
+        label: Manage Account
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry my-address (
+        label: My Address
+        icon {
+            imageIconCssClasses: fa-map-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 20010
+            }
+        }
+        userDefinedAttributes {
+            2: <span class="a-pwaPush--state"></span>
+        }
+        config {
+            buildOption: @feature-push-notifications
+        }
+    )
+
+    entry support (
+        label: Support
+        icon {
+            imageIconCssClasses: fa-support
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+)
+

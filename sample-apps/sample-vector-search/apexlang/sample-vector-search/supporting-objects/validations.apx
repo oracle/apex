@@ -1,0 +1,35 @@
+validation "Database Version is 23ai or higher" (
+    execution {
+        sequence: 10
+    }
+    validation {
+        type: expression
+        plsqlExpression: sys.dbms_db_version.version >= 23
+    }
+    error {
+        errorMessage: This sample application requires Oracle Database 23ai or later.
+    }
+)
+
+validation "VECTOR data type available" (
+    execution {
+        sequence: 20
+    }
+    validation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            begin
+                execute immediate 'declare l_vector vector; begin null; end;';
+                return true;
+            exception
+                when others then
+                    return false;
+            end;
+            ```
+    }
+    error {
+        errorMessage: VECTOR data type is not available in this database.
+    }
+)
+

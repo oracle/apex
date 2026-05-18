@@ -1,0 +1,795 @@
+page 18 (
+    name: Load Status
+    alias: LOAD-STATUS
+    title: Load Status
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 50
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region load-status (
+        name: Load Status
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select initcap(status_code)                                               as status,
+                       sofar                                                              as rows_processed,
+                       json_value( status_message, '$.rows_processed'  returning number ) as rows_successful,
+                       json_value( status_message, '$.rows_with_error' returning number ) as rows_with_error
+                  from apex_appl_page_bg_proc_status
+                 where execution_id = :P18_LOAD_EXEC_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: loadStatus
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/badge-list
+            templateOptions: [
+                #DEFAULT#
+                t-BadgeList--xlarge
+                t-BadgeList--dash
+                t-BadgeList--fixed
+                t-Report--hideNoPagination
+            ]
+            showNullValuesAs: -
+        }
+
+        column ROWS_PROCESSED (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Rows Processed
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            serverSideCondition {
+                type: itemIsNotInColonDelimitedList
+                item: P18_LOADING_STATUS
+                list: [
+                    SUCCESS
+                    ABORTED
+                    FAILED
+                ]
+            }
+        )
+
+        column ROWS_SUCCESSFUL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Rows Successful
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            serverSideCondition {
+                type: itemIsInColonDelimitedList
+                item: P18_LOADING_STATUS
+                list: [
+                    SUCCESS
+                    ABORTED
+                    FAILED
+                ]
+            }
+        )
+
+        column ROWS_WITH_ERROR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Rows With Error
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            serverSideCondition {
+                type: itemIsInColonDelimitedList
+                item: P18_LOADING_STATUS
+                list: [
+                    SUCCESS
+                    ABORTED
+                    FAILED
+                ]
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Status
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region rows-with-errors (
+        name: Rows with Errors
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select n001 row_number, c001 error_message
+                   from apex_collections
+                 where collection_name = 'SALES_DATA_LOAD_ERR';
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: loadError
+            customAttributes: style="display:none;"
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        messages {
+            whenNoDataFound: No error rows logged.
+        }
+
+        column ERROR_MESSAGE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Error Message
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column ROW_NUMBER (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Row Number
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region sales-table-contents (
+        name: Sales Table Contents
+        type: interactiveReport
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_LOAD_SALES
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: sales
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No sales data found.
+        }
+        advanced {
+            savedReportMappingIdentifier: 830208900339471008
+        }
+
+        column COUNTRY (
+            type: plainText
+            heading {
+                heading: Country
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 160
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ITEM_TYPE (
+            type: plainText
+            heading {
+                heading: Item Type
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column LAST_UPDATED (
+            type: plainText
+            heading {
+                heading: Last Updated
+                alignment: center
+            }
+            layout {
+                sequence: 170
+                columnAlignment: center
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column ORDER_DATE (
+            type: plainText
+            heading {
+                heading: Order Date
+                alignment: center
+            }
+            layout {
+                sequence: 70
+                columnAlignment: center
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ORDER_ID (
+            type: plainText
+            heading {
+                heading: Order Id
+                alignment: center
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column ORDER_PRIORITY (
+            type: plainText
+            heading {
+                heading: Order Priority
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column REGION (
+            type: plainText
+            heading {
+                heading: Region
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column SALES_CHANNEL (
+            type: plainText
+            heading {
+                heading: Sales Channel
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column SHIP_DATE (
+            type: plainText
+            heading {
+                heading: Ship Date
+                alignment: center
+            }
+            layout {
+                sequence: 90
+                columnAlignment: center
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column TOTAL_COST (
+            type: plainText
+            heading {
+                heading: Total Cost
+                alignment: center
+            }
+            layout {
+                sequence: 140
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column TOTAL_PROFIT (
+            type: plainText
+            heading {
+                heading: Total Profit
+                alignment: center
+            }
+            layout {
+                sequence: 150
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column TOTAL_REVENUE (
+            type: plainText
+            heading {
+                heading: Total Revenue
+                alignment: center
+            }
+            layout {
+                sequence: 130
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column UNITS_SOLD (
+            type: plainText
+            heading {
+                heading: Units Sold
+                alignment: center
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UNIT_COST (
+            type: plainText
+            heading {
+                heading: Unit Cost
+                alignment: center
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column UNIT_PRICE (
+            type: plainText
+            heading {
+                heading: Unit Price
+                alignment: center
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Sales Table Contents
+        }
+
+        savedReport 8302369 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn COUNTRY (
+                sequence: 2
+            )
+
+            displayColumn ITEM_TYPE (
+                sequence: 3
+            )
+
+            displayColumn LAST_UPDATED (
+                sequence: 10
+            )
+
+            displayColumn ORDER_PRIORITY (
+                sequence: 5
+            )
+
+            displayColumn REGION (
+                sequence: 1
+            )
+
+            displayColumn SALES_CHANNEL (
+                sequence: 4
+            )
+
+            displayColumn TOTAL_PROFIT (
+                sequence: 9
+            )
+
+            displayColumn UNITS_SOLD (
+                sequence: 6
+            )
+
+            displayColumn UNIT_COST (
+                sequence: 8
+            )
+
+            displayColumn UNIT_PRICE (
+                sequence: 7
+            )
+
+        )
+
+    )
+
+    region timer-container (
+        name: Timer Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: timer-container
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P18_LOADING_STATUS (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @load-status
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P18_LOAD_EXEC_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @load-status
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    dynamicAction refresh-load-status-on-timer (
+        name: Refresh Load Status on Timer
+        execution {
+            sequence: 20
+        }
+        when {
+            event: custom
+            customEvent: job_timer
+            selectionType: jQuerySelector
+            jquerySelector: #timer-container
+        }
+
+        action get-loading-job-status (
+            name: Get Loading Job Status
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    begin
+                        select status_code
+                          into :P18_LOADING_STATUS
+                          from apex_appl_page_bg_proc_status
+                         where execution_id = :P18_LOAD_EXEC_ID;
+                    exception when others then
+                        :P18_LOADING_STATUS := 'SUCCESS';
+                    end;
+                    ```
+                itemsToReturn: P18_LOADING_STATUS
+                showProcessing: true
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-load-status-timer (
+        name: Refresh Load Status Timer
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+
+        action initialize-timer-for-load-status-refresh (
+            name: Initialize Timer for Load Status Refresh
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var lSpinner$ = apex.util.showSpinner( $( "#loadStatus" ) );
+                    
+                    var triggerRefresh = function(){ 
+                        var lstatus = apex.item("P18_LOADING_STATUS").getValue() ?? "ENQUEUED";
+                    
+                        apex.event.trigger( apex.jQuery("#timer-container"), "job_timer" );
+                    
+                        console.log( "current satus " + lstatus );
+                    
+                        if (  lstatus === 'SUCCESS'  || 
+                              lstatus === 'ABORTED'  || 
+                              lstatus === 'FAILED' ) {
+                          apex.region( "loadStatus" ).refresh();
+                          apex.region( "sales" ).refresh();
+                          
+                          if ( lstatus === 'FAILED' ||  
+                               lstatus === 'ABORTED' ) {
+                              apex.region( "loadError" ).element.show();
+                              apex.region( "loadError" ).refresh();
+                          }
+                    
+                          clearInterval( refreshInterval );
+                          lSpinner$.remove();
+                        } else {
+                          apex.region( "loadStatus" ).refresh();
+                          apex.region( "sales" ).refresh(); 
+                        }
+                    };
+                    
+                    var refreshInterval = setInterval( triggerRefresh, 1000);
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+

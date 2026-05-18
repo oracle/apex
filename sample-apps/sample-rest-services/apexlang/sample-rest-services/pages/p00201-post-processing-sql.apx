@@ -1,0 +1,404 @@
+page 201 (
+    name: Post Processing SQL
+    alias: POST-PROCESSING-SQL
+    title: Post Processing SQL
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page uses the <strong>Post Processing SQL</strong> to combine data from the <strong>EBA_REST_DEPARTMENT</strong> REST Data Source with data from the local <strong>EBA_DEMO_REST_EMPLOYEECUSTOM</strong> table.</p>
+                
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region post-processing-sql-query (
+        name: Post Processing SQL Query
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre><code>
+                    select n.empno,
+                           n.emp_name          as ename,
+                           n.role_desc         as emp_role,  
+                           n.hourly_rate       as hourly_rate,  
+                           n.bonus_eligibility as bonus,
+                           n.deptno,
+                           dept.dname          as dname,
+                           dept.loc            as loc
+                      from #APEX$SOURCE_DATA#           dept
+                      join eba_demo_rest_employeecustom n
+                        on n.deptno = dept.deptno
+                
+                </code></pre>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region post-processing-sql-results (
+        name: Post Processing SQL Results
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @eba_rest_department
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select n.empno,
+                       n.emp_name          as ename,
+                       n.role_desc         as empRole,  
+                       n.hourly_rate       as hourlyRate,  
+                       n.bonus_eligibility as Bonus,
+                       n.deptno,
+                       dept.dname          as dname,
+                       dept.loc            as loc
+                  from #APEX$SOURCE_DATA# dept
+                  join eba_demo_rest_employeecustom  n
+                    on n.deptno = dept.deptno
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        advanced {
+            savedReportMappingIdentifier: 9486652586416939
+        }
+
+        column BONUS (
+            type: plainText
+            heading {
+                heading: Bonus
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column DEPTNO (
+            type: hidden
+            heading {
+                heading: Deptno
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column DNAME (
+            type: plainText
+            heading {
+                heading: Department
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column EMPNO (
+            type: plainText
+            heading {
+                heading: Employee ID
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column EMPROLE (
+            type: plainText
+            heading {
+                heading: Role
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ENAME (
+            type: plainText
+            heading {
+                heading: Employee
+            }
+            layout {
+                sequence: 50
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column HOURLYRATE (
+            type: plainText
+            heading {
+                heading: Hourly Rate
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column LOC (
+            type: plainText
+            heading {
+                heading: Location
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 107064 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn BONUS (
+                sequence: 5
+            )
+
+            displayColumn DNAME (
+                sequence: 6
+            )
+
+            displayColumn EMPNO (
+                sequence: 1
+            )
+
+            displayColumn EMPROLE (
+                sequence: 3
+            )
+
+            displayColumn ENAME (
+                sequence: 2
+            )
+
+            displayColumn HOURLYRATE (
+                sequence: 4
+            )
+
+            displayColumn LOC (
+                sequence: 7
+            )
+
+            highlight ir-condition (
+                condition {
+                    column: DNAME
+                    operator: isNotNull
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #fff5ce
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+            highlight ir-condition-2 (
+                condition {
+                    column: LOC
+                    operator: isNotNull
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #fff5ce
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+        )
+
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 202
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: Previous
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 200
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

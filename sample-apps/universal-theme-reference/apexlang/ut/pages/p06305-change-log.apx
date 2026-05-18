@@ -1,0 +1,580 @@
+page 6305 (
+    name: Change Log
+    alias: CHANGE-LOG
+    title: Change Log - &APP_TITLE.
+    pageGroup: @tools-and-utilities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region page_plug (
+        name: 24.1
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Theme Updates</h3>
+                <ul>
+                    <li><strong>Font APEX</strong>: added 70 new icons, including icons for AI, business use, and additional calendar and web application icons.
+                    <li><strong>Added Selection support to Content Row, Comments, Media List and Timeline template components.</strong></li>
+                    <li><strong>Added support for new Select One and Select Many items</strong></li>
+                    <li><strong>Added Workflow Diagram support.</strong></li>
+                    <li>Reduced font size on small buttons.</li>
+                    <li>Added support for indentation for tree items of level 3 and lower.</li>
+                    <li>Updated breakpoints for responsive visibility utility classes, and added new XXL support.</li>
+                </ul>
+                <ul>
+                    <li><strong>Refreshed Redwood Light </strong></li>
+                    <ul>
+                        <li>Updated Avatar default background color, font-size, border-radius, height and width.</li>
+                        <li>Updated File Drop background color and removed icon for inline, inline-dropzone, and dropzone views.</li>
+                        <li>Updated Wizards marker and track styles, increased font size and weight.</li>
+                        <li>Updated focus styles for inputs.</li>
+                        <li>Updated Badge border radius, padding, font-weight, subtle background-color palette.</li>
+                        <li>Updated Chip styles for Interactive Report, Interactive Grid, and Combobox.</li>
+                    </ul>
+                </ul>
+                
+                <h3>Accessibility Updates</h3>
+                <ul>
+                    <li>Improved accessibility of success and notification messages in page templates.</li>
+                    <li>Improved read only item support.</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                <ul>
+                    <li>Fixed pagination alignment of buttons and icons.</li>
+                    <li>Fixed issue where border-radius was not applied on comments.</li>
+                    <li>Fixed missing focus styles on Select Lists in Firefox.</li>
+                    <li>Fixed issues where Tree labels were not visible in Redwood Light.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-2 (
+        name: 23.2
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Theme Updates</h3>
+                <ul>
+                    <li><strong>Refreshed Redwood Light</strong></li>
+                    <ul>
+                        <li>Updated textures and background images</li>
+                        <li>Updated Tree navigation style</li>
+                        <li>Updated Badge font weight</li>
+                        <li>Updated Avatar Initials to display as uppercase</li>
+                        <li>Updated Breadcrumb style</li>
+                        <li>Updated default main content box shadow size for floating layout</li>
+                        <li>Updated body title background color</li>
+                        <li>Miscellaneous updates to font sizes</li>
+                    </ul>
+                </ul>
+                
+                <h3>Template Component Updates</h3>
+                <ul>
+                    <li>Content Row
+                    <ul>
+                        <li><strong>Support for Template Directives in Overline, Title, Description and Miscellaneous</strong></li>
+                        <li>Added Compact Style</li>
+                        <li>Added the ability to Remove Borders and Padding</li>
+                        <li>Added Badge alignment and position</li>
+                        <li>Added the ability to add a link to Badges</li>
+                    </ul></li>
+                    <li>Badge</li>
+                    <ul>
+                        <li>Added the ability to add a link</li>
+                    </ul>
+                    <li>Avatar</li>
+                    <ul>
+                        <li>Added support for No Shape for icons</li>
+                        <li>Support for accessible title and description text for all modes</li>
+                    </ul>
+                    <li>Comments</li>
+                    <ul>
+                        <li>Added ability to pass a class name for individual comments</li>
+                    </ul>
+                </ul>
+                
+                <h3>CSS Changes</h3>
+                <ul>
+                    <li><strong>Added support for new Combobox and File Upload items</strong></li>
+                    <li>Miscellaneous font sizing and style changes</li>
+                    <li>Updates to padding and alignment</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                <ul>
+                    <li>Fixed Datepicker day of the week abbreviation for Arabic language</li>
+                    <li>Fixed line height for percent graph</li>
+                    <li>Fixed floating label for Switch Select List</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-3 (
+        name: 23.1
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Template Changes</h3>
+                <ul>
+                    <li><strong>Added new Template Component regions: Comments, Content Row, Media List, Timeline</strong></li>
+                    <li><strong>Added new Template Component partials: Avatar, Badge</strong></li>
+                    <li>Added new Up position in the Hero and Title Bar region templates</li>
+                    <li>Added None Icon Shape option for Cards, Classic Report, and List templates.</li>
+                    <li>Added support for new Color Picker</li>
+                </ul>
+                
+                <h3>Template Options</h3>
+                <ul>
+                    <li>Added Order By alignment Template Option for Standard and Report regions</li>
+                </ul>
+                
+                <h3>CSS Changes</h3>
+                <ul>
+                    <li>Added u-inline-flex utility class</li>
+                    <li>Regions will no longer resize on smaller mobile when height is set</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                <ul>
+                    <li>Fixed missing indent on nested Link Lists</li>
+                    <li>Fixed image item not displaying properly when using Floating Fields</li>
+                    <li>Fixed issue where label could overlap contents in Floating Fields</li>
+                    <li>Fixed incorrect variable used to control dialog/drawer animation duration</li>
+                    <li>Fixed issue where .fa- size modifiers did not work on buttons</li>
+                    <li>Fixed issue where facets in faceted search would be forced into columns on mobile</li>
+                    <li>Fixed issue where Compact breadcrumbs did not work on smaller breakpoints</li>
+                    <li>Fixed issue where Mega Menus would scroll with page</li>
+                    <li>Removed Side Navigation's transitions when Reduced Motion enabled</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-4 (
+        name: 21.2
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Template Changes</h3>
+                
+                <ul>
+                <li><strong>New Inline Drawer region template</strong></li>
+                <li><strong>New Drawer page template</strong></li>
+                <li>Misc Accessibility changes</li>
+                <li>Added aria-current to list templates where needed</li>
+                <li>Collapsible region now uses a button wrapping the region title, faux button to keep current behavior/styles</li>
+                <li>Title Bar region updated to use &lt;nav&gt;</li>
+                <li>Button container removed region title from &lt;h1&gt; this is now used with aria-label</li>
+                <li>Button template options that hide label more accessible to screen readers</li>
+                <li>Main navigation now correctly sets the side navigation to hidden when collapsed</li>
+                <li>Added aria-hidden="true" to icons in regions</li>
+                <li>Hamburger menu label changed from "Expand / Collapse Navigation" to "Main Navigation"</li>
+                </ul>
+                
+                <h3>Template Options</h3>
+                
+                <ul>
+                <li>Button modifier for hide icon on desktop added</li>
+                <li>Button icon position now defaults to left instead of right</li>
+                <li>Added Dialog Size: None to Inline Dialog (now consistent with Modal Dialog)</li>
+                <li>Added inline scripts to help prevent layout shift on page load</li>
+                <li>Added Smart Filter custom position to Title Bar</li>
+                <li>Added Smart Filter custom position to Hero</li>
+                </ul>
+                
+                <h3>Page Template Changes</h3>
+                
+                <ul>
+                <li><strong>New Position for After Logo</strong></li>
+                <li><strong>New Position for Before Navigation Bar</strong></li>
+                <li><strong>New Position for After Navigation Bar</strong></li>
+                <li>Renamed Content Body to Body</li>
+                <li>Renamed Page Header to Banner</li>
+                <li>Renamed Page Navigation to Top Navigation</li>
+                <li>Renamed Before Content Body to Full Width Content</li>
+                <li>Renamed Inline Dialogs to Dialogs, Drawers and Popups</li>
+                <li>Enabled Items and Buttons in Footer</li>
+                </ul>
+                
+                <h3>CSS Changes</h3>
+                
+                <ul>
+                <li>Header Accent Changed to Primary Accent </li>
+                <li>Header Bottom Border (better support for white header)</li>
+                <li>Header Small Shadow</li>
+                <li>Header buttons removed border and active inner shadow</li>
+                <li>Button Border color changed from rgba(0,0,0,.15) to rgba(0,0,0,.075);</li>
+                <li>Button Box shadow added for normal state</li>
+                <li>Button icon spacing changed from 4px to 6px</li>
+                <li>Region Border radius changed from 2px to 4px</li>
+                <li>Region header buttons right padding changed from 8px to 12px (now consistent with other sides)</li>
+                <li>Region header buttons now have padding on top and bottom so they do not touch large button variations</li>
+                <li>Region Shadow added</li>
+                <li>Alert Shadow added</li>
+                <li>Alert font weight changed from normal to semibold</li>
+                <li>Tabs & RDS active tab font weight changed from normal to semibold</li>
+                <li>Content Block (Light/Shaded) Shadow added</li>
+                <li>Primary color changed to #056AC8</li>
+                <li>Warning color changed to #FFC628</li>
+                <li>Success color changed to #278701</li>
+                <li>Danger color changed to #CB1100</li>
+                <li>Info changed to new primary color</li>
+                <li>Title Bar/Hero font weight changed from normal to semibold</li>
+                <li>Removed DevToolbar button color overrides</li>
+                <li>Added support for reduced motion on dialogs/login split</li>
+                <li>Added spacing between radio/checkbox items</li>
+                <li>Increased spacing between radio/checkbox and label</li>
+                <li>Added custom scrollbar back to Side Navigation</li>
+                <li>Updated focus shadow on TreeNav to be inset</li>
+                <li>Added the ability to enlarge the input-font-size on mobile.</li>
+                <li>Added new variables for breadcrumb links controlled by theme roller</li>
+                <li>Added placeholder styles for Top Navigation Menu (faster loading)</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                
+                <ul>
+                <li><strong>Hammer.js scoped so native touch gestures will now work across the app. Enabling gestures such as zooming in and out.</strong></li>
+                <li>Hero Body now has grid support</li>
+                <li>Carousel swipe gesture reversed</li>
+                <li>Sidebar Navigation overflow/scroll/focus fixed (Moved overflow back to t-Body-nav from t-TreeNav)</li>
+                <li>Fixed incorrect icon color on fields</li>
+                <li>Fixed breadcrumb region title not displaying inline when shrunk</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-5 (
+        name: 26.1
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Theme Updates</h3>
+                  <ul>
+                      <li>New <strong>Iris Theme Style</strong> - new default theme style providing a fresh baseline for applications.</li>
+                      <li>New <strong>Metric Card Template Component</strong> - purpose-built for dashboards and KPI metrics.</li>
+                      <li>New <strong>Actions Template Partial</strong> - add buttons to Interactive Reports.</li>
+                      <li>New <strong>Flex Container Template Component</strong> - more flexible region layouts in a declarative way.</li>
+                      <li>New <strong>Blank Page Template</strong> - lightweight option for building fully custom layouts.</li>
+                      <li><strong>Font APEX 2.5</strong> - updated icon library with 66 new icons and modifiers.</li>
+                      <li><strong>Component Grouping</strong> - Avatar, Timeline, Comments, and Media List now support grouped display.</li>
+                      <li><strong>Inbound/Outbound Comments</strong> - support for threaded comment styling within the Comments Template Component.</li>
+                      <li><strong>Tabs Container</strong> - region icons can now be rendered within tabs.</li>
+                      <li><strong>Button Component</strong> - added data-count support for badge-like indicators.</li>
+                      <li><strong>Right Sidebar</strong> - new JavaScript events exposed for runtime customization.</li>
+                      <li><strong>CSS Variables</strong> - expanded variable coverage across core components for greater themeability.</li>
+                      <li><strong>Utility Classes</strong> - additional helpers for overflow handling, tabular number formatting, and flexbox layout.</li>
+                      <li><strong>Page Templates</strong> - vertical alignment options for content regions.</li>
+                      <li><strong>Navigation Menu</strong> - option to remove default file icons when collapse mode is set to hidden.</li>
+                      <li><strong>Top and Bottom Drawers</strong> - new drawer template positions for flexible UI layouts.</li>
+                      <li><strong>Footer Slot in Drawers and Dialogs</strong> - additional template slot for placing actions or metadata.</li>
+                  </ul>
+                
+                  <h3>Bug Fixes</h3>
+                  <ul>
+                      <li>Fixed issue where the Badge Component rounded modifier did not apply border-radius correctly.</li>
+                      <li>Fixed issue where the Inline Drawers "Remove Body Padding" option did not apply as expected.</li>
+                      <li>Updated background color for selected nodes in the Tree Component.</li>
+                      <li>Corrected dark header inconsistencies in Redwood Light Theme.</li>
+                      <li>Fixed issue where Modal Pages briefly flashed a dark background before content load.</li>
+                      <li>Misc bug fixes and Redwood Light enhancements, including Dialog and Drawer fixes.</li>
+                  </ul>
+                ```
+        }
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-5_1 (
+        name: 24.2
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Theme Updates</h3>
+                <ul>
+                    <li>New <strong>Font APEX 2.4</strong> - includes 254 Country Flag icons.</li>
+                    <li><strong>New Utility Classes for Typography, Shadows, Flex Order, and Padding/Margin.</strong></li>
+                    <li><strong>Support for Grouping in Content Row. supports a title & Icon.</strong></li>
+                    <li><strong>New Password Visibility toggle on Password Items.</strong></li>
+                    <li>Supports the ability to display multiple Avatars with the Avatar Template Component.</li>
+                    <li>Better support for mobile browsers with dynamic toolbars.</li>
+                    <li>Misc updates to Redwood Light & adjusted page padding to be consistent with Vita.</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                <ul>
+                    <li>Fixed issue with the Comments Template Component where the avatar was unable to receive classes.</li>
+                    <li>Fixed issue with the navigation menu placeholder icon would flicker when loading a user defined icon.</li>
+                    <li>Fixed issue with pagination button size for interactive grids.</li>
+                    <li>Fixed layout issue with the timeline template component when selection was not enabled.</li>
+                    <li>Fixed issue with the timeline template component regarding badge style and shape attributes.</li>
+                    <li>Fixed layout and styling issue regarding the hours and minutes for the inline date picker.</li>
+                    <li>Fixed layout issue when the navigation menu was open while the viewport is smaller than 420px.</li>
+                    <li>Fixed issue with interactive grid filter chip styles.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 15
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-6 (
+        name: 22.1
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Template Changes</h3>
+                
+                <ul>
+                <li><strong>New Image region template</strong></li>
+                <li>Added support for Region Images in Login Region and Hero Region</li>
+                <li>Added support for custom Background Image using Image Region on Login Page</li>
+                </ul>
+                
+                <h3>Template Options</h3>
+                
+                <ul>
+                <li>Added new modifiers for Image regions</li>
+                <li>Added Legacy "Deferred Rendering" to Pages</li>
+                </ul>
+                
+                <h3>CSS Changes</h3>
+                
+                <ul>
+                <li>Updated Menu Bars render during page load to reduce page flickering</li>
+                <li>Updated Side Navigation to render during page load to reduce page flickering</li>
+                <li>Updated Semi-bold weight to 600 from 500, allowing for thicker type in certain areas</li>
+                <li>Cleaned up Faceted Search spacing and support for new actions menu</li>
+                <li>Minor Redwood Light enhancements</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                
+                <ul>
+                <li>Fixed checkboxes that would render with different color</li>
+                <li>Fixed layout issue with Cards set to render as Row</li>
+                <li>Fixed where Tabs would display all content during page load</li>
+                <li>Fixed FontAPEX scale modifier classes to work with CSS variables</li>
+                <li>Fixed Standard Region title to wrap text when too long</li>
+                <li>Fixed button colors in Interactive Report and Interactive Grid</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region page_plug-7 (
+        name: 22.2
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Template Changes</h3>
+                
+                <ul>
+                <li><strong>New Search Region template</strong></li>
+                <li><strong>New Item Container region template</strong></li>
+                <li>Added support for new Date Picker item</li>
+                <li>Added support for new Autocomplete item</li>
+                <li>Added support for Declarative Landmarks</li>
+                </ul>
+                
+                <h3>Template Options</h3>
+                
+                <ul>
+                <li>Added the ability to hide the header of Content Block regions</li>
+                <li>Added option to change the style of Display Only on items</li>
+                </ul>
+                
+                <h3>Template Positions</h3>
+                <ul>
+                <li>Enabled Item support in NEXT button position on Hero region</li>
+                <li>Enabled Item support in NEXT button position on Title Bar region</li>
+                <li>Enabled Item support in EDIT, PREVIOUS, NEXT on Content Block region</li>
+                <li>Enabled Item support in CREATE, EDIT, NEXT, PREVIOUS in Standard region</li>
+                <li>Enabled Item support in CREATE, EDIT, NEXT, PREVIOUS in Collapsible region</li>
+                <li>Enabled item support in PREVIOUS, NEXT, CHANGE in Button Container region</li>
+                <li>Enabled item support in PREVIOUS, NEXT in Inline Dialog region</li>
+                <li>Enabled item support in PREVIOUS, NEXT in Inline Drawer region</li>
+                <li>Enabled item support in PREVIOUS, NEXT in Inline Popup region</li>
+                <li>Enabled item support in NEXT in Alert region</li>
+                </ul>
+                
+                <h3>CSS Changes</h3>
+                
+                <ul>
+                <li>Added .u-opacity utility classes to change opacity of elements</li>
+                <li>Updated Tabs & Region Display Selector to render during page load to reduce page flickering</li>
+                <li>Updated Floating Fields labels to render during page load to reduce item flickering</li>
+                <li>Updated Floating Fields to set label to display on top if Region Template Option "Show Form Labels Above" is set.</li>
+                </ul>
+                
+                <h3>Bug Fixes</h3>
+                
+                <ul>
+                <li>Fixed incorrect font-size for display only fields (now 14px by default vs 16px)</li>
+                <li>Fixed incorrect font-size for floating labels, changed from 12px to 14px</li>
+                <li>Fixed extra spacing & border on Button Containers used within Drawers</li>
+                <li>Fixed Callout's from missing border on caret/arrow</li>
+                <li>Fixed issue where Region Images would overlap Login page's content</li>
+                <li>Fixed transitions so they do not appear if Reduced Motion is enabled</li>
+                <li>Fixed shadow on buttons not being applied correctly</li>
+                </ul>
+                
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

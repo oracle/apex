@@ -1,0 +1,36 @@
+appComputation current-ai-provider (
+    itemName: CURRENT_AI_PROVIDER
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: expression
+        plsqlExpression: apex_app_setting.get_value('AI_PROVIDER')
+    }
+)
+
+appComputation initialized-ai-provider (
+    itemName: INITIALIZED_AI_PROVIDER
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: expression
+        plsqlExpression: apex_app_setting.get_value('AI_PROVIDER_INITIALIZED')
+    }
+)
+
+appComputation web-credentials-entered (
+    itemName: WEB_CREDENTIALS_ENTERED
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: expression
+        plsqlExpression: apex_app_setting.get_value('WC_STATUS')
+    }
+)
+

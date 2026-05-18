@@ -1,0 +1,1285 @@
+page 100 (
+    name: FAQ
+    alias: FAQ
+    title: FAQ
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region apex-pwas (
+        name: APEX PWAs
+        type: staticContent
+        source {
+            htmlCode: <p>Questions about Oracle APEX's support for PWA</p>
+        }
+        layout {
+            sequence: 250
+            slot: body
+            column: 2
+            columnSpan: 10
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region business (
+        name: Business
+        type: staticContent
+        source {
+            htmlCode: <p>Questions that could influence a business decision to use PWA or not</p>
+        }
+        layout {
+            sequence: 270
+            slot: body
+            column: 2
+            columnSpan: 10
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region can-apex-pwas-use-operating-system-resources (
+        name: Can APEX PWAs use operating system resources?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Yes, in most of the ways that matter most to end users, but not
+                    all operating system resources are available. Since Oracle APEX
+                    PWAs are web-based applications, they are not built using the
+                    native programming languages of the device's operating system. As
+                    a result, they do not have the same level of access to the
+                    device's hardware and software as native apps.
+                
+                </p>
+                <p>
+                
+                    An APEX PWA can access the device's camera, location, share sheet
+                    and storage using both declarative and programmatic APIs, as well
+                    as cache network requests. The specific resources and features
+                    available to an APEX PWA will depend on the capabilities of the
+                    device and the web browser being used to access the application.
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 90
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region can-i-track-how-many-times-my-pwa-was-installed (
+        name: Can I track how many times my PWA was installed?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    As of APEX 23.1 this is not possible, but it is on our Roadmap. We
+                    are always careful when it comes to telemetry of direct user
+                    interaction, therefore APEX should provide a solution that is
+                    non-intrusive to users.
+                
+                </p>
+                
+                <p>
+                
+                    As an alternative today, workspace admins can track how many apps
+                    were developed as a PWA along with the different PWA attributes.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @business
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region can-my-apex-pwa-detect-the-device-i-m-on (
+        name: Can my APEX PWA detect the device I'm on?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    APEX provides various JavaScript APIs to identify the current mode
+                    in which the PWA is accessed. For example this function is used to
+                    determine if the application is currently accessed through the PWA
+                    application (eg. in fullscreen) or through the browser
+                    normally. Possible values
+                    are: <strong>fullscreen</strong>, <strong>standalone</strong>, <strong>minimal-ui</strong>,
+                    and <strong>browser</strong>.
+                
+                </p>
+                
+                <pre><code>const displayMode = apex.pwa.getDisplayMode();</code></pre>
+                
+                <p>
+                
+                    Otherwise, it can be done using JavaScript and
+                    the <code>navigator.userAgent</code> property, which returns a
+                    string containing information about the device's user agent,
+                    however this is not recommended as user agents can change without
+                    prior notice.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 210
+            parentRegion: @development-tips
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region can-my-apex-pwa-support-payment-methods (
+        name: Can my APEX PWA support payment methods?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    It is possible for APEX PWAs to support payment, but it requires
+                    some manual coding. A JavaScript developer on your team would use
+                    the APEX custom service worker to call the Web Payment API, a
+                    browser-based standard for handling payments on the web. It allows
+                    users to make payments using a variety of payment methods,
+                    including credit cards, debit cards, and digital wallets. The Web
+                    Payment API can be used to implement payment support in a PWA.
+                
+                </p>
+                
+                <p>
+                
+                    The <strong>canmakepayment</strong> event of the service worker
+                    interface is fired when the client requests the authorization
+                    status of the Payment Handler API. It can be used to check if the
+                    browser supports at least one payment method. More info:
+                
+                </p>
+                
+                <ul>
+                    <li><a rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/Payment_Request_API/Using_the_Payment_Request_API">https://developer.mozilla.org/en-US/docs/Web/API/Payment_Request_API/Using_the_Payment_Request_API</a></li>
+                    <li><a rel="noopener noreferrer" href="https://web.dev/web-payments-updates">https://web.dev/web-payments-updates</a>/</li>
+                    <li><a rel="noopener noreferrer" href="https://www.w3.org/TR/payment-handler/#handling-a-canmakepaymentevent">https://www.w3.org/TR/payment-handler/#handling-a-canmakepaymentevent</a></li>
+                </ul>
+                
+                <p>
+                
+                    The <strong>paymentrequest</strong> event of the service worker
+                    interface is fired when client chooses to pay with a web-based
+                    payment app. It can be used to initiate a payment on a web app,
+                    using payment methods such as Google Pay. More info:
+                
+                </p>
+                
+                <ul>
+                    <li><a rel="noopener noreferrer" href="https://web.dev/how-payment-request-api-works/">https://web.dev/how-payment-request-api-works/</a></li>
+                    <li><a rel="noopener noreferrer" href="https://web.dev/orchestrating-payment-transactions/">https://web.dev/orchestrating-payment-transactions/</a></li>
+                </ul>
+                
+                <p>
+                
+                    Implementing payment support in a PWA requires careful consideration
+                    of security and compliance issues. You should follow best
+                    practices to ensure that sensitive payment information is handled
+                    securely, and comply with relevant regulations and standards.
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @business
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region can-my-apex-pwa-use-geolocation (
+        name: Can my APEX PWA use geolocation?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Yes, it is possible for an APEX PWA to access and use geolocation
+                    information. Geolocation refers to the location of a device or
+                    user, typically determined using GPS or other location-based
+                    technologies.
+                
+                </p>
+                <p>
+                
+                    In an APEX PWA, you can declaratively acquire location, speed,
+                    direction, and altitude using the <strong>Get Current
+                    Position</strong> dynamic action (subject to the user's granting
+                    permission). Your app can also declaratively geolocate any other
+                    address on the planet using built-in features. Your APEX PWA can
+                    take full advantage of APEX's data-savvy map region to visualize
+                    location-based data on mobile devices, too.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 100
+            parentRegion: @development-tips
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region can-my-existing-apex-app-become-a-pwa (
+        name: Can my existing APEX app become a PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Yes, easily. First, make sure the <strong>Friendly URLs</strong> app
+                    setting is enabled.  Then ensure your application is served using
+                    HTTPS. Finally, switch on the two additional app-level
+                    settings <strong>Enable Progressive Web App</strong>
+                    and <strong>Installable</strong>.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region can-my-pwa-be-installed-from-google-play-or-app-store (
+        name: Can my PWA be installed from Google Play or App Store?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    PWAs can be published to the Google Play Store and Apple App
+                    Store, but the process for doing so is different from the process
+                    for publishing a traditional native app.
+                
+                </p>
+                <p>
+                
+                    To publish a PWA to the Google Play Store, you will need to follow
+                    the steps outlined in the Google Play Console documentation. This
+                    process involves creating a new listing for your PWA in the Google
+                    Play Store, uploading your PWA's web manifest and other required
+                    assets, and setting up a distribution channel for your PWA. Once
+                    the steps are completed, it will be made available in the Google
+                    Play Store for users to download and install on their devices.
+                
+                </p>
+                <p>
+                
+                    To publish a PWA to the Apple App Store, you will need to follow
+                    the steps outlined in the App Store Connect documentation. This
+                    process involves creating a new listing for your PWA in the App
+                    Store, wrapping your PWA in Swift as a Webview. Once your PWA has
+                    been reviewed and approved by Apple, it will be made available in
+                    the App Store for users to download and install on their devices.
+                
+                </p>
+                <p>
+                
+                    There are publishing costs to both stores.
+                
+                </p>
+                <p>
+                
+                    We plan to make this integration process easier in the future,
+                    hopefully with some steps automated within the APEX Builder.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @business
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region development-tips (
+        name: Development Tips
+        type: staticContent
+        source {
+            htmlCode: <p>Development tips for APEX developers building PWAs</p>
+        }
+        layout {
+            sequence: 260
+            slot: body
+            column: 2
+            columnSpan: 10
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region do-users-need-to-sign-in-every-time-they-open-my-apex-pwa (
+        name: Do users need to sign in every time they open my APEX PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    By default, users need to sign in every time they access an APEX
+                    application, and they stay authenticated for the duration of their
+                    app session. However, APEX provides several options for
+                    maintaining user sessions and allowing users to stay signed in,
+                    including the use of cookies, session state, and authentication
+                    schemes.
+                
+                </p>
+                <p>
+                
+                    After an instance administrator enables APEX's persistent
+                    authentication feature, you can offer users the same native
+                    application launch experience they are familiar with from native
+                    desktop and mobile applications. Your APEX PWA users can tick
+                    a <strong>Remember me</strong> checkbox on their first login and
+                    stay logged in for a fixed period of time. By default a user's
+                    authentication is remembered for 30 days, but you can configure
+                    that at the instance level.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region general (
+        name: General
+        type: staticContent
+        source {
+            htmlCode: <p>Questions about PWA as a standalone technology</p>
+        }
+        layout {
+            sequence: 240
+            slot: body
+            column: 2
+            columnSpan: 10
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region how-can-i-customize-the-ui-of-my-apex-pwa (
+        name: How can I customize the UI of my APEX PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                  
+                    You can customize the appearance of your APEX PWA by configuring
+                    the display mode, orientation, theme color, background color,
+                    status bar style (for iOS), as well as use application shortcuts,
+                    and custom manifest properties.
+                
+                </p>
+                
+                <p>
+                
+                    It's a good idea to validate the responsive design behaviour of
+                    your APEX PWA application through adequate testing on different
+                    devices or simulators.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 130
+            parentRegion: @development-tips
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region how-do-apex-pwas-use-caching-on-a-device (
+        name: How do APEX PWAs use caching on a device?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    In an APEX PWA, certain resources are cached by default to improve
+                    the performance of the app.
+                
+                </p>
+                <p>
+                
+                    By default, APEX PWAs use a service worker to cache static
+                    resources, such as JavaScript and CSS files, as well as image and
+                    font files. These resources are stored in the browser's cache and
+                    are available offline, which can help to improve the app's
+                    performance and make it more resilient to network disruptions.
+                
+                </p>
+                <p>
+                
+                    However, not all resources are cached in an APEX PWA. Dynamic
+                    content, such as data retrieved from the database, is not cached
+                    by default. This means that if an app needs to access this type of
+                    content while offline, its developer needs to be familiar with
+                    JavaScript and implement their own mechanism using supported
+                    Service Worker hooks for storing and retrieving the data.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 230
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region how-do-i-develop-an-apex-pwa-icon (
+        name: How do I develop an APEX PWA icon?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    You can choose one of the built-in icon and color combinations, or
+                    upload your own custom icon in PNG or JPG formats.
+                
+                </p>
+                <p>
+                
+                    You can also develop the icon using your favorite graphics program
+                    and should target 512x512 size for best results.  Once uploaded,
+                    APEX lets you optionally scale and crop the icon before it
+                    proceeds to save your app icon as shared application files. APEX
+                    will downsize and resize the icon to all appriopriate icon sizes
+                    it requires.
+                
+                </p>
+                <p>
+                
+                    APEX will generate the appropriate icon files and reference them
+                    automatically from all revelant places in your APEX app where the
+                    app icon needs to be displayed, such as the favicon, the PWA
+                    install icon, the login screen icon, etc.
+                
+                </p>
+                <p>
+                
+                    As of APEX 23.1, APEX will generate 5 files out of the original
+                    icon: 512x512, 256x256, 192x192, 144x144 and 32x32. Each of them
+                    are designed to fit a specific use case such that it looks
+                    great on all platforms.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 110
+            parentRegion: @development-tips
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region how-do-i-uninstall-a-pwa (
+        name: How do I uninstall a PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                Uninstalling a PWA varies slightly depending on the device and platform you are using. Here's how to uninstall a PWA on Android, iOS, and desktop platforms:
+                </p>
+                
+                <p style="white-space: break-spaces;">
+                1. Android:
+                   a. Locate the PWA icon you want to uninstall.
+                   b. Press and hold the app icon until a menu appears.
+                   c. Select 'Uninstall'
+                   d. Confirm the action when prompted.
+                </p>
+                
+                <p style="white-space: break-spaces;">
+                2. iOS:
+                   a. Find the PWA on your home screen.
+                   b. Press and hold the app icon until it starts to wiggle, and an 'X' appears on the top-left corner of the icon.
+                   c. Tap the 'X' to uninstall the PWA.
+                   d. Confirm the action when prompted, and then press the home button or swipe up from the bottom of the screen to exit the edit mode.
+                </p>
+                
+                <p style="white-space: break-spaces;">
+                3. Desktop (Windows, macOS) using Chrome and Edge:
+                   a. Launch the PWA from its desktop icon or the applications folder.
+                   b. Click the 'Settings' (three-dot) menu in the top-right corner of the app window.
+                   c. Select 'Uninstall [App Name]' from the dropdown menu.
+                   d. Confirm the action when prompted.
+                </p>
+                
+                <p style="white-space: break-spaces;">
+                4. Windows:
+                   a. Click the 'Start' button and open the list of all installed apps.
+                   b. Locate the PWA you want to uninstall.
+                   c. Right-click on the app and select 'Uninstall' from the context menu.
+                   d. Follow any additional prompts to complete the uninstallation process.
+                </p>
+                
+                <p>
+                After completing these steps, the PWA will be uninstalled from your device. Keep in mind that these instructions may vary slightly depending on your device model and operating system version.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 180
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region how-long-does-it-take-to-develop-an-apex-pwa (
+        name: How long does it take to develop an APEX PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    The time it takes to develop an APEX PWA will depend on a number
+                    of factors, but it should require minimal additional effort by
+                    Oracle APEX developers. Two declarative, app-level settings
+                    control whether your application will be installable by users as a
+                    PWA. When creating a new application, the wizard reduces the
+                    effort to a single click.
+                
+                </p>
+                <p>
+                
+                    Your project's specific requirements influence the time required
+                    to develop an APEX PWA. A simple app with few pages and basic
+                    functionality could potentially be developed in a few days or
+                    weeks. In contrast, a more complex APEX PWA with advanced features
+                    and integrations could take longer to develop.
+                
+                </p>
+                <p>
+                
+                    For advanced scenarios, developers can fully customize the APEX
+                    PWA's Web App Manifest and Service Worker. When a project's
+                    requirements require this level of customization, it's hard to
+                    estimate the time and effort required.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region is-it-possible-to-generate-an-apk-of-my-pwa (
+        name: Is it possible to generate an APK of my PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Yes, it is possible to generate an Android Package Kit (APK) file
+                    for a PWA. An APK is a package file format used to distribute and
+                    install mobile apps on the Android operating system.
+                
+                </p>
+                
+                <p>
+                
+                    There are several tools and services that you can use to generate
+                    an APK file for your PWA:
+                
+                </p>
+                
+                <ol>
+                  <li>
+                
+                    PWA to APK: This is a online service that allows you to generate
+                    an APK file that can be installed on Android devices.
+                
+                  </li>
+                  <li>
+                
+                    PWA Wrapper: This is a command-line tool that allows you to
+                    generate an APK file for your PWA by providing the URL of your PWA
+                    and specifying some configuration options.
+                
+                  </li>
+                  <li>
+                
+                    PWA Builder: This is a web tool that allows you to generate an APK
+                    file for your PWA by providing the URL of your PWA and specifying
+                    some configuration options.
+                
+                  </li>
+                </ol>
+                
+                <p>
+                
+                    Once you have generated an APK file for your PWA, you can
+                    distribute it to users through the Google Play Store or other app
+                    stores, or by sharing the APK file directly with users. Users can
+                    install the APK file on their Android devices by opening the file
+                    on their device.
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 170
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region is-it-possible-to-have-apex-builder-become-a-pwa (
+        name: Is it possible to have APEX Builder become a PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                  
+                    Making the APEX Builder a seamless PWA desktop experience is on our
+                    roadmap. It implies creating a group of applications that will
+                    function as a single PWA.
+                
+                </p>
+                
+                <p>
+                  
+                    APEX Builder consists of numerous apps and it makes sense to have them
+                    as a single PWA. Customers will also be able to define a multi app PWA
+                    ecosystem.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 240
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region is-it-possible-to-use-my-apex-pwa-offline (
+        name: Is it possible to use my APEX PWA offline?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    The short answer is: not easily. APEX does provide a user friendly
+                    offline fallback page when there is no connection to the internet,
+                    however. You can easily customize this fallback page in a
+                    declarative way.
+                
+                </p>
+                <p>
+                
+                    For advanced users, it is technically possible to enable offline
+                    support for an APEX PWA. This entails using the custom Service
+                    Worker feature, which allows APEX applications to intercept
+                    network requests and serve cached responses when the device is
+                    offline.
+                
+                </p>
+                <p>
+                
+                    Within the service worker hooks, the <strong>fetch</strong> event
+                    is reponsible for intercepting network requests. It can be
+                    extended to cache complete pages, specific resources and
+                    requests. When offline, the service worker would be responsible
+                    for fetching the cached resources instead of going to the network.
+                
+                </p>
+                <p>
+                
+                    It is not trivial to make an APEX PWA app work offline in a
+                    generic way that would allow arbitrary searching, creation, and
+                    modification of the rich application data model that exists behind
+                    the typical APEX application.  We hope APEX can provide easier
+                    mechanisms to enable basic offline features in future releases of
+                    APEX.
+                </p>
+                <p>
+                
+                    Until then, developers can venture into the custom service worker
+                    hooks to enable specific application use cases. In doing so, these
+                    more advanced APEX developers can help the Oracle APEX community
+                    and development team better understand the most common offline
+                    data access patterns that surface in your applications. This
+                    information will help us narrow the focus on delivering
+                    incremental offline data capabilities into future Oracle APEX
+                    versions. You can do this by logging new ideas for targeted
+                    offline capabilities based on your experiences
+                    at <a target="_blank"
+                    href="https://apex.oracle.com/ideas">apex.oracle.com/ideas</a>.
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @business
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region is-pwa-a-native-mobile-app (
+        name: Is PWA a native mobile app?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    No, but they behave like a native application in virtually all the
+                    ways end users care about. They are web-based apps that any user
+                    can install on their device and access like a native app, but they
+                    are not built using the native programming languages of the
+                    device's operating system (such as Swift for iOS or Java for
+                    Android). PWAs can leverage native device resources like
+                    front-facing and selfie camera, native keyboards for entering
+                    decimals and numbers, sensors like GPS, accelerometer, and
+                    altimeter, and the native share sheet to exchange information or
+                    files to other apps or contacts. Using the PWA service worker
+                    hooks APEX offers to developers familiar with JavaScript, apps can
+                    further take advantage of push notifications, offline data
+                    handling, payment methods, and more.
+                
+                </p>
+                <p>
+                
+                    Since it is always automatically up to date with the latest
+                    version of your application onthe server, end users never need to
+                    manually update their installed app and you never have to bother
+                    users with pleas to install the latest version.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region is-there-any-way-to-avoid-the-splash-screen-when-opening-the-app-after-some-idle-time (
+        name: Is there any way to avoid the splash screen when opening the app after some idle time?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Like most PWA features, each browser can behave differently. As for
+                    iOS on APEX 23.1, there is currently no declarative way of defining
+                    a splash screen while the app loads. However, it can be done by
+                    adding a new link tag on the page manually 
+                    
+                </p>
+                
+                <pre><code>&lt;link rel="apple-touch-startup-image" href="#APP_FILES#ios-startup.png"&gt;</code></pre>
+                
+                <p>
+                
+                    We should look into making this declarative in future APEX releases.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 220
+            parentRegion: @development-tips
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region what-apps-are-best-for-pwa-and-which-ones-are-not-recommended (
+        name: What apps are best for PWA and which ones are not recommended?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    PWAs are well-suited for a wide range of applications, letting
+                    users quickly launch and use nearly any kind of data-centric
+                    application on smartphones, tablets, and desktop or laptop
+                    computers. This includes the vast majority of typical Oracle APEX
+                    applications, including:
+                
+                </p>
+                
+                <ul>
+                  <li>
+                
+                    Tracking, planning, productivity, and process automation apps with
+                    compelling data-driven visualizations, reporting, and data entry,
+                
+                  </li>
+                  <li>
+                
+                    E-commerce apps with a seamless shopping experience for quickly
+                    finding and buying goods and services,
+                
+                  </li>
+                  <li>
+                
+                    Social networking apps to interact with peers to ask questions,
+                    get answers, or exchange thoughts using text and media,
+                
+                  </li>
+                  <li>
+                
+                    News and media apps to abreast of a fast-changing world
+                
+                  </li>
+                </ul>
+                
+                <p>
+                
+                    While additional PWA features like offline support and push
+                    notifications require JavaScript skills to achieve with Oracle
+                    APEX today, they are possible to accomplish using supported APEX
+                    Service Worker hooks. This means that any of the APEX PWA
+                    applications above can be made to support these features to keep
+                    users working when connectivity is not reliable and keep them
+                    engaged through targeted app-specific alerts on their device.
+                  
+                </p>
+                
+                <p>
+                
+                    However, not all apps are well-suited for PWA development. For
+                    example, apps that require complex graphics rendering or real-time
+                    data processing may not be suitable. 
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @business
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region what-devices-and-browsers-are-compatible-with-pwa (
+        name: What devices and browsers are compatible with PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    Users can install PWAs on a wide range of devices, including
+                    smartphones, tablets, and desktop computers, and access them
+                    through compatible web browsers.
+                
+                </p>
+                <p>
+                
+                    All four modern web browsers that APEX supports - Google Chrome,
+                    Mozilla Firefox, Microsoft Edge, and Apple Safari - offer a rich
+                    set of PWA features, but the exact set of PWA capabilities that
+                    each one offers depends on the browser.
+                
+                </p>
+                <p>
+                
+                    For each APEX PWA feature, this reference app carefully documents
+                    which combination of device and browser supports it. Explore the
+                    different pages of this application using the navigation menu to
+                    learn more.
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region what-is-a-pwa (
+        name: What is a PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    
+                    A Progressive Web App (PWA) is a type of web application that uses
+                    modern web capabilities to give users a native app-like
+                    experience. PWAs work on any platform with a standards-compliant
+                    browser, including desktop, mobile, and tablet devices.
+                
+                </p>
+                <p>
+                  
+                    When a user visits a PWA in their browser, they can choose to
+                    install it on their device. They can then launch it from the
+                    device's home screen like a native app. It runs in its own window,
+                    separate from the browser.
+                
+                </p>
+                <p>
+                
+                    PWAs can work offline, with features the user can use even when
+                    the device is not connected to the internet. Background scripts
+                    called <i>service workers</i> enable this capability, caching resources
+                    for later use.
+                
+                </p>
+                <p>
+                
+                    PWAs offer many benefits over traditional native apps.  They work
+                    on any device with a standards-compliant browser, are faster to
+                    deploy and install, and are less expensive to develop and
+                    maintain. They are more discoverable, since they can be found
+                    through search engines. They are more intuitive for users who
+                    always use the app's latest features automatically without having
+                    to find, download, or update the app from an app store.
+                
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @general
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region what-is-an-apex-pwa (
+        name: What is an APEX PWA?
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    An APEX PWA is a Progressive Web Application developed using
+                    Oracle APEX.
+                
+                </p>
+                <p>
+                
+                    Users access APEX PWA apps through a web browser on a wide range
+                    of devices, including smartphones, tablets, and desktop
+                    computers. They can install the app on their device and access it
+                    like a native app. Oracle APEX makes developing PWAs apps easy. 
+                
+                </p>
+                <p>
+                
+                    APEX PWA applications offer many benefits unique to the Oracle
+                    APEX platform, such as the ability to easily connect to Oracle
+                    databases and integrate with all other APEX features.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @apex-pwas
+            slot: regionBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+)
+

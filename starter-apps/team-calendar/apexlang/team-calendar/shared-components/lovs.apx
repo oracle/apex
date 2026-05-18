@@ -1,0 +1,631 @@
+lov access-control-scope (
+    name: ACCESS CONTROL SCOPE
+    source {
+        location: staticValues
+    }
+
+    entry contributor-access-for-any-authenticated-user (
+        sequence: 2
+        display: Contributor access for any authenticated user
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry reader-access-for-any-authenticated-user (
+        sequence: 1
+        display: Reader access for any authenticated user
+        return: PUBLIC_READONLY
+    )
+
+    entry restricted-to-users-defined-in-access-control-list (
+        sequence: 3
+        display: Restricted to users defined in access control list
+        return: ACL_ONLY
+    )
+
+)
+
+lov access-control-scope-2 (
+    name: ACCESS CONTROL SCOPE1
+    source {
+        location: staticValues
+    }
+
+    entry contributors (
+        sequence: 2
+        display: Contributors
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry readers (
+        sequence: 1
+        display: Readers
+        return: PUBLIC_READONLY
+    )
+
+)
+
+lov access-level (
+    name: ACCESS_LEVEL
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select access_level d, id r
+              from eba_ca_access_levels
+             order by 1
+            ```
+    }
+)
+
+lov calendars (
+    name: CALENDARS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select short_name || ' - ' || calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d
+            , calendar_id r
+            from eba_ca_calendars c
+            where public_view_yn = 'Y'
+            or    exists (select 'x'
+                          from eba_ca_users u
+                          where u.username = :APP_USER
+                          and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                 or (access_level_id = 3 and restricted_to is null)
+                                )
+                         ) 
+            order by 1
+            ```
+    }
+)
+
+lov calendars-full-name (
+    name: CALENDARS FULL NAME
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select 'Default' d,
+                   -1 r,
+                   1 ob
+              from dual
+             where exists (select 1 from eba_ca_events
+                            where calendar_id is null)
+            union
+            select short_name ||' - '|| calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d,
+                   calendar_id r,
+                   2 ob
+              from eba_ca_calendars c
+              where public_view_yn = 'Y'
+              or    exists (select 'x'
+                            from eba_ca_users u
+                            where u.username = :APP_USER
+                            and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                   or (access_level_id = 3 and restricted_to is null)
+                                  )
+                           ) 
+            )
+             order by ob, d
+            ```
+    }
+)
+
+lov calendars-with-default (
+    name: CALENDARS WITH DEFAULT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select 'Default' d,
+                   -1 r,
+                   1 ob
+              from dual
+             where exists (select 1 from eba_ca_events
+                            where calendar_id is null)
+            union
+            select short_name ||' - '|| calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d,
+                   calendar_id r,
+                   2 ob
+              from eba_ca_calendars c
+              where public_view_yn = 'Y'
+              or    exists (select 'x'
+                            from eba_ca_users u
+                            where u.username = :APP_USER
+                            and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                   or (access_level_id = 3 and restricted_to is null)
+                                  )
+                           ) 
+            )
+             order by ob, d
+            ```
+    }
+)
+
+lov checkbox (
+    name: CHECKBOX
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 1
+        display: " "
+        return: Y
+    )
+
+)
+
+lov color-preference (
+    name: COLOR PREFERENCE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select color_name, id 
+            from EBA_CA_color_prefs 
+            order by display_sequence, id
+            ```
+    }
+)
+
+lov contacts (
+    name: CONTACTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select initcap(replace(decode(instr(username, '@'), 0, username, substr(username, 1, instr(username, '@') - 1)), '.', ' '))  d, upper(username) r
+            from eba_ca_users u
+            where exists (select 'x'
+                          from eba_ca_events e
+                          where instr(upper(e.contact_email), u.username) > 0
+                         )
+            order by 1
+            
+            ```
+    }
+)
+
+lov email-groups (
+    name: EMAIL GROUPS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select group_name d, group_id r
+              from EBA_ca_email_groups
+             order by 1
+            ```
+    }
+)
+
+lov email-groups-with-cnt (
+    name: EMAIL GROUPS WITH CNT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' (' || cnt  || 
+                      case when cnt = 1 then ' member)'
+                           else ' members)' end d, 
+                   group_id r 
+              from (
+            select g.group_id,
+                   g.group_name name,
+                   count(*) cnt    
+              from EBA_ca_email_groups g, 
+                   EBA_ca_email_group_mbrs m
+             where m.group_id = g.group_id
+             group by g.group_id, g.group_name
+            )
+            order by name
+            ```
+    }
+)
+
+lov event-types (
+    name: EVENT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select 1 ob, '- New Event Type -' d, -1 r
+              from dual
+            union all
+            select 2 ob, type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', ' (External)'), null) d, type_id r
+              from EBA_ca_event_types
+            where (:EXTERNAL_INTERNAL_BO = 'Exclude'
+                   or (   nvl(internal_yn, 'N') = 'N'
+                       or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                      )
+                  )
+            )
+            order by ob, d
+            ```
+    }
+)
+
+lov event-types-for-main-cal (
+    name: EVENT TYPES FOR MAIN CAL
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null) d, type_id r
+              from EBA_ca_event_types
+            where (:EXTERNAL_INTERNAL_BO = 'Exclude'
+                   or (   nvl(internal_yn, 'N') = 'N'
+                       or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                      )
+                  )
+             order by type_name
+            ```
+    }
+)
+
+lov events (
+    name: EVENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select event_name d, event_id r
+            from   eba_ca_events
+            order by 1
+            ```
+    }
+)
+
+lov notification-type (
+    name: NOTIFICATION TYPE
+    source {
+        location: staticValues
+    }
+
+    entry red (
+        sequence: 20
+        display: Red
+        return: RED
+    )
+
+    entry yellow (
+        sequence: 10
+        display: Yellow
+        return: YELLOW
+    )
+
+)
+
+lov recur-frequency (
+    name: RECUR FREQUENCY
+    source {
+        location: staticValues
+    }
+
+    entry daily (
+        sequence: 1
+        display: Daily
+        return: D
+    )
+
+    entry each-month-same-date (
+        sequence: 5
+        display: each Month (same date)
+        return: M
+    )
+
+    entry every-2-weeks-same-day-of-week (
+        sequence: 4
+        display: every 2 Weeks (same day of week)
+        return: 2W
+    )
+
+    entry every-3-months-same-date (
+        sequence: 6
+        display: every 3 Months (same date)
+        return: Q
+    )
+
+    entry every-week-same-day-of-week (
+        sequence: 3
+        display: every Week (same day of week)
+        return: W
+    )
+
+    entry every-weekday-m-f (
+        sequence: 2
+        display: every Weekday (M-F)
+        return: WD
+    )
+
+)
+
+lov rows (
+    name: ROWS
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-2 (
+        sequence: 20
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-3 (
+        sequence: 30
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-4 (
+        sequence: 40
+        display: 1000
+        return: 1000
+    )
+
+    entry lov_data-5 (
+        sequence: 50
+        display: 5000
+        return: 5000
+    )
+
+)
+
+lov start-time-selector (
+    name: START TIME SELECTOR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select to_char(trunc(sysdate)+((i-1)/48),v('APP_TIME_FORMAT')) d,
+                   to_char(trunc(sysdate)+((i-1)/48),v('APP_TIME_FORMAT')) r
+              from wwv_flow_dual100
+             where i < 49
+            order by i
+            
+            ```
+    }
+)
+
+lov std-time-zones (
+    name: STD TIME ZONES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct tzname d, tzname r
+              from V$TIMEZONE_NAMES
+             order by 1
+            ```
+    }
+)
+
+lov timeframes-for-ir-col-headings (
+    name: TIMEFRAMES (FOR IR COL HEADINGS)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select tf_name d, 
+                   tf_name r
+              from EBA_ca_timeframes
+             where sysdate <= end_date
+             order by start_date
+            
+            ```
+    }
+)
+
+lov timeframes-showing-dates (
+    name: TIMEFRAMES (SHOWING DATES)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select tf_name || ' (' || start_date || ' to ' ||
+                                      end_date || ')' d, 
+                   tf_id r
+              from EBA_ca_timeframes
+             order by start_date
+            
+            ```
+    }
+)
+
+lov timezones (
+    name: TIMEZONES
+    source {
+        location: staticValues
+    }
+
+    entry asia-calcutta (
+        sequence: 10
+        display: Asia/Calcutta
+        return: Asia/Calcutta
+    )
+
+    entry us-alaska (
+        sequence: 8
+        display: US/Alaska
+        return: US/Alaska
+    )
+
+    entry us-arizona (
+        sequence: 6
+        display: US/Arizona
+        return: US/Arizona
+    )
+
+    entry us-central (
+        sequence: 4
+        display: US/Central
+        return: US/Central
+    )
+
+    entry us-east-indiana (
+        sequence: 2
+        display: US/East-Indiana
+        return: US/East-Indiana
+    )
+
+    entry us-eastern (
+        sequence: 1
+        display: US/Eastern
+        return: US/Eastern
+    )
+
+    entry us-hawaii (
+        sequence: 9
+        display: US/Hawaii
+        return: US/Hawaii
+    )
+
+    entry us-michigan (
+        sequence: 3
+        display: US/Michigan
+        return: US/Michigan
+    )
+
+    entry us-mountain (
+        sequence: 5
+        display: US/Mountain
+        return: US/Mountain
+    )
+
+    entry us-pacific (
+        sequence: 7
+        display: US/Pacific
+        return: US/Pacific
+    )
+
+)
+
+lov upd-request-af (
+    name: UPD_REQUEST_AF
+    source {
+        location: staticValues
+    }
+
+    entry all-events (
+        sequence: 1
+        display: All Events
+        return: A
+    )
+
+    entry future-events (
+        sequence: 2
+        display: Future Events
+        return: F
+    )
+
+)
+
+lov upd-request-afo (
+    name: UPD_REQUEST_AFO
+    source {
+        location: staticValues
+    }
+
+    entry all-events (
+        sequence: 1
+        display: All Events
+        return: A
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                (:APP_PAGE_ID =  11 and (instr( :P11_REQUEST_TYPE,'A') > 0 or  :P11_REQUEST_TYPE = 'D'))
+                or
+                (:APP_PAGE_ID = 411 and (instr(nvl(:P411_REQUEST_TYPE,'AFO'),'A') > 0 or :P411_REQUEST_TYPE = 'D'))
+                ```
+        }
+    )
+
+    entry future-events (
+        sequence: 2
+        display: Future Events
+        return: F
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                (:APP_PAGE_ID =  11 and (instr( :P11_REQUEST_TYPE,'F') > 0 or  :P11_REQUEST_TYPE = 'D'))
+                or
+                (:APP_PAGE_ID = 411 and (instr(nvl(:P411_REQUEST_TYPE,'AFO'),'F') > 0 or :P411_REQUEST_TYPE = 'D'))
+                ```
+        }
+    )
+
+    entry only-this-event (
+        sequence: 3
+        display: Only this Event
+        return: O
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                (:APP_PAGE_ID =  11 and (instr( :P11_REQUEST_TYPE,'O') > 0 or  :P11_REQUEST_TYPE = 'D'))
+                or
+                (:APP_PAGE_ID = 411 and (instr(nvl(:P411_REQUEST_TYPE,'AFO'),'O') > 0 or :P411_REQUEST_TYPE = 'D'))
+                ```
+        }
+    )
+
+)
+
+lov upd-request-fo (
+    name: UPD_REQUEST_FO
+    source {
+        location: staticValues
+    }
+
+    entry future-events (
+        sequence: 2
+        display: Future Events
+        return: F
+    )
+
+    entry only-this-event (
+        sequence: 3
+        display: Only this Event
+        return: O
+    )
+
+)
+
+lov username-format (
+    name: USERNAME_FORMAT
+    source {
+        location: staticValues
+    }
+
+    entry email-address (
+        sequence: 1
+        display: Email Address
+        return: EMAIL
+    )
+
+    entry non-email-address (
+        sequence: 2
+        display: Non-Email Address
+        return: STRING
+    )
+
+)
+

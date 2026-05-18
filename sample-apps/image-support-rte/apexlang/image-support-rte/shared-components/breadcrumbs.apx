@@ -1,0 +1,47 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry image-support-demo (
+        name: Image Support Demo
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry interactive-report-of-content (
+        name: Interactive Report of Content
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @image-support-demo
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+)
+

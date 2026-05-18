@@ -1,0 +1,136 @@
+appComputation amt-hdr (
+    itemName: AMT_HDR
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Annual Recurring Revenue
+    }
+    config {
+        buildOption: @opportunity-amount-set-at-product-level
+    }
+)
+
+appComputation amt-hdr-2 (
+    itemName: AMT_HDR
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Amount
+    }
+    config {
+        buildOption: !@opportunity-amount-set-at-product-level
+    }
+)
+
+appComputation application-title (
+    itemName: APPLICATION_TITLE
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_app_name varchar2(255);
+            begin
+                select nvl(preference_value,:APP_NAME)
+                  into l_app_name
+                  from eba_sales_preferences
+                 where preference_name = 'APPLICATION_TITLE';
+                return l_app_name;
+            exception
+                when others then
+                    return :APP_NAME;
+            end;
+            ```
+    }
+    error {
+        errorMessage: An error was encountered while in the application title computation.
+    }
+)
+
+appComputation last-page (
+    itemName: LAST_PAGE
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: 1
+    }
+    error {
+        errorMessage: Error
+    }
+)
+
+appComputation opp-set-prod-lev-bo (
+    itemName: OPP_SET_PROD_LEV_BO
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Include
+    }
+    config {
+        buildOption: @opportunity-amount-set-at-product-level
+    }
+)
+
+appComputation opp-set-prod-lev-bo-2 (
+    itemName: OPP_SET_PROD_LEV_BO
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Exclude
+    }
+    config {
+        buildOption: !@opportunity-amount-set-at-product-level
+    }
+)
+
+appComputation opp-set-prod-lev-bo-name (
+    itemName: OPP_SET_PROD_LEV_BO_NAME
+    execution {
+        sequence: 10
+    }
+    computation {
+        staticValue: Opportunity Amount Set at Product Level
+    }
+)
+
+appComputation rep-title (
+    itemName: REP_TITLE
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody: return apex_escape.html(eba_sales_fw.get_preference_value('REP_TITLE'));
+    }
+)
+
+appComputation rep-title-raw (
+    itemName: REP_TITLE_RAW
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody: return eba_sales_fw.get_preference_value('REP_TITLE');
+    }
+)
+
+appComputation sales-ldr-title (
+    itemName: SALES_LDR_TITLE
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody: return apex_escape.html(eba_sales_fw.get_preference_value('SALES_LDR_TITLE'));
+    }
+)
+

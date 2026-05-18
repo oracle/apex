@@ -1,0 +1,105 @@
+file AboutTheApprovalsFeature.md (
+    mimeType: text/markdown
+    charSet: utf-8
+)
+
+file AboutTheSampleApplication.md (
+    mimeType: text/markdown
+    charSet: utf-8
+)
+
+file AboutTheWorkflowFeature.md (
+    mimeType: text/markdown
+    charSet: utf-8
+)
+
+file UsingTheSample.md (
+    mimeType: text/markdown
+    charSet: utf-8
+)
+
+file app.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file app.min.css (
+    mimeType: text/css
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file readme_appraisalworkflow.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_approvals.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_datamodel.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_employees.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_employees2.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_laptopordermgmt.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_laptopprocurementworkflow.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_laptopworkflow.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_salapprovers.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_selfeval.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_taskviews.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file readme_workflowviews.jpg (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+

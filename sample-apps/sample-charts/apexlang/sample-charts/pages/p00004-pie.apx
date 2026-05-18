@@ -1,0 +1,1258 @@
+page 4 (
+    name: Pie
+    alias: PIE
+    title: Pie
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>&PRODUCT_NAME. native Pie and Donut charts, using Oracle JET Data Visualizations, are showcased on this page. Pie charts are useful for visualizing parts of a whole, but do not display zero or negative values, and are therefore not recommended for data sets that may have negative or null data. Explore the wide range of chart attributes declaratively available with our native charts, to format and customise the style of your charts.</p><br/>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-pie-chart
+        }
+    )
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 90
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region colors-set-via-js-code (
+        name: Colors set via JS Code
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @pie-chart-series-colors
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: pie
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            pieSelectionEffect: highlightAndExplode
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            position: top
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ){
+                    var myColors = ["red","yellow","orange","#791b19", "purple"];
+                    
+                    // Setup a callback function which gets called when data is retrieved, it allows to manipulate the series
+                    options.dataFilter = function( data ) {
+                        
+                        for ( i = 0; i < data.series.length; i++ ) {
+                            data.series[ i ].color = myColors [ i ];
+                        }
+                        return data;
+                    };
+                    
+                    // Set chart initialization options
+                    return options;
+                }
+                ```
+        }
+
+        series products (
+            name: Products
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select product_id, 
+                           product_name, 
+                           list_price
+                    from eba_demo_chart_products
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: LIST_PRICE
+            }
+            label {
+                show: true
+                position: outsideSlice
+            }
+        )
+
+    )
+
+    region colors-set-via-sql-query (
+        name: Colors set via SQL Query
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @pie-chart-series-colors
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: pie
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            pieSelectionEffect: highlightAndExplode
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            position: top
+        }
+
+        series products (
+            name: Products
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select product_id, 
+                           product_name, 
+                           list_price,
+                           case product_name
+                               when 'Apples' then 'green'
+                               when 'Bananas' then 'yellow'
+                               when 'Grapes' then 'purple'
+                               when 'Cantaloupe' then 'orange'
+                               when 'Dates' then '#791b19'
+                           end series_colors
+                    from eba_demo_chart_products
+                    ```
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: LIST_PRICE
+            }
+            appearance {
+                color: &SERIES_COLORS.
+            }
+            label {
+                show: true
+                position: outsideSlice
+            }
+        )
+
+    )
+
+    region donut-chart-new-declarative-label-option (
+        name: Donut Chart ( New Declarative Label Option )
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: donut
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        value {
+            pieChartOtherThreshold: 0.05
+            format: currency
+            decimalPlaces: 0
+        }
+        animation {
+            onDisplay: alphaFade
+            onDataChange: none
+        }
+        legend {
+            position: top
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.id,
+                           b.project label,
+                           sum(a.cost) value
+                      from eba_demo_chart_tasks a,
+                           eba_demo_chart_projects b
+                     where a.project = b.id
+                     group by b.id, b.project
+                    order by 3 desc
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+                position: outsideSlice
+                displayAs: labelPercentageValue
+            }
+        )
+
+    )
+
+    region donut-chart-new-declarative-label-option-information (
+        name: Donut Chart ( New Declarative Label Option ) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Donut chart with labels defined via a new series-level declarative option, <strong>Display As</strong>.<p/>
+                <strong>Display As</strong> - Use this series-level attribute to define the level of detail you wish to display on the labels of your pie and donut chart.  Prior to 18.1, customing the label required the use of JavaScript code.  With 18.1 and above, just select the option that best suits your requirements, from the following list: <br/>
+                <ul>
+                <li><strong>Label</strong>: the labels will display on the slices of the chart, based on the selected Label column mapping. For example, <strong><i>Bugs</i></strong>.</li>
+                <li><strong>Percentage</strong>: the labels will display as values between 0% and 100%, based on the selected Value column mapping. The value is a percentage of the total values represented on the chart. For example, <strong><i>15%</i></strong>.</li>
+                <li><strong>Value</strong>: the labels will display as numeric values, based on the selected Value column mapping.</li>
+                <li><strong><i>Label - Percentage ( Value )</i></strong> : the labels will display the label, value and percentage information in the following format: label - percentage ( value ). For example, <strong><i>Bugs - 15% ( 18 )</i></strong>.</li>
+                <li><strong>Percentage ( Value )</strong>: the labels will display as numeric values, based on the selected Value column mapping. For example, <strong><i>15% ( 18 )</i></strong>.</li>
+                </ul>
+                <p/>
+                <strong>Label Position</strong> - The series-level attribute is set to Outside Slice, to ensure lengthy labels are visible, and rendered outside the slice of the donut.<p/>
+                For more information on the custom label settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=dataLabel" target="_blank">Chart: Data Label Callback</a> example.
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @donut-chart-new-declarative-label-option
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region donut-chart-sorting (
+        name: Donut Chart (Sorting)
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: donut1
+            regionDisplaySelector: true
+        }
+        chart {
+            type: donut
+        }
+        chartLayout {
+            height: 450
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            pieSelectionEffect: highlightAndExplode
+        }
+        value {
+            pieChartOtherThreshold: 0.05
+            format: decimal
+            decimalPlaces: 0
+        }
+        animation {
+            onDisplay: alphaFade
+            onDataChange: none
+        }
+        legend {
+            position: top
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (options) {
+                    // Set color of 'Other' slice to pink
+                    $.extend( options.styleDefaults, { otherColor: '#e85d89' }) ;
+                    return options;
+                }
+                ```
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.id,
+                           b.project label,
+                           sum(a.cost) value
+                      from eba_demo_chart_tasks a,
+                           eba_demo_chart_projects b
+                     where a.project = b.id
+                     group by b.id, b.project
+                    order by 3 desc
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+                position: outsideSlice
+                displayAs: percentageValue
+            }
+        )
+
+    )
+
+    region donut-chart-sorting-information (
+        name: Donut Chart (Sorting) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Donut chart with sorting options.<p/>
+                <strong>Pie Other Threshold</strong> - Use this chart-level attribute to attribute to aggregate small slices of the chart into an "Other" node. The attribute can be used to specify the smallest slice that will be displayed as a ratio of the total pie value.<p/>
+                <strong>Label Position</strong> - The series-level attribute is set to Outside Slice, rendering the label on the outside of each slice.<p/>
+                <strong>Label Display As</strong> - The new series-level attribute is set to <strong>Percentage ( Value )</strong>, rendering the label in that format, without the need to use custom JavaScript code to acomplish it.<p/>
+                <strong>Sort Order</strong> - Donut chart slices can be sorted based on the values. The new <strong>Sort Order</strong> chart-level attribute allows you to define the sort order of your chart. Through the use of Dynamic actions, you can allow your end users to toggle the sort order. Use the Ascending/Descending buttons to the top right of the chart to change the sorting of the data items on the charts.<p/>
+                <strong>JavaScript Initialization Code</strong> - Use this chart-level attribute to customize the <a href="&OJCHART_API_URL.#styleDefaults.otherColor" target="_blank">otherColor</a> JET attribute, to set the color of the 'Other' slice of the chart.  By default, that slice will use the color black. Use the following code snippet to achieve this:<br/>
+                <pre>
+                function (options) {
+                    // Set color of 'Other' slice to pink
+                    $.extend( options.styleDefaults, { otherColor: '#e85d89' }) ;
+                    return options;
+                }
+                </pre>
+                <p/>
+                For more information on the Pie chart sort settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=sorting" target="_blank">Pie Chart: Sorting</a> example.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @donut-chart-sorting
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region donut-chart-v2-labels-outside-slice (
+        name: Donut Chart v2 (Labels Outside Slice)
+        type: chart
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        chart {
+            type: donut
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            title: Projects Tasks
+            position: bottom
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.id,
+                           b.project label,
+                           sum(a.cost) value
+                      from eba_demo_chart_tasks a,
+                           eba_demo_chart_projects b
+                     where a.project = b.id
+                     group by b.id, b.project
+                    order by 3 desc
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+                position: outsideSlice
+                displayAs: percentage
+            }
+        )
+
+    )
+
+    region master-detail-chart-links (
+        name: Master Detail Chart Links
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                Drill into a slice of the Products pie chart on the left, to display its associated orders in the Orders bar chart on the right. To drill using the mouse, click on the chart slice.  To drill using the keyboard, navigate to the slice and hit Enter.<p/>
+                For more information on the <a href="&OJCHART_API_URL.#drilling" target="_blank">drilling</a> attribute, refer to the ojChart API.
+                ```
+        }
+        layout {
+            sequence: 100
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region master-detail-chart-links-information (
+        name: Master Detail Chart Links Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a master-detail chart, through the use of the Link Target on the Master chart.<p/>
+                <strong>Link Target</strong> - Use this series-level attribute to define a JavaScript call to set the value of a hidden page item to the currently selected product ID.<p/>
+                <strong>Dynamic Action</strong> - Define a dynamic action, to be triggered upon a change to the hidden page item.  That action will trigger a refresh of the Orders bar chart, to reflect the orders associated with the selected product.<p/>
+                <strong>Page Items To Submit</strong> - Ensure this series-level attribute is set to the name of the hidden page item, to ensure its value is used at the time of processing the chart SQL query.<p/>
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to define JavaScript code, to customise the pie chart attributes at initialization, to render the chart in 3D.  The <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank">threeDEffect</a> attribute in the ojChart API should be set, using the following JavaScript code:</br/>
+                <pre>
+                function( options ) {
+                
+                    // Add new 3D effect to existing chart style defaults   
+                    options.styleDefaults = $.extend( options.styleDefaults, {threeDEffect: "on"});
+                    
+                    return options;
+                }
+                </pre></p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @master-detail-chart-links
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region orders-detail-chart (
+        name: Orders (Detail chart)
+        type: chart
+        layout {
+            sequence: 30
+            parentRegion: @master-detail-chart-links
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        title {
+            title: &P4_PRODUCT_NAME.
+        }
+        chartLayout {
+            height: 380
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+        messages {
+            whenNoDataFound: No product selected from Pie Chart (Master chart)
+        }
+
+        series order-per-product (
+            name: Order Per Product
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select a.order_id, a.customer, a.sales_date, a.quantity, a.customer|| '<br/>Quantity: ' ||a.quantity tooltip
+                      from eba_demo_chart_orders a, eba_demo_chart_products b
+                     where a.product_id = :P4_PRODUCT_ID
+                       and a.product_id = b.product_id
+                    ```
+                pageItemsToSubmit: P4_PRODUCT_ID
+            }
+            columnMapping {
+                label: ORDER_ID
+                value: QUANTITY
+                customTooltip: TOOLTIP
+            }
+            label {
+                show: true
+            }
+        )
+
+        axis x (
+            name: x
+            title: Order ID
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            title: Quantity
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region pie-chart (
+        name: Pie Chart
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: pie1
+            regionDisplaySelector: true
+        }
+        chart {
+            type: pie
+        }
+        chartLayout {
+            height: 400
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            pieSelectionEffect: highlightAndExplode
+        }
+        value {
+            formatScaling: none
+        }
+
+        series tasks (
+            name: Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select b.id,
+                           b.project label,
+                           sum(a.cost) value
+                      from eba_demo_chart_tasks a,
+                           eba_demo_chart_projects b
+                     where a.project = b.id
+                     group by b.id, b.project
+                    order by 3 desc
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 47
+                    items: {
+                        IG_ID: &ID.
+                    }
+                    action: clearRegions
+                    request: "IG[tasksRep]_tasks"
+                }
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region pie-chart-information (
+        name: Pie Chart Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                This example demonstrates a Pie chart with various animation options.<p/>
+                <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to allow allowing a user to hide and unhide a series by clicking the chart legend markers. Upon hiding/showing a series, the <strong>With Rescale</strong> setting will result in the pie chart automatically recalculating the percent values displayed on the label to factor in the selection change. Selecting a slice of the pie will highlight and explode the slice.<p/>
+                
+                <strong>Label Display As</strong> - To display the 'Label' column mapping information in the label on each pie slice, this new series-level attribute is set to <strong>Label</strong>.<p/>
+                
+                <strong>Legend size</strong> - To decrease the amount of space between the pie chart and legend, the legend <strong>size</strong> attribute can be set to a value, in pixels or percent. Click the <strong>Increase Legend Size</strong> or <strong>Decrease Legend Size</strong> buttons to trigger a change in the legend size in relation to the chart.  A dynamic action is used to update the region size.  Refer to the <a href="&OJCHART_API_URL.#legend.size" target="_blank">ojChart API guide</a> for more information on this setting.<p>
+                
+                <strong>Link</strong> - This series-level attribute can be set to define a link on the chart element.  For this example, the new Interactive Grid URL Filtering support is demonstrated here.  When you click on a chart element, the URL will redirect you to page 47 in the application, which contains an Interactive Grid saved report on the EBA_DEMO_CHART_TASKS table.  The report will filter information based upon the project (ID) associated with the selected chart element.  The URL Filtering is achieved by defining a link on the chart series, with the following settings:
+                <ul>
+                <li> <strong>Link Type</strong> = Redirect to Page</li>
+                <li> <strong>Target</strong> = Page 47</li> 
+                <li> <strong>Link Builder Target settings:</strong></i> 
+                <ul>
+                <li> <strong>Set Item Name</strong> = IG_ID     - using the <i>IG_</i> syntax to reference a column of the Interactive Grid</i> 
+                <li> <strong>Set Item Value</strong> = &amp;ID.</i> 
+                <li> <strong>Clear/Reset Action</strong> = 'Clear Regions'</li> 
+                <li> <strong>Advanced Request</strong> = IG[<i>tasksRep</i>]_<i>tasks</i>  -  where <i>tasksRep</i> is the region static ID, and <i>tasks</i> is the saved report name.</li> 
+                </ul>
+                </ul>
+                <p/><p/>
+                
+                For more information on the Pie chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=hideShow" target="_blank">Pie Chart: Hide & Show</a> and <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=animation" target="_blank">Pie Chart: Animations</a> examples.
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @pie-chart
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region pie-chart-series-colors (
+        name: Pie Chart (Series Colors)
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region pie-chart-series-colors-information (
+        name: Pie Chart (Series Colors) Information
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                These examples demonstrate the various ways to control the colors used for the chart series.<p/><p/>
+                
+                <strong>Colors set via SQL Query</strong> - This example demonstrates a Pie chart with the series colors defined via the SQL query, and the column is then referenced in the Color attribute. Use the chart SQL query to define the colors to be applied to each slice of the pie, based on the product_name being displayed. Then set the <strong>Color</strong> attribute, referencing the column alias using &amp;COLUMN_VALUE. syntax, to use a column value for the setting of the pie slice colors.<p/><p/>
+                
+                <strong>Colors set via JS Code</strong> - Use the chart-level advanced attribute <b>JavaScript Code</b> to customize the chart colors at chart initialization. For example,:<p/>
+                <pre>
+                function( options ){
+                    var myColors = ["red","yellow","orange","#791b19", "purple"];
+                    
+                    // Setup a callback function which gets called when data is retrieved, it allows to manipulate the series
+                    options.dataFilter = function( data ) {
+                        
+                        for ( i = 0; i < data.series.length; i++ ) {
+                            data.series[ i ].color = myColors [ i ];
+                        }
+                        return data;
+                    };
+                    
+                    // Set chart initialization options
+                    return options;
+                }
+                </pre>
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @pie-chart-series-colors
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region products-master-chart (
+        name: Products (Master chart)
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @master-detail-chart-links
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                i-h480
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: pie
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        settings {
+            pieSelectionEffect: explode
+        }
+        animation {
+            onDisplay: none
+            onDataChange: none
+        }
+        legend {
+            hideAndShowBehavior: none
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ){
+                    // Add new 3D effect to existing chart style defaults   
+                    options.styleDefaults = $.extend( options.styleDefaults, {threeDEffect: "on"});
+                    return options;
+                }
+                ```
+        }
+
+        series products (
+            name: Products
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery: select product_id, product_name, list_price from eba_demo_chart_products
+            }
+            columnMapping {
+                label: PRODUCT_NAME
+                value: LIST_PRICE
+            }
+            link {
+                type: redirectUrl
+                targetUrl: javascript:$s('P4_PRODUCT_ID',&PRODUCT_ID.);
+            }
+            label {
+                show: true
+                position: outsideSlice
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P4_PRODUCT_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @products-master-chart
+            slot: regionBody
+        }
+    )
+
+    pageItem P4_PRODUCT_NAME (
+        type: displayOnly
+        label {
+            label: Product:
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 10
+            region: @orders-detail-chart
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button ascending (
+        buttonName: Ascending
+        label: Ascending
+        layout {
+            sequence: 20
+            region: @donut-chart-sorting
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-sort-numeric-asc
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button decrease (
+        buttonName: DECREASE
+        label: Decrease Legend Size
+        layout {
+            sequence: 20
+            region: @pie-chart
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button descending (
+        buttonName: Descending
+        label: Descending
+        layout {
+            sequence: 10
+            region: @donut-chart-sorting
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pill
+            ]
+            icon: fa-sort-numeric-desc
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button increase (
+        buttonName: INCREASE
+        label: Increase Legend Size
+        layout {
+            sequence: 10
+            region: @pie-chart
+            slot: belowBox
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction apply-other-threshold (
+        name: Apply Other Threshold
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P4_OTHER
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var lOther = apex.item('P4_OTHER').getValue();
+                    
+                    var num = 0.3
+                    $("#donut1_jet").ojChart({otherThreshold:num});
+                    
+                    ```
+            }
+            affectedElements {
+                selectionType: region
+                region: @donut-chart-sorting
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction decrease (
+        name: Decrease
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @decrease
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("pie1").widget().ojChart({legend:{size:'30%'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @pie-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction increase (
+        name: Increase
+        execution {
+            sequence: 40
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @increase
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("pie1").widget().ojChart({legend:{size:'50%'}});
+            }
+            affectedElements {
+                selectionType: region
+                region: @pie-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-orders-chart (
+        name: Refresh Orders Chart
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P4_PRODUCT_ID
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @orders-detail-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-product-name (
+        name: Set Product Name
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P4_PRODUCT_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select product_name from eba_demo_chart_products
+                    where product_id = :P4_PRODUCT_ID
+                    ```
+                itemsToSubmit: P4_PRODUCT_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P4_PRODUCT_NAME
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction sort-ascending (
+        name: Sort Ascending
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @ascending
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("donut1").widget().ojChart({sorting:'ascending'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @pie-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction sort-descending (
+        name: Sort Descending
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @descending
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.region("donut1").widget().ojChart({sorting:'descending'});
+            }
+            affectedElements {
+                selectionType: region
+                region: @pie-chart
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+)
+

@@ -1,0 +1,870 @@
+upgradeScript Activities (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: activities.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_ACTIVITIES'
+            ```
+    }
+)
+
+upgradeScript "Add parent_customer_id" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: add-parent-customer-id.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'PARENT_CUSTOMER_ID'
+            ```
+    }
+)
+
+upgradeScript "Add total_contract_value & discount_level to Customers table" (
+    execution {
+        sequence: 420
+    }
+    script {
+        contentFile: add-total-contract-value-discount-level-to-customers-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_columns
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name in ('TOTAL_CONTRACT_VALUE', 'DISCOUNT_LEVEL')
+            ```
+    }
+)
+
+upgradeScript "Allow NULL Preference Values" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: allow-null-preference-values.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_PREFERENCES'
+                and column_name = 'PREFERENCE_VALUE'
+                and nullable = 'N'
+            ```
+    }
+)
+
+upgradeScript "Click Counting Table" (
+    execution {
+        sequence: 130
+    }
+    script {
+        contentFile: click-counting-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_CLICKS';
+            ```
+    }
+)
+
+upgradeScript "Content Validation Table" (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: content-validation-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_VERIFICATIONS';
+            ```
+    }
+)
+
+upgradeScript "Drop product/customer constraint in product uses" (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: drop-product-customer-constraint-in-product-uses.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_constraints
+            where constraint_name = 'EBA_CUST_PRODUCT_USES_UK'
+            ```
+    }
+)
+
+upgradeScript "Email Log DDL" (
+    execution {
+        sequence: 390
+    }
+    script {
+        contentFile: email-log-ddl.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_EMAIL_LOG'
+            ```
+    }
+)
+
+upgradeScript "Feedback DDL" (
+    execution {
+        sequence: 380
+    }
+    script {
+        contentFile: feedback-ddl.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_FEEDBACK'
+            ```
+    }
+)
+
+upgradeScript "Feedback Types DDL" (
+    execution {
+        sequence: 360
+    }
+    script {
+        contentFile: feedback-types-ddl.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_FEEDBACK_TYPES'
+            ```
+    }
+)
+
+upgradeScript "Feedback Types Data" (
+    execution {
+        sequence: 370
+    }
+    script {
+        contentFile: feedback-types-data.sql
+    }
+    serverSideCondition {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_table_cnt number;
+                l_row_cnt   number;
+            begin
+                select count(*)
+                  into l_table_cnt
+                  from user_tables
+                 where table_name = 'EBA_CUST_FEEDBACK_TYPES';
+                if l_table_cnt = 1 then
+                    select count(*)
+                      into l_row_cnt
+                      from eba_cust_feedback_types;
+                    if l_row_cnt = 0 then
+                        return true;
+                    end if;
+                end if;
+                return false;
+            end;
+            ```
+    }
+)
+
+upgradeScript "Framework Body" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: framework-body.sql
+    }
+)
+
+upgradeScript "Framework Package" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: framework-package.sql
+    }
+)
+
+upgradeScript "History Triggers" (
+    execution {
+        sequence: 120
+    }
+    script {
+        contentFile: history-triggers.sql
+    }
+)
+
+upgradeScript "Implementation Partners/Competitors" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: implementation-partners-competitors.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_IMPL_PARTNERS'
+            ```
+    }
+)
+
+upgradeScript "Issue Statuses" (
+    execution {
+        sequence: 470
+    }
+    script {
+        contentFile: issue-statuses.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_ISSUE_STATUSES'
+            ```
+    }
+)
+
+upgradeScript Issues (
+    execution {
+        sequence: 480
+    }
+    script {
+        contentFile: issues.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_ISSUES'
+            ```
+    }
+)
+
+upgradeScript "New Product Uses Columns" (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: new-product-uses-columns.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_PRODUCT_USES'
+                and column_name = 'REFERENCE_TYPE_IDS'
+            ```
+    }
+)
+
+upgradeScript "Product Families" (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: product-families.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_PRODUCT_FAMILIES'
+            ```
+    }
+)
+
+upgradeScript "Reference Types" (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: reference-types.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_REFERENCE_TYPES'
+            ```
+    }
+)
+
+upgradeScript "Remove Help Table" (
+    execution {
+        sequence: 110
+    }
+    script {
+        contentFile: remove-help-table.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select table_name
+            from user_tables
+            where table_name = 'EBA_CUST_HELP_PAGE'
+            ```
+    }
+)
+
+upgradeScript "Set First Run Preference" (
+    execution {
+        sequence: 520
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+              from eba_cust_preferences
+             where preference_name = 'FIRST_RUN';
+            ```
+    }
+)
+
+upgradeScript "TIMESTAMP Fix (BUGID: 31352674) " (
+    execution {
+        sequence: 500
+    }
+    script {
+        contentFile: timestamp-fix-bugid-31352674-.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery: select null from all_tab_cols where table_name like 'EBA_CUST_%' and data_type = 'TIMESTAMP(6) WITH LOCAL TIME ZONE'
+    }
+)
+
+upgradeScript "Update countries region_ids" (
+    execution {
+        sequence: 510
+    }
+    script {
+        contentFile: update-countries-region-ids.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery: select null from eba_cust_countries where region_id is null
+    }
+)
+
+upgradeScript "Upgrade EBA_CUST_SAMPLE_DATA" (
+    execution {
+        sequence: 460
+    }
+    script {
+        contentFile: upgrade-eba-cust-sample-data.sql
+    }
+)
+
+upgradeScript "Upgrade eba_cust spec and body" (
+    execution {
+        sequence: 440
+    }
+    script {
+        contentFile: upgrade-eba-cust-spec-and-body.sql
+    }
+)
+
+upgradeScript "Username Format Preference" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: username-format-preference.sql
+    }
+)
+
+upgradeScript "add contact columns" (
+    execution {
+        sequence: 90
+    }
+    script {
+        contentFile: add-contact-columns.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select column_name
+            from user_tab_columns
+            where table_name = 'EBA_CUST_CONTACTS'
+                and column_name = 'FACEBOOK'
+            ```
+    }
+)
+
+upgradeScript "add eba_cust_prod_uses_contact_fk" (
+    execution {
+        sequence: 250
+    }
+    script {
+        contentFile: add-eba-cust-prod-uses-contact-fk.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_constraints
+            where constraint_name = 'EBA_CUST_PROD_USES_CONTACT_FK'
+            ```
+    }
+)
+
+upgradeScript "add logo columns to customers table" (
+    execution {
+        sequence: 270
+    }
+    script {
+        contentFile: add-logo-columns-to-customers-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'LOGO_BLOB'
+            ```
+    }
+)
+
+upgradeScript "add party attributes" (
+    execution {
+        sequence: 340
+    }
+    script {
+        contentFile: add-party-attributes.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'PARTY_ID'
+            ```
+    }
+)
+
+upgradeScript "add phase table" (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: add-phase-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_REF_PHASE'
+            ```
+    }
+)
+
+upgradeScript "add reference_phase_id" (
+    execution {
+        sequence: 180
+    }
+    script {
+        contentFile: add-reference-phase-id.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'REFERENCE_PHASE_ID'
+            ```
+    }
+)
+
+upgradeScript "add sales channel" (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: add-sales-channel.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'SALES_CHANNEL_ID'
+            ```
+    }
+)
+
+upgradeScript "country_id in customers table" (
+    execution {
+        sequence: 290
+    }
+    script {
+        contentFile: country-id-in-customers-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'COUNTRY_ID'
+            ```
+    }
+)
+
+upgradeScript "create eba_cust_acl_features" (
+    execution {
+        sequence: 430
+    }
+    script {
+        contentFile: create-eba-cust-acl-features.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_ACL_FEATURES';
+            ```
+    }
+)
+
+upgradeScript "customer after delete trigger" (
+    execution {
+        sequence: 490
+    }
+    script {
+        contentFile: customer-after-delete-trigger.sql
+    }
+)
+
+upgradeScript "drop index EBA_CUST_PRODUCT_USES_UK" (
+    execution {
+        sequence: 240
+    }
+    script {
+        contentFile: drop-index-eba-cust-product-uses-uk.sql
+    }
+    serverSideCondition {
+        type: rowsReturned
+        sqlQuery:
+            ```sql
+            select *
+            from user_indexes
+            where index_name = 'EBA_CUST_PRODUCT_USES_UK'
+            ```
+    }
+)
+
+upgradeScript "eba_cust_customers trigger" (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: eba-cust-customers-trigger.sql
+    }
+)
+
+upgradeScript "eba_cust_email package body" (
+    execution {
+        sequence: 410
+    }
+    script {
+        contentFile: eba-cust-email-package-body.sql
+    }
+)
+
+upgradeScript "eba_cust_email package spec" (
+    execution {
+        sequence: 400
+    }
+    script {
+        contentFile: eba-cust-email-package-spec.sql
+    }
+)
+
+upgradeScript eba_cust_type (
+    execution {
+        sequence: 300
+    }
+    script {
+        contentFile: eba-cust-type.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_TYPE'
+            ```
+    }
+)
+
+upgradeScript eba_cust_use_case (
+    execution {
+        sequence: 320
+    }
+    script {
+        contentFile: eba-cust-use-case.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_USE_CASE'
+            ```
+    }
+)
+
+upgradeScript "industry view" (
+    execution {
+        sequence: 80
+    }
+    script {
+        contentFile: industry-view.sql
+    }
+)
+
+upgradeScript "populate eba_cust_acl_features" (
+    execution {
+        sequence: 450
+    }
+    script {
+        contentFile: populate-eba-cust-acl-features.sql
+    }
+    serverSideCondition {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_cnt    pls_integer;
+                l_retval boolean := true;
+            begin
+                select count(*)
+                  into l_cnt
+                  from eba_cust_acl_features
+                 where authorization_name in ('EDIT_COMPETITORS', 'VIEW_COMPETITORS');
+            
+                if l_cnt > 0 then
+                    l_retval := false;
+                end if;
+            
+                return l_retval;
+            end;
+            ```
+    }
+)
+
+upgradeScript "product statuses" (
+    execution {
+        sequence: 260
+    }
+    script {
+        contentFile: product-statuses.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_PRODUCT_STATUSES'
+            ```
+    }
+)
+
+upgradeScript "recruitment owner" (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: recruitment-owner.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'REF_RECRUITMENT_OWNER'
+            ```
+    }
+)
+
+upgradeScript "region_id in countries" (
+    execution {
+        sequence: 350
+    }
+    script {
+        contentFile: region-id-in-countries.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_COUNTRIES'
+                and column_name = 'REGION_ID'
+            ```
+    }
+)
+
+upgradeScript "sales channel" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: sales-channel.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tables
+            where table_name = 'EBA_CUST_SALES_CHANNEL'
+            ```
+    }
+)
+
+upgradeScript strategic_customer_program_yn (
+    execution {
+        sequence: 280
+    }
+    script {
+        contentFile: strategic-customer-program-yn.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'STRATEGIC_CUSTOMER_PROGRAM_YN'
+            ```
+    }
+)
+
+upgradeScript "type_id into customers table" (
+    execution {
+        sequence: 310
+    }
+    script {
+        contentFile: type-id-into-customers-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'TYPE_ID'
+            ```
+    }
+)
+
+upgradeScript "use_case_id into customers table" (
+    execution {
+        sequence: 330
+    }
+    script {
+        contentFile: use-case-id-into-customers-table.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select null
+            from user_tab_cols
+            where table_name = 'EBA_CUST_CUSTOMERS'
+                and column_name = 'USE_CASE_ID'
+            ```
+    }
+)
+

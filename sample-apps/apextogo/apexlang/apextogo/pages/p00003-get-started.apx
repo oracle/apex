@@ -1,0 +1,128 @@
+page 3 (
+    name: Get Started
+    alias: GET-STARTED
+    title: Get Started
+    appearance {
+        pageTemplate: @/login
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region background-image (
+        name: Background Image
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: backgroundImage
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        image {
+            fileUrl: #APP_FILES#background.jpg
+        }
+    )
+
+    region get-started-image (
+        name: Get Started Image
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+                margin-top-none
+            ]
+            cssClasses: [
+                u-flex
+                u-justify-content-center
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        image {
+            fileUrl: #APP_FILES#splash/splash-3.png
+        }
+    )
+
+    region get-started-text (
+        name: Get Started Text
+        type: staticContent
+        source {
+            htmlCode: <p>Get the best experience on your mobile device<a href="#action$a-pwa-install"> by installing this app</a>.</p>
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+                margin-bottom-lg
+            ]
+            cssClasses: u-textCenter
+        }
+        accessibility {
+            useLandmark: false
+        }
+    )
+
+    button go (
+        buttonName: GO
+        label: Go!
+        layout {
+            sequence: 50
+            slot: contentBody
+            column: 5
+            columnSpan: 4
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--stretch
+            ]
+            cssClasses: [
+                mxw320
+                margin-auto
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9999
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

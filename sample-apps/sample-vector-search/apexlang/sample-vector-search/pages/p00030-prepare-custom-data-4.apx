@@ -1,0 +1,97 @@
+page 30 (
+    name: Prepare Custom Data (Step 4: Overview)
+    alias: PREPARE-CUSTOM-DATA-4
+    title: Prepare Custom Data
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region custom-vector-search-navigation (
+        name: Custom Vector Search Navigation
+        type: list
+        source {
+            list: @vector-search-custom-data
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkLabel: Custom Vector Search
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+            ]
+        }
+    )
+
+    region progress (
+        name: Progress
+        type: list
+        source {
+            list: @upload-data-progress
+        }
+        layout {
+            sequence: 30
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayCurrentLabelOnly
+            ]
+        }
+    )
+
+    region ready-for-vector-search (
+        name: Ready for Vector Search
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Vector embeddings for your data have been generated! You can now perform vector searches on your data.</p>
+                <p>Select a vector search example below to get started.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--success
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from eba_vector_datatable where embedding_vector is not null and rownum = 1
+        }
+    )
+
+)
+

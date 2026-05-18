@@ -1,0 +1,27 @@
+installScript "Oracle TEXT helper package (compiles without Oracle Text)" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: oracle-text-helper-package-compiles-without-oracle-text-.sql
+    }
+)
+
+installScript data (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: data.sql
+    }
+)
+
+installScript install (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: install.sql
+    }
+)
+

@@ -1,0 +1,158 @@
+page 15 (
+    name: Full Card Action
+    alias: FULL-CARD-ACITON
+    title: &APP_NAME. - Full Card Action
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>Actions can be defined for the full card.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-link
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region card-actions (
+        name: Card Actions
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        orderBy {
+            type: item
+            item: {
+                itemName: P15_ORDER_BY
+                orderBys: {
+                    ENAME: "ENAME" asc
+                    JOB: "JOB" asc
+                }
+            }
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        card {
+            primaryKeyColumn1: EMPNO
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: imageBlobColumn
+            imageColumn: PROFILE_IMAGE
+            iconDescription: &ENAME. - &JOB.
+        }
+        blobAttributes {
+            mimeTypeColumn: MIMETYPE
+            lastUpdatedColumn: IMAGE_LAST_UPDATE
+        }
+
+        action action (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 14
+                    items: {
+                        P14_EMPNO: &EMPNO.
+                    }
+                    clearCache: 14
+                }
+            }
+        )
+
+    )
+
+    pageItem P15_ORDER_BY (
+        type: selectList
+        label {
+            label: Order By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Ename;ENAME,Job;JOB
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @card-actions
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: ENAME
+        }
+    )
+
+)
+

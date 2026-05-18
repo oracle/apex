@@ -1,0 +1,178 @@
+page 105 (
+    name: Area
+    alias: AREA
+    title: &NOMENCLATURE_AREA.
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                A &NOMENCLATURE_AREA. is a way to organize &NOMENCLATURE_PROJECTS..  &NOMENCLATURE_AREAS. are the top level categorization, which are further organized by &NOMENCLATURE_INITIATIVES..
+                </p>
+                <p>
+                The goal is to more easily locate a specific &NOMENCLATURE_PROJECT. within a large list of &NOMENCLATURE_PROJECTS..  
+                This &NOMENCLATURE_PROJECT. organization is just one way to filter or categorize &NOMENCLATURE_PROJECTS..  
+                &NOMENCLATURE_PROJECTS. can also be filtered by tags and releases.
+                </p>
+                <p>
+                     Click on a &NOMENCLATURE_AREA. to view the &NOMENCLATURE_INITIATIVES. defined for the &NOMENCLATURE_AREA..
+                </p>
+                
+                <p>
+                    Content Organization:<br><br>
+                    <strong>&NOMENCLATURE_AREAS.</strong> >  &NOMENCLATURE_INITIATIVES. >  &NOMENCLATURE_PROJECTS.
+                </p>
+                <br />
+                <br />
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-container (
+        name: button container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button what-is-a-project (
+        buttonName: what_is_a_project
+        label: About &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 107
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-a-release (
+        buttonName: what_is_a_release
+        label: About Releases
+        layout {
+            sequence: 30
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 108
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    button what-is-activity (
+        buttonName: what_is_activity
+        label: About Activities
+        layout {
+            sequence: 50
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 110
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button what-is-an-initiative (
+        buttonName: what_is_an_initiative
+        label: About &NOMENCLATURE_INITIATIVES.
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa=info
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 106
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,810 @@
+page 15 (
+    name: Transform and Lookup
+    alias: TRANSFORM-AND-LOOKUP
+    title: Transform and Lookup
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use this page to load employees data in CSV file.  This page also does column transformation and lookup.</p>
+                
+                <p>Download sample <a href="#APP_IMAGES#Employees_TransformNLookup.csv">Employees_TransformNLookup.csv</a> file to try the load.</a>
+                ```
+        }
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_FILE
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region data-source (
+        name: Data Source
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region employees (
+        name: Employees
+        type: classicReport
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_LOAD_EMP
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Comm
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Deptno
+                alignment: center
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Empno
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Ename
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Hiredate
+                alignment: center
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Job
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+                alignment: center
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Mgr
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Sal
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region loaded-file (
+        name: Loaded File
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @data-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_FILE
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region preview (
+        name: Preview
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.line_number,
+                       p.col001, p.col002, p.col003, p.col004, p.col005, p.col006, p.col007, p.col008, p.col009, p.col010
+                       -- add more columns (col011 to col300) here.
+                  from apex_application_temp_files f, 
+                       table( apex_data_parser.parse(
+                                  p_content          => f.blob_content,
+                                  p_file_name        => f.filename,
+                                  p_add_headers_row   => 'Y',
+                                  p_csv_enclosed      => '"',
+                                  p_file_charset      => 'WE8ISO8859P1',
+                                  p_max_rows         => 10 ) ) p
+                 where f.name = :P15_FILE
+                 and p.line_number > 1;
+                ```
+            pageItemsToSubmit: P15_FILE
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_FILE
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        heading {
+            type: plsqlFunctionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_col_headers varchar2(32767);
+                begin
+                    select p.line_number || ':' || 
+                       p.col001 || ':' || p.col002 || ':' || p.col003 || ':' || p.col004 || ':' || p.col005 || ':' || 
+                       p.col006 || ':' || p.col007 || ':' || p.col008 || ':' || p.col009 || ':' || p.col010
+                    into l_col_headers
+                       -- add more columns (col011 to col300) here.
+                      from apex_application_temp_files f, 
+                           table( apex_data_parser.parse(
+                                      p_content          => f.blob_content,
+                                      p_file_name        => f.filename,
+                                      p_add_headers_row   => 'Y',
+                                      p_csv_enclosed      => '"',
+                                      p_file_charset      => 'WE8ISO8859P1',
+                                      p_max_rows         => 10 ) ) p
+                     where f.name = :P15_FILE
+                     and p.line_number = 1;
+                
+                    return l_col_headers;
+                end;
+                ```
+        }
+
+        column COL001 (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Col001
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL002 (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Col002
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL003 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Col003
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL004 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Col004
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL005 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Col005
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL006 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Col006
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL007 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Col007
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL008 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Col008
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL009 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Col009
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COL010 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Col010
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINE_NUMBER (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Line Number
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region upload-a-file (
+        name: Upload a File
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @data-source
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P15_FILE
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P15_ERROR_ROW_COUNT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @upload-a-file
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_FILE (
+        type: fileUpload
+        label {
+            label: Upload a File
+            alignment: left
+        }
+        display {
+            displayAs: blockDropzone
+            dropzoneDesc: Supported formats CSV, TXT
+        }
+        storage {
+            type: appTempFiles
+            maxFileSize: 5000
+        }
+        layout {
+            sequence: 10
+            region: @upload-a-file
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+        }
+    )
+
+    pageItem P15_FILE_NAME (
+        type: displayOnly
+        label {
+            label: Loaded File
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @loaded-file
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: Pasted Data
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button clear (
+        buttonName: CLEAR
+        label: Clear
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button load (
+        buttonName: LOAD
+        label: Load Data
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction upload-a-file (
+        name: Upload a File
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P15_FILE
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P15_FILE
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation is-valid-file-type (
+        name: Is valid file type
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if apex_data_parser.assert_file_type(
+                       p_file_name => :P15_FILE_NAME,
+                       p_file_type => apex_data_parser.c_file_type_csv )
+                then
+                    return true;
+                else
+                    :P15_FILE := null;
+                    return false;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: Invalid file type. Supported file types CSV, TXT.
+            associatedItem: @P15_FILE
+        }
+    )
+
+    computation p15-file-name (
+        itemName: P15_FILE_NAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select filename
+                  from apex_application_temp_files 
+                 where name = :P15_FILE
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_FILE
+        }
+    )
+
+    process clear-cache (
+        name: Clear Cache
+        type: clearSessionState
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 1658704713304802477
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :REQUEST = 'CLEAR' or :P15_ERROR_ROW_COUNT = 0
+        }
+    )
+
+    process load-data (
+        name: Load Data
+        type: dataLoading
+        dataLoading {
+            dataLoadDefinition: @Transform_and_Lookup
+        }
+        sourceData {
+            fileBrowseItem: P15_FILE
+        }
+        processingResult {
+            errorRowCountItem: P15_ERROR_ROW_COUNT
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 1658704292856802477
+        }
+        serverSideCondition {
+            whenButtonPressed: @load
+        }
+    )
+
+)
+

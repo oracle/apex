@@ -1,0 +1,11 @@
+authorization access-rights (
+    name: Access Rights
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody: return true;
+    }
+    error {
+        errorMessage: Insufficient privileges, user does not have access.
+    }
+)
+

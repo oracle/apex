@@ -1,0 +1,104 @@
+lov distinct-projects (
+    name: DISTINCT PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select project || ' (' || count(*) ||' tasks from ' || to_char(min(start_date),'Mon RR') ||' to ' ||to_char(max(start_date), 'Mon RR')||')' d, project r
+            from eba_demo_cal_projects
+            group by project
+            order by 1
+            ```
+    }
+)
+
+lov session-types (
+    name: SESSION_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry break (
+        sequence: 4
+        display: Break
+        return: BREAK
+    )
+
+    entry business (
+        sequence: 1
+        display: Business
+        return: BUSINESS
+    )
+
+    entry general-session (
+        sequence: 3
+        display: General Session
+        return: GENERAL
+    )
+
+    entry hands-on-session (
+        sequence: 5
+        display: Hands On Session
+        return: Hands On
+    )
+
+    entry technical (
+        sequence: 2
+        display: Technical
+        return: TECHNICAL
+    )
+
+)
+
+lov status (
+    name: STATUS
+    source {
+        location: staticValues
+    }
+
+    entry active (
+        sequence: 1
+        display: Active
+        return: ACTIVE
+    )
+
+    entry inactive (
+        sequence: 2
+        display: Inactive
+        return: INACTIVE
+    )
+
+)
+
+lov valid-status-codes (
+    name: VALID STATUS CODES
+    source {
+        location: staticValues
+    }
+
+    entry closed (
+        sequence: 10
+        display: Closed
+        return: Closed
+    )
+
+    entry on-hold (
+        sequence: 20
+        display: On-Hold
+        return: On-Hold
+    )
+
+    entry open (
+        sequence: 30
+        display: Open
+        return: Open
+    )
+
+    entry pending (
+        sequence: 40
+        display: Pending
+        return: Pending
+    )
+
+)
+

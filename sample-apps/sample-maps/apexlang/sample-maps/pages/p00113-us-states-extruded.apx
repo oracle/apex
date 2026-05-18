@@ -1,0 +1,270 @@
+page 113 (
+    name: US States (extruded)
+    alias: US-STATES-EXTRUDED
+    title: &APP_NAME. - US States (extruded)
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                These map visualize US states as <em>Extruded</em> polygons.  Click on a state to show a info popup with details.
+                </p>
+                <p>For the map on the left, Polygon color and height are determined by the <strong>WATER_AREA</strong> column, using the built-in <strong>Blue to Yellow</strong> color scheme. For the map on the right, Polygon color and height are derived from the "airport count" by state. The airports and states table are joined using the  
+                <strong>SDO_ANYINTERACT</strong> spatial SQL function, based on airports and state coordinates.
+                </p>
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region airports-by-state (
+        name: Airports by State
+        type: map
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -90
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer airports-by-state (
+            name: Airports by State
+            layerType: extrudedPolygons
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with data as (
+                        select s.ID,
+                           s.NAME,
+                           s.STATE_CODE,
+                           ( select count( a.id ) 
+                               from eba_sample_map_airports a
+                              where commercial_ops > 0 and upper(s.name) = upper(a.state_name) ) airport_count,
+                           s.GEOMETRY
+                      from EBA_SAMPLE_MAP_SIMPLE_STATES s
+                    ) 
+                    select id,
+                           upper(name) as name,
+                           state_code,
+                           airport_count,
+                           airport_count * 10 as polygon_height,
+                           geometry
+                      from data
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                useColorScheme: true
+                colorScheme: diverging
+                schemeName: temps
+                colorValueColumn: AIRPORT_COUNT
+                extrusionValueColumn: POLYGON_HEIGHT
+                unit: kilometer
+                fillOpacity: .7
+            }
+            tooltip {
+                column: NAME
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 110
+                    items: {
+                        P110_STATE: &NAME.
+                    }
+                    clearCache: 110
+                }
+            }
+            messages {
+                whenNoDataFound: No States found.
+            }
+        )
+
+    )
+
+    region water-area-by-state (
+        name: Water Area by State
+        type: map
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-ContentBlock--lightBG
+            ]
+        }
+        advanced {
+            htmlDomId: water-map-region
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -90
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer water-area-by-state (
+            name: Water Area by State
+            layerType: extrudedPolygons
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                           NAME,
+                           STATE_CODE,
+                           to_char(LAND_AREA / 1000000,'9G999G999G990D000')  land_area,
+                           to_char(WATER_AREA / 1000000,'9G999G999G990D000')  water_area,
+                           case when water_area > 50000000000 then 2500000 else water_area / 20000 end as water_area_color,
+                           GEOMETRY
+                      from EBA_SAMPLE_MAP_SIMPLE_STATES
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                useColorScheme: true
+                colorScheme: sequential
+                schemeName: blueToYellow
+                colorValueColumn: WATER_AREA_COLOR
+                extrusionValueColumn: WATER_AREA_COLOR
+                fillOpacity: .7
+            }
+            tooltip {
+                column: NAME
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <strong>&NAME. (&STATE_CODE.)</strong><br>
+                    Land Area: &LAND_AREA. km&sup2;<br>
+                    Water Area: &WATER_AREA. km&sup2;<br>
+                    ```
+            }
+            messages {
+                whenNoDataFound: No States found.
+            }
+        )
+
+    )
+
+    dynamicAction on-click-point (
+        name: On Click Point
+        execution {
+            sequence: 20
+        }
+        when {
+            event: region/map/spatialmapobjectclick
+            selectionType: region
+            region: @water-area-by-state
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    const { lng, lat } = this.data;
+                    
+                    apex.region("water-map-region").call( "getMapObject" ).flyTo({ 
+                        center: [ lng, lat ],
+                        screenSpeed: 0.8
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

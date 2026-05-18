@@ -1,0 +1,97 @@
+app SAMPLE-MAPS (
+    name: Sample Maps
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: Sample Maps
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @desktop-navigation-menu
+    }
+    navigationBar {
+        list: @desktop-navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    css {
+        fileUrls: #APP_IMAGES#app-icon.css?version=#APP_VERSION#
+    }
+    authentication {
+        scheme: @application-express-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    security {
+        deepLinking: true
+    }
+    sessionStateProtection {
+        checksumSalt: 3CD3E42780EA891142FAE9657CD2FC5D9B816007F5D2FE48E2390EA8E7ADB956
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments: Application created from create application wizard 2021.02.21.
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Maps
+        }
+    )
+
+    substitution AIRPORT_DATA (
+        value {
+            staticValue: <small>US Airports data from bts.gov "Airports", Bureau of Transportation Statistics / Federal Government.</small>
+        }
+    )
+
+    substitution US_STATES_DATA (
+        value {
+            staticValue: <small>US States data from Data.gov "US Boundaries TIGER/Shapefiles", Federal government.</small>
+        }
+    )
+
+)
+

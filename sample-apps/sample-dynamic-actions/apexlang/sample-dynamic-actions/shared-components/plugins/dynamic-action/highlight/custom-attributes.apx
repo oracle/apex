@@ -1,0 +1,44 @@
+customAttribute attribute_01 (
+    apexlangName: color
+    attribute: 1
+    name: Color
+    validation {
+        maxLength: 10
+    }
+    appearance {
+        sequence: 10
+    }
+    builder {
+        displayWidth: 10
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: speed
+    attribute: 2
+    name: Speed
+    type: selectList
+    appearance {
+        sequence: 20
+    }
+
+    entry fast (
+        sequence: 30
+        display: Fast
+        return: fast
+    )
+
+    entry normal (
+        sequence: 20
+        display: Normal
+        return: normal
+    )
+
+    entry slow (
+        sequence: 10
+        display: Slow
+        return: slow
+    )
+
+)
+

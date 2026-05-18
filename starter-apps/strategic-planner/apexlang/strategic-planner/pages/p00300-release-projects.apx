@@ -1,0 +1,1882 @@
+page 300 (
+    name: release_projects
+    alias: RELEASE-PROJECTS
+    title: Release &NOMENCLATURE_PROJECTS.
+    pageGroup: @releases
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: [
+            #DEFAULT#
+            t-PageBody--noContentPadding
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            $(() => { 
+                apex.actions.add({
+                    name: 'favoriteProject',
+                    action: function(event, focusElement, args) {
+                        $(event.currentTarget).addClass('js-project-to-favorite');
+                        apex.item('P300_PROJECT_TO_FAVORITE').setValue(args.id);
+                        return true;
+                        }
+                });
+            });
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .no-item-ui {
+              --a-field-input-border-width: 0px;
+              --a-field-input-background-color: transparent;
+            }
+            
+            .overline {
+              color: var(--ut-region-text-color, var(--ut-component-text-default-color));
+            }
+            
+            /* Vertically Align cells to top */
+            .t-Report td {
+              vertical-align: top;
+            }
+            
+            @media (min-width: 640px) {
+              .t-ContentRow-body {
+                align-items: flex-start;
+                /* Setting content row alignment to top */
+              }
+            
+              .t-ContentRow-misc {
+                flex-basis: 40%;
+                /* Setting misc column width so they all line up */
+              }
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @nomenclature-projects
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            displayChartForTopNValues: 10
+        }
+
+        facet P300_ACTIVE_ACTIVITY (
+            type: checkboxGroup
+            label {
+                label: Current Activity
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: ACTIVE_ACTIVITY
+            }
+        )
+
+        facet P300_CONTRIBUTOR_NAMES (
+            type: checkboxGroup
+            label {
+                label: Contributors
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: CONTRIBUTOR_NAMES
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+        facet P300_FAVORITE (
+            type: checkboxGroup
+            label {
+                label: My Favorites
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 110
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: FAVORITE
+            }
+        )
+
+        facet P300_OWNER_EMAILS (
+            type: checkboxGroup
+            label {
+                label: Owner Emails
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 150
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: OWNER_EMAILS
+            }
+        )
+
+        facet P300_PCT_COMPLETE (
+            type: checkboxGroup
+            label {
+                label: % Complete
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 90
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PCT_COMPLETE
+            }
+        )
+
+        facet P300_PRIORITY (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT. Priority
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 80
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PRIORITY
+            }
+        )
+
+        facet P300_PROJECT_OWNER1 (
+            type: checkboxGroup
+            label {
+                label: Owner
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PROJECT_OWNER
+            }
+        )
+
+        facet P300_PROJECT_SIZE (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT.  Size
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 140
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PROJECT_SIZE
+            }
+        )
+
+        facet P300_PROJECT_TAGS (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT. Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 100
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PROJECT_TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+        facet P300_REVIEWER_NAMES (
+            type: checkboxGroup
+            label {
+                label: Reviewers
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: REVIEWER_NAMES
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+        facet P300_REVIEW_STATUS (
+            type: checkboxGroup
+            label {
+                label: Review Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                display: addFilterDialog
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: REVIEW_STATUS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+        facet P300_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 20
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: u-flex-grow-1
+        }
+        componentAppearance {
+            display: report
+            cssClasses: header-actions
+        }
+        plugin-appearance {
+            applyThemeColors: false
+            style: compact
+            hideBorders: true
+            removePadding: true
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu about-releases (
+                label: About Releases
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 108
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-info
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 110
+                }
+            )
+
+            menu comp_menu_entry-2 (
+                type: separator
+                layout {
+                    sequence: 40
+                }
+            )
+
+            menu comp_menu_entry-3 (
+                type: separator
+                layout {
+                    sequence: 80
+                }
+            )
+
+            menu edit-release (
+                label: Edit Release
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 27
+                        items: {
+                            P27_ID: &P300_RELEASE_ID.
+                        }
+                        clearCache: 27
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 120
+                }
+                behavior {
+                    target: {
+                        page: 300
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu release-calendar (
+                label: Release Calendar
+                layout {
+                    sequence: 60
+                }
+                behavior {
+                    target: {
+                        page: 203
+                        items: {
+                            P203_RELEASE_ID: &P300_RELEASE_ID.
+                        }
+                        clearCache: 203
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-calendar-o
+                }
+            )
+
+            menu release-dashboard (
+                label: Release Dashboard
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 202
+                        items: {
+                            P202_RELEASE_ID: &P300_RELEASE_ID.
+                        }
+                        clearCache: 202
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-area-chart
+                }
+            )
+
+            menu release-home (
+                label: Release Home
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 117
+                        items: {
+                            P117_RELEASE_ID: &P300_RELEASE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-ship
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 130
+                }
+                behavior {
+                    target: {
+                        page: 300
+                        items: {
+                            P300_RELEASE_ID: &P300_RELEASE_ID.
+                        }
+                        clearCache: 300
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+            menu view-history (
+                label: View History
+                layout {
+                    sequence: 70
+                }
+                behavior {
+                    target: {
+                        page: 14
+                        items: {
+                            P14_RELEASE_ID: &P300_RELEASE_ID.
+                        }
+                        clearCache: 14
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+        )
+
+    )
+
+    region nomenclature-projects (
+        name: &NOMENCLATURE_PROJECTS.
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       --
+                       -- project
+                       --
+                       p.project,
+                       p.project_size,
+                       p.TAGS project_tags,
+                       'P'||to_char(p.priority_id) priority, 
+                       'P'||to_char(p.priority_id) as badge_label,
+                       'fa-pie-chart-'||p.PCT_COMPLETE as icon,
+                       p.PCT_COMPLETE||'%' pct_complete,
+                       p.PCT_COMPLETE pct_complete_sort,
+                       p.project_url_name,
+                       p.friendly_identifier,
+                       decode(p.ACTIVE_YN,'Y','Active','Not Active') active,
+                       decode(p.owner_id,null,'No Owner Defined', (select first_name||' '||last_name from sp_team_members tm where tm.id = p.owner_id)) project_owner,
+                       decode(p.owner_id,null,'No Owner Defined', (select email from sp_team_members tm where tm.id = p.owner_id)) owner_emails,
+                       --
+                       -- favorite
+                       --
+                       nvl((select 'Yes' from sp_favorites f where f.project_id = p.id and f.team_member_id = :APP_USER_ID),'No') favorite,
+                       nvl((select 'fa-heart u-danger-text' from sp_favorites f where f.project_id = p.id and f.team_member_id = :APP_USER_ID),'fa-heart-o') favorite_icon,
+                       --
+                       -- contributor list
+                       --
+                       substr((select listagg('<br>'||apex_escape.html(xrt.RESOURCE_TYPE||': '||xtm.first_name||' '||xtm.last_name), ', ') within group (order by 1) names
+                                 from SP_PROJECT_CONTRIBUTORS xpc, SP_TEAM_MEMBERS xtm, SP_RESOURCE_TYPES xrt
+                                where xpc.project_id = p.id and
+                                      xpc.TEAM_MEMBER_ID = xtm.id and
+                                      xrt.id = xpc.RESPONSIBILITY_ID
+                             ),5) contributors,
+                       --
+                       -- reviewers list
+                       --
+                       '<br>Reviewers: '||(select count(*) from SP_TASKS xpr, sp_task_types tt, sp_task_statuses s
+                                            where xpr.project_id = p.id
+                                              and nvl(xpr.task_sub_type_id,xpr.task_type_id) = tt.id
+                                              and xpr.status_id = s.id
+                                              and tt.static_id like 'REVIEW%') reviewers,
+                       --
+                       -- contributor facets
+                       --
+                       (select listagg(xtm.first_name||' '||xtm.last_name, ', ') within group (order by 1) names
+                       from SP_PROJECT_CONTRIBUTORS xpc, SP_TEAM_MEMBERS xtm
+                       where xpc.project_id = p.id and
+                             xpc.TEAM_MEMBER_ID = xtm.id) contributor_names,
+                       --
+                       -- reviewer facets
+                       --
+                       (select listagg(xtm.first_name||' '||xtm.last_name, ', ') within group (order by 1) names
+                          from SP_TASKS xpr, sp_task_types tt, SP_TEAM_MEMBERS xtm
+                         where xpr.project_id = p.id
+                           and nvl(xpr.task_sub_type_id,xpr.task_type_id) = tt.id
+                           and tt.static_id like 'REVIEW%'
+                           and xpr.OWNER_ID = xtm.id) reviewer_names,
+                       --
+                       -- review status facet
+                       --
+                       (select listagg(initcap(s.status),', ') within group (order by 1)
+                          from SP_TASKS xpr, sp_task_types tt, sp_task_statuses s
+                         where xpr.project_id = p.id
+                           and nvl(xpr.task_sub_type_id,xpr.task_type_id) = tt.id
+                           and xpr.status_id = s.id
+                           and tt.static_id like 'REVIEW%') review_status,
+                       --
+                       -- dates
+                       --
+                       p.updated,
+                       p.created,
+                       --
+                       -- active activity
+                       --
+                       nvl((select 'Yes' from dual where exists (select 1 from SP_ACTIVITIES ap where ap.project_id = p.id and trunc(sysdate) between trunc(ap.start_date) and trunc(ap.end_date))),'No') active_activity,
+                       (select '<span class="fa fa-badge-check" aria-hidden="true" title="Current Activity Exists"></span> ' from dual where exists (
+                           select 1 
+                           from SP_ACTIVITIES ap 
+                           where ap.project_id = p.id and trunc(sysdate) between trunc(ap.start_date) and trunc(ap.end_date))) active_activity_icon
+                
+                  from SP_PROJECTS p,
+                       SP_RELEASE_TRAINS rt
+                  where p.RELEASE_ID = rt.id and 
+                        rt.id = :P300_RELEASE_ID and
+                        p.ARCHIVED_YN = 'N' and
+                        p.DUPLICATE_OF_PROJECT_ID is null
+                ```
+            pageItemsToSubmit: [
+                APP_USER_ID
+                P300_RELEASE_ID
+            ]
+        }
+        orderBy {
+            type: item
+            item: {
+                itemName: P300_ORDER_BY
+                orderBys: {
+                    PRIORITY: priority asc, project
+                    PCT_COMPLETE: pct_complete_sort asc, project
+                    PCT_COMPLETE1: pct_complete_sort desc, project
+                    PROJECT: project
+                    UPDATED: updated desc, project
+                    UPDATED1: updated
+                    CREATED: created desc
+                    CREATED1: created
+                }
+            }
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &ACTIVE_ACTIVITY_ICON!RAW. &PROJECT.
+            description:
+                ```html
+                &CONTRIBUTORS!RAW.
+                &REVIEWERS!RAW.<br>
+                Last Updated: &UPDATED.
+                ```
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            description: &PCT_COMPLETE.
+            shape: noShape
+            size: small
+        }
+        plugin-badge {
+            label: Ticket
+            value: BADGE_LABEL
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 25
+        }
+
+        column ACTIVE (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: ACTIVE
+                dataType: varchar2
+            }
+        )
+
+        column ACTIVE_ACTIVITY (
+            layout {
+                sequence: 320
+            }
+            source {
+                databaseColumn: ACTIVE_ACTIVITY
+                dataType: varchar2
+            }
+        )
+
+        column ACTIVE_ACTIVITY_ICON (
+            layout {
+                sequence: 330
+            }
+            source {
+                databaseColumn: ACTIVE_ACTIVITY_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_LABEL (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column CONTRIBUTORS (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: CONTRIBUTORS
+                dataType: varchar2
+            }
+        )
+
+        column CONTRIBUTOR_NAMES (
+            layout {
+                sequence: 220
+            }
+            source {
+                databaseColumn: CONTRIBUTOR_NAMES
+                dataType: varchar2
+            }
+        )
+
+        column CREATED (
+            layout {
+                sequence: 310
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column FAVORITE (
+            layout {
+                sequence: 290
+            }
+            source {
+                databaseColumn: FAVORITE
+                dataType: varchar2
+            }
+        )
+
+        column FAVORITE_ICON (
+            layout {
+                sequence: 300
+            }
+            source {
+                databaseColumn: FAVORITE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: FRIENDLY_IDENTIFIER
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column OWNER_EMAILS (
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: OWNER_EMAILS
+                dataType: varchar2
+            }
+        )
+
+        column PCT_COMPLETE (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: PCT_COMPLETE
+                dataType: varchar2
+            }
+        )
+
+        column PCT_COMPLETE_SORT (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: PCT_COMPLETE_SORT
+                dataType: number
+            }
+        )
+
+        column PRIORITY (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: PRIORITY
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_OWNER (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: PROJECT_OWNER
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_SIZE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: PROJECT_SIZE
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_TAGS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PROJECT_TAGS
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: PROJECT_URL_NAME
+                dataType: varchar2
+            }
+        )
+
+        column REVIEWERS (
+            layout {
+                sequence: 280
+            }
+            source {
+                databaseColumn: REVIEWERS
+                dataType: varchar2
+            }
+        )
+
+        column REVIEWER_NAMES (
+            layout {
+                sequence: 230
+            }
+            source {
+                databaseColumn: REVIEWER_NAMES
+                dataType: varchar2
+            }
+        )
+
+        column REVIEW_STATUS (
+            layout {
+                sequence: 260
+            }
+            source {
+                databaseColumn: REVIEW_STATUS
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED (
+            layout {
+                sequence: 270
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 3
+                    items: {
+                        FI: &FRIENDLY_IDENTIFIER.
+                        PN: &PROJECT_URL_NAME.
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+            }
+        )
+
+        action actions-menu (
+            position: primaryActions
+            template: menu
+            label: Actions Menu
+            layout {
+                sequence: 40
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu activity-quick-view (
+                label: Activity Quick View
+                layout {
+                    sequence: 60
+                }
+                behavior {
+                    target: {
+                        page: 130
+                        items: {
+                            P130_PROJECT_ID: &ID.
+                        }
+                        clearCache: 130
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-badge-check
+                }
+            )
+
+            menu add-activity (
+                label: Add Activity
+                layout {
+                    sequence: 70
+                }
+                behavior {
+                    target: {
+                        page: 101
+                        items: {
+                            P101_PROJECT_ID: &ID.
+                        }
+                        clearCache: 101
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-plus
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu change-history (
+                label: Change History
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 124
+                        items: {
+                            P124_ID: &ID.
+                        }
+                        clearCache: 124
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+            menu comment (
+                label: Comment
+                layout {
+                    sequence: 80
+                }
+                behavior {
+                    target: {
+                        page: 100
+                        items: {
+                            P100_PROJECT_ID: &ID.
+                        }
+                        clearCache: 100
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-comment-o
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 20
+                }
+            )
+
+            menu comp_menu_entry-2 (
+                type: separator
+                layout {
+                    sequence: 90
+                }
+            )
+
+            menu edit-nomenclature-project (
+                label: Edit &NOMENCLATURE_PROJECT.
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 24
+                        items: {
+                            P24_ID: &ID.
+                        }
+                        clearCache: 24
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu nomenclature-project-details (
+                label: &NOMENCLATURE_PROJECT. Details
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 3
+                        items: {
+                            FI: &FRIENDLY_IDENTIFIER.
+                            PN: &PROJECT_URL_NAME.
+                        }
+                        clearCache: 3
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu nomenclature-project-quick-view (
+                label: &NOMENCLATURE_PROJECT. Quick View
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 36
+                        items: {
+                            P36_ID: &ID.
+                        }
+                        clearCache: 36
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu tag-change-history (
+                label: Tag Change History
+                layout {
+                    sequence: 110
+                }
+                behavior {
+                    target: {
+                        page: 82
+                        items: {
+                            P82_ID: &ID.
+                        }
+                        clearCache: 82
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+        )
+
+        action favorite (
+            position: primaryActions
+            template: button
+            label: Favorite
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #action$favoriteProject?id=&ID.
+            }
+            appearance {
+                displayType: icon
+                icon: &FAVORITE_ICON.
+                cssClasses: t-Button--noUI
+            }
+        )
+
+    )
+
+    region release (
+        name: Release
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID,
+                       r.RELEASE_TRAIN||' '||r.RELEASE release,
+                       decode(r.RELEASE_TARGET_DATE,null,    'No Date',to_char(r.RELEASE_TARGET_DATE,   'DD-MON-YY')) RELEASE_TARGET_DATE,
+                       decode(r.RELEASE_OPEN_DATE,null,      'No Date',to_char(r.RELEASE_OPEN_DATE,     'DD-MON-YY')) RELEASE_OPEN_DATE,
+                       greatest(round(r.RELEASE_TARGET_DATE - sysdate),0) days_remaining,
+                       --
+                       -- release projects
+                       --
+                       (select count(*) 
+                        from sp_projects p 
+                        where p.release_id = r.id and 
+                              p.ARCHIVED_YN = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null) projects,
+                       --
+                       round(r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE) release_length,
+                       --
+                       -- contributors
+                       --
+                       (select count(distinct TEAM_MEMBER_ID) 
+                        from SP_PROJECT_CONTRIBUTORS c 
+                        where c.PROJECT_ID in (
+                            select id 
+                            from sp_projects p 
+                            where p.release_id = r.id and 
+                                  p.ARCHIVED_YN = 'N' and 
+                                  p.DUPLICATE_OF_PROJECT_ID is null)
+                                  ) contributors,
+                       --
+                       r.RELEASE_MANAGEMENT_URL url,
+                       --
+                       -- current activity
+                       --
+                       (select count(*) 
+                        from  sp_projects p, SP_ACTIVITIES a
+                        where p.ARCHIVED_YN = 'N' and 
+                              p.DUPLICATE_OF_PROJECT_ID is null and 
+                              p.release_id = r.id and
+                              p.id = a.project_id and
+                              sysdate >= a.START_DATE and
+                              trunc(sysdate) <= a.END_DATE
+                              ) projects_with_current_activity,
+                       --
+                       -- milestones
+                       --
+                       (select count(*) from SP_RELEASE_MILESTONES m where m.release_id = r.id) milestones
+                  from SP_RELEASE_TRAINS r
+                 where r.id = :P300_RELEASE_ID 
+                ```
+            pageItemsToSubmit: P300_RELEASE_ID
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+                t-Region-orderBy--end
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column CONTRIBUTORS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Contributors
+            }
+            layout {
+                sequence: 140
+            }
+            link {
+                target: {
+                    page: 38
+                    items: {
+                        P38_ID: &P300_RELEASE_ID.
+                    }
+                    clearCache: 38
+                    action: resetPagination
+                }
+                linkText: #CONTRIBUTORS#
+            }
+        )
+
+        column DAYS_REMAINING (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 99999
+            }
+            columnFormatting {
+                htmlExpression: #DAYS_REMAINING# days
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column MILESTONES (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Milestones
+                alignment: end
+            }
+            layout {
+                sequence: 190
+                columnAlignment: end
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECTS.
+                alignment: end
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column PROJECTS_WITH_CURRENT_ACTIVITY (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Projects With Current Activity
+                alignment: end
+            }
+            layout {
+                sequence: 180
+                columnAlignment: end
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column RELEASE_LENGTH (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Length
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #RELEASE_LENGTH# days
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Open
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: DD-MON-YY
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Target Complete
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: DD-MON-YY
+            }
+        )
+
+        column URL (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 170
+            }
+            columnFormatting {
+                htmlExpression: <a href="#URL#" target="_blank">Open URL</a>
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from SP_RELEASE_TRAINS 
+                    where RELEASE_MANAGEMENT_URL is not null and id = :P300_RELEASE_ID
+                    ```
+            }
+        )
+
+    )
+
+    region sorting (
+        name: sorting
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 3
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    pageItem P300_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P300_ORDER_BY (
+        type: selectList
+        label {
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Priority;PRIORITY,% Complete;PCT_COMPLETE,% Complete desc;PCT_COMPLETE1,Project;PROJECT,Updated Desc;UPDATED,Updated Asc;UPDATED1,Created Desc;CREATED,Created Asc;CREATED1
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @sorting
+            slot: next
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                margin-top-none
+                margin-bottom-none
+            ]
+            icon: fa-sort-amount-asc
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        advanced {
+            cssClasses: [
+                w200
+                no-item-ui
+            ]
+            warnOnUnsavedChanges: ignore
+        }
+        default {
+            type: static
+            staticValue: PRIORITY
+        }
+    )
+
+    pageItem P300_PROJECT_TO_FAVORITE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @nomenclature-projects
+            slot: regionBody
+        }
+    )
+
+    pageItem P300_RELEASE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P300_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction change (
+        name: change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P300_RELEASE_ID
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P300_RELEASE_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @facets
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @release
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction dialog-close-bc (
+        name: dialog close bc
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @release
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-dialog-close (
+        name: refresh on dialog close
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @nomenclature-projects
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @facets
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-dialog-closed (
+        name: refresh on dialog closed 1
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @release
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @facets
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction set-favorite (
+        name: set favorite
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P300_PROJECT_TO_FAVORITE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    sp_favorite_toggle(
+                        p_project_id  => :P300_PROJECT_TO_FAVORITE, 
+                        p_app_user_id => :APP_USER_ID
+                        );
+                    ```
+                itemsToSubmit: [
+                    P300_PROJECT_TO_FAVORITE
+                    APP_USER_ID
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var favButton$ = $(".js-project-to-favorite");
+                    var favButtonIcon$ = favButton$.find(".t-Icon");
+                    
+                    // we use the class to get the active element, can be cleared now
+                    favButton$.removeClass("js-project-to-favorite"); 
+                    
+                    if ( favButtonIcon$.hasClass("fa-heart") ) {
+                        favButtonIcon$.removeClass("fa-heart u-danger-text").addClass("fa-heart-o");
+                        // hide success message, no API to do this so done with classes
+                        $( "#APEX_SUCCESS_MESSAGE" ).removeClass("u-visible").addClass("u-hidden"); 
+                    } else if ( favButtonIcon$.hasClass("fa-heart-o") ) {
+                        favButtonIcon$.removeClass("fa-heart-o").addClass("fa-heart u-danger-text");
+                        apex.message.showPageSuccess('Project favorited!');
+                    }
+                    apex.items.P300_PROJECT_TO_FAVORITE.setValue('',undefined,true); //third parameter used to suppress change event
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-project-view (
+        itemName: LAST_PROJECT_VIEW
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 300
+        }
+    )
+
+    computation p300-initiative-id (
+        itemName: P300_INITIATIVE_ID
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select initiative_id 
+                from SP_projects
+                where release_id = :P300_RELEASE_ID
+                ```
+        }
+    )
+
+    computation p300-release (
+        itemName: P300_RELEASE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select r.RELEASE_TRAIN||' '||r.RELEASE release
+                  from SP_RELEASE_TRAINS r
+                 where r.id = :P300_RELEASE_ID
+                ```
+        }
+    )
+
+)
+

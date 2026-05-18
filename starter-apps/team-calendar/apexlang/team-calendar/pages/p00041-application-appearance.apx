@@ -1,0 +1,352 @@
+page 41 (
+    name: Application Appearance
+    alias: APPLICATION-APPEARANCE
+    title: Application Appearance
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+                The appearance of your application is determined by the chosen Default Theme Style. The Default Theme Style affects <strong>all</strong> users of the application.
+            </p>
+            <p>
+                Additionally, choose whether to enable end users to change their Theme Style.
+            </p>
+            <p>
+                <i>&#40;If an end user changes Theme Styles, the change only applies to their individual account; end users cannot change the application appearance for other end users.&#41;</i>
+            </p>
+            <h3>
+                Default Theme Style
+            </h3>
+            <p>
+                Choose the Default Theme Style for all users of the application from a list of appearance options called Theme Styles. Each Theme Style applies a different look and color scheme to your application.
+            </p>
+            <p>
+                End users can change their Theme Style setting if you enable <q>Allow End Users to choose Theme Style.</q>
+            </p>
+            <h3>
+                Allow End Users to choose Theme Style
+            </h3>
+            <p>
+                Enable end users to customize their choice of Theme Style for the application.
+            </p>
+            <p>
+                Select this check box to populate the Customize link at the bottom of every non-modal page in the application for all end users.
+            </p>
+            <p>
+                Clicking the Customize link opens the Customize dialog. In the Customize dialog, end users choose from the list of Theme Styles to select their preferred application appearance.
+            </p>
+            ```
+    }
+
+    region configure-appearance (
+        name: Configure Appearance
+        type: staticContent
+        source {
+            htmlCode: <p>The appearance of your application is defined by the Theme Style.</p>
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Form--large
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+    )
+
+    pageItem P41_DESKTOP_THEME_STYLE_ID (
+        type: selectList
+        label {
+            label: Default Theme Style
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select s.name d,
+                       s.theme_style_id r
+                from apex_application_theme_styles s, apex_application_themes t
+                where s.application_id = t.application_id
+                and s.theme_number = t.theme_number
+                and s.application_id = :app_id
+                and t.ui_type_name   = 'DESKTOP'
+                and t.is_current = 'Yes'
+                order by 1
+                ```
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @configure-appearance
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            cssClasses: margin-top-lg
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select s.theme_style_id
+                from apex_application_theme_styles s, apex_application_themes t
+                where s.application_id = t.application_id
+                and s.theme_number = t.theme_number
+                and s.application_id = :app_id
+                and t.ui_type_name   = 'DESKTOP'
+                and s.is_current = 'Yes'
+                ```
+            used: always
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from apex_application_theme_styles s, apex_application_themes t
+                where s.application_id = t.application_id
+                and s.theme_number = t.theme_number
+                and s.application_id = :app_id
+                and t.ui_type_name   = 'DESKTOP'
+                ```
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            inlineHelpText: The default Theme Style applies to all users.
+        }
+    )
+
+    pageItem P41_END_USER_STYLE (
+        type: checkboxGroup
+        label {
+            label: End User Theme Preference
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Allow End Users to choose Theme Style;Yes
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 20
+            region: @configure-appearance
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select ui.theme_style_by_user_pref
+                  from apex_application_themes t, apex_applications ui
+                 where ui.application_id = t.application_id
+                   and ui.theme_number   = t.theme_number
+                   and t.application_id  = :app_id 
+                   and t.is_current      = 'Yes'
+                ```
+            used: always
+        }
+        help {
+            inlineHelpText: If checked, end users may choose their own Theme Style using the Customize link.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @configure-appearance
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @configure-appearance
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process enable-disable-end-user-style (
+        name: Enable / Disable End User Style
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                  l_enabled boolean := case when :P41_END_USER_STYLE = 'Yes' then true else false end;
+                begin
+                  for c1 in (
+                    select ui.theme_number
+                      from apex_application_themes t, apex_applications ui
+                     where ui.application_id = t.application_id 
+                       and ui.theme_number   = t.theme_number 
+                       and t.application_id  = :app_id
+                       and t.is_current      = 'Yes'
+                  ) loop
+                    if l_enabled then 
+                      apex_theme.enable_user_style ( p_application_id => :APP_ID, p_theme_number => c1.theme_number );
+                    else
+                      apex_theme.disable_user_style ( p_application_id => :APP_ID, p_theme_number => c1.theme_number );
+                      apex_theme.clear_all_users_style(:APP_ID);
+                    end if; 
+                  end loop;
+                end; 
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 1042902960964668929
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process set-theme-style (
+        name: Set Theme Style
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P41_DESKTOP_THEME_STYLE_ID is not null then
+                    for c1 in (select theme_number
+                               from apex_application_themes
+                               where application_id = :app_id
+                               and ui_type_name   = 'DESKTOP'
+                               and is_current = 'Yes')
+                    loop
+                        apex_theme.set_current_style (
+                            p_theme_number   => c1.theme_number,
+                            p_id => :P41_DESKTOP_THEME_STYLE_ID
+                            );
+                    end loop;
+                end if;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Application appearance settings updated successfully.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 1042903302601668930
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    branch (
+        name: Go To Page settings
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: settings
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @cancel
+        }
+    )
+
+)
+

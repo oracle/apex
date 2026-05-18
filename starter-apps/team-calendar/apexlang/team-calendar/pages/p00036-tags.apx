@@ -1,0 +1,116 @@
+page 36 (
+    name: Tags
+    alias: TAGS
+    title: &APPLICATION_TITLE. - Tags
+    pageGroup: @tags
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: View all tags that have been created in the app. Click a tag to perform a search for the pages appended with that tag.
+    }
+
+    region breadcrumbs (
+        name: breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region tags (
+        name: Tags
+        type: plugin/tagCloud
+        source {
+            sqlQuery:
+                ```sql
+                select tag, tag_count
+                from eba_ca_tags_sum
+                where tag_count > 0
+                order by 2 desc
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            linkTarget: {
+                page: 2
+                items: {
+                    IRC_TAGS: #TAG#
+                }
+                clearCache: [
+                    2
+                    RIR
+                ]
+                action: resetPagination
+            }
+            maximumTags: 1000
+        }
+        messages {
+            whenNoDataFound: No tags found.
+        }
+    )
+
+    region timezone (
+        name: Timezone
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                 "TIMEZONE"
+                
+                 
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: infoTextRegion
+        }
+        settings {
+            expandShortcuts: true
+        }
+    )
+
+)
+

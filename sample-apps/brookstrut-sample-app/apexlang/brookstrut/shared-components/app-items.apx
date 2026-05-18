@@ -1,0 +1,60 @@
+appItem IN_MEMORY_HINT (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem LAST_VIEW (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem PRODUCTS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem R1 (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem R2 (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem R3 (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem R4 (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem R5 (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem STORES (
+    security {
+        escapeSpecialChars: false
+    }
+)
+

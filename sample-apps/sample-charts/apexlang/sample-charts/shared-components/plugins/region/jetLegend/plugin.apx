@@ -1,0 +1,102 @@
+plugin jetLegend (
+    name: JET Legend
+    staticId: COM.APEX.LEGEND.JET
+    type: region
+    component {
+        standardAttributes: regionSourceIsSqlQuery
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            /*
+             * render - function to create placeholder div tag, and initialise the new legend component
+             */
+            function render ( 
+                p_region                in  apex_plugin.t_region, 
+                p_plugin                in  apex_plugin.t_plugin,
+                p_is_printer_friendly   in  boolean 
+            ) return apex_plugin.t_region_render_result 
+            is
+            begin
+                -- Add new placeholder div for legend component
+                sys.htp.p ( '<div id="' || apex_escape.html_attribute( p_region.static_id ) || '_jet"  />' );
+              
+                -- Initialise the legend
+                apex_javascript.add_onload_code( 
+                    p_code => 'jet.legend.init(' || apex_escape.js_literal( '#' || apex_escape.css_selector( p_region.static_id ||'_jet' )) || ',' ||
+                                                    apex_escape.js_literal( apex_plugin.get_ajax_identifier ) || ')' );
+              
+                return null;
+            end render;
+            
+            /*
+             * ajax - function to process SQL query, and output JSON data for legend
+             */
+            function ajax (
+                p_region    in  apex_plugin.t_region,
+                p_plugin    in  apex_plugin.t_plugin 
+            ) return apex_plugin.t_region_ajax_result
+            is
+              l_column_value_list  apex_plugin_util.t_column_value_list;
+            begin  
+            
+              -- Process SQL query
+              l_column_value_list := apex_plugin_util.get_data (
+                                         p_sql_statement      => p_region.source,
+                                         p_min_columns        => 2,
+                                         p_max_columns        => 3,
+                                         p_component_name     => p_region.name );
+              
+              -- Construct JSON object for legend
+              apex_json.open_object;
+            
+              -- Add Attributes
+              apex_json.write('orientation',   p_region.attribute_01);
+              apex_json.write('halign', p_region.attribute_02);
+              apex_json.write('valign', p_region.attribute_03);
+              apex_json.write('hideAndShowBehavior', p_region.attribute_04);
+              
+              -- Populate legend items array with values returned by SQL query
+              apex_json.open_array('sections');
+              apex_json.open_object;
+              apex_json.open_array('items');
+              for i in 1 .. l_column_value_list(1).count loop
+                  apex_json.open_object;
+                  apex_json.write( 'text',  l_column_value_list(1)(i) );
+                  apex_json.write( 'shortDesc', apex_escape.html_attribute( l_column_value_list(2)(i) ) );
+                  apex_json.close_object;
+              end loop;
+              
+              apex_json.close_array;
+              apex_json.close_object;
+              apex_json.close_array;
+              apex_json.close_object;
+              
+              return null;
+            end ajax;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+        ajaxProcedureName: ajax
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: "[require jet]#PLUGIN_FILES#jetLegend.js"
+    }
+    information {
+        version: 5.1.2
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        validation {
+            required: true
+        }
+    )
+
+)
+

@@ -1,0 +1,26 @@
+upgradeScript "Add Cards Demo Table and Data" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: add-cards-demo-table-and-data.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from user_tables where table_name = 'EBA_UT_DEMO_CARDS'
+    }
+)
+
+upgradeScript "Add Map Airports" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: add-map-airports.sql
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select null from user_tables where table_name = 'EBA_UT_MAP_AIRPORTS'
+    }
+)
+

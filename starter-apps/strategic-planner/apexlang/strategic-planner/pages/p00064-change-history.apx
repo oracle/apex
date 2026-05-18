@@ -1,0 +1,794 @@
+page 64 (
+    name: Project Change History
+    alias: CHANGE-HISTORY
+    title: Change History
+    pageGroup: @projects
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region nomenclature-projects (
+        name: &NOMENCLATURE_PROJECTS.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.INITIATIVE_ID,
+                       f.area focus_area,
+                       f.id focus_area_id,
+                       i.initiative,
+                       p.PROJECT,
+                       (select t.first_name||' '||t.last_name
+                       from SP_TEAM_MEMBERS t 
+                       where t.id = p.OWNER_ID) project_owner,
+                       p.owner_id,
+                       p.created,
+                       lower(p.created_by) created_by
+                  from SP_PROJECTS p, 
+                       SP_INITIATIVES i,
+                       SP_AREAS f
+                where 
+                      p.initiative_id = i.id and
+                      i.area_id = f.id and
+                      p.id = :P64_PROJECT_ID
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+                margin-right-md
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column CREATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 250
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 260
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Area
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #FOCUS_AREA#
+            }
+        )
+
+        column FOCUS_AREA_ID (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 230
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Initiative
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_INITIATIVE: #INITIATIVE#
+                        P23_FOCUS_AREA: #FOCUS_AREA#
+                    }
+                }
+                linkText: #INITIATIVE#
+            }
+        )
+
+        column INITIATIVE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column OWNER_ID (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 240
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_PROJECT.
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column PROJECT_OWNER (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Owner
+                alignment: center
+            }
+            layout {
+                sequence: 60
+            }
+            link {
+                target: {
+                    page: 5
+                    items: {
+                        P5_ID: #OWNER_ID#
+                    }
+                    clearCache: 5
+                    action: resetRegions
+                }
+                linkText: #PROJECT_OWNER#
+            }
+        )
+
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: true
+            displayChartForTopNValues: 10
+        }
+
+        facet P64_ATTRIBUTE_CHANGE_MONTH (
+            type: checkboxGroup
+            label {
+                label: Month
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: ATTRIBUTE_CHANGE_MONTH
+            }
+        )
+
+        facet P64_ATTRIBUTE_COLUMN (
+            type: checkboxGroup
+            label {
+                label: Attribute
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: ATTRIBUTE_COLUMN
+            }
+        )
+
+        facet P64_CHANGED_BY (
+            type: checkboxGroup
+            label {
+                label: Changed By
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGED_BY
+            }
+        )
+
+        facet P64_CHANGE_TYPE (
+            type: checkboxGroup
+            label {
+                label: Change
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CHANGE_TYPE
+            }
+        )
+
+        facet P64_PARENT_TYPE (
+            type: checkboxGroup
+            label {
+                label: Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: PARENT_TYPE
+            }
+        )
+
+        facet P64_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: ATTRIBUTE_DATATYPE,PROJECT_ID,ATTRIBUTE_COLUMN,OLD_VALUE,NEW_VALUE
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select :NOMENCLATURE_PROJECT change_to,
+                       :NOMENCLATURE_PROJECT parent_type,
+                       PROJECT_ID             project_id,
+                       CHANGED_ON             ATTRIBUTE_CHANGE_DATE,
+                       to_char(CHANGED_ON,'YYYY.MM') ATTRIBUTE_CHANGE_Month,
+                       case change_type when 'CREATE' then 'Added'
+                                        when 'UPDATE' then 'Updated'
+                                        when 'DELETE' then 'Deleted'
+                                        else change_type
+                            end change_type,
+                       --
+                       initcap(replace(attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(old_value,'Y','Yes','N','No',old_value) OLD_VALUE,
+                       decode(new_value,'Y','Yes','N','No',new_value) NEW_VALUE,
+                       changed_by
+                  from SP_PROJECT_HISTORY
+                where  project_id = :P64_PROJECT_ID
+                union all
+                select tt.task_type ||
+                       case when t.task_sub_type_id is not null
+                            then (select ': '||task_type from sp_task_types where t.task_sub_type_id = id)
+                            end change_to,
+                       tt.task_type parent_type,
+                       t.PROJECT_ID             project_id,
+                       h.CHANGED_ON             ATTRIBUTE_CHANGE_DATE,
+                       to_char(h.CHANGED_ON,'YYYY.MM') ATTRIBUTE_CHANGE_Month,
+                       case h.change_type when 'CREATE' then 'Added'
+                                        when 'UPDATE' then 'Updated'
+                                        when 'DELETE' then 'Deleted'
+                                        else change_type
+                            end change_type,
+                       --
+                       initcap(replace(h.attribute_column,'_',' ')) ATTRIBUTE_COLUMN,
+                       decode(h.old_value,'Y','Yes','N','No',h.old_value) OLD_VALUE,
+                       decode(h.new_value,'Y','Yes','N','No',h.new_value) NEW_VALUE,
+                       h.changed_by
+                  from sp_task_history h,
+                       sp_tasks t,
+                       sp_task_types tt
+                 where h.task_id = t.id
+                   and t.task_type_id = tt.id
+                   and t.project_id = :P64_PROJECT_ID
+                ```
+            pageItemsToSubmit: P64_PROJECT_ID
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ATTRIBUTE_CHANGE_DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: When
+            }
+            layout {
+                sequence: 72
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            sorting {
+                defaultSequence: 1
+                direction: desc
+            }
+        )
+
+        column ATTRIBUTE_CHANGE_MONTH (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 82
+            }
+        )
+
+        column ATTRIBUTE_COLUMN (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Attribute
+            }
+            layout {
+                sequence: 22
+            }
+        )
+
+        column CHANGED_BY (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Changed By
+            }
+            layout {
+                sequence: 62
+            }
+        )
+
+        column CHANGE_TO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Change To
+            }
+            layout {
+                sequence: 12
+            }
+        )
+
+        column CHANGE_TYPE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Change
+            }
+            layout {
+                sequence: 32
+            }
+        )
+
+        column NEW_VALUE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: New Value
+            }
+            layout {
+                sequence: 52
+            }
+        )
+
+        column OLD_VALUE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Old Value
+            }
+            layout {
+                sequence: 42
+            }
+        )
+
+        column PARENT_TYPE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 102
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+    )
+
+    pageItem P64_PROJECT_FI (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P64_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P64_PROJECT_PN (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    button refresh (
+        buttonName: refresh
+        label: Refresh
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 64
+                items: {
+                    P64_PROJECT_ID: &P64_PROJECT_ID.
+                }
+                clearCache: 64
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button tag-history (
+        buttonName: Tag-History
+        label: Tag History
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-clock-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 82
+                items: {
+                    P82_ID: &P64_PROJECT_ID.
+                }
+                clearCache: 82
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 3
+                items: {
+                    FI: &P64_PROJECT_FI.
+                    PN: &P64_PROJECT_PN.
+                }
+                clearCache: 3
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p64-project-fi (
+        itemName: P64_PROJECT_FI
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select FRIENDLY_IDENTIFIER
+                from sp_projects
+                where id = :P64_PROJECT_ID
+                ```
+        }
+    )
+
+    computation p64-project-pn (
+        itemName: P64_PROJECT_PN
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select PROJECT_URL_NAME
+                from sp_projects
+                where id = :P64_PROJECT_ID
+                ```
+        }
+    )
+
+    process new (
+        name: New
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_log.log_interaction(
+                    p_project_id => :P64_PROJECT_ID);
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeRegions
+        }
+        advanced {
+            executionMappingIdentifier: 1352978835919126401
+        }
+    )
+
+)
+

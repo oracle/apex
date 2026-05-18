@@ -1,0 +1,15 @@
+authentication apex-auth (
+    name: APEX Auth
+    type: oracleApexAccounts
+    sessionNotValid {
+        redirectTo: url
+        invalidSessionUrl: {
+            page: 101
+        }
+    }
+    postLogout {
+        redirectTo: url
+        url: f?p=&APP_ID.:101
+    }
+)
+

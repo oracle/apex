@@ -1,0 +1,16 @@
+attributeGroup ociDocumentGeneratorFunction (
+    name: OCI Document Generator Function
+    sequence: 10
+    advanced {
+        staticId: oci-document-generator-function
+    }
+)
+
+attributeGroup ociObjectStorageBucket (
+    name: OCI Object Storage Bucket
+    sequence: 20
+    advanced {
+        staticId: oci-object-storage-bucket
+    }
+)
+

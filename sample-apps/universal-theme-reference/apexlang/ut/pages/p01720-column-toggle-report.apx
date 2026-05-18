@@ -1,0 +1,349 @@
+page 1720 (
+    name: Column Toggle Report
+    alias: COLUMN-TOGGLE-REPORT
+    title: Column Toggle Report - &APP_TITLE.
+    pageGroup: @components
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: [
+            dm-Page
+            dm-Page--center
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region demo (
+        name: Demo
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: plugin/componentInstructions
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-ContentBlock--shadowBG
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            staticId: Demo1
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode: <p>Use the Column Toggle Report to let user quickly choose columns to display when screen size is limited.</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region tasks (
+        name: Tasks
+        type: columnToggleReport
+        source {
+            location: localDatabase
+            tableName: EBA_UT_CHART_TASKS
+        }
+        layout {
+            sequence: 10
+            parentRegion: @demo
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: Demo1
+        }
+        settings {
+            layoutOptions: [
+                stripes
+                stroke
+            ]
+        }
+
+        column ASSIGNED_TO (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Assigned To
+            }
+            layout {
+                sequence: 90
+            }
+        )
+
+        column BUDGET (
+            source {
+                dataType: NUMBER
+            }
+            heading {
+                heading: Budget
+                alignment: end
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column COST (
+            source {
+                dataType: NUMBER
+            }
+            heading {
+                heading: Cost
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column CREATED (
+            show: false
+            source {
+                dataType: TIMESTAMP_LTZ
+            }
+            layout {
+                sequence: 120
+            }
+        )
+
+        column CREATED_BY (
+            show: false
+            source {
+                dataType: VARCHAR2
+            }
+            layout {
+                sequence: 130
+            }
+        )
+
+        column END_DATE (
+            source {
+                dataType: DATE
+            }
+            heading {
+                heading: End Date
+                alignment: center
+            }
+            layout {
+                sequence: 70
+                columnAlignment: center
+            }
+        )
+
+        column ID (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PARENT_TASK (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column PROJECT (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column ROW_VERSION_NUMBER (
+            show: false
+            source {
+                dataType: NUMBER
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column START_DATE (
+            source {
+                dataType: DATE
+            }
+            heading {
+                heading: Start Date
+                alignment: center
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+        )
+
+        column STATUS (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 80
+            }
+        )
+
+        column TASK_NAME (
+            source {
+                dataType: VARCHAR2
+            }
+            heading {
+                heading: Task Name
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column UPDATED (
+            show: false
+            source {
+                dataType: TIMESTAMP_LTZ
+            }
+            layout {
+                sequence: 140
+            }
+        )
+
+        column UPDATED_BY (
+            show: false
+            source {
+                dataType: VARCHAR2
+            }
+            layout {
+                sequence: 150
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,78 @@
+page 34 (
+    name: Size
+    alias: SIZE
+    title: &NOMENCLATURE_PROJECT. Size
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region size (
+        name: Size
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x clob;
+                   l_remaining_days number;
+                begin
+                   for c1 in (
+                       select p.PCT_COMPLETE, 
+                              p.PROJECT_SIZE, 
+                              p.project, 
+                              ps.EFFORT_DAYS,
+                              ps.SIZE_DESCRIPTION, 
+                              round(ps.EFFORT_DAYS * .01 * p.PCT_COMPLETE) days_remaining
+                       from   SP_PROJECT_SIZES ps, SP_PROJECTS p
+                       where  p.id = :P34_ID and 
+                              p.PROJECT_SIZE = ps.PROJECT_SIZE
+                   ) loop
+                   l_remaining_days := round(c1.effort_days - c1.days_remaining);
+                   x := :NOMENCLATURE_PROJECT||' "'||c1.project||'" is '||c1.pct_complete||'% complete.  '||
+                        :NOMENCLATURE_PROJECT||' has an estimated size of '||c1.project_size||' which corresponds to '||c1.effort_days||' days of effort.  '||
+                        'The remaining effort is estimated to be '||l_remaining_days||' days.';
+                   end loop;
+                   return x;
+                   
+                end;
+                ```
+            pageItemsToSubmit: P34_ID
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P34_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @size
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+)
+

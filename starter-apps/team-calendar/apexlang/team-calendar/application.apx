@@ -1,0 +1,143 @@
+app TEAM-CALENDAR (
+    name: Team Calendar
+    version: 26.1.0
+    group: @starter-apps
+    logo {
+        type: text
+        text: &APPLICATION_TITLE.
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        usersCanChooseThemeStyle: true
+    }
+    appFormatMasks {
+        date: &APP_DATE_FORMAT.
+        timestamp: &APP_TIMESTAMP_FORMAT.
+    }
+    javaScript {
+        includeLegacyJavascript: [
+            pre18
+            18
+        ]
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: @application-sentry
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: B5CDC6F5068EB5D3291A15B06CECC9BAF767EF48F62733C466BFBC9C2C1A8583
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        maxSessionLength: 28800
+        maxSessionIdleTime: 28800
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    errorHandling {
+        errorHandlingFunctionName: eba_ca_fw.apex_error_handling
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c)2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0 as shown 
+            at https://oss.oracle.com/licenses/upl/
+            
+            This script makes use of the FullCalendar product. Refer to
+            THIRD_PARTY_LICENSES.txt in the top directory of this project
+            or at https://github.com/oracle/apex for license information.
+            ```
+    }
+    comments {
+        comments:
+            ```
+            1.0.26 -> 1.0.27: Changed Notifications region(s) from plsql to report.
+                Changed navigation region to APEX list.
+            1.0.27 -> 1.0.28: Changed Authentication scheme to use new "APEX_PACKAGED_APPLICATIONS" cookie
+            1.0.28 -> 1.0.29: Added confirm modal when enabling ACL
+            1.0.30 -> 1.0.31: Added "Rename Application" page and supporting application items, computations, substitution strings, item and region  changes on login pages, and UI Logo text replacement.
+            1.0.31 -> 1.0.32: Added Notifications to Mobile home page (400)
+            1.0.32 -> 1.0.33: Added "Bulk Add Users" functionality
+            1.0.34 -> 1.0.35: Error handling procedure updated to account for bug 17516350
+            1.0.35 -> 1.0.36: Implemented redesigned administrative ACL controls
+            ```
+    }
+
+    substitution APP_DATE_FORMAT (
+        value {
+            staticValue: DD-Mon-RRRR
+        }
+    )
+
+    substitution APP_TIME_FORMAT (
+        value {
+            staticValue: HH:MIam
+        }
+    )
+
+    substitution APP_TIMESTAMP_FORMAT (
+        value {
+            staticValue: DSFM HH24:MI:SS
+        }
+    )
+
+    substitution APP_DATETIME_FORMAT (
+        value {
+            staticValue: DD-Mon-RRRR HH:MIam
+        }
+    )
+
+    substitution APP_NAME (
+        value {
+            staticValue: Team Calendar
+        }
+    )
+
+)
+

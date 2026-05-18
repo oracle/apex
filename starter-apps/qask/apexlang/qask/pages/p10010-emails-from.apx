@@ -1,0 +1,138 @@
+page 10010 (
+    name: Emails From
+    alias: EMAILS-FROM
+    title: Emails From Setting
+    appearance {
+        pageTemplate: @/login
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administrator
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region qask-emails-from-setting (
+        name: qAsk Emails From Setting
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/login
+            templateOptions: #DEFAULT#
+            icon: app-icon
+        }
+        headerAndFooter {
+            headerText: This is the email address that the verification codes will be sent from (can be a noreply@somewhere.org).  The application cannot be used without providing a setting.
+        }
+    )
+
+    pageItem P10010_FROM_EMAIL (
+        type: textField
+        label {
+            label: From Email
+            alignment: left
+        }
+        settings {
+            submitWhenEnterPressed: true
+        }
+        layout {
+            sequence: 10
+            region: @qask-emails-from-setting
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody: return qask_util.get_setting(p_name => 'from_email');
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @qask-emails-from-setting
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation email-valid (
+        name: email valid
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P10010_FROM_EMAIL
+            regexp: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+        }
+        error {
+            errorMessage: Email is not valid
+            associatedItem: @P10010_FROM_EMAIL
+        }
+    )
+
+    process update-settings (
+        name: Update settings
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.set_setting (
+                    p_name  => 'from_email',
+                    p_value => :P10010_FROM_EMAIL );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Settings saved.
+        }
+        error {
+            errorMessage: Settings failed to be saved.
+        }
+        advanced {
+            executionMappingIdentifier: 58613361866905368106
+        }
+    )
+
+    branch (
+        name: Go To Sessions
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 100
+                clearCache: 10010
+            }
+        }
+    )
+
+)
+

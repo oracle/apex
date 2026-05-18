@@ -1,0 +1,16 @@
+pageGroup components (
+    name: Components
+)
+
+pageGroup design (
+    name: Design
+)
+
+pageGroup migration-guide (
+    name: Migration Guide
+)
+
+pageGroup tools-and-utilities (
+    name: Tools and Utilities
+)
+

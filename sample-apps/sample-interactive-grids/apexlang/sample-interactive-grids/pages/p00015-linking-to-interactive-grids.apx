@@ -1,0 +1,627 @@
+page 15 (
+    name: Linking to Interactive Grids
+    alias: LINKING-TO-INTERACTIVE-GRIDS
+    title: Linking to Interactive Grids
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 60
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region interactive-grid (
+        name: Interactive Grid
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO,
+                       ONLEAVE,
+                       NOTES
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @container
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        edit {
+            enabled: true
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2061514982480271436
+        }
+
+        savedReport 6239234 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 92.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 96.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 77.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    sequence: 14
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 84.7
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 77.7
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 70.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 79.69999999999999
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    sequence: 19
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+        )
+
+        savedReport Roles (
+            visibility: alternative
+            name: Roles
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    width: 92.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    show: false
+                    width: 96.69999999999999
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 77.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    sequence: 14
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 84.7
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 77.7
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 70.69999999999999
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @ONLEAVE
+                layout {
+                    width: 79.69999999999999
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @NOTES
+                layout {
+                    sequence: 19
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+            controlBreak (
+                column: @JOB
+                layout {
+                    sequence: 1
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column DEPTNO (
+            type: numberField
+            heading {
+                heading: Deptno
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column EMPNO (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hiredate
+                alignment: center
+            }
+            layout {
+                sequence: 70
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: textField
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                maxLength: 9
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column MGR (
+            type: numberField
+            heading {
+                heading: Mgr
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column NOTES (
+            type: textarea
+            heading {
+                heading: Notes
+            }
+            layout {
+                sequence: 120
+            }
+            validation {
+                maxLength: 1000
+            }
+            source {
+                databaseColumn: NOTES
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column ONLEAVE (
+            type: checkbox
+            heading {
+                heading: Onleave
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: ONLEAVE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Sal
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Interactive Grid
+        }
+    )
+
+    region overview-linking-to-interactive-grids (
+        name: Overview: Linking to Interactive Grids
+        type: staticContent
+        source {
+            htmlCode: <p>This page demonstrates how to create URLs that link to Oracle Application Express (APEX) interactive grid pages.  Click on the example links below and note the URL syntax used.  Use <strong>RR</strong> to reset an interactive grid, use <strong>CR</strong> to clear an interactive grid filter settings.  Use <strong>IG_&lt;your_report_column&gt;</strong> syntax to filter a report for an exact match.  Use <strong>IGC_&lt;your_report_column&gt;</strong> for a contains match, use <strong>IGGT_</strong> and <strong>IGLT_</strong> for greater than and less than filters.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region report-linking-examples (
+        name: Report Linking Examples
+        type: list
+        source {
+            list: @ig-report-linking-examples
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    process interactive-grid-save-interactive-grid-data (
+        name: Interactive Grid - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @interactive-grid
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 1031431515422469120
+        }
+    )
+
+)
+

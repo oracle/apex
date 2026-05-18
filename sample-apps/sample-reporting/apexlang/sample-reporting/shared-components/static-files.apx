@@ -1,0 +1,35 @@
+file fs-sprite.png (
+    mimeType: image/png
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file reports_classic.png (
+    mimeType: image/png
+)
+
+file reports_filter.png (
+    mimeType: image/png
+)
+
+file reports_ir.png (
+    mimeType: image/png
+)
+
+file reports_usecases.jpg (
+    mimeType: image/jpeg
+)
+

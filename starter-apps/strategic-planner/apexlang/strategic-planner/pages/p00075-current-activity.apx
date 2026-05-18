@@ -1,0 +1,769 @@
+page 75 (
+    name: Current Activity
+    alias: CURRENT-ACTIVITY
+    title: Current Activity
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region current-activity (
+        name: Current Activity
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                       tm.first_name||' '||tm.last_name person,
+                       tm.id team_member_id,
+                       count(distinct p.id) projects,
+                       sum(decode(instr(p.tags,'-COMMITTED'),0,0,1)) tagged_committed,
+                       sum(decode(instr(p.tags,'-TARGETED'),0,0,1)) tagged_tareted,
+                       sum(decode(instr(p.tags,'-QUICK-WIN'),0,0,1)) tagged_quick_win,
+                       sum(decode(instr(p.tags,'-BACKLOG'),0,0,1)) tagged_backlog,
+                       sum(decode(instr(p.tags,'-CANDIDATE'),0,0,1)) tagged_candidate,
+                       --
+                       -- priorities
+                       --
+                       sum(decode(pp.PRIORITY,1,1,0)) p1,
+                       sum(decode(pp.PRIORITY,2,1,0)) p2,
+                       sum(decode(pp.PRIORITY,3,1,0)) p3,
+                       sum(decode(pp.PRIORITY,4,1,0)) p4,
+                       sum(decode(pp.PRIORITY,5,1,0)) p5,
+                       --
+                       -- percent complete
+                       --
+                       sum(decode(p.PCT_COMPLETE,10,1,0)) s10_pct,
+                       sum(decode(p.PCT_COMPLETE,20,1,0)) s20_pct,
+                       sum(decode(p.PCT_COMPLETE,30,1,0)) s30_pct,
+                       sum(decode(p.PCT_COMPLETE,40,1,0)) s40_pct,
+                       sum(decode(p.PCT_COMPLETE,50,1,0)) s50_pct,
+                       sum(decode(p.PCT_COMPLETE,60,1,0)) s60_pct,
+                       sum(decode(p.PCT_COMPLETE,70,1,0)) s70_pct,
+                       sum(decode(p.PCT_COMPLETE,80,1,0)) s80_pct,
+                       sum(decode(p.PCT_COMPLETE,90,1,0)) s90_pct,
+                       sum(decode(p.PCT_COMPLETE,100,1,0)) s100_pct,
+                       --
+                       --
+                       --
+                       LISTAGG(DISTINCT (select release_train||' '||release 
+                                         from SP_RELEASE_TRAINS rt
+                                         where rt.id = p.release_id), ', ' 
+                            ON OVERFLOW TRUNCATE WITH COUNT) WITHIN GROUP 
+                            (ORDER BY (select release_train||' '||release 
+                                         from SP_RELEASE_TRAINS rt
+                                         where rt.id = p.release_id)) releases
+                from sp_activities ap,
+                     sp_projects p,
+                     sp_activity_types at,
+                     sp_team_members tm,
+                     SP_PROJECT_PRIORITIES pp
+                where ap.project_id = p.id and
+                      p.priority_id = pp.id and
+                      ap.activity_type_id = at.id and
+                      ap.team_member_id = tm.id and
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.ARCHIVED_YN = 'N' and
+                      trunc(sysdate) between ap.start_date and ap.end_date and
+                      (:P75_RELEASE = 0 or p.release_id = :P75_RELEASE)
+                group by tm.first_name, tm.last_name, tm.id
+                ```
+            pageItemsToSubmit: P75_RELEASE
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        breakFormatting {
+            reportSumLabel: &nbsp;
+        }
+
+        column P1 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: P1
+                alignment: end
+            }
+            layout {
+                sequence: 73
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column P2 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: P2
+                alignment: end
+            }
+            layout {
+                sequence: 83
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column P3 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: P3
+                alignment: end
+            }
+            layout {
+                sequence: 93
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column P4 (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: P4
+                alignment: end
+            }
+            layout {
+                sequence: 103
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column P5 (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: P5
+                alignment: end
+            }
+            layout {
+                sequence: 113
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column PERSON (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Person
+            }
+            layout {
+                sequence: 1
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #TEAM_MEMBER_ID#
+                    }
+                    clearCache: 73
+                    action: resetPagination
+                }
+                linkText: #PERSON#
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column PROJECTS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Projects
+                alignment: end
+            }
+            layout {
+                sequence: 3
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column RELEASES (
+            reportColumnQueryId: 24
+            derivedColumn: N
+            heading {
+                heading: Releases
+            }
+            layout {
+                sequence: 13
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column S100_PCT (
+            reportColumnQueryId: 23
+            derivedColumn: N
+            heading {
+                heading: 100%
+                alignment: end
+            }
+            layout {
+                sequence: 213
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S10_PCT (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: 10%
+                alignment: end
+            }
+            layout {
+                sequence: 123
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S20_PCT (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: 20%
+                alignment: end
+            }
+            layout {
+                sequence: 133
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S30_PCT (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: 30%
+                alignment: end
+            }
+            layout {
+                sequence: 143
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S40_PCT (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: 40%
+                alignment: end
+            }
+            layout {
+                sequence: 153
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S50_PCT (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: 50%
+                alignment: end
+            }
+            layout {
+                sequence: 163
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S60_PCT (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: 60%
+                alignment: end
+            }
+            layout {
+                sequence: 164
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S70_PCT (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: 70%
+                alignment: end
+            }
+            layout {
+                sequence: 183
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S80_PCT (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: 80%
+                alignment: end
+            }
+            layout {
+                sequence: 193
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column S90_PCT (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            heading {
+                heading: 90%
+                alignment: end
+            }
+            layout {
+                sequence: 203
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column TAGGED_BACKLOG (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Tagged Backlog
+                alignment: end
+            }
+            layout {
+                sequence: 53
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column TAGGED_CANDIDATE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Tagged Candidate
+                alignment: end
+            }
+            layout {
+                sequence: 63
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column TAGGED_COMMITTED (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Tagged Committed
+                alignment: end
+            }
+            layout {
+                sequence: 23
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column TAGGED_QUICK_WIN (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Tagged Quick Win
+                alignment: end
+            }
+            layout {
+                sequence: 43
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column TAGGED_TARETED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Tagged Tareted
+                alignment: end
+            }
+            layout {
+                sequence: 33
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+    )
+
+    region filter (
+        name: Filter
+        type: staticContent
+        layout {
+            sequence: 2
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 10
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-ellipsis-v
+            }
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 20
+                }
+            )
+
+            menu nomenclature-projects (
+                label: &NOMENCLATURE_PROJECTS.
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 23
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    target: {
+                        page: 75
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 75
+                        clearCache: 75
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P75_RELEASE (
+        type: radioGroup
+        label {
+            label: Release
+            alignment: left
+        }
+        settings {
+            noOfCols: 8
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select release_train||' '||release release_train, id 
+                  from SP_RELEASE_TRAINS
+                 where id in (select release_id 
+                                from sp_projects p, sp_activities ap
+                               where ap.project_id = p.id 
+                                 and p.ARCHIVED_YN = 'N' 
+                                 and p.DUPLICATE_OF_PROJECT_ID is null)
+                ```
+            nullDisplayValue: - All Releases -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @filter
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction release-change (
+        name: release change
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P75_RELEASE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P75_RELEASE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @current-activity
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,136 @@
+page 1113 (
+    name: Minimal Page Template
+    alias: MINIMAL-PAGE-TEMPLATE
+    title: Minimal Page Template - &APP_TITLE.
+    appearance {
+        pageTemplate: @/minimal-no-navigation
+        templateOptions: #DEFAULT#
+    }
+    navigationMenu {
+        overrideUserInterfaceLevel: true
+        list: @ut-sample-navigation-menu
+        listPosition: top
+        listTemplate: @/top-navigation-menu
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region region-a (
+        name: Region A
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region A</h3>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                dm-Placeholder
+                h180
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-b (
+        name: Region B
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region B</h3>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                dm-Placeholder
+                h180
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-b-2 (
+        name: Region B
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region B</h3>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                dm-Placeholder
+                h180
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

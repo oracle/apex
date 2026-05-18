@@ -1,0 +1,221 @@
+page 42 (
+    name: Mixed Languages
+    alias: MIXED-LANGUAGES
+    title: Mixed Languages
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-mixed-languages (
+        name: About Mixed Languages
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Each language yields unique results, as it connects to different attributes or contexts, enhancing the diversity and relevance of search outcomes.</p>
+                
+                <p>The system leverages vector embeddings to identify semantically similar results across multiple languages, even if the query combines different languages (e.g., <strong><span lang="zh-Hans">太空</span> and Star Wars</strong>).</p>
+                
+                <p>Note that performing a vector search will always yield results, regardless of the quality of the match. The best matches will be displayed at the top of the resultset.</p>
+                
+                <p>To search, start typing your query, and the results will be displayed immediately. 
+                    Try out the Arabic, Mandarin, German, or French term for "Space":</p>
+                
+                <ul>
+                    <li><span lang="ar">الفضاء</span></li>
+                    <li><span lang="zh-Hans">太空</span></li>
+                    <li><span lang="de">Weltraum</span></li>
+                    <li><span lang="fr">espace</span></li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--textContent
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: complementary
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region content (
+        name: Content
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Mixed Languages
+        }
+    )
+
+    region search-results-oci (
+        name: Search Results OCI
+        type: search
+        source {
+            pageItemsToSubmit: P42_SEARCH
+        }
+        layout {
+            sequence: 20
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: CURRENT_AI_PROVIDER
+            value: OCI
+        }
+        settings {
+            searchPageItem: P42_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Please enter a search term.
+            noResultsFoundMessage: No results found.
+        }
+
+        searchSource vector-comparison (
+            name: Vector Comparison
+            searchConfig: @OCI_BASIC_VECTOR_SEARCH
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region search-results-openai (
+        name: Search Results OPENAI
+        type: search
+        source {
+            pageItemsToSubmit: P42_SEARCH
+        }
+        layout {
+            sequence: 30
+            parentRegion: @content
+            slot: subRegions
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: CURRENT_AI_PROVIDER
+            value: OPENAI
+        }
+        settings {
+            searchPageItem: P42_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Please enter a search term.
+            noResultsFoundMessage: No results found.
+        }
+
+        searchSource vector-comparison (
+            name: Vector Comparison
+            searchConfig: @OPENAI_BASIC_VECTOR_SEARCH
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P42_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            width: 30
+            valuePlaceholder: Enter your search term
+        }
+    )
+
+)
+

@@ -1,0 +1,129 @@
+restDataSource eba_rest_pagination (
+    name: EBA_REST_EMPLOYEE_PAGINATION
+    source {
+        type: http
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /data/Pagination
+    }
+    settings {
+        paginationType: pageSizeAndFetchOffset
+        pageSizeUrlParam: limit
+        rowOffsetUrlParam: offset
+        hasMoreRowsSelector: hasMore
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    dataProfile {
+        name: EBA_REST_PAGINATION
+        rowSelector: items
+    }
+
+    dataProfileColumn bonus (
+        columnName: BONUS
+        source {
+            sequence: 5
+            dataType: number
+        }
+        parsing {
+            pathExpression: bonus
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn dept (
+        columnName: DEPT
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: dept
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 0
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn name (
+        columnName: NAME
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: name
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn rnum (
+        columnName: RNUM
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: rnum
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn status (
+        columnName: STATUS
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

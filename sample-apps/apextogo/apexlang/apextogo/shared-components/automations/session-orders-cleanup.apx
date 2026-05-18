@@ -1,0 +1,31 @@
+automation session-orders-cleanup (
+    name: Session orders cleanup
+    execution {
+        scheduleExpression: FREQ=DAILY;INTERVAL=1;BYHOUR=0;BYMINUTE=0
+        actionsInitiatedOn: always
+    }
+
+    action delete-orders (
+        name: Delete Orders
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                delete sample_restaurant_order_items
+                 where order_id in (
+                       select order_id
+                         from sample_restaurant_orders
+                        where session_id is not null );
+                
+                delete sample_restaurant_orders
+                 where session_id is not null;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+    )
+
+)
+

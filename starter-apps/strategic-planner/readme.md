@@ -1,10 +1,24 @@
 The Strategic Planner is designed to monitor projects, releases, contributors, reviews, and activities, making it particularly useful for managing teams of developers working on larger projects. This tool complements platforms like Jira and Confluence, or similar project tracking tools. Its user interface features faceted search, row-menus, interactive reporting, and other contemporary UX designs. You can use the tool as-is to help manage the application development projects or customize it to meet your specific requirements.
 
-The first Administrative user will be created during the installation process as the installing user's email address.  If that is not available, and the installing user's username is an email address, that will be used.  If neither is available, the first Administrative user will need to be added to the ACL by editing the application post-install.
+The first Administrative user will be created during the 
 
-Installation Steps
+Installation
 ------------------------------------
-1. Download the .zip file in this directory
-2. Navigate to App Builder -> Import
-3. Drag and drop the application .zip file and click Next
-4. Leave the defaults as they are, then continue through the remaining steps in the wizard to finish installing the application
+### APEXlang Import (Recommended)
+**For App Builder UI**
+1. Open the `apexlang/` folder in this directory.
+2. Download `apexlang/<app-alias>.zip`.
+3. In Oracle APEX App Builder, navigate to **Import** and upload the APEXlang ZIP file.
+4. Continue through the import wizard to finish installing the app.
+
+**For SQLcl**
+1. Open the `apexlang/` folder in this directory.
+2. Use the generated project directory inside `apexlang/` as the import source.
+3. In SQLcl, connect to the target workspace schema and run `apex import -input apexlang/<app-alias>`.
+4. To validate the project before import, run `apex validate -input apexlang/<app-alias>` in SQLcl.
+
+### Legacy SQL Import
+1. Open the `sql/` folder in this directory.
+2. Download the `.zip` file, or use the `.sql` file if you prefer a SQL import.
+3. In Oracle APEX App Builder, navigate to **Import** and import the application.
+4. Continue through the import wizard to finish installing the app.

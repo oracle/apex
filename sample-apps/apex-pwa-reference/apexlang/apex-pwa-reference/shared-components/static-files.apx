@@ -1,0 +1,355 @@
+file "icons/app-icon-144-macOS.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-macOS.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/create-app-push.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/create-pwa.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/da-get-current-position.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/da-share-ios.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/da-share-macos.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/da-share.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/display-mobile-browser.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/display-mobile-fullscreen.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/display-mobile-minimal.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-app-icon.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-app-push.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-description.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-meta-tag.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-pwa.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-screenshots.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/edit-shortcuts.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/geolocation-done-ios.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/geolocation-request-ios.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/install-macos1.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/install-macos2.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-android1.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-android2.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-android3.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-android4.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-ios1.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-ios2.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-ios3.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/installing-ios4.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/login-normal.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/login-pwa.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/offline.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/persistent-auth-admin.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/process-send-push-notification.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-received-ios.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-received-macos.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-received-watch.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-subscribe-ios1.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-subscribe-ios2.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-subscribe-ios3.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/push-subscribe-ios4.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-display-browser.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-display-fullscreen.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-display-minimalui.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-ios-status-default.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-ios-status-translucent.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-theme-color1.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/pwa-appearance-theme-color2.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "img/shortcuts-android.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/shortcuts-macos.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/theme-color-mobile1.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "img/theme-color-mobile2.jpeg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "pwa/screenshot1.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot2.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot3.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/screenshot4.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-10.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-100.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-20.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-30.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-40.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-50.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-60.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-70.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "pwa/shortcut-icon-80.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+

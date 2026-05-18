@@ -1,0 +1,84 @@
+textMessage P303.PROCESS.SUCCESS (
+    message {
+        text:
+            ```
+            Debug enabled. On the Developer Toolbar, click the Debug Button to see more details.
+            
+            ```
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.ERROR.MSG (
+    message {
+        text: Error parsing JSON: %0
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.FORBIDDEN.MSG (
+    message {
+        text: Forbidden: You don't have permission to access this resource.
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.NOTFOUND.MSG (
+    message {
+        text: Resource not found.
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.ORDS.RESPONSE (
+    message {
+        text: Response from REST API: %0
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.SERVEREERR.MSG (
+    message {
+        text: Internal server error. Please try again later.
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.UNAUTHORIZED.MSG (
+    message {
+        text: Unauthorized access. Please log in.
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P402.DA.UNEXPECTEDERR.MSG (
+    message {
+        text: An unexpected error occurred.
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P404.PROCESS.SUCCESS (
+    message {
+        text: Store and Orders data processed, summary report email sent successfully.
+        language: en
+        usedInJavaScript: true
+    }
+)
+
+textMessage P405.DA.REFRESH.MSG (
+    message {
+        text: Chart refreshed
+        language: en
+        usedInJavaScript: true
+    }
+)
+

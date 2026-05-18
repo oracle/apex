@@ -1,0 +1,153 @@
+appItem ACTIVE_MSG (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+    }
+)
+
+appItem ACTIVITIES (
+    config {
+        buildOption: @activities
+    }
+)
+
+appItem APPLICATION_TITLE (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+    }
+)
+
+appItem CATEGORY_HELP (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem CNT_01 (
+)
+
+appItem CNT_02 (
+)
+
+appItem CNT_03 (
+)
+
+appItem CNT_04 (
+)
+
+appItem CNT_05 (
+)
+
+appItem CNT_06 (
+)
+
+appItem CNT_07 (
+)
+
+appItem CNT_08 (
+)
+
+appItem CNT_09 (
+)
+
+appItem CNT_10 (
+)
+
+appItem CONTACTS (
+)
+
+appItem CONTACT_TYPES_HELP (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem CREATE_MSG (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem CUSTOMER (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem CUSTOMERS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem CUSTOMER_STATUS_HELP (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem CUSTOMER_TYPE_HELP (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem CUSTOMER_USE_CASE_HELP (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem GET_ID (
+    security {
+        sessionStateProtection: unrestricted
+        escapeSpecialChars: false
+    }
+    comments {
+        comments: This is a generic item used to fetch things via ajax. Used for fetching image for customer Logos.
+    }
+)
+
+appItem INACTIVE_MSG (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem LAST_VIEW (
+    security {
+        sessionStateProtection: unrestricted
+    }
+)
+
+appItem PRODUCTS (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem RETURN_URL (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem TZ (
+    security {
+        escapeSpecialChars: false
+    }
+)
+
+appItem UNLINK_CONFIRM_MSG (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+

@@ -1,0 +1,1600 @@
+page 53 (
+    name: Initiative Document Details
+    alias: INITIATIVE-DOCUMENT-DETAILS
+    title: Initiative Document Details
+    pageGroup: @projects
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #PRISMJS_DIRECTORY#prism#MIN#.js
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region document-description (
+        name: Document Description
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT DOC_description
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID 
+                ```
+            pageItemsToSubmit: P53_ID
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                SELECT 1
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID 
+                   and DOC_description is not null
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+            ]
+        }
+        heading {
+            type: none
+        }
+
+        column DOC_DESCRIPTION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region document-details (
+        name: Document Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select d.ID,
+                       i.id initiative_id,
+                       i.initiative,
+                       f.area,
+                       d.DOCUMENT_FILENAME,
+                       d.UPDATED,
+                       d.created,
+                       --d.doc_description,
+                       lower(d.created_by) author,
+                       dbms_lob.getlength(d.DOCUMENT_BLOB) doc_size,
+                       d.created date_created,
+                       substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1)) file_extension
+                  from SP_INITIATIVE_DOCUMENTS d,
+                       sp_initiatives i,
+                       sp_areas f
+                 where d.id = :P53_ID and d.initiative_id = i.id and f.id = i.area_id
+                
+                ```
+            pageItemsToSubmit: P53_ID
+        }
+        layout {
+            sequence: 100
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+            ]
+        }
+
+        column AREA (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Area
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 23
+                    items: {
+                        P23_FOCUS_AREA: #AREA#
+                    }
+                    clearCache: 23
+                }
+                linkText: #AREA#
+            }
+        )
+
+        column AUTHOR (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Author
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column DATE_CREATED (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column DOCUMENT_FILENAME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Document Filename
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column DOC_SIZE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Size
+                alignment: center
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+        )
+
+        column FILE_EXTENSION (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Initiative
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_INITIATIVE_ID: #INITIATIVE_ID#
+                    }
+                    clearCache: 94
+                }
+                linkText: #INITIATIVE#
+            }
+        )
+
+        column INITIATIVE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Updated
+                alignment: center
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+        )
+
+    )
+
+    region html-display-of-markdown (
+        name: HTML Display of Markdown
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   r clob;
+                begin
+                    for c1 in (
+                        select TO_CLOB(DOCUMENT_BLOB) x
+                          from SP_INITIATIVE_DOCUMENTS
+                         where id = :P53_ID
+                    ) loop
+                        r := apex_markdown.to_html(c1.x);
+                    end loop;
+                return r;
+                
+                end;
+                ```
+        }
+        layout {
+            sequence: 53
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: MD
+        }
+    )
+
+    region java (
+        name: Java
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-java">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 100
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: JAVA
+        }
+    )
+
+    region json (
+        name: JSON
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-json">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: JSON
+        }
+    )
+
+    region markdown (
+        name: Markdown
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID
+                   ) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre>'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 52
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: MD
+        }
+    )
+
+    region no-preview-available (
+        name: No Preview Available
+        type: staticContent
+        source {
+            htmlCode: This file type cannot be previewed.
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P53_FILE_EXTENSION not in ('SQL','PLS','PLSQL','PLB','YAML','JSON','XML','JAVA','PYC','PDF','MD','TXT') and
+                :P53_DOCUMENT_IS_IMAGE is null
+                ```
+        }
+    )
+
+    region p53-file-name (
+        name: &P53_FILE_NAME.
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P53_DOCUMENT_IS_IMAGE
+        }
+    )
+
+    region pdf (
+        name: PDF
+        type: staticContent
+        source {
+            htmlCode: &P53_PDF_LINK.
+        }
+        layout {
+            sequence: 120
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: pdf_viewer
+        }
+        serverSideCondition {
+            type: item=value
+            item: P53_FILE_EXTENSION
+            value: PDF
+        }
+    )
+
+    region pl-sql (
+        name: PL/SQL
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-plsql">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: [
+                PLS
+                PLSQL
+                PLB
+            ]
+        }
+    )
+
+    region python (
+        name: Python
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-python">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 110
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: PYC
+        }
+    )
+
+    region sql (
+        name: SQL
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-sql">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: SQL
+        }
+    )
+
+    region text (
+        name: Text
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID
+                   ) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre>'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 51
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: TXT
+        }
+    )
+
+    region xml (
+        name: XML
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-xml">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: XML
+        }
+    )
+
+    region yaml (
+        name: YAML
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   s clob;
+                   l number;
+                   r clob;
+                   l_offset int := 1;
+                begin
+                   for c1 in (
+                       select TO_CLOB(DOCUMENT_BLOB) x
+                       from SP_INITIATIVE_DOCUMENTS
+                       where id = :P53_ID) loop
+                          s := c1.x;
+                   end loop;
+                   l := dbms_lob.getlength(s);
+                   r := '<pre><code class="lang-yaml">'||chr(10);
+                   for i in 1..2000 loop
+                       if l_offset > dbms_lob.getlength(s) then 
+                          exit;
+                       else
+                          r := r||apex_escape.html(dbms_lob.substr(s,5000,l_offset));
+                          l_offset := l_offset + 5000;
+                       end if;
+                   end loop;
+                   r := r||chr(10)||'</code></pre>';
+                   return r;
+                end;
+                
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsInColonDelimitedList
+            item: P53_FILE_EXTENSION
+            list: YAML
+        }
+    )
+
+    pageItem P53_DOCUMENT_BLOB (
+        type: displayImage
+        label {
+            label: Document
+            alignment: left
+        }
+        settings {
+            basedOn: blobColSql
+            sqlQuery:
+                ```sql
+                SELECT DOCUMENT_BLOB 
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID 
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            region: @p53-file-name
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P53_DOCUMENT_IS_IMAGE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P53_DOCUMENT_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P53_FILE_EXTENSION (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P53_FILE_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @p53-file-name
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P53_ID (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P53_NEXT_ID (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P53_PDF_LINK (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P53_PREV_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P53_PREV_PAGE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @document-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    button download (
+        buttonName: download
+        label: Download
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-download
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button edit (
+        buttonName: Edit
+        label: Edit
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                items: {
+                    P13_ID: &P53_ID.
+                }
+                clearCache: 13
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 53
+                items: {
+                    P53_ID: &P53_NEXT_ID.
+                    P53_PREV_PAGE: &P53_PREV_PAGE.
+                }
+                clearCache: 53
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: Previous
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 53
+                items: {
+                    P53_ID: &P53_PREV_ID.
+                    P53_PREV_PAGE: &P53_PREV_PAGE.
+                }
+                clearCache: 53
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &P53_PREV_PAGE.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-html-of-md (
+        buttonName: VIEW_HTML_OF_MD
+        label: View HTML of Markdown
+        layout {
+            sequence: 20
+            region: @markdown
+            slot: copy
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button view-md (
+        buttonName: VIEW_MD
+        label: View Markdown
+        layout {
+            sequence: 30
+            region: @html-display-of-markdown
+            slot: copy
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction dc (
+        name: DC
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @document-details
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction disable-next-button (
+        name: Disable Next Button
+        execution {
+            sequence: 30
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: itemIsNull
+            item: P53_NEXT_ID
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: button
+                button: @next
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction disable-previous-button (
+        name: Disable Previous Button
+        execution {
+            sequence: 40
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: itemIsNull
+            item: P53_PREV_ID
+        }
+
+        action native-disable (
+            action: disable
+            affectedElements {
+                selectionType: button
+                button: @previous
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction download (
+        name: download
+        execution {
+            sequence: 50
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @download
+        }
+
+        action native-download (
+            action: download
+            source {
+                sqlQuery:
+                    ```sql
+                    select DOCUMENT_BLOB, DOCUMENT_FILENAME, DOCUMENT_MIMETYPE
+                      from SP_INITIATIVE_DOCUMENTS 
+                     where id = :P53_ID
+                    ```
+                itemsToSubmit: P53_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction hide-html-md-on-load (
+        name: Hide HTML MD on load
+        execution {
+            sequence: 80
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @html-display-of-markdown
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction load-pdf (
+        name: Load PDF
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: item=value
+            item: P53_FILE_EXTENSION
+            value: PDF
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('#pdf_viewer').html('');
+                    var url = $v('P53_PDF_LINK');
+                    var preview = document.createElement('embed'); 
+                    preview.type = "application/pdf";
+                    preview.width="100%";
+                    preview.height="1000px";
+                    preview.src = url;
+                    $("#pdf_viewer").append(preview);
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction view-html-of-md (
+        name: View HTML of MD
+        execution {
+            sequence: 60
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @view-html-of-md
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @markdown
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @html-display-of-markdown
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction view-md (
+        name: View MD
+        execution {
+            sequence: 70
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @view-md
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @html-display-of-markdown
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @markdown
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    computation p53-document-is-image (
+        itemName: P53_DOCUMENT_IS_IMAGE
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select 'Y'
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID
+                and upper(substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1)))
+                 in ('JPG','JPEG','PNG','GIF','AVIF','WEBP')
+                
+                ```
+        }
+    )
+
+    computation p53-document-name (
+        itemName: P53_DOCUMENT_NAME
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select DOCUMENT_FILENAME
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID
+                
+                ```
+        }
+    )
+
+    computation p53-file-extension (
+        itemName: P53_FILE_EXTENSION
+        execution {
+            sequence: 10
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select upper(substr(d.DOCUMENT_FILENAME,instr(d.DOCUMENT_FILENAME,'.',-1)+1,length(d.DOCUMENT_FILENAME)-instr(d.DOCUMENT_FILENAME,'.',-1))) ext
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID
+                ```
+        }
+    )
+
+    computation p53-file-name (
+        itemName: P53_FILE_NAME
+        execution {
+            sequence: 50
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                SELECT DOCUMENT_FILENAME
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where id = :P53_ID 
+                ```
+        }
+    )
+
+    computation p53-next-id (
+        itemName: P53_NEXT_ID
+        execution {
+            sequence: 30
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                SELECT id
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where initiative_id = (select initiative_id from SP_INITIATIVE_DOCUMENTS d2 where d2.id = :P53_ID) and
+                       created < (select created from SP_INITIATIVE_DOCUMENTS d2 where d2.id = :P53_ID) and
+                          dbms_lob.getlength(DOCUMENT_BLOB) > 0 
+                order by created desc
+                fetch first 1 rows only
+                ```
+        }
+    )
+
+    computation p53-pdf-link (
+        itemName: P53_PDF_LINK
+        execution {
+            sequence: 60
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return APEX_PAGE.GET_URL (
+                            p_page      => 53,
+                            p_request   => 'APPLICATION_PROCESS=viewInitiativePDF',
+                            p_plain_url => TRUE );
+                ```
+        }
+    )
+
+    computation p53-prev-id (
+        itemName: P53_PREV_ID
+        execution {
+            sequence: 40
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                SELECT id
+                  from SP_INITIATIVE_DOCUMENTS d
+                 where initiative_id = (select initiative_id from SP_INITIATIVE_DOCUMENTS d2 where d2.id = :P53_ID) and
+                       created > (select created from SP_INITIATIVE_DOCUMENTS d2 where d2.id = :P53_ID) and
+                          dbms_lob.getlength(DOCUMENT_BLOB) > 0 
+                order by created 
+                fetch first 1 rows only
+                ```
+        }
+    )
+
+)
+

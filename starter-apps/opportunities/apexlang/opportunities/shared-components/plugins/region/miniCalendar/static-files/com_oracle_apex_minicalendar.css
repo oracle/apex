@@ -1,0 +1,10 @@
+table.apex-mini-calendar{width:100%}
+table.apex-mini-calendar caption{background-color:#ecf1f9;background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2f5f9), color-stop(100%, #ecf1f9));background-image:-webkit-linear-gradient(#f2f5f9,#ecf1f9);background-image:-moz-linear-gradient(#f2f5f9,#ecf1f9);background-image:linear-gradient(#f2f5f9,#ecf1f9);font-size:12px;font-weight:bold;color:#404040;color:rgba(0,0,0,0.75);text-shadow:0 1px 0 rgba(255,255,255,0.75);padding:8px 8px 0 8px;text-align:center;-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.65) inset;-moz-box-shadow:0 1px 0 rgba(255,255,255,0.65) inset;box-shadow:0 1px 0 rgba(255,255,255,0.65) inset}
+table.apex-mini-calendar thead th{background-color:#e7edf9;background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ecf1f9), color-stop(100%, #e7edf9));background-image:-webkit-linear-gradient(#ecf1f9,#e7edf9);background-image:-moz-linear-gradient(#ecf1f9,#e7edf9);background-image:linear-gradient(#ecf1f9,#e7edf9);font-size:10px;font-weight:bold;color:#606060;color:rgba(0,0,0,0.5);padding:4px;text-shadow:0 1px 0 rgba(255,255,255,0.5);border-bottom:1px solid #b0bdcc}
+table.apex-mini-calendar tbody tr td{width:14%;background:none #fafafa;text-align:center;border-bottom:1px solid #e8e8e8;line-height:24px;color:#404040;font-size:11px;font-weight:normal;position:relative}
+table.apex-mini-calendar tbody tr td:last-child{border-right:none}
+table.apex-mini-calendar tbody tr td.inactive{background-color:#F0F0F0;color:#C0C0C0;font-weight:normal}
+table.apex-mini-calendar tbody tr td.weekend{color:#707070;background-color:#F1F4F9}
+table.apex-mini-calendar tbody tr td.today{font-weight:bold}
+table.apex-mini-calendar tbody tr td.active span{display:block;margin:3px;font-size:11px;line-height:16px;background-color:#FEE49C;border-radius:3px;border:1px solid #ccb368;font-weight:bold;-webkit-box-shadow:0 1px 0 rgba(255,255,255,0.65) inset;-moz-box-shadow:0 1px 0 rgba(255,255,255,0.65) inset;box-shadow:0 1px 0 rgba(255,255,255,0.65) inset}
+table.apex-mini-calendar tbody tr:last-child td{border-bottom:none}

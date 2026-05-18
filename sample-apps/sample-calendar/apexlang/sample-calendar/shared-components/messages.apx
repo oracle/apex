@@ -1,0 +1,28 @@
+textMessage ADMINISTRATION (
+    message {
+        text: Administration
+        language: en
+    }
+)
+
+textMessage HELP (
+    message {
+        text: Help
+        language: en
+    }
+)
+
+textMessage LOGOUT (
+    message {
+        text: Logout
+        language: en
+    }
+)
+
+textMessage USER (
+    message {
+        text: User
+        language: en
+    }
+)
+

@@ -1,0 +1,1642 @@
+page 27 (
+    name: String Functions
+    alias: STRING-FUNCTIONS
+    title: String Functions
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline: .highlight {background-color: yellow;}
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>Click the function names on the left to see string function examples.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 100
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region coalesce-query (
+        name: Coalesce Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    comm,
+                    deptno
+                from
+                    eba_demo_ir_emp
+                where
+                    coalesce(comm, sal) > sal
+                order by
+                    7
+                ```
+        }
+        layout {
+            sequence: 110
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: coalesce_report
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: COALESCE
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region coalesce-title-text (
+        name: Coalesce Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions030.htm#i1001341" target="_blank"><strong>COALESCE()</strong></a> function to display all employees whose commission is higher than their salary.</p>
+        }
+        layout {
+            sequence: 100
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: COALESCE
+        }
+    )
+
+    region function-selection (
+        name: Function Selection
+        type: list
+        source {
+            list: @string-functions
+        }
+        layout {
+            sequence: 110
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region instr-query (
+        name: Instr Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    comm,
+                    deptno
+                from
+                    eba_demo_ir_emp
+                where
+                    instr(job,'SALES') > 0
+                order by
+                    2
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: instr_report
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: INSTR
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region instr-title-text (
+        name: Instr Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions080.htm#i77598" target="_blank"><strong>INSTR()</strong></a> function to limit the results to employees with a job title that contains the word "SALES".</p>
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: INSTR
+        }
+    )
+
+    region nvl-query (
+        name: Nvl Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    nvl(comm, 0) comm,
+                    deptno
+                from
+                    eba_demo_ir_emp
+                order by
+                    7
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: nvl_query
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: NVL
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region nvl-title-text (
+        name: Nvl Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions119.htm#i91798" target="_blank"><strong>NVL()</strong></a> function to display a "0" commission value (instead of null) for employees' who do not receive a commission as part of their salary.</p>
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: NVL
+        }
+    )
+
+    region nvl2-query (
+        name: Nvl2 Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    nvl2(comm, 'Commissioned', 'Non-Commissioned') as comm,
+                    deptno
+                from
+                    eba_demo_ir_emp
+                order by
+                    7
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: nvl2_query
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: NVL2
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region nvl2-title-text (
+        name: Nvl2 Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions120.htm#i91806" target="_blank"><strong>NVL2()</strong></a> function to display a "Commissioned" or "Non-Commissioned" as the commission value. Employees not receiving a commission, show up as "Non-Commissioned".</p>
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: NVL2
+        }
+    )
+
+    region replace-query (
+        name: Replace Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    replace(job,'SALESMAN','SALESPERSON') as job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    comm,
+                    deptno
+                from
+                    eba_demo_ir_emp
+                where
+                    job = 'SALESMAN'
+                order by
+                    3
+                ```
+        }
+        layout {
+            sequence: 130
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: replace_report
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: REPLACE
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region replace-title-text (
+        name: Replace Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions153.htm#i78608" target="_blank"><strong>REPLACE()</strong></a> function to display a job title of "SALESPERSON" (instead of the real value, "SALESMAN").</p>
+        }
+        layout {
+            sequence: 120
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: REPLACE
+        }
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 270
+            parentRegion: @substr-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: substr_report
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region sql-source-2 (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 280
+            parentRegion: @instr-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: instr_report
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region sql-source-3 (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 290
+            parentRegion: @nvl-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: nvl_query
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region sql-source-4 (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 300
+            parentRegion: @nvl2-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: nvl2_query
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region sql-source-5 (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 310
+            parentRegion: @coalesce-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: coalesce_report
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region sql-source-6 (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 320
+            parentRegion: @replace-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: replace_report
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region sql-source-7 (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 330
+            parentRegion: @trim-query
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: trim_report
+            highlightTermPageItem: P27_FUNCTION
+        }
+    )
+
+    region substr-query (
+        name: Substr Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    comm,
+                    deptno
+                from
+                    eba_demo_ir_emp
+                where
+                    substr(ename,1,1) = 'M'
+                order by
+                    2
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: substr_report
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: SUBSTR
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region substr-title-text (
+        name: Substr Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions181.htm#i87066" target="_blank"><strong>SUBSTR()</strong></a> function to limit the results to employees whose last name starts with the letter "M".</p>
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: SUBSTR
+        }
+    )
+
+    region trim-query (
+        name: Trim Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    empno,
+                    ename,
+                    job,
+                    mgr,
+                    hiredate,
+                    sal,
+                    comm,
+                    trim(trailing 0 from deptno) as deptno
+                from
+                    eba_demo_ir_emp
+                order by
+                    8 asc
+                ```
+        }
+        layout {
+            sequence: 150
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+                t-Region--noBorder
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            htmlDomId: trim_report
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: TRIM
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+            ]
+            showNullValuesAs: " - "
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column COMM (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: COMM
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DEPTNO (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: DEPTNO
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPNO (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: EMPNO
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ENAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ENAME
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column HIREDATE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: HIREDATE
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: JOB
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column MGR (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: MGR
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column SAL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: SAL
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region trim-title-text (
+        name: Trim Title Text
+        type: staticContent
+        source {
+            htmlCode: <p>Department numbers are stored in multiples of ten (10, 20, 30, etc...). This query uses the <a href="http://docs.oracle.com/cd/E11882_01/server.112/e26088/functions219.htm#i79689" target="_blank"><strong>TRIM()</strong></a> function to display the department numbers without trailing zeros.</p>
+        }
+        layout {
+            sequence: 140
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: item=value
+            item: P27_FUNCTION
+            value: TRIM
+        }
+    )
+
+    pageItem P27_FUNCTION (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @about-this-page
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: SUBSTR
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

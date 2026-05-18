@@ -1,0 +1,201 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            div.featuredBlock{
+            	-webkit-border-radius:3px;
+            	-moz-border-radius:3px;
+            	border-radius:3px;
+            	-webkit-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	-moz-box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	box-shadow:0 1px 2px rgba(0,0,0,0.05);
+            	border:1px solid #E1E6EB;
+            	margin-bottom:18px
+            }
+            div.featuredBlock div.featuredIcon{
+            	background-image:url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIvPjxzdG9wIG9mZnNldD0iNDAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNmNGY0ZjgiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
+            	background-size:100%;
+            	background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(40%, #ffffff), color-stop(60%, #f4f4f8), color-stop(100%, #ffffff));
+            	background-image:-webkit-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:-moz-linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	background-image:linear-gradient(top, #ffffff 0%,#ffffff 40%,#f4f4f8 60%,#ffffff 100%);
+            	-webkit-border-radius:3px 3px 0 0;
+            	-moz-border-radius:3px 3px 0 0;
+            	border-radius:3px 3px 0 0;
+            	padding:8px 0;
+            	min-height: 90px;
+            	text-align:center;
+            }
+            div.featuredBlock div.featuredIcon img{
+            	display:block;
+            	margin:0 auto 0 auto;
+            	-webkit-box-reflect:below -20px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(65%, transparent), to(rgba(255,255,255,0.2)));
+            }
+            div.featuredBlock div.featuredIcon h1{
+            	font-size:12px;
+            	line-height:12px;
+            	color:#404040;
+            	margin:0 8px;
+            	padding:0;
+            	text-align:center;
+            }
+            a.blockLink,a.blockLink:hover{
+            	text-decoration:none
+            }
+            a.blockLink:hover div.featuredBlock{
+            	border:1px solid #b1bbcb
+            }
+            a.blockLink:hover div.featuredBlock div.featuredIcon{
+            	background: none #e5effb;
+            	-webkit-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	-moz-box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            	box-shadow: 0 0 10px rgba(50,117,199,0.25);
+            }
+            .regionDivider {
+            	border-top: 2px solid #F0F0F0 !important;
+            	padding-top: 8px;;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This application demonstrates many of the native dynamic actions that ship with Oracle APEX and also a number of plug-in dynamic actions. Each page containing the dynamic action will have an 'Overview' region at the top, explaining the purpose of the dynamic action and a breakdown of which are used and whether they are native or plug-in.</p>
+                <p>Debugging dynamic actions in APEX is slightly different than other debugging, because much of the processing done with the dynamic actions framework is done on the client, not on the server. Debug information is output to the browser's JavaScript console when runnning apps in 'Debug' mode, if your browser supports it. The debug information will tell you when a dynamic action fires, the name of the dynamic action, and which action has fired. To see how dynamic actions are used in this application, use the Debug menu in the Developer Toolbar to enable App Level debug and interact with the example pages.</p>
+                <p>Click on any of the examples to get started.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+            ]
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: staticContent
+        source {
+            htmlCode: <p>Add interactivity to your applications with dynamic actions</p>
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumbs (
+        name: Breadcrumbs
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region dynamic-action-demonstrations (
+        name: Dynamic Action Demonstrations
+        type: list
+        source {
+            list: @dynamic-actions
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--cols t-MediaList--2cols
+            ]
+        }
+    )
+
+    region footer (
+        name: Footer
+        type: plugin/sampleAppsFooter
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

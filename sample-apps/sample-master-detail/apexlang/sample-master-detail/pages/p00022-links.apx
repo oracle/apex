@@ -1,0 +1,632 @@
+page 22 (
+    name: Links
+    alias: LINKS
+    title: Links
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 800
+        height: 600
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region button-region (
+        name: Button Region
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region eba-demo-md-task-links (
+        name: EBA_DEMO_MD_TASK_LINKS
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select "ID", 
+                "PROJECT_ID",
+                "TASK_ID",
+                "LINK_TYPE",
+                "URL",
+                application_id,
+                application_page,
+                "DESCRIPTION"
+                from EBA_DEMO_MD_TASK_LINKS
+                where TASK_ID = :P22_TASK_ID
+                  
+                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: link
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+            addRowIfEmpty: false
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: No links for this task.
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+            ]
+            addButtonLabel: Add Link
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1856138989430330521
+        }
+
+        savedReport 14395 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @PROJECT_ID
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @TASK_ID
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @LINK_TYPE
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @URL
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @APPLICATION_ID
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @APPLICATION_PAGE
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ROWID
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 10
+            }
+        )
+
+        column APPLICATION_ID (
+            type: numberField
+            heading {
+                heading: Application id
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: APPLICATION_ID
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column APPLICATION_PAGE (
+            type: numberField
+            heading {
+                heading: Application page
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: APPLICATION_PAGE
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column DESCRIPTION (
+            type: textarea
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column LINK_TYPE (
+            type: selectList
+            heading {
+                heading: Link Type
+            }
+            lov {
+                type: sharedComponent
+                lov: @link-types
+            }
+            layout {
+                sequence: 70
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: LINK_TYPE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+        )
+
+        column PROJECT_ID (
+            type: hidden
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: PROJECT_ID
+                dataType: number
+            }
+            default {
+                type: item
+                item: P22_PROJECT_ID
+                duplicateCopiesExistingValue: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ROWID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ROWID
+                dataType: rowid
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column TASK_ID (
+            type: hidden
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: TASK_ID
+                dataType: number
+            }
+            default {
+                type: item
+                item: P22_TASK_ID
+                duplicateCopiesExistingValue: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column URL (
+            type: textField
+            heading {
+                heading: Url
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: URL
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: none
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+    )
+
+    region task-details (
+        name: Task Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select distinct id task_id, project_id
+                from eba_demo_md_tasks
+                where project_id = :P22_PROJECT_ID 
+                and id = :P22_TASK_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column PROJECT_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Project
+                alignment: center
+            }
+            lov {
+                type: sharedComponent
+                lov: @projects
+            }
+            layout {
+                sequence: 1
+            }
+        )
+
+        column TASK_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Task
+                alignment: center
+            }
+            lov {
+                type: sharedComponent
+                lov: @tasks
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+    )
+
+    pageItem P22_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @eba-demo-md-task-links
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P22_TASK_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @eba-demo-md-task-links
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @button-region
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Save
+        layout {
+            sequence: 10
+            region: @button-region
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @eba-demo-md-task-links
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @eba-demo-md-task-links
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation new (
+        name: New
+        execution {
+            sequence: 10
+        }
+        validation {
+            editableRegion: @eba-demo-md-task-links
+            type: columnMatchesRegexp
+            column: URL
+            regexp: "^http[s]?://[-a-zA-Z0-9_.:]+[-a-zA-Z0-9_:@&?=+,.!/~*'%$]*$"
+        }
+        error {
+            errorMessage: #COLUMN_HEADER# must have a value.
+            associatedColumn: URL
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action processed.
+        }
+        advanced {
+            executionMappingIdentifier: 3940932740084126533
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process save-link (
+        name: save link
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @eba-demo-md-task-links
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action processed.
+        }
+        advanced {
+            executionMappingIdentifier: 3940734750241538848
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

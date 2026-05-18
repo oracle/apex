@@ -1,0 +1,192 @@
+page 3 (
+    name: Basic Cards
+    alias: BASIC-CARDS
+    title: &APP_NAME. - Styles
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>You can display Cards in 3 different styles.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+            icon: fa-cards
+            renderComponents: belowContent
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            includeShowAll: false
+            rememberSelection: false
+        }
+    )
+
+    region style-a (
+        name: Style A
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleA
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: initials
+            iconColumn: ENAME
+            iconPosition: top
+        }
+        pagination {
+            showTotalCount: true
+        }
+    )
+
+    region style-b (
+        name: Style B
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleB
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: initials
+            iconColumn: ENAME
+            iconPosition: top
+        }
+        pagination {
+            showTotalCount: true
+        }
+    )
+
+    region style-c (
+        name: Style C
+        type: cards
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_CARD_EMP
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--styleC
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        title {
+            column: ENAME
+        }
+        subtitle {
+            column: JOB
+        }
+        iconAndBadge {
+            iconSource: initials
+            iconColumn: ENAME
+            iconPosition: top
+        }
+        pagination {
+            showTotalCount: true
+        }
+    )
+
+)
+

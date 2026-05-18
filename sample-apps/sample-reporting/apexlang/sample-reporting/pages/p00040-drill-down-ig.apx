@@ -1,0 +1,616 @@
+page 40 (
+    name: Drill Down IG
+    alias: DRILL-DOWN-IG
+    title: Drill Down IG
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This interactive grid was created using the create page wizard.  The SQL used to create the report is displayed in the show/hide region at the bottom of the page. Many columns of this report provide drill down capabilities.  To make a report column "hot" you edit the Column <strong>Link</strong> attributes which are on the <strong>Columns</strong> tab of the interactive grid region.  You can link report columns to other pages in the Oracle APEX application and control the session state to be passed.  You can also link to custom URLs.  Your column link can access any of the values of a given report row using the <strong>&amp;MY_COLUMN.</strong> syntax.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region container (
+        name: Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region projects (
+        name: Projects
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                       PROJECT,
+                       count(*) tasks,
+                       min(START_DATE) first_start_date,
+                       max(END_DATE) last_end_date,
+                       sum(decode(STATUS,'Open',1,0)) open,
+                       sum(decode(STATUS,'Closed',1,0)) closed,
+                       sum(decode(STATUS,'Pending',1,0)) pending,
+                       sum(decode(STATUS,'On-Hold',1,0)) on_hold,   
+                       count(distinct ASSIGNED_TO) assignees,
+                       sum(COST) total_cost,
+                       sum(BUDGET) total_budget,
+                       sum(BUDGET) - sum(COST) cost_vs_budget
+                from EBA_DEMO_IR_PROJECTS
+                group by project
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @container
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--noBorders
+            ]
+        }
+        advanced {
+            htmlDomId: projects_report
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 1029855602099718145
+        }
+
+        savedReport 14149 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @PROJECT
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @TASKS
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @FIRST_START_DATE
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @LAST_END_DATE
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @OPEN
+                layout {
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @CLOSED
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @PENDING
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @ON_HOLD
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ASSIGNEES
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @TOTAL_COST
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @TOTAL_BUDGET
+                layout {
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @COST_VS_BUDGET
+                layout {
+                    sequence: 12
+                }
+            )
+
+        )
+
+        column ASSIGNEES (
+            type: link
+            heading {
+                heading: Assignees
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &ASSIGNEES.
+            }
+            source {
+                databaseColumn: ASSIGNEES
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column CLOSED (
+            type: link
+            heading {
+                heading: Closed
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &CLOSED.
+            }
+            source {
+                databaseColumn: CLOSED
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column COST_VS_BUDGET (
+            type: numberField
+            heading {
+                heading: Cost Vs Budget
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 120
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COST_VS_BUDGET
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column FIRST_START_DATE (
+            type: datePickerJquery
+            heading {
+                heading: First Start Date
+                alignment: center
+            }
+            layout {
+                sequence: 30
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: FIRST_START_DATE
+                dataType: date
+            }
+        )
+
+        column LAST_END_DATE (
+            type: datePickerJquery
+            heading {
+                heading: Last End Date
+                alignment: center
+            }
+            layout {
+                sequence: 40
+                columnAlignment: center
+            }
+            source {
+                databaseColumn: LAST_END_DATE
+                dataType: date
+            }
+        )
+
+        column ON_HOLD (
+            type: numberField
+            heading {
+                heading: On Hold
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &ON_HOLD.
+            }
+            source {
+                databaseColumn: ON_HOLD
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column OPEN (
+            type: link
+            heading {
+                heading: Open
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &OPEN.
+            }
+            source {
+                databaseColumn: OPEN
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column PENDING (
+            type: link
+            heading {
+                heading: Pending
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &PENDING.
+            }
+            source {
+                databaseColumn: PENDING
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &PROJECT.
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column TASKS (
+            type: link
+            heading {
+                heading: Tasks
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            link {
+                target: {
+                    page: 17
+                    items: {
+                        IG_PROJECT: &PROJECT.
+                    }
+                    action: clearRegions
+                    request: "IG[projects_report]_Costings"
+                }
+                linkText: &TASKS.
+            }
+            source {
+                databaseColumn: TASKS
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column TOTAL_BUDGET (
+            type: numberField
+            heading {
+                heading: Total Budget
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 110
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: TOTAL_BUDGET
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column TOTAL_COST (
+            type: numberField
+            heading {
+                heading: Total Cost
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: TOTAL_COST
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Projects
+        }
+    )
+
+    region sql-source (
+        name: SQL Source
+        type: plugin/sourceDisplay
+        layout {
+            sequence: 20
+            parentRegion: @container
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            regionStaticId: projects_report
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @projects
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 40
+                clearCache: RR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

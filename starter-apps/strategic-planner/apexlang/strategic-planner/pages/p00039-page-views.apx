@@ -1,0 +1,489 @@
+page 39 (
+    name: Page Views
+    alias: PAGE-VIEWS
+    title: Page Views
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region page-performance (
+        name: Page Performance
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select step_id page,
+                    USERID_LC username,
+                    nvl((   select p.page_title||' ('||p.PAGE_FUNCTION||')' page_name
+                        from apex_application_pages p
+                        where p.page_id = l.step_id
+                            and p.application_id = :app_id ),'Unknown') page_name,
+                    elap                  elapsed,
+                    session_id,
+                    nvl(num_rows,0)       num_rows,
+                    decode(page_mode,'P','Partial Page','D','Full Page','Other - '||page_mode) page_mode,
+                    time_stamp,
+                    time_stamp time_stamp_since
+                from apex_activity_log l
+                where flow_id = :app_id
+                    and userid is not null
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 9095121827256010122
+        }
+
+        column ELAPSED (
+            type: plainText
+            heading {
+                heading: Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 12
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G990D000
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column NUM_ROWS (
+            type: plainText
+            heading {
+                heading: Num Rows
+                alignment: end
+            }
+            layout {
+                sequence: 32
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column PAGE (
+            type: plainText
+            heading {
+                heading: Page
+                alignment: end
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PAGE_MODE (
+            type: plainText
+            heading {
+                heading: Page Mode
+            }
+            layout {
+                sequence: 42
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column PAGE_NAME (
+            type: plainText
+            heading {
+                heading: Page Name
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column SESSION_ID (
+            type: plainText
+            heading {
+                heading: Session ID
+                alignment: end
+            }
+            layout {
+                sequence: 22
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column TIME_STAMP (
+            type: plainText
+            heading {
+                heading: Time Stamp
+            }
+            layout {
+                sequence: 52
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column TIME_STAMP_SINCE (
+            type: plainText
+            heading {
+                heading: Date
+            }
+            layout {
+                sequence: 62
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column USERNAME (
+            type: plainText
+            heading {
+                heading: Username
+            }
+            layout {
+                sequence: 72
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Page Performance
+        }
+
+        savedReport 188482655 (
+            visibility: alternativeDefault
+            name: Users Active in last hour
+            view {
+                chart: true
+                default: chart
+                rowsPerPage: 50
+            }
+
+            displayColumn ELAPSED (
+                sequence: 3
+            )
+
+            displayColumn NUM_ROWS (
+                sequence: 5
+            )
+
+            displayColumn PAGE (
+                sequence: 1
+            )
+
+            displayColumn PAGE_MODE (
+                sequence: 6
+            )
+
+            displayColumn PAGE_NAME (
+                sequence: 2
+            )
+
+            displayColumn TIME_STAMP_SINCE (
+                sequence: 7
+            )
+
+            displayColumn USERNAME (
+                sequence: 4
+            )
+
+            sort (
+                column: TIME_STAMP_SINCE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: ELAPSED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            aggregate (
+                function: countDistinct
+                column: USERNAME
+            )
+
+            filter ir-condition (
+                column: TIME_STAMP_SINCE
+                operator: isInTheLast
+                value: 1
+                unit: hours
+            )
+
+            chart {
+                label: USERNAME
+                valueAggregation: count
+            }
+        )
+
+        savedReport 27689094 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ELAPSED (
+                sequence: 3
+            )
+
+            displayColumn NUM_ROWS (
+                sequence: 5
+            )
+
+            displayColumn PAGE (
+                sequence: 1
+            )
+
+            displayColumn PAGE_MODE (
+                sequence: 6
+            )
+
+            displayColumn PAGE_NAME (
+                sequence: 2
+            )
+
+            displayColumn TIME_STAMP_SINCE (
+                sequence: 7
+            )
+
+            displayColumn USERNAME (
+                sequence: 4
+            )
+
+            sort (
+                column: TIME_STAMP_SINCE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: ELAPSED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button page-performance (
+        buttonName: page_performance
+        label: Page Performance
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 71
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button refresh (
+        buttonName: refresh
+        label: Refresh
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 39
+                clearCache: 39
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button user-interactions (
+        buttonName: user_interactions
+        label: User Interactions
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 72
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

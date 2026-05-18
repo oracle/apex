@@ -1,0 +1,89 @@
+plugin legacyOracleMapsSetCustomMarker (
+    name: Legacy: Oracle Maps - set Custom Marker
+    staticId: COM.ORACLE.APEX.ORAMAPS.SETMARKER
+    type: dynamicAction
+    component {
+        standardAttributes: [
+            forRegion
+            affectedElementRequired
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render_da_oramaps_setcustfoi(
+                p_dynamic_action in apex_plugin.t_dynamic_action,
+                p_plugin         in apex_plugin.t_plugin )
+                return apex_plugin.t_dynamic_action_render_result
+            is
+                l_item_x        varchar2(30)   := upper(p_dynamic_action.attribute_01);
+                l_item_y        varchar2(30)   := upper(p_dynamic_action.attribute_02);
+                l_item_srid     varchar2(30)   := upper(p_dynamic_action.attribute_03);
+                l_style         varchar2(10)   := upper(p_dynamic_action.attribute_04);
+                l_text          varchar2(100)  := upper(p_dynamic_action.attribute_05);
+                l_region_id     apex_application_page_da_acts.affected_elements%type;
+                l_result        apex_plugin.t_dynamic_action_render_result;       
+                l_srid          varchar2(100);
+            begin
+              begin
+                select nvl(r.static_id, 'R'||da.affected_region_id) into l_region_id
+                from apex_application_page_da_acts da, apex_application_page_regions r
+                where da.affected_region_id = r.region_id
+                and da.application_id = v('APP_ID') and da.page_id = v('APP_PAGE_ID')
+                and da.action_id = p_dynamic_action.id;
+              exception
+                when NO_DATA_FOUND then 
+                  apex_debug.message(
+                    p_message => 'ORAMAPS_DA_SETZOOM: FATAL ERROR: Dynamic Action ID "%s" not found in the APEX dictionary!',
+                    p0      => p_dynamic_action.id,
+                    p_level   => apex_debug.c_log_level_error
+                  );
+                  raise_application_error(-20000, 'FATAL ERROR: '||p_dynamic_action.id||' not found in dictionary for APP:PAGE '||v('APP_ID')||':'||v('APP_PAGE_ID'), true);
+              end;
+            
+              apex_debug.message(
+                p_message => 'ORAMAPS_DA_SETZOOM: found affected region: %s',
+                p0        => l_region_id,
+                p_level   => apex_debug.c_log_level_info
+              );
+            
+              if l_item_srid = 'WGS84' then 
+                l_srid := '4326';
+              else
+                l_srid := '';
+              end if;
+            
+              l_result.javascript_function := 'function () {
+                 getOramaps_setCustomMarker('||
+                   apex_javascript.add_value(l_region_id, false) || ', ' ||
+                   '$v('||apex_javascript.add_value(l_item_x, false)||'), ' ||
+                   '$v('||apex_javascript.add_value(l_item_y, false)||'), ' ||
+                   apex_javascript.add_value(l_srid, false) ||', '||
+                   apex_javascript.add_value(l_style, false) ||', '||
+                   apex_javascript.add_value(l_text, false)||
+                ');
+              }';
+              apex_debug.message(
+                   p_message => 'ORAMAPS_DA_SETZOOM: JavaScript function is: %s',
+                    p0      => l_result.javascript_function,
+                    p_level   => apex_debug.c_log_level_info
+                  );
+              return l_result;
+            end render_da_oramaps_setcustfoi; 
+            
+            
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_da_oramaps_setcustfoi
+    }
+    advanced {
+        category: execute
+        substituteAttributeValues: true
+    }
+    information {
+        version: 20140707
+    }
+)
+

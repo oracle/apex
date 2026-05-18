@@ -1,0 +1,34 @@
+appProcess set-poll-details (
+    name: Set POLL Details
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            :POLL_ID         := null;
+            :POLL_NAME       := null;
+            :POLL_OR_QUIZ    := null;
+            :POLL_AUTHENTICATION_REQ_YN := null;
+            
+            for c1 in (
+               select id, apex_escape.html(poll_name) as poll_name, poll_or_quiz, authentication_req_yn
+                 from eba_qpoll_polls
+                where id = :LPOLL_ID
+            ) loop
+               :POLL_ID         := c1.id;
+               :POLL_NAME       := c1.poll_name;
+               :POLL_OR_QUIZ    := c1.poll_or_quiz;
+               :POLL_AUTHENTICATION_REQ_YN := c1.authentication_req_yn;
+            end loop;
+            
+            :LPOLL_ID := null;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    serverSideCondition {
+        type: itemIsNotNull
+        item: LPOLL_ID
+    }
+)
+

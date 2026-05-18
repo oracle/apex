@@ -1,0 +1,7 @@
+aiAgent oci (
+    name: OCI
+    genAI {
+        service: @EBA_GENAI_OCI
+    }
+)
+

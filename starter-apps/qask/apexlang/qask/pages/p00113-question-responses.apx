@@ -1,0 +1,1331 @@
+page 113 (
+    name: Question Responses
+    alias: QUESTION-RESPONSES
+    title: Question Responses
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        fileUrls: #APP_FILES#jquery.qrcode.min.js
+        executeWhenPageLoads:
+            ```javascript-browser
+            	jQuery('#qr_code').qrcode({
+                    render	: "table",
+            		text	: '&P113_QR_URL!RAW.'
+            	});
+            ```
+    }
+    css {
+        inline:
+            ```css
+            :root {
+                --a-button-gap-x: 1rem;
+            }
+            .qr-container {
+                min-height: 348px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+            }
+            #qr_code {
+                padding: 8px;
+                background-color: white;
+            }
+            .qr-container h2 {
+                margin: 0 0 16px 0;
+                font-weight: 700;
+            }
+            
+            .t-BadgeList + .t-Report-pagination {
+                display: none;
+            }
+            
+            /* Style Responses Badge */
+            .t-ContextualInfo-label {
+                position: absolute;
+                overflow: hidden;
+                clip: rect(0 0 0 0);
+                margin: -1px;
+                padding: 0;
+                width: 1px;
+                height: 1px;
+                border: 0;
+            }
+            .t-ContextualInfo-value {
+                margin-top: 4px;
+                padding: 4px 8px;
+                background: rgba(0,0,0,.1);
+                border-radius: 4px;
+                font-weight: 600;
+                min-width: 32px;
+                display: block;
+                text-align: center;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: @host
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region answers-by-participant (
+        name: Answers by Participant
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.name,
+                       r.email,
+                       r.apex_session,
+                       r.user_agent,
+                       r.x_forwarded_for,
+                       r.remote_addr,
+                       a.answer_id,
+                       a.answer_text,
+                       a.comment_text,
+                       a.created_on
+                  from qask_responses r,
+                       qask_response_answers a
+                 where r.session_id = :P113_SESSION_ID
+                   and r.id = a.response_id
+                   and :P113_QUESTION_ID = a.question_id
+                order by r.id, a.answer_text
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @live-responses-2
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        advanced {
+            htmlDomId: live_responses_report
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 238839073197339895270
+        }
+
+        column ANSWER_ID (
+            type: hidden
+            heading {
+                heading: Answer Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column ANSWER_TEXT (
+            type: plainText
+            heading {
+                heading: Answer
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column APEX_SESSION (
+            type: plainText
+            heading {
+                heading: Session ID
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column COMMENT_TEXT (
+            type: plainText
+            heading {
+                heading: Comment Text
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: X
+            }
+            serverSideCondition {
+                type: expression
+                language: sql
+                sqlExpression: :P113_ASK_FOR_COMMENTS_YN = 'Y'
+            }
+        )
+
+        column CREATED_ON (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column EMAIL (
+            type: plainText
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :P113_RESP_EMAIL_REQUIRED_YN = 'Y'
+            }
+        )
+
+        column NAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: R
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :P113_RESP_NAME_REQUIRED_YN = 'Y'
+            }
+        )
+
+        column REMOTE_ADDR (
+            type: plainText
+            heading {
+                heading: Remote Address
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column USER_AGENT (
+            type: plainText
+            heading {
+                heading: User Agent
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column X_FORWARDED_FOR (
+            type: plainText
+            heading {
+                heading: X Forwarded For
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Answers by Participant
+        }
+
+        savedReport 300483001 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ANSWER_TEXT (
+                sequence: 4
+            )
+
+            displayColumn APEX_SESSION (
+                sequence: 1
+            )
+
+            displayColumn COMMENT_TEXT (
+                sequence: 5
+            )
+
+            displayColumn EMAIL (
+                sequence: 3
+            )
+
+            displayColumn NAME (
+                sequence: 2
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region live-responses (
+        name: Live Responses
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideShowIconsMath
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+            cssClasses: js-refresh-region
+        }
+        advanced {
+            htmlDomId: live_responses_chart
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: :P113_ANSWER_TYPE != 'FREEFORM'
+        }
+        chartLayout {
+            height: 400
+        }
+        legend {
+            show: false
+        }
+
+        series answers (
+            name: answers
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select qa.answer_text, 
+                           (select count(*) 
+                              from qask_response_answers a 
+                             where :P113_QUESTION_ID = a.question_id
+                               and a.answer_id = qa.id) answer_count
+                       from qask_session_questions q, 
+                            qask_sess_question_answers qa
+                      where q.session_id = :P113_SESSION_ID
+                        and q.id = qa.question_id
+                        and q.id = :P113_QUESTION_ID
+                    order by qa.answer_number
+                    ```
+                pageItemsToSubmit: P113_SESSION_CODE
+            }
+            columnMapping {
+                label: ANSWER_TEXT
+                value: ANSWER_COUNT
+            }
+            performance {
+                maxRowsToProcess: 100000
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            majorTicks {
+                minStep: 1
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region live-responses-2 (
+        name: Live Responses
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression:
+                ```sql
+                :P113_ANSWER_TYPE = 'FREEFORM' or
+                :P113_ASK_FOR_COMMENTS_YN = 'Y'
+                ```
+        }
+    )
+
+    region p113-question-number-p113-question (
+        name: &P113_QUESTION_NUMBER.. &P113_QUESTION.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region question (
+        name: question
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region session-details (
+        name: Session Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select count(r.id) respondents
+                  from qask_responses r,
+                       qask_response_answers a
+                 where r.session_id = :P113_SESSION_ID
+                   and r.id = a.response_id
+                   and a.question_id = :P113_QUESTION_ID
+                ```
+            pageItemsToSubmit: P113_SESSION_CODE
+        }
+        layout {
+            sequence: 10
+            parentRegion: @p113-question-number-p113-question
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                js-refresh-region
+                u-pullRight
+            ]
+        }
+        advanced {
+            htmlDomId: session_details
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: #DEFAULT#
+        }
+
+        column RESPONDENTS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Participants
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+    )
+
+    region session-qr (
+        name: Session QR
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <div class="qr-container">
+                    <h2 class="u-tC">Scan QR code to participate!</h2>
+                    <div id="qr_code"></div>
+                    <h2 class="u-tC">&P113_SESSION_CODE.</h2>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+                margin-bottom-none
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: qask_util.get_session_status (p_session_id => :P113_SESSION_ID) = 'OPEN'
+        }
+    )
+
+    region view-next-question (
+        name: View Next Question
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select question
+                  from qask_session_questions
+                 where id = :P113_NEXT_QUESTION_ID
+                ```
+            pageItemsToSubmit: P113_NEXT_QUESTION_ID
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P113_NEXT_QUESTION_ID
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            partialPageRefresh: false
+        }
+        heading {
+            type: none
+        }
+
+        column QUESTION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Question
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P113_ANSWER_TYPE (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_ASK_FOR_COMMENTS_YN (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_NEXT_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 150
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_QR_URL (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_QUESTION (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_QUESTION_FILE (
+        type: displayImage
+        label {
+            alignment: left
+        }
+        settings {
+            basedOn: blobColSql
+            sqlQuery:
+                ```sql
+                select question_file
+                  from qask_session_questions
+                 where id = :P113_QUESTION_ID
+                ```
+        }
+        layout {
+            sequence: 160
+            region: @p113-question-number-p113-question
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from qask_session_questions
+                 where id = :P113_QUESTION_ID
+                   and question_filename is not null
+                ```
+        }
+    )
+
+    pageItem P113_QUESTION_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_QUESTION_NUMBER (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_QUESTION_STATUS (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_RESP_EMAIL_REQUIRED_YN (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_RESP_NAME_REQUIRED_YN (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_SESSION_CODE (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_SESSION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_SESSION_NAME (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P113_SESSION_STATUS (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @question
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button ask-new-question (
+        buttonName: ASK_NEW_QUESTION
+        label: Ask New Question
+        layout {
+            sequence: 40
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                w200
+                padding-md
+                u-bold
+            ]
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 112
+                items: {
+                    P112_SESSION_ID: &P113_SESSION_ID.
+                }
+                clearCache: 112
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_session_status (
+                    p_session_id => :P113_SESSION_ID) = 'OPEN' and
+                :P113_QUESTION_STATUS = 'CLOSED' and
+                :P113_NEXT_QUESTION_ID is null
+                ```
+        }
+    )
+
+    button ask-next-question (
+        buttonName: ASK_NEXT_QUESTION
+        label: Ask Next Question
+        layout {
+            sequence: 50
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                w200
+                padding-md
+                u-bold
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_session_status (
+                    p_session_id => :P113_SESSION_ID) = 'OPEN'  and
+                :P113_QUESTION_STATUS = 'CLOSED' and
+                :P113_NEXT_QUESTION_ID is not null
+                ```
+        }
+    )
+
+    button close-question (
+        buttonName: CLOSE_QUESTION
+        label: Close Question
+        layout {
+            sequence: 30
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                w200
+                padding-md
+                u-bold
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_question_status (
+                    p_question_id => :P113_QUESTION_ID) = 'OPEN'
+                ```
+        }
+    )
+
+    button close-session (
+        buttonName: CLOSE_SESSION
+        label: Close Session
+        layout {
+            sequence: 20
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                w200
+                padding-md
+                u-bold
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                qask_util.get_session_status (
+                    p_session_id => :P113_SESSION_ID) = 'OPEN'
+                ```
+        }
+    )
+
+    button refresh (
+        buttonName: REFRESH
+        label: Refresh
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: change
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            cssClasses: [
+                u-hidden
+                w200
+                padding-md
+                u-bold
+            ]
+            icon: fa-refresh
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: refresh_button
+        }
+    )
+
+    dynamicAction auto-refresh (
+        name: Auto Refresh
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+        serverSideCondition {
+            type: item!=value
+            item: P113_QUESTION_STATUS
+            value: CLOSED
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var i = 0;
+                    var interval = setInterval(function(){
+                        i += 1;
+                        if(i === 90){
+                            clearInterval(interval);
+                            $("#refresh_button").removeClass('u-hidden');
+                        }
+                        apex.region("session_details").refresh();
+                        if (apex.region("live_responses_chart")) {
+                            apex.region("live_responses_chart").refresh();
+                        }
+                        if (apex.region("live_responses_report")) {
+                            console.log('refreshing report');
+                            apex.region("live_responses_report").refresh();
+                        }
+                    }, 3000);
+                    
+                    
+                    
+                    
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    computation p113-qr-url (
+        itemName: P113_QR_URL
+        execution {
+            sequence: 60
+            point: afterHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    x  varchar2(4000);
+                begin 
+                    x := apex_page.get_url (
+                           p_page => 'home',
+                           p_session => 0,
+                           p_items => 'P1_CODE',
+                           p_values => :P113_SESSION_CODE );
+                    x := substr(x,1,instr(x,'&')-1);
+                
+                    return rtrim(owa_util.get_cgi_env('HTTP_REFERER'),'/') || x;
+                end;
+                ```
+        }
+    )
+
+    process close-question (
+        name: Close Question
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.close_question (
+                    p_question_id => :P113_QUESTION_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 61406984604563871479
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-question
+        }
+    )
+
+    process close-session (
+        name: Close Session
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.close_session (
+                    p_session_id => :P113_SESSION_ID );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Session Closed.
+        }
+        advanced {
+            executionMappingIdentifier: 57262747055406183343
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+        }
+    )
+
+    process get-next-question-for-staged (
+        name: Get Next Question (for staged)
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                :P113_NEXT_QUESTION_ID := qask_util.get_next_question_id (
+                                             p_session_id  => :P113_SESSION_ID,
+                                             p_question_id => :P113_QUESTION_ID,
+                                             p_status      => 'ANY' );
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 20591545128813265122
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-question
+        }
+    )
+
+    process get-question-details (
+        name: get question details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_dont_need  varchar2(4000);
+                begin
+                qask_util.get_question_details (
+                    p_question_id          => :P113_QUESTION_ID,
+                    p_question_number      => :P113_QUESTION_NUMBER,
+                    p_question_status      => :P113_QUESTION_STATUS,
+                    p_question             => :P113_QUESTION,
+                    p_answer_type          => :P113_ANSWER_TYPE,
+                    p_ask_for_comments_yn  => :P113_ASK_FOR_COMMENTS_YN,
+                    p_question_explanation => l_dont_need );
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 68021426199988531908
+        }
+    )
+
+    process get-session-details (
+        name: get session details
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_dont_need  varchar2(4000);
+                begin
+                qask_util.get_session_details (
+                    p_session_id             => :P113_SESSION_ID,
+                    p_session_name           => :P113_SESSION_NAME,
+                    p_session_code           => :P113_SESSION_CODE,
+                    p_purpose                => l_dont_need,
+                    p_resp_name_required_yn  => :P113_RESP_NAME_REQUIRED_YN,
+                    p_resp_email_required_yn => :P113_RESP_EMAIL_REQUIRED_YN,
+                    p_session_status         => :P113_SESSION_STATUS );
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 71278461693359453363
+        }
+    )
+
+    process open-next-question-for-staged (
+        name: Open Next Question (for staged)
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                qask_util.start_staged_question (
+                    p_question_id => :P113_NEXT_QUESTION_ID );
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 20591545388332265124
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-next-question
+        }
+    )
+
+    branch (
+        name: here for next question (for staged)
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 113
+                items: {
+                    P113_SESSION_ID: &P113_SESSION_ID.
+                    P113_QUESTION_ID: &P113_NEXT_QUESTION_ID.
+                }
+                clearCache: 113
+                action: resetRegions
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @ask-next-question
+        }
+    )
+
+    branch (
+        name: session summary
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 120
+                items: {
+                    P120_SESSION_ID: &P113_SESSION_ID.
+                }
+                clearCache: 120
+                action: resetRegions
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @close-session
+        }
+    )
+
+)
+

@@ -1,0 +1,342 @@
+page 21 (
+    name: Add Multiple Members
+    alias: ADD-MULTIPLE-MEMBERS
+    title: Add Multiple Members
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText:
+            ```html
+            <p>
+                Enter or copy and paste email addresses separated by commas, semicolons, or new lines. Extraneous information and duplicates will be filtered out. Click the <strong>Next</strong> button to continue and the <strong>Cancel</strong> button to leave the Add Multiple Members wizard.
+            </p>
+            ```
+    }
+
+    region add-multiple-members (
+        name: Add Multiple Members
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: dialogHeader
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: never
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P21_GROUP_ID (
+        type: selectList
+        label {
+            label: Group
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @email-groups
+            displayNullValue: false
+        }
+        layout {
+            sequence: 5
+            region: @add-multiple-members
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Select the Group that these Members will be assigned to.
+        }
+    )
+
+    pageItem P21_LB (
+        type: stopAndStartGridLayout
+        label {
+            alignment: left
+        }
+        layout {
+            sequence: 7
+            region: @add-multiple-members
+            slot: regionBody
+        }
+    )
+
+    pageItem P21_MBRS (
+        type: textarea
+        label {
+            label: List of Email Addresses
+            alignment: left
+        }
+        settings {
+            resizable: false
+            trimSpaces: none
+        }
+        layout {
+            sequence: 10
+            region: @add-multiple-members
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 75
+            height: 14
+        }
+        validation {
+            valueRequired: true
+            maxLength: 32767
+        }
+        help {
+            helpText: Enter or copy and paste email addresses separated by commas, semicolons, or new lines. Note that if you copy and paste email addresses from email messages, extraneous text will be filtered out.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cnx (
+        name: CNX
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process clear-collections-on-cancel (
+        name: Clear Collections on Cancel
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                apex_collection.delete_collection (
+                   p_collection_name => 'BULK_MBRS_CREATE' );
+                apex_collection.delete_collection (
+                   p_collection_name => 'BULK_MBRS_INVALID' );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 7389046851828293560
+        }
+        serverSideCondition {
+            whenButtonPressed: @cancel
+        }
+    )
+
+    process create-collection (
+        name: Create collection
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                EBA_ca_api.create_mbrs_collection (
+                    p_users    => :P21_MBRS,
+                    p_group_id => :P21_GROUP_ID );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        error {
+            displayLocation: onErrorPage
+        }
+        advanced {
+            executionMappingIdentifier: 8013234484451302155
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+    process init-collections (
+        name: init collections
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                wwv_flow_collection.CREATE_OR_TRUNCATE_COLLECTION ('BULK_MBRS_INVALID');
+                wwv_flow_collection.CREATE_OR_TRUNCATE_COLLECTION ('BULK_MBRS_CREATE');
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 8013212671151213180
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 18
+                clearCache: [
+                    21
+                    22
+                ]
+                successMessage: false
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @cancel
+        }
+        comments {
+            comments: Created 14-OCT-2010 11:46 by SBKENNED
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 22
+            }
+            saveStateBeforeBranching: true
+        }
+        serverSideCondition {
+            whenButtonPressed: @next
+        }
+    )
+
+)
+

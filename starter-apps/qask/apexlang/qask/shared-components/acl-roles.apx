@@ -1,0 +1,14 @@
+role ADMINISTRATOR (
+    name: Administrator
+    description {
+        description: Can host sessions, monitor the application and add users.
+    }
+)
+
+role HOST (
+    name: Host
+    description {
+        description: Can host sessions
+    }
+)
+

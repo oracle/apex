@@ -1,0 +1,641 @@
+page 31 (
+    name: Attachments
+    alias: ATTACHMENTS
+    title: Attachments
+    pageGroup: @events
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: This page shows a report of the file attachments that have been added to this event. Click the pencil icon to edit attributes of an existing attachment. Click the <strong>Add Attachment</strong> button to add an attachment. Click the <strong>Cancel</strong> button to return to the decision request details page. Click the <strong>Reset</strong> button to reset the interactive report. Click the <strong>Actions</strong> button to define the number of rows displayed per page, filter, format, download, and/or save the interactive report.
+    }
+
+    region attachments (
+        name: Attachments
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select event_id, 
+                id,
+                '<a href="'||APEX_UTIL.GET_BLOB_FILE_SRC('P32_FILE_BLOB',id)||'">'||apex_escape.html(filename)||'</a>' filename,
+                substr(file_comments,1,50)||decode(greatest(length(file_comments),50),50,'','...') FILE_COMMENTS,
+                TAGS,
+                dbms_lob.getlength(FILE_BLOB) file_size,
+                FILE_MIMETYPE mimetype,
+                created, lower(created_by) created_by,
+                updated, lower(updated_by) updated_by,
+                '#' delete_file
+                from eba_ca_files
+                where event_id = :P31_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 32
+                items: {
+                    P32_ID: #ID#
+                }
+                clearCache: 32
+            }
+            linkIcon: <span class="fa fa-edit" aria-hidden="true"></span>
+            linkAttributes: title="Edit #FILENAME#"
+            authorizationScheme: @contribution-rights
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No attachments found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2594250504666917254
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Date Added
+            }
+            layout {
+                sequence: 4
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Added By
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column DELETE_FILE (
+            type: link
+            heading {
+                heading: Delete
+                alignment: center
+            }
+            layout {
+                sequence: 17
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 31
+                    items: {
+                        P31_DELETE_FILE_ID: #ID#
+                    }
+                    request: DELETE_FILE
+                }
+                linkText: <span class="t-Icon fa fa-trash-o" aria-hidden="true"></span>
+                linkAttributes: onclick="return confirm('Are you sure you want to delete this file?');" class="t-Button t-Button--danger t-Button--simple t-Button--small" title="Delete File"
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Q
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+                highlight: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column EVENT_ID (
+            type: hidden
+            heading {
+                heading: Event Id
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: S
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column FILENAME (
+            type: plainText
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column FILE_COMMENTS (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column FILE_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+                alignment: end
+            }
+            layout {
+                sequence: 18
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FILESIZE
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column MIMETYPE (
+            type: plainText
+            heading {
+                heading: Mimetype
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 3
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        savedReport 25942519 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CREATED (
+                sequence: 4
+            )
+
+            displayColumn CREATED_BY (
+                sequence: 5
+            )
+
+            displayColumn DELETE_FILE (
+                sequence: 8
+            )
+
+            displayColumn DELETE_LINK (
+                sequence: 7
+            )
+
+            displayColumn ENVIRONMENT_ID (
+                sequence: 10
+            )
+
+            displayColumn EVENT_ID (
+                sequence: 11
+            )
+
+            displayColumn FILENAME (
+                sequence: 1
+            )
+
+            displayColumn FILE_COMMENTS (
+                sequence: 3
+            )
+
+            displayColumn FILE_SIZE (
+                sequence: 2
+            )
+
+            displayColumn F_LEN (
+                sequence: 9
+            )
+
+            displayColumn TAGS (
+                sequence: 6
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: FILE_SIZE
+            )
+
+        )
+
+    )
+
+    region bc (
+        name: BC
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    pageItem P31_DELETE_FILE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: regionBody
+        }
+        source {
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P31_ID (
+        type: displayOnly
+        label {
+            label: Event Name:
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sharedComponent
+            lov: @events
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            preText: <a href="f?p=&APP_ID.:3:&APP_SESSION.::::P3_EVENT_ID:&P31_ID.">
+            postText: </a>
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button attach-file (
+        buttonName: ATTACH_FILE
+        label: Add Attachment
+        layout {
+            sequence: 10
+            region: @bc
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 32
+                items: {
+                    P32_EVENT_ID: &P31_ID.
+                }
+                clearCache: 32
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P3_UPDATEABLE
+            value: Y
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 20
+            region: @attachments
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 31
+                clearCache: RIR
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-reports (
+        name: Refresh Reports
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Action Processed.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @attachments
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-view (
+        itemName: LAST_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 31
+        }
+    )
+
+    computation p3-event-id (
+        itemName: P3_EVENT_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: item
+            itemName: P31_ID
+        }
+    )
+
+    process delete-file (
+        name: delete file
+        type: executeCode
+        source {
+            plsqlCode: delete from eba_ca_files where id = :P31_DELETE_FILE_ID;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        successMessage {
+            successMessage: File deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 3236325791332560861
+        }
+        serverSideCondition {
+            type: request=Value
+            value: DELETE_FILE
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+            }
+        }
+        comments {
+            comments: Created 12-JAN-2012 07:05 by MIKE
+        }
+    )
+
+)
+

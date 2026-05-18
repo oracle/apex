@@ -1,0 +1,28 @@
+restDataSourceServer flexible_remote_servers (
+    name: flexible remote servers
+    endpointUrl {
+        url: #host#
+    }
+    dynamicConfig {
+        plsqlCode:
+            ```plsql
+            procedure configure_remote_server(
+               p_info   in apex_plugin.t_remote_server_info,
+               p_config in out apex_plugin.t_remote_server_config
+            )
+            is
+            begin
+               p_config.base_url := apex_app_setting.get_value(p_name => 'REMOTE_SERVER_BASE_URL') 
+                                    || apex_app_setting.get_value(p_name => 'REMOTE_SERVER_SCHEMA_ALIAS');
+            
+            exception
+               when others then
+                  p_config.base_url := null;
+            
+            end;
+            
+            ```
+        procedureName: configure_remote_server
+    }
+)
+

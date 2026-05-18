@@ -1,0 +1,656 @@
+page 38 (
+    name: Sections
+    alias: SECTIONS
+    title: Sections
+    pageGroup: @polls
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region question-image-optional (
+        name: Question Image (Optional)
+        type: plSqlDynamicContent
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   c integer := 0;
+                begin
+                   for c2 in (
+                      select image_height, image_width
+                        from EBA_QPOLL_SECTIONS
+                       where id = :P38_ID
+                         and NVL(dbms_lob.getlength(IMAGE_BLOB),0) > 0
+                   ) loop
+                      c := c + 1;
+                      sys.htp.p('<p><img src="'||apex_util.get_blob_file_src('P38_IMAGE_BLOB',:P38_ID)||'"');
+                      if c2.image_height is not null then
+                         sys.htp.p(' height="'|| apex_escape.html(c2.image_height) ||'"');
+                      end if;
+                      if c2.image_width is not null then
+                         sys.htp.p(' width="'|| apex_escape.html(c2.image_width) ||'"');
+                      end if;
+                      sys.htp.p(' /></p>');
+                   end loop;
+                   if c = 0 then
+                       sys.htp.p('<p>No image has been selected click the <strong>choose file</strong> button to add an image.</p>');
+                   end if;
+                end;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: t-Region--hiddenOverflow
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                        from EBA_QPOLL_SECTIONS
+                where id = :P38_ID and NVL(dbms_lob.getlength(IMAGE_BLOB),0) > 0
+                ```
+        }
+    )
+
+    region sections (
+        name: Sections
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    pageItem P38_DISPLAY_SEQUENCE (
+        type: numberField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 50
+            region: @sections
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DISPLAY_SEQUENCE
+            used: always
+        }
+    )
+
+    pageItem P38_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @sections
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P38_IMAGE_BLOB (
+        type: fileUpload
+        label {
+            label: Image
+            alignment: left
+        }
+        storage {
+            mimeTypeColumn: IMAGE_MIMETYPE
+            filenameColumn: IMAGE_FILENAME
+            charSetColumn: IMAGE_CHARSET
+            bobLastUpdatedColumn: IMAGE_LAST_UPDATED
+        }
+        layout {
+            sequence: 70
+            region: @sections
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_BLOB
+            used: always
+        }
+    )
+
+    pageItem P38_IMAGE_HEIGHT (
+        type: numberField
+        label {
+            label: Height
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 90
+            region: @sections
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            labelColumnSpan: 1
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_HEIGHT
+            used: always
+        }
+    )
+
+    pageItem P38_IMAGE_WIDTH (
+        type: numberField
+        label {
+            label: Image Width
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @sections
+            slot: regionBody
+            alignment: left
+            columnSpan: 4
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 5
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: IMAGE_WIDTH
+            used: always
+        }
+    )
+
+    pageItem P38_POLL_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @sections
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: POLL_ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P38_POLL_NAME (
+        type: displayOnly
+        label {
+            label: Poll
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @sections
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P38_SECTION_TEXT (
+        type: textarea
+        label {
+            label: Section Text
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @sections
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SECTION_TEXT
+            used: always
+        }
+    )
+
+    pageItem P38_TITLE (
+        type: textField
+        label {
+            label: Title
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @sections
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: TITLE
+            used: always
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Section
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P38_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P38_ID
+        }
+    )
+
+    button remove-image (
+        buttonName: REMOVE_IMAGE
+        label: Remove Image
+        layout {
+            sequence: 10
+            region: @question-image-optional
+            slot: edit
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P38_ID
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p38-poll-id (
+        itemName: P38_POLL_ID
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: item
+            itemName: POLL_ID
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P38_POLL_ID
+        }
+    )
+
+    computation p38-poll-name (
+        itemName: P38_POLL_NAME
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select poll_name
+                  from eba_qpoll_polls
+                 where id = :POLL_ID
+                ```
+        }
+    )
+
+    process close-modal (
+        name: close modal
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 4534122738864855866
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select count(*) cnt
+                     from eba_qpoll_sections
+                    where poll_id = :POLL_ID
+                ) loop
+                   if c1.cnt > 1 and :REQUEST != 'REMOVE_IMAGE' then
+                      return TRUE;
+                   end if;
+                end loop;
+                
+                return FALSE;
+                ```
+        }
+    )
+
+    process fetch-row-from-eba-qpoll-sections (
+        name: Fetch Row from EBA_QPOLL_SECTIONS
+        type: autoRowFetch
+        source {
+            tableName: EBA_QPOLL_SECTIONS
+            pkColumn: ID
+            pkItem: P38_ID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 13024685817966263610
+        }
+    )
+
+    process process-row-of-eba-qpoll-sections (
+        name: Process Row of EBA_QPOLL_SECTIONS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_QPOLL_SECTIONS
+            pkColumn: ID
+            pkItem: P38_ID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 13024686210608263610
+        }
+    )
+
+    process remove-image (
+        name: remove image
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                update EBA_QPOLL_QUESTIONS
+                set IMAGE_BLOB = null, IMAGE_CHARSET  = null, IMAGE_MIMETYPE = null, IMAGE_FILENAME = null, IMAGE_LAST_UPDATED = null
+                where id = :P18_ID;
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        successMessage {
+            successMessage: Image removed.
+        }
+        advanced {
+            executionMappingIdentifier: 13024827941402219728
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-image
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 13024686616843263610
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: for first section
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 100
+                action: resetPagination
+            }
+        }
+    )
+
+    branch (
+        name: remove image
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 38
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @remove-image
+        }
+    )
+
+)
+

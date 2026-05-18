@@ -1,0 +1,410 @@
+page 205 (
+    name: Product Details
+    alias: PRODUCT-DETAILS
+    title: Product Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .rating{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font: bold;
+                color: #fff !important;
+                background-color: #5B5B59!important;
+            }
+            .star{
+                /* color: gold!important; */
+                margin: 0!important;
+                color: gold !important;
+            }
+            
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region left (
+        name: Left
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @product-details
+            slot: regionBody
+            columnSpan: 4
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region product-details (
+        name: Product Details
+        type: form
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select product_id,
+                       product_name,
+                       unit_price,
+                       json_value(product_details, '$.description') as description,
+                       product_image,
+                       image_mime_type,
+                       image_filename,
+                       image_charset,
+                       image_last_updated
+                  from eba_demo_search_products
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkLabel: Product details
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region reviews (
+        name: Reviews
+        type: listView
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.review, 
+                       r.rating
+                  from eba_demo_search_products p, 
+                       json_table(
+                           p.product_details, 
+                           '$.reviews[*]' 
+                            columns (
+                                rating number        path '$.rating',
+                                review varchar2(200) path '$.review') ) r
+                where product_id = :P205_PRODUCT_ID
+                ```
+            pageItemsToSubmit: P205_PRODUCT_ID
+        }
+        layout {
+            sequence: 100
+            parentRegion: @product-details
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+                margin-top-lg
+            ]
+        }
+        settings {
+            features: advancedFormatting
+            textFormatting:
+                ```html
+                &REVIEW.
+                <div class="ui-li-count rating">
+                    <span class="fa fa-star star"></span>
+                    &RATING./10
+                </div>
+                ```
+        }
+        messages {
+            whenNoDataFound: No reviews found!
+        }
+    )
+
+    region right (
+        name: Right
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @product-details
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P205_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @right
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @product-details
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_IMAGE_CHARSET (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @product-details
+            column: IMAGE_CHARSET
+            dataType: varchar2
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_IMAGE_FILENAME (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @product-details
+            column: IMAGE_FILENAME
+            dataType: varchar2
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_IMAGE_LAST_UPDATED (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @product-details
+            column: IMAGE_LAST_UPDATED
+            dataType: date
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_IMAGE_MIME_TYPE (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @product-details
+            column: IMAGE_MIME_TYPE
+            dataType: varchar2
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_PRODUCT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @product-details
+            slot: regionBody
+        }
+        source {
+            formRegion: @product-details
+            column: PRODUCT_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P205_PRODUCT_IMAGE (
+        type: displayImage
+        label {
+            alignment: left
+        }
+        settings {
+            altTextColumn: PRODUCT_NAME
+            filenameColumn: IMAGE_FILENAME
+            mimeTypeColumn: IMAGE_MIME_TYPE
+            blobLastUpdatedColumn: IMAGE_LAST_UPDATED
+        }
+        layout {
+            sequence: 10
+            region: @left
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+        }
+        source {
+            formRegion: @product-details
+            column: PRODUCT_IMAGE
+            dataType: blob
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_PRODUCT_NAME (
+        type: textField
+        label {
+            label: Product Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @right
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @product-details
+            column: PRODUCT_NAME
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P205_UNIT_PRICE (
+        type: textField
+        label {
+            label: Unit Price
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @right
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @product-details
+            column: UNIT_PRICE
+            dataType: number
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    process initialize-form-product-details (
+        name: Initialize form Product Details
+        type: formInitialization
+        formRegion: @product-details
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4097100659679327826
+        }
+    )
+
+    process process-form-product-details (
+        name: Process form Product Details
+        type: formAutoRowProcessing
+        formRegion: @product-details
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4097101089139327826
+        }
+    )
+
+)
+

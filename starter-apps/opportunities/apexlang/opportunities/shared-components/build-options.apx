@@ -1,0 +1,155 @@
+buildOption account-locations (
+    name: Account Locations
+    status {
+        status: include
+        defaultOnExport: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This option allows end-users the ability to add locations to an account (if an account has multiple locations that need to be tracked).
+    }
+)
+
+buildOption agreements (
+    name: Agreements
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This option allows for the ability to assign license agreements to accounts.
+    }
+)
+
+buildOption competitors (
+    name: Competitors
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds ability to track opportunity competitors.
+    }
+)
+
+buildOption contacts (
+    name: Contacts
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds ability to track contacts that are associated with accounts.
+    }
+)
+
+buildOption leads (
+    name: Leads
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds ability to track leads which can be converted to opportunities.
+    }
+)
+
+buildOption opportunity-amount-set-at-product-level (
+    name: Opportunity Amount Set at Product Level
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: When this option is enabled, an opportunity's amount is derived from the sum of its associated product's quote prices. When it is disabled, an opportunity's amount is the amount that is manually entered at the opportunity level.
+    }
+)
+
+buildOption product-level-close-dates (
+    name: Product Level Close Dates
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Enabling this option will capture and report on close dates for each product associated with an opportunity. Disabling this option will exclude per product close date tracking.
+    }
+)
+
+buildOption products (
+    name: Products
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds ability to maintain products and link them with opportunities.
+    }
+)
+
+buildOption show-opportunity-pipeline-on-home-page (
+    name: Show "Opportunity Pipeline" on Home Page
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: When included, causes the "Opportunity Pipeline" funnel chart to be displayed on the home page.
+    }
+)
+
+buildOption show-top-open-opportunities-on-home-page (
+    name: Show "Top Open Opportunities" on Home Page
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: When included, causes the "Top Open Opportunities" bar chart to be displayed on the home page.
+    }
+)
+
+buildOption support-amounts (
+    name: Support Amounts
+    status {
+        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: This option allows for the ability to assign support amounts to accounts.
+    }
+)
+
+buildOption territories (
+    name: Territories
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds ability to manage application by territories. Territories are assigned to accounts, which are linked to leads and opportunities.
+    }
+)
+
+buildOption usage-metrics (
+    name: Usage Metrics
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds a usage metics widget to the detail pages of leads, opportunities, territories, accounts, contacts, and products. The widget is used to show how many times and how many people have viewed the item in the last 90 days.
+    }
+)
+
+buildOption validations (
+    name: Validations
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Adds a validation widget to the detail pages of leads, opportunities, territories, accounts, contacts, and products. The widget is used to occasionally validate that the data has been reviewed and is accurate.
+    }
+)
+

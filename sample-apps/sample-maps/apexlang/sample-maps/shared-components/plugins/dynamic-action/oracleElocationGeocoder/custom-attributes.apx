@@ -1,0 +1,284 @@
+customAttribute attribute_01 (
+    apexlangName: collectionName
+    attribute: 1
+    name: Collection Name
+    validation {
+        required: true
+        maxLength: 30
+    }
+    appearance {
+        sequence: 10
+    }
+    builder {
+        displayWidth: 30
+    }
+    default {
+        value: GEOCODER_RESULTS
+    }
+    help {
+        helpText:
+            ```
+            <p>
+            Enter the name of a collection to store the geocoding results here. The collection can be queried as follows:
+            </p>
+            <pre>
+            select 
+                 c001 as street,
+                 c002 as house_number,
+                 c003 as postal_code,
+                 c004 as settlement,
+                 c005 as builtup_area,
+                 c006 as municipality,
+                 c007 as order1_area,
+                 c008 as side,
+                 c009 as error_message,
+                 c010 as match_vector,
+                 c011 as country,
+                 n001 as sequence,
+                 n002 as longitude,
+                 n003 as latitude,
+                 n004 as edge_id
+                from apex_collections where collection_name = '<i>{Collection Name}</i>'
+                order by seq_id
+            </pre>
+            <p>
+             To display geocoding results, create a Report based on that query and add another <i>true action</i> to this dynamic action, in order to refresh that report.
+            </p>
+            
+            ```
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: geocoderMatchMode
+    attribute: 2
+    name: Geocoder match mode
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    default {
+        value: DEFAULT
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: =
+        value: NORMAL
+    }
+    help {
+        helpText:
+            ```
+            <p>Match Modes for Geocoding Operations</p>
+            <table cellspacing="0" cellpadding="3" border="1" dir="ltr" >
+            <tr valign="top" align="left">
+            <th valign="bottom" align="left" >Match Mode</th>
+            <th valign="bottom" align="left" >Description</th>
+            </tr>
+            <tr valign="top" align="left">
+            <td align="left" headers="r1c1-t3" >
+            <p>EXACT</p>
+            </td>
+            <td align="left" headers="r2c1-t3 r1c2-t3">
+            <p>All attributes of the input address must match the data used for geocoding. However, if the house or building number, base name (street name), street type, street prefix, and street suffix do not all match the geocoding data, a location in the first match found in the following is returned: postal code, city or town (settlement) within the state, and state. For example, if the street name is incorrect but a valid postal code is specified, a location in the postal code is returned.</p>
+            </td>
+            </tr>
+            <tr valign="top" align="left">
+            <td align="left" headers="r1c1-t3" >
+            <p>RELAX_BASE_NAME</p>
+            </td>
+            <td align="left" headers="r6c1-t3 r1c2-t3">
+            <p>The base name of the street, the house or building number, and the street type can be different from the data used for geocoding. For example, if <i>Pleasant Valley</i> is the base name of a street in the data used for geocoding, <i>Pleasant Vale</i> would also match as long as there were no ambiguities or other matches in the data.</p>
+            </td>
+            </tr>
+            <tr valign="top" align="left">
+            <td align="left" headers="r1c1-t3" >
+            <p>RELAX_POSTAL_CODE</p>
+            </td>
+            <td align="left" headers="r7c1-t3 r1c2-t3">
+            <p>The postal code (if provided), base name, house or building number, and street type can be different from the data used for geocoding.</p>
+            </td>
+            </tr>
+            <tr valign="top" align="left">
+            <td align="left" headers="r1c1-t3" >
+            <p>DEFAULT</p>
+            </td>
+            <td align="left" headers="r8c1-t3 r1c2-t3">
+            <p>The address can be outside the city specified as long as it is within the same county. Also includes the characteristics of RELAX_POSTAL_CODE.</p>
+            </td>
+            </tr>
+            </table>
+            ```
+    }
+
+    entry doOnlyExactMatches (
+        sequence: 10
+        display: Do only exact matches
+        return: EXACT
+    )
+
+    entry relaxBaseName (
+        sequence: 30
+        display: Relax Base Name
+        return: RELAX_BASE_NAME
+    )
+
+    entry relaxPostalCode (
+        sequence: 20
+        display: Relax Postal Code
+        return: RELAX_POSTAL_CODE
+    )
+
+    entry useServerDefault (
+        sequence: 40
+        display: Use Server Default
+        return: DEFAULT
+    )
+
+)
+
+customAttribute attribute_03 (
+    apexlangName: itemContainingCountryCode
+    attribute: 3
+    name: Item containing Country Code
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 30
+    }
+    default {
+        value: PX_GEOCODER_COUNTRY
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: =
+        value: NORMAL
+    }
+    help {
+        helpText: Enter the name of the item containing the country code for the Geocoder.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: itemContainingAddressLines
+    attribute: 4
+    name: Item containing address lines
+    type: pageItem
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 40
+    }
+    default {
+        value: PX_GEOCODER_ADDRESS
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: =
+        value: NORMAL
+    }
+    help {
+        helpText: Enter the name of the item containing the address to geocode.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: separatorForAddressElements
+    attribute: 5
+    name: Separator for address elements
+    validation {
+        required: true
+        maxLength: 2
+    }
+    appearance {
+        sequence: 50
+    }
+    builder {
+        displayWidth: 2
+    }
+    default {
+        value: ,
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: =
+        value: NORMAL
+    }
+    help {
+        helpText: Enter the character which separates the parts of an address.
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: geocodingType
+    attribute: 8
+    name: Geocoding type
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 5
+    }
+    default {
+        value: NORMAL
+    }
+    help {
+        helpText: Specify the kind of geocoding here. <b>Geocoding</b> is converting a postal address to a coordinate - <b>Reverse Geocoding</b> is determining the postal address from the coordinate.
+    }
+
+    entry geocoding (
+        sequence: 10
+        display: Geocoding
+        return: NORMAL
+    )
+
+    entry reverseGeocoding (
+        sequence: 20
+        display: Reverse Geocoding
+        return: REVERSE
+    )
+
+)
+
+customAttribute attribute_09 (
+    apexlangName: itemContainingLongitudeValue
+    attribute: 9
+    name: Item containing Longitude value
+    type: pageItem
+    appearance {
+        sequence: 90
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: =
+        value: REVERSE
+    }
+    help {
+        helpText: Specify the APEX item containing the longitude value here.
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: itemContainingLatitudeValue
+    attribute: 10
+    name: Item containing Latitude value
+    type: pageItem
+    appearance {
+        sequence: 100
+    }
+    dependingOn {
+        attribute: @attribute_08/component
+        conditionType: =
+        value: REVERSE
+    }
+    help {
+        helpText: Specify the item containing the Latitude value.
+    }
+)
+

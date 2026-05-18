@@ -1,0 +1,572 @@
+page 119 (
+    name: "User Access Control  "
+    alias: USER-ACCESS-CONTROL
+    title: "User Access Control  "
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region form-items (
+        name: form Items
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @user-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region user-details (
+        name: User Details
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P119_ACCESS_LEVEL_ID (
+        type: radioGroup
+        label {
+            label: Access Level
+            alignment: left
+        }
+        settings {
+            noOfCols: 5
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-levels
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCESS_LEVEL_ID
+            used: always
+        }
+        default {
+            type: static
+            staticValue: 2
+        }
+        readOnly {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_users
+                where id = :P119_ID
+                and upper(username) = :APP_USER
+                ```
+        }
+    )
+
+    pageItem P119_ACCOUNT_LOCKED (
+        type: checkboxGroup
+        label {
+            label: Account Locked
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Yes;Y
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 40
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ACCOUNT_LOCKED
+            used: always
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P119_ID
+        }
+        readOnly {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_users
+                where id = :P119_ID
+                and upper(username) = :APP_USER
+                ```
+        }
+    )
+
+    pageItem P119_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form-items
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P119_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @form-items
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USERNAME
+            used: always
+        }
+        readOnly {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_users
+                where id = :P119_ID
+                and upper(username) = :APP_USER
+                ```
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add User
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P119_ID
+        }
+    )
+
+    button create-again (
+        buttonName: CREATE_AGAIN
+        label: Add and Add Another
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P119_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--danger
+            ]
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 'show' d
+                from dual
+                where :P119_ID is not null
+                    and not exists (
+                        select null
+                        from eba_sales_users
+                        where upper(username) = :APP_USER
+                            and id = :P119_ID )
+                ```
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--gapLeft
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 'show' d
+                from dual
+                where :P119_ID is not null
+                    and not exists (
+                        select null
+                        from eba_sales_users
+                        where upper(username) = :APP_USER
+                            and id = :P119_ID )
+                ```
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-update-yourself (
+        name: cannot update yourself
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from eba_sales_users
+                where upper(username) = :APP_USER
+                    and id = :P119_ID
+                    and ( username <> :P119_USERNAME
+                        or access_level_id <> :P119_ACCESS_LEVEL_ID
+                        or account_locked <> :P119_ACCOUNT_LOCKED )
+                ```
+        }
+        error {
+            errorMessage: You cannot update your own record.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    validation p119-username-valid-format-email (
+        name: P119_USERNAME valid format (email)
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P119_USERNAME
+            regexp: "^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$"
+        }
+        error {
+            errorMessage: Username is not in a valid email address format. Please note the application's username format below.
+            associatedItem: @P119_USERNAME
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sales_fw.get_preference_value ('USERNAME_FORMAT') = 'EMAIL'
+        }
+    )
+
+    computation last-page (
+        itemName: LAST_PAGE
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    computation p119-account-locked (
+        itemName: P119_ACCOUNT_LOCKED
+        execution {
+            sequence: 20
+            point: afterSubmit
+        }
+        computation {
+            type: staticValue
+            staticValue: N
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P119_ACCOUNT_LOCKED
+        }
+    )
+
+    computation p119-username (
+        itemName: P119_USERNAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: trim(:P119_USERNAME)
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6527635883230112089
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: CREATE_AGAIN
+        }
+    )
+
+    process fetch-row-from-eba-sales-users (
+        name: Fetch Row from EBA_SALES_USERS
+        type: autoRowFetch
+        source {
+            tableName: EBA_SALES_USERS
+            pkColumn: ID
+            pkItem: P119_ID
+            rowVersionColumn: ROW_VERSION
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 9042598057709717830
+        }
+    )
+
+    process process-row-of-eba-sales-users (
+        name: Process Row of EBA_SALES_USERS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_SALES_USERS
+            pkColumn: ID
+            pkItem: P119_ID
+            rowVersionColumn: ROW_VERSION
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 9042598259763717831
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        clear {
+            type: pages
+            pages: 23
+        }
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 9042598447181717831
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    branch (
+        name: Add and Add Another
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: &APP_PAGE_ID.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-again
+        }
+    )
+
+)
+

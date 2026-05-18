@@ -1,0 +1,178 @@
+page 0 (
+    name: Global Page - Desktop
+
+    region airport-data (
+        name: Airport Data
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>&AIRPORT_DATA.<br />
+                &US_STATES_DATA.</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: footer
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                1
+                2
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region only-minimal-data-is-installed (
+        name: Only minimal data is installed
+        type: staticContent
+        source {
+            htmlCode: <p>Only the minimal dataset is currently installed in this application, so demo pages are limited. To install the full <strong>Airports</strong> and <strong>US States</strong> data, navigate to the <a href="f?p=&APP_ID.:501:&SESSION.::&DEBUG."><strong><span class="fa fa-download"></span> Data Loading</strong></a> page.</p>
+        }
+        layout {
+            sequence: 5
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from eba_sample_map_states
+                union all
+                select 1 from sys.dual where :APP_PAGE_ID in ( 501,9999 )
+                ```
+        }
+    )
+
+    button help (
+        buttonName: HELP
+        label: About This Page
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-question-circle-o
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        advanced {
+            htmlDomId: help_button
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                2
+                9999
+            ]
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-refresh
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: &APP_PAGE_ID.
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                501
+                9999
+            ]
+        }
+    )
+
+    dynamicAction toggle-help (
+        name: Toggle Help
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @help
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme.openRegion("about_this_page");
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

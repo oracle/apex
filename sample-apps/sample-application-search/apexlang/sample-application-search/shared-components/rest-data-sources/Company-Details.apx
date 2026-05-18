@@ -1,0 +1,125 @@
+restDataSource Company_Details (
+    name: Company Details
+    source {
+        type: http
+        remoteServer: @api_themoviedb_org_3
+        urlPathPrefix: company/{company_id}
+    }
+    authentication {
+        credentials: @tmdb_api_key
+    }
+    advanced {
+        passEcid: Y
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    parameter company-id (
+        name: company_id
+        value {
+            defaultValueType: staticValue
+            staticValue: 1
+        }
+    )
+
+    dataProfile {
+        name: Company Details
+    }
+
+    dataProfileColumn description (
+        columnName: DESCRIPTION
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: description
+        }
+    )
+
+    dataProfileColumn headquarters (
+        columnName: HEADQUARTERS
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: headquarters
+        }
+    )
+
+    dataProfileColumn homepage (
+        columnName: HOMEPAGE
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: homepage
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: id
+        }
+    )
+
+    dataProfileColumn logo-path (
+        columnName: LOGO_PATH
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: logo_path
+        }
+    )
+
+    dataProfileColumn name (
+        columnName: NAME
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: name
+        }
+    )
+
+    dataProfileColumn origin-country (
+        columnName: ORIGIN_COUNTRY
+        source {
+            sequence: 7
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: origin_country
+        }
+    )
+
+    dataProfileColumn parent-company (
+        columnName: PARENT_COMPANY
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: parent_company
+        }
+    )
+
+)
+

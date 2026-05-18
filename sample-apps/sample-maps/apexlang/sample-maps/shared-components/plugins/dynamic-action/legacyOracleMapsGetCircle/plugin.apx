@@ -1,0 +1,62 @@
+plugin legacyOracleMapsGetCircle (
+    name: Legacy: Oracle Maps - get Circle
+    staticId: COM.ORACLE.APEX.ORAMAPS.GETCIRCLE
+    type: dynamicAction
+    source {
+        plsqlCode:
+            ```plsql
+            function render_da_oramaps_getcircle(
+                p_dynamic_action in apex_plugin.t_dynamic_action,
+                p_plugin         in apex_plugin.t_plugin )
+                return apex_plugin.t_dynamic_action_render_result
+            is
+                l_region_id      apex_application_page_regions.static_id%type;
+                l_it_map_ctr_x   p_dynamic_action.attribute_01%type := upper(p_dynamic_action.attribute_01);
+                l_it_map_ctr_y   p_dynamic_action.attribute_02%type := upper(p_dynamic_action.attribute_02);
+                l_it_radius      p_dynamic_action.attribute_03%type := upper(p_dynamic_action.attribute_03);
+                l_it_srid        p_dynamic_action.attribute_04%type := upper(p_dynamic_action.attribute_04);
+                l_ret_srid       p_dynamic_action.attribute_05%type := upper(p_dynamic_action.attribute_05);
+                l_result         apex_plugin.t_dynamic_action_render_result;       
+            
+                l_js             varchar2(32767):='';
+                l_dec_char       varchar2(1);
+            begin
+              l_dec_char := substr(to_char(1/2, 'FM0D0'),2,1);
+              l_js := 
+                'function ( ) {' ||
+                  'getOramaps_circledata(this.triggeringElement.id, '||apex_javascript.add_value(l_ret_srid, true)||' function (pData) {';
+              l_js := l_js || 
+                 '$s('||apex_javascript.add_value(l_it_map_ctr_x, false)||', String(pData.center.x).replace(".", "'||l_dec_char||'"));';
+              l_js := l_js || 
+                 '$s('||apex_javascript.add_value(l_it_map_ctr_y, false)||', String(pData.center.y).replace(".", "'||l_dec_char||'"));';
+                l_js := l_js || 
+                 '$s('||apex_javascript.add_value(l_it_radius,    false)||', String(pData.radius).replace(".", "'||l_dec_char||'"));';
+                l_js := l_js || 
+                 '$s('||apex_javascript.add_value(l_it_srid  ,    false)||', String(pData.srid).replace(".", "'||l_dec_char||'"));';
+              l_js := l_js || '});}';
+              l_result.javascript_function := l_js;
+              apex_debug.message(
+                   p_message => 'ORAMAPS_DA_GETCIRCLE: JavaScript function is: %s',
+                    p0      => l_result.javascript_function,
+                    p_level   => apex_debug.c_log_level_info
+                  );
+              return l_result;
+            end render_da_oramaps_getcircle;
+            
+            
+            
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_da_oramaps_getcircle
+    }
+    advanced {
+        category: miscellaneous
+        substituteAttributeValues: true
+    }
+    information {
+        version: 20140707
+    }
+)
+

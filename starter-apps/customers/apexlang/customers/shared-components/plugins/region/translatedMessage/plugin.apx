@@ -1,0 +1,136 @@
+plugin translatedMessage (
+    name: Translated Message
+    staticId: COM.ORACLE.APEX.TRANSLATED_MESSAGE
+    type: region
+    component {
+        standardAttributes: [
+            regionSourceIsSqlQuery
+            escapeSpecialCharsRegionAttr
+        ]
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            function render (
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result
+            is
+                c_message     constant varchar2(255) := p_region.attribute_01;
+                c_add_p_tags  constant varchar2(1) := p_region.attribute_12;
+            
+                type subs_t is varray(10) of varchar2(4000);
+                type colnos_t is varray(10) of pls_integer;
+            
+                c_subs_columns constant subs_t :=
+                    subs_t (
+                        p_region.attribute_02,
+                        p_region.attribute_03,
+                        p_region.attribute_04,
+                        p_region.attribute_05,
+                        p_region.attribute_06,
+                        p_region.attribute_07,
+                        p_region.attribute_08,
+                        p_region.attribute_09,
+                        p_region.attribute_10,
+                        p_region.attribute_11
+                    );
+            
+                l_column_value_list apex_plugin_util.t_column_value_list2;
+                l_subs_column_nos colnos_t := colnos_t( null, null, null, null, null, null, null, null, null, null );
+            
+                l_subs subs_t := subs_t( null, null, null, null, null,
+                                         null, null, null, null, null );
+                l_label varchar2(50);
+                l_message clob;
+            begin
+                if p_region.source is not null then
+                    -- Read the data based on the region source query
+                    l_column_value_list := apex_plugin_util.get_data2 (
+                                               p_sql_statement  => p_region.source,
+                                               p_min_columns    => 1,
+                                               p_max_columns    => null,
+                                               p_component_name => p_region.name );
+            
+                    -- Get the actual column# for faster access and also verify that the data type
+                    -- of the column matches with what we are looking for
+                    for i in 0..9 loop
+                        l_label := 'Substitution Column '
+                                    ||to_char(i)||' (%'||to_char(i)||')';
+                        l_subs_column_nos(i+1) := apex_plugin_util.get_column_no (
+                                                    p_attribute_label   => l_label,
+                                                    p_column_alias      => c_subs_columns(i+1),
+                                                    p_column_value_list => l_column_value_list,
+                                                    p_is_required       => false,
+                                                    p_data_type         => apex_plugin_util.c_data_type_varchar2 );
+                    end loop;
+            
+                    -- Set the column values of the first row so that apex_plugin_util.replace_substitutions
+                    -- can do substitutions for columns contained in the region source query.
+                    apex_plugin_util.set_component_values (
+                        p_column_value_list => l_column_value_list,
+                        p_row_num           => 1 );
+            
+                    -- get the substitution values
+                    for i in 0..9 loop
+                        if l_subs_column_nos(i+1) is not null then
+                            l_subs(i+1) := apex_plugin_util.escape (
+                                            apex_plugin_util.get_value_as_varchar2 (
+                                                p_data_type => l_column_value_list(l_subs_column_nos(i+1)).data_type,
+                                                p_value     => l_column_value_list(l_subs_column_nos(i+1)).value_list(1) ),
+                                            p_region.escape_output );
+                        end if;
+                    end loop;
+                end if;
+            
+                l_message := apex_application.do_substitutions(
+                    apex_lang.message( p_name => c_message,
+                                       p0     => l_subs(1),
+                                       p1     => l_subs(2),
+                                       p2     => l_subs(3),
+                                       p3     => l_subs(4),
+                                       p4     => l_subs(5),
+                                       p5     => l_subs(6),
+                                       p6     => l_subs(7),
+                                       p7     => l_subs(8),
+                                       p8     => l_subs(9),
+                                       p9     => l_subs(10)
+                                  )
+                    );
+                if c_add_p_tags = 'Y' and instr( l_message, '<p' ) = 0 then
+                    l_message := '<p>'||l_message||'</p>';
+                end if;
+                sys.htp.p(l_message);
+                return null;
+            end;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 5.0.1
+        helpText:
+            ```
+            <p>This region plug-in is used to allow text messages to readily be translated into different languages. Up to nine values can be substituted into the text message.</p>
+            <p>The text message, with appropriate substitution variables, must be defined as a system message.</p>
+            ```
+    }
+
+    standardAttributeConfig (
+        name: regionSourceIsSqlQuery
+        sqlQuery {
+            minColumns: 1
+        }
+        examples {
+            examples: This SQL is optional. If the message you are translating has substitutions built in (%0 through %9), select the values you wish to replace them with within Attributes.
+        }
+    )
+
+)
+

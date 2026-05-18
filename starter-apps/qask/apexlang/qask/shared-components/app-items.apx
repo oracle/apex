@@ -1,0 +1,21 @@
+appItem ACCEPTED_TERMS_YN (
+)
+
+appItem APP_URL (
+)
+
+appItem QUESTION_ID (
+)
+
+appItem RESPONSE_ID (
+)
+
+appItem SESSION_CODE (
+)
+
+appItem SESSION_ID (
+)
+
+appItem SESSION_NAME (
+)
+

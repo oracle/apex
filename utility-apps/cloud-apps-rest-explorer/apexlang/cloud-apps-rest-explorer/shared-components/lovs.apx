@@ -1,0 +1,16 @@
+lov lov-manifest-releases (
+    name: LOV_MANIFEST_RELEASES
+    source {
+        location: jsonSource
+        jsonSource: @available_catalogs_by_release
+    }
+    dataProfile {
+        nestedRows: @releases
+    }
+    columnMapping {
+        return: NAME
+        display: NAME
+        defaultSort: NAME
+    }
+)
+

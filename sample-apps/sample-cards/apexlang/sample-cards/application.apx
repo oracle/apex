@@ -1,0 +1,117 @@
+app SAMPLE-CARDS (
+    name: Sample Cards
+    version: 26.1.0
+    group: @sample-apps
+    logo {
+        type: text
+        text: Sample Cards
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @desktop-navigation-menu
+    }
+    navigationBar {
+        list: @desktop-navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    css {
+        fileUrls: #APP_IMAGES#app-icon.css?version=#APP_VERSION#
+    }
+    authentication {
+        scheme: @application-express-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 96B41F545B0BFBFD24D94728B21AA084727E5AF81068F10BD0F3883560FFE2B6
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+    }
+    globalization {
+        documentDirection: leftToRight
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments: Application created from create application wizard 2020.08.14.
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Sample Cards
+        }
+    )
+
+    substitution JET_VISUALIZATION_URL (
+        value {
+            staticValue: https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=home&demo=rootVisualizations
+        }
+    )
+
+    substitution MOVIEDB_API (
+        value {
+            staticValue: https://www.themoviedb.org/documentation/api
+        }
+    )
+
+    substitution GOOGLE_API (
+        value {
+            staticValue: https://developers.google.com/youtube/v3/docs
+        }
+    )
+
+    substitution PRODUCT_NAME (
+        value {
+            staticValue: Oracle APEX
+        }
+    )
+
+)
+

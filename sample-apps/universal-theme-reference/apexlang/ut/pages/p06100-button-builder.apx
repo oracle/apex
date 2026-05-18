@@ -1,0 +1,934 @@
+page 6100 (
+    name: Button Builder
+    alias: BUTTON-BUILDER
+    title: Button Builder - &APP_TITLE.
+    pageGroup: @tools-and-utilities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: dm-Page
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        fileUrls: [
+            #APP_FILES#demo/icons.js
+            #APP_FILES#demo/iconSearch.js
+            #APP_FILES#demo/buttonBuilder.js
+        ]
+        functionAndGlobalVariableDeclaration:
+            ```javascript-browser
+            var detached;
+            
+            var returnIcon = function (cl) {
+                $s('P6100_ICON_CLASS', cl);
+                apex.jQuery('#icon_picker_dialog').dialog('close');
+            };
+            ```
+        executeWhenPageLoads:
+            ```javascript-browser
+            (function($){
+               apex.theme42demo.renderButtons();
+            
+                $(".icon-preview").stickyWidget({toggleWidth: true});
+            
+                // for icon dialogs
+                $('#icons').on( "dialogclose", function( event, ui ) {
+                    $('#icons-wrapper').remove();
+                });
+            
+                $("#P6100_SEARCH").on("keyup",function(){
+                    apex.theme42demo.renderIcons({debounce: 250, filterString: this.value});
+                }); 
+            })(apex.jQuery);
+            ```
+    }
+    css {
+        inline:
+            ```css
+            .event-name { background: rgba(147, 180, 197, 0.25); padding: 6px 8px; border-radius: 3px; text-shadow: 1px 1px #fff; }
+            .event-name:hover { color: #000; background: #eee }
+            .is-hidden { display: none; }
+            .icon-preview { height: 128px; display: flex; align-items: center; justify-content: center; background: #FFF; border-radius: 2px; box-shadow: 0 1px 1px rgba(0, 0, 0, .05), 0 0 0 1px rgba(0, 0, 0, 0.1) inset; }
+            .instructions { font-size: 11px; line-height: 16px; color: #767676; display: block; margin: 0; }
+            .dm-IconDialog-info.row { margin-left: 0; margin-right: 0; }
+            .button-instructions { margin-top: 12px; }
+            .icon-preview button { transition: all .2s ease }
+            body .ui-widget-content a { color: inherit; }
+            .dm-Search-category:first-child { margin-top: 0; }
+            #icon_picker { max-height: 400px; overflow: auto; }
+            #icon_picker .dm-Search-title { font-size: 1.6rem }
+            .highlight { background-color: #ffef9a; padding: 2px 0; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset, 0 1px 1px -1px rgba(0, 0, 0, 0.1); border-radius: 2px; transition: .1s ease; }
+            p.instructions { margin-top: 4px; margin-bottom: 16px; }
+            .dm-IconDialog-info code { background: var(--ut-component-badge-background-color); color: var(--ut-component-badge-text-color); display: block; padding: 0.5rem; overflow: hidden; white-space: normal; font-size: .6875rem; }
+            .dm-Search:empty:before { content: 'No Results'; font-size: 14px; text-align: left; padding: 16px 0; opacity: .5; display: block; }
+            .u-RTL .dm-Search:empty:before { text-align: right; }
+            #P4000_SIZE.apex-item-group--rc { margin: 0; }
+            .dm-Search-category { display: block; background: var(--ut-component-background-color); color: var(--ut-component-text-color); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0, 0, 0, 0.075); border-radius: 2px; padding: 16px; margin-bottom: 16px; }
+            .dm-Search-title { text-transform: capitalize; margin-bottom: 0; padding: 8px; font-weight: var(--a-base-font-weight-semibold, 500); }
+            .dm-Search-list { list-style: none; margin: 0; padding: 0; clear: both; overflow: hidden; }
+            .dm-Search-list li { width: 25%; float: left; }
+            .u-RTL .dm-Search-list li { float: right; }
+            @media (max-width:767px) {
+              .dm-Search-list li { width: 33.33%; }
+            }
+            @media (max-width:639px) {
+              .dm-Search-list li { width: 50%; }
+            }
+            .dm-Search-result { display: block; color: var(--ut-component-text-subtitle-color); padding: 4px; cursor: pointer; border-radius: 2px; overflow: hidden; }
+            .dm-Search-result:focus { outline: none; box-shadow: 0 0 0 1px var(--ut-palette-primary, #0572CE) inset; background-color: var(--ut-component-background-color); color: var(--ut-component-text-color); }
+            .dm-Search-result:hover { background-color: var(--ut-component-background-color); color: var(--ut-component-text-color); box-shadow: 0 0 0 1px var(--ut-palette-primary, #0572CE) inset, var(--ut-shadow-sm); }
+            .dm-Search-icon { float: left; padding: 8px 0 8px 8px; }
+            .u-RTL .dm-Search-icon { float: right; padding: 8px 8px 8px 0; }
+            .dm-Search-icon .t-Icon { transform-origin: left; vertical-align: top; line-height: 24px; }
+            .u-RTL .dm-Search-icon .t-Icon { transform-origin: right; }
+            .dm-Search-info { overflow: hidden; padding: 8px; }
+            .dm-Search-class { font-size: 14px; line-height: 24px; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region advanced (
+        name: Advanced
+        type: staticContent
+        source {
+            htmlCode: <p class="instructions">Spacing options provide a way to manage whitespace around the buttons. These are especially useful when buttons are placed adjacent to one another, or next to other components.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @template-options
+            slot: subRegions
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region appearance (
+        name: Appearance
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @builder
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region builder (
+        name: Builder
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region icon-picker (
+        name: Icon Picker
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size720x480
+            ]
+        }
+        advanced {
+            htmlDomId: icon_picker_dialog
+            regionDisplaySelector: true
+        }
+    )
+
+    region icons (
+        name: Icons
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @icon-picker
+            slot: subRegions
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: icons
+        }
+    )
+
+    region preview (
+        name: Preview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <button type="button" id="TEXT_ONLY" class="t-Button">My Button</button>
+                
+                <button class="t-Button t-Button--noLabel t-Button--icon" type="button" id="ICON_ONLY" title="Icon Only" aria-label="Icon Only"><span class="t-Icon " aria-hidden="true"></span></button>
+                
+                <button class="t-Button t-Button--icon t-Button--iconLeft" type="button" id="TEXT_W_ICON"><span class="t-Icon t-Icon--left " aria-hidden="true"></span>My Button<span class="t-Icon t-Icon--right " aria-hidden="true"></span></button>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: icon-preview
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @icon-picker
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+    )
+
+    region template-options (
+        name: Template Options
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @builder
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region usage-instructions (
+        name: Usage Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Use this page to build buttons for use in your reports. Simply specify a column as a <strong>Link</strong> and then enter the following properties for Link Text and Link Attributes.</p>
+                <div class="dm-IconDialog-info row">
+                    <span class="dm-IconDialog-infoTitle col col-3">Link Text</span>
+                    <div class="dm-IconDialog-infoBody col col-9">
+                        <code id="button_code_link_text"></code>
+                        <p class="instructions">Enter this in the Link Text property for a Link Column in your report.</p>
+                    </div>
+                </div>
+                <div class="dm-IconDialog-info row">
+                    <span class="dm-IconDialog-infoTitle col col-3">Link Attributes</span>
+                    <div class="dm-IconDialog-infoBody col col-9">
+                        <code id="button_code_link_attr"></code>
+                        <p class="instructions">Enter these attributes in the Link Attributes property for a Link Column in your report.</p>
+                    </div>
+                </div>
+                <div class="dm-IconDialog-info row">
+                    <span class="dm-IconDialog-infoTitle col col-3">Entire Markup</span>
+                    <div class="dm-IconDialog-infoBody col col-9">
+                        <code id="button_code_whole"></code>
+                        <p class="instructions">Full HTML markup.</p>
+                    </div>
+                </div>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: button-instructions
+        }
+    )
+
+    pageItem P6100_BUTTON_LABEL (
+        type: textField
+        label {
+            label: Button Label
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @appearance
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        default {
+            type: static
+            staticValue: My Button
+        }
+    )
+
+    pageItem P6100_BUTTON_SET (
+        type: radioGroup
+        label {
+            label: Button Set
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Default;default,First Button;t-Button--pillStart,Inner Button;t-Button--pill,Last Button;t-Button--pillEnd
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @advanced
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+        help {
+            helpText: Use these options if you would like to arrange multiple buttons into a pill or button set. You can then set the first button of the set to "First Button" and the last button to "Last Button." Any buttons in the middle can be set to "Inner Button."
+        }
+    )
+
+    pageItem P6100_BUTTON_TEMPLATE (
+        type: radioGroup
+        label {
+            label: Button Template
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Text;TEXT_ONLY,Text with Icon;TEXT_W_ICON,Icon;ICON_ONLY
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @appearance
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: TEXT_ONLY
+        }
+    )
+
+    pageItem P6100_HOT (
+        type: radioGroup
+        label {
+            label: Hot
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Yes;t-Button--hot,No;default
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @appearance
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_ICON_CLASS (
+        type: textField
+        label {
+            label: Icon Class
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @appearance
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        advanced {
+            postText: <button id="open_dialog" type="button" class="t-Button t-Button--small t-Button--pillEnd" title="Icon Picker"><span aria-hidden="true" class="t-Icon fa fa-chevron-up"></span></button>
+        }
+        default {
+            type: static
+            staticValue: fa-check-circle
+        }
+    )
+
+    pageItem P6100_ICON_POSITION (
+        type: radioGroup
+        label {
+            label: Icon Position
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Left;t-Button--iconLeft,Right;t-Button--iconRight
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @template-options
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: t-Button--iconLeft
+        }
+    )
+
+    pageItem P6100_SEARCH (
+        type: textField
+        label {
+            label: Search Icons
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Search Font APEX Icons...
+        }
+        source {
+            used: always
+        }
+    )
+
+    pageItem P6100_SIZE (
+        type: radioGroup
+        label {
+            label: Size
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Tiny;t-Button--tiny,Small;t-Button--small,Default;default,Large;t-Button--large
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @template-options
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_SPACING_BOTTOM (
+        type: radioGroup
+        label {
+            label: Spacing Bottom
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Small;t-Button--padBottom,Default;default,Large;t-Button--gapBottom
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 60
+            region: @advanced
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_SPACING_LEFT (
+        type: radioGroup
+        label {
+            label: Spacing Left
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Small;t-Button--padleft,Default;default,Large;t-Button--gapLeft
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @advanced
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_SPACING_RIGHT (
+        type: radioGroup
+        label {
+            label: Spacing Right
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Small;t-Button--padRight,Default;default,Large;t-Button--gapRight
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @advanced
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_SPACING_TOP (
+        type: radioGroup
+        label {
+            label: Spacing Top
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Small;t-Button--padTop,Default;default,Large;t-Button--gapTop
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @advanced
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_STYLE (
+        type: radioGroup
+        label {
+            label: Style
+            alignment: left
+        }
+        settings {
+            noOfCols: 4
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Default;default,Simple;t-Button--simple,Remove UI Decorations;t-Button--noUI,Display as Link;t-Button--link
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 30
+            region: @template-options
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_TYPE (
+        type: radioGroup
+        label {
+            label: Type
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Normal;default,Primary;t-Button--primary,Warning;t-Button--warning,Danger;t-Button--danger,Success;t-Button--success
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @template-options
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    pageItem P6100_WIDTH (
+        type: radioGroup
+        label {
+            label: Width
+            alignment: left
+        }
+        settings {
+            noOfCols: 6
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Auto - Default;default,Stretch;t-Button--stretch
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @advanced
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 3
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: default
+        }
+    )
+
+    button icon-dialog-button (
+        buttonName: ICON_DIALOG_BUTTON
+        label: Icon dialog button
+        layout {
+            sequence: 40
+            region: @appearance
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6101
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    dynamicAction populate-link-text (
+        name: Populate Link Text
+        execution {
+            sequence: 20
+        }
+        when {
+            event: keyup
+            selectionType: items
+            items: P6100_BUTTON_LABEL
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var $j = apex.jQuery,
+                        v = $j(this.triggeringElement).val();
+                    $j('.icon-preview .t-Button').first().text(v);
+                    $j('.icon-preview .t-Button').last().contents().filter(function(){ 
+                      return this.nodeType == 3; 
+                    })[0].nodeValue = v
+                    $j('#button_code_link_text').text(v);
+                    apex.theme42demo.renderButtons();
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction render-button (
+        name: Render Button
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                "P6100_BUTTON_TEMPLATE "
+                "P6100_SIZE "
+                "P6100_BUTTON_SET "
+                "P6100_HOT "
+                "P6100_TYPE "
+                "P6100_WIDTH "
+                "P6100_STYLE "
+                "P6100_SPACING_LEFT "
+                "P6100_ICON_CLASS "
+                "P6100_SPACING_RIGHT "
+                "P6100_SPACING_TOP "
+                P6100_SPACING_BOTTOM
+                P6100_ICON_POSITION
+                P6100_BUTTON_LABEL
+            ]
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.theme42demo.renderButtons();
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-icon-dialog (
+        name: Show Icon Dialog
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: #open_dialog
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    apex.jQuery('#icon_picker_dialog').dialog('open');
+                    apex.theme42demo.renderIcons({filterString: $v('P6100_SEARCH')});
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

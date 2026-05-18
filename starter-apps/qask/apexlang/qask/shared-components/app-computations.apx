@@ -1,0 +1,28 @@
+appComputation app-url (
+    itemName: APP_URL
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                x  varchar2(4000);
+            begin 
+                x := apex_page.get_url (
+                       p_page    => 'home',
+                       p_session => 0 );
+                x := substr(x,1,instr(x,'?')-1);
+            
+                return rtrim(owa_util.get_cgi_env('HTTP_REFERER'),'/') || x;
+            end;
+            ```
+    }
+    serverSideCondition {
+        type: itemIsNull
+        item: APP_URL
+    }
+)
+

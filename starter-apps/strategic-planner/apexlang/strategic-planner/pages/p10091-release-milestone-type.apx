@@ -1,0 +1,430 @@
+page 10091 (
+    name: Release Milestone Type
+    alias: RELEASE-MILESTONE-TYPE
+    title: Release Milestone Type
+    pageGroup: @activities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @releases
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region release-milestone-type (
+        name: Release Milestone Type
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_RELEASE_MILESTONE_TYPES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10091_CALENDAR_EVENT_COLOR (
+        type: selectOne
+        label {
+            label: Calendar Event Color
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @apex-calendar-event-colors
+        }
+        layout {
+            sequence: 40
+            region: @release-milestone-type
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: CALENDAR_EVENT_COLOR
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10091_CREATED (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @release-milestone-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: CREATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10091_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @release-milestone-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: CREATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10091_DISPLAY_SEQ (
+        type: numberField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @release-milestone-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: DISPLAY_SEQ
+            dataType: number
+        }
+    )
+
+    pageItem P10091_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @release-milestone-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10091_INCLUDE_YN (
+        type: switch
+        label {
+            label: Include
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @release-milestone-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: INCLUDE_YN
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10091_MILESTONE_TYPE (
+        type: textField
+        label {
+            label: Milestone Type
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @release-milestone-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 60
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: MILESTONE_TYPE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10091_UPDATED (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @release-milestone-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: UPDATED
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10091_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @release-milestone-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @release-milestone-type
+            column: UPDATED_BY
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10091_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10091_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10091_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 6187984956953018618
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-manage-activity-type (
+        name: Initialize form Manage Activity Type
+        type: formInitialization
+        formRegion: @release-milestone-type
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6187984087016018617
+        }
+    )
+
+    process process-form-manage-release-milestone-type (
+        name: Process form Manage Release Milestone Type
+        type: formAutoRowProcessing
+        formRegion: @release-milestone-type
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 6187984430437018618
+        }
+    )
+
+)
+

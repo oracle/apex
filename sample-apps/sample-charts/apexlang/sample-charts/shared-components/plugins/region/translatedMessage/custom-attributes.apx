@@ -1,0 +1,165 @@
+customAttribute attribute_01 (
+    apexlangName: textMessage
+    attribute: 1
+    name: Text Message
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: Enter the name of the Text Message (from shared components) to be displayed.
+    }
+)
+
+customAttribute attribute_02 (
+    apexlangName: substitutionColumn00
+    attribute: 2
+    name: Substitution Column 0 (%0)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 20
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%0</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_03 (
+    apexlangName: substitutionColumn11
+    attribute: 3
+    name: Substitution Column 1 (%1)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 30
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%1</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_04 (
+    apexlangName: substitutionColumn22
+    attribute: 4
+    name: Substitution Column 2 (%2)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 40
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%2</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_05 (
+    apexlangName: substitutionColumn33
+    attribute: 5
+    name: Substitution Column 3 (%3)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 50
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%3</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_06 (
+    apexlangName: substitutionColumn44
+    attribute: 6
+    name: Substitution Column 4 (%4)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 60
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%4</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_07 (
+    apexlangName: substitutionColumn55
+    attribute: 7
+    name: Substitution Column 5 (%5)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 70
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%5</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_08 (
+    apexlangName: substitutionColumn66
+    attribute: 8
+    name: Substitution Column 6 (%6)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 80
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%6</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_09 (
+    apexlangName: substitutionColumn77
+    attribute: 9
+    name: Substitution Column 7 (%7)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 90
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%7</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_10 (
+    apexlangName: substitutionColumn88
+    attribute: 10
+    name: Substitution Column 8 (%8)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 100
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%8</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_11 (
+    apexlangName: substitutionColumn99
+    attribute: 11
+    name: Substitution Column 9 (%9)
+    type: regionSqlQueryColumn
+    appearance {
+        sequence: 110
+    }
+    help {
+        helpText: Select the column from the region SQL Query which is used to replace any <strong>%9</strong> values in the displayed message.
+    }
+)
+
+customAttribute attribute_12 (
+    apexlangName: addParagraphTags
+    attribute: 12
+    name: Add Paragraph Tags
+    type: yesNo
+    appearance {
+        sequence: 120
+    }
+    default {
+        value: true
+    }
+    help {
+        helpText:
+            ```
+            <p>Select whether paragraph tags are added around the text message.</p>
+            <p>Note: If the message already starts with a paragraph tag, no changes are made.</p>
+            ```
+    }
+)
+

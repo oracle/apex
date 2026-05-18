@@ -1,0 +1,227 @@
+list administration (
+    name: Administration
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data.  You can remove or recreate sample data using this administrative page.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 12
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                5
+                8
+            ]
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                4
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry project-tracking (
+        label: Project Tracking
+        icon {
+            imageIconCssClasses: fa-toggle-right
+        }
+        layout {
+            sequence: 2
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                6
+                7
+                9
+                10
+            ]
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+
+list task-tracking-tabs (
+    name: Task_Tracking_Tabs
+
+    entry project-dashboard (
+        label: Project Dashboard
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry task-tree (
+        label: Task Tree
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+
+list trees (
+    name: Trees
+
+    entry project-tracking (
+        label: Project Tracking
+        icon {
+            imageIconCssClasses: #APP_IMAGES#trees_project_tracking.jpg
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+

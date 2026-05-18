@@ -1,0 +1,132 @@
+page 10 (
+    name: Store Locations Map
+    alias: STORE-LOCATIONS-MAP
+    title: Store Locations Map
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    config {
+        buildOption: @maps
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region store-locations (
+        name: Store Locations
+        type: map
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select * from OOW_DEMO_STORES
+        }
+        layout {
+            sequence: 10
+            slot: fullWidthContent
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                rectangleZoom
+                scaleBar
+            ]
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer stores (
+            name: stores
+            layout {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                geometryColumnDataType: longitudeLatitude
+                longitudeColumn: STORE_LNG
+                latitudeColumn: STORE_LAT
+            }
+            pointObjects {
+                shape: Pin Circle
+                shapeScale: 2
+            }
+            appearance {
+                fillColor: #ff3b30
+                strokeColor: #ffffff
+                strokeWidth: 2
+            }
+            legend {
+                show: false
+            }
+        )
+
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,119 @@
+app OPPORTUNITIES (
+    name: Opportunities
+    version: 26.1.0
+    group: @starter-apps
+    logo {
+        type: text
+        text: &APPLICATION_TITLE.
+    }
+    navigation {
+        homeUrl: {
+            page: 100
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @application-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        usersCanChooseThemeStyle: true
+    }
+    javaScript {
+        includeLegacyJavascript: [
+            pre18
+            18
+        ]
+    }
+    css {
+        fileUrls: #IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css
+    }
+    authentication {
+        scheme: @apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: @application-sentry
+    }
+    security {
+        deepLinking: true
+        embedInFrames: allowSameOrigin
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        allowUrlsCreatedAfter: 1999-08-04T00:00:00
+        checksumSalt: 40468B10AECAD957E04758D38A5A131344A0F095B504A0F77A07286C45405C0B
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+        maxSessionLength: 28800
+    }
+    globalization {
+        primaryLanguage: en-us
+        documentDirection: leftToRight
+        autoCsvEncoding: false
+    }
+    progressiveWebApp {
+        enable: false
+    }
+    rowSearch {
+        tokenize: false
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    errorHandling {
+        errorHandlingFunctionName: eba_sales_acl_api.apex_error_handling
+    }
+    advanced {
+        passEcid: false
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+    comments {
+        comments:
+            ```
+            0.9.25 -> 0.9.26: Fixed code in eba_sales_acl_api.apex_error_handling() procedure to allow the correct error message to be displayed when a page item's "Restricted characters" security setting has been violated.
+            0.9.26 -> 0.9.27: Implemented redesigned administrative ACL controls
+            0.9.27 -> 0.9.28: Added Usage Metrics region plugin to pages 80 (Opportunity), 94 (Account) and 133 (Lead)
+            0.9.28 -> 1.1.26: Updated version level to match APEX metadata
+            ```
+    }
+
+    substitution APP_DATE_FORMAT (
+        value {
+            staticValue: DD-MON-YYYY
+        }
+    )
+
+    substitution APP_DATE_TIME_FMT (
+        value {
+            staticValue: DD-MON-YYYY HH:MI PM
+        }
+    )
+
+    substitution APP_NAME (
+        value {
+            staticValue: Opportunities
+        }
+    )
+
+)
+

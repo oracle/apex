@@ -1,0 +1,607 @@
+page 23 (
+    name: Sales History Interactive Grid
+    alias: SALES-HISTORY-INTERACTIVE-GRID
+    title: Sales History Interactive Grid
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region sales-history-interactive-grid (
+        name: Sales History Interactive Grid
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    h.ID            id,
+                    r.REGION_NAME   region,
+                    s.store_name    store,
+                    i.item_Name     product,
+                    h.DATE_OF_SALE,
+                    to_char(h.DATE_OF_SALE,'YYYY.MM') the_month,
+                    h.QUANTITY,
+                    h.TRANSACTION_ID,
+                    h.ITEM_PRICE,
+                    h.QUANTITY * h.ITEM_PRICE sale,
+                    i.id product_id,
+                    s.id store_id
+                from #OWNER#.OOW_DEMO_SALES_HISTORY h,
+                     #OWNER#.OOW_DEMO_REGIONS r,
+                     #OWNER#.OOW_DEMO_STORES s,
+                     #OWNER#.OOW_DEMO_STORE_PRODUCTS p,
+                     #OWNER#.OOW_DEMO_ITEMS i
+                where s.region_id = r.id and
+                      h.store_id = s.id and
+                      p.ITEM_ID = h.PRODUCT_ID and
+                      p.item_id = i.id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: page
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+                excel
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 12339121678407132038
+        }
+
+        savedReport 123391221 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @REGION
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @STORE
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @PRODUCT
+                layout {
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @DATE_OF_SALE
+                layout {
+                    width: 323
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @THE_MONTH
+                layout {
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @QUANTITY
+                layout {
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @TRANSACTION_ID
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @ITEM_PRICE
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @SALE
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @PRODUCT_ID
+                layout {
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @STORE_ID
+                layout {
+                    sequence: 12
+                }
+            )
+
+        )
+
+        column DATE_OF_SALE (
+            type: datePicker
+            heading {
+                heading: Date of Sale
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: DD-MON-YYYY HH24:MI:SS
+            }
+            source {
+                databaseColumn: DATE_OF_SALE
+                dataType: timestampWithLocalTimeZone
+            }
+        )
+
+        column ID (
+            type: hidden
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ITEM_PRICE (
+            type: numberField
+            heading {
+                heading: Item Price
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: ITEM_PRICE
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column PRODUCT (
+            type: textField
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                valueRequired: true
+                maxLength: 60
+            }
+            source {
+                databaseColumn: PRODUCT
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column PRODUCT_ID (
+            type: hidden
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: PRODUCT_ID
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column QUANTITY (
+            type: numberField
+            heading {
+                heading: Quantity
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: QUANTITY
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column REGION (
+            type: textField
+            heading {
+                heading: Region
+            }
+            layout {
+                sequence: 20
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: REGION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column SALE (
+            type: numberField
+            heading {
+                heading: Sale
+                alignment: end
+            }
+            layout {
+                sequence: 100
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: SALE
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column STORE (
+            type: textField
+            heading {
+                heading: Store
+            }
+            layout {
+                sequence: 30
+            }
+            validation {
+                maxLength: 255
+            }
+            source {
+                databaseColumn: STORE
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column STORE_ID (
+            type: hidden
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: STORE_ID
+                dataType: number
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column THE_MONTH (
+            type: textField
+            heading {
+                heading: The Month
+            }
+            layout {
+                sequence: 60
+            }
+            validation {
+                maxLength: 7
+            }
+            source {
+                databaseColumn: THE_MONTH
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column TRANSACTION_ID (
+            type: textField
+            heading {
+                heading: Transaction Id
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                maxLength: 30
+            }
+            source {
+                databaseColumn: TRANSACTION_ID
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Sales History Interactive Grid
+        }
+    )
+
+    region timer (
+        name: Timer
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   x clob;
+                begin
+                    x := to_char(oow_demo_timing.get_elap,'99G9990D000')||' seconds';
+                    return x;
+                end;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P23_NAVIGATION (
+        type: selectList
+        label {
+            label: Navigation
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @sales-history-navigation
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        default {
+            type: static
+            staticValue: &APP_PAGE_ID.
+        }
+    )
+
+    button reset (
+        buttonName: reset
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 23
+                clearCache: 23
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction on-navigation-click (
+        name: on navigation click
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P23_NAVIGATION
+        }
+
+        action native-submit-page (
+            action: submitPage
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process start-timer (
+        name: Start Timer
+        type: executeCode
+        source {
+            plsqlCode: oow_demo_timing.start_timer;
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 12340031181811634396
+        }
+    )
+
+    branch (
+        name: branch to requested page
+        execution {
+            sequence: 50
+        }
+        behavior {
+            target: {
+                page: &P23_NAVIGATION.
+                clearCache: &P23_NAVIGATION.
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

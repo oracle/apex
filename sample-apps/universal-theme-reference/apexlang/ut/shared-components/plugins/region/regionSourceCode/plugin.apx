@@ -1,0 +1,61 @@
+plugin regionSourceCode (
+    name: Region Source Code
+    staticId: COM.ORACLE.APEX.REGION_SOURCE_CODE
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            c_workspace constant varchar2(100) := apex_util.find_workspace(:workspace_id);
+            
+            subtype t_region_type is varchar2(40);
+            c_region_type_list       constant t_region_type := 'NATIVE_LIST';
+            c_region_type_breadcrumb constant t_region_type := 'NATIVE_BREADCRUMB';
+            c_region_type_report     constant t_region_type := 'NATIVE_SQL_REPORT';
+            c_region_type_calendar   constant t_region_type := 'NATIVE_CSS_CALENDAR';
+            
+            function render (
+                p_region              in apex_plugin.t_region,
+                p_plugin              in apex_plugin.t_plugin,
+                p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result
+            is
+                c_component_static_id constant varchar2(1000) := p_region.attribute_01;
+            begin
+            
+                if apex_application.g_debug then
+                    apex_plugin_util.debug_region ( 
+                        p_plugin => p_plugin, 
+                        p_region => p_region );
+                end if;
+            
+                for i in ( select *
+                             from apex_application_page_regions
+                            where workspace      = c_workspace
+                              and application_id = :app_id
+                              and page_id        = :app_page_id
+                              and static_id      = c_component_static_id )
+                loop
+                    if i.region_source is not null then
+                        sys.htp.p( '<pre class="lang-sql" tabindex="-1" style="margin: 1rem;"><code>' || i.region_source || '</code></pre>' );
+                    end if;
+                end loop;
+            
+                return null;
+            end render;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    javaScript {
+        fileUrls: #PRISMJS_DIRECTORY#prism.js
+    }
+    information {
+        version: 1.0
+    }
+)
+

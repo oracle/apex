@@ -1,0 +1,18 @@
+installScript "create sample data" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-sample-data.sql
+    }
+)
+
+installScript "helper package" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: helper-package.sql
+    }
+)
+

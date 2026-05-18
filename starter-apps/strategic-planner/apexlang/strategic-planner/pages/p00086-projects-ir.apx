@@ -1,0 +1,1566 @@
+page 86 (
+    name: Projects
+    alias: PROJECTS-IR
+    title: &NOMENCLATURE_PROJECTS.
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: All active &NOMENCLATURE_PROJECTS., not archived and not marked as duplicates.   Includes owner, priority, completion status, size, last comment and other details.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu about-nomenclature-projects (
+                label: About &NOMENCLATURE_PROJECTS.
+                layout {
+                    sequence: 120
+                }
+                behavior {
+                    target: {
+                        page: 107
+                    }
+                }
+                appearance {
+                    icon: fa-info
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 60
+                }
+            )
+
+            menu nomenclature-projects-primary-report (
+                label: &NOMENCLATURE_PROJECTS. Primary Report
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 23
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 140
+                }
+                behavior {
+                    target: {
+                        page: 86
+                        clearCache: [
+                            CIR
+                            RIR
+                            86
+                        ]
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+        )
+
+        action add-nomenclature-project (
+            position: primaryActions
+            template: button
+            label: Add &NOMENCLATURE_PROJECT.
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 104
+                    clearCache: [
+                        104
+                        24
+                    ]
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-plus
+                hot: true
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+    )
+
+    region projects-interactive-report (
+        name: Projects Interactive Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                       --
+                       -- IDs
+                       --
+                       p.ID as project_id,
+                       p.owner_id,
+                       --
+                       -- project information
+                       --
+                       p.PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select tags from sp_team_members where id = p.owner_id) owner_tags,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       case when p.pct_complete >= s.min_pc_for_status and p.pct_complete != 100
+                            then nvl((select status from sp_project_statuses
+                                       where id = p.status_id),'Not Set') 
+                            else 'NA'
+                            end status,
+                       case when p.requires_reviews_yn = 'Y' then 'Yes' else 'No' end requires_reviews,
+                       case when p.doc_impact_yn = 'Y' then 'Yes' else 'No' end doc_impact,
+                       p.friendly_identifier,
+                       p.project_url_name,
+                       replace(lower(p.tags),',',', ') as tags,
+                       (select group_name from sp_project_groups
+                         where id = p.project_group_id) project_group,
+                       --
+                       external_ticket_identifier,
+                       external_system_link,
+                       sync_identifier,
+                       sync_system_link,
+                       last_synced_on,
+                       last_sync_status,
+                       --
+                       -- favorite
+                       --
+                       nvl((
+                           select 'Yes' 
+                           from sp_favorites f 
+                           where f.project_id = p.id and 
+                                 f.team_member_id = :APP_USER_ID),'No') favorite,
+                       --
+                       -- project description
+                       --
+                       decode(nvl(dbms_lob.getlength(p.description),0),0,'Not Provided',
+                           dbms_lob.substr(p.description,200,1)||
+                           decode(greatest(dbms_lob.getlength(p.description),200),200,null,'...')) description,
+                       --
+                       -- contributors
+                       --
+                       (select listagg(distinct xtm.first_name||' '||xtm.last_name, ', ') within group (order by 1) names
+                          from SP_TASKS xpc, SP_TEAM_MEMBERS xtm
+                         where xpc.project_id = p.id and
+                               xpc.OWNER_ID = xtm.id
+                                ) contributors,
+                       --
+                       -- contributor emails
+                       --
+                       (select listagg(distinct xtm.email, ', ') within group (order by 1) names
+                          from SP_TASKS xpc, SP_TEAM_MEMBERS xtm
+                         where xpc.project_id = p.id and
+                               xpc.OWNER_ID = xtm.id
+                               ) contributor_emails,
+                       --
+                       -- reviews
+                       --
+                       (select count(*) from sp_tasks t, sp_task_types tt
+                         where t.project_id = p.id 
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
+                           and tt.static_id like 'REVIEW%') review_cnt,
+                       (select listagg(distinct xtm.first_name||' '||xtm.last_name, ', ') within group (order by 1) names
+                          from SP_TASKS xpc, SP_TEAM_MEMBERS xtm, sp_task_types tt
+                         where xpc.project_id = p.id and
+                               xpc.OWNER_ID = xtm.id and 
+                               nvl(xpc.task_sub_type_id,xpc.task_type_id) = tt.id and 
+                               tt.static_id like 'REVIEW%'
+                                ) reviewers,
+                       (select listagg(tt.task_type||' - '||nvl(to_char(t.target_complete,'DD-MON-YYYY'),'No date'), ', ') within group (order by t.target_complete nulls first) 
+                          from sp_tasks t, sp_task_types tt
+                         where t.project_id = p.id 
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
+                           and tt.static_id like 'REVIEW%') reviews,
+                       --
+                       -- milestones
+                       --
+                       (select count(*) from sp_tasks t, sp_task_types tt
+                         where t.project_id = p.id 
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
+                           and tt.static_id like 'MILESTONE%') milestone_cnt,
+                       (select listagg(tt.task_type||' - '||nvl(to_char(t.target_complete,'DD-MON-YYYY'),'No date'), ', ') within group (order by t.target_complete nulls first) 
+                          from sp_tasks t, sp_task_types tt
+                         where t.project_id = p.id 
+                           and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
+                           and tt.static_id like 'MILESTONE%') milestones,
+                       --
+                       -- updated
+                       --
+                       p.UPDATED,
+                       P.CREATED,
+                       nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.updated_by)),lower(p.updated_by)) updated_by,
+                       --
+                       -- last comments
+                       --
+                       (select max(dbms_lob.substr(c.body_no_images,255,1)||
+                               decode(greatest(dbms_lob.getlength(c.body_no_images),255),255,null,'...')) last_comment 
+                        from   SP_PROJECT_COMMENTS c 
+                        where c.project_id = p.id and 
+                              c.private_yn = 'N' and 
+                              c.created = (select max(c2.created) from sp_project_comments c2 where c2.project_id = p.id and c2.private_yn = 'N'))
+                        as last_comment,
+                       --
+                       (select max(c.created) from sp_project_comments c where c.project_id = p.id and c.private_yn = 'N') last_comment_on,
+                       (select first_name||' '||last_name from SP_TEAM_MEMBERS t where t.id = (select max(c.author_id) from sp_project_comments c where c.project_id = p.id and c.created = (select max(c.created) from sp_project_comments c where c.project_id = p.id and c.private_yn = 'N'))) last_comment_by,
+                       --
+                       -- last owner comments
+                       --
+                       (select max(dbms_lob.substr(c.body_no_images,255,1)||
+                               decode(greatest(dbms_lob.getlength(c.body_no_images),255),255,null,'...')) last_comment 
+                        from   SP_PROJECT_COMMENTS c 
+                        where c.project_id = p.id and 
+                              c.private_yn = 'N' and 
+                              c.AUTHOR_ID = p.owner_id and
+                              c.created = (select max(c2.created) from sp_project_comments c2 where c2.project_id = p.id and c2.AUTHOR_ID = p.owner_id and c2.private_yn = 'N'))
+                        as last_comment_by_owner,
+                       --
+                       (select max(c.created) from sp_project_comments c where c.project_id = p.id and c.author_id = p.owner_id and c.private_yn = 'N') last_comment_by_owner_on,
+                       (select count(*) from sp_project_comments c where c.project_id = p.id and c.created >= sysdate - 28 and c.private_yn = 'N') comments_28d,
+                       --
+                       -- activity
+                       --
+                       nvl((select count(*) from SP_ACTIVITIES ap where ap.project_id = p.id and trunc(sysdate) >= ap.start_date and trunc(sysdate) <= ap.end_date),0) current_activity_count,
+                       --
+                       -- release
+                       --
+                       case when p.release_id is not null
+                            then (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id)
+                            else 'No Release'
+                            end  release,
+                       nvl(to_char(p.target_complete,'DD-Mon-YYYY'),'Not Targeted') target_complete,
+                       --
+                       -- initiative and area
+                       --
+                       i.initiative,
+                       (select area from sp_areas a where a.id = i.area_id) area,
+                       (select focus_area from sp_initiative_focus_areas where id = p.focus_area_id) focus_area,
+                       -- 
+                       -- size
+                       --
+                       p.PROJECT_SIZE,
+                       z.size_description,
+                       z.effort_days,
+                       round((100 - p.PCT_COMPLETE) * z.effort_days *.01) days_remaining,
+                       --
+                       -- quick look
+                       --
+                       null quick_look,
+                       nvl((select listagg(t.approval_type||' ('||initcap(replace(status,'-',' '))||')',', ')
+                                   within group (order by submitted)
+                              from (select approval_type_id, status, submitted, max(submitted) over (partition by approval_type_id) last_submitted
+                                      from sp_project_approvals
+                                     where project_id = p.id) a,
+                                   sp_approval_types t
+                             where a.submitted = a.last_submitted
+                               and a.approval_type_id = t.id),'None') approvals
+                from  SP_PROJECTS p,
+                      sp_project_scales s,
+                      sp_initiatives i,
+                      SP_PROJECT_SIZES z
+                where nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.status_scale = s.scale_letter and 
+                      p.initiative_id = i.id and
+                      p.PROJECT_SIZE = z.project_size
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 24
+                items: {
+                    P24_ID: #PROJECT_ID#
+                }
+                clearCache: 24
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        actionsMenu {
+            savePublicReport: true
+            savePublicReportAuthorization: @administration-rights
+        }
+        advanced {
+            savedReportMappingIdentifier: 8583407391153691182
+        }
+
+        column APPROVALS (
+            type: plainText
+            heading {
+                heading: Approvals
+            }
+            layout {
+                sequence: 394
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BJ
+            }
+        )
+
+        column AREA (
+            type: plainText
+            heading {
+                heading: &NOMENCLATURE_AREA.
+            }
+            layout {
+                sequence: 94
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column COMMENTS_28D (
+            type: plainText
+            heading {
+                heading: Comments 28d
+                alignment: end
+            }
+            layout {
+                sequence: 104
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column CONTRIBUTORS (
+            type: plainText
+            heading {
+                heading: Contributors
+            }
+            layout {
+                sequence: 114
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        column CONTRIBUTOR_EMAILS (
+            type: plainText
+            heading {
+                heading: Contributor Emails
+            }
+            layout {
+                sequence: 124
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AF
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 184
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: AM
+            }
+        )
+
+        column CURRENT_ACTIVITY_COUNT (
+            type: plainText
+            heading {
+                heading: Current Activity Count
+                alignment: end
+            }
+            layout {
+                sequence: 54
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column DAYS_REMAINING (
+            type: plainText
+            heading {
+                heading: Days Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 234
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AR
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 154
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column DOC_IMPACT (
+            type: plainText
+            heading {
+                heading: Doc Impact
+            }
+            layout {
+                sequence: 294
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AY
+            }
+        )
+
+        column EFFORT_DAYS (
+            type: plainText
+            heading {
+                heading: Effort Days
+                alignment: end
+            }
+            layout {
+                sequence: 224
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AQ
+            }
+        )
+
+        column EXTERNAL_SYSTEM_LINK (
+            type: plainText
+            heading {
+                heading: External System Link
+            }
+            layout {
+                sequence: 204
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AO
+            }
+        )
+
+        column EXTERNAL_TICKET_IDENTIFIER (
+            type: plainText
+            heading {
+                heading: External Ticket Identifier
+            }
+            layout {
+                sequence: 194
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AN
+            }
+        )
+
+        column FAVORITE (
+            type: plainText
+            heading {
+                heading: Favorite
+            }
+            layout {
+                sequence: 164
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column FOCUS_AREA (
+            type: plainText
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 304
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AZ
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_initiative_focus_areas
+                    ```
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            type: hidden
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column INITIATIVE (
+            type: plainText
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 64
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column LAST_COMMENT (
+            type: plainText
+            heading {
+                heading: Last Comment
+            }
+            layout {
+                sequence: 12
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column LAST_COMMENT_BY (
+            type: plainText
+            heading {
+                heading: Last Comment By
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column LAST_COMMENT_BY_OWNER (
+            type: plainText
+            heading {
+                heading: Last Comment By Owner
+            }
+            layout {
+                sequence: 34
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column LAST_COMMENT_BY_OWNER_ON (
+            type: plainText
+            heading {
+                heading: Last Comment By Owner Date
+            }
+            layout {
+                sequence: 44
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column LAST_COMMENT_ON (
+            type: plainText
+            heading {
+                heading: Last Comment Date
+            }
+            layout {
+                sequence: 13
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column LAST_SYNCED_ON (
+            type: plainText
+            heading {
+                heading: Last Synced On
+            }
+            layout {
+                sequence: 344
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: BD
+            }
+        )
+
+        column LAST_SYNC_STATUS (
+            type: plainText
+            heading {
+                heading: Last Sync Status
+            }
+            layout {
+                sequence: 354
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BE
+            }
+        )
+
+        column MILESTONES (
+            type: plainText
+            heading {
+                heading: Milestones
+            }
+            layout {
+                sequence: 244
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AT
+            }
+        )
+
+        column MILESTONE_CNT (
+            type: plainText
+            heading {
+                heading: Milestone Cnt
+                alignment: end
+            }
+            layout {
+                sequence: 284
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AX
+            }
+        )
+
+        column OWNER_ID (
+            type: hidden
+            heading {
+                heading: Owner Id
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column OWNER_TAGS (
+            type: plainText
+            heading {
+                heading: Owner Tags
+            }
+            layout {
+                sequence: 384
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BH
+            }
+        )
+
+        column PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Comp
+                alignment: end
+            }
+            layout {
+                sequence: 6
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 5
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: &NOMENCLATURE_PROJECT.
+            }
+            layout {
+                sequence: 3
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column PROJECT_GROUP (
+            type: plainText
+            heading {
+                heading: &NOMENCLATURE_PROJECT. Group
+            }
+            layout {
+                sequence: 364
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BF
+            }
+        )
+
+        column PROJECT_ID (
+            type: plainText
+            heading {
+                heading: Project ID
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+            }
+            layout {
+                sequence: 7
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            type: hidden
+            heading {
+                heading: Project Url Name
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column QUICK_LOOK (
+            type: link
+            heading {
+                heading: Quick Look
+                alignment: center
+            }
+            layout {
+                sequence: 134
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 36
+                    items: {
+                        P36_ID: #PROJECT_ID#
+                    }
+                    clearCache: 36
+                    action: resetPagination
+                }
+                linkText: <span class="fa fa-align-justify" aria-hidden="true"></span>
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AG
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 74
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: T
+            }
+            config {
+                buildOption: @releases
+            }
+        )
+
+        column REQUIRES_REVIEWS (
+            type: plainText
+            heading {
+                heading: Requires Reviews
+            }
+            layout {
+                sequence: 174
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AL
+            }
+            config {
+                buildOption: @reviews
+            }
+        )
+
+        column REVIEWERS (
+            type: plainText
+            heading {
+                heading: Reviewers
+            }
+            layout {
+                sequence: 264
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AV
+            }
+            config {
+                buildOption: @reviews
+            }
+        )
+
+        column REVIEWS (
+            type: plainText
+            heading {
+                heading: Reviews
+            }
+            layout {
+                sequence: 274
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AW
+            }
+            config {
+                buildOption: @reviews
+            }
+        )
+
+        column REVIEW_CNT (
+            type: plainText
+            heading {
+                heading: Review Cnt
+                alignment: end
+            }
+            layout {
+                sequence: 254
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: AU
+            }
+            config {
+                buildOption: @reviews
+            }
+        )
+
+        column SIZE_DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Size Description
+            }
+            layout {
+                sequence: 214
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AP
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 374
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BG
+            }
+        )
+
+        column SYNC_IDENTIFIER (
+            type: plainText
+            heading {
+                heading: Sync Identifier
+            }
+            layout {
+                sequence: 324
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BB
+            }
+        )
+
+        column SYNC_SYSTEM_LINK (
+            type: plainText
+            heading {
+                heading: Sync System Link
+            }
+            layout {
+                sequence: 334
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BC
+            }
+        )
+
+        column TAGS (
+            type: plainText
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 144
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Target Complete
+            }
+            layout {
+                sequence: 84
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: BK
+            }
+        )
+
+        column THE_OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 10
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Projects Interactive Report
+        }
+
+        savedReport 134314365 (
+            visibility: alternativeDefault
+            name: Milestones and Reviews
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn INITIATIVE (
+                sequence: 1
+            )
+
+            displayColumn MILESTONES (
+                sequence: 8
+            )
+
+            displayColumn PCT_COMPLETE (
+                sequence: 6
+            )
+
+            displayColumn PRIORITY (
+                sequence: 5
+            )
+
+            displayColumn PROJECT (
+                sequence: 3
+            )
+
+            displayColumn PROJECT_SIZE (
+                sequence: 7
+            )
+
+            displayColumn QUICK_LOOK (
+                sequence: 12
+            )
+
+            displayColumn RELEASE (
+                sequence: 2
+            )
+
+            displayColumn REQUIRES_REVIEWS (
+                sequence: 10
+            )
+
+            displayColumn REVIEWS (
+                sequence: 9
+            )
+
+            displayColumn THE_OWNER (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 11
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+        savedReport 134314651 (
+            visibility: alternativeDefault
+            name: Effort and Days Remaining
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DAYS_REMAINING (
+                sequence: 9
+            )
+
+            displayColumn EFFORT_DAYS (
+                sequence: 8
+            )
+
+            displayColumn INITIATIVE (
+                sequence: 1
+            )
+
+            displayColumn LAST_COMMENT (
+                sequence: 10
+            )
+
+            displayColumn PCT_COMPLETE (
+                sequence: 6
+            )
+
+            displayColumn PRIORITY (
+                sequence: 5
+            )
+
+            displayColumn PROJECT (
+                sequence: 3
+            )
+
+            displayColumn PROJECT_SIZE (
+                sequence: 7
+            )
+
+            displayColumn QUICK_LOOK (
+                sequence: 12
+            )
+
+            displayColumn RELEASE (
+                sequence: 2
+            )
+
+            displayColumn THE_OWNER (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 11
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+        savedReport 85832204 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn INITIATIVE (
+                sequence: 1
+            )
+
+            displayColumn LAST_COMMENT (
+                sequence: 10
+            )
+
+            displayColumn PCT_COMPLETE (
+                sequence: 7
+            )
+
+            displayColumn PRIORITY (
+                sequence: 6
+            )
+
+            displayColumn PROJECT (
+                sequence: 4
+            )
+
+            displayColumn PROJECT_SIZE (
+                sequence: 9
+            )
+
+            displayColumn QUICK_LOOK (
+                sequence: 12
+            )
+
+            displayColumn RELEASE (
+                sequence: 2
+            )
+
+            displayColumn STATUS (
+                sequence: 8
+            )
+
+            displayColumn TARGET_COMPLETE (
+                sequence: 3
+            )
+
+            displayColumn THE_OWNER (
+                sequence: 5
+            )
+
+            displayColumn UPDATED (
+                sequence: 11
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_PROJ_JUMP_PG.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-dc (
+        name: refresh on dc
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @projects-interactive-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-dc-from-report (
+        name: refresh on dc from report
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @projects-interactive-report
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @projects-interactive-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-project-view (
+        itemName: LAST_PROJECT_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 86
+        }
+    )
+
+)
+

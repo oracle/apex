@@ -1,0 +1,250 @@
+taskDefinition REVIEW-PROJECT (
+    name: Review Project
+    type: approval
+    task {
+        subject: Review Project
+        initiatorCanComplete: true
+    }
+    advanced {
+        detailsPage: {
+            page: 3
+            items: {
+                P3_WF_TASK_ID: &TASK_ID.
+            }
+            clearCache: 3
+        }
+    }
+
+    parameter P_APPROVAL_TYPE (
+        label: Approval Type
+    )
+
+    parameter P_APP_ID (
+        label: App ID
+    )
+
+    parameter P_APP_NAME (
+        label: App Name
+    )
+
+    parameter P_NOMENCLATURE_PROJECT (
+        label: Nomenclature Project
+    )
+
+    parameter P_PROJECT_ID (
+        label: Project ID
+    )
+
+    parameter P_PROJECT_LINK (
+        label: Project Link
+    )
+
+    parameter P_PROJECT_NAME (
+        label: Project Name
+    )
+
+    parameter P_REVIEWER_EMAIL (
+        label: Reviewer Email
+    )
+
+    parameter P_REVIEWER_TM_ID (
+        label: Reviewer Team Member ID
+    )
+
+    parameter V_EMAIL_BODY (
+        label: Email Body
+    )
+
+    parameter V_EMAIL_SUBJECT (
+        label: Email Subject
+    )
+
+    parameter V_PROJECT_APPROVAL_CHAIN_ID (
+        label: Project Approval Chain ID
+    )
+
+    action add-comment-comments-are-passed-after-the-action (
+        name: Add Comment (comments are passed after the action...)
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_approvals.add_comments (
+                    p_project_approval_chain_id => :V_PROJECT_APPROVAL_CHAIN_ID,
+                    p_comments                  => :APEX$TASK_TEXT );
+                ```
+        }
+        execution {
+            onEvent: updateComment
+            sequence: 60
+        }
+        error {
+            logging: failure
+        }
+    )
+
+    action approve (
+        name: APPROVE
+        type: executeCode
+        source {
+            plsqlCode: sp_approvals.approve ( p_project_approval_chain_id => :V_PROJECT_APPROVAL_CHAIN_ID );
+        }
+        execution {
+            onEvent: complete
+            outcome: approved
+            sequence: 20
+        }
+        error {
+            logging: failure
+        }
+    )
+
+    action notify-reviewer (
+        name: Notify Reviewer
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.assignment_notification (
+                    p_team_member_id    => :P_REVIEWER_TM_ID,
+                    p_app_name          => :P_APP_NAME,
+                    p_app_id            => :P_APP_ID,
+                    p_project_id        => :P_PROJECT_ID,
+                    p_link              => :P_PROJECT_LINK,
+                    p_view_what         => :P_NOMENCLATURE_PROJECT,
+                    p_title             => :V_EMAIL_SUBJECT,
+                    p_email_contents    => :V_EMAIL_BODY,
+                    p_notification_type => 'APPROVAL' );
+                ```
+        }
+        execution {
+            onEvent: create
+            sequence: 100
+        }
+    )
+
+    action notify-reviewer-of-clarification-provided (
+        name: Notify Reviewer of Clarification Provided
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select team_member_id reviewer_tm_id, 
+                       :P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' - Clarification Provided for '||:P_APPROVAL_TYPE||' review' email_subject,
+                       'Clarification has been provided for the '||:P_APPROVAL_TYPE||' review of '||:P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||'.<br/>'||
+                                          'Clarification: '|| :APEX$TASK_TEXT email_body
+                  from sp_project_approval_chain
+                 where id = :V_PROJECT_APPROVAL_CHAIN_ID
+                   and status = 'PENDING'
+                ) loop
+                
+                sp_util.assignment_notification (
+                    p_team_member_id    => c1.reviewer_tm_id,
+                    p_app_name          => :P_APP_NAME,
+                    p_app_id            => :P_APP_ID,
+                    p_project_id        => :P_PROJECT_ID,
+                    p_link              => :P_PROJECT_LINK,
+                    p_view_what         => :P_NOMENCLATURE_PROJECT,
+                    p_title             => c1.email_subject,
+                    p_email_contents    => c1.email_body,
+                    p_notification_type => 'APPROVAL' );
+                
+                end loop;
+                ```
+        }
+        execution {
+            onEvent: submitInformation
+            sequence: 110
+        }
+    )
+
+    action notify-submitter-for-more-info (
+        name: Notify Submitter for more info
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select a.submitted_by_team_member_id submitter_tm_id, 
+                       :P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||' - Clarification Request for '||:P_APPROVAL_TYPE||' review' email_subject,
+                       'There is a clarification request for the '||:P_APPROVAL_TYPE||' review of '||:P_NOMENCLATURE_PROJECT||' '||:P_PROJECT_NAME||'.<br/>'||
+                                          'Request: '|| c.comments email_body
+                  from sp_project_approval_chain c,
+                       sp_project_approvals a
+                 where c.id = :V_PROJECT_APPROVAL_CHAIN_ID
+                   and c.project_approval_id = a.id
+                   and c.status = 'CLARIFICATION-REQUESTED'
+                   and c.final_yn = 'Y'
+                ) loop
+                
+                sp_util.assignment_notification (
+                    p_team_member_id    => c1.submitter_tm_id,
+                    p_app_name          => :P_APP_NAME,
+                    p_app_id            => :P_APP_ID,
+                    p_project_id        => :P_PROJECT_ID,
+                    p_link              => :P_PROJECT_LINK,
+                    p_view_what         => :P_NOMENCLATURE_PROJECT,
+                    p_title             => c1.email_subject,
+                    p_email_contents    => c1.email_body,
+                    p_notification_type => 'APPROVAL-CLARIFICATION' );
+                
+                end loop;
+                ```
+        }
+        execution {
+            onEvent: requestInformation
+            sequence: 80
+        }
+    )
+
+    action reject (
+        name: REJECT
+        type: executeCode
+        source {
+            plsqlCode: sp_approvals.reject( p_project_approval_chain_id => :V_PROJECT_APPROVAL_CHAIN_ID );
+        }
+        execution {
+            onEvent: complete
+            outcome: rejected
+            sequence: 30
+        }
+        error {
+            logging: failure
+        }
+    )
+
+    action request-clarification (
+        name: REQUEST_CLARIFICATION
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_approvals.request_clarification (
+                    p_project_approval_chain_id => :V_PROJECT_APPROVAL_CHAIN_ID,
+                    p_comments                  => :APEX$TASK_TEXT );
+                ```
+        }
+        execution {
+            onEvent: requestInformation
+            sequence: 40
+        }
+        error {
+            logging: failure
+        }
+    )
+
+    participant (
+        value {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select upper(email)
+                  from sp_team_members
+                 where id = :P_REVIEWER_TM_ID
+                ```
+        }
+    )
+
+)
+

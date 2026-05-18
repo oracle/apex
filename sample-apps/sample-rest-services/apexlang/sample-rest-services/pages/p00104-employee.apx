@@ -1,0 +1,539 @@
+page 104 (
+    name: Employee
+    alias: EMPLOYEE
+    title: Create / Edit Employee
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region employee (
+        name: EMPLOYEE
+        type: form
+        source {
+            location: restSource
+            restSource: @Employee_ords_rest_source
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+
+        parameter (
+            name: @query
+            value {
+                type: null
+            }
+        )
+
+        parameter (
+            name: @empno
+            value {
+                type: item
+                item: P104_EMPNO
+            }
+        )
+
+    )
+
+    pageItem P104_COMM (
+        type: numberField
+        label {
+            label: Commission
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: FML999G999G999G999G990D00
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @employee
+            column: COMM
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_DEPTNO (
+        type: selectList
+        label {
+            label: Department
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select dname   as d,
+                       deptno  as r
+                  from eba_demo_rest_department
+                 order by dname;
+                
+                ```
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 80
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee
+            column: DEPTNO
+            dataType: number
+        }
+        default {
+            type: static
+            staticValue: --select--
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_EMPNO (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @employee
+            slot: regionBody
+        }
+        source {
+            formRegion: @employee
+            column: EMPNO
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_ENAME (
+        type: textField
+        label {
+            label: Employee
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            formRegion: @employee
+            column: ENAME
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_HIREDATE (
+        type: datePicker
+        label {
+            label: Hire Date
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            formRegion: @employee
+            column: HIREDATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_JOB (
+        type: selectList
+        label {
+            label: Job
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select distinct job as display_value,
+                                job as return_value
+                  from eba_demo_rest_employee
+                 where job is not null
+                 order by job;
+                
+                ```
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 30
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee
+            column: JOB
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_MGR (
+        type: selectList
+        label {
+            label: Manager
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ename as d,
+                       mgr   as r
+                  from eba_demo_rest_employee
+                 order by mgr;
+                
+                ```
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 40
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @employee
+            column: MGR
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_REQ_LC (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P104_SAL (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: FML999G999G999G999G990D00
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @employee
+            column: SAL
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P104_EMPNO
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P104_EMPNO
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P104_EMPNO
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p104-req-lc (
+        itemName: P104_REQ_LC
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                LOWER(:REQUEST)
+                
+                ```
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 7488019213881001
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-employee (
+        name: Initialize form EMPLOYEE
+        type: formInitialization
+        formRegion: @employee
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 7485106807881000
+        }
+    )
+
+    process process-form-employee (
+        name: Process form EMPLOYEE
+        type: formAutoRowProcessing
+        formRegion: @employee
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Employee &P104_REQ_LC.d
+        }
+        advanced {
+            executionMappingIdentifier: 7485562900881000
+        }
+    )
+
+)
+

@@ -1,0 +1,91 @@
+appProcess clear-create-member-collections (
+    name: Clear Create Member Collections
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            apex_collection.delete_collection (
+               p_collection_name => 'BULK_MBRS_CREATE' );
+            apex_collection.delete_collection (
+               p_collection_name => 'BULK_MBRS_INVALID' );
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: @contribution-rights
+    }
+)
+
+appProcess default-time-zone (
+    name: Default Time Zone
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            declare
+              c integer := 0;
+            begin
+            for c1 in (
+               select TIMEZONE_PREFERENCE
+               from   eba_ca_tz_pref
+               where  USERID = upper(:APP_USER)) loop
+               --
+               if c1.TIMEZONE_PREFERENCE is not null then
+                   c := c + 1;
+                   APEX_UTIL.SET_SESSION_TIME_ZONE (P_TIME_ZONE => c1.TIMEZONE_PREFERENCE ); 
+                   :P100_TIMEZONE := c1.TIMEZONE_PREFERENCE;
+                   :F855_TIMEZONE := c1.TIMEZONE_PREFERENCE;
+               end if;
+               exit;
+            end loop;
+            if c = 0 then
+                    APEX_UTIL.SET_SESSION_TIME_ZONE (P_TIME_ZONE => 'US/Pacific'); 
+                   :P100_TIMEZONE := 'US/Pacific';
+                   :F855_TIMEZONE := 'US/Pacific';
+            end if;
+            
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: afterAuthentication
+    }
+    error {
+        errorMessage: Failed to default time zone
+    }
+)
+
+appProcess trim-all-page-items (
+    name: Trim All Page Items
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            begin
+                for c1 in (select item_name
+                           from apex_application_page_items
+                           where application_id = :APP_ID
+                               and page_id = :APP_PAGE_ID
+                               and display_as_code in ('NATIVE_TEXT_FIELD',
+                                                       'NATIVE_TEXTAREA',
+                                                       'NATIVE_NUMBER_FIELD') ) loop
+                    apex_util.set_session_state( c1.item_name,
+                        ltrim( rtrim( apex_util.get_session_state( c1.item_name ) ) )
+                    );
+                end loop;
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: afterSubmit
+    }
+    error {
+        displayLocation: onErrorPage
+    }
+)
+

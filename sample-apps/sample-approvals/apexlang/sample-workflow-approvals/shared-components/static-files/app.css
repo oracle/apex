@@ -1,0 +1,4 @@
+/* Prevent card regions from flashing initial row of empty cards before data load */
+.no-anim .a-CardView-item > div {
+    display: none;
+}

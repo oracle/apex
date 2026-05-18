@@ -1,0 +1,109 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample Vector Search
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode: <p>This application highlights the features and capabilities of AI Vector Search in Oracle APEX. Use this application to better understand the native and declarative functionality of Vector Search available in the Oracle Database 23ai.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-lg
+            ]
+        }
+    )
+
+    region app-name (
+        name: &APP_NAME.
+        type: staticContent
+        source {
+            htmlCode: <p>Demonstration of AI Vector Search in Oracle APEX</p>
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region app-navigation (
+        name: App Navigation
+        type: list
+        source {
+            list: @home-page-list
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: App
+        }
+        componentAppearance {
+            listTemplate: @/cards
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+                t-Cards--featured force-fa-lg
+                t-Cards--displayIcons
+                t-Cards--3cols
+                t-Cards--iconsRounded
+                t-Cards--animColorFill
+            ]
+        }
+    )
+
+    branch (
+        name: to Welcome Page
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        behavior {
+            target: {
+                page: 100
+            }
+        }
+        serverSideCondition {
+            type: item=value
+            item: INITIALIZED_AI_PROVIDER
+            value: NO
+        }
+    )
+
+)
+

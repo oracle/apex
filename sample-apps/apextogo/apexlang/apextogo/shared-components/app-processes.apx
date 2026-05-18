@@ -1,0 +1,22 @@
+appProcess initialize-shopping-cart-header (
+    name: Initialize Shopping Cart Header
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            :SHOPPING_CART_ITEMS := sample_restaurant_manage_orders.get_quantity;
+            :SHOPPING_CART_ICON  := case
+                                      when :SHOPPING_CART_ITEMS > 0
+                                      then 'fa-cart-full'
+                                      else 'fa-cart-empty'
+                                    end;
+            ```
+    }
+    execution {
+        sequence: 1
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+

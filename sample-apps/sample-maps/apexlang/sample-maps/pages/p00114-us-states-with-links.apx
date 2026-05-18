@@ -1,0 +1,144 @@
+page 114 (
+    name: US States with Links
+    alias: US-STATES-WITH-LINKS
+    title: &APP_NAME. - US States with Links
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About This Page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This map visualizes US states as <em>Extruded</em> polygons. Polygon color is derived from 
+                the "airport count" by state. The states and airports table are joined using the state name. 
+                Click on a state to be redirected to a <em>Faceted Search</em> page with more details.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-noOverlay
+                js-popup-callout
+                js-dialog-size480x320
+            ]
+        }
+        advanced {
+            htmlDomId: about_this_page
+            customAttributes: data-parent-element="#help_button"
+            regionDisplaySelector: true
+        }
+    )
+
+    region airports-by-state (
+        name: Airports by State
+        type: map
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        controls {
+            options: [
+                scaleBar
+                infiniteMap
+                rectangleZoom
+            ]
+        }
+        initialPositionAndZoom {
+            type: staticValues
+            longitude: -90
+            latitude: 35
+            zoomLevel: 3
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer airports-by-state (
+            name: Airports by State
+            layerType: polygons
+            layout {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with data as (
+                        select s.ID,
+                           s.NAME,
+                           s.STATE_CODE,
+                           ( select count( a.id ) 
+                               from eba_sample_map_airports a
+                              where commercial_ops > 0 and upper(s.name) = upper(a.state_name) ) airport_count,
+                           s.GEOMETRY
+                      from EBA_SAMPLE_MAP_SIMPLE_STATES s
+                    ) 
+                    select id,
+                           upper(name) as name,
+                           state_code,
+                           airport_count,
+                           airport_count * 10 as polygon_height,
+                           geometry
+                      from data
+                    ```
+            }
+            columnMapping {
+                geometryColumn: GEOMETRY
+                primaryKeyColumn: ID
+            }
+            appearance {
+                useColorScheme: true
+                colorScheme: diverging
+                schemeName: temps
+                colorValueColumn: AIRPORT_COUNT
+                fillOpacity: .7
+                strokeColor: #101010
+            }
+            tooltip {
+                column: NAME
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 110
+                    items: {
+                        P110_STATE: &NAME.
+                    }
+                    clearCache: 110
+                }
+            }
+            messages {
+                whenNoDataFound: No States found.
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,470 @@
+page 8 (
+    name: Store Regions
+    alias: STORE-REGIONS
+    title: Store Regions
+    pageGroup: @regions
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region store-regions (
+        name: Store Regions
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select id, 
+                       region_name, 
+                       is_default, 
+                       stores, 
+                       sales_trailing_30_days, 
+                       sales_prior_30_days,
+                       --
+                       -- sales trend
+                       --
+                       nvl(sales_trailing_30_days,0) - nvl(sales_prior_30_days,0) sales_trend,
+                       --
+                       -- sales trend percentage accounting for divide by zero errors
+                       --
+                       decode(nvl(sales_prior_30_days,0),0,null,
+                          round(nvl(sales_trailing_30_days,0) / nvl(sales_prior_30_days,0),2)) sales_trend_percentage,
+                       --
+                       -- average sales per store
+                       --
+                       to_number(decode(stores,0,0,sales_trailing_30_days/stores)) avg_store_sales
+                from (
+                --
+                -- inline view
+                --
+                select r.ID, 
+                       r.REGION_NAME,
+                       decode(r.is_default_yn,'Y','Yes','No') is_default,
+                       --
+                       nvl((select count(*) 
+                            from #OWNER#.OOW_DEMO_STORES s 
+                            where s.region_id = r.id),0) stores,
+                       --
+                       -- sales in the last 30 days
+                       --
+                       (select sum(QUANTITY*ITEM_PRICE) qp 
+                        from #OWNER#.OOW_DEMO_SALES_HISTORY h 
+                        where DATE_OF_SALE > sysdate - 30 and 
+                              h.store_id in (select id from OOW_DEMO_STORES s where s.region_id = r.id)) sales_trailing_30_days,
+                        --
+                        -- sales in the prior 30 days
+                        --
+                        (select sum(QUANTITY*ITEM_PRICE) qp 
+                        from #OWNER#.OOW_DEMO_SALES_HISTORY h 
+                        where DATE_OF_SALE > sysdate - 60 and 
+                              date_of_sale < sysdate - 30 and
+                              h.store_id in (select id from OOW_DEMO_STORES s where s.region_id = r.id)) sales_prior_30_days
+                from #OWNER#.OOW_DEMO_REGIONS r
+                ) ilv
+                  
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
+        }
+        actionsMenu {
+            savePublicReport: true
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2708389615873260088
+        }
+
+        column AVG_STORE_SALES (
+            type: plainText
+            heading {
+                heading: Average Sales per Store
+                alignment: end
+            }
+            layout {
+                sequence: 36
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: ID
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column IS_DEFAULT (
+            type: plainText
+            heading {
+                heading: Is Default
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column REGION_NAME (
+            type: link
+            heading {
+                heading: Region
+            }
+            layout {
+                sequence: 2
+            }
+            link {
+                target: {
+                    page: 15
+                    items: {
+                        P15_REGION_ID: #ID#
+                    }
+                    action: resetPagination
+                }
+                linkText: #REGION_NAME#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column SALES_PRIOR_30_DAYS (
+            type: plainText
+            heading {
+                heading: Sales Prior 30 Days
+                alignment: center
+            }
+            layout {
+                sequence: 46
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column SALES_TRAILING_30_DAYS (
+            type: plainText
+            heading {
+                heading: Sales Trailing 30 Days
+                alignment: end
+            }
+            layout {
+                sequence: 26
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column SALES_TREND (
+            type: plainText
+            heading {
+                heading: Sales Trend
+                alignment: center
+            }
+            layout {
+                sequence: 56
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column SALES_TREND_PERCENTAGE (
+            type: plainText
+            heading {
+                heading: Sales Trend Percentage
+                alignment: end
+            }
+            layout {
+                sequence: 66
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: S999G999G999G999G990D00
+            }
+            columnFormatting {
+                htmlExpression: #SALES_TREND_PERCENTAGE#%
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column STORES (
+            type: plainText
+            heading {
+                heading: Stores
+                alignment: end
+            }
+            layout {
+                sequence: 16
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        savedReport 27083913 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn AVG_STORE_SALES (
+                sequence: 6
+            )
+
+            displayColumn REGION_NAME (
+                sequence: 1
+            )
+
+            displayColumn SALES_PRIOR_30_DAYS (
+                sequence: 4
+            )
+
+            displayColumn SALES_TRAILING_30_DAYS (
+                sequence: 3
+            )
+
+            displayColumn SALES_TREND (
+                sequence: 5
+            )
+
+            displayColumn STORES (
+                sequence: 2
+            )
+
+            sort (
+                column: AVG_STORE_SALES
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            aggregate (
+                column: SALES_TRAILING_30_DAYS
+            )
+
+            aggregate (
+                column: STORES
+            )
+
+            aggregate (
+                column: SALES_PRIOR_30_DAYS
+            )
+
+            aggregate (
+                column: SALES_TREND
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add Region
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconRight
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                clearCache: 9
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 4
+            region: @store-regions
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                clearCache: [
+                    8
+                    RIR
+                ]
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

@@ -1,0 +1,276 @@
+page 1117 (
+    name: Sticky Mobile Footer
+    alias: STICKY-MOBILE-FOOTER
+    title: Sticky Mobile Footer
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: [
+            #DEFAULT#
+            js-pageStickyMobileHeader
+        ]
+    }
+    navigationMenu {
+        overrideUserInterfaceLevel: true
+        list: @ut-sample-navigation-menu
+        listPosition: side
+        listTemplate: @/side-navigation-menu
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads: apex.theme42demo.noNavigate();
+    }
+    security {
+        authentication: public
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @universal-theme-breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region page-footer (
+        name: Page Footer 2
+        type: staticContent
+        source {
+            htmlCode: Page Footer
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--stickToBottom
+                t-ButtonRegion--slimPadding
+            ]
+            cssClasses: u-tC
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: request=Value
+            value: sample2
+        }
+    )
+
+    region page-footer-2 (
+        name: Page Footer 1
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--stickToBottom
+                t-ButtonRegion--slimPadding
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: request=Value
+            value: sample1
+        }
+    )
+
+    region region-a (
+        name: Region A
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region A</h3>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                dm-Placeholder
+                h480
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-b (
+        name: Region B
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region B</h3>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                dm-Placeholder
+                h480
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-c (
+        name: Region C
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <span class="a-Icon icon-template-region"></span>
+                <h3>Region C</h3>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                dm-Placeholder
+                h480
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button button-a (
+        buttonName: BUTTON_A
+        label: Button A
+        layout {
+            sequence: 10
+            region: @page-footer
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+            icon: fa-list-ul
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button button-b (
+        buttonName: BUTTON_B
+        label: Button B
+        layout {
+            sequence: 20
+            region: @page-footer
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            hot: true
+            templateOptions: #DEFAULT#
+            icon: fa-pencil-square-o
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button menu (
+        buttonName: MENU
+        label: Menu
+        layout {
+            sequence: 10
+            region: @page-footer-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconRight
+            ]
+            icon: fa-bars
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Back
+        layout {
+            sequence: 20
+            region: @page-footer-2
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconLeft
+            ]
+            icon: fa-chevron-circle-left
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+)
+

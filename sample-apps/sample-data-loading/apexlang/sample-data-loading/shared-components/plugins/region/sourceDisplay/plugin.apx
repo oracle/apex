@@ -1,0 +1,100 @@
+plugin sourceDisplay (
+    name: Source Display
+    staticId: COM.ORACLE.APEX.DISPLAY_SOURCE
+    type: region
+    source {
+        plsqlCode:
+            ```plsql
+            function render (
+                    p_region              in apex_plugin.t_region,
+                    p_plugin              in apex_plugin.t_plugin,
+                    p_is_printer_friendly in boolean )
+                return apex_plugin.t_region_render_result
+            is
+                -- It's better to have named variables instead of using the generic ones,
+                -- makes the code more readable. We are using the same defaults for the
+                -- required attributes as in the plug-in attribute configuration, because
+                -- they can still be null. Keep them in sync!
+                c_region_static_id    constant varchar2(255) := p_region.attribute_01;
+                c_highlight_page_item constant varchar2(255) := p_region.attribute_02;
+            
+                l_highlight_term varchar2(4000) := '';
+            
+                cursor sql_csr( d_region_static_id in varchar2 ) is
+                    select source_type, 10 seq, null series_name, region_source source
+                    from apex_application_page_regions
+                    where application_id = :APP_ID
+                        and page_id = :APP_PAGE_ID
+                        and static_id = d_region_static_id
+                        and ( source_type_code like 'PLUGIN%'
+                            or source_type_code like 'STATIC_TEXT%'
+                            or source_type in (
+                                'Calendar',
+                                'Easy Calendar',
+                                'Interactive Report',
+                                'Interactive Grid',
+                                'List View',
+                                'Report',
+                                'PL/SQL',
+                                'Tabular Form'
+                            )
+                        )
+                    union all
+                    select reg.source_type, 10 seq, null series_name, to_clob(tr.tree_query) source
+                    from apex_application_page_regions reg,
+                        apex_application_page_trees tr
+                    where reg.application_id = :APP_ID
+                        and reg.page_id = :APP_PAGE_ID
+                        and reg.static_id = d_region_static_id
+                        and tr.application_id = reg.application_id
+                        and tr.page_id = reg.page_id
+                        and tr.region_id = reg.region_id
+                        and reg.source_type in ('JavaScript Tree')
+                    union all
+                    select reg.source_type, 10 seq, null series_name, to_clob(list_query) source
+                    from apex_application_page_regions reg,
+                        apex_application_lists li
+                    where reg.application_id = :APP_ID
+                        and reg.page_id = :APP_PAGE_ID
+                        and reg.static_id = d_region_static_id
+                        and li.application_id = reg.application_id
+                        and li.list_id = reg.list_id
+                        and reg.source_type in ( 'List' )
+                    order by 1, 2;
+                sql_rec sql_csr%ROWTYPE;
+            begin
+                if c_highlight_page_item is not null then
+                    l_highlight_term := apex_escape.html(trim(lower(v(c_highlight_page_item))));
+                end if;
+            
+                for sql_rec in sql_csr( c_region_static_id ) loop
+                    if sql_rec.series_name is not null then
+                        sys.htp.p('<p><strong>'||apex_escape.html(sql_rec.series_name)||':</strong></p>');
+                    end if;
+                    sys.htp.p('<pre>');
+                    if l_highlight_term is not null then
+                        sys.htp.p(replace(apex_escape.html(sql_rec.source),
+                            l_highlight_term,'<span class="highlight">'||l_highlight_term||'</span>'));
+                    else
+                        sys.htp.p(apex_escape.html(sql_rec.source));
+                    end if;
+                    sys.htp.p('</pre>');
+                end loop;
+            
+                return null;
+            end render;
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render
+    }
+    advanced {
+        substituteAttributeValues: true
+    }
+    information {
+        version: 5.0.1
+        helpText: This region plug-in is used to display the SQL Source region of an accompanying region.
+    }
+)
+

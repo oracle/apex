@@ -1,0 +1,60 @@
+pageGroup about-app (
+    name: About App
+)
+
+pageGroup activities (
+    name: Activities
+)
+
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup administrative-utilities (
+    name: Administrative Utilities
+)
+
+pageGroup areas (
+    name: Areas
+)
+
+pageGroup cross-project-reports (
+    name: Cross-Project Reports
+)
+
+pageGroup feedback (
+    name: Feedback
+)
+
+pageGroup groups (
+    name: Groups
+)
+
+pageGroup home (
+    name: Home
+)
+
+pageGroup initiatives (
+    name: Initiatives
+)
+
+pageGroup login (
+    name: Login
+)
+
+pageGroup projects (
+    name: Projects
+)
+
+pageGroup releases (
+    name: Releases
+)
+
+pageGroup reporting (
+    name: Reporting
+)
+
+pageGroup users (
+    name: Users
+)
+

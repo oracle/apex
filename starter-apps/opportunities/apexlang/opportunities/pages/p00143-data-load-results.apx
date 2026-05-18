@@ -1,0 +1,1818 @@
+page 143 (
+    name: Data Load Results
+    alias: DATA-LOAD-RESULTS
+    title: Data Load Results
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            /* apply u-Report--dataLoad CSS class to Data Load Report and hide empty columns */
+            apex.jQuery("table.standardLook").addClass("u-Report u-Report--standardLook");
+            apex.jQuery("table.u-Report--standardLook tr:nth-child(1) td:empty").css("display", "none");
+            apex.jQuery("table.u-Report--standardLook tr th:empty").css("display", "none");
+            apex.jQuery("table.u-Report--standardLook tr th:empty").each( function (idx, elem) { apex.jQuery("table.u-Report--standardLook tr td[headers=\""+apex.jQuery(elem).attr('id')+"\"]").css("display", "none");});
+            ```
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: Verify the data was uploaded correctly and click the <strong>Finish</strong> button.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region data-load-results (
+        name: Data Load Results
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            customAttributes: style="width:100%;max-width:none;"
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region data-load-wizard-progress (
+        name: Data Load Wizard Progress
+        type: list
+        source {
+            list: @data-load-wizard-progress-upload-accounts
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        componentAppearance {
+            listTemplate: @/wizard-progress
+            templateOptions: [
+                #DEFAULT#
+                t-WizardSteps--displayLabels
+            ]
+        }
+    )
+
+    region failed-records (
+        name: Failed Records
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select n001 as row_num,
+                       c049 as action,
+                       c048 as error,
+                       c001, c002, c003,
+                       c004, c005, c006,
+                       c007, c008, c009,
+                       c010, c011, c012,
+                       c013, c014, c015,
+                       c016, c017, c018,
+                       c019, c020, c021,
+                       c022, c023, c024,
+                       c025, c026, c027,
+                       c028, c029, c030,
+                       c031, c032, c033,
+                       c034, c035, c036,
+                       c037, c038, c040,
+                       c041, c042, c043,
+                       c044, c045
+                  from apex_collections
+                 where collection_name = 'LOAD_CONTENT'
+                   and c047 in ('FAILED') 
+                 order by seq_id
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: data-upload-result
+        }
+        advanced {
+            customAttributes: "style=\"width:100%;max-width:none;\" "
+        }
+        serverSideCondition {
+            type: itemIsNotNullAndNotZero
+            item: P143_ERROR_COUNT
+        }
+        componentAppearance {
+            templateType: predefined
+        }
+        pagination {
+            type: setPaginationSelectList
+            partialPageRefresh: false
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: plsqlFunctionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare  
+                    l_string varchar(32667);
+                begin
+                    l_string := wwv_flow_lang.system_message('DATA_LOAD.SEQUENCE_ACTION');
+                    l_string := l_string ||':'|| wwv_flow_lang.system_message('ERROR');
+                    for l_heading in ( select c005 as label
+                                         from apex_collections
+                                        where collection_name = 'LOAD_COL_HEAD'
+                                        order by seq_id )
+                    loop
+                        l_string := l_string || ':' || apex_escape.html(l_heading.label);
+                    end loop;
+                    return l_string;
+                end;
+                ```
+        }
+
+        column ACTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ACTION
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C001 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: C001
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C002 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: C002
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C003 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: C003
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C004 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: C004
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C005 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: C005
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C006 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: C006
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C007 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: C007
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C008 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: C008
+                alignment: center
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C009 (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: C009
+                alignment: center
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C010 (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: C010
+                alignment: center
+            }
+            layout {
+                sequence: 13
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C011 (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: C011
+                alignment: center
+            }
+            layout {
+                sequence: 14
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C012 (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: C012
+                alignment: center
+            }
+            layout {
+                sequence: 15
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C013 (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: C013
+                alignment: center
+            }
+            layout {
+                sequence: 16
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C014 (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: C014
+                alignment: center
+            }
+            layout {
+                sequence: 17
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C015 (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: C015
+                alignment: center
+            }
+            layout {
+                sequence: 18
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C016 (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: C016
+                alignment: center
+            }
+            layout {
+                sequence: 19
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C017 (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: C017
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C018 (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: C018
+                alignment: center
+            }
+            layout {
+                sequence: 21
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C019 (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            heading {
+                heading: C019
+                alignment: center
+            }
+            layout {
+                sequence: 22
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C020 (
+            reportColumnQueryId: 23
+            derivedColumn: N
+            heading {
+                heading: C020
+                alignment: center
+            }
+            layout {
+                sequence: 23
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C021 (
+            reportColumnQueryId: 24
+            derivedColumn: N
+            heading {
+                heading: C021
+                alignment: center
+            }
+            layout {
+                sequence: 24
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C022 (
+            reportColumnQueryId: 25
+            derivedColumn: N
+            heading {
+                heading: C022
+                alignment: center
+            }
+            layout {
+                sequence: 25
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C023 (
+            reportColumnQueryId: 26
+            derivedColumn: N
+            heading {
+                heading: C023
+                alignment: center
+            }
+            layout {
+                sequence: 26
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C024 (
+            reportColumnQueryId: 27
+            derivedColumn: N
+            heading {
+                heading: C024
+                alignment: center
+            }
+            layout {
+                sequence: 27
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C025 (
+            reportColumnQueryId: 28
+            derivedColumn: N
+            heading {
+                heading: C025
+                alignment: center
+            }
+            layout {
+                sequence: 28
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C026 (
+            reportColumnQueryId: 29
+            derivedColumn: N
+            heading {
+                heading: C026
+                alignment: center
+            }
+            layout {
+                sequence: 29
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C027 (
+            reportColumnQueryId: 30
+            derivedColumn: N
+            heading {
+                heading: C027
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C028 (
+            reportColumnQueryId: 31
+            derivedColumn: N
+            heading {
+                heading: C028
+                alignment: center
+            }
+            layout {
+                sequence: 31
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C029 (
+            reportColumnQueryId: 32
+            derivedColumn: N
+            heading {
+                heading: C029
+                alignment: center
+            }
+            layout {
+                sequence: 32
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C030 (
+            reportColumnQueryId: 33
+            derivedColumn: N
+            heading {
+                heading: C030
+                alignment: center
+            }
+            layout {
+                sequence: 33
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C031 (
+            reportColumnQueryId: 34
+            derivedColumn: N
+            heading {
+                heading: C031
+                alignment: center
+            }
+            layout {
+                sequence: 34
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C032 (
+            reportColumnQueryId: 35
+            derivedColumn: N
+            heading {
+                heading: C032
+                alignment: center
+            }
+            layout {
+                sequence: 35
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C033 (
+            reportColumnQueryId: 36
+            derivedColumn: N
+            heading {
+                heading: C033
+                alignment: center
+            }
+            layout {
+                sequence: 36
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C034 (
+            reportColumnQueryId: 37
+            derivedColumn: N
+            heading {
+                heading: C034
+                alignment: center
+            }
+            layout {
+                sequence: 37
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C035 (
+            reportColumnQueryId: 38
+            derivedColumn: N
+            heading {
+                heading: C035
+                alignment: center
+            }
+            layout {
+                sequence: 38
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C036 (
+            reportColumnQueryId: 39
+            derivedColumn: N
+            heading {
+                heading: C036
+                alignment: center
+            }
+            layout {
+                sequence: 39
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C037 (
+            reportColumnQueryId: 40
+            derivedColumn: N
+            heading {
+                heading: C037
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C038 (
+            reportColumnQueryId: 41
+            derivedColumn: N
+            heading {
+                heading: C038
+                alignment: center
+            }
+            layout {
+                sequence: 41
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C040 (
+            reportColumnQueryId: 42
+            derivedColumn: N
+            heading {
+                heading: C040
+                alignment: center
+            }
+            layout {
+                sequence: 42
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C041 (
+            reportColumnQueryId: 43
+            derivedColumn: N
+            heading {
+                heading: C041
+                alignment: center
+            }
+            layout {
+                sequence: 43
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C042 (
+            reportColumnQueryId: 44
+            derivedColumn: N
+            heading {
+                heading: C042
+                alignment: center
+            }
+            layout {
+                sequence: 44
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C043 (
+            reportColumnQueryId: 45
+            derivedColumn: N
+            heading {
+                heading: C043
+                alignment: center
+            }
+            layout {
+                sequence: 45
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C044 (
+            reportColumnQueryId: 46
+            derivedColumn: N
+            heading {
+                heading: C044
+                alignment: center
+            }
+            layout {
+                sequence: 46
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C045 (
+            reportColumnQueryId: 47
+            derivedColumn: N
+            heading {
+                heading: C045
+                alignment: center
+            }
+            layout {
+                sequence: 47
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ERROR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: ERROR
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROW_NUM (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: ROW_NUM
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region records-changed-by-another-user (
+        name: Records Changed by Another User.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select n001 as row_num,
+                       c049 as action,
+                       c048 as error,
+                       c001, c002, c003,
+                       c004, c005, c006,
+                       c007, c008, c009,
+                       c010, c011, c012,
+                       c013, c014, c015,
+                       c016, c017, c018,
+                       c019, c020, c021,
+                       c022, c023, c024,
+                       c025, c026, c027,
+                       c028, c029, c030,
+                       c031, c032, c033,
+                       c034, c035, c036,
+                       c037, c038, c040,
+                       c041, c042, c043,
+                       c044, c045
+                  from apex_collections
+                 where collection_name = 'LOAD_CONTENT'
+                   and c049 in ('REVIEW') 
+                 order by seq_id
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+            cssClasses: data-upload-result
+        }
+        advanced {
+            customAttributes: "style=\"width:100%;max-width:none;\" "
+        }
+        serverSideCondition {
+            type: itemIsNotNullAndNotZero
+            item: P143_REVIEW_COUNT
+        }
+        componentAppearance {
+            templateType: predefined
+        }
+        pagination {
+            type: setPaginationSelectList
+            partialPageRefresh: false
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+        heading {
+            type: plsqlFunctionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare  
+                    l_string varchar(32667);
+                begin
+                    l_string := wwv_flow_lang.system_message('DATA_LOAD.SEQUENCE_ACTION');
+                    l_string := l_string ||':'|| wwv_flow_lang.system_message('ERROR');
+                    for l_heading in ( select c005 as label
+                                         from apex_collections
+                                        where collection_name = 'LOAD_COL_HEAD'
+                                        order by seq_id )
+                    loop
+                        l_string := l_string || ':' || apex_escape.html(l_heading.label);
+                    end loop;
+                    return l_string;
+                end;
+                ```
+        }
+
+        column ACTION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: ACTION
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C001 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: C001
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C002 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: C002
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C003 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: C003
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C004 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: C004
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C005 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: C005
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C006 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: C006
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C007 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: C007
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C008 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: C008
+                alignment: center
+            }
+            layout {
+                sequence: 11
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C009 (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: C009
+                alignment: center
+            }
+            layout {
+                sequence: 12
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C010 (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: C010
+                alignment: center
+            }
+            layout {
+                sequence: 13
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C011 (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: C011
+                alignment: center
+            }
+            layout {
+                sequence: 14
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C012 (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: C012
+                alignment: center
+            }
+            layout {
+                sequence: 15
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C013 (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: C013
+                alignment: center
+            }
+            layout {
+                sequence: 16
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C014 (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: C014
+                alignment: center
+            }
+            layout {
+                sequence: 17
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C015 (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: C015
+                alignment: center
+            }
+            layout {
+                sequence: 18
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C016 (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: C016
+                alignment: center
+            }
+            layout {
+                sequence: 19
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C017 (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: C017
+                alignment: center
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C018 (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: C018
+                alignment: center
+            }
+            layout {
+                sequence: 21
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C019 (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            heading {
+                heading: C019
+                alignment: center
+            }
+            layout {
+                sequence: 22
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C020 (
+            reportColumnQueryId: 23
+            derivedColumn: N
+            heading {
+                heading: C020
+                alignment: center
+            }
+            layout {
+                sequence: 23
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C021 (
+            reportColumnQueryId: 24
+            derivedColumn: N
+            heading {
+                heading: C021
+                alignment: center
+            }
+            layout {
+                sequence: 24
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C022 (
+            reportColumnQueryId: 25
+            derivedColumn: N
+            heading {
+                heading: C022
+                alignment: center
+            }
+            layout {
+                sequence: 25
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C023 (
+            reportColumnQueryId: 26
+            derivedColumn: N
+            heading {
+                heading: C023
+                alignment: center
+            }
+            layout {
+                sequence: 26
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C024 (
+            reportColumnQueryId: 27
+            derivedColumn: N
+            heading {
+                heading: C024
+                alignment: center
+            }
+            layout {
+                sequence: 27
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C025 (
+            reportColumnQueryId: 28
+            derivedColumn: N
+            heading {
+                heading: C025
+                alignment: center
+            }
+            layout {
+                sequence: 28
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C026 (
+            reportColumnQueryId: 29
+            derivedColumn: N
+            heading {
+                heading: C026
+                alignment: center
+            }
+            layout {
+                sequence: 29
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C027 (
+            reportColumnQueryId: 30
+            derivedColumn: N
+            heading {
+                heading: C027
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C028 (
+            reportColumnQueryId: 31
+            derivedColumn: N
+            heading {
+                heading: C028
+                alignment: center
+            }
+            layout {
+                sequence: 31
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C029 (
+            reportColumnQueryId: 32
+            derivedColumn: N
+            heading {
+                heading: C029
+                alignment: center
+            }
+            layout {
+                sequence: 32
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C030 (
+            reportColumnQueryId: 33
+            derivedColumn: N
+            heading {
+                heading: C030
+                alignment: center
+            }
+            layout {
+                sequence: 33
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C031 (
+            reportColumnQueryId: 34
+            derivedColumn: N
+            heading {
+                heading: C031
+                alignment: center
+            }
+            layout {
+                sequence: 34
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C032 (
+            reportColumnQueryId: 35
+            derivedColumn: N
+            heading {
+                heading: C032
+                alignment: center
+            }
+            layout {
+                sequence: 35
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C033 (
+            reportColumnQueryId: 36
+            derivedColumn: N
+            heading {
+                heading: C033
+                alignment: center
+            }
+            layout {
+                sequence: 36
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C034 (
+            reportColumnQueryId: 37
+            derivedColumn: N
+            heading {
+                heading: C034
+                alignment: center
+            }
+            layout {
+                sequence: 37
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C035 (
+            reportColumnQueryId: 38
+            derivedColumn: N
+            heading {
+                heading: C035
+                alignment: center
+            }
+            layout {
+                sequence: 38
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C036 (
+            reportColumnQueryId: 39
+            derivedColumn: N
+            heading {
+                heading: C036
+                alignment: center
+            }
+            layout {
+                sequence: 39
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C037 (
+            reportColumnQueryId: 40
+            derivedColumn: N
+            heading {
+                heading: C037
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C038 (
+            reportColumnQueryId: 41
+            derivedColumn: N
+            heading {
+                heading: C038
+                alignment: center
+            }
+            layout {
+                sequence: 41
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C040 (
+            reportColumnQueryId: 42
+            derivedColumn: N
+            heading {
+                heading: C040
+                alignment: center
+            }
+            layout {
+                sequence: 42
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C041 (
+            reportColumnQueryId: 43
+            derivedColumn: N
+            heading {
+                heading: C041
+                alignment: center
+            }
+            layout {
+                sequence: 43
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C042 (
+            reportColumnQueryId: 44
+            derivedColumn: N
+            heading {
+                heading: C042
+                alignment: center
+            }
+            layout {
+                sequence: 44
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C043 (
+            reportColumnQueryId: 45
+            derivedColumn: N
+            heading {
+                heading: C043
+                alignment: center
+            }
+            layout {
+                sequence: 45
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C044 (
+            reportColumnQueryId: 46
+            derivedColumn: N
+            heading {
+                heading: C044
+                alignment: center
+            }
+            layout {
+                sequence: 46
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column C045 (
+            reportColumnQueryId: 47
+            derivedColumn: N
+            heading {
+                heading: C045
+                alignment: center
+            }
+            layout {
+                sequence: 47
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ERROR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: ERROR
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROW_NUM (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: ROW_NUM
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P143_ERROR_COUNT (
+        type: displayOnly
+        label {
+            label: Failed Row(s):
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @data-load-results
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery: select count(*) c from apex_collections where collection_name = 'LOAD_CONTENT' and c047 = 'FAILED'
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P143_INSERT_COUNT (
+        type: displayOnly
+        label {
+            label: Inserted Row(s):
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 10
+            region: @data-load-results
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P143_REVIEW_COUNT (
+        type: displayOnly
+        label {
+            label: To be Reviewed Row(s):
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @data-load-results
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P143_UPDATE_COUNT (
+        type: displayOnly
+        label {
+            label: Updated Row(s):
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 20
+            region: @data-load-results
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button finish (
+        buttonName: FINISH
+        label: Finish
+        layout {
+            sequence: 30
+            region: @data-load-results
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 33
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

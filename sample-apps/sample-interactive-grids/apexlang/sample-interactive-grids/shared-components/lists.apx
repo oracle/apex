@@ -1,0 +1,1554 @@
+list administration (
+    name: Administration
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data.  You can reset the sample data using this administrative page.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: Set application user interface theme style for all users.
+        }
+    )
+
+)
+
+list advanced-list (
+    name: Advanced List
+
+    entry advanced-delete (
+        label: Advanced Delete
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to customize Interactive Grid to focus on the task of deleting. Includes a custom row delete button.
+        }
+    )
+
+    entry client-validation (
+        label: Client Validation
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates using HTML5 form validation to implement client side validations.
+        }
+    )
+
+    entry custom-server-processing (
+        label: Custom Server Processing
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 57
+                clearCache: 57
+            }
+        }
+        userDefinedAttributes {
+            1: "Shows how to process the submitted interactive grid rows with custom PL/SQL logic. "
+        }
+    )
+
+    entry feature-customization (
+        label: Feature Customization
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to use JavaScript to customize feature configuration settings.
+        }
+    )
+
+    entry item-type-plugins (
+        label: Item Type Plugins
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 56
+                clearCache: 56
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to use an Item Type Plug-In ("Modern Star Rating") within an interactive grid.
+        }
+    )
+
+    entry tooltips (
+        label: Tooltips
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to integrate jQuery UI Tooltips to provide tooltips for Interactive Grid rows and cells.
+        }
+    )
+
+)
+
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry add-toolbar-button (
+        label: Add Toolbar Button
+        layout {
+            sequence: 40
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 14
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry advanced-delete (
+        label: Advanced Delete
+        layout {
+            sequence: 270
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 53
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry basic-editing (
+        label: Basic Editing
+        layout {
+            sequence: 160
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 30
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry basic-reporting (
+        label: Basic Reporting
+        layout {
+            sequence: 20
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry chart-view (
+        label: Chart View
+        layout {
+            sequence: 285
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 14
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry client-validation (
+        label: Client Validation
+        layout {
+            sequence: 250
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 51
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry column-groups (
+        label: Column Groups
+        layout {
+            sequence: 30
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry custom-server-processing (
+        label: Custom Server Processing
+        layout {
+            sequence: 320
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 57
+        }
+        link {
+            target: {
+                page: 57
+            }
+        }
+    )
+
+    entry delete-only (
+        label: Delete Only
+        layout {
+            sequence: 180
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry dynamic-actions (
+        label: Dynamic Actions
+        layout {
+            sequence: 215
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 58
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+    )
+
+    entry editing (
+        label: Editing
+        icon {
+            imageIconCssClasses: fa-pencil-square-o
+        }
+        layout {
+            sequence: 13
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry editing-dialog (
+        label: Editing (Dialog)
+        layout {
+            sequence: 300
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 54
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry feature-customization (
+        label: Feature Customization
+        layout {
+            sequence: 240
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 50
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry form-with-grid (
+        label: Form with Grid
+        layout {
+            sequence: 200
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 34
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry full-page-with-maximize (
+        label: Full Page with Maximize
+        layout {
+            sequence: 220
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 21
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                23
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry icon-and-detail-views (
+        label: Icon and Detail Views
+        layout {
+            sequence: 95
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 13
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry item-type-plug-ins (
+        label: Item Type Plug-Ins
+        layout {
+            sequence: 310
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 56
+        }
+        link {
+            target: {
+                page: 56
+            }
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        label: Linking to Interactive Grids
+        layout {
+            sequence: 330
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry load-more (
+        label: Load More
+        layout {
+            sequence: 150
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        layout {
+            sequence: 210
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 35
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry multiple-selection (
+        label: Multiple Selection
+        layout {
+            sequence: 70
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry oracle-text (
+        label: Oracle Text
+        layout {
+            sequence: 290
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 70
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry other-column-types (
+        label: Other Column Types
+        layout {
+            sequence: 172
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 36
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry pagination (
+        label: Pagination
+        icon {
+            imageIconCssClasses: fa-arrow-circle-o-right
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry people-paging (
+        label: People (paging)
+        layout {
+            sequence: 280
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 60
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry progressive-scroll (
+        label: Progressive Scroll
+        layout {
+            sequence: 145
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry protected-rows (
+        label: Protected Rows
+        layout {
+            sequence: 190
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 33
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry reporting (
+        label: Reporting
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry row-header (
+        label: Row Header
+        layout {
+            sequence: 50
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry saved-reports (
+        label: Saved Reports
+        layout {
+            sequence: 80
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 9
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry scroll (
+        label: Scroll
+        layout {
+            sequence: 140
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 19
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry scroll-with-maximize (
+        label: Scroll with Maximize
+        layout {
+            sequence: 230
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 22
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry sequence-row-header (
+        label: Sequence Row Header
+        layout {
+            sequence: 60
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry single-row-view (
+        label: Single Row View
+        layout {
+            sequence: 90
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry tooltips (
+        label: Tooltips
+        layout {
+            sequence: 260
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 52
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry traditional (
+        label: Traditional
+        layout {
+            sequence: 100
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry traditional-custom (
+        label: Traditional (Custom)
+        layout {
+            sequence: 120
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry traditional-select-list (
+        label: Traditional (Select List)
+        layout {
+            sequence: 130
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry traditional-total-rows (
+        label: Traditional (Total Rows)
+        layout {
+            sequence: 110
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry validation (
+        label: Validation
+        layout {
+            sequence: 170
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 31
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+)
+
+list editing-list (
+    name: Editing List
+
+    entry basic-editing (
+        label: Basic Editing
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a standard editable Interactive Grid.
+        }
+    )
+
+    entry delete-only (
+        label: Delete Only
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates changing a grid to only allow deletion of rows.
+        }
+    )
+
+    entry dynamic-actions (
+        label: Dynamic Actions
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 58
+                clearCache: 58
+            }
+        }
+        userDefinedAttributes {
+            1: This example shows how to use Dynamic Actions within an Interactive Grid.
+        }
+    )
+
+    entry editing-in-a-modal-dialog (
+        label: Editing in a modal dialog
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how interactive grids work in a modal dialog.
+        }
+    )
+
+    entry form-with-grid (
+        label: Form with Grid
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a single updateable record (form) and an editable report (grid).
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a master grid, with detail grids which display the child records for the selected master record.
+        }
+    )
+
+    entry other-column-types (
+        label: Other Column Types
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates some of the different column types that can be included.
+        }
+    )
+
+    entry people-paging (
+        label: People (paging)
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates editing a larger data set using traditional paging.
+        }
+    )
+
+    entry protected-rows (
+        label: Protected Rows
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how you can control the ability to update or delete rows.
+        }
+    )
+
+    entry validation (
+        label: Validation
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to include validation in your Interactive Grid.
+        }
+    )
+
+)
+
+list home-page-list (
+    name: Home Page List
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 14
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of advanced Interactive Grid techniques
+        }
+    )
+
+    entry editing (
+        label: Editing
+        icon {
+            imageIconCssClasses: fa-pencil-square-o
+        }
+        layout {
+            sequence: 13
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of the editing capabilities of Interactive Grid
+        }
+    )
+
+    entry pagination (
+        label: Pagination
+        icon {
+            imageIconCssClasses: fa-chevron-circle-right
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of pagination options of Interactive Grid
+        }
+    )
+
+    entry reporting (
+        label: Reporting
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of reporting (read-only) capabilities of Interactive Grid
+        }
+    )
+
+)
+
+list ig-report-linking-examples (
+    name: IG Report Linking Examples
+
+    entry clearing-report-settings (
+        label: Clearing report settings
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+                action: clearRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry filtering-report-for-salaries-greater-than (
+        label: Filtering Report for salaries greater than 3000
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 15
+                items: {
+                    IG_SAL: 3000
+                }
+                action: clearRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry invoking-a-saved-report (
+        label: Invoking a Saved Report
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+                action: resetRegions
+                request: IG_Roles
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry linking-to-a-saved-report (
+        label: Linking to a Saved Report
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 9
+                items: {
+                    IGGT_SAL: 3000
+                }
+                action: clearRegions
+                request: "IG[emp]_Main"
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry resetting-to-developer-defaults (
+        label: Resetting to Developer Defaults
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+)
+
+list navigation-bar-top (
+    name: Navigation Bar (Top)
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list pagination-list (
+    name: Pagination List
+
+    entry full-page-with-maximize (
+        label: Full Page with Maximize
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates traditional pagination but with the headers fixed to the page. Also includes the Universal Theme maximize region feature.
+        }
+    )
+
+    entry load-more (
+        label: Load More
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates progressive scrolling but with a Load More Rows button.
+        }
+    )
+
+    entry progressive-scroll (
+        label: Progressive Scroll
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates progressive or infinite scrolling.
+        }
+    )
+
+    entry scroll (
+        label: Scroll
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates virtual paging by scrolling.
+        }
+    )
+
+    entry scroll-with-maximize (
+        label: Scroll with Maximize
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates scroll pagination but with the headers fixed to the page. Also includes the Universal Theme maximize region feature.
+        }
+    )
+
+    entry traditional (
+        label: Traditional
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates traditional paging with next and previous buttons.
+        }
+    )
+
+    entry traditional-custom (
+        label: Traditional (Custom)
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates using advanced configuration to remove the page range and increase the number of links to 12.
+        }
+    )
+
+    entry traditional-select-list (
+        label: Traditional (Select List)
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates using advanced configuration to include a select list for the pages.
+        }
+    )
+
+    entry traditional-total-rows (
+        label: Traditional (Total Rows)
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates additional features available when the total number of rows is known.
+        }
+    )
+
+)
+
+list reporting-list (
+    name: Reporting List
+
+    entry add-toolbar-button (
+        label: Add Toolbar Button
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to add a toolbar button to an Interactive Grid region.
+        }
+    )
+
+    entry basic-reporting (
+        label: Basic Reporting
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a basic read only report.
+        }
+    )
+
+    entry chart-view (
+        label: Chart View
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates including a chart view within an Interactive Grid.
+        }
+    )
+
+    entry column-groups (
+        label: Column Groups
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how column groups can be applied to different columns.
+        }
+    )
+
+    entry icon-and-detail-views (
+        label: Icon and Detail Views
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates including icon and detail views within an Interactive Grid.
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        label: Linking to Interactive Grids
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates linking to an Interactive Grid.
+        }
+    )
+
+    entry multiple-selection (
+        label: Multiple Selection
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to utilize the rows selected to populate a second region.
+        }
+    )
+
+    entry row-header (
+        label: Row Header
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to add a row header to a report.
+        }
+    )
+
+    entry saved-reports (
+        label: Saved Reports
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrate the different types of saved reports.
+        }
+    )
+
+    entry sequence-row-header (
+        label: Sequence Row Header
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to add a sequence number for each row.
+        }
+    )
+
+    entry single-row-view (
+        label: Single Row View
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates including the single row view in a non-editable Interactive Grid.
+        }
+    )
+
+)
+

@@ -1,0 +1,283 @@
+page 204 (
+    name: Custom Result Row Template
+    alias: CUSTOM-RESULT-ROW-TEMPLATE
+    title: Custom Result Row Template
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .a-ResultsItem{
+                background: white;
+                border-radius: 25px;
+                box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                color: #394e6a;
+                padding: 0px;
+            }
+            .a-ResultItem-image{
+                padding: 0px;
+                background-color: powderblue;
+                border-top-left-radius: 25px;
+                border-bottom-left-radius: 25px;
+                object-fit: fill;
+            }
+            .a-ResultsItem-content{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin: 1rem;
+            }
+            .a-ResultsItem-title{
+                font-size: x-large;
+            }
+            .a-ResultsItem-title a{
+                color: #021431;
+            }
+            
+            .a-ResultsItem-subTitle{
+                padding: .5rem 0;
+            }
+            .a-ResultsItem-subTitle span{
+                color: #021431;
+            }
+            
+            .a-ResultsItem-price{
+                color: #056ac8;
+                font-size: xx-large;
+                font-weight: 700;
+            }
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page demonstrates how to change the default result row display template using HTML expressions and template directives. There are two approaches to achieve this:</p>
+                <ol>
+                <li>Changing the Search Configuration setting under <strong><em>Icon and Display &rarr; Default Result Row Template</em></strong>.</li>
+                <li>Changing the search region attributes under <strong><em>Custom Layout</em></strong>.</li>
+                </ol>
+                <p>Note that with the second approach, you cannot substitute the original column names directly, but rather the generic column names (such as <em>Primary Key</em>, <em>Title</em>, etc.).</p>
+                <p>To test this functionality, type a search query (such as "<strong>boy</strong>"). The associated search configurations (in this case, the <em>Products Search Configuration</em>) will be executed and all the relevant results will be displayed with the new result row template.</p>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                js-headingLevel-2
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: search
+            landmarkLabel: Products
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: [
+                #DEFAULT#
+                margin-top-sm
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+        settings {
+            searchPageItem: P204_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Enter a query to search for products.
+            noResultsFoundMessage: No products found.
+        }
+
+        searchSource product-search-configuration-custom-display (
+            name: Product Search Configuration Custom Display
+            searchConfig: @product_custom
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P204_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--large
+            ]
+            icon: fa-search
+            valuePlaceholder: Enter your search term, e.g. 'boy'
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 206
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 202
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction enter-key (
+        name: Enter key
+        execution {
+            sequence: 10
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P204_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                this.browserEvent.keyCode === 13
+                
+                ```
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

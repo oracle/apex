@@ -1,0 +1,858 @@
+page 10032 (
+    name: User Details
+    alias: USER_DETAILS
+    title: User Details
+    pageGroup: @administration
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    security {
+        authorizationScheme: @administrator
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @feature-access-control
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region form-on-manage-user-access (
+        name: Form on Manage User Access
+        type: form
+        source {
+            location: localDatabase
+            tableName: APEX_APPL_ACL_USERS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region verification-tokens (
+        name: Verification Tokens
+        type: classicReport
+        source {
+            location: localDatabase
+            tableName: EBA_EMA_VERIFY_TOKENS
+            whereClause: username = lower(:P10032_USER_NAME)
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: created_on desc
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                is-collapsed
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10032_ID
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column ACCESSED_ON (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Accessed
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ACCESS_ATTEMPTS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Access Attempts
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column CREATED_ON (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 30
+            }
+        )
+
+        column EXPIRED_YN (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Expired?
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no
+            }
+            layout {
+                sequence: 100
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EXPIRE_ON (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Expired
+            }
+            layout {
+                sequence: 110
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column RESET_BY (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Reset By
+            }
+            layout {
+                sequence: 130
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column RESET_ON (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Reset
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ROW_VERSION (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column TOKEN (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Token
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column UPDATED_ON (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column USERNAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column VERIFIED_YN (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Verified?
+            }
+            lov {
+                type: sharedComponent
+                lov: @yes-no
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P10032_APPLICATION_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @form-on-manage-user-access
+            slot: regionBody
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: APPLICATION_ID
+            dataType: number
+        }
+        default {
+            type: static
+            staticValue: &APP_ID.
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10032_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form-on-manage-user-access
+            slot: regionBody
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10032_IS_ACCOUNT_LOCKED_YN (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @form-on-manage-user-access
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P10032_ROLE_ID (
+        type: radioGroup
+        label {
+            label: Role
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @access-roles
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @form-on-manage-user-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: ROLE_IDS
+            dataType: varchar2
+        }
+        default {
+            type: sqlQuerySingleValue
+            sqlQuerySingleValue:
+                ```sql
+                select role_id
+                  from APEX_APPL_ACL_ROLES
+                 where application_id = :APP_ID 
+                   and role_name = 'Host'
+                ```
+        }
+    )
+
+    pageItem P10032_SEND_EMAIL_YN (
+        type: switch
+        label {
+            label: Send Email
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @form-on-manage-user-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10032_ID
+        }
+    )
+
+    pageItem P10032_USER_NAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @form-on-manage-user-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            valuePlaceholder: must be valid email
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @form-on-manage-user-access
+            column: USER_NAME
+            dataType: varchar2
+        }
+        readOnly {
+            type: itemIsNotNull
+            item: P10032_ID
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Add User
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10032_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10032_ID
+        }
+    )
+
+    button reset-verification (
+        buttonName: RESET_VERIFICATION
+        label: Reset Verification
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P10032_ID is not null and 
+                :P10032_IS_ACCOUNT_LOCKED_YN = 'Y'
+                ```
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10032_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-remove-yourself-from-administrator (
+        name: Cannot remove yourself from administrator
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                if :P10032_USER_NAME = :APP_USER and
+                    apex_acl.is_role_removed_from_user (
+                        p_application_id => :APP_ID,
+                        p_user_name      => :APP_USER,
+                        p_role_static_id => 'ADMINISTRATOR',
+                        p_role_ids       => apex_string.split_numbers(
+                                                p_str => case when :REQUEST = 'DELETE' then
+                                                             null
+                                                         else
+                                                             :P10032_ROLE_ID
+                                                         end,
+                                                p_sep => ':') ) then
+                    return false;
+                else
+                    return true;
+                end if;
+                ```
+        }
+        error {
+            errorMessage: You cannot remove administrator role from yourself.
+            displayLocation: inlineInNotification
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    validation email-valid (
+        name: email valid
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P10032_USER_NAME
+            regexp: "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}"
+        }
+        error {
+            errorMessage: Email is not valid
+            associatedItem: @P10032_USER_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    validation user-already-exists (
+        name: user already exists
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from apex_appl_acl_users 
+                 where application_id = :APP_ID
+                   and user_name_lc = lower(:P10032_USER_NAME)
+                ```
+        }
+        error {
+            errorMessage: user already exists.
+            associatedItem: @P10032_USER_NAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process add-user (
+        name: add user
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_ema_util.add_user (
+                    p_username      => :P10032_USER_NAME,
+                    p_role_id       => :P10032_ROLE_ID,
+                    p_send_email_yn => :P10032_SEND_EMAIL_YN,
+                    p_app_id        => :APP_ID,
+                    p_app_url       => case when :P10032_SEND_EMAIL_YN = 'Y' then :APP_URL end );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: User added.
+        }
+        error {
+            errorMessage: User failed to be added.
+        }
+        advanced {
+            executionMappingIdentifier: 4479971691421753318
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 46429009182863432911
+        }
+    )
+
+    process delete-user (
+        name: delete user
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                eba_ema_util.delete_user (
+                    p_username => :P10032_USER_NAME,
+                    p_app_id   => :APP_ID );
+                ```
+        }
+        execution {
+            sequence: 40
+        }
+        successMessage {
+            successMessage: User deleted.
+        }
+        error {
+            errorMessage: User failed to be deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 4479971417399753316
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process initialize-form-manage-user-access (
+        name: Initialize form Manage User Access
+        type: formInitialization
+        formRegion: @form-on-manage-user-access
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 46429008368452432910
+        }
+    )
+
+    process load-is-account-locked-yn (
+        name: load is_account_locked_yn
+        type: executeCode
+        source {
+            plsqlCode: :P10032_IS_ACCOUNT_LOCKED_YN := eba_ema_util.is_account_locked_yn (p_username => lower(:P10032_USER_NAME));
+        }
+        execution {
+            sequence: 20
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 9036721548938608747
+        }
+    )
+
+    process reset-verification (
+        name: Reset Verification
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select user_name_lc
+                      from APEX_APPL_ACL_USERS
+                     where id = :P10032_ID
+                       and application_id = :APP_ID 
+                ) loop
+                    eba_ema_util.reset_verification_tokens (
+                        p_username => c1.user_name_lc );
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        successMessage {
+            successMessage: Verification Reset.
+        }
+        error {
+            errorMessage: Verification failed to be reset.
+        }
+        advanced {
+            executionMappingIdentifier: 9036721404701608746
+        }
+        serverSideCondition {
+            whenButtonPressed: @reset-verification
+        }
+    )
+
+    process update-user-can-only-change-role (
+        name: update user (can only change role)
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select role_ids
+                      from apex_appl_acl_users 
+                     where id = :P10032_ID
+                       and application_id = :APP_ID 
+                ) loop
+                    if :P10032_ROLE_ID != c1.role_ids then
+                        eba_ema_util.update_user (
+                            p_username => :P10032_USER_NAME,
+                            p_role_id  => :P10032_ROLE_ID,
+                            p_app_id   => :APP_ID );
+                    end if;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: User change saved.
+        }
+        error {
+            errorMessage: User change failed to be saved.
+        }
+        advanced {
+            executionMappingIdentifier: 4479971312604753315
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

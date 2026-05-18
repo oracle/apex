@@ -1,0 +1,542 @@
+page 15 (
+    name: Edit
+    alias: EDIT6
+    title: Edit
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page contains one dynamic action called 'CALC COMMISSION'. This fires whenever either the 'Job' or 'Salary' page items change. Upon change, this does two things. Firstly an AJAX call is fired that retrieves the calculated commission (based on the current values for 'Job' and 'Salary') from calling a PL/SQL function. The 'Commission' page item is then set to the calculated commission. Secondly, the 'Commission' page item is highlighted to show an update has occurred.</p>
+                <p>It uses one native action ('Set Value' with a 'Set Type' of 'PL/SQL Function Body') and one plug-in action ('Highlight').</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region maintain-employee (
+        name: Maintain Employee
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P15_COMM (
+        type: numberField
+        label {
+            label: Commission
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMM
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_DEPTNO (
+        type: selectList
+        label {
+            label: Department
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p15-eba-demo-da-emp-deptno
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEPTNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_EMPNO (
+        type: textField
+        label {
+            label: Employee Number
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMPNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_ENAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENAME
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_HIREDATE (
+        type: datePicker
+        label {
+            label: Hire date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: HIREDATE
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_JOB (
+        type: selectList
+        label {
+            label: Job
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p15-eba-demo-da-emp-job
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: JOB
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_MGR (
+        type: popupLov
+        label {
+            label: Manager
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @p15-eba-demo-da-emp-mgr
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MGR
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_ROWID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @maintain-employee
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROWID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P15_SAL (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 70
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SAL
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 14
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_ROWID
+        }
+    )
+
+    dynamicAction calc-commission (
+        name: CALC COMMISSION
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: [
+                P15_JOB
+                P15_SAL
+            ]
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: plsqlFunctionBody
+                plsqlFunctionBody:
+                    ```plsql
+                    declare
+                        l_multiplier number := 0;
+                    begin
+                        -- determine multiplier based on job
+                        case :P15_JOB
+                            when 'ANALYST'      then l_multiplier := .1;
+                            when 'CLERK'        then l_multiplier := .2;
+                            when 'MANAGER'      then l_multiplier := .3;
+                            when 'PRESIDENT'    then l_multiplier := .4;
+                            when 'SALESMAN'     then l_multiplier := .3;
+                            else                     l_multiplier := .1;
+                        end case;
+                        -- return commission, which is calculated by multiplying salary by multiplier
+                        return :P15_SAL * l_multiplier;
+                    end;
+                    ```
+                itemsToSubmit: [
+                    P15_SAL
+                    P15_JOB
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P15_COMM
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action plugin-com-oracle-apex-highlight (
+            action: plugin/highlight
+            settings {
+                color: #E5FFCC
+                speed: normal
+            }
+            affectedElements {
+                selectionType: items
+                items: P15_COMM
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process fetch-row-from-eba-demo-da-emp (
+        name: Fetch Row from EBA_DEMO_DA_EMP
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P15_ROWID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2656134342550987092
+        }
+    )
+
+    process process-row-of-eba-demo-da-emp (
+        name: Process Row of EBA_DEMO_DA_EMP
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P15_ROWID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 2656134533381987093
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 2656134733094987093
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+)
+

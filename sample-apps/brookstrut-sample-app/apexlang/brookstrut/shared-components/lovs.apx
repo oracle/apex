@@ -1,0 +1,475 @@
+lov auto-refresh (
+    name: AUTO REFRESH
+    source {
+        location: staticValues
+    }
+
+    entry every-1-minute (
+        sequence: 40
+        display: Every 1 minute
+        return: 40
+    )
+
+    entry every-10-seconds (
+        sequence: 20
+        display: Every 10 seconds
+        return: 10
+    )
+
+    entry every-30-seconds (
+        sequence: 30
+        display: Every 30 seconds
+        return: 30
+    )
+
+    entry every-5-seconds (
+        sequence: 10
+        display: Every 5 seconds
+        return: 5
+    )
+
+    entry every-second (
+        sequence: 1
+        display: Every Second
+        return: 1
+    )
+
+)
+
+lov desktop-theme-styles (
+    name: DESKTOP THEME STYLES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select s.name d,
+                   s.theme_style_id r
+              from apex_application_theme_styles s,
+                   apex_application_themes t
+             where s.application_id = :app_id
+               and t.application_id = s.application_id
+               and t.theme_number   = s.theme_number
+               and t.is_current     = 'Yes'
+             order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov food-types (
+    name: FOOD TYPES
+    source {
+        location: staticValues
+    }
+
+    entry drink (
+        sequence: 20
+        display: Drink
+        return: Drink
+    )
+
+    entry food (
+        sequence: 10
+        display: Food
+        return: Food
+    )
+
+    entry miscellaneous (
+        sequence: 40
+        display: Miscellaneous
+        return: Miscellaneous
+    )
+
+    entry snacks (
+        sequence: 50
+        display: Snacks
+        return: Snacks
+    )
+
+    entry soap (
+        sequence: 30
+        display: Soap
+        return: Soap
+    )
+
+)
+
+lov items (
+    name: ITEMS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select item_name d, id r
+            from   OOW_DEMO_items 
+            order by 1
+            ```
+    }
+)
+
+lov number-of-rows-per-page (
+    name: NUMBER OF ROWS PER PAGE
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 7
+        display: 1
+        return: 1
+    )
+
+    entry lov_data-2 (
+        sequence: 10
+        display: 5
+        return: 5
+    )
+
+    entry lov_data-3 (
+        sequence: 20
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-4 (
+        sequence: 30
+        display: 15
+        return: 15
+    )
+
+    entry lov_data-5 (
+        sequence: 40
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-6 (
+        sequence: 50
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-7 (
+        sequence: 60
+        display: 500
+        return: 500
+    )
+
+    entry lov_data-8 (
+        sequence: 80
+        display: 1,000
+        return: 1000
+    )
+
+)
+
+lov oow-demo-items-type (
+    name: OOW_DEMO_ITEMS.TYPE
+    source {
+        tableName: OOW_DEMO_ITEMS
+    }
+    columnMapping {
+        return: ID
+        display: TYPE
+        defaultSort: TYPE
+    }
+)
+
+lov oow-demo-stores-store-name (
+    name: OOW_DEMO_STORES.STORE_NAME
+    source {
+        tableName: OOW_DEMO_STORES
+    }
+    columnMapping {
+        return: ID
+        display: STORE_NAME
+        defaultSort: STORE_NAME
+    }
+)
+
+lov popularity-view-options-p (
+    name: POPULARITY VIEW OPTIONS P2
+    source {
+        location: staticValues
+    }
+
+    entry bubbles (
+        sequence: 1
+        display: Bubbles
+        return: B
+    )
+
+    entry interactive-report (
+        sequence: 2
+        display: Interactive Report
+        return: IR
+    )
+
+    entry treemap (
+        sequence: 3
+        display: Treemap
+        return: T
+    )
+
+)
+
+lov product-types (
+    name: PRODUCT_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry drink (
+        sequence: 1
+        display: Drink
+        return: Drink
+    )
+
+    entry food (
+        sequence: 2
+        display: Food
+        return: Food
+    )
+
+    entry miscellaneous (
+        sequence: 3
+        display: Miscellaneous
+        return: Miscellaneous
+    )
+
+    entry soap (
+        sequence: 4
+        display: Soap
+        return: Soap
+    )
+
+)
+
+lov regions (
+    name: REGIONS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select region_name, id 
+            from OOW_DEMO_REGIONS 
+            order by 1
+            ```
+    }
+)
+
+lov sales-history-navigation (
+    name: SALES HISTORY NAVIGATION
+    source {
+        location: staticValues
+    }
+
+    entry classic-report (
+        sequence: 10
+        display: Classic Report
+        return: 50
+    )
+
+    entry faceted-calendar (
+        sequence: 28
+        display: Faceted Calendar
+        return: 42
+    )
+
+    entry faceted-classic-report (
+        sequence: 27
+        display: Faceted Classic Report
+        return: 13
+    )
+
+    entry faceted-content-row (
+        sequence: 30
+        display: Faceted Content Row
+        return: 2
+    )
+
+    entry faceted-content-row-with-menus (
+        sequence: 40
+        display: Faceted Content Row with Menus
+        return: 38
+    )
+
+    entry interactive-grid (
+        sequence: 25
+        display: Interactive Grid
+        return: 23
+    )
+
+    entry interactive-report (
+        sequence: 20
+        display: Interactive Report
+        return: 51
+    )
+
+    entry smart-search-content-row-with-menu (
+        sequence: 60
+        display: Smart Search Content Row with Menu
+        return: 45
+    )
+
+    entry smart-search-with-classic-cards (
+        sequence: 50
+        display: Smart Search with Classic Cards
+        return: 46
+    )
+
+)
+
+lov store-type (
+    name: STORE TYPE
+    source {
+        location: staticValues
+    }
+
+    entry branch (
+        sequence: 20
+        display: Branch
+        return: Branch
+    )
+
+    entry flagship (
+        sequence: 10
+        display: Flagship
+        return: Flagship
+    )
+
+)
+
+lov stores (
+    name: STORES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select STORE_NAME d, ID r
+            from   OOW_DEMO_stores
+            order by 1
+            ```
+    }
+)
+
+lov storetype (
+    name: STORETYPE
+    source {
+        location: staticValues
+    }
+
+    entry branch (
+        sequence: 1
+        display: Branch
+        return: Branch
+    )
+
+    entry flagship (
+        sequence: 2
+        display: Flagship
+        return: Flagship
+    )
+
+)
+
+lov timeframe-2-weeks (
+    name: TIMEFRAME (2 WEEKS)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select wwv_flow_lang.system_message('N_MINUTES','15') d, 
+            trim(to_char(15/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','30') d, 
+            trim(to_char(30/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOUR','1') d, 
+            trim(to_char(1/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','90') d, 
+            trim(to_char(90/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','2') d, 
+            trim(to_char(1/12,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','3') d, 
+            trim(to_char(3/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','4') d, 
+            trim(to_char(4/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','5') d, 
+            trim(to_char(5/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','6') d, 
+            trim(to_char(6/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','8') d, 
+            trim(to_char(8/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','10') d, 
+            trim(to_char(10/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','12') d, 
+            trim(to_char(12/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','16') d, 
+            trim(to_char(16/24,'00000.9999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAY','1') d, trim(to_char(1,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','2') d, trim(to_char(2,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','3') d, trim(to_char(3,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','4') d, trim(to_char(4,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','5') d, trim(to_char(5,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEK','1') d, trim(to_char(7,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEKS','2') d, trim(to_char(14,'00000.9999999999')) t from dual
+            order by 2
+            ```
+    }
+)
+
+lov truncation-options (
+    name: TRUNCATION OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry retain-existing-history-and-generate-additional-history (
+        sequence: 10
+        display: Retain existing history and generate additional history
+        return: N
+    )
+
+    entry truncate-existing-sales-history-and-generate-new-history (
+        sequence: 20
+        display: Truncate existing sales history and generate new history
+        return: Y
+    )
+
+)
+
+lov user-theme-preference (
+    name: USER_THEME_PREFERENCE
+    source {
+        location: staticValues
+    }
+
+    entry allow-end-users-to-choose-theme-style (
+        sequence: 1
+        display: Allow End Users to choose Theme Style
+        return: Yes
+    )
+
+)
+

@@ -1,0 +1,93 @@
+jsonSource available_catalogs_by_release (
+    name: Available Catalogs by Release
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_UTIL_FACAT_MANIFEST
+    }
+    dataProfile {
+        name: Available Catalogs
+        rowSelector: .
+    }
+
+    dataProfileColumn manifest-json (
+        columnName: MANIFEST_JSON
+        source {
+            sequence: 0
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: MANIFEST_JSON
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn name (
+        columnName: NAME
+        source {
+            sequence: 2
+            parentColumn: @releases
+            dataType: varchar2
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: name
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn pillar-name (
+        columnName: PILLAR_NAME
+        source {
+            sequence: 3
+            parentColumn: @pillars
+            dataType: varchar2
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: .
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn pillars (
+        columnName: PILLARS
+        source {
+            sequence: 2
+            parentColumn: @releases
+            dataType: array
+        }
+        parsing {
+            pathExpression: pillars
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn releases (
+        columnName: RELEASES
+        source {
+            sequence: 1
+            parentColumn: @manifest-json
+            dataType: array
+        }
+        parsing {
+            pathExpression: releases
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+)
+

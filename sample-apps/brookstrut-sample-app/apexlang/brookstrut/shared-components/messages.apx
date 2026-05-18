@@ -1,0 +1,84 @@
+textMessage ADMINISTRATION (
+    message {
+        text: Administration
+        language: en
+    }
+)
+
+textMessage HELP (
+    message {
+        text: Help
+        language: en
+    }
+)
+
+textMessage HELP_SIDEBAR (
+    message {
+        text: <h1 class="appNameHeader"> <img src="%0f_spacer.gif" class="appIcon %1" alt="" /> %2 </h1> <ul class="vapList"> <li> <span class="vLabel">App Version</span> <span class="vValue">%3</span> </li> <li> <span class="vLabel">Pages</span> <span class="vValue">%4</span> </li> <li> <span class="vLabel">Vendor</span> <span class="vValue">%5 </span> </li> </ul>
+        language: en
+    }
+)
+
+textMessage LOGOUT (
+    message {
+        text: Logout
+        language: en
+    }
+)
+
+textMessage N_DAY (
+    message {
+        text: %0 day
+        language: en
+    }
+)
+
+textMessage N_DAYS (
+    message {
+        text: %0 days
+        language: en
+    }
+)
+
+textMessage N_HOUR (
+    message {
+        text: %0 hour
+        language: en
+    }
+)
+
+textMessage N_HOURS (
+    message {
+        text: %0 hours
+        language: en
+    }
+)
+
+textMessage N_MINUTES (
+    message {
+        text: %0 minutes
+        language: en
+    }
+)
+
+textMessage N_WEEK (
+    message {
+        text: %0 week
+        language: en
+    }
+)
+
+textMessage N_WEEKS (
+    message {
+        text: %0 weeks
+        language: en
+    }
+)
+
+textMessage USER (
+    message {
+        text: User
+        language: en
+    }
+)
+

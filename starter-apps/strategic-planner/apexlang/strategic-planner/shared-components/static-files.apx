@@ -1,0 +1,50 @@
+file default-user-avatar.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "js/sp-search.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "js/sp-search.min.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "js/spCommentImageSupport.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "js/spCommentImageSupport.min.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file strategic-planner.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file strategic-planner_transparent.png (
+    mimeType: image/png
+    charSet: utf-8
+)
+

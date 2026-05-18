@@ -1,0 +1,33 @@
+classicNavigationBarEntry help (
+    label: Help
+    layout {
+        sequence: 10
+    }
+    icon {
+        imageIconCssClasses: fa-question-circle
+        altAttribute: fa-question
+    }
+    link {
+        target: {
+            page: help
+        }
+    }
+)
+
+classicNavigationBarEntry logout (
+    label: Logout
+    layout {
+        sequence: 20
+    }
+    icon {
+        height: 32
+        width: 32
+    }
+    link {
+        target: {
+            type: url
+            url: &LOGOUT_URL.
+        }
+    }
+)
+

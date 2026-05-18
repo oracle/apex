@@ -1,0 +1,466 @@
+page 14 (
+    name: &APPLICATION_TITLE. - Request Access
+    alias: REQUEST-ACCESS
+    title: &APPLICATION_TITLE. - Request Access
+    pageGroup: @request-access
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @self-service-requests
+    }
+
+    region hide-nobody (
+        name: hide nobody
+        type: staticContent
+        source {
+            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        advanced {
+            excludeTitleFromTranslation: true
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if apex_authentication.is_authenticated then
+                   return false;
+                else
+                   return true;
+                end if;
+                ```
+        }
+    )
+
+    region request-access (
+        name: Request Access
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>To access the &APPLICATION_TITLE. application you need to be an authorized user. If you are not already authorized, please submit a request using the form below.</p>
+                <br>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Form--stretchInputs
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P14_EMAIL_ADDRESS (
+        type: textField
+        label {
+            label: Email Address
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 40
+            region: @request-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMAIL_ADDRESS
+            used: always
+        }
+        default {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                if regexp_instr(:APP_USER,'^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\.(-?[a-zA-Z0-9+])*)+$')
+                = 1
+                   then return :APP_USER;
+                end if;
+                ```
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        help {
+            helpText: Please enter the email address we will use to send the results of your account request to. This field is limited to 255 characters.
+        }
+    )
+
+    pageItem P14_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @request-access
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P14_JUSTIFICATION (
+        type: textarea
+        label {
+            label: Justification
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 50
+            region: @request-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 3
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4000
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: JUSTIFICATION
+            used: always
+        }
+        help {
+            helpText: Please tell us why you would like access to &APPLICATION_TITLE.. This field is limited to 4,000 characters.
+        }
+    )
+
+    pageItem P14_STATUS (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @request-access
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: STATUS
+            used: always
+        }
+        default {
+            type: static
+            staticValue: pending
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P14_USERNAME (
+        type: textField
+        label {
+            label: Username
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @request-access
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            width: 64
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: USERNAME
+            used: always
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('USERNAME_FORMAT') = 'STRING'
+        }
+        help {
+            helpText: Please enter the username you would like to login with. This field is restricted to 255 characters.
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @request-access
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_VIEW.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Request Access
+        layout {
+            sequence: 20
+            region: @request-access
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation p14-email-address-already-has-proper-access (
+        name: P14_EMAIL_ADDRESS already has proper access
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_user_found       varchar2(1) := 'N';
+                   l_apex_user_found  varchar2(1) := 'N';
+                begin
+                   for c1 in (
+                      select 1
+                        from apex_appl_acl_users
+                       where application_id = :APP_ID
+                         and user_name_lc = lower(:P14_EMAIL_ADDRESS)
+                   ) loop
+                      l_user_found := 'Y';
+                   end loop;
+                
+                   -- not an application user
+                   if l_user_found = 'N' then
+                      return true;
+                   end if;
+                
+                   -- only if is an application user
+                   for c1 in (
+                      select 1
+                        from apex_applications
+                       where application_id = :APP_ID
+                         and authentication_scheme_type = 'Application Express Accounts'
+                   ) loop
+                      for c2 in (
+                         select 1
+                           from apex_workspace_apex_users
+                          where lower(user_name) = lower(:P14_EMAIL_ADDRESS)
+                      ) loop
+                         -- already have apex account
+                         return false;
+                      end loop;
+                
+                      return true;
+                   end loop;
+                end;
+                ```
+        }
+        error {
+            errorMessage: This Email Address already has access to this self-service system.
+            associatedItem: @P14_EMAIL_ADDRESS
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    validation p14-email-address-unique (
+        name: P14_EMAIL_ADDRESS Unique
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select 1 
+                     from eba_qpoll_access_requests
+                    where email_address = lower(:P14_EMAIL_ADDRESS)
+                      and status = 'pending'
+                ) loop
+                   return false;
+                end loop;
+                
+                return true;
+                ```
+        }
+        error {
+            errorMessage: Outstanding request for this email address already exists.
+            associatedItem: @P14_EMAIL_ADDRESS
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    validation p14-email-address-valid-format (
+        name: P14_EMAIL_ADDRESS valid format
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemMatchesRegexp
+            item: P14_EMAIL_ADDRESS
+            regexp: "^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\\.(-?[a-zA-Z0-9+])*)+$"
+        }
+        error {
+            errorMessage: Email Address is not in a valid format.
+            associatedItem: @P14_EMAIL_ADDRESS
+        }
+    )
+
+    validation p14-justification (
+        name: P14_JUSTIFICATION <= 4000
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: length(:P14_JUSTIFICATION) <= 4000
+        }
+        error {
+            errorMessage: Justification must be less than 4000 characters.
+            associatedItem: @P14_JUSTIFICATION
+        }
+    )
+
+    validation p14-username-not-null (
+        name: P14_USERNAME not null
+        execution {
+            sequence: 50
+        }
+        validation {
+            type: itemIsNotNull
+            item: P14_USERNAME
+        }
+        error {
+            errorMessage: #LABEL# must have some value.
+            associatedItem: @P14_USERNAME
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('USERNAME_FORMAT') = 'STRING'
+        }
+    )
+
+    computation p14-username (
+        itemName: P14_USERNAME
+        execution {
+            sequence: 10
+            point: afterSubmit
+        }
+        computation {
+            type: expression
+            plsqlExpression: upper(:P14_EMAIL_ADDRESS)
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_qpoll_fw.get_preference_value('USERNAME_FORMAT') = 'EMAIL'
+        }
+    )
+
+    process process-row-for-eba-qpoll-access-requests (
+        name: Process Row for EBA_QPOLL_ACCESS_REQUESTS
+        type: autoRowProcessing
+        target {
+            tableName: EBA_QPOLL_ACCESS_REQUESTS
+            pkColumn: ID
+            pkItem: P14_ID
+            supportedOperations: insert
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Your access request has been submitted. You will receive an email with login credentials upon approval.
+        }
+        error {
+            errorMessage: #SQLERRM#
+        }
+        advanced {
+            executionMappingIdentifier: 13902658876157643904
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 51
+                successMessage: false
+            }
+        }
+    )
+
+)
+

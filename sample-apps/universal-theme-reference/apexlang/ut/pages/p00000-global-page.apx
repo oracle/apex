@@ -1,0 +1,100 @@
+page 0 (
+    name: Page Zero
+
+    region items (
+        name: Items
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: topNavigation
+        }
+    )
+
+    region script (
+        name: Script
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <script>
+                const toggleRtl = ( ) => {
+                    if ( $('html').hasClass('u-RTL') ) {
+                        sessionStorage.removeItem('dir');
+                        $('html').removeClass('u-RTL').attr('dir', 'ltr');
+                    } else {
+                        sessionStorage.setItem('dir', 'rtl');
+                        $('html').addClass('u-RTL').attr('dir', 'rtl');
+                    }
+                };
+                
+                window.addEventListener('load', () => {
+                    if ( sessionStorage.getItem('dir') ) {
+                        toggleRtl();
+                    }
+                });
+                </script>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: banner
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region woops (
+        name: Woops.
+        type: staticContent
+        source {
+            htmlCode: You've stumbled on a page that doesn't exist.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--wizard
+                t-Alert--customIcons
+                t-Alert--info
+            ]
+            icon: fa-emoji-grin-sweat
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                400
+                403
+                404
+                406
+                5001
+                5002
+                5003
+                5004
+                5005
+                6306
+                700
+                701
+            ]
+        }
+    )
+
+    pageItem P0_THEME_STYLE_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @items
+            slot: regionBody
+        }
+    )
+
+)
+

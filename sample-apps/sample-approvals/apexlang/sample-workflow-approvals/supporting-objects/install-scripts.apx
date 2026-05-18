@@ -1,0 +1,107 @@
+installScript DropTables (
+    execution {
+        sequence: 1
+    }
+    script {
+        contentFile: droptables.sql
+    }
+)
+
+installScript InstallLaptopRequestsTable (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: installlaptoprequeststable.sql
+    }
+)
+
+installScript InstallLaptopRequestsTrigger (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: installlaptoprequeststrigger.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: trigger
+        name: EBA_DEMO_APPR_LAPTOP_REQUESTS_T
+    )
+
+)
+
+installScript InstallOtherSchemaObjects (
+    execution {
+        sequence: 15
+    }
+    script {
+        contentFile: installotherschemaobjects.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_LAPTOP_STOCK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_VACATION
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_DEMO_APPR
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_DEMO_APPR_DATA
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_DEPT
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_EMP
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_APPROVERS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_SAL_HISTORY
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: EBA_DEMO_APPR_APPRAISALS
+    )
+
+)
+
+installScript InstallSampleData (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: installsampledata.sql
+    }
+)
+

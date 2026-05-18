@@ -1,0 +1,245 @@
+page 50 (
+    name: Unmark as Duplicate
+    alias: UNMARK-AS-DUPLICATE
+    title: Not a Duplicate
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region archive (
+        name: Archive
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region button-container (
+        name: Button Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P50_DUPLICATE_OF (
+        type: displayOnly
+        label {
+            label: Marked as duplicate of
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-projects-project
+        }
+        layout {
+            sequence: 30
+            region: @archive
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P50_PROJECT (
+        type: displayOnly
+        label {
+            label: &NOMENCLATURE_PROJECT.
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @archive
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P50_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @archive
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button cancel (
+        buttonName: Cancel
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button mark-as-duplicate (
+        buttonName: mark_as_duplicate
+        label: Not a Duplicate
+        layout {
+            sequence: 10
+            region: @button-container
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close-dialog (
+        name: close dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation p50-duplicate-of (
+        itemName: P50_DUPLICATE_OF
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project
+                from sp_projects p
+                where id = (
+                    select DUPLICATE_OF_PROJECT_ID
+                    from sp_projects p2 
+                    where id = :P50_PROJECT_ID)
+                ```
+        }
+    )
+
+    computation p50-project (
+        itemName: P50_PROJECT
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project
+                from sp_projects p
+                where id = :P50_PROJECT_ID
+                ```
+        }
+    )
+
+    process unmark-as-dupicate (
+        name: unmark as dupicate
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.unmark_proj_as_duplicate (
+                    p_project_id       => :P50_PROJECT_ID);
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Not a duplicate
+        }
+        advanced {
+            executionMappingIdentifier: 11672103213563434030
+        }
+        serverSideCondition {
+            whenButtonPressed: @mark-as-duplicate
+        }
+    )
+
+    branch (
+        name: back to project
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 3
+                items: {
+                    P3_PROJECT_ID: &P50_PROJECT_ID.
+                }
+                clearCache: 3
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

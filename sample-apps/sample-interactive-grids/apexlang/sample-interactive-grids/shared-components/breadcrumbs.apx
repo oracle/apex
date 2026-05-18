@@ -1,0 +1,711 @@
+breadcrumb breadcrumb (
+    name: " Breadcrumb"
+
+    entry add-toolbar-button (
+        name: Add Toolbar Button
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry administration (
+        name: Administration
+        pageNumber: 24
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry advanced (
+        name: Advanced
+        pageNumber: 40
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry advanced-delete (
+        name: Advanced Delete
+        pageNumber: 53
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry application-theme-style (
+        name: Application Theme Style
+        pageNumber: 26
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry basic-editing (
+        name: Basic Editing
+        pageNumber: 30
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry basic-reporting (
+        name: Basic Reporting
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry chart-view (
+        name: Chart View
+        pageNumber: 14
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry client-validation (
+        name: Client Validation
+        pageNumber: 51
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry column-groups (
+        name: Column Groups
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry custom-server-processing (
+        name: Custom Server Processing
+        pageNumber: 57
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 57
+            }
+        }
+    )
+
+    entry delete-only (
+        name: Delete Only
+        pageNumber: 32
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry dynamic-actions (
+        name: Dynamic Actions
+        pageNumber: 58
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+    )
+
+    entry edit-dialog (
+        name: Edit (Dialog)
+        pageNumber: 54
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 54
+                clearCache: [
+                    54
+                    55
+                ]
+            }
+        }
+    )
+
+    entry editing (
+        name: Editing
+        pageNumber: 39
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry feature-customization (
+        name: Feature Customization
+        pageNumber: 50
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry form-with-grid (
+        name: Form with Grid
+        pageNumber: 34
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry full-page-with-maximize (
+        name: Full Page with Maximize
+        pageNumber: 21
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry icon-and-detail-views (
+        name: Icon and Detail Views
+        pageNumber: 13
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry item-type-plug-ins (
+        name: Item Type Plug-Ins
+        pageNumber: 56
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 56
+            }
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        name: Linking to Interactive Grids
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry load-more (
+        name: Load More
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        name: Manage Sample Data
+        pageNumber: 25
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry master-detail (
+        name: Master Detail
+        pageNumber: 35
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry multiple-selection (
+        name: Multiple Selection
+        pageNumber: 8
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry oracle-text (
+        name: Oracle Text
+        pageNumber: 70
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry other-column-types (
+        name: Other Column Types
+        pageNumber: 36
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry pagination (
+        name: Pagination
+        pageNumber: 38
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry people-paging (
+        name: People (paging)
+        pageNumber: 60
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry progressive-scroll (
+        name: Progressive Scroll
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry protected-rows (
+        name: Protected Rows
+        pageNumber: 33
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry reporting (
+        name: Reporting
+        pageNumber: 37
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry row-header (
+        name: Row Header
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry saved-reports (
+        name: Saved Reports
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry scroll (
+        name: Scroll
+        pageNumber: 19
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry scroll-with-maximize (
+        name: Scroll with Maximize
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry sequence-row-header (
+        name: Sequence Row Header
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry single-row-view (
+        name: Single Row View
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry tooltips (
+        name: Tooltips
+        pageNumber: 52
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry traditional (
+        name: Traditional
+        pageNumber: 11
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry traditional-custom (
+        name: Traditional (Custom)
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry traditional-select-list (
+        name: Traditional (Select List)
+        pageNumber: 18
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry traditional-total-rows (
+        name: Traditional (Total Rows)
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @pagination
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry validation (
+        name: Validation
+        pageNumber: 31
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @editing
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+)
+

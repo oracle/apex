@@ -1,0 +1,58 @@
+appItem APPLICATION_TITLE (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+    }
+)
+
+appItem CALENDARS_FILTER (
+)
+
+appItem CALS_RESTRICTED_TO (
+)
+
+appItem CONTACT_EMAIL (
+)
+
+appItem EVENT_TYPES_FILTER (
+    security {
+        sessionStateProtection: checksumRequiredAppLevel
+    }
+)
+
+appItem EXTERNAL_INTERNAL_BO (
+    config {
+        buildOption: @include-external-internal-event-types
+    }
+)
+
+appItem EXTERNAL_INTERNAL_BO_NAME (
+    config {
+        buildOption: @include-external-internal-event-types
+    }
+)
+
+appItem F855_TIMEZONE (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+    }
+)
+
+appItem HOST_URL (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+        escapeSpecialChars: false
+    }
+)
+
+appItem LAST_VIEW (
+    security {
+        sessionStateProtection: checksumRequiredSessionLevel
+    }
+)
+
+appItem MULTIPLE_CAL_BO (
+)
+
+appItem MULTIPLE_CAL_BO_NAME (
+)
+

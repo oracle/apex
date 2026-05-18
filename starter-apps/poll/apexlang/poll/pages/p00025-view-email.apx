@@ -1,0 +1,115 @@
+page 25 (
+    name: View Email
+    alias: VIEW-EMAIL
+    title: View Email
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: [
+            #DEFAULT#
+            ui-dialog--stretch
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region preview-email (
+        name: Preview Email
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                   l_poll_url   varchar2(4000);
+                   l_body       clob;
+                   l_subject    varchar2(4000);
+                   l_html_body  clob;
+                   l_text_body  clob;
+                begin
+                
+                l_poll_url := '<a href="#">'||apex_escape.html(:POLL_NAME)||'</a>';
+                                                                     
+                l_body := replace(:P72_INVITE_BODY,'#POLL_LINK#',l_poll_url);
+                   
+                for c1 in (
+                    select
+                        sent_time,
+                        subject,
+                        apex_escape.html(text_body) message
+                    from eba_qpoll_emails
+                    where id = :P25_EMAIL_ID
+                ) loop
+                
+                   apex_mail.prepare_template (
+                      p_static_id       => 'INVITE',
+                      p_placeholders    => '{' || 
+                                           '    "SUBJECT":'           || apex_json.stringify( c1.subject ) || 
+                                           '   ,"APPLICATION_TITLE":' || apex_json.stringify( apex_escape.html(:APPLICATION_TITLE) ) || 
+                                           '   ,"OPT_OUT_TEXT":'      || apex_json.stringify( apex_lang.message('OPT_OUT_TEXT', 
+                                                                                              :APP_PATH || '/f?p=' || :APP_ID || ':optout',
+                                                                                              apex_escape.html(:APPLICATION_TITLE)) ) || 
+                                           '   ,"BODY":'  || apex_json.stringify( replace(c1.message,'#POLL_LINK#','<a href="#">'||:POLL_NAME||'</a>') ) || 
+                                           '}' , 
+                      p_application_id  => :APP_ID,
+                      p_subject         => l_subject,
+                      p_html            => l_html_body,
+                      p_text            => l_text_body );
+                      
+                   return l_html_body;
+                   
+                end loop;
+                      
+                end;
+                ```
+            pageItemsToSubmit: P25_EMAIL_ID
+        }
+        layout {
+            sequence: 30
+            parentRegion: @view-email
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region view-email (
+        name: View Email
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: view_email
+        }
+    )
+
+    pageItem P25_EMAIL_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @view-email
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

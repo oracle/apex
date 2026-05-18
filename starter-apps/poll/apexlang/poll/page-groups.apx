@@ -1,0 +1,40 @@
+pageGroup acl (
+    name: ACL
+)
+
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup communities (
+    name: Communities
+)
+
+pageGroup help (
+    name: Help
+)
+
+pageGroup home (
+    name: Home
+)
+
+pageGroup invite (
+    name: Invite
+)
+
+pageGroup login (
+    name: Login
+)
+
+pageGroup opt-out (
+    name: Opt Out
+)
+
+pageGroup polls (
+    name: Polls
+)
+
+pageGroup request-access (
+    name: Request Access
+)
+

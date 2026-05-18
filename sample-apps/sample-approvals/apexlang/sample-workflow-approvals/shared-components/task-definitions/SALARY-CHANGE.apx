@@ -1,0 +1,72 @@
+taskDefinition SALARY_CHANGE (
+    name: Salary Change
+    type: approval
+    task {
+        subject: Salary Change for &INITCAP_ENAME. from &SAL. to &P_NEW_SALARY.
+    }
+    deadline {
+        dueOnType: interval
+        interval: P7D
+    }
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select ename, sal, initcap(ename) as initcap_ename, job
+            from eba_demo_appr_emp where empno = :APEX$TASK_PK
+            ```
+    }
+    advanced {
+        detailsPage: {
+            page: 15
+            items: {
+                P15_TASK_ID: &TASK_ID.
+            }
+            clearCache: 15
+            action: resetPagination
+        }
+    }
+
+    parameter P_NEW_SALARY (
+        label: Proposed Salary
+    )
+
+    action on-approve (
+        name: On Approve
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                insert into eba_demo_appr_sal_history(empno,old_sal,new_sal,task_id,approval_date) 
+                select empno, sal, :P_NEW_SALARY, :APEX$TASK_ID, sysdate from eba_demo_appr_emp where empno = :APEX$TASK_PK;
+                update eba_demo_appr_emp set sal = :P_NEW_SALARY where empno = :APEX$TASK_PK;
+                
+                ```
+        }
+        execution {
+            onEvent: complete
+            outcome: approved
+            sequence: 1
+        }
+        successMessage {
+            successMessage: Salary change approved
+        }
+    )
+
+    participant (
+        type: businessAdministrator
+        value {
+            type: expression
+            plsqlExpression: eba_demo_appr.get_admin_for('SALARY_CHANGE', :APEX$TASK_PK, :JOB, :P_NEW_SALARY)
+        }
+    )
+
+    participant (
+        value {
+            type: expression
+            plsqlExpression: eba_demo_appr.get_approver_for('SALARY_CHANGE', :APEX$TASK_PK, :JOB, :P_NEW_SALARY)
+        }
+    )
+
+)
+

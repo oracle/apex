@@ -1,0 +1,206 @@
+restDataSource post (
+    name: EBA_REST_PRODUCT_WORKFLOWS_POST
+    source {
+        type: ords
+        remoteServer: @flexible_remote_servers
+        urlPathPrefix: /orders/product_post
+    }
+
+    operation get (
+        label: GET
+        operation {
+            urlPattern: .
+            httpMethod: get
+            databaseOperation: fetchRows
+        }
+    )
+
+    operation post (
+        label: POST
+        operation {
+            urlPattern: .
+            httpMethod: post
+            databaseOperation: insert
+        }
+        requestBody {
+            template:
+                ```
+                {
+                    
+                   "USER_ID":"#USER_ID#"
+                   ,"PRODUCT_NAME":"#PRODUCT_NAME#"
+                   ,"PRODUCT_DETAILS":"#PRODUCT_DETAILS#"
+                   
+                }
+                ```
+            versionNumber: 1
+        }
+    )
+
+    parameter content-type (
+        name: Content-Type
+        operation: @post
+        parameter {
+            type: httpHeader
+        }
+        value {
+            defaultValueType: staticValue
+            staticValue: application/json
+        }
+    )
+
+    parameter id (
+        name: id
+        value {
+            defaultValueType: staticValue
+            staticValue: 1
+        }
+    )
+
+    parameter product-details (
+        name: PRODUCT_DETAILS
+        operation: @post
+        parameter {
+            type: requestOrResponseBody
+        }
+    )
+
+    parameter product-name (
+        name: PRODUCT_NAME
+        operation: @post
+        parameter {
+            type: requestOrResponseBody
+        }
+    )
+
+    parameter user-id (
+        name: USER_ID
+        operation: @post
+        parameter {
+            type: requestOrResponseBody
+        }
+    )
+
+    dataProfile {
+        name: Post
+        rowSelector: .
+        containsSingleRow: true
+    }
+
+    dataProfileColumn created-date (
+        columnName: CREATED_DATE
+        source {
+            sequence: 4
+            dataType: timestampWithTimeZone
+        }
+        parsing {
+            pathExpression: created_date
+            formatMask: YYYY"-"MM"-"DD"T"HH24":"MI:SS.FF9TZR
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn href (
+        columnName: HREF
+        source {
+            sequence: 8
+            parentColumn: @links
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: href
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+        }
+        parsing {
+            pathExpression: id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn links (
+        columnName: LINKS
+        source {
+            sequence: 2
+            dataType: array
+        }
+        parsing {
+            pathExpression: links
+        }
+        advanced {
+            sourceDataType: array
+        }
+    )
+
+    dataProfileColumn product-details (
+        columnName: PRODUCT_DETAILS
+        source {
+            sequence: 6
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: product_details
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn product-name (
+        columnName: PRODUCT_NAME
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: product_name
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn rel (
+        columnName: REL
+        source {
+            sequence: 7
+            parentColumn: @links
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: rel
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn user-id (
+        columnName: USER_ID
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: user_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

@@ -1,0 +1,945 @@
+page 4016 (
+    name: Initiative Approval Chain
+    alias: INITIATIVE-APPROVAL-CHAIN1
+    title: Initiative Approval Chain
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @contribution-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @approvals
+    }
+
+    region add-new-entry (
+        name: Add New Entry
+        type: staticContent
+        layout {
+            sequence: 35
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                t-Form--noPadding
+                margin-bottom-sm
+            ]
+            cssClasses: u-flex
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region initiative (
+        name: Initiative
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region initiative-approval-chain (
+        name: Initiative Approval Chain
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.ID,
+                       c.initiative_approval_id,
+                       case when c.active_yn = 'N'
+                            then 'Inactive - '
+                            end ||
+                       case when c.alternate_team_member_id is not null and   
+                                 (c.alternate_start_date <= sysdate or c.alternate_start_date is null) and 
+                                 (c.alternate_end_date+1 > sysdate or c.alternate_end_date is null)
+                            then 'Alternate - '||
+                                 (select last_name||', '||first_name||' ('||lower(email)||')'
+                                    from sp_team_members
+                                   where id = c.alternate_team_member_id)
+                            else tm.last_name||', '||tm.first_name||' ('||lower(tm.email)||')' 
+                            end reviewer,
+                       c.approval_seq,
+                       lower(c.CREATED_BY) created_by,
+                       c.UPDATED
+                  from sp_initiative_approval_chain c,
+                       sp_team_members tm,
+                       SP_INITIATIVE_APPROVALS a
+                 where c.initiative_approval_id = a.id
+                   and c.team_member_id = tm.id
+                   and a.id = :P4016_INITIATIVE_APPROVAL_ID
+                 order by c.approval_seq
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column APPROVAL_SEQ (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DERIVED$01 (
+            reportColumnQueryId: 7
+            derivedColumn: Y
+            type: link
+            heading {
+                heading: Delete
+                alignment: center
+            }
+            layout {
+                sequence: 80
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    type: url
+                    url: javascript:void(null);
+                }
+                linkText: <span role="img" aria-label="Delete" class="fa fa-trash-o delete-entry" title="Delete"></span>
+                linkAttributes: data-id=#ID#
+            }
+            sorting {
+                sortable: false
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INITIATIVE_APPROVAL_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column REVIEWER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Reviewer
+            }
+            layout {
+                sequence: 40
+            }
+            link {
+                target: {
+                    page: 4015
+                    items: {
+                        P4015_ID: #ID#
+                    }
+                    clearCache: 4015
+                }
+                linkText: #REVIEWER#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P4016_APPROVAL_COUNT (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            region: @initiative
+            slot: regionBody
+        }
+    )
+
+    pageItem P4016_APPROVAL_SEQ (
+        type: numberField
+        label {
+            label: Sequence
+            alignment: left
+        }
+        settings {
+            virtualKeyboard: numeric
+        }
+        layout {
+            sequence: 10
+            region: @add-new-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P4016_DELETE_PROCEED_YN (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 50
+            region: @initiative
+            slot: regionBody
+        }
+    )
+
+    pageItem P4016_ID_TO_DELETE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @initiative
+            slot: regionBody
+        }
+    )
+
+    pageItem P4016_INITIATIVE_APPROVAL_ID (
+        type: displayOnly
+        label {
+            label: Initiative Approval
+            alignment: left
+        }
+        settings {
+            basedOn: lov
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.initiative ||' - '|| t.approval_type d,
+                       a.id r
+                  from sp_initiatives i,
+                       sp_initiative_approvals a,
+                       sp_approval_types t
+                 where i.id = a.initiative_id    
+                   and a.id = :P4016_INITIATIVE_APPROVAL_ID
+                   and a.approval_type_id = t.id
+                ```
+        }
+        layout {
+            sequence: 20
+            region: @initiative
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4016_OTHER_APPROVERS_COUNT (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 40
+            region: @initiative
+            slot: regionBody
+        }
+    )
+
+    pageItem P4016_TEAM_MEMBER_ID (
+        type: selectOne
+        label {
+            label: Team Member
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-member-contribs-and-admins
+        }
+        layout {
+            sequence: 10
+            region: @add-new-entry
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                margin-left-sm
+                margin-right-sm
+            ]
+            cssClasses: u-flex-grow-1
+            width: 50
+        }
+    )
+
+    button add (
+        buttonName: ADD
+        label: Add Approver
+        layout {
+            sequence: 30
+            region: @add-new-entry
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction add (
+        name: Add
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add
+        }
+
+        action native-alert (
+            action: alert
+            settings {
+                message: Must provide Sequence and Team Member
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: $v('P4016_TEAM_MEMBER_ID') === '' || $v('P4016_APPROVAL_SEQ') === ''
+            }
+        )
+
+        action native-alert-2 (
+            action: alert
+            settings {
+                message: Team Member already in Approval Chain.
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_initiative_approval_chain
+                     where initiative_approval_id = :P4016_INITIATIVE_APPROVAL_ID
+                       and team_member_id = :P4016_TEAM_MEMBER_ID
+                    ```
+            }
+        )
+
+        action native-alert-3 (
+            action: alert
+            settings {
+                message: Approval Sequence must be unique.
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_initiative_approval_chain
+                     where initiative_approval_id = :P4016_INITIATIVE_APPROVAL_ID
+                       and approval_seq = :P4016_APPROVAL_SEQ
+                    ```
+            }
+        )
+
+        action native-clear (
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: [
+                    P4016_APPROVAL_SEQ
+                    P4016_TEAM_MEMBER_ID
+                ]
+            }
+            execution {
+                sequence: 80
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: [
+                    P4016_INITIATIVE_APPROVAL_ID
+                    P4016_TEAM_MEMBER_ID
+                    P4016_APPROVAL_SEQ
+                ]
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    if :P4016_TEAM_MEMBER_ID is not null and :P4016_APPROVAL_SEQ is not null then
+                        insert into sp_initiative_approval_chain
+                            (INITIATIVE_APPROVAL_ID, TEAM_MEMBER_ID, APPROVAL_SEQ)
+                        values
+                            (:P4016_INITIATIVE_APPROVAL_ID, :P4016_TEAM_MEMBER_ID, :P4016_APPROVAL_SEQ);
+                    end if;
+                    ```
+                itemsToSubmit: [
+                    P4016_INITIATIVE_APPROVAL_ID
+                    P4016_TEAM_MEMBER_ID
+                    P4016_APPROVAL_SEQ
+                ]
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @initiative-approval-chain
+            }
+            execution {
+                sequence: 90
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction after-edit (
+        name: after edit
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @initiative-approval-chain
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @initiative-approval-chain
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction delete (
+        name: delete
+        execution {
+            sequence: 20
+            eventScope: dynamic
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .delete-entry
+        }
+
+        action active-approval-alert (
+            name: active approval alert
+            action: alert
+            settings {
+                message: User has active Approval assignments, cannot delete.
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item>value
+                item: P4016_APPROVAL_COUNT
+                value: 0
+            }
+        )
+
+        action check-if-only-active-approver (
+            name: check if only active approver
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from sp_initiative_approvals a,
+                           sp_initiative_approval_chain c
+                     where a.id = c.initiative_approval_id    
+                       and a.active_yn = 'Y'
+                       and c.active_yn = 'Y'
+                       and c.id != :P4016_ID_TO_DELETE
+                       and c.initiative_approval_id = (select initiative_approval_id
+                                                         from sp_initiative_approval_chain
+                                                        where c.id = :P4016_ID_TO_DELETE)
+                    ```
+                itemsToSubmit: P4016_ID_TO_DELETE
+            }
+            affectedElements {
+                selectionType: items
+                items: P4016_OTHER_APPROVERS_COUNT
+            }
+            execution {
+                sequence: 60
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P4016_DELETE_PROCEED_YN
+                value: N
+            }
+        )
+
+        action check-if-pending-approvals (
+            name: check if pending approvals
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select count(*)
+                      from sp_project_approval_chain
+                     where initiative_approval_chain_id = :P4016_ID_TO_DELETE
+                    ```
+                itemsToSubmit: P4016_ID_TO_DELETE
+            }
+            affectedElements {
+                selectionType: items
+                items: P4016_APPROVAL_COUNT
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action clear-counts (
+            name: clear counts
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: [
+                    P4016_APPROVAL_COUNT
+                    P4016_OTHER_APPROVERS_COUNT
+                    P4016_DELETE_PROCEED_YN
+                ]
+            }
+            execution {
+                sequence: 140
+                fireOnInit: false
+            }
+        )
+
+        action clear-id (
+            name: clear id
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: P4016_ID_TO_DELETE
+            }
+            execution {
+                sequence: 110
+                fireOnInit: false
+            }
+        )
+
+        action delete (
+            name: delete
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    delete from sp_initiative_approval_chain
+                     where id = :P4016_ID_TO_DELETE;
+                    ```
+                itemsToSubmit: P4016_ID_TO_DELETE
+            }
+            execution {
+                sequence: 100
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P4016_DELETE_PROCEED_YN
+                value: N
+            }
+        )
+
+        action native-confirm (
+            action: confirm
+            settings {
+                message: Are you sure you want to delete this entry?
+            }
+            execution {
+                sequence: 90
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P4016_DELETE_PROCEED_YN
+                value: N
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @initiative-approval-chain
+            }
+            execution {
+                sequence: 120
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P4016_DELETE_PROCEED_YN
+                value: N
+            }
+        )
+
+        action only-approver-alert (
+            name: only approver alert
+            action: alert
+            settings {
+                message: Only active approver, cannot delete.
+            }
+            execution {
+                sequence: 80
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P4016_OTHER_APPROVERS_COUNT
+                value: 0
+            }
+        )
+
+        action set-do-not-proceed (
+            name: set do not proceed
+            action: setValue
+            settings {
+                value: N
+            }
+            affectedElements {
+                selectionType: items
+                items: P4016_DELETE_PROCEED_YN
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item>value
+                item: P4016_APPROVAL_COUNT
+                value: 0
+            }
+        )
+
+        action set-do-not-proceed-2 (
+            name: set do not proceed
+            action: setValue
+            settings {
+                value: N
+            }
+            affectedElements {
+                selectionType: items
+                items: P4016_DELETE_PROCEED_YN
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item=value
+                item: P4016_OTHER_APPROVERS_COUNT
+                value: 0
+            }
+        )
+
+        action set-id-to-delete (
+            name: set ID to delete
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: $(this.triggeringElement).parent().data('id')
+            }
+            affectedElements {
+                selectionType: items
+                items: P4016_ID_TO_DELETE
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation no-dup-approval-seq (
+        name: no dup approval seq
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain
+                 where initiative_approval_id = :P4016_INITIATIVE_APPROVAL_ID
+                   and approval_seq = :P4016_APPROVAL_SEQ
+                ```
+        }
+        error {
+            errorMessage: Must use unique approval sequence
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+    validation no-dups (
+        name: no dups
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_approval_chain
+                 where initiative_approval_id = :P4016_INITIATIVE_APPROVAL_ID
+                   and team_member_id = :P4016_TEAM_MEMBER_ID
+                ```
+        }
+        error {
+            errorMessage: Duplicate entry found.
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+    process add-entry (
+        name: add entry
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                insert into sp_initiative_approval_chain
+                    (INITIATIVE_APPROVAL_ID, TEAM_MEMBER_ID, APPROVAL_SEQ, active_yn)
+                values
+                    (:P4016_INITIATIVE_APPROVAL_ID, :P4016_TEAM_MEMBER_ID, :P4016_APPROVAL_SEQ, 'Y');
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Entry added.
+        }
+        advanced {
+            executionMappingIdentifier: 13590397069861826808
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+    process cancel (
+        name: Cancel
+        type: closeDialog
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 13590400754029826845
+        }
+        serverSideCondition {
+            whenButtonPressed: @cancel
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 4016
+                items: {
+                    P4016_INITIATIVE_APPROVAL_ID: &P4016_INITIATIVE_APPROVAL_ID.
+                }
+                clearCache: 4016
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @add
+        }
+    )
+
+)
+

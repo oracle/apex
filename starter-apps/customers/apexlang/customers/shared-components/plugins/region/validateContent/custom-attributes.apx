@@ -1,0 +1,16 @@
+customAttribute attribute_01 (
+    apexlangName: validationLink
+    attribute: 1
+    name: Validation Link
+    type: linkToTargetPageUrl
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    help {
+        helpText: Enter a target page to be called when the user clicks the <strong>Validate</strong> button.
+    }
+)
+

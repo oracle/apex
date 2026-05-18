@@ -1,0 +1,144 @@
+list configure-docgen (
+    name: Configure DocGen
+)
+
+list examples (
+    name: Examples
+
+    entry customer-order (
+        label: Customer Order
+        layout {
+            sequence: 10
+        }
+        userDefinedAttributes {
+            1: A purchase order form, based on the Order / Order Item Sample Data Set.
+            2: document-screenshots/customer-order.png
+            3: templates/customer-order.docx
+            4: ORDER
+        }
+    )
+
+    entry employee-overview (
+        label: Employee Overview
+        layout {
+            sequence: 20
+        }
+        userDefinedAttributes {
+            1: A report with a table containing employee details.
+            2: document-screenshots/employees.png
+            3: templates/employees.docx
+            4: EMPLOYEES
+        }
+    )
+
+    entry employees-per-department (
+        label: Employees Per Department
+        layout {
+            sequence: 30
+        }
+        userDefinedAttributes {
+            1: A report with employees per department per page.
+            2: document-screenshots/emp_per_dept.png
+            3: templates/emp_per_dept.docx
+            4: EMP_PER_DEPT
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10010
+            }
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 60
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 70
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+

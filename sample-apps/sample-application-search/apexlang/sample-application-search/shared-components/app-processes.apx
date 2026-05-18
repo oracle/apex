@@ -1,0 +1,21 @@
+appProcess load-products-images (
+    name: Load Products Images
+    type: executeCode
+    source {
+        plsqlCode:
+            ```plsql
+            begin
+                eba_demo_search_data_pkg.load_product_images(:APP_ID,'product_images.zip');
+            end;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: newSession
+    }
+    serverSideCondition {
+        type: noRowsReturned
+        sqlQuery: select * from eba_demo_search_products where product_image is not null
+    }
+)
+

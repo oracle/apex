@@ -1,0 +1,956 @@
+list administration (
+    name: Administration
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data.  You can remove or recreate sample data using this administrative page.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Set application user interface default theme style and determine whether end users can choose between public theme styles.
+        }
+    )
+
+)
+
+list calendar-styling (
+    name: Calendar Styling
+
+    entry custom-css-classes (
+        label: Custom CSS Classes
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+        userDefinedAttributes {
+            1: This page shows custom styling of calendar events using your own CSS classes.
+        }
+    )
+
+    entry custom-event-icons (
+        label: Custom Event Icons
+        icon {
+            imageIconCssClasses: fa-square-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+        userDefinedAttributes {
+            1: "Add custom icons to your calendar events. "
+        }
+    )
+
+)
+
+list calendars-and-dynamic-actions (
+    name: Calendars and Dynamic Actions
+
+    entry calendar-with-report (
+        label: Calendar with Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+        userDefinedAttributes {
+            1: This page contains a classic report region which is always in sync with the Calendar view, i.e. shows only data which is also visible on the calendar.
+        }
+    )
+
+    entry copy-events-by-click (
+        label: Copy Events by Click
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+        userDefinedAttributes {
+            1: This page shows, how existing calendar events can be copied with a simple mouse click.
+        }
+    )
+
+    entry create-calendar-events (
+        label: Create Calendar Events
+        icon {
+            imageIconCssClasses: fa-calendar-plus-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+        userDefinedAttributes {
+            1: Select a date range in the calendar and have a new event being created in the database immediately.
+        }
+    )
+
+    entry custom-drag-and-drop-handlers (
+        label: Custom Drag and Drop Handlers
+        icon {
+            imageIconCssClasses: fa-calendar-pointer
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+        userDefinedAttributes {
+            1: Explore how to capture drag and drop events with dynamic actions.
+        }
+    )
+
+    entry delete-events-by-click (
+        label: Delete Events By Click
+        icon {
+            imageIconCssClasses: fa-calendar-times-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+        userDefinedAttributes {
+            1: Delete a calendar event in the database by simply clicking it in the Calendar.
+        }
+    )
+
+)
+
+list calendars-and-javascript (
+    name: Calendars and Javascript
+
+    entry calendar-client-events (
+        label: Calendar Client Events
+        icon {
+            imageIconCssClasses: fa-calendar-plus-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 73
+            }
+        }
+        userDefinedAttributes {
+            1: Add "client-only" events" to your calendar view with JavaScript. Edit them and when ready, save to the database.
+        }
+    )
+
+    entry custom-navigation (
+        label: Custom Navigation
+        icon {
+            imageIconCssClasses: fa-calendar-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+        userDefinedAttributes {
+            1: Use APEX components like buttons or page items to navigate within your Calendar.
+        }
+    )
+
+    entry query-calendar-status (
+        label: Query Calendar Status
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+        userDefinedAttributes {
+            1: This page shows how to get the current calendar status with the FullCalendar JavaScript API.
+        }
+    )
+
+    entry schedule-builder (
+        label: Schedule Builder
+        icon {
+            imageIconCssClasses: fa-apex
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+        userDefinedAttributes {
+            1: Explore how to create a <i>Schedule Builder</i> with Application Express
+        }
+    )
+
+)
+
+list custom-calendar-initialization (
+    name: Custom Calendar Initialization
+
+    entry weekly-schedule (
+        label: Weekly schedule
+        icon {
+            imageIconCssClasses: fa-calendar-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+        userDefinedAttributes {
+            1: This example customizes the weekly view to act as a conference schedule without day dates. Column headings are set to week names, a custom title is being used and nightly hours are removed from the calendar.
+        }
+    )
+
+)
+
+list home-page-list (
+    name: Home Page List
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Administer this Sample Application.
+        }
+    )
+
+    entry calendar-styling (
+        label: Calendar Styling
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+        userDefinedAttributes {
+            1: Apply custom styles to your Calendar region. Change colors, fonts or add icons to your calendar events.
+        }
+    )
+
+    entry calendars-and-javascript (
+        label: Calendars and Javascript
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+        userDefinedAttributes {
+            1: Use the FullCalendar Javascript API and fully exploit the capabilities of your calendar component.
+        }
+    )
+
+    entry dynamic-action-examples (
+        label: Dynamic Action Examples
+        icon {
+            imageIconCssClasses: fa-calendar-check-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        userDefinedAttributes {
+            1: These Calendar Regions are using Dynamic Actions to communicate with other page components of your APEX application.
+        }
+    )
+
+    entry standard-calendars (
+        label: Standard Calendars
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Review a collection of Standard Calendar examples. These Calendars only utilize standard component attributes and no custom Dynamic Actions or Javascript code.
+        }
+    )
+
+)
+
+list navigation-bar-top (
+    name: Navigation Bar (Top)
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: HELP
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                7
+                8
+                15
+            ]
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry calendar-and-dynamic-actions (
+        label: Calendar and Dynamic Actions
+        icon {
+            imageIconCssClasses: fa-calendar-check-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry calendar-and-javascript (
+        label: Calendar and Javascript
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry calendar-and-report (
+        label: Calendar and Report
+        layout {
+            sequence: 140
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 51
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry calendar-client-events (
+        label: Calendar Client Events
+        layout {
+            sequence: 210
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 73
+        }
+        link {
+            target: {
+                page: 73
+            }
+        }
+    )
+
+    entry calendar-styling (
+        label: Calendar Styling
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 65
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+    )
+
+    entry copy-events-by-click (
+        label: Copy Events By Click
+        layout {
+            sequence: 170
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 54
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry create-calendar-events (
+        label: Create Calendar Events
+        layout {
+            sequence: 150
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 52
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry custom-calendar-initialization (
+        label: Custom Calendar Initialization
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+    )
+
+    entry custom-css-classes (
+        label: Custom CSS Classes
+        layout {
+            sequence: 230
+            parentEntry: @calendar-styling
+        }
+        isCurrent {
+            type: pages
+            pages: 91
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry custom-drag-drop-handlers (
+        label: Custom Drag & Drop Handlers
+        layout {
+            sequence: 180
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 112
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+    )
+
+    entry custom-event-icons (
+        label: Custom Event Icons
+        layout {
+            sequence: 240
+            parentEntry: @calendar-styling
+        }
+        isCurrent {
+            type: pages
+            pages: 92
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+    )
+
+    entry custom-navigation (
+        label: Custom Navigation
+        layout {
+            sequence: 190
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 71
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+    )
+
+    entry delete-events-by-click (
+        label: Delete Events By Click
+        layout {
+            sequence: 160
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 53
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry faceted-search-projects (
+        label: Faceted Search: Projects
+        layout {
+            sequence: 310
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 36
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry monthly-calendar-projects (
+        label: Monthly Calendar: Projects
+        layout {
+            sequence: 90
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry query-calendar-status (
+        label: Query Calendar Status
+        layout {
+            sequence: 200
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 72
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+    )
+
+    entry schedule-builder (
+        label: Schedule Builder
+        layout {
+            sequence: 220
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 74
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+    )
+
+    entry standard-calendars (
+        label: Standard Calendars
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry weekly-calendar-conference (
+        label: Weekly Calendar: Conference
+        layout {
+            sequence: 100
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry weekly-calendar-drag-drop (
+        label: Weekly Calendar: Drag & Drop
+        layout {
+            sequence: 120
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 34
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry weekly-calendar-edit-sessions (
+        label: Weekly Calendar: Edit Sessions
+        layout {
+            sequence: 110
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 33
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry weekly-calendar-time-format (
+        label: Weekly Calendar: Time Format
+        layout {
+            sequence: 130
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 35
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry weekly-schedule (
+        label: Weekly schedule
+        layout {
+            sequence: 300
+            parentEntry: @custom-calendar-initialization
+        }
+        isCurrent {
+            type: pages
+            pages: 111
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+)
+
+list standard-calendars (
+    name: Standard Calendars
+
+    entry faceted-search-projects (
+        label: Faceted Search: Projects
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This page allows to choose the time format (12h, 24h) which is being used to display the time component of an event timestamp.
+                
+                ```
+        }
+    )
+
+    entry monthly-calendar-projects (
+        label: Monthly Calendar: Projects
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: This is a standard Oracle APEX calendar region component built using the create calendar region wizard.
+        }
+    )
+
+    entry weekly-calendar-conference (
+        label: Weekly Calendar: Conference
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: "This is a standard Oracle APEX calendar region component showing a weekly view on events with a time component. "
+        }
+    )
+
+    entry weekly-calendar-drag-drop (
+        label: Weekly Calendar: Drag & Drop
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: Change the start and end timestamps for calendar events with drag and drop.
+        }
+    )
+
+    entry weekly-calendar-edit-sessions (
+        label: Weekly Calendar: Edit Sessions
+        icon {
+            imageIconCssClasses: fa-calendar-edit
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This weekly calendar allows to edit existing events by clicking them or to select a date range in the Calendar to create a new event.
+                
+                ```
+        }
+    )
+
+    entry weekly-calendar-time-format (
+        label: Weekly Calendar: Time Format
+        icon {
+            imageIconCssClasses: fa-calendar-clock
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This page allows to choose the time format (12h, 24h) which is being used to display the time component of an event timestamp.
+                
+                ```
+        }
+    )
+
+)
+

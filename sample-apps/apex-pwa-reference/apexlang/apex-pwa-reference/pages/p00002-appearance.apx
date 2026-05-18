@@ -1,0 +1,1098 @@
+page 2 (
+    name: Appearance
+    alias: APPEARANCE
+    title: Appearance - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region background-color (
+        name: Background Color
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The background color is used when opening the PWA, as a splash screen while the app content is loading. For a smooth transition, it should match the APEX theme body background.</p>
+                
+                <p>This table shows the supported combinations of operating systems and browsers for the background color attribute.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid col-8">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region browser (
+        name: Browser
+        type: staticContent
+        layout {
+            sequence: 80
+            parentRegion: @display
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region custom-manifest (
+        name: Custom Manifest
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>The <strong>Custom Manifest</strong> attribute is used to store additional JSON properties for the web app manifest.</p>
+                <p>Custom manifest properties extend APEX PWA declarative options by overriding existing ones or appending new ones.</p>
+                ```
+        }
+        layout {
+            sequence: 100
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region custom-manifest-example (
+        name: Custom Manifest Example
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <code>{
+                    "short_name": "APEX PWA",
+                    "other": "value"
+                }</code>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @custom-manifest
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region custom-theme-color-example (
+        name: Custom theme color example
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @theme-color
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region default (
+        name: Default
+        type: staticContent
+        source {
+            htmlCode: <p>White Text and Black Background.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @ios-status-bar-style
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+    region default-theme-color-example (
+        name: Default theme color example
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @theme-color
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region description (
+        name: Description
+        type: staticContent
+        source {
+            htmlCode: <p>Using both <strong>Full Screen</strong> or <strong>Standalone</strong> display will open the PWA with no browser UI or status bar using the entire screen or window, stripping out the browser UI elements.</p>
+        }
+        layout {
+            sequence: 40
+            parentRegion: @full-screen-standalone
+            slot: subRegions
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region description-2 (
+        name: Description
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    Similar to standalone, except with browser navigation buttons like back and refresh.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @minimal-ui
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region description-3 (
+        name: Description
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                   Shows the PWA using a regular browser UI.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @browser
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region description-4 (
+        name: Description
+        type: staticContent
+        source {
+            htmlCode: <p>Dark PWA theme color.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @default-theme-color-example
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    region description-5 (
+        name: Description
+        type: staticContent
+        source {
+            htmlCode: <p>PWA theme color matching application primary color.</p>
+        }
+        layout {
+            sequence: 40
+            parentRegion: @custom-theme-color-example
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+    )
+
+    region display (
+        name: Display
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    The <strong>display</strong> setting determines how much of the browser UI is shown to the user by default. Possible choices are:
+                </p>
+                
+                <ul>
+                    <li>Fullscreen</li>
+                    <li>Standalone</li>
+                    <li>Minimal UI</li>
+                    <li>Browser</li>
+                </ul>
+                
+                <p>This table shows the supported combinations of operating systems and browsers for the display attribute.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid col-8">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-partial">Partial Support</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region full-screen-standalone (
+        name: Full Screen / Standalone
+        type: staticContent
+        layout {
+            sequence: 50
+            parentRegion: @display
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @default
+            slot: regionBody
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-ios-status-default.png
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 50
+            parentRegion: @translucent
+            slot: regionBody
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-ios-status-translucent.png
+        }
+    )
+
+    region image-desktop (
+        name: Image Desktop
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @full-screen-standalone
+            slot: subRegions
+            startNewRow: false
+            columnSpan: 6
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-display-fullscreen.png
+        }
+    )
+
+    region image-desktop-2 (
+        name: Image Desktop
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @minimal-ui
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-display-minimalui.png
+        }
+    )
+
+    region image-desktop-3 (
+        name: Image Desktop
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @browser
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-display-browser.png
+        }
+    )
+
+    region image-desktop-4 (
+        name: Image Desktop 1
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @default-theme-color-example
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-theme-color1.png
+        }
+    )
+
+    region image-desktop-5 (
+        name: Image Desktop 2
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @custom-theme-color-example
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: [
+                u-flex
+                u-align-items-center
+            ]
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/pwa-appearance-theme-color2.png
+        }
+    )
+
+    region image-mobile (
+        name: Image Mobile
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @full-screen-standalone
+            slot: subRegions
+            columnSpan: 2
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/display-mobile-fullscreen.jpeg
+        }
+    )
+
+    region image-mobile-2 (
+        name: Image Mobile
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @minimal-ui
+            slot: regionBody
+            columnSpan: 2
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/display-mobile-minimal.jpeg
+        }
+    )
+
+    region image-mobile-3 (
+        name: Image Mobile
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @browser
+            slot: regionBody
+            columnSpan: 2
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/display-mobile-browser.jpeg
+        }
+    )
+
+    region image-mobile-4 (
+        name: Image Mobile 1
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @default-theme-color-example
+            slot: regionBody
+            columnSpan: 2
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+                margin-left-lg
+                margin-right-lg
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/theme-color-mobile1.jpeg
+            customAttributes: style="max-height:475px;"
+        }
+    )
+
+    region image-mobile-5 (
+        name: Image Mobile 2
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @custom-theme-color-example
+            slot: regionBody
+            columnSpan: 2
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+                margin-left-lg
+                margin-right-lg
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/theme-color-mobile2.jpeg
+            customAttributes: style="max-height:475px;"
+        }
+    )
+
+    region ios-status-bar-style (
+        name: iOS Status Bar Style
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                   Choose the style of the iOS status bar of your PWA. This option applies
+                   only to Apple iOS devices.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region minimal-ui (
+        name: Minimal UI
+        type: staticContent
+        layout {
+            sequence: 70
+            parentRegion: @display
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region orientation (
+        name: Orientation
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                    The <strong>orientation</strong> attribute determines your PWA's preferred launch layout. Possible choices are:
+                </p>
+                
+                <ul>
+                    <li>Any</li>
+                    <li>Natural</li>
+                    <li>Landscape</li>
+                    <li>Landscape Secondary</li>
+                    <li>Portrait</li>
+                    <li>Landscape Primary</li>
+                    <li>Portrait Primary</li>
+                    <li>Portrait Secondary</li>
+                </ul>
+                
+                <p>This table shows the supported combinations of operating systems and browsers for the orientation attribute.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid col-8">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-partial">Partial Support</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    With appearance settings in APEX, you can easily customize the look
+                    and feel of your PWA container to match the branding and design of
+                    your application. This can help to create a more cohesive and professional
+                    appearance for your app, making it more appealing to users.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+    region theme-color (
+        name: Theme Color
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">This attribute defines the theme color for the PWA. This affects how the operating system displays the frame of the PWA, for example the title bar on desktop or the status bar on mobile.</p>
+                
+                <p>This table shows the supported combinations of operating systems and browsers for the theme color attribute.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid col-8">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-visible">Yes</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region translucent (
+        name: Translucent
+        type: staticContent
+        source {
+            htmlCode: <p>Transparent Background. Useful for apps with no top navbar.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @ios-status-bar-style
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+            renderComponents: belowContent
+        }
+    )
+
+)
+

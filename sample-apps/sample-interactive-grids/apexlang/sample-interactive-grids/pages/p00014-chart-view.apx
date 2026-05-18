@@ -1,0 +1,475 @@
+page 14 (
+    name: Chart View
+    alias: CHART-VIEW
+    title: Chart View
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region basic-read-only (
+        name: Basic Read Only
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region chart-view (
+        name: Chart View
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPNO,
+                       ENAME,
+                       JOB,
+                       MGR,
+                       HIREDATE,
+                       SAL,
+                       COMM,
+                       DEPTNO
+                  from EBA_DEMO_IG_EMP
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            showNullValuesAs: -
+        }
+        pagination {
+            showTotalCount: false
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 3003295792666417356
+        }
+
+        savedReport 14456 (
+            visibility: primary
+            view {
+                chart: true
+                default: chart
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @EMPNO
+                layout {
+                    frozen: true
+                    width: 90
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @ENAME
+                layout {
+                    frozen: true
+                    width: 343
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @JOB
+                layout {
+                    width: 208
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @MGR
+                layout {
+                    width: 95
+                    sequence: 5
+                }
+            )
+
+            displayColumn (
+                column: @HIREDATE
+                layout {
+                    width: 135
+                    sequence: 4
+                }
+            )
+
+            displayColumn (
+                column: @SAL
+                layout {
+                    width: 95
+                    sequence: 6
+                }
+            )
+
+            displayColumn (
+                column: @COMM
+                layout {
+                    width: 70
+                    sequence: 7
+                }
+            )
+
+            displayColumn (
+                column: @DEPTNO
+                layout {
+                    width: 96
+                    sequence: 8
+                }
+            )
+
+            sort (
+                column: @JOB
+                sort {
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: @HIREDATE
+                sort {
+                    direction: desc
+                    nulls: first
+                    sequence: 2
+                }
+            )
+
+            chart {
+                type: bar
+                label: @DEPTNO
+                value: @SAL
+                valueAggregation: average
+                series: @JOB
+            }
+            axisTitle {
+                label: Department
+                value: Average Salary
+            }
+        )
+
+        column COMM (
+            type: numberField
+            heading {
+                heading: Comm
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: COMM
+                dataType: number
+            }
+        )
+
+        column DEPTNO (
+            type: numberField
+            heading {
+                heading: Deptno
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: DEPTNO
+                dataType: number
+            }
+        )
+
+        column EMPNO (
+            type: numberField
+            heading {
+                heading: Empno
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: EMPNO
+                dataType: number
+            }
+        )
+
+        column ENAME (
+            type: textField
+            heading {
+                heading: Ename
+            }
+            layout {
+                sequence: 20
+            }
+            validation {
+                maxLength: 60
+            }
+            source {
+                databaseColumn: ENAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column HIREDATE (
+            type: datePickerJquery
+            heading {
+                heading: Hiredate
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: HIREDATE
+                dataType: date
+            }
+        )
+
+        column JOB (
+            type: textField
+            heading {
+                heading: Job
+            }
+            layout {
+                sequence: 30
+            }
+            validation {
+                maxLength: 9
+            }
+            source {
+                databaseColumn: JOB
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column MGR (
+            type: numberField
+            heading {
+                heading: Mgr
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: MGR
+                dataType: number
+            }
+        )
+
+        column SAL (
+            type: numberField
+            heading {
+                heading: Sal
+                alignment: end
+            }
+            settings {
+                numberAlignment: end
+                virtualKeyboard: text
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                databaseColumn: SAL
+                dataType: number
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    region overview-chart-view (
+        name: Overview: Chart View
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page shows the result of firstly going through the create page wizard and choosing Report for page type, then Interactive Grid, and selecting EBA_DEMO_IG_EMP for the table (leave Editing Enabled set to the default: No). Secondly, the Actions > Chart menu item was selected, launching the Chart dialog to define a chart on the Interactive Grid columns. Interactive Grid charts are based on our new charting solution in Oracle Application Express 5.1, Oracle JET Data Visualizations.
+                </p>
+                <p>In many ways it looks and acts like an Interactive Report chart. Here are some new features and differences:
+                </p>
+                <ul>
+                <li>Larger selection of chart types available, such as area, bar, bubble, donut, funnel, line, line with area, pie, polar, radar, range, scatter and stock.</li>
+                <li>Multiple series charts supported.</li>
+                <li>Define chart orientation as either vertical or horizontal.</li>
+                <li>Stacked chart support for multiple series charts.</li>
+                <li>Aggregations can be applied to the values being rendered on the chart.</li>
+                <li>Chart data can be sorted based upon any of the values used to generate the chart. Use the Sort By select list in the Chart Dialog to set the sort column.</li>
+                <li>Column format masks will be automatically applied to the values rendered on the chart.</li>
+                <li>Where no column format mask has been defined, use the Decimal Places attribute of the Chart dialog to define the number of decimal places the chart values should be rendered with.</li>
+                <li>Use the Edit Chart filter, to modify attributes of the chart.</li>
+                <li>View the Chart dialog help, for item level help on each attribute.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-expanded
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    button next (
+        buttonName: Next
+        label: Next
+        layout {
+            sequence: 20
+            region: @basic-read-only
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillEnd
+            ]
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 70
+                action: resetPagination
+            }
+        }
+    )
+
+    button prev (
+        buttonName: PREV
+        label: Previous
+        layout {
+            sequence: 10
+            region: @basic-read-only
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--pillStart
+            ]
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 13
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

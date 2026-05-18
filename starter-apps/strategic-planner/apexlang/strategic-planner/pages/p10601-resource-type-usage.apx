@@ -1,0 +1,327 @@
+page 10601 (
+    name: Resource Type Usage
+    alias: RESOURCE-TYPE-USAGE
+    title: Resource Type Usage
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: @administration-rights
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region usage (
+        name: Usage
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select  p.id project_id,
+                        p.project,
+                        (select RELEASE_TRAIN||' '||RELEASE from SP_RELEASE_TRAINS rt where rt.id = p.RELEASE_ID) release,
+                        'P'||p.priority_id priority,
+                        c.TEAM_MEMBER_ID,
+                        (select first_name||' '||last_Name from sp_team_members tm where tm.id = c.TEAM_MEMBER_ID) contributor,
+                        (select RESOURCE_TYPE from SP_RESOURCE_TYPES rt where rt.id = c.RESPONSIBILITY_ID) resource_type,
+                        p.FRIENDLY_IDENTIFIER fi,
+                        p.PROJECT_URL_NAME pn
+                from    SP_PROJECT_CONTRIBUTORS c,
+                        SP_PROJECTS p
+                where   c.RESPONSIBILITY_ID = :P10601_ID and
+                        c.project_id = p.id
+                ```
+        }
+        layout {
+            sequence: 13
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 3389542917438453001
+        }
+
+        column CONTRIBUTOR (
+            type: plainText
+            heading {
+                heading: Contributor
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column FI (
+            type: plainText
+            heading {
+                heading: Fi
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PN (
+            type: plainText
+            heading {
+                heading: Pn
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FI#
+                        PN: #PN#
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+                linkText: #PROJECT#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PROJECT_ID (
+            type: plainText
+            heading {
+                heading: Project Id
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column RESOURCE_TYPE (
+            type: plainText
+            heading {
+                heading: Resource Type
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            type: plainText
+            heading {
+                heading: Team Member Id
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Usage
+        }
+
+        savedReport 33896728 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CONTRIBUTOR (
+                sequence: 4
+            )
+
+            displayColumn PRIORITY (
+                sequence: 3
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn RELEASE (
+                sequence: 2
+            )
+
+            displayColumn RESOURCE_TYPE (
+                sequence: 5
+            )
+
+            sort (
+                column: CONTRIBUTOR
+                sort {
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P10601_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @usage
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10600
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

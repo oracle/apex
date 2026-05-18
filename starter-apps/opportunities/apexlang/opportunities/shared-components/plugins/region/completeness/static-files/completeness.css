@@ -1,0 +1,131 @@
+/* fill chart */
+
+.db-FillChart {
+  position: relative;
+  width: 172px;
+  height: 172px;
+  margin: 12px auto;
+}
+.db-FillChart-fillWrapper {
+  height: 100%;
+  width: 100%;
+  border-radius: 100%;
+  border: 2px solid #F0F0F0;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background: #FFF;
+}
+.db-FillChart-wrapper {
+  box-shadow: 0 0 0 4px rgba(0,0,0,.5) inset;
+}
+.db-FillChart-fill {
+  background-color: #69DE29;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transition: background-color .2s;
+}
+.db-FillChart-fill.red {
+  background-color: #F02936;
+}
+.db-FillChart-fill.yellow {
+  background-color: #F3D834;
+}
+.db-FillChart-fillWrapper:before {
+  content: '';
+  position: absolute;
+  border-radius: 100%;
+  height: 100%;
+  width: 100%;
+  z-index: 90;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.10) inset;
+  box-sizing: border-box;
+}
+.db-FillChart-heading {
+  position: absolute;
+  text-align: center;
+  line-height: 40px;
+  top: 50%;
+  z-index: 90;
+  left: 0;
+  right: 0;
+  margin: -20px 20px 0 20px;
+  font-weight: bold;
+  border-radius: 2px;
+  background-color: rgba(255,255,255,.5);
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,.15);
+  transition: box-shadow .4s, background-color .2s;
+}
+.db-FillChart-link {
+  display: block;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  outline: none;
+}
+.db-FillChart-link .db-FillChart-heading {
+  color: #000;
+  text-decoration: underline;
+}
+.db-FillChart-link:hover .db-FillChart-heading {
+  background-color: rgba(255,255,255,.85);
+  box-shadow: 0 4px 12px 2px rgba(0,0,0,.15);
+}
+.db-FillChart-link:hover .db-FillChart-fillWrapper:before {
+  box-shadow: 0 0 0 2px rgba(0,0,0,.25) inset;
+}
+.db-FillChart-link:hover .db-FillChart-fillWrapper {
+  border-color: #D0D0D0;
+}
+.db-FillChartModal {
+  padding: 0;
+}
+.db-FillChartModal p {
+  color: #707070;
+  font-size: 12px;
+  margin: 0;
+}
+.db-FillChartModal-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #E0E0E0;
+  margin: 8px 0;
+}
+.db-FillChartModal-table thead th {
+  border-bottom: 1px solid #E0E0E0;
+  background-color: #F0F0F0;
+  padding: 8px;
+  text-align: right;
+  font-size: 12px;
+  color: #404040;
+  font-weight: bold;
+}
+.db-FillChartModal-table thead th:first-child {
+  text-align: left;
+}
+.db-FillChartModal-table tbody td {
+  text-align: right;
+  font-size: 12px;
+  color: #404040;
+  padding: 8px;
+  border-bottom: 1px solid #E0E0E0;
+}
+.db-FillChartModal-table .negative-score {
+  color: #EA0000;
+}
+.db-FillChartModal-table tbody td:first-child {
+  text-align: left;
+}
+.db-FillChartModal-table tfoot th {
+  font-size: 12px;
+  color: #404040;
+  padding: 8px;
+  text-align: right;
+  border-top: 2px solid #E0E0E0;
+  font-weight: bold;
+}
+.db-FillChartModal-table tfoot th:first-child {
+  text-align: left;
+}

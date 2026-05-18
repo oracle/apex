@@ -1,0 +1,301 @@
+page 12 (
+    name: Sample Collections - API Examples
+    alias: SAMPLE-COLLECTIONS-API-EXAMPLES
+    title: Sample Collections - API Syntax
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode: <p>This page lists some of the PL/SQL page processes used in this demonstration application.</p>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region apex-collection-add-member (
+        name: apex_collection.add_member
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                --
+                -- This application uses the Application Level Date format to control the default date format for the application.
+                -- Without this, then you would need to specify explict date format masks in the TO_DATE conversions.
+                --
+                apex_collection.add_member(
+                    p_collection_name => :P3_NAME,
+                    p_c001            => :P3_ATTR1,
+                    p_c002            => :P3_ATTR2,
+                    p_c003            => :P3_ATTR3,
+                    p_c004            => :P3_ATTR4,
+                    p_c005            => :P3_ATTR5,
+                    p_n001            => :P3_NUM_ATTR1,
+                    p_n002            => :P3_NUM_ATTR2,
+                    p_n003            => :P3_NUM_ATTR3,
+                    p_d001            => to_date(:P3_DATE_ATTR1),
+                    p_d002            => to_date(:P3_DATE_ATTR2),
+                    p_d003            => to_date(:P3_DATE_ATTR3),
+                    p_generate_md5    => 'YES' );
+                commit;
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collection-create-collection-from-query (
+        name: apex_collection.create_collection_from_query2
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>apex_collection.create_collection_from_query2(
+                    p_collection_name => 'EMPCollection',
+                    p_query           => 'select empno, sal, comm, deptno, null, hiredate, null, null, null, null, ename, job, mgr, ''O'' original_flag from eba_demo_cs_emp order by ename',
+                    p_generate_md5    => 'YES');
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collection-create-or-truncate-collection (
+        name: apex_collection.create_or_truncate_collection
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>apex_collection.create_or_truncate_collection( p_collection_name => :P2_NAME );
+                commit;</pre>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collection-delete-collection (
+        name: apex_collection.delete_collection
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>apex_collection.delete_collection(
+                    p_collection_name => :P3_NAME );
+                --
+                commit;
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collection-resequence-collection (
+        name: apex_collection.resequence_collection
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>apex_collection.resequence_collection(
+                    p_collection_name => :P3_NAME );
+                commit;
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collection-truncate-collection (
+        name: apex_collection.truncate_collection
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>apex_collection.truncate_collection (
+                    p_collection_name => :P3_NAME );
+                --
+                commit;
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collection-update-member-attribute (
+        name: apex_collection.update_member_attribute
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>
+                for c1 in (select n001 empno, seq_id
+                             from apex_collections
+                            where collection_name = 'EMPCOLLECTION'
+                           order by seq_id) loop
+                    
+                    l_rowxml := dbms_xmlgen.getxml( 'select * from eba_demo_cs_emp where empno = ' || c1.empno );
+                    apex_collection.update_member_attribute( 
+                        p_collection_name => 'EMPCollection',
+                        p_seq             => c1.seq_id,
+                        p_xmltype_number  => 1,
+                        p_xmltype_value   => XMLType(l_rowxml));
+                end loop;
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region apex-collections (
+        name: apex_collections
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre>select seq_id editlink,
+                    seq_id, 
+                    n001, 
+                    n002, 
+                    n003, 
+                    n004, 
+                    d001, 
+                    c001, 
+                    c002, 
+                    c003, 
+                    c004 status
+                from apex_collections
+                where collection_name = 'EMPCOLLECTION'
+                </pre>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumbs
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

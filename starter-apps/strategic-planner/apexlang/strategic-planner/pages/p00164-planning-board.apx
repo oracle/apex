@@ -1,0 +1,1532 @@
+page 164 (
+    name: Planning Board
+    alias: PLANNING-BOARD
+    title: Planning Board
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: [
+            #DEFAULT#
+            t-PageBody--noContentPadding
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        fileUrls: #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyTableHeader#MIN#.js?v=#APEX_VERSION#
+    }
+    css {
+        inline:
+            ```css
+            /* Set background when kanban is there */
+            :root:has(.kb-Layout) {
+              --ut-body-main-background-color: #fff;
+            }
+            
+            /* Clip overflow */
+            .kb-Layout {
+              --ut-focus-outline: var(--ut-link-text-color) solid 2px;
+              --ut-focus-outline-offset: -1px;
+            
+              overflow: clip;
+            }
+            
+            /* Row layout */
+            .kb-RowHeader,
+            .kb-Row {
+              display: grid;
+              grid-template-columns: repeat(5, 1fr);
+              border-bottom-width: var(--ut-component-border-width);
+              border-bottom-style: solid;
+              border-bottom-color: var(--ut-component-border-color);
+            }
+            
+            /* Headers */
+            .kb-RowHeader {
+              position: sticky;
+              background-color: #eee;
+              top: var(--js-page-title-height);
+              z-index: 2;
+              width: ;
+            }
+            
+            .kb-RowHeader .kb-Column {
+              font-size: .675rem;
+              line-height: 1rem;
+              font-weight: 400;
+              text-transform: uppercase;
+              text-align: start;
+              padding-inline: .5rem;
+              padding-block: .5rem;
+              position: relative;
+            }
+            
+            .kb-RowHeader .kb-Column:not(:first-child):before {
+              content: '';
+              position: absolute;
+              background-color: #ddd;
+              inline-size: var(--ut-component-border-width);
+              inset-block: 0;
+              inset-inline-start: 0;
+            }
+            
+            /* Groups */
+            .kb-Group {
+              position: sticky;
+              top: calc(var(--js-page-title-height) + 2rem + 1px);
+              z-index: 3;
+              font-size: .875rem;
+              line-height: 1rem;
+              font-weight: 700;
+              margin: 0;
+            }
+            
+            .kb-Group-label {
+              display: inline-block;
+              background-color: var(--ut-body-main-background-color);
+              padding-inline: .5rem;
+              padding-block: .5rem;
+              margin-block-end: -.5rem;
+              inline-size: 20%;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+            }
+            
+            .kb-Cell {
+              min-inline-size: 0;
+              display: flex;
+              flex-direction: column;
+              gap: .25rem;
+              padding: .5rem;
+              min-block-size: 4rem;
+            }
+            
+            .kb-Cell:not(:first-child):before {
+              content: '';
+              position: absolute;
+              background-color: #ddd;
+              inline-size: var(--ut-component-border-width);
+              inset-block: 0;
+              margin-inline-start: -.5rem;
+            }
+            
+            /* Card */
+            .kb-Card {
+              border-width: var(--ut-component-border-width);
+              border-style: solid;
+              border-color: var(--ut-component-border-color);
+              border-radius: .25rem;
+              /* var(--ut-component-border-radius); */
+              background-color: var(--kb-card-background, var(--ut-component-background-color));
+              color: var(--ut-component-text-default-color);
+              padding: 8px;
+              display: flex;
+              flex-direction: column;
+              gap: .25rem;
+              cursor: move;
+            }
+            
+            .kb-Card:hover {
+              border-color: rgba(22, 21, 19, .4);
+            }
+            
+            .kb-Card:focus:not(:focus-visible) {
+              outline: none !important;
+            }
+            
+            /* Hide Empty Cards */
+            .kb-Card:has(.kb-Card-title:empty) {
+              display: none !important;
+            }
+            
+            .kb-Card-title {
+              font-size: .75rem;
+              font-weight: var(--a-base-font-weight-semibold, 500);
+              line-height: 1rem;
+              color: var(--ut-component-text-title-color);
+              margin: 0;
+            
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              -webkit-line-clamp: 2;
+            }
+            
+            /* .kb-Card-title:before {
+              background-color: var(--kb-emphasis-background-color, var(--ut-component-border-color));
+              display: inline-block;
+              inline-size: .5rem;
+              block-size: .5rem;
+              border-radius: .5rem;
+              margin-inline-end: .25rem;
+              content: '';
+              vertical-align: baseline;
+            } */
+            
+            .kb-Card-attributes {
+              font-size: .6875rem;
+              color: var(--ut-component-text-muted-color);
+              display: flex;
+              flex-wrap: wrap;
+              gap: .5rem;
+              align-items: center;
+            }
+            
+            .kb-Card-badges {
+              --ut-badge-padding-x: .375rem;
+              --ut-badge-height: 1rem;
+              --ut-badge-line-height: .75rem;
+              --ut-badge-font-size: .6875rem;
+              --ut-badge-icon-size: .75rem;
+              --ut-badge-border-radius: .25rem;
+              --ut-badge-subtle-background-color: rgba(0, 0, 0, .075);
+            
+              flex-grow: 1;
+            }
+            
+            .kb-Badge--priority {
+              --ut-badge-background-color: var(--kb-emphasis-background-color);
+              --ut-badge-text-color: var(--kb-emphasis-text-color);
+              --ut-badge-font-weight: 700;
+            }
+            
+            .kb-Badge--priority .t-Badge-icon {
+              display: none;
+            }
+            
+            .kb-Badge--release,
+            .kb-Badge--percent {
+              --ut-badge-background-color: transparent;
+              --ut-badge-text-color: currentColor;
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-100) {
+              --ut-badge-font-weight: 700;
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-100) .t-Badge-icon:before {
+              content: '\f058';
+              color: var(--a-palette-success);
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-0) {
+              --ut-badge-font-weight: 700;
+            }
+            
+            .kb-Badge--percent:has(.fa-pie-chart-0) .t-Badge-icon:before {
+              content: '\f071';
+              color: var(--a-palette-danger);
+            }
+            
+            .kb-Badge--percent {
+              margin-inline-start: auto;
+            }
+            
+            /* Droppable */
+            .kb-Droppable {
+              background-color: rgba(0, 0, 0, .08);
+            }
+            
+            .kb-Cell.kb-Droppable {
+              border-radius: var(--ut-component-border-radius);
+            }
+            
+            /* States */
+            .kb-Card--p1 {
+              --kb-card-background: #FFEAE8;
+              --kb-emphasis-background-color: #D83F2A;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p2 {
+              --kb-card-background: #FCEDDA;
+              --kb-emphasis-background-color: #AE650E;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p3 {
+              --kb-card-background: #E4F4D4;
+              --kb-emphasis-background-color: #518324;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p4 {
+              --kb-card-background: #E5F1F5;
+              --kb-emphasis-background-color: #457D95;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Card--p5 {
+              --kb-card-background: #F3ECF8;
+              --kb-emphasis-background-color: #876D94;
+              --kb-emphasis-text-color: #fff;
+            }
+            
+            .kb-Blank {display:none;}
+            ```
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    config {
+        buildOption: @kanban
+    }
+    comments {
+        comments: #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyTableHeader#MIN#.js?v=#APEX_VERSION#
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 110
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+                t-BreadcrumbRegion--headingFontAlt
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region menubar (
+        name: Menubar
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select 1 as actions from dual
+        }
+        layout {
+            sequence: 100
+            parentRegion: @breadcrumb
+            slot: subRegions
+        }
+        componentAppearance {
+            display: partial
+            cssClasses: header-actions
+        }
+
+        column ACTIONS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIONS
+                dataType: number
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+            }
+
+            menu about-kanban (
+                label: About Kanban
+                layout {
+                    sequence: 120
+                }
+                behavior {
+                    target: {
+                        page: 163
+                    }
+                }
+                appearance {
+                    icon: fa-info
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 60
+                }
+            )
+
+            menu comp_menu_entry-2 (
+                type: separator
+                layout {
+                    sequence: 110
+                }
+            )
+
+            menu control-chart (
+                label: Control Chart
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 162
+                        items: {
+                            P162_INITIATIVE_ID: &P164_INITIATIVE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-scatter-chart
+                }
+            )
+
+            menu cumulative-flow (
+                label: Cumulative Flow
+                layout {
+                    sequence: 80
+                }
+                behavior {
+                    target: {
+                        page: 161
+                        items: {
+                            P161_INITIATIVE_ID: &P164_INITIATIVE_ID.
+                        }
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-line-area-chart
+                }
+            )
+
+            menu kanban-board (
+                label: Kanban Board
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 160
+                        items: {
+                            P160_INITIATIVE_ID: &P160_INITIATIVE_ID.
+                        }
+                    }
+                }
+                appearance {
+                    icon: fa-columns
+                }
+            )
+
+            menu nomenclature-projects-interactive-report (
+                label: &NOMENCLATURE_PROJECTS. Interactive Report
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 86
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu refresh (
+                label: Refresh
+                layout {
+                    sequence: 130
+                }
+                behavior {
+                    target: {
+                        page: 164
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-refresh
+                }
+            )
+
+            menu reset (
+                label: Reset
+                layout {
+                    sequence: 140
+                }
+                behavior {
+                    target: {
+                        page: 164
+                        items: {
+                            P164_INITIATIVE_ID: &P164_INITIATIVE_ID.
+                        }
+                        clearCache: 164
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-undo-alt
+                }
+            )
+
+        )
+
+        action add-nomenclature-project (
+            position: primaryActions
+            template: button
+            label: Add &NOMENCLATURE_PROJECT.
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 104
+                    items: {
+                        P104_INITIATIVE: &P164_INITIATIVE_ID.
+                    }
+                    clearCache: [
+                        104
+                        24
+                    ]
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-plus
+                hot: true
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+    )
+
+    region planning-board (
+        name: Planning Board
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 
+                  x.focus_area_name focus_area,
+                  y.id,
+                  y.project project,
+                  x.column_id,
+                  y.priority,
+                  case y.priority
+                  when 1 then 'kb-Card--p1'
+                  when 2 then 'kb-Card--p2'
+                  when 3 then 'kb-Card--p3'
+                  when 4 then 'kb-Card--p4'
+                  when 5 then 'kb-Card--p5'
+                  else null end p_style,
+                  y.project_size,
+                  y.effort_days,
+                  y.weight,
+                  decode(y.release,'TBD','N','Y') release_dependent_yn,
+                  y.pct_complete,
+                  y.status_scale,
+                  x.focus_area_id,
+                  y.kb_stack_rank,
+                  y.release,
+                  nvl(y.name,'(No Owner)') name,
+                  nvl2(y.id,null,'kb-Blank') display,
+                  row_number() over(PARTITION BY x.focus_area_id ORDER BY x.focus_area,x.column_id,y.kb_stack_rank,y.id) row_split,
+                  row_number() over(PARTITION BY x.focus_area_id,x.column_id ORDER BY x.focus_area, x.release_target_date ,y.kb_stack_rank,y.id) column_split,
+                  'apex.navigation.redirect('''||
+                  apex_util.prepare_url(p_url => 'f?p=' || :APP_ID || ':36:' || :APP_SESSION || '::NO::P36_ID:' || y.id)||''')' as link,
+                  -- Display Attributes
+                  null attrs,
+                  case
+                  (select count(*) from APEX_APPL_ACL_USER_ROLES where role_static_id in ('CONTRIBUTOR', 'ADMINISTRATOR') and application_id = :app_id and user_name = :app_user)
+                    when 0 then null
+                    else 'kb-Sortable' end sortable
+                from 
+                --------------------------------------------------
+                -- Inline view that lays out the Planning Board --
+                --------------------------------------------------
+                (select * from
+                      -------------
+                      -- Columns --
+                      -------------
+                      (select 0 column_id, sysdate release_target_date from dual union all
+                        (select id column_id,
+                              release_target_date
+                            from sp_release_trains
+                            where release_train = :P164_RELEASE_TRAIN
+                            --and release_completed = 'N'
+                            and sysdate < release_target_date
+                            and release_type = 'FULL'
+                            order by release_target_date
+                            fetch first 4 rows only
+                            )) columns
+                       cross join
+                      ------------
+                      -- Groups --
+                      ------------
+                      (select 
+                        focus_area||(select ' ('||stm.first_name||' '||stm.last_name||')' from SP_TEAM_MEMBERS stm where stm.id = fa.development_owner_id) focus_area_name,
+                        focus_area,
+                        to_char(id) focus_area_id
+                      from
+                        sp_initiative_focus_areas fa
+                      where fa.initiative_id = :P164_INITIATIVE_ID
+                        and active_yn = 'Y'
+                      --------------------------------------------------
+                      -- Create a sudo group for unallocated projects --
+                      -------------------------------------------------- 
+                      union all select 'Unallocated', 'Unallocated', 'Unallocated' from dual) groups) x
+                  --------------------------------------------------------
+                  -- An inline view of all the projects is outer joined --
+                  -- to the Planning Board                              --
+                  --------------------------------------------------------
+                  left join (
+                      select 
+                           re.id column_id,
+                           case when sp.release_id is null 
+                                then 'TBD'
+                                else re.release_train||' '||re.release end release,
+                           to_char(sp.id) as id,
+                           sp.project,
+                           sp.tags,
+                           pp.priority,
+                           ps.project_size,
+                           ps.effort_days,
+                           re.release_target_date,
+                           pp.priority * ps.effort_days weight,
+                           sp.kb_stack_rank,
+                           sp.pct_complete,
+                           sp.status_scale,
+                           nvl(to_char(sp.focus_area_id),'Unallocated') focus_area_id,
+                           (select tm.first_name||' '||tm.last_name from sp_team_members tm where sp.owner_id = tm.id) name
+                      from sp_projects sp
+                      inner join sp_project_priorities pp on sp.priority_id = pp.id
+                      inner join sp_project_sizes ps on sp.project_size = ps.project_size 
+                      left outer join sp_release_trains re on sp.release_id = re.id
+                      ----------------------------------------
+                      -- Predicates to filter projects only --
+                      ----------------------------------------
+                      where sp.pct_complete > 0 
+                        and sp.archived_yn = 'N' 
+                        and sp.duplicate_of_project_id is null
+                        and sp.initiative_id = :P164_INITIATIVE_ID
+                        --and sp.status_scale = 'A'
+                        and (pp.priority in (select column_value from table(apex_string.split(:p164_kb_priority,':'))) or :p164_kb_priority is null)
+                        and (sp.project_size in (select column_value from table(apex_string.split(:p164_kb_project_size,':')))  or :p164_kb_project_size is null)
+                        and ((select count(*) from table(apex_string.split(sp.tags,',')) t1 inner join table(apex_string.split(:P164_KB_TAGS,':')) t2 on t1.column_value = t2.column_value) > 0  or :p164_kb_tags is null)
+                        and ((sp.release_id is null and sp.pct_complete < 100)
+                              or (sp.release_id is not null and (sysdate < release_target_date or re.id is null)))
+                        or sp.id is null
+                  ) y on x.focus_area_id = y.focus_area_id 
+                     and x.column_id = nvl(y.column_id,0)
+                     and (y.release in (select column_value from table(apex_string.split(:p164_kb_release,':'))) or :p164_kb_release is null)
+                     and (y.pct_complete in (select column_value from table(apex_string.split(:p164_kb_pct_complete,':'))) or :p164_kb_pct_complete is null)
+                     and (nvl(y.name,'$$NULL$$') in (select column_value from table(apex_string.split(:p164_kb_name,':'))) or :p164_kb_name is null)
+                     and (instr(upper(y.project||y.name||x.focus_area||y.tags||y.project_size), upper(:P164_KB_SEARCH), 1, 1) > 0 or :P164_KB_SEARCH is null)
+                ----------------------------------------------------
+                -- Predicates that filter both board and projects --
+                ----------------------------------------------------
+                where (x.focus_area in (select column_value from table(apex_string.split(:p164_kb_focus_area,':'))) or :p164_kb_focus_area is null)
+                order by x.focus_area, x.release_target_date, y.kb_stack_rank, y.id
+                
+                
+                
+                ```
+            pageItemsToSubmit: [
+                P164_KB_SEARCH
+                P164_KB_RELEASE
+                P164_KB_TAGS
+                P164_KB_NAME
+                P164_KB_PRIORITY
+                P164_KB_PROJECT_SIZE
+                P164_KB_FOCUS_AREA
+                P164_KB_COLUMN_ID
+                P164_KB_PCT_COMPLETE
+            ]
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 1000
+        }
+        componentAppearance {
+            template: @kanban-board
+            templateOptions: #DEFAULT#
+        }
+        performance {
+            lazyLoading: true
+        }
+        heading {
+            type: plsqlFunctionBody
+            plsqlFunctionBody: return 'Not Scheduled:'||:P164_COLUMN_NAMES;
+        }
+
+        column ATTRS (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <span class="kb-Card-author" title="Assigned">#NAME#</span>
+                    
+                    <div class="t-Badges kb-Card-badges">
+                      <span class="t-Badge kb-Badge--priority" role="status" aria-label="Priority: P#PRIORITY#" title="Priority: P#PRIORITY#">
+                        <span class="t-Badge-icon fa fa-exclamation-diamond" aria-hidden="true"></span>
+                        <span class="t-Badge-value">P#PRIORITY#</span>
+                      </span>
+                      <span class="t-Badge t-Badge--subtle kb-Badge--size" role="status" aria-label="Project Size: #PROJECT_SIZE#" title="Project Size: #PROJECT_SIZE#">
+                        <span class="t-Badge-icon fa fa-expand" aria-hidden="true"></span>
+                        <span class="t-Badge-value">#PROJECT_SIZE#</span>
+                      </span>
+                      <span class="t-Badge kb-Badge--release" role="status" aria-label="Release: #RELEASE#" title="Release: #RELEASE#">
+                        <span class="t-Badge-icon fa fa-cube" aria-hidden="true"></span><span class="t-Badge-value" id="#ID#-release">#RELEASE#</span>
+                        {if ?RELEASE_DEPENDENT_YN/}
+                          {case RELEASE_DEPENDENT_YN/}
+                          {when N/}
+                          <span class="t-Badge-icon fa fa-asterisk" aria-hidden="true"></span>
+                          {when Y/}
+                          <span class="t-Badge-icon fa fa-check" aria-hidden="true"></span>
+                          {endcase/} 
+                        {else/}
+                        <span aria-hidden="true"></span>
+                        {endif/}
+                      </span>
+                      <span class="t-Badge kb-Badge--percent" id="#ID#-pct-complete" role="status" aria-label="Complete: #PCT_COMPLETE#%" title="Complete: #PCT_COMPLETE#%">
+                        <span class="t-Badge-icon fa fa-pie-chart-#PCT_COMPLETE#" aria-hidden="true"></span>
+                        <span class="t-Badge-value">#PCT_COMPLETE#%</span>
+                      </span>
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :p164_column_count >= 1
+            }
+        )
+
+        column COLUMN_ID (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Column Id
+            }
+            layout {
+                sequence: 50
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :p164_column_count >= 3
+            }
+        )
+
+        column COLUMN_SPLIT (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column DISPLAY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 190
+            }
+        )
+
+        column EFFORT_DAYS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FOCUS_AREA_ID (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 220
+            }
+            serverSideCondition {
+                type: never
+            }
+        )
+
+        column KB_STACK_RANK (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Kb Stack Rank
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :p164_column_count >= 4
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 200
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+            serverSideCondition {
+                type: expression
+                plsqlExpression: :p164_column_count >= 2
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column P_STYLE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 210
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column RELEASE_DEPENDENT_YN (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 230
+            }
+        )
+
+        column ROW_SPLIT (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column SORTABLE (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 240
+            }
+        )
+
+        column STATUS_SCALE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 150
+            }
+        )
+
+        column WEIGHT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+    )
+
+    pageItem P164_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 110
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P164_COLUMN_COUNT (
+        type: hidden
+        layout {
+            sequence: 150
+            slot: body
+        }
+    )
+
+    pageItem P164_COLUMN_NAMES (
+        type: hidden
+        layout {
+            sequence: 140
+            slot: body
+        }
+    )
+
+    pageItem P164_DRAG_COLUMN_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+    )
+
+    pageItem P164_DRAG_FOCUS_AREA_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+    )
+
+    pageItem P164_DRAG_ITEM_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+    )
+
+    pageItem P164_DROP_COLUMN_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+    )
+
+    pageItem P164_DROP_FOCUS_AREA_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+    )
+
+    pageItem P164_DROP_RELEASE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 100
+            slot: body
+        }
+    )
+
+    pageItem P164_INITIATIVE (
+        type: hidden
+        layout {
+            sequence: 130
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P164_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P164_SR_ABOVE (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+    )
+
+    pageItem P164_SR_BELOW (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 160
+                items: {
+                    P160_INITIATIVE_ID: &P164_INITIATIVE_ID.
+                }
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction add-project-dialog-close (
+        name: Add Project Dialog Close
+        execution {
+            sequence: 50
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @menubar
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @planning-board
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction change-in-columns (
+        name: Change in Columns
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P164_NO_OF_COLUMNS
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @planning-board
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction change-release-train (
+        name: Change Release Train
+        execution {
+            sequence: 70
+        }
+        when {
+            selectionType: items
+            items: P164_RELEASE_TRAIN
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    select listagg(release,':') within group (order by release_target_date, release_id),
+                    count(release) into :P164_COLUMN_NAMES,:P164_COLUMN_COUNT
+                    from
+                      (select 
+                      --'Release '||replace(release||' ('||release_open_date||' - '||release_target_date||')',':','.') release, 
+                      to_char(release_open_date,'MON-RR')||' to '||to_char(release_target_date,'MON-RR')||' (Release '||release||')' release,
+                      release_target_date, id release_id
+                      from sp_release_trains
+                      where release_train = :P164_RELEASE_TRAIN
+                      and sysdate < release_target_date
+                      and release_type = 'FULL'
+                      order by release_target_date
+                      fetch first 4 rows only
+                      );
+                    ```
+                itemsToSubmit: P164_RELEASE_TRAIN
+                itemsToReturn: [
+                    P164_COLUMN_NAMES
+                    P164_COLUMN_COUNT
+                ]
+                showProcessing: true
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @planning-board
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction drag-drop (
+        name: Drag & Drop
+        execution {
+            sequence: 60
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @planning-board
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                      var originCellID, originRowID, originColumnID, originID;
+                    
+                      $(".kb-Sortable").sortable({
+                        connectWith: ".kb-Cell",
+                    
+                        start: function(event, ui) {
+                          // Store the ID of the cell and row where the item was originally dragged from
+                          originCellID   = ui.item.closest('.kb-Cell').attr('id');
+                          originColumnID = ui.item.closest('.kb-Cell').attr('data-id');
+                          originRowID    = ui.item.closest('.kb-Row').attr('id');
+                          originID       = ui.item.attr('id');
+                        },
+                    
+                        stop: function(event, ui) {
+                          // Find the ID of the cell and row where the item is dropped
+                          var parentCellID   = ui.item.closest('.kb-Cell').attr('id');
+                          var parentColumnID = ui.item.closest('.kb-Cell').attr('data-id');
+                          var parentRowID    = ui.item.closest('.kb-Row').attr('id');
+                    
+                          // Get the Stack Rank of the divs above and below the current div (if any)
+                          var aboveItem = ui.item.prev().attr('id');
+                          var belowItem = ui.item.next().attr('id');
+                    
+                    
+                          $s('P164_DROP_COLUMN_ID',parentColumnID);
+                          $s('P164_DRAG_COLUMN_ID',originColumnID);
+                          $s('P164_DRAG_ITEM_ID',originID);
+                          $s('P164_DROP_FOCUS_AREA_ID',parentRowID);
+                          $s('P164_DRAG_FOCUS_AREA_ID',originRowID);
+                          $s('P164_SR_ABOVE',(aboveItem ? aboveItem : "None"));
+                          $s('P164_SR_BELOW',(belowItem ? belowItem : "None"));
+                    
+                      
+                          // Log the details in the console
+                          console.log("P164_SR_ABOVE: "             + $v('P164_SR_ABOVE'));
+                          console.log("P164_SR_BELOW: "             + $v('P164_SR_BELOW'));
+                          console.log("P164_DRAG_COLUMN_ID: "       + $v('P164_DRAG_COLUMN_ID'));
+                          console.log("P164_DRAG_FOCUS_AREA_ID: "   + $v('P164_DRAG_FOCUS_AREA_ID'));
+                          console.log("P164_DRAG_ITEM_ID: "         + $v('P164_DRAG_ITEM_ID'));
+                          console.log("P164_DROP_COLUMN_ID: "       + $v('P164_DROP_COLUMN_ID'));
+                          console.log("P164_DROP_FOCUS_AREA_ID: "   + $v('P164_DROP_FOCUS_AREA_ID'));
+                        }
+                        
+                      }).disableSelection();
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction drop-item (
+        name: Drop Item
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P164_SR_BELOW
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    declare
+                    
+                      insufficient_data exception;
+                      lv_stack_rank number;
+                    
+                    begin
+                    
+                    :P164_DROP_RELEASE := null;
+                    
+                    if :P164_DRAG_FOCUS_AREA_ID is null 
+                      or :P164_DROP_FOCUS_AREA_ID is null 
+                      or :P164_DRAG_ITEM_ID is null 
+                      or :P164_DRAG_COLUMN_ID is null 
+                      or :P164_DROP_COLUMN_ID is null 
+                      or :P164_INITIATIVE_ID is null
+                      or :P164_SR_ABOVE is null
+                      or :P164_SR_BELOW is null then
+                      raise insufficient_data;
+                    end if;
+                    
+                    if :P164_SR_ABOVE != 'None' and :P164_SR_BELOW != 'None' then
+                    
+                      select sum(kb_stack_rank) / 2 into lv_stack_rank from sp_projects
+                      where initiative_id = :P164_INITIATIVE_ID and id in (:P164_SR_ABOVE,:P164_SR_BELOW);
+                    
+                      update sp_projects set kb_stack_rank = lv_stack_rank
+                      where id = :P164_DRAG_ITEM_ID and initiative_id = :P164_INITIATIVE_ID;
+                    
+                    elsif :P164_SR_ABOVE = 'None' and :P164_SR_BELOW != 'None' then
+                    
+                      select kb_stack_rank -1 into lv_stack_rank from sp_projects
+                      where initiative_id = :P164_INITIATIVE_ID and id = :P164_SR_BELOW;
+                    
+                      update sp_projects set kb_stack_rank = lv_stack_rank
+                      where id = :P164_DRAG_ITEM_ID and initiative_id = :P164_INITIATIVE_ID;
+                    
+                    elsif :P164_SR_ABOVE != 'None' and :P164_SR_BELOW = 'None' then
+                    
+                      select kb_stack_rank +1 into lv_stack_rank from sp_projects
+                      where initiative_id = :P164_INITIATIVE_ID and id = :P164_SR_ABOVE;
+                    
+                      update sp_projects set kb_stack_rank = lv_stack_rank 
+                      where id = :P164_DRAG_ITEM_ID and initiative_id = :P164_INITIATIVE_ID;
+                    
+                    end if;
+                    
+                    
+                    if :P164_DRAG_FOCUS_AREA_ID != :P164_DROP_FOCUS_AREA_ID then
+                      update sp_projects
+                      set focus_area_id = decode(:P164_DROP_FOCUS_AREA_ID,'Unallocated',null,:P164_DROP_FOCUS_AREA_ID)
+                      where id = :P164_DRAG_ITEM_ID and initiative_id = :P164_INITIATIVE_ID;
+                    end if;
+                    
+                    if :P164_DRAG_COLUMN_ID != :P164_DROP_COLUMN_ID then
+                    
+                      -- Get the new release name
+                      if :P164_DROP_COLUMN_ID = 0 then
+                    
+                        update sp_projects
+                        set release_id = decode(:P164_DROP_COLUMN_ID,0,null,:P164_DROP_COLUMN_ID)
+                        where id = :P164_DRAG_ITEM_ID and initiative_id = :P164_INITIATIVE_ID;
+                    
+                        :P164_DROP_RELEASE := 'TBD';
+                        
+                      else
+                    
+                        update sp_projects
+                        set release_id = decode(:P164_DROP_COLUMN_ID,0,null,:P164_DROP_COLUMN_ID)
+                        where id = :P164_DRAG_ITEM_ID and initiative_id = :P164_INITIATIVE_ID;
+                      
+                        select           
+                          re.release_train||' '||re.release into :P164_DROP_RELEASE
+                          from sp_release_trains re 
+                          where re.id = :P164_DROP_COLUMN_ID;
+                        end if;
+                    
+                    end if;
+                    
+                    exception
+                    
+                      when insufficient_data then RAISE_APPLICATION_ERROR(-20001, 'Insufficient Data!');  
+                      
+                    end;
+                    ```
+                itemsToSubmit: [
+                    P164_SR_ABOVE
+                    P164_SR_BELOW
+                    P164_DRAG_FOCUS_AREA_ID
+                    P164_DRAG_ITEM_ID
+                    P164_DRAG_COLUMN_ID
+                    P164_DROP_COLUMN_ID
+                    P164_DROP_FOCUS_AREA_ID
+                ]
+                itemsToReturn: P164_DROP_RELEASE
+                suppressChangeEvent: true
+                showProcessing: true
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    var lRel; 
+                    
+                    lRel = $v('P164_DROP_RELEASE');
+                    
+                    if (lRel) {
+                    
+                      $('#'+$v('P164_DRAG_ITEM_ID')+'-release').text(lRel);
+                    
+                      if ($v('P164_DROP_RELEASE')=='TBD') {
+                          $('#'+$v('P164_DRAG_ITEM_ID')+'-release').next('span').hide();
+                      } else{
+                          $('#'+$v('P164_DRAG_ITEM_ID')+'-release').next('span').attr('class','t-Badge-icon fa fa-asterisk').show();
+                      }
+                    
+                    apex.message.showPageSuccess('Project Move Success');
+                    
+                    }
+                    
+                    
+                    ```
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction edit-project-dialog-close (
+        name: Edit Project Dialog Close
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @planning-board
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @planning-board
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process set-items (
+        name: set Items
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                ---------------------------------------------
+                -- Set items for breadcrumb and navication --
+                ---------------------------------------------
+                select initiative, area_id
+                into :P164_INITIATIVE, :P164_AREA_ID
+                from   sp_initiatives i
+                where  id = :P164_INITIATIVE_ID;
+                
+                
+                if :P164_RELEASE_TRAIN is null then
+                  select distinct release_train into :P164_RELEASE_TRAIN
+                  from sp_release_trains
+                  order by 1
+                  fetch first rows only;
+                end if;
+                
+                select listagg(apex_escape.html(release),':') within group (order by release_target_date, release_id),
+                count(release) into :P164_COLUMN_NAMES,:P164_COLUMN_COUNT
+                from
+                  (select 
+                    --'Release '||replace(release||' ('||release_open_date||' - '||release_target_date||')',':','.') release,
+                  to_char(release_open_date,'MON-RR')||' to '||to_char(release_target_date,'MON-RR') release,
+                  release_target_date, id release_id
+                  from sp_release_trains
+                  where release_train = :P164_RELEASE_TRAIN
+                  and sysdate < release_target_date
+                  and release_type = 'FULL'
+                  order by release_target_date
+                  fetch first 4 rows only
+                  );
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 15446694967913228941
+        }
+    )
+
+)
+

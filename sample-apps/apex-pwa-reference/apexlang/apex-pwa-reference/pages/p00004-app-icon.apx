@@ -1,0 +1,632 @@
+page 4 (
+    name: App Icon
+    alias: APP-ICON
+    title: App Icon - &APP_NAME.
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .t-Comments-instructions {
+                margin: 24px 0px 0px 0px;
+                text-align: center;
+                font-weight: bold;
+            }
+            
+            .image-wrap {
+                display: flex;
+                flex-flow: column;
+            }
+            
+            .img-installer {
+                width: 100%;
+                border-radius: 5px;
+            }
+            
+            .img-installer-mobile {
+                width: 100%;
+                border-radius: 5px;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+
+    region app-icon (
+        name: App Icon
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p class="col-8">
+                
+                    Every APEX application comes with an icon that you can customize to
+                    give your app a unique look and feel. You can either choose an icon
+                    from a list of options provided or upload your own icon for a more
+                    personalized experience. The app icon serves as the PWA icon, appears
+                    on the application login page, favicon, and builder app icon.
+                
+                </p>
+                
+                <p class="col-8">
+                
+                    To ensure that your PWA icon looks great on all devices, APEX generates
+                    five different icon formats when you upload a file: 32x32, 144x144,
+                    192x192, 256x256, and 512x512. Each icon format has a specific use case,
+                    and by providing these different sizes, APEX ensures that your app looks
+                    visually appealing on all platforms.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region compatibility (
+        name: Compatibility
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This table shows the supported combinations of operating systems and browsers for the PWA Shortcuts feature.</p>
+                
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc dm-Report--grid">
+                    <thead>
+                        <tr>
+                            <td class="display-hidden"></td>
+                            <th class="u-tL">Chrome</th>
+                            <th class="u-tL">Edge</th>
+                            <th class="u-tL">Firefox</th>
+                            <th class="u-tL">Safari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Android</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>iOS</span></th>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>macOS</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-not">No</td>
+                        </tr>
+                        <tr>
+                            <th class="u-tL" scope="row"><span>Windows</span></th>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-visible">Yes</td>
+                            <td class="display-not">No</td>
+                            <td class="display-hidden">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p class="margin-top-md"><em>Last updated: April 2023</em></p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @pwa-shortcuts
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region examples (
+        name: Examples
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Shorcuts Examples
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region image (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @pwa-shortcuts-on-macos
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/shortcuts-macos.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-2 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @pwa-shortcuts-on-android
+            slot: subRegions
+            columnSpan: 4
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--square
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/shortcuts-android.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-3 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @managing-app-icon
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/edit-app-icon.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region image-4 (
+        name: Image
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @managing-shortcuts
+            slot: subRegions
+        }
+        appearance {
+            template: @/image
+            templateOptions: [
+                #DEFAULT#
+                t-ImageRegion--auto
+                t-ImageRegion--cover
+                t-ImageRegion--rounded
+                t-ImageRegion--noFilter
+            ]
+        }
+        image {
+            fileUrl: #APP_FILES#img/edit-shortcuts.jpeg
+            customAttributes: loading="lazy"
+        }
+    )
+
+    region instructions (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>Install APEX PWA on a Desktop device</li>
+                    <li>Locate app icon in task bar</li>
+                    <li>Right click app icon</li>
+                    <li>See PWA shortcuts</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @examples
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Shortcuts Instructions
+        }
+    )
+
+    region instructions-2 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>Install APEX PWA on an Android device</li>
+                    <li>Locate app icon in the home screen</li>
+                    <li>Long-press on app icon</li>
+                    <li>See PWA shortcuts</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @examples
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Shortcuts Instructions
+        }
+    )
+
+    region instructions-3 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In the <strong>App Builder</strong> click <strong>Shared Components</strong></li>
+                    <li>Click <strong>User Interface Attributes</strong></li>
+                    <li>Click <strong>Change Icon</strong> button</li>
+                    <li>Choose a predefined icon and color or upload, resize, and crop a custom icon</li>
+                    <li>Click <strong>Save Icon</strong></li>
+                    <li>Your app icon gets saved in three formats (32x32, 144x144 rounded, 192x192, 256x256 rounded and 512x512)</li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @app-icon
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Shortcuts Instructions
+        }
+    )
+
+    region instructions-4 (
+        name: Instructions
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <ol>
+                    <li>In the <strong>App Builder</strong> click <strong>Shared Components</strong></li>
+                    <li>Click <strong>Progressive Web App</strong></li>
+                    <li>Turn on <strong>Enable Progressive Web App</strong> and <strong>Installable</strong></li>
+                    <li>Choose if shortcuts are enabled for Public Sessions or All Sessions</li>
+                    <li>Click <strong>Add Shortcut</strong> button</li>
+                    <li>Type a name and select the page target</li>
+                    <li>Upload your <strong>shortcut icon</strong> file or or leave the default</li>
+                    <li>Click <strong>Create</strong></li>
+                </ol>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @pwa-shortcuts
+            slot: subRegions
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                js-headingLevel-3
+            ]
+        }
+        accessibility {
+            landmarkLabel: PWA Shortcuts Instructions
+        }
+    )
+
+    region managing-app-icon (
+        name: Managing App Icon
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @app-icon
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region managing-shortcuts (
+        name: Managing Shortcuts
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @pwa-shortcuts
+            slot: subRegions
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                    An app icon is a visual representation that identifies an APEX PWA
+                    application on a device's home screen or taskbar. A well-designed app
+                    icon can help to establish brand identity and improve the user experience
+                    by providing easy recognition and quick access to the app when this is
+                    installed. An effective icon should be simple, recognizable, and visually
+                    appealing, with a clear representation of the app's purpose or function.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region pwa-shortcuts (
+        name: PWA Shortcuts
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                
+                   Oracle APEX Progressive Web App shortcuts provide a convenient way
+                   for users to access specific pages within the application.
+                
+                </p>
+                
+                <p>
+                
+                    On touch-enabled devices, users can simply long-press on the home
+                    screen app icon to access the shortcuts.
+                
+                </p>
+                
+                <p>
+                
+                    For non-touch devices, such as computers, users can right-click on
+                    the taskbar app icon to access the same feature. 
+                
+                </p>
+                
+                <p>
+                
+                    By providing these shortcuts, Oracle APEX enhances the user experience
+                    and makes it easier for users to quickly access the pages they need
+                    within the PWA.
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region pwa-shortcuts-on-android (
+        name: PWA Shortcuts on Android
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @examples
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region pwa-shortcuts-on-macos (
+        name: PWA Shortcuts on macOS
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @examples
+            slot: regionBody
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                js-headingLevel-3
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Region Display Selector
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            mode: scrollWindow
+            rememberSelection: false
+        }
+    )
+
+)
+

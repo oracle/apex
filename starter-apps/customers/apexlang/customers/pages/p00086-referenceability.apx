@@ -1,0 +1,566 @@
+page 86 (
+    name: Referenceability
+    alias: REFERENCEABILITY
+    title: Referenceability
+    pageGroup: @customers
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+    config {
+        buildOption: @customer-referencability
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb-2
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region by-asset-commitment (
+        name: By Asset Commitment
+        type: chart
+        layout {
+            sequence: 35
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @geography
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+
+        series asset-commitment (
+            name: Asset Commitment
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                    reference_TYPE group_name,
+                    (select count(distinct(customer_id)) 
+                     from EBA_CUST_CUSTOMER_REFTYPE_REF rt , eba_cust_customers c
+                     where rt.reference_type_id = t.id and c.id = rt.customer_id and 
+                           (NVL(:P86_CATEGORY,0) = 0 or c.CATEGORY_ID = :P86_CATEGORY) and
+                           (NVL(:P86_GEO,0) = 0 or :P86_GEO = c.geography_id)
+                     ) cnt
+                    from EBA_CUST_reference_TYPES t
+                    order by 2 desc
+                    ```
+                pageItemsToSubmit: [
+                    P86_CATEGORY
+                    P86_GEO
+                ]
+            }
+            columnMapping {
+                label: GROUP_NAME
+                value: CNT
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 91
+                    items: {
+                        IR_REFERENCE_TYPE: &GROUP_NAME.
+                    }
+                    clearCache: [
+                        RIR
+                        91
+                    ]
+                    action: resetPagination
+                }
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region by-phase (
+        name: By Phase
+        type: chart
+        layout {
+            sequence: 45
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @geography
+        }
+        dataCursor {
+            dimOnHover: false
+        }
+        tooltip {
+            showSeriesName: false
+        }
+        legend {
+            show: false
+        }
+
+        series asset-commitment (
+            name: Asset Commitment
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select ID,
+                    status group_name,
+                    (select count(distinct(c.id)) 
+                     from eba_cust_customers c
+                     where (NVL(:P86_CATEGORY,0) = 0 or c.CATEGORY_ID = :P86_CATEGORY) and 
+                           (NVL(:P86_GEO,0) = 0 or :P86_GEO = c.geography_id) and
+                           t.id = c.reference_phase_id) cnt
+                    from EBA_CUST_REF_PHASE t
+                    order by display_sequence, description
+                    ```
+                pageItemsToSubmit: [
+                    P86_CATEGORY
+                    P86_GEO
+                ]
+            }
+            columnMapping {
+                label: GROUP_NAME
+                value: CNT
+            }
+            link {
+                type: redirectThisApp
+                target: {
+                    page: 91
+                    items: {
+                        IR_REF_PHASE: &GROUP_NAME.
+                        P91_CATEGORY: &P86_CATEGORY.
+                    }
+                    clearCache: [
+                        RIR
+                        91
+                    ]
+                    action: resetPagination
+                }
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                minStep: 1
+            }
+            minorTicks {
+                show: true
+            }
+        )
+
+    )
+
+    region by-recruitment-owner (
+        name: by Recruitment Owner
+        type: plugin/html5BarChart
+        source {
+            sqlQuery:
+                ```sql
+                select REF_RECRUITMENT_OWNER RECRUITMENT_OWNER,
+                       count(*) customers
+                from EBA_CUST_CUSTOMERS c
+                where REF_RECRUITMENT_OWNER is not null and  
+                     (NVL(:P86_CATEGORY,0) = 0 or c.CATEGORY_ID = :P86_CATEGORY) and
+                     (NVL(:P86_GEO,0) = 0 or :P86_GEO = c.geography_id)
+                group by REF_RECRUITMENT_OWNER
+                ```
+            pageItemsToSubmit: [
+                P86_CATEGORY
+                P86_GEO
+            ]
+        }
+        layout {
+            sequence: 65
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            labelColumn: RECRUITMENT_OWNER
+            valueColumn: CUSTOMERS
+            labelLinkTarget: {
+                page: 91
+                items: {
+                    IR_RECRUITMENT_OWNER: &RECRUITMENT_OWNER.
+                    P91_CATEGORY: &P86_CATEGORY.
+                }
+                clearCache: [
+                    91
+                    RIR
+                ]
+                action: resetPagination
+            }
+            maximumRows: 50
+        }
+    )
+
+    region customer-summary (
+        name: Customer Summary
+        type: plugin/badgeList
+        source {
+            sqlQuery:
+                ```sql
+                select label, nvl(to_number(value,'999G999G990'),0) value, url from (
+                with data as (
+                    select count(*) total,
+                        sum(decode(marquee_customer_yn,'Y',1,0)) marquee,
+                        sum(decode(referencable,'Yes',1,0)) ref
+                    from eba_cust_customers c
+                    where (NVL(:P86_CATEGORY,0) = 0 or CATEGORY_ID = :P86_CATEGORY) and
+                          (NVL(:P86_GEO,0) = 0 or :P86_GEO = c.geography_id)
+                ), rws as (
+                    select level r from dual connect by level < 4
+                )
+                select rws.r display_order,
+                    decode(rws.r, 1, 'Customers Tracked',    2, 'Marquee',    3, 'Referenceable')  label,
+                    decode(rws.r, 1, data.total, 2, data.marquee, 3, data.ref) value,
+                    decode(rws.r, 1, 'f?p='||:APP_ID||':59:'||:APP_SESSION||':::59,RIR:',
+                                  2, 'f?p='||:APP_ID||':59:'||:APP_SESSION||':::59,RIR:IR_MARQUEE_CUSTOMER,P59_MARQUEE_CUST:Yes,Y',
+                                  3, 'f?p='||:APP_ID||':59:'||:APP_SESSION||':::59,RIR:IR_REFERENCABLE,P59_REFERENCEABLE:Yes,Yes:') url
+                from data, rws
+                union all
+                select 4 display_order,
+                	'Products' label,
+                	count(*) value,
+                	apex_util.prepare_url('f?p='||:APP_ID||':44:'||:APP_SESSION||':::44,RIR') url
+                from eba_cust_products
+                )
+                order by display_order
+                ```
+            pageItemsToSubmit: [
+                P86_CATEGORY
+                P86_GEO
+            ]
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--hiddenOverflow
+            ]
+        }
+        settings {
+            value: VALUE
+            bottomLabel: LABEL
+            linkTarget: {
+                type: url
+                url: &URL.
+            }
+            layout: 4Columns
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 25
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    pageItem P86_CATEGORY (
+        type: selectList
+        label {
+            label: Category
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @cat
+            nullDisplayValue: - All -
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: staticValue
+            staticValue: 0
+        }
+        default {
+            type: static
+            staticValue: 0
+        }
+    )
+
+    pageItem P86_GEO (
+        type: selectList
+        label {
+            label: Geography
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @geography
+            nullDisplayValue: "- All - "
+            nullReturnValue: 0
+        }
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 1000
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &APP_PAGE_ID.
+                clearCache: [
+                    &APP_PAGE_ID.
+                    RIR
+                ]
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction cat (
+        name: cat
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P86_CATEGORY
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @by-recruitment-owner
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-summary
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction geo (
+        name: geo
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P86_GEO
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @by-recruitment-owner
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customer-summary
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

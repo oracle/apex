@@ -1,0 +1,158 @@
+customAttribute attribute_01 (
+    apexlangName: orientation
+    attribute: 1
+    name: Orientation
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+    default {
+        value: Horizontal
+    }
+
+    entry horizontal (
+        sequence: 10
+        display: Horizontal
+        return: horizintal
+        advanced {
+            quickPick: true
+        }
+    )
+
+    entry vertical (
+        sequence: 20
+        display: Vertical
+        return: vertical
+        advanced {
+            quickPick: true
+        }
+    )
+
+)
+
+customAttribute attribute_02 (
+    apexlangName: horizontalAlignment
+    attribute: 2
+    name: Horizontal Alignment
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 20
+    }
+    default {
+        value: Center
+    }
+
+    entry center (
+        sequence: 10
+        display: Center
+        return: center
+        advanced {
+            quickPick: true
+        }
+    )
+
+    entry end (
+        sequence: 20
+        display: End
+        return: end
+        advanced {
+            quickPick: true
+        }
+    )
+
+    entry start (
+        sequence: 30
+        display: Start
+        return: start
+        advanced {
+            quickPick: true
+        }
+    )
+
+)
+
+customAttribute attribute_03 (
+    apexlangName: verticalAlignment
+    attribute: 3
+    name: Vertical Alignment
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 30
+    }
+    default {
+        value: middle
+    }
+
+    entry bottom (
+        sequence: 30
+        display: Bottom
+        return: bottom
+        advanced {
+            quickPick: true
+        }
+    )
+
+    entry middle (
+        sequence: 20
+        display: Middle
+        return: middle
+        advanced {
+            quickPick: true
+        }
+    )
+
+    entry top (
+        sequence: 10
+        display: Top
+        return: top
+        advanced {
+            quickPick: true
+        }
+    )
+
+)
+
+customAttribute attribute_04 (
+    apexlangName: hideAndShowBehavior
+    attribute: 4
+    name: Hide and Show Behavior
+    type: selectList
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 40
+    }
+    default {
+        value: on
+    }
+
+    entry off (
+        sequence: 20
+        display: Off
+        return: off
+        advanced {
+            quickPick: true
+        }
+    )
+
+    entry on (
+        sequence: 10
+        display: On
+        return: on
+        advanced {
+            quickPick: true
+        }
+    )
+
+)
+

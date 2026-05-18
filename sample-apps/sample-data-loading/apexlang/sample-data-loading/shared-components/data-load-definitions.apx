@@ -1,0 +1,787 @@
+dataLoadDefinition CSV_Load (
+    name: CSV Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: merge
+    }
+    dataProfile {
+        name: CSV Load
+        format: csv
+    }
+    advanced {
+        encoding: iso-8859-1
+        csvEnclosedBy: "
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            selector: COMM
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            selector: DEPTNO
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            selector: EMPNO
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            selector: ENAME
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            selector: HIREDATE
+            formatMask: MM/DD/YYYY
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            selector: JOB
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            selector: MGR
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            selector: SAL
+        }
+    )
+
+)
+
+dataLoadDefinition JSON_Load (
+    name: JSON Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: replace
+    }
+    dataProfile {
+        name: JSON Load
+        rowSelector: items
+    }
+    advanced {
+        encoding: utf-8
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: comm
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: deptno
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 5
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: empno
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 6
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            pathExpression: ename
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 8
+            dataType: date
+        }
+        parsing {
+            pathExpression: hiredate
+            formatMask: YYYY"-"MM"-"DD"T"HH24":"MI":"SS
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 1
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            pathExpression: job
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: mgr
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 3
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+            decimalChar: .
+        }
+    )
+
+)
+
+dataLoadDefinition Sales_Data_Load (
+    name: Sales Data Load
+    target {
+        tableName: EBA_DEMO_LOAD_SALES
+        loadingMethod: replace
+    }
+    errorHandling {
+        whenOnError: logErrorIntoCollection
+        name: SALES_DATA_LOAD_ERR
+    }
+    dataProfile {
+        name: Sales Data Load
+        format: csv
+    }
+    advanced {
+        encoding: iso-8859-1
+        csvEnclosedBy: "
+    }
+
+    dataProfileColumn country (
+        columnName: COUNTRY
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 255
+        }
+        parsing {
+            selector: COUNTRY
+        }
+    )
+
+    dataProfileColumn item-type (
+        columnName: ITEM_TYPE
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 50
+        }
+        parsing {
+            selector: ITEM_TYPE
+        }
+    )
+
+    dataProfileColumn order-date (
+        columnName: ORDER_DATE
+        source {
+            sequence: 6
+            dataType: date
+        }
+        parsing {
+            selector: ORDER_DATE
+            formatMask: MM"/"DD"/"RR
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn order-id (
+        columnName: ORDER_ID
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            selector: ORDER_ID
+        }
+    )
+
+    dataProfileColumn order-priority (
+        columnName: ORDER_PRIORITY
+        source {
+            sequence: 5
+            dataType: varchar2
+            maxLength: 1
+        }
+        parsing {
+            selector: ORDER_PRIORITY
+        }
+    )
+
+    dataProfileColumn region (
+        columnName: REGION
+        source {
+            sequence: 1
+            dataType: varchar2
+            maxLength: 255
+        }
+        parsing {
+            selector: REGION
+        }
+    )
+
+    dataProfileColumn sales-channel (
+        columnName: SALES_CHANNEL
+        source {
+            sequence: 4
+            dataType: varchar2
+            maxLength: 50
+        }
+        parsing {
+            selector: SALES_CHANNEL
+        }
+    )
+
+    dataProfileColumn ship-date (
+        columnName: SHIP_DATE
+        source {
+            sequence: 8
+            dataType: date
+        }
+        parsing {
+            selector: SHIP_DATE
+            formatMask: MM"/"DD"/"RR
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn total-cost (
+        columnName: TOTAL_COST
+        source {
+            sequence: 13
+            dataType: number
+        }
+        parsing {
+            selector: TOTAL_COST
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn total-profit (
+        columnName: TOTAL_PROFIT
+        source {
+            sequence: 14
+            dataType: number
+        }
+        parsing {
+            selector: TOTAL_PROFIT
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn total-revenue (
+        columnName: TOTAL_REVENUE
+        source {
+            sequence: 12
+            dataType: number
+        }
+        parsing {
+            selector: TOTAL_REVENUE
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn unit-cost (
+        columnName: UNIT_COST
+        source {
+            sequence: 11
+            dataType: number
+        }
+        parsing {
+            selector: UNIT_COST
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn unit-price (
+        columnName: UNIT_PRICE
+        source {
+            sequence: 10
+            dataType: number
+        }
+        parsing {
+            selector: UNIT_PRICE
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn units-sold (
+        columnName: UNITS_SOLD
+        source {
+            sequence: 9
+            dataType: number
+        }
+        parsing {
+            selector: UNITS_SOLD
+        }
+    )
+
+)
+
+dataLoadDefinition Transform_and_Lookup (
+    name: Transform and Lookup
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: replace
+    }
+    dataProfile {
+        name: Transform and Lookup
+        format: csv
+    }
+    advanced {
+        encoding: iso-8859-1
+        csvEnclosedBy: "
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            selectorType: regexp
+            selector: COMM|Commission
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 18
+            type: lookup
+            dataType: number
+        }
+        lookup {
+            tableName: EBA_DEMO_LOAD_DEPT
+            returnColumn: DEPTNO
+            tableColumn1: DNAME
+            dataColumn1: DEPTNO_LOADED
+        }
+    )
+
+    dataProfileColumn deptno-loaded (
+        columnName: DEPTNO_LOADED
+        source {
+            sequence: 8
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: regexp
+            selector: DEPTNO|Department
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            selector: EMPNO
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            selectorType: regexp
+            selector: .*Name$
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            selector: HIREDATE
+            formatMask: MM/DD/YYYY
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            selector: JOB
+        }
+        transformation {
+            type: upper
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 28
+            type: lookup
+            dataType: number
+        }
+        lookup {
+            tableName: EBA_DEMO_LOAD_EMP
+            returnColumn: EMPNO
+            tableColumn1: ENAME
+            dataColumn1: MGR_LOADED
+        }
+    )
+
+    dataProfileColumn mgr-loaded (
+        columnName: MGR_LOADED
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            selectorType: regexp
+            selector: MGR|Manager
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            selectorType: regexp
+            selector: SAL|Salary
+        }
+    )
+
+)
+
+dataLoadDefinition XLSX_Load (
+    name: XLSX Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: merge
+    }
+    dataProfile {
+        name: XLSX Load
+        format: xlsx
+    }
+    advanced {
+        encoding: utf-8
+        defaultXlsxSheetName: sheet1.xml
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            selector: COMM
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            selector: DEPTNO
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            selector: EMPNO
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            selector: ENAME
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            selector: HIREDATE
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            selector: JOB
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            selector: MGR
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            selector: SAL
+        }
+    )
+
+)
+
+dataLoadDefinition XML_Load (
+    name: XML Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: replace
+    }
+    dataProfile {
+        name: XML Load
+        format: xml
+        rowSelector: /*/ROW
+    }
+    advanced {
+        encoding: utf-8
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: "COMM[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: "DEPTNO[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: "EMPNO[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            pathExpression: "ENAME[1]"
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            pathExpression: "HIREDATE[1]"
+            formatMask: MM"/"DD"/"RR
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            pathExpression: "JOB[1]"
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: "MGR[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            pathExpression: "SAL[1]"
+            decimalChar: .
+        }
+    )
+
+)
+

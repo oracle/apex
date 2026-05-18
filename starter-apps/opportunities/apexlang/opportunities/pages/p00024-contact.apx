@@ -1,0 +1,967 @@
+page 24 (
+    name: Contact
+    alias: CONTACT
+    title: Contact
+    appearance {
+        pageTemplate: @/marquee
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText: Manage a contact's details, links, attachments, and/or comments. You can also validate the contact.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region contact-actions (
+        name: Contact Actions
+        type: list
+        source {
+            list: @actions-contact
+        }
+        layout {
+            sequence: 10
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            listTemplate: @/links-list
+            templateOptions: [
+                #DEFAULT#
+                t-LinksList--actions
+                t-LinksList--showTopIcons
+            ]
+        }
+    )
+
+    region contact-details (
+        name: Contact Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select cc.id,
+                  cc.row_key,
+                  cc.contact_name,
+                  cc.contact_title,
+                  cc.contact_email,
+                  cc.contact_phone,
+                  cc.contact_cell,
+                  cc.contact_address,
+                  cc.contact_description,
+                  cc.contact_linkedin,
+                  cc.contact_facebook,
+                  cc.tags,
+                  cc.created,
+                  cc.updated,
+                  lower(cc.created_by) created_by,
+                  lower(cc.updated_by) updated_by,
+                  c.id account_id,
+                  c.customer_name account_name
+                from eba_sales_customer_contacts cc
+                join eba_sales_customers c
+                  on c.id = cc.customer_id
+                where cc.id = :P24_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+            showNullValuesAs: -
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ACCOUNT_ID (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 18
+            }
+        )
+
+        column ACCOUNT_NAME (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            heading {
+                heading: Account
+            }
+            layout {
+                sequence: 4
+            }
+        )
+
+        column CONTACT_ADDRESS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Address
+            }
+            layout {
+                sequence: 11
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_address is not null
+                    ```
+            }
+        )
+
+        column CONTACT_CELL (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Cell
+            }
+            layout {
+                sequence: 8
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_cell is not null
+                    ```
+            }
+        )
+
+        column CONTACT_DESCRIPTION (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 12
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_description is not null
+                    ```
+            }
+        )
+
+        column CONTACT_EMAIL (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Email
+            }
+            layout {
+                sequence: 6
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_email is not null
+                    ```
+            }
+        )
+
+        column CONTACT_FACEBOOK (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Facebook
+            }
+            layout {
+                sequence: 10
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_facebook is not null
+                    ```
+            }
+        )
+
+        column CONTACT_LINKEDIN (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: LinkedIn
+            }
+            layout {
+                sequence: 9
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_linkedin is not null
+                    ```
+            }
+        )
+
+        column CONTACT_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 3
+            }
+        )
+
+        column CONTACT_PHONE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Phone
+            }
+            layout {
+                sequence: 7
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_phone is not null
+                    ```
+            }
+        )
+
+        column CONTACT_TITLE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Title
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.contact_title is not null
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 14
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: #CREATED# by #CREATED_BY#
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 16
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column ROW_KEY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Key
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 13
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select null
+                      from eba_sales_customer_contacts cc
+                      join eba_sales_customers c
+                        on c.id = cc.customer_id
+                     where cc.id = :P24_ID
+                       and cc.tags is not null
+                    ```
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 15
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            columnFormatting {
+                htmlExpression: #UPDATED# by #UPDATED_BY#
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 17
+            }
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: masterDetail
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region usage-metrics-90-days (
+        name: Usage Metrics - 90 days
+        type: plugin/badgeList
+        source {
+            sqlQuery:
+                ```sql
+                select count(*) c,
+                  'Views' l,
+                  1 disp
+                from eba_sales_clicks
+                where contact_id = :P24_ID 
+                  and view_timestamp > sysdate - 90
+                union all
+                select count(distinct(app_username)) c,
+                  'Users' l,
+                  2 disp
+                from eba_sales_clicks
+                where contact_id = :P24_ID 
+                  and view_timestamp > sysdate - 90
+                order by disp
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        config {
+            buildOption: @usage-metrics
+        }
+        settings {
+            badgeStyle: circular
+            value: C
+            bottomLabel: L
+            linkTarget: {
+                page: 138
+                items: {
+                    P138_ENTITY_TYPE: CONTACT
+                    P138_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 138
+            }
+            layout: 2Columns
+        }
+    )
+
+    region validations (
+        name: Validations
+        type: plugin/contentValidator
+        source {
+            sqlQuery:
+                ```sql
+                select v.verified_by,
+                  v.created
+                from eba_sales_verifications v
+                where contact_id = :P24_ID
+                order by v.created desc
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: rightSideColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--stacked
+                t-Region--hiddenOverflow
+            ]
+            cssClasses: js-validateRegion
+        }
+        config {
+            buildOption: @validations
+        }
+        settings {
+            validationLink: {
+                page: 146
+                items: {
+                    P146_ENTITY_TYPE: CONTACT
+                    P146_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 146
+            }
+            previousValidationsLink: {
+                page: 147
+                items: {
+                    P147_ENTITY_TYPE: CONTACT
+                    P147_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 147
+                action: resetPagination
+            }
+        }
+    )
+
+    pageItem P24_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @contact-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button edit-contact (
+        buttonName: EDIT_CONTACT
+        label: Edit Contact
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 106
+                items: {
+                    P106_ID: &P24_ID.
+                    P106_SHOW_ACCOUNT: Y
+                    P106_DELETE_BRANCH_PAGE_ID: 23
+                }
+                clearCache: 106
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button pop-link (
+        buttonName: POP_LINK
+        label: Add Link
+        layout {
+            sequence: 240
+            region: @/links
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: CONTACT
+                    P114_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 114
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button popattachment (
+        buttonName: POPATTACHMENT
+        label: Add Attachment
+        layout {
+            sequence: 10
+            region: @/attachments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: CONTACT
+                    P99_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 99
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button popcomment (
+        buttonName: POPCOMMENT
+        label: Add Comment
+        layout {
+            sequence: 260
+            region: @/comments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: CONTACT
+                    P22_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 22
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button view-attachments (
+        buttonName: VIEW_ATTACHMENTS
+        label: View Attachments
+        layout {
+            sequence: 20
+            region: @/attachments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 92
+                items: {
+                    P92_ENTITY_TYPE: CONTACT
+                    P92_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 92
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-comments (
+        buttonName: VIEW_COMMENTS
+        label: View Comments
+        layout {
+            sequence: 270
+            region: @/comments
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 88
+                items: {
+                    P88_ENTITY_TYPE: CONTACT
+                    P88_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 88
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button view-links (
+        buttonName: VIEW_LINKS
+        label: View Links
+        layout {
+            sequence: 250
+            region: @/links
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-external-link-square
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 89
+                items: {
+                    P89_ENTITY_TYPE: CONTACT
+                    P89_ENTITY_ID: &P24_ID.
+                }
+                clearCache: 89
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-contact-dialog-closed (
+        name: Edit Contact dialog closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @edit-contact
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('.t-Breadcrumb-item.is-active > span').text(this.data.P106_CONTACT_NAME);
+                    
+                    apex.message.showPageSuccess('Action Processed.');
+                    ```
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @contact-details
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction handle-no-data-found-regions (
+        name: Handle No Data Found Regions
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    (function() {
+                        
+                      function toggleRegion() {
+                        var $region = $(this),
+                            noDataFound = $region.find('.nodatafound').length === 1;
+                          
+                          //triggering after hide/show because that what the RDS response to
+                          if (noDataFound) {
+                            $region.hide();
+                            $region.trigger('apexafterhide');
+                          } else {
+                            $region.show();
+                            $region.trigger('apexaftershow');
+                          }
+                      }
+                      
+                      function initHideShowRegions() {
+                        var $regions = $('.js-dynamicHideShowRegion');
+                            $rds = $('.apex-rds');
+                    
+                        $regions
+                          .each(toggleRegion)
+                          .on('apexafterrefresh', toggleRegion);
+                    
+                          //using visiblity over display to avoid DOM movement issues
+                          $rds.css('visibility', 'visibile');
+                      } 
+                    
+                      //using load because document.ready here goes before the RDS has added its listeners
+                      $(window).on('theme42ready',initHideShowRegions);
+                     
+                    }())
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction link-details-dialog-closed (
+        name: Link Details dialog closed
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.data && this.data.dialogPageId === 114
+        }
+    )
+
+    dynamicAction page-loaded-and-or-report-refreshed (
+        name: Page loaded and/or report refreshed
+        execution {
+            sequence: 30
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    $('.t-Report-pagination--bottom').each(function(){
+                      var $self = $(this);
+                      var links = $self.find('a');
+                      
+                      if (links.length === 0) {
+                        $self.hide();
+                      } else {
+                        $self.show();
+                      }
+                    });
+                    ```
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process init-page (
+        name: Init page
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                insert into eba_sales_clicks (
+                  entity_type,
+                  contact_id,
+                    app_username
+                ) values (
+                  'CONTACT',
+                  :P24_ID,
+                    lower(:APP_USER)
+                );
+                
+                delete from eba_sales_clicks 
+                where view_timestamp < (sysdate - 90) 
+                  and contact_id = :P24_ID;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 6661028916598044653
+        }
+    )
+
+)
+

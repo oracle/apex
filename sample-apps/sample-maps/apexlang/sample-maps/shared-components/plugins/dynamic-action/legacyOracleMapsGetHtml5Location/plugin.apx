@@ -1,0 +1,108 @@
+plugin legacyOracleMapsGetHtml5Location (
+    name: Legacy: Oracle Maps - get HTML5 Location
+    staticId: COM.ORACLE.APEX.ORAMAPS.GETLOC
+    type: dynamicAction
+    source {
+        plsqlCode:
+            ```plsql
+            function render_da_oramaps_getlocation(
+                p_dynamic_action in apex_plugin.t_dynamic_action,
+                p_plugin         in apex_plugin.t_plugin )
+                return apex_plugin.t_dynamic_action_render_result
+            is
+                l_item_lat      varchar2(30)   := upper(p_dynamic_action.attribute_02);
+                l_item_lon      varchar2(30)   := upper(p_dynamic_action.attribute_01);
+                l_item_status   varchar2(30)   := upper(p_dynamic_action.attribute_03);
+                l_result        apex_plugin.t_dynamic_action_render_result;       
+            begin
+              l_result.javascript_function := 'function () {
+                if (navigator.geolocation) {
+                 navigator.geolocation.getCurrentPosition (
+                  function (pos) {
+                   try {
+                     if ($x('||apex_javascript.add_value(l_item_lat, false)||')) {
+                       $s('||apex_javascript.add_value(l_item_lat, false)||', String(pos.coords.latitude).replace(".", "'||substr(to_char((1/2), 'FM0D0'),2,1)||'"));
+                     }
+                     if ($x('||apex_javascript.add_value(l_item_lon, false)||')) {
+                       $s('||apex_javascript.add_value(l_item_lon, false)||', String(pos.coords.longitude).replace(".", "'||substr(to_char((1/2), 'FM0D0'),2,1)||'"));
+                     }
+                     if ($x('||apex_javascript.add_value(l_item_status, false)||')) {
+                       $s('||apex_javascript.add_value(l_item_status, false)||', "SUCCESS");
+                     }
+                     apex.event.trigger(
+                       document,
+                       "com_oracle_oramapshtml5_locsuccess"
+                     );
+                   } catch (e) {
+                     if ($v("pDebug")=="YES") {
+                       console.log(e);
+                     }
+                     apex.event.trigger(
+                       document,
+                       "com_oracle_oramapshtml5_locerror"
+                     );
+                   }
+                  },
+                  function(error) {
+                   var mesg;
+                   if ($v("pDebug")=="YES") {
+                     console.log(e);
+                   }
+                   switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                     mesg = "ERROR: Permission denied.";
+                     break;
+                    case error.POSITION_UNAVAILABLE:
+                     mesg = "ERROR: Location information unavailable.";
+                     break;
+                    case error.TIMEOUT:
+                     mesg = "ERROR: Location retrieval timed out.";
+                     break;
+                    case error.UNKNOWN_ERROR:
+                     mesg = "ERROR: Unknown error.";
+                     break;
+                   } 
+                   if ($x('||apex_javascript.add_value(l_item_status, false)||')) {
+                     $s('||apex_javascript.add_value(l_item_status, false)||', mesg);
+                   }
+                   console.log(mesg);
+                   apex.event.trigger(
+                     document,
+                     "com_oracle_oramapshtml5_locerror"
+                   );
+                  } 
+                 );
+                } else {
+                 mesg = "ERROR: No Geolocation capability available.";
+                 if ($x('||apex_javascript.add_value(l_item_status, false)||')) {
+                   $s('||apex_javascript.add_value(l_item_status, false)||', mesg);
+                 }
+                 console.log(mesg);
+                 apex.event.trigger(
+                   document,
+                   "com_oracle_oramapshtml5_locerror"
+                 );
+                }
+              }';
+              return l_result;
+            end render_da_oramaps_getlocation; 
+            ```
+    }
+    callbacks {
+        apiInterface: function
+        renderProcedureName: render_da_oramaps_getlocation
+    }
+    advanced {
+        category: miscellaneous
+        substituteAttributeValues: true
+    }
+    information {
+        version: 20140707
+        helpText:
+            ```
+            <p>
+            	This plugin uses the Browsers&#39; HTML5 capabilities to get the current location. The longitude and latitude values are being stored in APEX items provided by the application developer. Upon receiving of the coordinate values from the browser the plugin fires the<strong> HTML5 Location received</strong> event on the <strong>document</strong> DOM Element. You can create additional Dynamic Actions based on this in order to further process the coordinates.</p>
+            ```
+    }
+)
+

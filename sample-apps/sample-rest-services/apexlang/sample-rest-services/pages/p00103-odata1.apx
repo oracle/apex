@@ -1,0 +1,438 @@
+page 103 (
+    name: OData
+    alias: ODATA1
+    title: OData
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region northwind-odata-products (
+        name: Northwind OData Products
+        type: interactiveReport
+        source {
+            location: restSource
+            restSource: @prod_odata
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('ODATA_URL') is not null
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        advanced {
+            savedReportMappingIdentifier: 10516424651602484
+        }
+
+        column CATEGORYID (
+            type: plainText
+            heading {
+                heading: Category ID
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column DISCONTINUED (
+            type: plainText
+            heading {
+                heading: Discontinued
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column PRODUCTID (
+            type: plainText
+            heading {
+                heading: Product ID
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PRODUCTNAME (
+            type: plainText
+            heading {
+                heading: Product Name
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column QUANTITYPERUNIT (
+            type: plainText
+            heading {
+                heading: Quantity Per Unit
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column REORDERLEVEL (
+            type: plainText
+            heading {
+                heading: Reorder Level
+                alignment: end
+            }
+            layout {
+                sequence: 90
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column SUPPLIERID (
+            type: plainText
+            heading {
+                heading: Supplier ID
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UNITPRICE (
+            type: plainText
+            heading {
+                heading: Unit Price
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column UNITSINSTOCK (
+            type: plainText
+            heading {
+                heading: Units In Stock
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column UNITSONORDER (
+            type: plainText
+            heading {
+                heading: Units On Order
+                alignment: end
+            }
+            layout {
+                sequence: 80
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 33981 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CATEGORYID (
+                sequence: 4
+            )
+
+            displayColumn DISCONTINUED (
+                sequence: 10
+            )
+
+            displayColumn PRODUCTID (
+                sequence: 1
+            )
+
+            displayColumn PRODUCTNAME (
+                sequence: 2
+            )
+
+            displayColumn QUANTITYPERUNIT (
+                sequence: 5
+            )
+
+            displayColumn REORDERLEVEL (
+                sequence: 9
+            )
+
+            displayColumn SUPPLIERID (
+                sequence: 3
+            )
+
+            displayColumn UNITPRICE (
+                sequence: 6
+            )
+
+            displayColumn UNITSINSTOCK (
+                sequence: 7
+            )
+
+            displayColumn UNITSONORDER (
+                sequence: 8
+            )
+
+        )
+
+    )
+
+    region odata-url-not-provided (
+        name: OData URL Not Provided
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                  This page requires a valid OData service URL to function correctly.  
+                  To enable OData features, use the <strong>Set OData URL</strong> button in order to navigate to the <strong>Administration</strong> page, where the OData endpoint can be configured.
+                </p>
+                
+                
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('ODATA_URL') is null
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page demonstrates the <strong>OData</strong> protocol by consuming the Northwind Products OData service. It shows how <strong> OData</strong> standardizes data queries and updates with built in options like $filter, $orderby, $select, and $top for pagination. In this page, APEX automatically converts the JSON response from the external <strong>OData</strong> service into APEX components, allowing you to view and interact with the returned product data—such as Product ID, Product Name, Unit Price, and more—in an Interactive Report.
+                
+                
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: apex_app_setting.get_value('ODATA_URL') is not null
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 200
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: Previous
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 102
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button set-odata-url (
+        buttonName: Set_OData_URL
+        label: Set OData URL
+        layout {
+            sequence: 10
+            region: @odata-url-not-provided
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 504
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

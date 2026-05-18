@@ -1,0 +1,825 @@
+lov access-roles (
+    name: ACCESS_ROLES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select role_name d, role_id r
+              from APEX_APPL_ACL_ROLES
+             where application_id = :APP_ID 
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov apex-calendar-event-colors (
+    name: APEX_CALENDAR_EVENT_COLORS
+    source {
+        location: staticValues
+    }
+
+    entry black (
+        sequence: 13
+        display: Black
+        return: black
+    )
+
+    entry blue (
+        sequence: 3
+        display: Blue
+        return: blue
+    )
+
+    entry blue-sky (
+        sequence: 4
+        display: Blue Sky
+        return: bluesky
+    )
+
+    entry brown (
+        sequence: 9
+        display: Brown
+        return: brown
+    )
+
+    entry cyan (
+        sequence: 2
+        display: Cyan
+        return: cyan
+    )
+
+    entry dark-blue (
+        sequence: 5
+        display: Dark Blue
+        return: darkblue
+    )
+
+    entry gray (
+        sequence: 12
+        display: Gray
+        return: gray
+    )
+
+    entry green (
+        sequence: 6
+        display: Green
+        return: green
+    )
+
+    entry lime (
+        sequence: 10
+        display: Lime
+        return: lime
+    )
+
+    entry orange (
+        sequence: 14
+        display: Orange
+        return: orange
+    )
+
+    entry red (
+        sequence: 1
+        display: Red
+        return: red
+    )
+
+    entry silver (
+        sequence: 8
+        display: Silver
+        return: silver
+    )
+
+    entry yellow (
+        sequence: 7
+        display: Yellow
+        return: yellow
+    )
+
+)
+
+lov area-initiative (
+    name: AREA INITIATIVE 2
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select i.initiative, 
+                   a.area,
+                   i.id initiative_id
+            from sp_initiatives i, sp_areas a
+            where i.area_id = a.id
+            order by 2, 1
+            ```
+    }
+    columnMapping {
+        return: INITIATIVE_ID
+        display: INITIATIVE
+    }
+
+    column AREA (
+        heading {
+            heading: Area
+        }
+        layout {
+            sequence: 10
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column INITIATIVE (
+        heading {
+            heading: Initiative
+        }
+        layout {
+            sequence: 30
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column INITIATIVE_ID (
+        show: false
+        layout {
+            sequence: 20
+        }
+        source {
+            dataType: number
+        }
+        advanced {
+            searchable: false
+        }
+    )
+
+)
+
+lov email-alert-pref (
+    name: EMAIL_ALERT_PREF
+    source {
+        location: staticValues
+    }
+
+    entry email (
+        sequence: 2
+        display: Email
+        return: EMAIL
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    entry none (
+        sequence: 3
+        display: None
+        return: NONE
+    )
+
+    entry within-application (
+        sequence: 1
+        display: Within Application
+        return: APP
+    )
+
+)
+
+lov email-username-format (
+    name: EMAIL_USERNAME_FORMAT
+    source {
+        location: staticValues
+    }
+
+    entry email-addresses (
+        sequence: 1
+        display: Email Addresses
+        return: EMAIL
+    )
+
+)
+
+lov event-recurrence (
+    name: EVENT RECURRENCE
+    source {
+        location: staticValues
+    }
+
+    entry daily (
+        sequence: 1
+        display: Daily
+        return: D
+    )
+
+    entry each-month-same-date (
+        sequence: 5
+        display: Each Month (same date)
+        return: M
+    )
+
+    entry every-2-weeks-same-day-of-week (
+        sequence: 4
+        display: Every 2 Weeks (same day of week)
+        return: 2W
+    )
+
+    entry every-week-same-day-of-week (
+        sequence: 3
+        display: Every Week (same day of week)
+        return: W
+    )
+
+    entry every-weekday-m-f (
+        sequence: 2
+        display: Every Weekday (M-F)
+        return: WD
+    )
+
+)
+
+lov event-types (
+    name: EVENT_TYPES
+    source {
+        tableName: SP_EVENT_TYPES
+    }
+    columnMapping {
+        return: ID
+        display: EVENT_TYPE
+        defaultSort: EVENT_TYPE
+    }
+)
+
+lov feedback-rating (
+    name: FEEDBACK_RATING
+    source {
+        location: staticValues
+    }
+
+    entry negative (
+        sequence: 3
+        display: Negative
+        return: 1
+        globalization {
+            template: <span title="#DISPLAY_VALUE#" aria-label="#DISPLAY_VALUE#"><span class="fa fa-frown-o fa-2x feedback-negative" aria-hidden="true" ></span></span>
+        }
+    )
+
+    entry neutral (
+        sequence: 2
+        display: Neutral
+        return: 2
+        globalization {
+            template: <span title="#DISPLAY_VALUE#" aria-label="#DISPLAY_VALUE#"><span class="fa fa-emoji-neutral fa-2x feedback-neutral" aria-hidden="true" ></span></span>
+        }
+    )
+
+    entry positive (
+        sequence: 1
+        display: Positive
+        return: 3
+        globalization {
+            template: <span title="#DISPLAY_VALUE#" aria-label="#DISPLAY_VALUE#"><span class="fa fa-smile-o fa-2x feedback-positive" aria-hidden="true" ></span></span>
+        }
+    )
+
+)
+
+lov feedback-status (
+    name: FEEDBACK_STATUS
+    source {
+        location: staticValues
+    }
+
+    entry acknowledged (
+        sequence: 2
+        display: Acknowledged
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry no-action (
+        sequence: 1
+        display: No Action
+        return: 0
+    )
+
+    entry open (
+        sequence: 3
+        display: Open
+        return: 3
+    )
+
+)
+
+lov projects-detail (
+    name: PROJECTS DETAIL
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select 
+                 p.id, 
+                 decode(rt.release,null,p.project,rt.release_train||' '||rt.release||': '||project)|| ' - '||pct_complete||'%' display
+            from SP_PROJECTS p,
+                 SP_RELEASE_TRAINS rt
+            where p.release_id = rt.id(+) and
+                  p.ARCHIVED_YN = 'N' and
+                  p.DUPLICATE_OF_PROJECT_ID is null
+            order by p.project
+            ```
+    }
+    columnMapping {
+        return: ID
+        display: DISPLAY
+    }
+)
+
+lov releases (
+    name: RELEASES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select 
+                   id,
+                   RELEASE_TRAIN||' '||release release,
+                   to_char(release_open_date,'YYYY.MM.DD')||' - '||
+                   to_char(release_target_date,'YYYY.MM.DD') window
+            from SP_RELEASE_TRAINS
+            order by release_target_date
+            ```
+    }
+    columnMapping {
+        return: ID
+        display: RELEASE
+    }
+
+    column ID (
+        show: false
+        layout {
+            sequence: 10
+        }
+        source {
+            dataType: number
+        }
+        advanced {
+            searchable: false
+        }
+    )
+
+    column RELEASE (
+        heading {
+            heading: Release
+        }
+        layout {
+            sequence: 20
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column WINDOW (
+        heading {
+            heading: Window
+        }
+        layout {
+            sequence: 30
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+)
+
+lov sp-areas-area (
+    name: SP_AREAS.AREA
+    source {
+        tableName: SP_AREAS
+    }
+    columnMapping {
+        return: ID
+        display: AREA
+        defaultSort: AREA
+    }
+)
+
+lov sp-groups-group-name (
+    name: SP_GROUPS.GROUP_NAME
+    source {
+        tableName: SP_GROUPS
+    }
+    columnMapping {
+        return: ID
+        display: GROUP_NAME
+        defaultSort: GROUP_NAME
+    }
+)
+
+lov sp-initiative-focus-areas-focus-area (
+    name: SP_INITIATIVE_FOCUS_AREAS.FOCUS_AREA
+    source {
+        tableName: SP_INITIATIVE_FOCUS_AREAS
+    }
+    columnMapping {
+        return: ID
+        display: FOCUS_AREA
+        defaultSort: FOCUS_AREA
+    }
+)
+
+lov sp-initiatives-initiative (
+    name: SP_INITIATIVES.INITIATIVE
+    source {
+        tableName: SP_INITIATIVES
+    }
+    columnMapping {
+        return: ID
+        display: INITIATIVE
+        defaultSort: INITIATIVE
+    }
+)
+
+lov sp-project-groups-group-name (
+    name: SP_PROJECT_GROUPS.GROUP_NAME
+    source {
+        tableName: SP_PROJECT_GROUPS
+    }
+    columnMapping {
+        return: ID
+        display: GROUP_NAME
+        defaultSort: GROUP_NAME
+    }
+)
+
+lov sp-project-priorities-description (
+    name: SP_PROJECT_PRIORITIES.DESCRIPTION
+    source {
+        tableName: SP_PROJECT_PRIORITIES
+    }
+    columnMapping {
+        return: ID
+        display: DESCRIPTION
+        defaultSort: DESCRIPTION
+    }
+)
+
+lov sp-project-scales-scale-name (
+    name: SP_PROJECT_SCALES.SCALE_NAME
+    source {
+        tableName: SP_PROJECT_SCALES
+    }
+    columnMapping {
+        return: SCALE_LETTER
+        display: SCALE_NAME
+        defaultSort: SCALE_NAME
+    }
+)
+
+lov sp-projects-project (
+    name: SP_PROJECTS.PROJECT
+    source {
+        tableName: SP_PROJECTS
+    }
+    columnMapping {
+        return: ID
+        display: PROJECT
+        defaultSort: PROJECT
+    }
+)
+
+lov sp-release-trains-release-train (
+    name: SP_RELEASE_TRAINS.RELEASE_TRAIN
+    source {
+        type: sqlQuery
+        sqlQuery: select release_train||' '||release release_train, id from SP_RELEASE_TRAINS
+    }
+    columnMapping {
+        return: ID
+        display: RELEASE_TRAIN
+    }
+)
+
+lov sp-resource-types-resource-type (
+    name: SP_RESOURCE_TYPES.RESOURCE_TYPE
+    source {
+        tableName: SP_RESOURCE_TYPES
+    }
+    columnMapping {
+        return: ID
+        display: RESOURCE_TYPE
+        defaultSort: RESOURCE_TYPE
+    }
+)
+
+lov sp-tasks-description (
+    name: SP_TASKS.DESCRIPTION
+    source {
+        tableName: SP_TASKS
+    }
+    columnMapping {
+        return: ID
+        display: DESCRIPTION
+        defaultSort: DESCRIPTION
+    }
+)
+
+lov sp-team-member-contribs-and-admins (
+    name: SP_TEAM_MEMBER - CONTRIBS AND ADMINS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+            from SP_TEAM_MEMBERS
+            where upper(email) in (select user_name
+                                     from apex_appl_acl_user_roles
+                                    where application_id = :APP_ID
+                                      and role_static_id in ('ADMINISTRATOR','CONTRIBUTOR'))
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov sp-team-members (
+    name: SP_TEAM_MEMBERS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+            from SP_TEAM_MEMBERS
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov sp-team-members-current-only (
+    name: SP_TEAM_MEMBERS - CURRENT ONLY
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+            from SP_TEAM_MEMBERS
+            where is_current_yn = 'Y'
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov task-names-for-display-lovs (
+    name: TASK NAMES FOR DISPLAY LOVS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select r.id r,
+                   (select task_type from sp_task_types rt where rt.id = r.task_type_id)||
+                       case when r.task_sub_type_id is not null then ': ' end ||
+                       (select task_type from sp_task_types rt where rt.id = r.task_sub_type_id) ||
+                       case when r.task is not null then ' - '||r.task end d
+              from sp_tasks r
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+        defaultSort: D
+    }
+)
+
+lov unified-task-list-lov-due (
+    name: UNIFIED_TASK_LIST.LOV.DUE
+    source {
+        location: staticValues
+    }
+
+    entry more-than-30-days (
+        sequence: 6
+        display: More than 30 days
+        return: 720|
+    )
+
+    entry next-24-hours (
+        sequence: 3
+        display: Next 24 hours
+        return: 1|24
+    )
+
+    entry next-30-days (
+        sequence: 5
+        display: Next 30 days
+        return: 168|720
+    )
+
+    entry next-7-days (
+        sequence: 4
+        display: Next 7 days
+        return: 24|168
+    )
+
+    entry next-hour (
+        sequence: 2
+        display: Next hour
+        return: 0|1
+    )
+
+    entry overdue (
+        sequence: 1
+        display: Overdue
+        return: |0
+    )
+
+)
+
+lov unified-task-list-lov-initiated (
+    name: UNIFIED_TASK_LIST.LOV.INITIATED
+    source {
+        location: staticValues
+    }
+
+    entry last-24-hours (
+        sequence: 2
+        display: Last 24 hours
+        return: 1|24
+    )
+
+    entry last-30-days (
+        sequence: 4
+        display: Last 30 days
+        return: 168|720
+    )
+
+    entry last-7-days (
+        sequence: 3
+        display: Last 7 days
+        return: 24|168
+    )
+
+    entry last-hour (
+        sequence: 1
+        display: Last hour
+        return: |1
+    )
+
+    entry older-than-30-days (
+        sequence: 5
+        display: Older than 30 days
+        return: 720|
+    )
+
+)
+
+lov unified-task-list-lov-priority (
+    name: UNIFIED_TASK_LIST.LOV.PRIORITY
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_human_task.get_lov_priority )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov unified-task-list-lov-state (
+    name: UNIFIED_TASK_LIST.LOV.STATE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_human_task.get_lov_state )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov unified-task-list-lov-type (
+    name: UNIFIED_TASK_LIST.LOV.TYPE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_human_task.get_lov_type )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov workflow-console-lov-initiated (
+    name: WORKFLOW_CONSOLE.LOV.INITIATED
+    source {
+        location: staticValues
+    }
+
+    entry last-24-hours (
+        sequence: 2
+        display: Last 24 hours
+        return: 1|24
+    )
+
+    entry last-30-days (
+        sequence: 4
+        display: Last 30 days
+        return: 168|720
+    )
+
+    entry last-7-days (
+        sequence: 3
+        display: Last 7 days
+        return: 24|168
+    )
+
+    entry last-hour (
+        sequence: 1
+        display: Last hour
+        return: |1
+    )
+
+    entry older-than-30-days (
+        sequence: 5
+        display: Older than 30 days
+        return: 720|
+    )
+
+)
+
+lov workflow-console-lov-workflow-state (
+    name: WORKFLOW_CONSOLE.LOV.WORKFLOW_STATE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_workflow.get_lov_workflow_state )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+
+lov yn-yesno (
+    name: YN_YESNO
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

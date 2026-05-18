@@ -1,0 +1,565 @@
+page 13 (
+    name: Edit
+    alias: EDIT5
+    title: Edit
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+    help {
+        helpText: No help is available for this page.
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This page contains one dynamic action called 'GET DEPT INFORMATION'. This fires whenever the 'Department' page item changes and invokes an AJAX call that retrieves the 'Location' and 'Number of Employees' information for the selected department from the database.</p>
+                <p>It uses one native action ('Set Value' with a 'Set Type' of 'SQL Statement').</p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region maintain-employee (
+        name: Maintain Employee
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P13_COMM (
+        type: numberField
+        label {
+            label: Commission
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 80
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: COMM
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_DEPTNO (
+        type: selectList
+        label {
+            label: Department
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p13-eba-demo-da-emp-deptno
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: DEPTNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_EMPNO (
+        type: textField
+        label {
+            label: Employee Number
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 20
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 4
+        }
+        validation {
+            valueRequired: true
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: EMPNO
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_ENAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        settings {
+            trimSpaces: none
+        }
+        layout {
+            sequence: 30
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ENAME
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_HIREDATE (
+        type: datePicker
+        label {
+            label: Hire date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            formatMask: DD-MON-YYYY
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: HIREDATE
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_JOB (
+        type: selectList
+        label {
+            label: Job
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p13-eba-demo-da-emp-job
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: JOB
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_LOCATION (
+        type: displayOnly
+        label {
+            label: Location
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 100
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_MGR (
+        type: popupLov
+        label {
+            label: Manager
+            alignment: left
+        }
+        settings {
+            displayAs: modalDialog
+        }
+        lov {
+            type: sharedComponent
+            lov: @p13-eba-demo-da-emp-mgr
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: MGR
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_NO_OF_EMPLOYEES (
+        type: displayOnly
+        label {
+            label: Number of Employees
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 110
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_ROWID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @maintain-employee
+            slot: regionBody
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: ROWID
+            used: always
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: webSafe
+        }
+    )
+
+    pageItem P13_SAL (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        settings {
+            numberAlignment: end
+            virtualKeyboard: text
+        }
+        layout {
+            sequence: 70
+            region: @maintain-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+            width: 7
+        }
+        validation {
+            maxLength: 7
+        }
+        source {
+            type: databaseColumn
+            databaseColumn: SAL
+            used: always
+        }
+        security {
+            restrictedChars: webSafe
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 12
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P13_ROWID
+        }
+    )
+
+    dynamicAction get-dept-information (
+        name: GET DEPT INFORMATION
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P13_DEPTNO
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select d.loc location,
+                           count(e.empno) num_employees
+                      from eba_demo_da_dept d,
+                           eba_demo_da_emp e
+                     where d.deptno = e.deptno(+)
+                       and d.deptno = :P13_DEPTNO
+                     group by d.loc
+                    ```
+                itemsToSubmit: P13_DEPTNO
+            }
+            affectedElements {
+                selectionType: items
+                items: [
+                    P13_LOCATION
+                    P13_NO_OF_EMPLOYEES
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process fetch-row-from-eba-demo-da-emp (
+        name: Fetch Row from EBA_DEMO_DA_EMP
+        type: autoRowFetch
+        source {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P13_ROWID
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2655222751921886701
+        }
+    )
+
+    process process-row-of-eba-demo-da-emp (
+        name: Process Row of EBA_DEMO_DA_EMP
+        type: autoRowProcessing
+        target {
+            tableName: EBA_DEMO_DA_EMP
+            pkColumn: ROWID
+            pkItem: P13_ROWID
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Action Processed.
+        }
+        advanced {
+            executionMappingIdentifier: 2655222934836886703
+        }
+    )
+
+    process reset-page (
+        name: reset page
+        type: clearSessionState
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 2655223159919886703
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+)
+

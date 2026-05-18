@@ -1,0 +1,117 @@
+appComputation app-path (
+    itemName: APP_PATH
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_friendly_url_yn varchar2(3);
+                l_app_path        varchar2(4000) := wwv_flow_utilities.get_protocol() || '://' || owa_util.get_cgi_env('HTTP_HOST');
+            begin
+                select nvl(FRIENDLY_URL,'Yes') into l_friendly_url_yn from APEX_APPLICATIONS where APPLICATION_ID = :APP_ID;
+            
+                if l_friendly_url_yn = 'No' then
+                    l_app_path := l_app_path || owa_util.get_cgi_env('SCRIPT_NAME') || '/';
+                end if;
+            
+                return l_app_path;
+            end;
+            ```
+    }
+)
+
+appComputation application-title (
+    itemName: APPLICATION_TITLE
+    execution {
+        sequence: 10
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_app_name varchar2(255);
+            begin
+                select nvl(preference_value,:APP_NAME)
+                  into l_app_name
+                  from eba_qpoll_preferences
+                 where preference_name = 'APPLICATION_TITLE';
+                return l_app_name;
+            exception
+                when others then
+                    return :APP_NAME;
+            end;
+            ```
+    }
+    error {
+        errorMessage: An error was encountered while in the application title computation.
+    }
+)
+
+appComputation community-cnt (
+    itemName: COMMUNITY_CNT
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select count(*) 
+              from EBA_QPOLL_RESP_COMMUNITIES
+            ```
+    }
+)
+
+appComputation outstanding-invites (
+    itemName: OUTSTANDING_INVITES
+    execution {
+        sequence: 10
+        point: afterHeader
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select count (unique i.respondent_id) cnt
+              from eba_qpoll_comm_invites c,
+                   eba_qpoll_invites i
+             where c.poll_id = :POLL_ID
+               and c.id = i.comm_invite_id
+               and i.respondent_id not in
+                       (select respondent_id
+                          from EBA_QPOLL_RESULTS 
+                         where POLL_ID = :POLL_ID
+                           and nvl(is_valid_yn,'Y') = 'Y')
+            ```
+    }
+    serverSideCondition {
+        type: currentPageInList
+        pages: [
+            100
+            66
+            68
+        ]
+    }
+)
+
+appComputation poll-cnt (
+    itemName: POLL_CNT
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: sqlQuerySingleValue
+        sqlQuery:
+            ```sql
+            select count(*)
+              from eba_qpoll_polls
+            ```
+    }
+)
+

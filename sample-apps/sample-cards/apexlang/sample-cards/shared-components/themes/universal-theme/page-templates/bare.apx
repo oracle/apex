@@ -1,0 +1,237 @@
+pageTemplate bare (
+    name: bare
+    templateClass: oneLevelTabs
+    page {
+        header:
+            ```html
+            <!DOCTYPE html>
+            <html class="no-js #RTL_CLASS# page-&APP_PAGE_ID. app-&APP_ALIAS." lang="&BROWSER_LANGUAGE." #TEXT_DIRECTION#>
+            <head>
+              <meta http-equiv="x-ua-compatible" content="IE=edge" />
+              <meta charset="utf-8">
+              <title>#TITLE#</title>
+              #APEX_CSS#
+              #THEME_CSS#
+              #TEMPLATE_CSS#
+              #THEME_STYLE_CSS#
+              #APPLICATION_CSS#
+              #PAGE_CSS#
+              #FAVICONS#
+              #HEAD#
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            </head>
+            <body class="t-PageBody t-PageBody--hideLeft t-PageBody--hideActions no-anim #PAGE_CSS_CLASSES#" #TEXT_DIRECTION# #ONLOAD# id="t_PageBody">
+            #FORM_OPEN#
+              #REGION_POSITION_07#
+            #NAVIGATION_BAR#
+                    #TOP_GLOBAL_NAVIGATION_LIST##REGION_POSITION_06#
+            ```
+        body:
+            ```html
+              #SIDE_GLOBAL_NAVIGATION_LIST#
+            #REGION_POSITION_01#
+                    #SUCCESS_MESSAGE##NOTIFICATION_MESSAGE##GLOBAL_NOTIFICATION#
+            #REGION_POSITION_08#
+            #BODY#
+            #REGION_POSITION_05#
+            #REGION_POSITION_04#
+            ```
+        footer:
+            ```html
+            #FORM_CLOSE#
+            #DEVELOPER_TOOLBAR#
+            #APEX_JAVASCRIPT#
+            #GENERATED_CSS#
+            #APPLICATION_JAVASCRIPT#
+            #PAGE_JAVASCRIPT#  
+            #GENERATED_JAVASCRIPT#
+            </body>
+            </html>
+            
+            ```
+    }
+    subtemplate {
+        successMessage:
+            ```html
+            <div class="t-Body-alert">
+              <div class="t-Alert t-Alert--defaultIcons t-Alert--success t-Alert--horizontal t-Alert--page t-Alert--colorBG" id="t_Alert_Success" role="alert">
+                <div class="t-Alert-wrap">
+                  <div class="t-Alert-icon">
+                    <span class="t-Icon"></span>
+                  </div>
+                  <div class="t-Alert-content">
+                    <div class="t-Alert-header">
+                      <h2 class="t-Alert-title">#SUCCESS_MESSAGE#</h2>
+                    </div>
+                  </div>
+                  <div class="t-Alert-buttons">
+                    <button class="t-Button t-Button--noUI t-Button--icon t-Button--closeAlert" type="button" title="#CLOSE_NOTIFICATION#"><span class="t-Icon icon-close"></span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            ```
+        navigationBar:
+            ```html
+            <ul class="t-NavigationBar t-NavigationBar--classic" data-mode="classic">
+              <li class="t-NavigationBar-item">
+                <span class="t-Button t-Button--icon t-Button--noUI t-Button--header t-Button--navBar t-Button--headerUser">
+                  <span class="t-Icon a-Icon icon-user"></span>
+                  <span class="t-Button-label">&APP_USER.</span>
+                </span>
+              </li>#BAR_BODY#
+            </ul>
+            ```
+        navigationBarEntry:
+            ```html
+            <li class="t-NavigationBar-item">
+              <a class="t-Button t-Button--icon t-Button--header" href="#LINK#">
+                <span class="t-Icon #IMAGE#"></span>
+                <span class="t-Button-label">#TEXT#</span>
+              </a>
+            </li>
+            ```
+        notification:
+            ```html
+            <div class="t-Body-alert">
+              <div class="t-Alert t-Alert--defaultIcons t-Alert--warning t-Alert--horizontal t-Alert--page t-Alert--colorBG" id="t_Alert_Notification" role="alert">
+                <div class="t-Alert-wrap">
+                  <div class="t-Alert-icon">
+                    <span class="t-Icon"></span>
+                  </div>
+                  <div class="t-Alert-content">
+                    <div class="t-Alert-body">#MESSAGE#</div>
+                  </div>
+                  <div class="t-Alert-buttons">
+                    <button class="t-Button t-Button--noUI t-Button--icon t-Button--closeAlert" type="button" title="#CLOSE_NOTIFICATION#"><span class="t-Icon icon-close"></span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            ```
+    }
+    layout {
+        maxColumns: 12
+        alwaysUseMaxColumns: true
+        defaultLabelColumnSpan: 2
+        firstColumnAttributes: col-start
+        lastColumnAttributes: col-end
+        containerTemplate:
+            ```html
+            <div class="container">
+            #ROWS#
+            </div>
+            ```
+        rowTemplate:
+            ```html
+            <div class="row">
+            #COLUMNS#
+            </div>
+            ```
+        columnTemplate: <div class="col col-#COLUMN_SPAN_NUMBER# #CSS_CLASSES# #FIRST_LAST_COLUMN_ATTRIBUTES#" #ATTRIBUTES#>#CONTENT#</div>
+    }
+    positions {
+        breadcrumbPosition: breadcrumbBar
+    }
+    errorPage {
+        template:
+            ```html
+            <div class="t-Alert t-Alert--danger t-Alert--wizard t-Alert--defaultIcons">
+              <div class="t-Alert-wrap">
+                <div class="t-Alert-icon">
+                  <span class="t-Icon"></span>
+                </div>
+                <div class="t-Alert-content">
+                  <div class="t-Alert-body">
+                    <h3>#MESSAGE#</h3>
+                    <p>#ADDITIONAL_INFO#</p>
+                    <div class="t-Alert-inset">#TECHNICAL_INFO#</div>
+                  </div>
+                </div>
+                <div class="t-Alert-buttons">
+                  <button onclick="#BACK_LINK#" class="t-Button t-Button--hot w50p t-Button--large" type="button">#OK#</button>
+                </div>
+              </div>
+            </div>
+            ```
+    }
+    advanced {
+        identifier: BARE
+    }
+
+    templateOption sticky-header-on-mobile (
+        name: Sticky Header on Mobile
+        sequence: 100
+        appearance {
+            cssClasses: js-pageStickyMobileHeader
+        }
+        help {
+            helpText: This will position the contents of the Breadcrumb Bar region position so it sticks to the top of the screen for small screens.
+        }
+        advanced {
+            identifier: STICKY_HEADER_ON_MOBILE
+        }
+    )
+
+    slot beforeContentBody (
+        name: Before Content Body
+        staticId: REGION_POSITION_08
+        gridLayout {
+            maxFixedColumns: 12
+        }
+    )
+
+    slot breadcrumbBar (
+        name: Breadcrumb Bar
+        staticId: REGION_POSITION_01
+        gridLayout {
+            gridSupport: false
+        }
+    )
+
+    slot contentBody (
+        name: Content Body
+        staticId: BODY
+        supports {
+            items: true
+            buttons: true
+        }
+        gridLayout {
+            maxFixedColumns: 12
+        }
+    )
+
+    slot footer (
+        name: Footer
+        staticId: REGION_POSITION_05
+        gridLayout {
+            maxFixedColumns: 12
+        }
+    )
+
+    slot inlineDialogs (
+        name: Inline Dialogs
+        staticId: REGION_POSITION_04
+        gridLayout {
+            maxFixedColumns: 12
+        }
+    )
+
+    slot pageHeader (
+        name: Page Header
+        staticId: REGION_POSITION_07
+        gridLayout {
+            gridSupport: false
+        }
+    )
+
+    slot pageNavigation (
+        name: Page Navigation
+        staticId: REGION_POSITION_06
+        gridLayout {
+            gridSupport: false
+        }
+    )
+
+)
+

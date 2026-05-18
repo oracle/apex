@@ -1,0 +1,41 @@
+classicNavigationBarEntry administration (
+    label: Administration
+    layout {
+        sequence: 10
+    }
+    link {
+        target: {
+            page: settings
+        }
+    }
+)
+
+classicNavigationBarEntry help (
+    label: Help
+    layout {
+        sequence: 20
+    }
+    link {
+        target: {
+            page: help
+        }
+    }
+)
+
+classicNavigationBarEntry logout (
+    label: Logout
+    layout {
+        sequence: 30
+    }
+    icon {
+        height: 32
+        width: 32
+    }
+    link {
+        target: {
+            type: url
+            url: &LOGOUT_URL.
+        }
+    }
+)
+

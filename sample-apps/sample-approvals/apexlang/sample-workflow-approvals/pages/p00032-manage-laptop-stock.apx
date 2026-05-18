@@ -1,0 +1,247 @@
+page 32 (
+    name: Manage Laptop Stock
+    alias: MANAGE-LAPTOP-STOCK
+    title: Manage Laptop Stock
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about-this-page (
+        name: About this page
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This page lets Operations Team members adjust the stock levels of Mac and Windows laptops
+                    used for laptop procurement. The <emphasis>Laptop Procurement</emphasis> workflow first 
+                    tries to see if there is a laptop of the appropriate type in stock, and if not it will
+                    place an order for a new one to fulfill the procurement and wait for an Operations Team
+                    member to mark the ordered laptop as received by entering a <emphasis>Delivered Date</emphasis>
+                    on the <emphasis>Laptop Order Management</emphasis> page.   
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                js-useLocalStorage
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region manage-laptop-stock (
+        name: Manage Laptop Stock
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: EBA_DEMO_APPR_LAPTOP_STOCK
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: update
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+                excel
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 7642180507678449
+        }
+
+        savedReport 76426 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+            displayColumn (
+                column: @LAPTOP_TYPE
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @AMOUNT
+                layout {
+                    sequence: 2
+                }
+            )
+
+        )
+
+        column AMOUNT (
+            type: numberField
+            heading {
+                heading: Amount
+                alignment: end
+            }
+            settings {
+                minValue: 0
+                maxValue: 9999
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                width: 4
+            }
+            source {
+                databaseColumn: AMOUNT
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column LAPTOP_TYPE (
+            type: displayOnly
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: LAPTOP_TYPE
+                dataType: varchar2
+                primaryKey: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Manage Laptop Stock
+        }
+    )
+
+    validation ensure-whole-number (
+        name: Ensure Whole Number
+        execution {
+            sequence: 10
+        }
+        validation {
+            editableRegion: @manage-laptop-stock
+            plsqlExpression: mod(:AMOUNT,1)=0
+        }
+        error {
+            errorMessage: #COLUMN_HEADER# must be a whole number.
+            associatedColumn: AMOUNT
+        }
+    )
+
+    process manage-laptop-stock-save-interactive-grid-data (
+        name: Manage Laptop Stock - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @manage-laptop-stock
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 7646438551678469
+        }
+    )
+
+)
+

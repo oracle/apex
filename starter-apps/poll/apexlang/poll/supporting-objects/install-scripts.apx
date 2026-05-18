@@ -1,0 +1,327 @@
+installScript "History Triggers" (
+    execution {
+        sequence: 440
+    }
+    script {
+        contentFile: history-triggers.sql
+    }
+)
+
+installScript "Set FIRST_RUN Preference" (
+    execution {
+        sequence: 600
+    }
+    script {
+        contentFile: set-first-run-preference.sql
+    }
+)
+
+installScript "Set plscope_settings" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: set-plscope-settings.sql
+    }
+)
+
+installScript "eba_qpoll body" (
+    execution {
+        sequence: 510
+    }
+    script {
+        contentFile: eba-qpoll-body.sql
+    }
+)
+
+installScript "eba_qpoll spec" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: eba-qpoll-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_LIVEPOLL
+    )
+
+)
+
+installScript "eba_qpoll_access_requests table" (
+    execution {
+        sequence: 350
+    }
+    script {
+        contentFile: eba-qpoll-access-requests-table.sql
+    }
+)
+
+installScript "eba_qpoll_account body" (
+    execution {
+        sequence: 540
+    }
+    script {
+        contentFile: eba-qpoll-account-body.sql
+    }
+)
+
+installScript "eba_qpoll_account spec" (
+    execution {
+        sequence: 37
+    }
+    script {
+        contentFile: eba-qpoll-account-spec.sql
+    }
+)
+
+installScript "eba_qpoll_application_log table" (
+    execution {
+        sequence: 300
+    }
+    script {
+        contentFile: eba-qpoll-application-log-table.sql
+    }
+)
+
+installScript "eba_qpoll_canned_answers table" (
+    execution {
+        sequence: 210
+    }
+    script {
+        contentFile: eba-qpoll-canned-answers-table.sql
+    }
+)
+
+installScript "eba_qpoll_comm_invites table" (
+    execution {
+        sequence: 200
+    }
+    script {
+        contentFile: eba-qpoll-comm-invites-table.sql
+    }
+)
+
+installScript "eba_qpoll_email body" (
+    execution {
+        sequence: 530
+    }
+    script {
+        contentFile: eba-qpoll-email-body.sql
+    }
+)
+
+installScript "eba_qpoll_email spec" (
+    execution {
+        sequence: 35
+    }
+    script {
+        contentFile: eba-qpoll-email-spec.sql
+    }
+)
+
+installScript "eba_qpoll_email_opt_out table" (
+    execution {
+        sequence: 420
+    }
+    script {
+        contentFile: eba-qpoll-email-opt-out-table.sql
+    }
+)
+
+installScript "eba_qpoll_emails table" (
+    execution {
+        sequence: 190
+    }
+    script {
+        contentFile: eba-qpoll-emails-table.sql
+    }
+)
+
+installScript "eba_qpoll_error_log table" (
+    execution {
+        sequence: 230
+    }
+    script {
+        contentFile: eba-qpoll-error-log-table.sql
+    }
+)
+
+installScript "eba_qpoll_errors table" (
+    execution {
+        sequence: 70
+    }
+    script {
+        contentFile: eba-qpoll-errors-table.sql
+    }
+)
+
+installScript "eba_qpoll_fw body" (
+    execution {
+        sequence: 500
+    }
+    script {
+        contentFile: eba-qpoll-fw-body.sql
+    }
+)
+
+installScript "eba_qpoll_fw spec" (
+    execution {
+        sequence: 15
+    }
+    script {
+        contentFile: eba-qpoll-fw-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_QPOLL_FW
+    )
+
+)
+
+installScript "eba_qpoll_history table" (
+    execution {
+        sequence: 430
+    }
+    script {
+        contentFile: eba-qpoll-history-table.sql
+    }
+)
+
+installScript "eba_qpoll_notifications table" (
+    execution {
+        sequence: 100
+    }
+    script {
+        contentFile: eba-qpoll-notifications-table.sql
+    }
+)
+
+installScript "eba_qpoll_polls table" (
+    execution {
+        sequence: 125
+    }
+    script {
+        contentFile: eba-qpoll-polls-table.sql
+    }
+)
+
+installScript "eba_qpoll_preferences data" (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: eba-qpoll-preferences-data.sql
+    }
+)
+
+installScript "eba_qpoll_preferences table" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: eba-qpoll-preferences-table.sql
+    }
+)
+
+installScript "eba_qpoll_questions table" (
+    execution {
+        sequence: 140
+    }
+    script {
+        contentFile: eba-qpoll-questions-table.sql
+    }
+)
+
+installScript "eba_qpoll_quiz body" (
+    execution {
+        sequence: 520
+    }
+    script {
+        contentFile: eba-qpoll-quiz-body.sql
+    }
+)
+
+installScript "eba_qpoll_quiz spec" (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: eba-qpoll-quiz-spec.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: package
+        name: EBA_QPOLL_QUIZ
+    )
+
+)
+
+installScript "eba_qpoll_resp_comm_ref table" (
+    execution {
+        sequence: 170
+    }
+    script {
+        contentFile: eba-qpoll-resp-comm-ref-table.sql
+    }
+)
+
+installScript "eba_qpoll_resp_communities table" (
+    execution {
+        sequence: 150
+    }
+    script {
+        contentFile: eba-qpoll-resp-communities-table.sql
+    }
+)
+
+installScript "eba_qpoll_respondents table" (
+    execution {
+        sequence: 160
+    }
+    script {
+        contentFile: eba-qpoll-respondents-table.sql
+    }
+)
+
+installScript "eba_qpoll_results table" (
+    execution {
+        sequence: 220
+    }
+    script {
+        contentFile: eba-qpoll-results-table.sql
+    }
+)
+
+installScript "eba_qpoll_sections table" (
+    execution {
+        sequence: 135
+    }
+    script {
+        contentFile: eba-qpoll-sections-table.sql
+    }
+)
+
+installScript eba_qpoll_seq (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: eba-qpoll-seq.sql
+    }
+)
+
+installScript "eba_qpoll_user_log table" (
+    execution {
+        sequence: 310
+    }
+    script {
+        contentFile: eba-qpoll-user-log-table.sql
+    }
+)
+
