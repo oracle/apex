@@ -114,6 +114,7 @@
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/brookstrut-sample-app",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.zip",
+            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/apexlang/brookstrut.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -272,6 +273,7 @@
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-approvals",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/sql/sample-approvals.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/sql/sample-approvals.zip",
+            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/apexlang/sample-workflow-approvals.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -589,6 +591,7 @@
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-document-generator",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-document-generator/sql/sample-document-generator.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-document-generator/sql/sample-document-generator.zip",
+            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-document-generator/apexlang/sample-docgen.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -694,6 +697,7 @@
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-email-authentication",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-email-authentication/sql/sample-email-authentication.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-email-authentication/sql/sample-email-authentication.zip",
+            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-email-authentication/apexlang/ema.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1117,6 +1121,7 @@
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/universal-theme-reference",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/universal-theme-reference/sql/universal-theme-reference.sql",
             "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/universal-theme-reference/sql/universal-theme-reference.zip",
+            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/universal-theme-reference/apexlang/ut.zip",
             "license": "",
             "i18n": {
                 "en": {
