@@ -1,5 +1,6 @@
 page 34 (
     name: Transaction Summary by Minute
+    alias: TRANSACTION-SUMMARY-BY-MINUTE
     title: Transaction Summary by Minute
     appearance {
         pageTemplate: @/standard

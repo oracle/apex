@@ -41,23 +41,23 @@ prompt APPLICATION 7210 - Brookstrut Sample App
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     49
---       Items:                   88
+--     Pages:                     48
+--       Items:                   87
 --       Computations:            10
 --       Validations:              4
---       Processes:               37
---       Regions:                142
---       Buttons:                 93
---       Dynamic Actions:         23
+--       Processes:               36
+--       Regions:                134
+--       Buttons:                 91
+--       Dynamic Actions:         20
 --     Shared Components:
 --       Logic:
 --         Items:                  9
 --         Processes:              2
---         Build Options:          3
+--         Build Options:          2
 --       Navigation:
 --         Lists:                  9
 --         Breadcrumbs:            1
---           Entries:             45
+--           Entries:             44
 --         NavBar Entries:         2
 --       Security:
 --         Authentication:         1
@@ -74,7 +74,7 @@ prompt APPLICATION 7210 - Brookstrut Sample App
 --     Supporting Objects:  Included
 --       Install scripts:         25
 --   Version:         26.1.0
---   Instance ID:     746015870406431
+--   Instance ID:     746039064640963
 --
 
 prompt --application/delete_application
@@ -116,7 +116,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -134,7 +134,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Brookstrut Sample App'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>20
-,p_version_scn=>'111115802'
+,p_version_scn=>'148991861'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -1102,7 +1102,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(38797542156837024721)
 ,p_name=>'Application Actions'
 ,p_static_id=>'application-actions'
-,p_version_scn=>'37167692709710'
+,p_version_scn=>'SH256:pUJ4rpNIgcBPDKYI0rdCB01f_HsOMfIWWK3AsGzQJt8'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(39055515224605557951)
@@ -1169,20 +1169,9 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_display_sequence=>56
 ,p_list_item_link_text=>'Sales History'
 ,p_static_id=>'sales-history'
-,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP,2:::'
+,p_list_item_link_target=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.:RP,51:::'
 ,p_list_item_icon=>'fa-credit-card'
 ,p_list_text_01=>'Identify product items available for sale at one or more stores'
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(38798991067502784420)
-,p_list_item_display_sequence=>20
-,p_list_item_link_text=>'Store Locations Map'
-,p_static_id=>'store-locations-map'
-,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.:10:::'
-,p_list_item_icon=>'fa-map-o'
-,p_list_text_01=>'Set production promotions by store using map interface.'
-,p_required_patch=>wwv_flow_imp.id(38815931759832039124)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
@@ -4125,13 +4114,6 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>7
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(41305530756112818856)
-,p_short_name=>'Store Locations Map'
-,p_static_id=>'store-locations-map'
-,p_link=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.:::'
-,p_page_id=>10
-);
-wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(38796830576292623486)
 ,p_short_name=>'Stores'
 ,p_static_id=>'stores'
@@ -4413,14 +4395,6 @@ wwv_flow_imp_shared.create_build_option(
 ,p_version_scn=>'1'
 ,p_feature_identifier=>'APPLICATION_THEME_STYLE_SELECTION'
 ,p_build_option_comment=>'Allow administrators to select a default color scheme (theme style) for the application. Administrators can also choose to allow end users to choose their own theme style. '
-);
-wwv_flow_imp_shared.create_build_option(
- p_id=>wwv_flow_imp.id(38815931759832039124)
-,p_build_option_name=>'Maps'
-,p_static_id=>'maps'
-,p_build_option_status=>'EXCLUDE'
-,p_version_scn=>'1'
-,p_build_option_comment=>'Show store locations on a map.  Including provides the ability to show store locations on a map.  Excluding removes this capability from users.'
 );
 end;
 /
@@ -5117,6 +5091,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>3
 ,p_name=>'Store'
+,p_alias=>'STORE-PERFORMANCE'
 ,p_step_title=>'Store'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -5497,7 +5472,6 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_point=>'AFTER_PROCESSING'
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_sequence=>10
-,p_branch_comment=>'Created 13-SEP-2012 12:08 by ALLAN'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(38799094373216974833)
@@ -5643,6 +5617,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>5
 ,p_name=>'Sales'
+,p_alias=>'SALES'
 ,p_step_title=>'Sales'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -5712,9 +5687,6 @@ wwv_flow_imp_page.create_report_region(
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
 ,p_plug_query_strip_html=>'N'
-,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT json_value(SALES_DATA, ''$.PRODUCT_ID'') x',
-' FROM OOW_DEMO_SALES_HISTORY;'))
 );
 wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(35959400789812408491)
@@ -6596,153 +6568,14 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>7
 ,p_name=>'Store'
+,p_alias=>'STORE'
 ,p_step_title=>'Store'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(39780713597028209169)
-,p_javascript_file_urls=>'https://maps.googleapis.com/maps/api/js?key=&P7_MAPS_API_KEY.&amp;sensor=false'
-,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'var htmldb_delete_message = ''"DELETE_CONFIRM_MSG"'';',
-'',
-'var g_initialAddress = "";',
-'var g_addrFieldMap = {',
-'    "route": "P7_STORE_ADDRESS",',
-'    "sublocality": "P7_STORE_CITY",',
-'    "locality": "P7_STORE_CITY",',
-'    "administrative_area_level_1": "P7_STORE_STATE",',
-'    "postal_code": "P7_STORE_ZIP"',
-'};',
-'',
-'function getAddressString() {',
-'    var addr = $v("P7_STORE_ADDRESS") + ", " + $v("P7_STORE_CITY") + ", " + $v("P7_STORE_STATE") + ", " + $v("P7_STORE_ZIP");',
-'    return addr;',
-'}',
-'',
-'function updateAddress(result, updateLoc) {',
-'    var i, type, value, field, loc, lat, lng, stnum, address, subloc, city,',
-'        ok = true,',
-'        comps = result.address_components;',
-'',
-'    for (i = 0; i < comps.length; i++) {',
-'        type = comps[i].types[0];',
-'        value = comps[i][type == "administrative_area_level_1" ? "short_name" : "long_name"];',
-'        if (type == "street_number") {',
-'            stnum = value;',
-'        } else if (type == "route") {',
-'            address = value;',
-'        } else if (type == "sublocality") {',
-'            subloc = value;',
-'        } else if (type == "locality") {',
-'            city = value;',
-'        } else {',
-'            field = g_addrFieldMap[type];',
-'            if (field) {',
-'                $s(field, value);',
-'            }',
-'        }',
-'    }',
-'    if (stnum && address) {',
-'        address = stnum + " " + address;',
-'    }',
-'    if (address) {',
-'        field = g_addrFieldMap["route"];',
-'        if (field) {',
-'            $s(field, address);',
-'        }',
-'    }',
-'    if (subloc) {',
-'        city = subloc;',
-'    }',
-'    if (city) {',
-'        field = g_addrFieldMap["locality"];',
-'        if (field) {',
-'            $s(field, city);',
-'        }',
-'    }',
-'    if (!address || $v("P7_STORE_ADDRESS") === "" || $v("P7_STORE_CITY") === "" || $v("P7_STORE_STATE") === "" || $v("P7_STORE_ZIP") === "") {',
-'        ok = false;',
-'    }',
-'',
-'    if (updateLoc) {',
-'        loc = result.geometry.location;',
-'        lat = loc.lat();',
-'        lng = loc.lng();',
-'        $s("P7_STORE_LAT", lat);',
-'        $s("P7_STORE_LNG", lng);',
-'    }',
-'    return ok;',
-'}',
-'',
-'function validateAddressAndSubmit(action) {',
-'    var gc,',
-'        curAddr = getAddressString(),',
-'        lat = $v("P7_STORE_LAT"),',
-'        lng = $v("P7_STORE_LNG");',
-'',
-'    // don''t check addresses if there is no API key or required fields are missing (let the server validate), or have lat, lng and no address change',
-'    // do check if missing lat or lag or the address has been edited',
-'    if ($v("P7_MAPS_API_KEY") !== "" && ',
-'          $v("P7_STORE_ADDRESS") !== "" && ',
-'          $v("P7_STORE_CITY") !== "" && ',
-'          $v("P7_STORE_NAME") !== "" && ',
-'          (lat === "" || lng === "" || curAddr !== g_initialAddress)) {',
-'',
-'        apex.jQuery("#storeForm h1").first().append("<span id=''checking'' style=''padding-left: 40px;''>- Validating Address - </span>");',
-'        apex.jQuery(".addressCheckMessage").hide();',
-'',
-'        gc = new google.maps.Geocoder();',
-'        gc.geocode({',
-'            address: curAddr',
-'        }, function (results, status) {',
-'            var i, choices;',
-'',
-'            apex.jQuery("#checking").remove();',
-'            if (status === google.maps.GeocoderStatus.OK) {',
-'                if (results.length === 1) {',
-'                    if (updateAddress(results[0], true)) {',
-'                        apex.submit(action);',
-'                        return;',
-'                    } else {',
-'                        apex.jQuery("#incomplete").show();',
-'                    }',
-'                } else {',
-'                    choices = "";',
-'                    for (i = 0; i < results.length; i++) {',
-'                        choices += "<li><input id=''addrChoices_" + i + ',
-'                                   "'' type=radio name=''addrchoice''><label for=''addrChoices_" + i + "''>" + ',
-'                                   results[i].formatted_address + "</label></li>";',
-'                    }',
-'                    apex.jQuery("#addrChoices").html(choices).off("change").on("change", function (evt) {',
-'                        var i = evt.target.id;',
-'                        i = i.split("_")[1];',
-'                        updateAddress(results[i], false);',
-'                    });',
-'                    apex.jQuery("#multiple").show();',
-'                }',
-'            } else {',
-'                switch (status) {',
-'                case google.maps.GeocoderStatus.ZERO_RESULTS:',
-'                    apex.jQuery("#notfound").show();',
-'                    break;',
-'                case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:',
-'                    apex.jQuery("#overlimit").show();',
-'                    break;',
-'                default:',
-'                    apex.jQuery("#checkfailed").show();',
-'                }',
-'            }',
-'            openModal("adrchkres");',
-'        });',
-'    } else {',
-'        apex.submit(action);',
-'    }',
-'}'))
-,p_javascript_code_onload=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'(function ($) {',
-'    g_initialAddress = getAddressString();',
-'})(apex.jQuery);'))
+,p_javascript_code=>'var htmldb_delete_message = ''"DELETE_CONFIRM_MSG"'';'
 ,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '.addressCheckMessage {',
 '  display: none;',
@@ -6756,21 +6589,6 @@ wwv_flow_imp_page.create_page(
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
 ,p_page_component_map=>'02'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36948269167443413738)
-,p_plug_name=>'Address Validation'
-,p_static_id=>'address-validation'
-,p_region_name=>'adrchkres'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_04'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38797116452607296176)
@@ -6788,111 +6606,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36959319651030873021)
-,p_plug_name=>'Check Failed'
-,p_static_id=>'check-failed'
-,p_region_name=>'checkfailed'
-,p_parent_plug_id=>wwv_flow_imp.id(36948269167443413738)
-,p_region_css_classes=>'addressCheckMessage'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>90
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Failed to check address.</p>',
-''))
-,p_translate_title=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36959301961617365136)
-,p_plug_name=>'Incomplete address'
-,p_static_id=>'incomplete-address'
-,p_region_name=>'incomplete'
-,p_parent_plug_id=>wwv_flow_imp.id(36948269167443413738)
-,p_region_css_classes=>'addressCheckMessage'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>50
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>'<p>Not a complete address</p>'
-,p_translate_title=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36959302275600378630)
-,p_plug_name=>'Multiple addresses'
-,p_static_id=>'multiple-addresses'
-,p_region_name=>'multiple'
-,p_parent_plug_id=>wwv_flow_imp.id(36948269167443413738)
-,p_region_css_classes=>'addressCheckMessage'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>60
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Multiple results found. Choose one of the following.</p>',
-'<ul id="addrChoices">',
-'</ul>',
-''))
-,p_translate_title=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36959317847521843577)
-,p_plug_name=>'Not Found'
-,p_static_id=>'not-found'
-,p_region_name=>'notfound'
-,p_parent_plug_id=>wwv_flow_imp.id(36948269167443413738)
-,p_region_css_classes=>'addressCheckMessage'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>70
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Address not found. Enter a correct address and try again.</p>',
-''))
-,p_translate_title=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(36959318760596866293)
-,p_plug_name=>'Over Limit'
-,p_static_id=>'over-limit'
-,p_region_name=>'overlimit'
-,p_parent_plug_id=>wwv_flow_imp.id(36948269167443413738)
-,p_region_css_classes=>'addressCheckMessage'
-,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>80
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>Over limit try again later.</p>',
-''))
-,p_translate_title=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(38797111768689296153)
 ,p_plug_name=>'Store'
 ,p_static_id=>'store'
@@ -6900,7 +6613,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>10
-,p_plug_display_point=>'BODY_3'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -6921,33 +6633,17 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:::'
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(36948276158345054582)
-,p_button_sequence=>50
-,p_button_plug_id=>wwv_flow_imp.id(36948269167443413738)
-,p_button_name=>'CLOSE'
-,p_static_id=>'close'
-,p_button_static_id=>'adrchkclose'
-,p_button_action=>'DEFINED_BY_DA'
-,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
-,p_button_is_hot=>'Y'
-,p_button_image_alt=>'OK'
-,p_button_position=>'CLOSE'
-,p_button_execute_validations=>'N'
-,p_warn_on_unsaved_changes=>null
-);
-wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(38797111947743296155)
 ,p_button_sequence=>40
 ,p_button_plug_id=>wwv_flow_imp.id(38797116452607296176)
 ,p_button_name=>'CREATE'
 ,p_static_id=>'create'
-,p_button_action=>'DEFINED_BY_DA'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4073839297780169708
 ,p_button_image_alt=>'Add Store'
 ,p_button_position=>'CREATE'
-,p_warn_on_unsaved_changes=>null
 ,p_button_condition=>'P7_ID'
 ,p_button_condition_type=>'ITEM_IS_NULL'
 ,p_icon_css_classes=>'fa-plus'
@@ -6976,12 +6672,12 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(38797116452607296176)
 ,p_button_name=>'SAVE'
 ,p_static_id=>'save'
-,p_button_action=>'DEFINED_BY_DA'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
 ,p_button_template_id=>4073839297780169708
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CHANGE'
-,p_warn_on_unsaved_changes=>null
 ,p_button_condition=>'P7_ID'
 ,p_button_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_database_action=>'UPDATE'
@@ -7001,17 +6697,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_use_cache_before_default=>'NO'
 ,p_source=>'ID'
 ,p_source_type=>'DB_COLUMN'
-,p_display_as=>'NATIVE_HIDDEN'
-,p_protection_level=>'S'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'value_protected', 'Y')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(36959232372180327018)
-,p_name=>'P7_MAPS_API_KEY'
-,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(38797111768689296153)
-,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -7294,76 +6979,6 @@ wwv_flow_imp_page.create_page_validation(
 ,p_associated_item=>wwv_flow_imp.id(38797113369010296170)
 ,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(38797117948012309485)
-,p_name=>'CheckCreate'
-,p_static_id=>'checkcreate'
-,p_event_sequence=>20
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(38797111947743296155)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(38797118272510309485)
-,p_event_id=>wwv_flow_imp.id(38797117948012309485)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P7_STORE_LAT,P7_STORE_LNG'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', 'validateAddressAndSubmit("CREATE");')).to_clob
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(38797117469006306125)
-,p_name=>'CheckSave'
-,p_static_id=>'checksave'
-,p_event_sequence=>10
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(38797112074254296155)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(38797117747075306126)
-,p_event_id=>wwv_flow_imp.id(38797117469006306125)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_affected_elements_type=>'ITEM'
-,p_affected_elements=>'P7_STORE_LAT,P7_STORE_LNG'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', 'validateAddressAndSubmit("SAVE");')).to_clob
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(36959320661120904341)
-,p_name=>'Close Dialog'
-,p_static_id=>'close-dialog'
-,p_event_sequence=>30
-,p_triggering_element_type=>'BUTTON'
-,p_triggering_button_id=>wwv_flow_imp.id(36948276158345054582)
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'click'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(36959320957915904348)
-,p_event_id=>wwv_flow_imp.id(36959320661120904341)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', 'closeModal();')).to_clob
-);
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(38797115964533296175)
 ,p_process_sequence=>10
@@ -7376,26 +6991,6 @@ wwv_flow_imp_page.create_page_process(
   'primary_key_item', 'P7_ID',
   'table_name', 'OOW_DEMO_STORES')).to_clob
 ,p_internal_uid=>16574553282555984965
-);
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(36959232075817318948)
-,p_process_sequence=>50
-,p_process_point=>'BEFORE_HEADER'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Populate Google Maps API Key'
-,p_static_id=>'populate-google-maps-api-key'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'begin',
-'    select preference_value',
-'      into :P7_MAPS_API_KEY',
-'      from oow_demo_preferences',
-'     where preference_name = ''GOOGLE_MAPS_API_KEY'';',
-'exception',
-'    when no_data_found then',
-'        :P7_MAPS_API_KEY := null;',
-'end;'))
-,p_process_clob_language=>'PLSQL'
-,p_internal_uid=>14736669393840007738
 );
 wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(38797116172016296176)
@@ -7554,7 +7149,7 @@ wwv_flow_imp_page.create_page_plug(
 ') ilv',
 '  '))
 ,p_plug_source_type=>'NATIVE_IR'
-,p_ai_enabled=>false
+,p_ai_enabled=>true
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(38796922262101504052)
@@ -7572,6 +7167,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_download_formats=>'CSV:HTML'
 ,p_enable_mail_download=>'Y'
 ,p_internal_uid=>2708389615873260088
+,p_ai_search_mode=>'A'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(39058949910624172172)
@@ -7746,6 +7342,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>9
 ,p_name=>'Region'
+,p_alias=>'REGION'
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Region'
 ,p_reload_on_submit=>'A'
@@ -7955,108 +7552,12 @@ wwv_flow_imp_page.create_page_process(
 );
 end;
 /
-prompt --application/pages/page_00010
-begin
-wwv_flow_imp_page.create_page(
- p_id=>10
-,p_name=>'Store Locations Map'
-,p_alias=>'STORE-LOCATIONS-MAP'
-,p_step_title=>'Store Locations Map'
-,p_reload_on_submit=>'A'
-,p_warn_on_unsaved_changes=>'N'
-,p_autocomplete_on_off=>'OFF'
-,p_group_id=>wwv_flow_imp.id(39780716619966210174)
-,p_step_template=>4073832297226169690
-,p_page_template_options=>'#DEFAULT#'
-,p_required_patch=>wwv_flow_imp.id(38815931759832039124)
-,p_protection_level=>'C'
-,p_page_component_map=>'19'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(41305530474417818855)
-,p_plug_name=>'Breadcrumb'
-,p_static_id=>'breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(44425078801060133467)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(37026811695045935915)
-,p_plug_name=>'Store Locations'
-,p_static_id=>'store-locations'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>10
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_display_point=>'REGION_POSITION_08'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>'select * from OOW_DEMO_STORES'
-,p_lazy_loading=>true
-,p_plug_source_type=>'NATIVE_MAP_REGION'
-);
-wwv_flow_imp_page.create_map_region(
- p_id=>wwv_flow_imp.id(37026811772821935916)
-,p_region_id=>wwv_flow_imp.id(37026811695045935915)
-,p_height=>640
-,p_navigation_bar_type=>'FULL'
-,p_navigation_bar_position=>'END'
-,p_init_position_zoom_type=>'QUERY_RESULTS'
-,p_layer_messages_position=>'BELOW'
-,p_legend_position=>'END'
-,p_features=>'RECTANGLE_ZOOM:SCALE_BAR'
-);
-wwv_flow_imp_page.create_map_region_layer(
- p_id=>wwv_flow_imp.id(37026811925030935917)
-,p_map_region_id=>wwv_flow_imp.id(37026811772821935916)
-,p_name=>'stores'
-,p_static_id=>'stores'
-,p_layer_type=>'POINT'
-,p_display_sequence=>10
-,p_location=>'REGION_SOURCE'
-,p_has_spatial_index=>false
-,p_geometry_column_data_type=>'LONLAT_COLUMNS'
-,p_longitude_column=>'STORE_LNG'
-,p_latitude_column=>'STORE_LAT'
-,p_stroke_color=>'#ffffff'
-,p_stroke_width_subst=>'2'
-,p_fill_color=>'#ff3b30'
-,p_point_display_type=>'SVG'
-,p_point_svg_shape=>'Pin Circle'
-,p_point_svg_shape_scale=>'2'
-,p_feature_clustering=>false
-,p_tooltip_adv_formatting=>false
-,p_info_window_adv_formatting=>false
-,p_display_in_legend=>false
-);
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(39037834460929184475)
-,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(41305530474417818855)
-,p_button_name=>'up'
-,p_static_id=>'up'
-,p_button_action=>'REDIRECT_PAGE'
-,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
-,p_button_image_alt=>'Up'
-,p_button_position=>'NEXT'
-,p_button_redirect_url=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:::'
-,p_icon_css_classes=>'fa-arrow-up'
-);
-end;
-/
 prompt --application/pages/page_00011
 begin
 wwv_flow_imp_page.create_page(
  p_id=>11
 ,p_name=>'Products'
+,p_alias=>'PRODUCTS'
 ,p_step_title=>'Products'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -8106,7 +7607,7 @@ wwv_flow_imp_page.create_page_plug(
 '  ',
 ''))
 ,p_plug_source_type=>'NATIVE_IR'
-,p_ai_enabled=>false
+,p_ai_enabled=>true
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(38797099271376725401)
@@ -8124,6 +7625,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_download_formats=>'CSV:HTML'
 ,p_enable_mail_download=>'Y'
 ,p_internal_uid=>2708566625148481437
+,p_ai_search_mode=>'A'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13953921192157688639)
@@ -8294,6 +7796,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>12
 ,p_name=>'Product'
+,p_alias=>'PRODUCT'
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Product'
 ,p_reload_on_submit=>'A'
@@ -9742,6 +9245,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>16
 ,p_name=>'Top Users'
+,p_alias=>'TOP-USERS'
 ,p_step_title=>'Top Users'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -9978,6 +9482,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>17
 ,p_name=>'Activity Calendar'
+,p_alias=>'ACTIVITY-CALENDAR'
 ,p_step_title=>'Activity Calendar'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -10440,6 +9945,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>19
 ,p_name=>'Reports'
+,p_alias=>'REPORTS'
 ,p_step_title=>'Reports'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -10517,6 +10023,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>20
 ,p_name=>'Sales by Store by Day'
+,p_alias=>'SALES-BY-STORE-BY-DAY'
 ,p_step_title=>'Sales by Store by Day'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -10597,6 +10104,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>21
 ,p_name=>'Event Log'
+,p_alias=>'EVENT-LOG'
 ,p_step_title=>'Event Log'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -10840,6 +10348,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>22
 ,p_name=>'Sales by Store by Week'
+,p_alias=>'SALES-BY-STORE-BY-WEEK'
 ,p_step_title=>'Sales by Store by Week'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -11701,6 +11210,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>24
 ,p_name=>'Sales History Generation Log'
+,p_alias=>'SALES-HISTORY-GENERATION-LOG'
 ,p_step_title=>'Sales History Generation Log'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -11866,6 +11376,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>25
 ,p_name=>'Sales by Product and Store by Week'
+,p_alias=>'SALES-BY-PRODUCT-AND-STORE-BY-WEEK'
 ,p_step_title=>'Sales by Product and Store by Week'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -12236,6 +11747,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>27
 ,p_name=>'Product Availability'
+,p_alias=>'PRODUCT-AVAILABILITY'
 ,p_step_title=>'Product Availability'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -12286,7 +11798,7 @@ wwv_flow_imp_page.create_page_plug(
 '     (select count(*) product_count from oow_demo_items) p',
 ') x'))
 ,p_plug_source_type=>'NATIVE_IR'
-,p_ai_enabled=>false
+,p_ai_enabled=>true
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(38815909464336675770)
@@ -12304,6 +11816,7 @@ wwv_flow_imp_page.create_worksheet(
 ,p_download_formats=>'CSV:HTML'
 ,p_enable_mail_download=>'Y'
 ,p_internal_uid=>2727376818108431806
+,p_ai_search_mode=>'A'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(38815909960305675779)
@@ -12491,6 +12004,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>29
 ,p_name=>'Generate Transaction'
+,p_alias=>'GENERATE-TRANSACTION'
 ,p_step_title=>'Generate Transaction'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -12719,7 +12233,6 @@ wwv_flow_imp_page.create_page_branch(
 ,p_branch_type=>'REDIRECT_URL'
 ,p_branch_when_button_id=>wwv_flow_imp.id(38815920277362334565)
 ,p_branch_sequence=>10
-,p_branch_comment=>'Created 25-OCT-2012 15:37 by MIKE'
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(14045073826684737160)
@@ -12791,6 +12304,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>30
 ,p_name=>'Transaction'
+,p_alias=>'TRANSACTION'
 ,p_step_title=>'Transaction'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -12982,6 +12496,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>31
 ,p_name=>'100 Transactions Generated'
+,p_alias=>'TRANSACTIONS-GENERATED'
 ,p_step_title=>'100 Transactions Generated'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -13117,6 +12632,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>32
 ,p_name=>'Table Counts'
+,p_alias=>'TABLE-COUNTS'
 ,p_step_title=>'Table Counts'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -13253,6 +12769,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>33
 ,p_name=>'Transaction Log'
+,p_alias=>'TRANSACTION-LOG'
 ,p_step_title=>'Transaction Log'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -13486,6 +13003,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>34
 ,p_name=>'Transaction Summary by Minute'
+,p_alias=>'TRANSACTION-SUMMARY-BY-MINUTE'
 ,p_step_title=>'Transaction Summary by Minute'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -13705,6 +13223,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>35
 ,p_name=>'Transaction Summary by Hour'
+,p_alias=>'TRANSACTION-SUMMARY-BY-HOUR'
 ,p_step_title=>'Transaction Summary by Hour'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -15084,6 +14603,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>41
 ,p_name=>'Load Data'
+,p_alias=>'LOAD-DATA'
 ,p_step_title=>'Load Data'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -15765,6 +15285,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>43
 ,p_name=>'Recent Sales'
+,p_alias=>'RECENT-SALES'
 ,p_step_title=>'Recent Sales'
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
@@ -17322,7 +16843,9 @@ wwv_flow_imp_page.create_page_plug(
 '    s.store_name    store,',
 '    i.item_Name     product,',
 '    h.DATE_OF_SALE,',
+'    to_char(h.DATE_OF_SALE,''YYYY.MM.W'') the_week,',
 '    to_char(h.DATE_OF_SALE,''YYYY.MM'') the_month,',
+'    to_char(h.DATE_OF_SALE,''YYYY'') the_year,',
 '    h.QUANTITY,',
 '    h.TRANSACTION_ID,',
 '    h.ITEM_PRICE,',
@@ -17369,7 +16892,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_prn_page_header_alignment=>'CENTER'
 ,p_prn_page_footer_alignment=>'CENTER'
 ,p_prn_border_color=>'#666666'
-,p_ai_enabled=>false
+,p_ai_enabled=>true
 );
 wwv_flow_imp_page.create_worksheet(
  p_id=>wwv_flow_imp.id(13957518928568239832)
@@ -17383,6 +16906,8 @@ wwv_flow_imp_page.create_worksheet(
 ,p_download_formats=>'CSV:HTML:XLSX:PDF'
 ,p_enable_mail_download=>'Y'
 ,p_internal_uid=>12014204872062923921
+,p_ai_search_mode=>'A'
+,p_ai_report_hint=>'Report provides sales of products by store, and stores are grouped by geographic region.'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13957519376383239837)
@@ -17417,6 +16942,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G999G999G990D00'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
@@ -17430,6 +16956,9 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
+,p_ai_column_hint=>'The product name'
+,p_ai_lov_type=>'SQL_QUERY'
+,p_ai_lov_source=>'select item_name d, item_name r from "#OWNER#"."OOW_DEMO_ITEMS"'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13957520614120239849)
@@ -17452,6 +16981,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
+,p_format_mask=>'999G999G999G999G999G999G990'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
@@ -17465,6 +16995,12 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
+,p_ai_lov_type=>'SQL_QUERY'
+,p_ai_lov_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select region_name d,',
+'       region_name r',
+'from #OWNER#.OOW_DEMO_REGIONS ',
+''))
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13957519866953239842)
@@ -17475,6 +17011,7 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_column_type=>'NUMBER'
 ,p_heading_alignment=>'RIGHT'
 ,p_column_alignment=>'RIGHT'
+,p_format_mask=>'FML999G999G999G999G990D00'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
 );
@@ -17488,6 +17025,8 @@ wwv_flow_imp_page.create_worksheet_column(
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
+,p_ai_lov_type=>'SQL_QUERY'
+,p_ai_lov_source=>'select store_name d, store_name r from "#OWNER#"."OOW_DEMO_STORES"'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13957520752884239850)
@@ -17504,13 +17043,38 @@ wwv_flow_imp_page.create_worksheet_column(
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13957519465024239838)
 ,p_db_column_name=>'THE_MONTH'
-,p_display_order=>60
-,p_column_identifier=>'F'
+,p_display_order=>130
+,p_column_identifier=>'N'
 ,p_column_label=>'The Month'
 ,p_column_type=>'STRING'
 ,p_heading_alignment=>'LEFT'
 ,p_use_as_row_header=>'N'
 ,p_available_clientside=>'N'
+,p_ai_column_hint=>'The month of the sale in YYYY.MM Oracle date format'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(3503103080518985101)
+,p_db_column_name=>'THE_WEEK'
+,p_display_order=>60
+,p_column_identifier=>'M'
+,p_column_label=>'Month Week'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+,p_ai_column_hint=>'The year, month, and week of month in oracle date format "YYYY.MM.W"'
+);
+wwv_flow_imp_page.create_worksheet_column(
+ p_id=>wwv_flow_imp.id(3503103267773985103)
+,p_db_column_name=>'THE_YEAR'
+,p_display_order=>140
+,p_column_identifier=>'O'
+,p_column_label=>'The Year'
+,p_column_type=>'STRING'
+,p_heading_alignment=>'LEFT'
+,p_use_as_row_header=>'N'
+,p_available_clientside=>'N'
+,p_ai_column_hint=>'The year of the sale in YYYY Oracle date format'
 );
 wwv_flow_imp_page.create_worksheet_column(
  p_id=>wwv_flow_imp.id(13957519690957239840)
@@ -17533,7 +17097,14 @@ wwv_flow_imp_page.create_worksheet_rpt(
 ,p_status=>'PUBLIC'
 ,p_is_default=>'Y'
 ,p_display_rows=>100
-,p_report_columns=>'TRANSACTION_ID:REGION:STORE:PRODUCT:DATE_OF_SALE:THE_MONTH:QUANTITY:ITEM_PRICE:SALE'
+,p_report_columns=>'TRANSACTION_ID:REGION:STORE:PRODUCT:DATE_OF_SALE:THE_WEEK:QUANTITY:ITEM_PRICE:SALE'
+,p_sort_column_1=>'DATE_OF_SALE'
+,p_sort_direction_1=>'DESC'
+,p_sort_column_2=>'SALE'
+,p_sort_direction_2=>'DESC'
+,p_sort_column_3=>'THE_WEEK'
+,p_sort_direction_3=>'DESC'
+,p_sum_columns_on_break=>'SALE'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(49296799085388713689)
@@ -17561,12 +17132,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(62833333119761554824)
 ,p_button_name=>'reset'
 ,p_static_id=>'reset'
+,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI:t-Button--iconLeft'
 ,p_button_template_id=>2084305881903810008
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'NEXT'
-,p_button_redirect_url=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.:RP,51::'
+,p_button_redirect_url=>'f?p=&APP_ID.:51:&SESSION.::&DEBUG.:RR,51::'
 ,p_icon_css_classes=>'fa-undo'
 );
 wwv_flow_imp_page.create_page_button(

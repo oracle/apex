@@ -1,5 +1,6 @@
 page 7 (
     name: Store
+    alias: STORE
     title: Store
     pageGroup: @stores
     appearance {
@@ -10,151 +11,7 @@ page 7 (
         warnOnUnsavedChanges: false
     }
     javaScript {
-        fileUrls: https://maps.googleapis.com/maps/api/js?key=&P7_MAPS_API_KEY.&amp;sensor=false
-        functionAndGlobalVariableDeclaration:
-            ```javascript-browser
-            var htmldb_delete_message = '"DELETE_CONFIRM_MSG"';
-            
-            var g_initialAddress = "";
-            var g_addrFieldMap = {
-                "route": "P7_STORE_ADDRESS",
-                "sublocality": "P7_STORE_CITY",
-                "locality": "P7_STORE_CITY",
-                "administrative_area_level_1": "P7_STORE_STATE",
-                "postal_code": "P7_STORE_ZIP"
-            };
-            
-            function getAddressString() {
-                var addr = $v("P7_STORE_ADDRESS") + ", " + $v("P7_STORE_CITY") + ", " + $v("P7_STORE_STATE") + ", " + $v("P7_STORE_ZIP");
-                return addr;
-            }
-            
-            function updateAddress(result, updateLoc) {
-                var i, type, value, field, loc, lat, lng, stnum, address, subloc, city,
-                    ok = true,
-                    comps = result.address_components;
-            
-                for (i = 0; i < comps.length; i++) {
-                    type = comps[i].types[0];
-                    value = comps[i][type == "administrative_area_level_1" ? "short_name" : "long_name"];
-                    if (type == "street_number") {
-                        stnum = value;
-                    } else if (type == "route") {
-                        address = value;
-                    } else if (type == "sublocality") {
-                        subloc = value;
-                    } else if (type == "locality") {
-                        city = value;
-                    } else {
-                        field = g_addrFieldMap[type];
-                        if (field) {
-                            $s(field, value);
-                        }
-                    }
-                }
-                if (stnum && address) {
-                    address = stnum + " " + address;
-                }
-                if (address) {
-                    field = g_addrFieldMap["route"];
-                    if (field) {
-                        $s(field, address);
-                    }
-                }
-                if (subloc) {
-                    city = subloc;
-                }
-                if (city) {
-                    field = g_addrFieldMap["locality"];
-                    if (field) {
-                        $s(field, city);
-                    }
-                }
-                if (!address || $v("P7_STORE_ADDRESS") === "" || $v("P7_STORE_CITY") === "" || $v("P7_STORE_STATE") === "" || $v("P7_STORE_ZIP") === "") {
-                    ok = false;
-                }
-            
-                if (updateLoc) {
-                    loc = result.geometry.location;
-                    lat = loc.lat();
-                    lng = loc.lng();
-                    $s("P7_STORE_LAT", lat);
-                    $s("P7_STORE_LNG", lng);
-                }
-                return ok;
-            }
-            
-            function validateAddressAndSubmit(action) {
-                var gc,
-                    curAddr = getAddressString(),
-                    lat = $v("P7_STORE_LAT"),
-                    lng = $v("P7_STORE_LNG");
-            
-                // don't check addresses if there is no API key or required fields are missing (let the server validate), or have lat, lng and no address change
-                // do check if missing lat or lag or the address has been edited
-                if ($v("P7_MAPS_API_KEY") !== "" && 
-                      $v("P7_STORE_ADDRESS") !== "" && 
-                      $v("P7_STORE_CITY") !== "" && 
-                      $v("P7_STORE_NAME") !== "" && 
-                      (lat === "" || lng === "" || curAddr !== g_initialAddress)) {
-            
-                    apex.jQuery("#storeForm h1").first().append("<span id='checking' style='padding-left: 40px;'>- Validating Address - </span>");
-                    apex.jQuery(".addressCheckMessage").hide();
-            
-                    gc = new google.maps.Geocoder();
-                    gc.geocode({
-                        address: curAddr
-                    }, function (results, status) {
-                        var i, choices;
-            
-                        apex.jQuery("#checking").remove();
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            if (results.length === 1) {
-                                if (updateAddress(results[0], true)) {
-                                    apex.submit(action);
-                                    return;
-                                } else {
-                                    apex.jQuery("#incomplete").show();
-                                }
-                            } else {
-                                choices = "";
-                                for (i = 0; i < results.length; i++) {
-                                    choices += "<li><input id='addrChoices_" + i + 
-                                               "' type=radio name='addrchoice'><label for='addrChoices_" + i + "'>" + 
-                                               results[i].formatted_address + "</label></li>";
-                                }
-                                apex.jQuery("#addrChoices").html(choices).off("change").on("change", function (evt) {
-                                    var i = evt.target.id;
-                                    i = i.split("_")[1];
-                                    updateAddress(results[i], false);
-                                });
-                                apex.jQuery("#multiple").show();
-                            }
-                        } else {
-                            switch (status) {
-                            case google.maps.GeocoderStatus.ZERO_RESULTS:
-                                apex.jQuery("#notfound").show();
-                                break;
-                            case google.maps.GeocoderStatus.OVER_QUERY_LIMIT:
-                                apex.jQuery("#overlimit").show();
-                                break;
-                            default:
-                                apex.jQuery("#checkfailed").show();
-                            }
-                        }
-                        openModal("adrchkres");
-                    });
-                } else {
-                    apex.submit(action);
-                }
-            }
-            ```
-        executeWhenPageLoads:
-            ```javascript-browser
-            (function ($) {
-                g_initialAddress = getAddressString();
-            })(apex.jQuery);
-            ```
+        functionAndGlobalVariableDeclaration: var htmldb_delete_message = '"DELETE_CONFIRM_MSG"';
     }
     css {
         inline:
@@ -179,25 +36,6 @@ page 7 (
         helpText: No help is available for this page.
     }
 
-    region address-validation (
-        name: Address Validation
-        type: staticContent
-        layout {
-            sequence: 30
-            slot: dialogsDrawersAndPopups
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--scrollBody
-            ]
-        }
-        advanced {
-            htmlDomId: adrchkres
-        }
-    )
-
     region breadcrumb (
         name: Breadcrumb
         type: breadcrumb
@@ -221,155 +59,12 @@ page 7 (
         }
     )
 
-    region check-failed (
-        name: Check Failed
-        type: staticContent
-        source {
-            htmlCode:
-                ```html
-                <p>Failed to check address.</p>
-                
-                ```
-        }
-        layout {
-            sequence: 90
-            parentRegion: @address-validation
-            slot: subRegions
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--scrollBody
-            ]
-            cssClasses: addressCheckMessage
-        }
-        advanced {
-            htmlDomId: checkfailed
-            excludeTitleFromTranslation: true
-        }
-    )
-
-    region incomplete-address (
-        name: Incomplete address
-        type: staticContent
-        source {
-            htmlCode: <p>Not a complete address</p>
-        }
-        layout {
-            sequence: 50
-            parentRegion: @address-validation
-            slot: subRegions
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--scrollBody
-            ]
-            cssClasses: addressCheckMessage
-        }
-        advanced {
-            htmlDomId: incomplete
-            excludeTitleFromTranslation: true
-        }
-    )
-
-    region multiple-addresses (
-        name: Multiple addresses
-        type: staticContent
-        source {
-            htmlCode:
-                ```html
-                <p>Multiple results found. Choose one of the following.</p>
-                <ul id="addrChoices">
-                </ul>
-                
-                ```
-        }
-        layout {
-            sequence: 60
-            parentRegion: @address-validation
-            slot: subRegions
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--scrollBody
-            ]
-            cssClasses: addressCheckMessage
-        }
-        advanced {
-            htmlDomId: multiple
-            excludeTitleFromTranslation: true
-        }
-    )
-
-    region not-found (
-        name: Not Found
-        type: staticContent
-        source {
-            htmlCode:
-                ```html
-                <p>Address not found. Enter a correct address and try again.</p>
-                
-                ```
-        }
-        layout {
-            sequence: 70
-            parentRegion: @address-validation
-            slot: subRegions
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--scrollBody
-            ]
-            cssClasses: addressCheckMessage
-        }
-        advanced {
-            htmlDomId: notfound
-            excludeTitleFromTranslation: true
-        }
-    )
-
-    region over-limit (
-        name: Over Limit
-        type: staticContent
-        source {
-            htmlCode:
-                ```html
-                <p>Over limit try again later.</p>
-                
-                ```
-        }
-        layout {
-            sequence: 80
-            parentRegion: @address-validation
-            slot: subRegions
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--scrollBody
-            ]
-            cssClasses: addressCheckMessage
-        }
-        advanced {
-            htmlDomId: overlimit
-            excludeTitleFromTranslation: true
-        }
-    )
-
     region store (
         name: Store
         type: staticContent
         layout {
             sequence: 10
-            slot: body-3
+            slot: body
         }
         appearance {
             template: @/standard
@@ -397,18 +92,6 @@ page 7 (
             type: databaseColumn
             databaseColumn: ID
             used: always
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P7_MAPS_API_KEY (
-        type: hidden
-        layout {
-            sequence: 20
-            region: @store
-            slot: regionBody
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -788,28 +471,6 @@ page 7 (
         }
     )
 
-    button close (
-        buttonName: CLOSE
-        label: OK
-        layout {
-            sequence: 50
-            region: @address-validation
-            slot: close
-        }
-        appearance {
-            buttonTemplate: @/text
-            hot: true
-            templateOptions: #DEFAULT#
-        }
-        behavior {
-            action: definedByDynamicAction
-            executeValidations: false
-        }
-        advanced {
-            htmlDomId: adrchkclose
-        }
-    )
-
     button create (
         buttonName: CREATE
         label: Add Store
@@ -824,7 +485,7 @@ page 7 (
             icon: fa-plus
         }
         behavior {
-            action: definedByDynamicAction
+            warnOnUnsavedChanges: doNotCheck
             databaseAction: insert
         }
         serverSideCondition {
@@ -877,99 +538,13 @@ page 7 (
             ]
         }
         behavior {
-            action: definedByDynamicAction
+            warnOnUnsavedChanges: doNotCheck
             databaseAction: update
         }
         serverSideCondition {
             type: itemIsNotNull
             item: P7_ID
         }
-    )
-
-    dynamicAction checkcreate (
-        name: CheckCreate
-        execution {
-            sequence: 20
-        }
-        when {
-            event: click
-            selectionType: button
-            button: @create
-        }
-
-        action native-javascript-code (
-            action: executeJsCode
-            settings {
-                jsCode: validateAddressAndSubmit("CREATE");
-            }
-            affectedElements {
-                selectionType: items
-                items: [
-                    P7_STORE_LAT
-                    P7_STORE_LNG
-                ]
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction checksave (
-        name: CheckSave
-        execution {
-            sequence: 10
-        }
-        when {
-            event: click
-            selectionType: button
-            button: @save
-        }
-
-        action native-javascript-code (
-            action: executeJsCode
-            settings {
-                jsCode: validateAddressAndSubmit("SAVE");
-            }
-            affectedElements {
-                selectionType: items
-                items: [
-                    P7_STORE_LAT
-                    P7_STORE_LNG
-                ]
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction close-dialog (
-        name: Close Dialog
-        execution {
-            sequence: 30
-        }
-        when {
-            event: click
-            selectionType: button
-            button: @close
-        }
-
-        action native-javascript-code (
-            action: executeJsCode
-            settings {
-                jsCode: closeModal();
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
     )
 
     validation p7-store-address-not-null (
@@ -1043,32 +618,6 @@ page 7 (
         }
         advanced {
             executionMappingIdentifier: 16574553282555984965
-        }
-    )
-
-    process populate-google-maps-api-key (
-        name: Populate Google Maps API Key
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                begin
-                    select preference_value
-                      into :P7_MAPS_API_KEY
-                      from oow_demo_preferences
-                     where preference_name = 'GOOGLE_MAPS_API_KEY';
-                exception
-                    when no_data_found then
-                        :P7_MAPS_API_KEY := null;
-                end;
-                ```
-        }
-        execution {
-            sequence: 50
-            point: beforeHeader
-        }
-        advanced {
-            executionMappingIdentifier: 14736669393840007738
         }
     )
 

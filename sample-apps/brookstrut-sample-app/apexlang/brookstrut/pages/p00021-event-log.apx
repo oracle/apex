@@ -1,5 +1,6 @@
 page 21 (
     name: Event Log
+    alias: EVENT-LOG
     title: Event Log
     pageGroup: @administration
     appearance {

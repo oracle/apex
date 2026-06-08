@@ -1,6 +1,8 @@
-page 26 (
+page 4001 (
     name: Workflow Details
+    alias: WORKFLOW-DETAILS
     title: Workflow Details
+    pageGroup: @administration
     appearance {
         pageMode: modalDialog
         dialogTemplate: @/drawer
@@ -16,12 +18,15 @@ page 26 (
         cursorFocus: doNotFocusCursor
     }
     security {
-        authorizationScheme: @operations-team
+        authorizationScheme: @administration-rights
         pageAccessProtection: argumentsMustHaveChecksum
         formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
+    }
+    config {
+        buildOption: @approvals
     }
 
     region activities (
@@ -50,13 +55,13 @@ page 26 (
                        end as badge_state,
                        ( select max(workflow_id)
                            from apex_workflows w
-                          where w.parent_workflow_id = :P26_WORKFLOW_ID
+                          where w.parent_workflow_id = :P4001_WORKFLOW_ID
                             and w.parent_activity_id = a.activity_id ) as invoked_workflow_id
                   from apex_workflow_activities a
-                 where workflow_id = :P26_WORKFLOW_ID
+                 where workflow_id = :P4001_WORKFLOW_ID
                  order by start_time
                 ```
-            pageItemsToSubmit: P26_WORKFLOW_ID
+            pageItemsToSubmit: P4001_WORKFLOW_ID
         }
         layout {
             sequence: 70
@@ -270,11 +275,11 @@ page 26 (
             }
             behavior {
                 target: {
-                    page: 26
+                    page: 4001
                     items: {
-                        P26_WORKFLOW_ID: &INVOKED_WORKFLOW_ID.
+                        P4001_WORKFLOW_ID: &INVOKED_WORKFLOW_ID.
                     }
-                    clearCache: 26
+                    clearCache: 4001
                     action: resetPagination
                 }
             }
@@ -299,13 +304,13 @@ page 26 (
                        action,
                        display_msg
                   from apex_workflow_audit
-                 where workflow_id         = :P26_WORKFLOW_ID
-                   and current_activity_id = :P26_ACTIVITY_ID
+                 where workflow_id         = :P4001_WORKFLOW_ID
+                   and current_activity_id = :P4001_ACTIVITY_ID
                  order by audit_id
                 ```
             pageItemsToSubmit: [
-                P26_WORKFLOW_ID
-                P26_ACTIVITY_ID
+                P4001_WORKFLOW_ID
+                P4001_ACTIVITY_ID
             ]
         }
         layout {
@@ -403,30 +408,6 @@ page 26 (
         }
     )
 
-    region edit-variable (
-        name: Edit Variable
-        type: staticContent
-        layout {
-            sequence: 100
-            parentRegion: @variables
-            slot: subRegions
-        }
-        appearance {
-            template: @/inline-popup
-            templateOptions: [
-                #DEFAULT#
-                js-dialog-autoheight
-                js-dialog-nosize
-            ]
-        }
-        accessibility {
-            landmarkType: form
-        }
-        settings {
-            outputAs: text
-        }
-    )
-
     region history (
         name: History
         type: themeTemplateComponent/comments
@@ -439,11 +420,11 @@ page 26 (
                        created_by,
                        created_on
                   from apex_workflow_audit
-                 where workflow_id = :P26_WORKFLOW_ID
+                 where workflow_id = :P4001_WORKFLOW_ID
                    and current_activity_id is null
                  order by audit_id desc
                 ```
-            pageItemsToSubmit: P26_WORKFLOW_ID
+            pageItemsToSubmit: P4001_WORKFLOW_ID
         }
         layout {
             sequence: 120
@@ -524,11 +505,11 @@ page 26 (
                 select label,
                        display_value
                   from apex_workflow_variables
-                 where workflow_id = :P26_WORKFLOW_ID
+                 where workflow_id = :P4001_WORKFLOW_ID
                    and variable_type = 'PARAMETER'
                  order by label
                 ```
-            pageItemsToSubmit: P26_WORKFLOW_ID
+            pageItemsToSubmit: P4001_WORKFLOW_ID
         }
         layout {
             sequence: 110
@@ -599,7 +580,7 @@ page 26 (
                        badge_state
                   from table ( apex_workflow.get_workflows (
                                    p_context     => 'SINGLE_WORKFLOW',
-                                   p_workflow_id => :P26_WORKFLOW_ID ) );
+                                   p_workflow_id => :P4001_WORKFLOW_ID ) );
                 ```
         }
         layout {
@@ -716,11 +697,11 @@ page 26 (
                        label,
                        display_value
                   from apex_workflow_variables
-                 where workflow_id = :P26_WORKFLOW_ID
+                 where workflow_id = :P4001_WORKFLOW_ID
                    and variable_type = 'VARIABLE'
                  order by label
                 ```
-            pageItemsToSubmit: P26_WORKFLOW_ID
+            pageItemsToSubmit: P4001_WORKFLOW_ID
         }
         layout {
             sequence: 90
@@ -786,30 +767,6 @@ page 26 (
             }
         )
 
-        action edit (
-            position: primaryActions
-            template: button
-            label: Edit
-            layout {
-                sequence: 10
-            }
-            behavior {
-                type: redirectUrl
-                targetUrl: #
-                linkAttributes: class="variable" data-id="&STATIC_ID!ATTR." data-label="&LABEL!ATTR." data-value="&DISPLAY_VALUE!ATTR." aria-haspopup="dialog"
-            }
-            serverSideCondition {
-                type: expression
-                plsqlExpression:
-                    ```plsql
-                    apex_workflow.is_allowed (
-                        p_instance_id => :P26_WORKFLOW_ID,
-                        p_operation   => apex_workflow.c_workflow$_op_update_var )
-                    ```
-                executeCondition: once
-            }
-        )
-
     )
 
     region workflow-diagram (
@@ -832,11 +789,11 @@ page 26 (
             landmarkType: region
         }
         settings {
-            workflowId: P26_WORKFLOW_ID
+            workflowId: P4001_WORKFLOW_ID
         }
     )
 
-    pageItem P26_ACTIVITY_ID (
+    pageItem P4001_ACTIVITY_ID (
         type: hidden
         settings {
             valueProtected: false
@@ -853,67 +810,7 @@ page 26 (
         }
     )
 
-    pageItem P26_CURRENT_VALUE (
-        type: displayOnly
-        label {
-            label: Current Value
-            alignment: left
-        }
-        settings {
-            sendOnPageSubmit: false
-        }
-        layout {
-            sequence: 30
-            region: @edit-variable
-            slot: regionBody
-            alignment: left
-        }
-        appearance {
-            template: @/optional-floating
-            templateOptions: #DEFAULT#
-        }
-        advanced {
-            warnOnUnsavedChanges: ignore
-        }
-        sessionState {
-            storage: request
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-            encryptSessionState: false
-        }
-    )
-
-    pageItem P26_NEW_VALUE (
-        type: textarea
-        label {
-            label: New Value
-            alignment: left
-        }
-        layout {
-            sequence: 40
-            region: @edit-variable
-            slot: regionBody
-            alignment: left
-        }
-        appearance {
-            template: @/required-floating
-            templateOptions: #DEFAULT#
-            width: 30
-            height: 3
-        }
-        validation {
-            maxLength: 4000
-        }
-        advanced {
-            warnOnUnsavedChanges: ignore
-        }
-        sessionState {
-            storage: request
-        }
-    )
-
-    pageItem P26_PARENT_WORKFLOW_ID (
+    pageItem P4001_PARENT_WORKFLOW_ID (
         type: hidden
         layout {
             sequence: 30
@@ -921,67 +818,14 @@ page 26 (
         }
         source {
             type: sqlQuerySingleValue
-            sqlQuery: select parent_workflow_id from apex_workflows where workflow_id = :P26_WORKFLOW_ID
+            sqlQuery: select parent_workflow_id from apex_workflows where workflow_id = :P4001_WORKFLOW_ID
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 
-    pageItem P26_VARIABLE_ID (
-        type: hidden
-        settings {
-            valueProtected: false
-        }
-        layout {
-            sequence: 10
-            region: @edit-variable
-            slot: regionBody
-        }
-        advanced {
-            warnOnUnsavedChanges: ignore
-        }
-        sessionState {
-            storage: request
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-            encryptSessionState: false
-        }
-    )
-
-    pageItem P26_VARIABLE_LABEL (
-        type: displayOnly
-        label {
-            label: Variable
-            alignment: left
-        }
-        settings {
-            sendOnPageSubmit: false
-        }
-        layout {
-            sequence: 20
-            region: @edit-variable
-            slot: regionBody
-            alignment: left
-        }
-        appearance {
-            template: @/optional-floating
-            templateOptions: #DEFAULT#
-        }
-        advanced {
-            warnOnUnsavedChanges: ignore
-        }
-        sessionState {
-            storage: request
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-            encryptSessionState: false
-        }
-    )
-
-    pageItem P26_WORKFLOW_ID (
+    pageItem P4001_WORKFLOW_ID (
         type: hidden
         layout {
             sequence: 10
@@ -1028,29 +872,11 @@ page 26 (
         }
     )
 
-    button cancel-edit-variable (
-        buttonName: CANCEL_EDIT_VARIABLE
-        label: Close
-        layout {
-            sequence: 10
-            region: @edit-variable
-            slot: close
-        }
-        appearance {
-            buttonTemplate: @/text
-            templateOptions: #DEFAULT#
-        }
-        behavior {
-            action: definedByDynamicAction
-            executeValidations: false
-        }
-    )
-
     button resume (
         buttonName: RESUME
         label: Resume
         layout {
-            sequence: 20
+            sequence: 30
             region: @buttons
             slot: create
         }
@@ -1070,7 +896,7 @@ page 26 (
             plsqlExpression:
                 ```plsql
                 apex_workflow.is_allowed (
-                    p_instance_id => :P26_WORKFLOW_ID,
+                    p_instance_id => :P4001_WORKFLOW_ID,
                     p_operation   => apex_workflow.c_workflow$_op_resume )
                 ```
         }
@@ -1080,13 +906,12 @@ page 26 (
         buttonName: RETRY
         label: Retry
         layout {
-            sequence: 40
+            sequence: 50
             region: @buttons
             slot: create
         }
         appearance {
             buttonTemplate: @/text-with-icon
-            hot: true
             templateOptions: [
                 #DEFAULT#
                 t-Button--iconLeft
@@ -1101,7 +926,7 @@ page 26 (
             plsqlExpression:
                 ```plsql
                 apex_workflow.is_allowed (
-                    p_instance_id => :P26_WORKFLOW_ID,
+                    p_instance_id => :P4001_WORKFLOW_ID,
                     p_operation   => apex_workflow.c_workflow$_op_retry )
                 ```
         }
@@ -1111,7 +936,7 @@ page 26 (
         buttonName: SUSPEND
         label: Suspend
         layout {
-            sequence: 10
+            sequence: 20
             region: @buttons
             slot: create
         }
@@ -1131,7 +956,7 @@ page 26 (
             plsqlExpression:
                 ```plsql
                 apex_workflow.is_allowed (
-                    p_instance_id => :P26_WORKFLOW_ID,
+                    p_instance_id => :P4001_WORKFLOW_ID,
                     p_operation   => apex_workflow.c_workflow$_op_suspend )
                 ```
         }
@@ -1141,7 +966,7 @@ page 26 (
         buttonName: TERMINATE
         label: Terminate
         layout {
-            sequence: 30
+            sequence: 10
             region: @buttons
             slot: create
         }
@@ -1161,7 +986,7 @@ page 26 (
             plsqlExpression:
                 ```plsql
                 apex_workflow.is_allowed (
-                    p_instance_id => :P26_WORKFLOW_ID,
+                    p_instance_id => :P4001_WORKFLOW_ID,
                     p_operation   => apex_workflow.c_workflow$_op_terminate )
                 ```
         }
@@ -1185,36 +1010,18 @@ page 26 (
         behavior {
             action: redirectThisApp
             target: {
-                page: 26
+                page: 4001
                 items: {
-                    P26_WORKFLOW_ID: &P26_PARENT_WORKFLOW_ID.
+                    P4001_WORKFLOW_ID: &P4001_PARENT_WORKFLOW_ID.
                 }
-                clearCache: 26
+                clearCache: 4001
                 action: resetPagination
             }
             warnOnUnsavedChanges: doNotCheck
         }
         serverSideCondition {
             type: itemIsNotNull
-            item: P26_PARENT_WORKFLOW_ID
-        }
-    )
-
-    button update-variable (
-        buttonName: UPDATE_VARIABLE
-        label: Apply Changes
-        layout {
-            sequence: 20
-            region: @edit-variable
-            slot: edit
-        }
-        appearance {
-            buttonTemplate: @/text
-            hot: true
-            templateOptions: #DEFAULT#
-        }
-        behavior {
-            warnOnUnsavedChanges: doNotCheck
+            item: P4001_PARENT_WORKFLOW_ID
         }
     )
 
@@ -1262,7 +1069,7 @@ page 26 (
             }
             affectedElements {
                 selectionType: items
-                items: P26_ACTIVITY_ID
+                items: P4001_ACTIVITY_ID
             }
             execution {
                 sequence: 20
@@ -1318,43 +1125,6 @@ page 26 (
 
     )
 
-    dynamicAction cancel-edit-variable (
-        name: Cancel Edit Variable
-        execution {
-            sequence: 40
-        }
-        when {
-            event: click
-            selectionType: button
-            button: @cancel-edit-variable
-        }
-
-        action native-close-region (
-            action: closeRegion
-            affectedElements {
-                selectionType: region
-                region: @edit-variable
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-        action native-set-value (
-            action: setValue
-            affectedElements {
-                selectionType: items
-                items: P26_NEW_VALUE
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
     dynamicAction disable-enable-update-button (
         name: Disable/Enable Update Button
         execution {
@@ -1363,38 +1133,12 @@ page 26 (
         when {
             event: keyup
             selectionType: items
-            items: P26_NEW_VALUE
+            items: P4001_NEW_VALUE
         }
         clientSideCondition {
             type: jsExpression
-            javaScriptExpression: apex.items.P26_NEW_VALUE.value != apex.items.P26_CURRENT_VALUE.value
+            javaScriptExpression: apex.items.P4001_NEW_VALUE.value != apex.items.P4001_CURRENT_VALUE.value
         }
-
-        action native-disable (
-            action: disable
-            affectedElements {
-                selectionType: button
-                button: @update-variable
-            }
-            execution {
-                sequence: 20
-                fireWhenEventResultIs: false
-                fireOnInit: false
-            }
-        )
-
-        action native-enable (
-            action: enable
-            affectedElements {
-                selectionType: button
-                button: @update-variable
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
     )
 
     dynamicAction edit-variable (
@@ -1410,35 +1154,11 @@ page 26 (
             jquerySelector: a.variable
         }
 
-        action native-disable (
-            action: disable
-            affectedElements {
-                selectionType: button
-                button: @update-variable
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-        action native-open-region (
-            action: openRegion
-            affectedElements {
-                selectionType: region
-                region: @edit-variable
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
         action native-set-focus (
             action: setFocus
             affectedElements {
                 selectionType: items
-                items: P26_NEW_VALUE
+                items: P4001_NEW_VALUE
             }
             execution {
                 sequence: 60
@@ -1455,7 +1175,7 @@ page 26 (
             }
             affectedElements {
                 selectionType: items
-                items: P26_VARIABLE_ID
+                items: P4001_VARIABLE_ID
             }
             execution {
                 sequence: 30
@@ -1472,7 +1192,7 @@ page 26 (
             }
             affectedElements {
                 selectionType: items
-                items: P26_VARIABLE_LABEL
+                items: P4001_VARIABLE_LABEL
             }
             execution {
                 sequence: 40
@@ -1490,8 +1210,8 @@ page 26 (
             affectedElements {
                 selectionType: items
                 items: [
-                    P26_CURRENT_VALUE
-                    P26_NEW_VALUE
+                    P4001_CURRENT_VALUE
+                    P4001_NEW_VALUE
                 ]
             }
             execution {
@@ -1506,14 +1226,10 @@ page 26 (
         name: Close Dialog
         type: closeDialog
         execution {
-            sequence: 60
+            sequence: 50
         }
         advanced {
-            executionMappingIdentifier: 6682906670447718
-        }
-        serverSideCondition {
-            type: requestIsNotContainedInValue
-            value: UPDATE_VARIABLE
+            executionMappingIdentifier: 9356465559635672071
         }
     )
 
@@ -1524,10 +1240,10 @@ page 26 (
             type: resume
         }
         workflowInstance {
-            workflowIdItem: P26_WORKFLOW_ID
+            workflowIdItem: P4001_WORKFLOW_ID
         }
         execution {
-            sequence: 30
+            sequence: 20
         }
         successMessage {
             successMessage: Workflow resumed
@@ -1536,7 +1252,7 @@ page 26 (
             errorMessage: #SQLERRM_TEXT#
         }
         advanced {
-            executionMappingIdentifier: 6681741343447717
+            executionMappingIdentifier: 16188957934309039220
         }
         serverSideCondition {
             whenButtonPressed: @resume
@@ -1550,10 +1266,10 @@ page 26 (
             type: retry
         }
         workflowInstance {
-            workflowIdItem: P26_WORKFLOW_ID
+            workflowIdItem: P4001_WORKFLOW_ID
         }
         execution {
-            sequence: 50
+            sequence: 40
         }
         successMessage {
             successMessage: Workflow retried
@@ -1562,7 +1278,7 @@ page 26 (
             errorMessage: #SQLERRM_TEXT#
         }
         advanced {
-            executionMappingIdentifier: 6682595530447718
+            executionMappingIdentifier: 16188958788370039228
         }
         serverSideCondition {
             whenButtonPressed: @retry
@@ -1576,10 +1292,10 @@ page 26 (
             type: suspend
         }
         workflowInstance {
-            workflowIdItem: P26_WORKFLOW_ID
+            workflowIdItem: P4001_WORKFLOW_ID
         }
         execution {
-            sequence: 20
+            sequence: 10
         }
         successMessage {
             successMessage: Workflow suspended
@@ -1588,7 +1304,7 @@ page 26 (
             errorMessage: #SQLERRM_TEXT#
         }
         advanced {
-            executionMappingIdentifier: 6681369196447716
+            executionMappingIdentifier: 16188958127618039222
         }
         serverSideCondition {
             whenButtonPressed: @suspend
@@ -1602,10 +1318,10 @@ page 26 (
             type: terminate
         }
         workflowInstance {
-            workflowIdItem: P26_WORKFLOW_ID
+            workflowIdItem: P4001_WORKFLOW_ID
         }
         execution {
-            sequence: 40
+            sequence: 30
         }
         successMessage {
             successMessage: Workflow terminated
@@ -1614,41 +1330,10 @@ page 26 (
             errorMessage: #SQLERRM_TEXT#
         }
         advanced {
-            executionMappingIdentifier: 6682121753447718
+            executionMappingIdentifier: 16188958567800039226
         }
         serverSideCondition {
             whenButtonPressed: @terminate
-        }
-    )
-
-    process update-variable (
-        name: Update Variable
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                apex_workflow.update_variables (
-                    p_instance_id    => :P26_WORKFLOW_ID,
-                    p_changed_params => apex_workflow.t_workflow_parameters (
-                        1 => apex_workflow.t_workflow_parameter (
-                                static_id    => :P26_VARIABLE_ID,
-                                string_value => :P26_NEW_VALUE ) ) );
-                ```
-        }
-        execution {
-            sequence: 10
-        }
-        successMessage {
-            successMessage: Variable updated
-        }
-        error {
-            errorMessage: #SQLERRM_TEXT#
-        }
-        advanced {
-            executionMappingIdentifier: 6680969727447715
-        }
-        serverSideCondition {
-            whenButtonPressed: @update-variable
         }
     )
 

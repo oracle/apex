@@ -1,5 +1,6 @@
 page 32 (
     name: Table Counts
+    alias: TABLE-COUNTS
     title: Table Counts
     pageGroup: @reporting
     appearance {

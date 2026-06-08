@@ -109,7 +109,7 @@
         {
             "internalName": "BROOKSTRUT_SAMPLE_APP",
             "author": "Oracle",
-            "version": "26.1.0",
+            "version": "26.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-brookstrut-sample-app.svg",
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/brookstrut-sample-app",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.sql",
@@ -268,7 +268,7 @@
         {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
-            "version": "26.1.0",
+            "version": "26.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-approvals.svg",
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-approvals",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/sql/sample-approvals.sql",
@@ -1010,7 +1010,7 @@
         {
             "internalName": "SAMPLE_RESTFUL_SERVICES",
             "author": "Oracle",
-            "version": "26.1.0",
+            "version": "26.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-rest-services.svg",
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-rest-services",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-rest-services/sql/sample-rest-services.sql",
@@ -1436,7 +1436,7 @@
         {
             "internalName": "APP_STRATEGIC_PLANNER",
             "author": "Oracle",
-            "version": "26.1.0",
+            "version": "26.1.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-strategic-planner.svg",
             "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/strategic-planner",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/strategic-planner/sql/strategic-planner.sql",

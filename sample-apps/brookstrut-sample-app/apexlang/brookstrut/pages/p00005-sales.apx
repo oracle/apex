@@ -1,5 +1,6 @@
 page 5 (
     name: Sales
+    alias: SALES
     title: Sales
     appearance {
         pageTemplate: @/standard
@@ -91,13 +92,6 @@ page 5 (
         }
         advanced {
             regionDisplaySelector: true
-        }
-        comments {
-            comments:
-                ```
-                SELECT json_value(SALES_DATA, '$.PRODUCT_ID') x
-                 FROM OOW_DEMO_SALES_HISTORY;
-                ```
         }
         componentAppearance {
             template: @/badge-list

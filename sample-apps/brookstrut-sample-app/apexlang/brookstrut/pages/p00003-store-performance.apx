@@ -1,5 +1,6 @@
 page 3 (
     name: Store
+    alias: STORE-PERFORMANCE
     title: Store
     appearance {
         pageTemplate: @/standard
@@ -656,9 +657,6 @@ page 3 (
             target: {
                 page: 3
             }
-        }
-        comments {
-            comments: Created 13-SEP-2012 12:08 by ALLAN
         }
     )
 

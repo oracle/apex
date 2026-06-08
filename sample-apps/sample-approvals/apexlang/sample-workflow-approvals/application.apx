@@ -1,6 +1,6 @@
 app SAMPLE-WORKFLOW-APPROVALS (
     name: Sample Workflow, Approvals, and Tasks
-    version: 26.1.0
+    version: 26.1.1
     group: @sample-apps
     logo {
         type: text

@@ -1,6 +1,6 @@
 app STRATEGIC-PLANNER (
     name: Strategic Planner
-    version: 26.1.0
+    version: 26.1.1
     group: @starter-apps
     logo {
         type: text

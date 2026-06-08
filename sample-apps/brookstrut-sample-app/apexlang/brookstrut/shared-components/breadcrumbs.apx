@@ -483,19 +483,6 @@ breadcrumb breadcrumb (
         }
     )
 
-    entry store-locations-map (
-        name: Store Locations Map
-        pageNumber: 10
-        execution {
-            sequence: 10
-        }
-        link {
-            target: {
-                page: 10
-            }
-        }
-    )
-
     entry stores (
         name: Stores
         pageNumber: 6

@@ -1,5 +1,6 @@
 page 41 (
     name: Load Data
+    alias: LOAD-DATA
     title: Load Data
     appearance {
         pageTemplate: @/standard

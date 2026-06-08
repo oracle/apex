@@ -1,6 +1,7 @@
-page 22 (
-    name: Sales by Store by Week
-    title: Sales by Store by Week
+page 33 (
+    name: Transaction Log
+    alias: TRANSACTION-LOG
+    title: Transaction Log
     pageGroup: @reporting
     appearance {
         pageTemplate: @/standard
@@ -41,46 +42,39 @@ page 22 (
         }
     )
 
-    region sales-by-region-by-week (
-        name: Sales by Region by Week
+    region transaction-generation-log (
+        name: Transaction Generation Log
         type: interactiveReport
         source {
             location: localDatabase
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select 
-                    yyyy_ww yyyy_w,
-                    sum(decode(x.region_id,1,units_sold,0)) r1_units,
-                    sum(decode(x.region_id,2,units_sold,0)) r2_units,
-                    sum(decode(x.region_id,3,units_sold,0)) r3_units,
-                    sum(decode(x.region_id,1,total_sale,0)) r1_total_sale,
-                    sum(decode(x.region_id,2,total_sale,0)) r2_total_sale,
-                    sum(decode(x.region_id,3,total_sale,0)) r3_total_sale
-                from
-                (
-                select (select region_id 
-                        from OOW_DEMO_STORES s 
-                        where s.id = sh.store_id) region_id, 
-                       to_char(sh.date_of_sale, 'YYYY.WW') yyyy_ww,
-                       sum(sh.item_price * sh.QUANTITY) total_sale,
-                       sum(sh.quantity) units_sold
-                from OOW_DEMO_SALES_HISTORY sh
-                group by sh.store_id, to_char(sh.date_of_sale, 'YYYY.WW')
-                ) x
-                group by yyyy_ww
+                select id, owner, num_days, max_orders, end_time, end_time_since, elapsed_seconds, row_count,
+                       to_number(decode (elapsed_seconds,null,null,row_count/elapsed_seconds)) rows_per_second
+                from (
+                select
+                    ID,
+                    OWNER,
+                    NUM_DAYS,
+                    MAX_ORDERS,
+                    START_TIME,
+                    END_TIME,
+                    END_TIME end_time_since,
+                    (extract(SECOND FROM end_time-start_time)) +
+                    (extract(MINUTE FROM end_time-start_time) * 60) +
+                    (extract(HOUR FROM end_time-start_time) *3600 ) elapsed_seconds,
+                    row_count
+                from OOW_DEMO_HIST_GEN_LOG) base_query
                 ```
         }
         layout {
             sequence: 10
-            slot: body
+            slot: body-3
         }
         appearance {
             template: @/interactive-report
             templateOptions: #DEFAULT#
-        }
-        advanced {
-            regionDisplaySelector: true
         }
         componentAppearance {
             showNullValuesAs: -
@@ -105,42 +99,93 @@ page 22 (
             ]
         }
         advanced {
-            savedReportMappingIdentifier: 2712029319722118413
+            savedReportMappingIdentifier: 2727520115186399180
         }
 
-        column R1_TOTAL_SALE (
+        column ELAPSED_SECONDS (
             type: plainText
             heading {
-                heading: &R1. Total Sale
+                heading: Elapsed Seconds
                 alignment: end
             }
             layout {
-                sequence: 8
+                sequence: 7
                 columnAlignment: end
             }
             appearance {
-                formatMask: $999G999G999G999G999G990
+                formatMask: 999G999G999G999G999G990D00
             }
             source {
                 dataType: NUMBER
             }
             advanced {
-                endUserAlias: H
+                endUserAlias: G
             }
         )
 
-        column R1_UNITS (
+        column END_TIME (
             type: plainText
             heading {
-                heading: &R1. Units
+                heading: End Time
+            }
+            layout {
+                sequence: 6
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column END_TIME_SINCE (
+            type: plainText
+            heading {
+                heading: Last Action
+            }
+            layout {
+                sequence: 28
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: DATE
+                timezoneAware: Y
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column ID (
+            type: plainText
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 1
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column MAX_ORDERS (
+            type: plainText
+            heading {
+                heading: Max Orders
                 alignment: end
             }
             layout {
                 sequence: 4
                 columnAlignment: end
-            }
-            appearance {
-                formatMask: 999G999G999G999G999G990
             }
             source {
                 dataType: NUMBER
@@ -150,81 +195,52 @@ page 22 (
             }
         )
 
-        column R2_TOTAL_SALE (
+        column NUM_DAYS (
             type: plainText
             heading {
-                heading: &R2. Total Sale
+                heading: Num Days
                 alignment: end
             }
             layout {
-                sequence: 9
+                sequence: 3
                 columnAlignment: end
-            }
-            appearance {
-                formatMask: $999G999G999G999G999G990
             }
             source {
                 dataType: NUMBER
             }
             advanced {
-                endUserAlias: I
+                endUserAlias: C
             }
         )
 
-        column R2_UNITS (
+        column OWNER (
             type: plainText
             heading {
-                heading: &R2. Units
-                alignment: end
+                heading: Owner
             }
             layout {
-                sequence: 5
-                columnAlignment: end
-            }
-            appearance {
-                formatMask: 999G999G999G999G999G990
+                sequence: 2
             }
             source {
-                dataType: NUMBER
+                dataType: STRING
             }
             advanced {
-                endUserAlias: E
+                endUserAlias: B
             }
         )
 
-        column R3_TOTAL_SALE (
+        column ROWS_PER_SECOND (
             type: plainText
             heading {
-                heading: &R3. Total Sale
+                heading: Rows Per Second
                 alignment: end
             }
             layout {
-                sequence: 11
+                sequence: 18
                 columnAlignment: end
             }
             appearance {
-                formatMask: $999G999G999G999G999G990
-            }
-            source {
-                dataType: NUMBER
-            }
-            advanced {
-                endUserAlias: K
-            }
-        )
-
-        column R3_UNITS (
-            type: plainText
-            heading {
-                heading: &R3. Units
-                alignment: end
-            }
-            layout {
-                sequence: 10
-                columnAlignment: end
-            }
-            appearance {
-                formatMask: 999G999G999G999G999G990
+                formatMask: 999G999G999G999G999G990D00
             }
             source {
                 dataType: NUMBER
@@ -234,59 +250,67 @@ page 22 (
             }
         )
 
-        column YYYY_W (
+        column ROW_COUNT (
             type: plainText
             heading {
-                heading: Week
-                alignment: center
+                heading: New Rows
+                alignment: end
             }
             layout {
-                sequence: 3
+                sequence: 8
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: STRING
+                dataType: NUMBER
             }
             advanced {
-                endUserAlias: C
+                endUserAlias: H
             }
         )
 
-        savedReport 27120301 (
+        savedReport 27275210 (
             visibility: primaryDefault
             view {
                 rowsPerPage: 15
             }
 
-            displayColumn R1_TOTAL_SALE (
-                sequence: 3
-            )
-
-            displayColumn R1_UNITS (
-                sequence: 2
-            )
-
-            displayColumn R2_TOTAL_SALE (
+            displayColumn ELAPSED_SECONDS (
                 sequence: 5
             )
 
-            displayColumn R2_UNITS (
+            displayColumn END_TIME (
                 sequence: 4
             )
 
-            displayColumn R3_TOTAL_SALE (
-                sequence: 7
+            displayColumn END_TIME_SINCE (
+                sequence: 8
             )
 
-            displayColumn R3_UNITS (
-                sequence: 6
+            displayColumn MAX_ORDERS (
+                sequence: 3
             )
 
-            displayColumn YYYY_W (
+            displayColumn NUM_DAYS (
+                sequence: 2
+            )
+
+            displayColumn OWNER (
                 sequence: 1
             )
 
+            displayColumn ROWS_PER_SECOND (
+                sequence: 7
+            )
+
+            displayColumn ROW_COUNT (
+                sequence: 6
+            )
+
             sort (
-                column: YYYY_W
+                column: END_TIME_SINCE
                 sort {
                     direction: desc
                     sequence: 1
@@ -294,7 +318,7 @@ page 22 (
             )
 
             sort (
-                column: TOTAL_SALE
+                column: START_TIME
                 sort {
                     direction: desc
                     sequence: 2
@@ -302,7 +326,11 @@ page 22 (
             )
 
             aggregate (
-                column: PRODUCT_SALES
+                column: ROW_COUNT
+            )
+
+            aggregate (
+                column: ELAPSED_SECONDS
             )
 
         )
@@ -314,7 +342,7 @@ page 22 (
         label: Reset
         layout {
             sequence: 10
-            region: @sales-by-region-by-week
+            region: @transaction-generation-log
             slot: rightOfInteractiveReportSearchBar
         }
         appearance {
@@ -328,12 +356,11 @@ page 22 (
         behavior {
             action: redirectThisApp
             target: {
-                page: 22
+                page: 33
                 clearCache: [
-                    22
+                    33
                     RIR
                 ]
-                action: resetPagination
             }
             warnOnUnsavedChanges: doNotCheck
         }
@@ -361,36 +388,6 @@ page 22 (
                 page: 19
             }
             warnOnUnsavedChanges: doNotCheck
-        }
-    )
-
-    process set-regions (
-        name: set regions
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                declare
-                   i integer := 0;
-                begin
-                
-                for c1 in (select region_name from OOW_DEMO_REGIONS order by id) loop
-                   i := i + 1;
-                   if i = 1 then :R1 := c1.region_name; end if;
-                   if i = 2 then :R2 := c1.region_name; end if;
-                   if i = 3 then :R3 := c1.region_name; end if;
-                   if i = 4 then :R4 := c1.region_name; end if;
-                   if i = 5 then :R5 := c1.region_name; end if;
-                end loop;
-                end;
-                ```
-        }
-        execution {
-            sequence: 10
-            point: beforeHeader
-        }
-        advanced {
-            executionMappingIdentifier: 16594361276569978206
         }
     )
 
