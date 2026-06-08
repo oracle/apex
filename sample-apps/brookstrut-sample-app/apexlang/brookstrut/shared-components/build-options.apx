@@ -24,10 +24,3 @@ buildOption feature-theme-style-selection (
     }
 )
 
-buildOption maps (
-    name: Maps
-    comments {
-        comments: Show store locations on a map.  Including provides the ability to show store locations on a map.  Excluding removes this capability from users.
-    }
-)
-

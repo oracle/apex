@@ -122,35 +122,13 @@ list application-actions (
         }
         link {
             target: {
-                page: 2
-                clearCache: 2
+                page: 51
+                clearCache: 51
                 action: resetPagination
             }
         }
         userDefinedAttributes {
             1: Identify product items available for sale at one or more stores
-        }
-    )
-
-    entry store-locations-map (
-        label: Store Locations Map
-        icon {
-            imageIconCssClasses: fa-map-o
-        }
-        layout {
-            sequence: 20
-        }
-        link {
-            target: {
-                page: 10
-                clearCache: 10
-            }
-        }
-        userDefinedAttributes {
-            1: Set production promotions by store using map interface.
-        }
-        config {
-            buildOption: @maps
         }
     )
 

@@ -126,6 +126,9 @@ page 8 (
             whenNoDataFound: No data found.
             whenMoreDataFound: This query returns more than #MAX_ROW_COUNT# rows, please filter your data to ensure complete results.
         }
+        genAI {
+            naturalLanguageSupport: true
+        }
         actionsMenu {
             savePublicReport: true
         }

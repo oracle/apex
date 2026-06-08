@@ -1,7 +1,7 @@
-page 10 (
-    name: Store Locations Map
-    alias: STORE-LOCATIONS-MAP
-    title: Store Locations Map
+page 19 (
+    name: Reports
+    alias: REPORTS
+    title: Reports
     pageGroup: @reporting
     appearance {
         pageTemplate: @/standard
@@ -18,9 +18,6 @@ page 10 (
     advanced {
         reloadOnSubmit: always
     }
-    config {
-        buildOption: @maps
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -29,7 +26,7 @@ page 10 (
             breadcrumb: @breadcrumb
         }
         layout {
-            sequence: 10
+            sequence: 30
             slot: breadcrumbBar
         }
         appearance {
@@ -45,62 +42,61 @@ page 10 (
         }
     )
 
-    region store-locations (
-        name: Store Locations
-        type: map
+    region summary-reports (
+        name: Summary Reports
+        type: list
         source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select * from OOW_DEMO_STORES
+            list: @reports
         }
         layout {
-            sequence: 10
-            slot: fullWidthContent
+            sequence: 20
+            slot: body
         }
         appearance {
-            template: @/blank-with-attributes-no-grid
-            templateOptions: #DEFAULT#
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
         }
         advanced {
             regionDisplaySelector: true
         }
-        controls {
-            options: [
-                rectangleZoom
-                scaleBar
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region transaction-reports (
+        name: Transaction Reports
+        type: list
+        source {
+            list: @transaction-reports
+        }
+        layout {
+            sequence: 30
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
             ]
         }
-        attributes {
-            messagesPosition: below
+        advanced {
+            regionDisplaySelector: true
         }
-
-        layer stores (
-            name: stores
-            layout {
-                sequence: 10
-            }
-            source {
-                location: regionSource
-            }
-            columnMapping {
-                geometryColumnDataType: longitudeLatitude
-                longitudeColumn: STORE_LNG
-                latitudeColumn: STORE_LAT
-            }
-            pointObjects {
-                shape: Pin Circle
-                shapeScale: 2
-            }
-            appearance {
-                fillColor: #ff3b30
-                strokeColor: #ffffff
-                strokeWidth: 2
-            }
-            legend {
-                show: false
-            }
-        )
-
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: #DEFAULT#
+        }
     )
 
     button up (
@@ -109,7 +105,7 @@ page 10 (
         layout {
             sequence: 10
             region: @breadcrumb
-            slot: next
+            slot: up
         }
         appearance {
             buttonTemplate: @/icon

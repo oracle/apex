@@ -1,6 +1,7 @@
-page 19 (
-    name: Reports
-    title: Reports
+page 20 (
+    name: Sales by Store by Day
+    alias: SALES-BY-STORE-BY-DAY
+    title: Sales by Store by Day
     pageGroup: @reporting
     appearance {
         pageTemplate: @/standard
@@ -25,7 +26,7 @@ page 19 (
             breadcrumb: @breadcrumb
         }
         layout {
-            sequence: 30
+            sequence: 20
             slot: breadcrumbBar
         }
         appearance {
@@ -41,60 +42,43 @@ page 19 (
         }
     )
 
-    region summary-reports (
-        name: Summary Reports
-        type: list
+    region sales-by-store-by-day (
+        name: Sales by Store by Day
+        type: calendar
         source {
-            list: @reports
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select (select store_name from oow_demo_stores s where s.id = sh.store_id)||' - '||
+                        to_char(sum(sh.item_price * sh.QUANTITY),'$999G999G999G999G990')||
+                       '('||count(*)||')' sales,
+                       sh.store_id,
+                       trunc(sh.date_of_sale) sale_date,
+                       sum(sh.quantity) units_sold
+                from OOW_DEMO_SALES_HISTORY sh
+                group by sh.store_id, trunc(sh.date_of_sale)
+                ```
         }
         layout {
-            sequence: 20
+            sequence: 10
             slot: body
         }
         appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--noPadding
-                t-Region--noUI
-                t-Region--scrollBody
-            ]
-        }
-        advanced {
-            regionDisplaySelector: true
-        }
-        componentAppearance {
-            listTemplate: @/media-list
+            template: @/blank-with-attributes-no-grid
             templateOptions: #DEFAULT#
         }
-    )
-
-    region transaction-reports (
-        name: Transaction Reports
-        type: list
-        source {
-            list: @transaction-reports
-        }
-        layout {
-            sequence: 30
-            slot: body
-            startNewRow: false
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--noPadding
-                t-Region--noUI
-                t-Region--scrollBody
+        settings {
+            displayColumn: SALES
+            startDateColumn: SALE_DATE
+            additionalCalendarViews: [
+                list
+                navigation
             ]
+            export: csv
         }
-        advanced {
-            regionDisplaySelector: true
-        }
-        componentAppearance {
-            listTemplate: @/media-list
-            templateOptions: #DEFAULT#
+        performance {
+            lazyLoading: true
         }
     )
 
@@ -117,7 +101,7 @@ page 19 (
         behavior {
             action: redirectThisApp
             target: {
-                page: 1
+                page: 19
             }
             warnOnUnsavedChanges: doNotCheck
         }

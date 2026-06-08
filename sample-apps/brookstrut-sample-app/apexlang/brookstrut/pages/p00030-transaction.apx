@@ -1,5 +1,6 @@
 page 30 (
     name: Transaction
+    alias: TRANSACTION
     title: Transaction
     appearance {
         pageTemplate: @/standard

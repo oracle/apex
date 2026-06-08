@@ -1,5 +1,6 @@
 page 31 (
     name: 100 Transactions Generated
+    alias: TRANSACTIONS-GENERATED
     title: 100 Transactions Generated
     pageGroup: @data-generation
     appearance {

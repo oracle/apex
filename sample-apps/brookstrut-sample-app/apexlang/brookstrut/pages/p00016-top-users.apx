@@ -1,10 +1,12 @@
-page 33 (
-    name: Transaction Log
-    title: Transaction Log
-    pageGroup: @reporting
+page 16 (
+    name: Top Users
+    alias: TOP-USERS
+    title: Top Users
+    pageGroup: @administration
     appearance {
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
     }
     navigation {
         cursorFocus: doNotFocusCursor
@@ -17,6 +19,9 @@ page 33 (
     advanced {
         reloadOnSubmit: always
     }
+    help {
+        helpText: No help is available for this page.
+    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -25,7 +30,7 @@ page 33 (
             breadcrumb: @breadcrumb
         }
         layout {
-            sequence: 20
+            sequence: 1
             slot: breadcrumbBar
         }
         appearance {
@@ -41,35 +46,44 @@ page 33 (
         }
     )
 
-    region transaction-generation-log (
-        name: Transaction Generation Log
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region top-users (
+        name: Top Users
         type: interactiveReport
         source {
             location: localDatabase
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select id, owner, num_days, max_orders, end_time, end_time_since, elapsed_seconds, row_count,
-                       to_number(decode (elapsed_seconds,null,null,row_count/elapsed_seconds)) rows_per_second
-                from (
                 select
-                    ID,
-                    OWNER,
-                    NUM_DAYS,
-                    MAX_ORDERS,
-                    START_TIME,
-                    END_TIME,
-                    END_TIME end_time_since,
-                    (extract(SECOND FROM end_time-start_time)) +
-                    (extract(MINUTE FROM end_time-start_time) * 60) +
-                    (extract(HOUR FROM end_time-start_time) *3600 ) elapsed_seconds,
-                    row_count
-                from OOW_DEMO_HIST_GEN_LOG) base_query
+                lower(USERID)                   as THE_USER,
+                count(*)                        as PAGE_EVENTS,
+                median(ELAP)                    as MEDIAN_ELAPSED,
+                sum(NUM_ROWS)                   as ROWS_FETCHED,
+                sum(decode(SQLERRM,null,0,1))   as ERRORS,
+                sum(CONTENT_LENGTH)             as CONTENT_SERVED,
+                max(time_stamp)                 as MOST_RECENT
+                from apex_activity_log l
+                where flow_id = :app_id  and 
+                time_stamp > sysdate - to_number(:P16_SINCE,'9999999990.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')
+                group by lower(userid)
                 ```
         }
         layout {
-            sequence: 10
-            slot: body-3
+            sequence: 20
+            slot: body
         }
         appearance {
             template: @/interactive-report
@@ -82,7 +96,7 @@ page 33 (
             type: rowRangesXToY
         }
         performance {
-            maxRowsToProcess: 100000
+            maxRowsToProcess: 10000
         }
         messages {
             whenNoDataFound: No data found.
@@ -98,148 +112,99 @@ page 33 (
             ]
         }
         advanced {
-            savedReportMappingIdentifier: 2727520115186399180
+            savedReportMappingIdentifier: 2711091832321217270
         }
 
-        column ELAPSED_SECONDS (
-            type: plainText
+        column CONTENT_SERVED (
+            type: hidden
             heading {
-                heading: Elapsed Seconds
-                alignment: end
+                heading: Content Served
             }
             layout {
-                sequence: 7
-                columnAlignment: end
-            }
-            appearance {
-                formatMask: 999G999G999G999G999G990D00
+                sequence: 15
             }
             source {
                 dataType: NUMBER
             }
             advanced {
-                endUserAlias: G
+                endUserAlias: O
             }
         )
 
-        column END_TIME (
+        column ERRORS (
             type: plainText
             heading {
-                heading: End Time
+                heading: Errors
+                alignment: end
             }
             layout {
-                sequence: 6
-            }
-            source {
-                dataType: DATE
-                timezoneAware: Y
-            }
-            advanced {
-                endUserAlias: F
-            }
-        )
-
-        column END_TIME_SINCE (
-            type: plainText
-            heading {
-                heading: Last Action
-            }
-            layout {
-                sequence: 28
+                sequence: 14
+                columnAlignment: end
             }
             appearance {
-                formatMask: SINCE
+                formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: DATE
-                timezoneAware: Y
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column MEDIAN_ELAPSED (
+            type: plainText
+            heading {
+                heading: Median Elapsed
+                alignment: end
+            }
+            layout {
+                sequence: 11
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
             }
             advanced {
                 endUserAlias: K
             }
         )
 
-        column ID (
+        column MOST_RECENT (
             type: plainText
             heading {
-                heading: Id
+                heading: Most Recent
+                alignment: center
             }
             layout {
-                sequence: 1
-                columnAlignment: end
+                sequence: 8
+            }
+            appearance {
+                formatMask: SINCE
             }
             source {
-                dataType: NUMBER
+                dataType: DATE
             }
             advanced {
-                endUserAlias: A
+                endUserAlias: H
             }
         )
 
-        column MAX_ORDERS (
+        column PAGE_EVENTS (
             type: plainText
             heading {
-                heading: Max Orders
+                heading: Page Events
                 alignment: end
             }
             layout {
-                sequence: 4
-                columnAlignment: end
-            }
-            source {
-                dataType: NUMBER
-            }
-            advanced {
-                endUserAlias: D
-            }
-        )
-
-        column NUM_DAYS (
-            type: plainText
-            heading {
-                heading: Num Days
-                alignment: end
-            }
-            layout {
-                sequence: 3
-                columnAlignment: end
-            }
-            source {
-                dataType: NUMBER
-            }
-            advanced {
-                endUserAlias: C
-            }
-        )
-
-        column OWNER (
-            type: plainText
-            heading {
-                heading: Owner
-            }
-            layout {
-                sequence: 2
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: B
-            }
-        )
-
-        column ROWS_PER_SECOND (
-            type: plainText
-            heading {
-                heading: Rows Per Second
-                alignment: end
-            }
-            layout {
-                sequence: 18
+                sequence: 10
                 columnAlignment: end
             }
             appearance {
-                formatMask: 999G999G999G999G999G990D00
+                formatMask: 999G999G999G999G999G999G990
             }
             source {
                 dataType: NUMBER
@@ -249,67 +214,76 @@ page 33 (
             }
         )
 
-        column ROW_COUNT (
+        column ROWS_FETCHED (
             type: plainText
             heading {
-                heading: New Rows
+                heading: Rows Fetched
                 alignment: end
             }
             layout {
-                sequence: 8
+                sequence: 12
                 columnAlignment: end
             }
             appearance {
-                formatMask: 999G999G999G999G999G990
+                formatMask: 999G999G999G999G999G999G990
             }
             source {
                 dataType: NUMBER
             }
             advanced {
-                endUserAlias: H
+                endUserAlias: L
             }
         )
 
-        savedReport 27275210 (
+        column THE_USER (
+            type: plainText
+            heading {
+                heading: The User
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        savedReport 27110928 (
             visibility: primaryDefault
             view {
                 rowsPerPage: 15
             }
 
-            displayColumn ELAPSED_SECONDS (
+            displayColumn ERRORS (
                 sequence: 5
             )
 
-            displayColumn END_TIME (
-                sequence: 4
-            )
-
-            displayColumn END_TIME_SINCE (
-                sequence: 8
-            )
-
-            displayColumn MAX_ORDERS (
-                sequence: 3
-            )
-
-            displayColumn NUM_DAYS (
-                sequence: 2
-            )
-
-            displayColumn OWNER (
-                sequence: 1
-            )
-
-            displayColumn ROWS_PER_SECOND (
-                sequence: 7
-            )
-
-            displayColumn ROW_COUNT (
+            displayColumn MEDIAN_ELAPSED (
                 sequence: 6
             )
 
+            displayColumn MOST_RECENT (
+                sequence: 1
+            )
+
+            displayColumn PAGE_EVENTS (
+                sequence: 3
+            )
+
+            displayColumn ROWS_FETCHED (
+                sequence: 4
+            )
+
+            displayColumn THE_USER (
+                sequence: 2
+            )
+
             sort (
-                column: END_TIME_SINCE
+                column: "Page Events"
                 sort {
                     direction: desc
                     sequence: 1
@@ -317,7 +291,7 @@ page 33 (
             )
 
             sort (
-                column: START_TIME
+                column: MOST_RECENT
                 sort {
                     direction: desc
                     sequence: 2
@@ -325,15 +299,57 @@ page 33 (
             )
 
             aggregate (
-                column: ROW_COUNT
+                column: PAGE_EVENTS
             )
 
             aggregate (
-                column: ELAPSED_SECONDS
+                column: ROWS_FETCHED
+            )
+
+            aggregate (
+                column: ERRORS
             )
 
         )
 
+    )
+
+    pageItem P16_SINCE (
+        type: selectList
+        label {
+            label: Timeframe
+            alignment: left
+        }
+        settings {
+            pageActionOnSelection: redirectSetValue
+        }
+        lov {
+            type: sharedComponent
+            lov: @timeframe-2-weeks
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        advanced {
+            cssClasses: mnw180
+        }
+        source {
+            type: staticValue
+            staticValue: 00001.0000000000
+        }
+        default {
+            type: static
+            staticValue: 00001.0000000000
+        }
     )
 
     button reset-report (
@@ -341,7 +357,7 @@ page 33 (
         label: Reset
         layout {
             sequence: 10
-            region: @transaction-generation-log
+            region: @top-users
             slot: rightOfInteractiveReportSearchBar
         }
         appearance {
@@ -355,11 +371,12 @@ page 33 (
         behavior {
             action: redirectThisApp
             target: {
-                page: 33
+                page: 16
                 clearCache: [
-                    33
+                    16
                     RIR
                 ]
+                action: resetPagination
             }
             warnOnUnsavedChanges: doNotCheck
         }
@@ -384,7 +401,7 @@ page 33 (
         behavior {
             action: redirectThisApp
             target: {
-                page: 19
+                page: 4
             }
             warnOnUnsavedChanges: doNotCheck
         }

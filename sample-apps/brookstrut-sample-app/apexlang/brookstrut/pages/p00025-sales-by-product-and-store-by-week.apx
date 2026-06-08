@@ -1,5 +1,6 @@
 page 25 (
     name: Sales by Product and Store by Week
+    alias: SALES-BY-PRODUCT-AND-STORE-BY-WEEK
     title: Sales by Product and Store by Week
     pageGroup: @reporting
     appearance {

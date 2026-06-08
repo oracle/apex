@@ -1,5 +1,6 @@
 page 17 (
     name: Employee Self Review Details
+    alias: EMPLOYEE-SELF-REVIEW-DETAILS
     title: Employee Self Review Details
     appearance {
         pageMode: modalDialog

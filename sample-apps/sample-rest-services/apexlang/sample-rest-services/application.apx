@@ -1,6 +1,6 @@
 app SAMPLE-REST-SERVICES (
     name: Sample REST Services
-    version: 26.1.0
+    version: 26.1.1
     logo {
         type: text
         text: Sample REST Services

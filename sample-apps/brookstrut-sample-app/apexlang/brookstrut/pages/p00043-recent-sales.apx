@@ -1,5 +1,6 @@
 page 43 (
     name: Recent Sales
+    alias: RECENT-SALES
     title: Recent Sales
     appearance {
         pageTemplate: @/standard

@@ -75,7 +75,7 @@ prompt APPLICATION 7930 - Sample REST Services
 --     Supporting Objects:  Included
 --       Install scripts:          5
 --   Version:         26.1.0
---   Instance ID:     746015870406431
+--   Instance ID:     746039064640963
 --
 
 prompt --application/delete_application
@@ -109,7 +109,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -122,7 +122,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Sample REST Services'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>152
-,p_version_scn=>'113034497'
+,p_version_scn=>'138423080'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -13463,6 +13463,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>409
 ,p_name=>'Workflow Details'
+,p_alias=>'WORKFLOW-DETAILS'
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Workflow Details'
 ,p_allow_duplicate_submissions=>'N'

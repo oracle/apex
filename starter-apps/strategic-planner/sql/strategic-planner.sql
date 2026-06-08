@@ -78,7 +78,7 @@ prompt APPLICATION 7150 - Strategic Planner
 --     Supporting Objects:  Included
 --       Install scripts:        111
 --   Version:         26.1.0
---   Instance ID:     746074654651817
+--   Instance ID:     746039064640963
 --
 
 prompt --application/delete_application
@@ -118,7 +118,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -133,7 +133,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Strategic Planner'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>28
-,p_version_scn=>'123337515'
+,p_version_scn=>'138422349'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -118898,6 +118898,7 @@ begin
 wwv_flow_imp_page.create_page(
  p_id=>4001
 ,p_name=>'Workflow Details'
+,p_alias=>'WORKFLOW-DETAILS'
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Workflow Details'
 ,p_allow_duplicate_submissions=>'N'

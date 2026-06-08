@@ -1,6 +1,8 @@
-page 12 (
-    name: Product
-    title: Product
+page 9 (
+    name: Region
+    alias: REGION
+    title: Region
+    pageGroup: @regions
     appearance {
         pageMode: modalDialog
         dialogTemplate: @/drawer
@@ -13,7 +15,6 @@ page 12 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -30,11 +31,11 @@ page 12 (
         helpText: No help is available for this page.
     }
 
-    region button-bar (
-        name: button bar
+    region buttonbar (
+        name: buttonbar
         type: staticContent
         layout {
-            sequence: 1
+            sequence: 20
             slot: dialogFooter
         }
         appearance {
@@ -46,8 +47,8 @@ page 12 (
         }
     )
 
-    region product (
-        name: Product
+    region regions (
+        name: Regions
         type: staticContent
         layout {
             sequence: 10
@@ -59,11 +60,11 @@ page 12 (
         }
     )
 
-    pageItem P12_ID (
+    pageItem P9_ID (
         type: hidden
         layout {
             sequence: 10
-            region: @product
+            region: @regions
             slot: regionBody
         }
         source {
@@ -76,18 +77,18 @@ page 12 (
         }
     )
 
-    pageItem P12_ITEM_DESC (
-        type: textarea
+    pageItem P9_REGION_NAME (
+        type: textField
         label {
-            label: Description
+            label: Region Name
             alignment: left
         }
         settings {
             trimSpaces: none
         }
         layout {
-            sequence: 90
-            region: @product
+            sequence: 20
+            region: @regions
             slot: regionBody
             alignment: left
         }
@@ -95,113 +96,14 @@ page 12 (
             template: @/optional-floating
             templateOptions: #DEFAULT#
             width: 64
-            height: 5
         }
         validation {
+            valueRequired: true
             maxLength: 255
         }
         source {
             type: databaseColumn
-            databaseColumn: ITEM_DESC
-            used: always
-        }
-    )
-
-    pageItem P12_ITEM_NAME (
-        type: textField
-        label {
-            label: Item Name
-            alignment: left
-        }
-        settings {
-            trimSpaces: none
-        }
-        layout {
-            sequence: 60
-            region: @product
-            slot: regionBody
-            alignment: left
-        }
-        appearance {
-            template: @/optional-floating
-            templateOptions: #DEFAULT#
-            width: 48
-        }
-        validation {
-            maxLength: 60
-        }
-        source {
-            type: databaseColumn
-            databaseColumn: ITEM_NAME
-            used: always
-        }
-    )
-
-    pageItem P12_ITEM_TYPE (
-        type: selectList
-        label {
-            label: Type
-            alignment: left
-        }
-        lov {
-            type: sharedComponent
-            lov: @food-types
-            displayNullValue: false
-        }
-        layout {
-            sequence: 30
-            region: @product
-            slot: regionBody
-            alignment: left
-        }
-        appearance {
-            template: @/optional-floating
-            templateOptions: #DEFAULT#
-            height: 1
-        }
-        validation {
-            valueRequired: true
-        }
-        advanced {
-            cssClasses: mnw180
-        }
-        source {
-            type: databaseColumn
-            databaseColumn: ITEM_TYPE
-            used: always
-        }
-    )
-
-    pageItem P12_MSRP (
-        type: numberField
-        label {
-            label: MSRP
-            alignment: left
-        }
-        settings {
-            minValue: 0
-            numberAlignment: end
-            virtualKeyboard: text
-        }
-        layout {
-            sequence: 70
-            region: @product
-            slot: regionBody
-            alignment: left
-        }
-        appearance {
-            template: @/optional-floating
-            templateOptions: #DEFAULT#
-            formatMask: 999G999G999G999G990D00
-            width: 64
-        }
-        validation {
-            valueRequired: true
-            maxLength: 4000
-        }
-        source {
-            type: databaseColumn
-            databaseColumn: MSRP
+            databaseColumn: REGION_NAME
             used: always
         }
     )
@@ -211,7 +113,7 @@ page 12 (
         label: Cancel
         layout {
             sequence: 10
-            region: @button-bar
+            region: @buttonbar
             slot: close
         }
         appearance {
@@ -220,16 +122,15 @@ page 12 (
         }
         behavior {
             action: definedByDynamicAction
-            executeValidations: false
         }
     )
 
     button create (
         buttonName: CREATE
-        label: Add Store Item
+        label: Add Region
         layout {
             sequence: 40
-            region: @button-bar
+            region: @buttonbar
             slot: create
         }
         appearance {
@@ -243,7 +144,7 @@ page 12 (
         }
         serverSideCondition {
             type: itemIsNull
-            item: P12_ID
+            item: P9_ID
         }
     )
 
@@ -252,7 +153,7 @@ page 12 (
         label: Delete
         layout {
             sequence: 20
-            region: @button-bar
+            region: @buttonbar
             slot: delete
         }
         appearance {
@@ -268,7 +169,7 @@ page 12 (
         }
         serverSideCondition {
             type: itemIsNotNull
-            item: P12_ID
+            item: P9_ID
         }
     )
 
@@ -277,7 +178,7 @@ page 12 (
         label: Apply Changes
         layout {
             sequence: 30
-            region: @button-bar
+            region: @buttonbar
             slot: change
         }
         appearance {
@@ -291,12 +192,12 @@ page 12 (
         }
         serverSideCondition {
             type: itemIsNotNull
-            item: P12_ID
+            item: P9_ID
         }
     )
 
-    dynamicAction close-dialog (
-        name: close dialog
+    dynamicAction on-click (
+        name: on click
         execution {
             sequence: 10
         }
@@ -306,8 +207,8 @@ page 12 (
             button: @cancel
         }
 
-        action native-dialog-cancel (
-            action: cancelDialog
+        action native-dialog-close (
+            action: closeDialog
             execution {
                 sequence: 10
                 fireOnInit: false
@@ -316,58 +217,39 @@ page 12 (
 
     )
 
-    validation p12-item-name-not-null (
-        name: P12_ITEM_NAME Not Null
-        execution {
-            sequence: 10
-        }
-        validation {
-            type: functionBodyReturningBoolean
-            plsqlFunctionBody: return trim(:P12_ITEM_NAME) is not null
-        }
-        error {
-            errorMessage: #LABEL# must have some value.
-            associatedItem: @P12_ITEM_NAME
-        }
-        serverSideCondition {
-            type: requestIsContainedInValue
-            value: CREATE,SAVE
-        }
-    )
-
-    process fetch-row-from-oow-demo-items (
-        name: Fetch Row from OOW_DEMO_ITEMS
+    process fetch-row-from-oow-demo-regions (
+        name: Fetch Row from OOW_DEMO_REGIONS
         type: autoRowFetch
         source {
-            tableName: OOW_DEMO_ITEMS
+            tableName: OOW_DEMO_REGIONS
             pkColumn: ID
-            pkItem: P12_ID
+            pkItem: P9_ID
         }
         execution {
             sequence: 10
             point: afterHeader
         }
         advanced {
-            executionMappingIdentifier: 16574535388351414176
+            executionMappingIdentifier: 16574358396805192834
         }
     )
 
-    process process-row-of-oow-demo-items (
-        name: Process Row of OOW_DEMO_ITEMS
+    process process-row-of-oow-demo-regions (
+        name: Process Row of OOW_DEMO_REGIONS
         type: autoRowProcessing
         target {
-            tableName: OOW_DEMO_ITEMS
+            tableName: OOW_DEMO_REGIONS
             pkColumn: ID
-            pkItem: P12_ID
+            pkItem: P9_ID
         }
         execution {
-            sequence: 30
+            sequence: 20
         }
         successMessage {
             successMessage: Action Processed.
         }
         advanced {
-            executionMappingIdentifier: 16574535588104414179
+            executionMappingIdentifier: 16574358565667192834
         }
     )
 
@@ -375,10 +257,10 @@ page 12 (
         name: reset page
         type: clearSessionState
         execution {
-            sequence: 40
+            sequence: 30
         }
         advanced {
-            executionMappingIdentifier: 16574535780149414179
+            executionMappingIdentifier: 16574358794782192835
         }
         serverSideCondition {
             whenButtonPressed: @delete
@@ -387,11 +269,11 @@ page 12 (
 
     branch (
         execution {
-            sequence: 1
+            sequence: 10
         }
         behavior {
             target: {
-                page: 11
+                page: 8
             }
         }
     )

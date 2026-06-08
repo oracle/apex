@@ -1,5 +1,6 @@
 page 17 (
     name: Activity Calendar
+    alias: ACTIVITY-CALENDAR
     title: Activity Calendar
     pageGroup: @administration
     appearance {

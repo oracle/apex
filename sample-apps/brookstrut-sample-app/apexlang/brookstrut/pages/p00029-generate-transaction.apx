@@ -1,5 +1,6 @@
 page 29 (
     name: Generate Transaction
+    alias: GENERATE-TRANSACTION
     title: Generate Transaction
     pageGroup: @data-generation
     appearance {
@@ -368,9 +369,6 @@ page 29 (
         }
         serverSideCondition {
             whenButtonPressed: @generate-transaction
-        }
-        comments {
-            comments: Created 25-OCT-2012 15:37 by MIKE
         }
     )
 

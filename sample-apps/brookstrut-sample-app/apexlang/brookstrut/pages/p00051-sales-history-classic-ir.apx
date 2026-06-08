@@ -79,7 +79,9 @@ page 51 (
                     s.store_name    store,
                     i.item_Name     product,
                     h.DATE_OF_SALE,
+                    to_char(h.DATE_OF_SALE,'YYYY.MM.W') the_week,
                     to_char(h.DATE_OF_SALE,'YYYY.MM') the_month,
+                    to_char(h.DATE_OF_SALE,'YYYY') the_year,
                     h.QUANTITY,
                     h.TRANSACTION_ID,
                     h.ITEM_PRICE,
@@ -95,7 +97,7 @@ page 51 (
                       h.store_id = s.id and
                       p.ITEM_ID = h.PRODUCT_ID and
                       p.item_id = i.id
-                
+
                 ```
         }
         layout {
@@ -111,6 +113,10 @@ page 51 (
         }
         performance {
             maxRowsToProcess: 1000000
+        }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: Report provides sales of products by store, and stores are grouped by geographic region.
         }
         advanced {
             savedReportMappingIdentifier: 12014204872062923921
@@ -162,6 +168,9 @@ page 51 (
                 sequence: 90
                 columnAlignment: end
             }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990D00
+            }
             source {
                 dataType: NUMBER
             }
@@ -183,6 +192,11 @@ page 51 (
             }
             advanced {
                 endUserAlias: D
+            }
+            genAI {
+                columnContext: The product name
+                referenceDataType: sqlQuery
+                sqlQuery: select item_name d, item_name r from "#OWNER#"."OOW_DEMO_ITEMS"
             }
         )
 
@@ -214,6 +228,9 @@ page 51 (
                 sequence: 70
                 columnAlignment: end
             }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
             source {
                 dataType: NUMBER
             }
@@ -236,6 +253,16 @@ page 51 (
             advanced {
                 endUserAlias: B
             }
+            genAI {
+                referenceDataType: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select region_name d,
+                           region_name r
+                    from #OWNER#.OOW_DEMO_REGIONS
+
+                    ```
+            }
         )
 
         column SALE (
@@ -247,6 +274,9 @@ page 51 (
             layout {
                 sequence: 100
                 columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
             }
             source {
                 dataType: NUMBER
@@ -269,6 +299,10 @@ page 51 (
             }
             advanced {
                 endUserAlias: C
+            }
+            genAI {
+                referenceDataType: sqlQuery
+                sqlQuery: select store_name d, store_name r from "#OWNER#"."OOW_DEMO_STORES"
             }
         )
 
@@ -296,13 +330,54 @@ page 51 (
                 heading: The Month
             }
             layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+            genAI {
+                columnContext: The month of the sale in YYYY.MM Oracle date format
+            }
+        )
+
+        column THE_WEEK (
+            type: plainText
+            heading {
+                heading: Month Week
+            }
+            layout {
                 sequence: 60
             }
             source {
                 dataType: STRING
             }
             advanced {
-                endUserAlias: F
+                endUserAlias: M
+            }
+            genAI {
+                columnContext: The year, month, and week of month in oracle date format "YYYY.MM.W"
+            }
+        )
+
+        column THE_YEAR (
+            type: plainText
+            heading {
+                heading: The Year
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: O
+            }
+            genAI {
+                columnContext: The year of the sale in YYYY Oracle date format
             }
         )
 
@@ -375,12 +450,40 @@ page 51 (
                 sequence: 3
             )
 
-            displayColumn THE_MONTH (
+            displayColumn THE_WEEK (
                 sequence: 6
             )
 
             displayColumn TRANSACTION_ID (
                 sequence: 1
+            )
+
+            sort (
+                column: DATE_OF_SALE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: SALE
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+            sort (
+                column: THE_WEEK
+                sort {
+                    direction: desc
+                    sequence: 3
+                }
+            )
+
+            aggregate (
+                column: SALE
             )
 
         )
@@ -461,7 +564,7 @@ page 51 (
             target: {
                 page: 51
                 clearCache: 51
-                action: resetPagination
+                action: resetRegions
             }
             warnOnUnsavedChanges: doNotCheck
         }
