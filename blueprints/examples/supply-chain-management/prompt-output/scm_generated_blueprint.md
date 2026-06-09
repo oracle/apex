@@ -1,0 +1,23805 @@
+# Provenance
+- Source Prompt: blueprint_prompt.md (v26.1.220)
+- Functional Requirements: scm_functional_requirement.md
+- Schema Metadata: scm_schema_metadata.md
+- UX Patterns: Built-in
+# Application Definition
+- Name: APEX Inventory and Warehouse Management
+- Description: Inventory and warehouse management application for operational stock control across multiple warehouses.
+- Comments: Supports role-scoped warehouse operations, master data maintenance, inventory control, traceability, and review workflows.
+- Primary Application Language: en
+- Home Page: Page 1
+- Access Controls:
+  - Roles:
+    - Role: Administrator
+      - Description: Maintain users, roles, master data, controlled lists, and application setup records.
+    - Role: Warehouse Manager
+      - Description: Oversee warehouse operations, review workloads, monitor exceptions, and manage operational activity.
+    - Role: Inventory Controller
+      - Description: Manage stock accuracy, replenishment, count variances, and approved stock corrections.
+    - Role: Operations User
+      - Description: Perform receiving, putaway, movement, transfer execution, picking, packing, dispatch, and routine stock work.
+    - Role: Quality User
+      - Description: Review returned, damaged, suspect, expired, or quarantined stock and disposition outcomes.
+    - Role: Business Viewer
+      - Description: View authorized master data, stock, operational activity, exceptions, counts, adjustments, and traceability.
+- List of Values:
+  - LOV
+    - Name: LOV_WAREHOUSES
+    - Type: Table
+    - Table Name: SCM_WAREHOUSES
+    - Display: WAREHOUSE_NAME
+    - Return: WAREHOUSE_ID
+  - LOV
+    - Name: LOV_APPLICATION_USERS
+    - Type: Table
+    - Table Name: SCM_APPLICATION_USERS
+    - Display: FULL_NAME
+    - Return: APPLICATION_USER_ID
+  - LOV
+    - Name: LOV_BUSINESS_LISTS
+    - Type: Table
+    - Table Name: SCM_BUSINESS_LISTS
+    - Display: LIST_NAME
+    - Return: BUSINESS_LIST_ID
+  - LOV
+    - Name: LOV_BUSINESS_PARTNERS
+    - Type: Table
+    - Table Name: SCM_BUSINESS_PARTNERS
+    - Display: PARTNER_NAME
+    - Return: BUSINESS_PARTNER_ID
+  - LOV
+    - Name: LOV_PARTNER_SITES
+    - Type: Table
+    - Table Name: SCM_PARTNER_SITES
+    - Display: SITE_NAME
+    - Return: PARTNER_SITE_ID
+  - LOV
+    - Name: LOV_INBOUND_RECEIPTS
+    - Type: Table
+    - Table Name: SCM_INBOUND_RECEIPTS
+    - Display: RECEIPT_NUMBER
+    - Return: INBOUND_RECEIPT_ID
+  - LOV
+    - Name: LOV_ITEMS
+    - Type: Table
+    - Table Name: SCM_ITEMS
+    - Display: ITEM_NAME
+    - Return: ITEM_ID
+  - LOV
+    - Name: LOV_INVENTORY_LOTS
+    - Type: Table
+    - Table Name: SCM_INVENTORY_LOTS
+    - Display: LOT_NUMBER
+    - Return: INVENTORY_LOT_ID
+  - LOV
+    - Name: LOV_STORAGE_LOCATIONS
+    - Type: Table
+    - Table Name: SCM_STORAGE_LOCATIONS
+    - Display: LOCATION_NAME
+    - Return: STORAGE_LOCATION_ID
+  - LOV
+    - Name: LOV_ITEM_SERIALS
+    - Type: Table
+    - Table Name: SCM_ITEM_SERIALS
+    - Display: SERIAL_NUMBER
+    - Return: ITEM_SERIAL_ID
+  - LOV
+    - Name: LOV_OUTBOUND_ORDERS
+    - Type: Table
+    - Table Name: SCM_OUTBOUND_ORDERS
+    - Display: OUTBOUND_ORDER_NUMBER
+    - Return: OUTBOUND_ORDER_ID
+  - LOV
+    - Name: LOV_ITEM_WAREHOUSE_POLICIES
+    - Type: Table
+    - Table Name: SCM_ITEM_WAREHOUSE_POLICIES
+    - Display: ITEM_ID
+    - Return: ITEM_WAREHOUSE_POLICY_ID
+  - LOV
+    - Name: LOV_RETURNS
+    - Type: Table
+    - Table Name: SCM_RETURNS
+    - Display: RETURN_NUMBER
+    - Return: RETURN_ID
+  - LOV
+    - Name: LOV_STOCK_ADJUSTMENTS
+    - Type: Table
+    - Table Name: SCM_STOCK_ADJUSTMENTS
+    - Display: ADJUSTMENT_NUMBER
+    - Return: STOCK_ADJUSTMENT_ID
+  - LOV
+    - Name: LOV_OUTBOUND_ORDER_LINES
+    - Type: Table
+    - Table Name: SCM_OUTBOUND_ORDER_LINES
+    - Display: LINE_NUMBER
+    - Return: OUTBOUND_ORDER_LINE_ID
+  - LOV
+    - Name: LOV_INVENTORY_BALANCES
+    - Type: Table
+    - Table Name: SCM_INVENTORY_BALANCES
+    - Display: ITEM_ID
+    - Return: INVENTORY_BALANCE_ID
+  - LOV
+    - Name: LOV_WAREHOUSE_AREAS
+    - Type: Table
+    - Table Name: SCM_WAREHOUSE_AREAS
+    - Display: AREA_NAME
+    - Return: WAREHOUSE_AREA_ID
+  - LOV
+    - Name: LOV_STOCK_COUNTS
+    - Type: Table
+    - Table Name: SCM_STOCK_COUNTS
+    - Display: COUNT_NUMBER
+    - Return: STOCK_COUNT_ID
+  - LOV
+    - Name: LOV_STOCK_TRANSFERS
+    - Type: Table
+    - Table Name: SCM_STOCK_TRANSFERS
+    - Display: TRANSFER_NUMBER
+    - Return: STOCK_TRANSFER_ID
+  - LOV
+    - Name: LOV_USER_ROLES
+    - Type: Table
+    - Table Name: SCM_USER_ROLES
+    - Display: ROLE_NAME
+    - Return: USER_ROLE_ID
+  - LOV
+    - Name: LOV_APPLICATION_USERS_USER_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+      - Entry:
+        - Display: Locked
+        - Return: LOCKED
+  - LOV
+    - Name: LOV_BUSINESS_LISTS_LIST_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+  - LOV
+    - Name: LOV_BUSINESS_PARTNERS_PARTNER_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Supplier
+        - Return: SUPPLIER
+      - Entry:
+        - Display: Customer
+        - Return: CUSTOMER
+      - Entry:
+        - Display: Carrier
+        - Return: CARRIER
+      - Entry:
+        - Display: Internal
+        - Return: INTERNAL
+  - LOV
+    - Name: LOV_BUSINESS_PARTNERS_PARTNER_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+      - Entry:
+        - Display: On Hold
+        - Return: ON_HOLD
+  - LOV
+    - Name: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Supplier
+        - Return: SUPPLIER
+      - Entry:
+        - Display: Transfer
+        - Return: TRANSFER
+      - Entry:
+        - Display: Customer Return
+        - Return: CUSTOMER_RETURN
+      - Entry:
+        - Display: Internal Return
+        - Return: INTERNAL_RETURN
+      - Entry:
+        - Display: Other
+        - Return: OTHER
+  - LOV
+    - Name: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Planned
+        - Return: PLANNED
+      - Entry:
+        - Display: Arrived
+        - Return: ARRIVED
+      - Entry:
+        - Display: Part Received
+        - Return: PART_RECEIVED
+      - Entry:
+        - Display: Received
+        - Return: RECEIVED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+      - Entry:
+        - Display: Closed
+        - Return: CLOSED
+  - LOV
+    - Name: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Good
+        - Return: GOOD
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Suspect
+        - Return: SUSPECT
+      - Entry:
+        - Display: Mismatch
+        - Return: MISMATCH
+      - Entry:
+        - Display: Short
+        - Return: SHORT
+      - Entry:
+        - Display: Over
+        - Return: OVER
+  - LOV
+    - Name: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Part Received
+        - Return: PART_RECEIVED
+      - Entry:
+        - Display: Received
+        - Return: RECEIVED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Closed
+        - Return: CLOSED
+  - LOV
+    - Name: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Available
+        - Return: AVAILABLE
+      - Entry:
+        - Display: Reserved
+        - Return: RESERVED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_INVENTORY_LOTS_LOT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Hold
+        - Return: HOLD
+      - Entry:
+        - Display: Expired
+        - Return: EXPIRED
+      - Entry:
+        - Display: Closed
+        - Return: CLOSED
+  - LOV
+    - Name: LOV_ITEMS_ITEM_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Available
+        - Return: AVAILABLE
+      - Entry:
+        - Display: Reserved
+        - Return: RESERVED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+      - Entry:
+        - Display: Shipped
+        - Return: SHIPPED
+      - Entry:
+        - Display: Written Off
+        - Return: WRITTEN_OFF
+  - LOV
+    - Name: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Good
+        - Return: GOOD
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Suspect
+        - Return: SUSPECT
+      - Entry:
+        - Display: Expired
+        - Return: EXPIRED
+  - LOV
+    - Name: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Receipt Discrepancy
+        - Return: RECEIPT_DISCREPANCY
+      - Entry:
+        - Display: Transfer Discrepancy
+        - Return: TRANSFER_DISCREPANCY
+      - Entry:
+        - Display: Pick Shortage
+        - Return: PICK_SHORTAGE
+      - Entry:
+        - Display: Item Not Found
+        - Return: ITEM_NOT_FOUND
+      - Entry:
+        - Display: Return Review
+        - Return: RETURN_REVIEW
+      - Entry:
+        - Display: Count Variance
+        - Return: COUNT_VARIANCE
+      - Entry:
+        - Display: Status Problem
+        - Return: STATUS_PROBLEM
+      - Entry:
+        - Display: Other
+        - Return: OTHER
+  - LOV
+    - Name: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Receipt
+        - Return: RECEIPT
+      - Entry:
+        - Display: Transfer
+        - Return: TRANSFER
+      - Entry:
+        - Display: Outbound Order
+        - Return: OUTBOUND_ORDER
+      - Entry:
+        - Display: Return
+        - Return: RETURN
+      - Entry:
+        - Display: Count
+        - Return: COUNT
+      - Entry:
+        - Display: Adjustment
+        - Return: ADJUSTMENT
+      - Entry:
+        - Display: Inventory
+        - Return: INVENTORY
+  - LOV
+    - Name: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Low
+        - Return: LOW
+      - Entry:
+        - Display: Medium
+        - Return: MEDIUM
+      - Entry:
+        - Display: High
+        - Return: HIGH
+      - Entry:
+        - Display: Critical
+        - Return: CRITICAL
+  - LOV
+    - Name: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Customer Order
+        - Return: CUSTOMER_ORDER
+      - Entry:
+        - Display: Internal Request
+        - Return: INTERNAL_REQUEST
+  - LOV
+    - Name: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: New
+        - Return: NEW
+      - Entry:
+        - Display: Released
+        - Return: RELEASED
+      - Entry:
+        - Display: Allocated
+        - Return: ALLOCATED
+      - Entry:
+        - Display: Picking
+        - Return: PICKING
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: Dispatched
+        - Return: DISPATCHED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+      - Entry:
+        - Display: Closed
+        - Return: CLOSED
+  - LOV
+    - Name: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Low
+        - Return: LOW
+      - Entry:
+        - Display: Medium
+        - Return: MEDIUM
+      - Entry:
+        - Display: High
+        - Return: HIGH
+      - Entry:
+        - Display: Critical
+        - Return: CRITICAL
+  - LOV
+    - Name: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Allocated
+        - Return: ALLOCATED
+      - Entry:
+        - Display: Part Picked
+        - Return: PART_PICKED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: Part Dispatched
+        - Return: PART_DISPATCHED
+      - Entry:
+        - Display: Dispatched
+        - Return: DISPATCHED
+      - Entry:
+        - Display: Short
+        - Return: SHORT
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_PARTNER_SITES_SITE_ROLE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Primary
+        - Return: PRIMARY
+      - Entry:
+        - Display: Ship From
+        - Return: SHIP_FROM
+      - Entry:
+        - Display: Ship To
+        - Return: SHIP_TO
+      - Entry:
+        - Display: Pickup
+        - Return: PICKUP
+      - Entry:
+        - Display: Delivery
+        - Return: DELIVERY
+      - Entry:
+        - Display: Return
+        - Return: RETURN
+  - LOV
+    - Name: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Low Stock
+        - Return: LOW_STOCK
+      - Entry:
+        - Display: Out Of Stock
+        - Return: OUT_OF_STOCK
+      - Entry:
+        - Display: Pick Face Replenishment
+        - Return: PICK_FACE_REPLENISHMENT
+      - Entry:
+        - Display: Aging Review
+        - Return: AGING_REVIEW
+      - Entry:
+        - Display: Short Dated Review
+        - Return: SHORT_DATED_REVIEW
+  - LOV
+    - Name: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: In Review
+        - Return: IN_REVIEW
+      - Entry:
+        - Display: Actioned
+        - Return: ACTIONED
+      - Entry:
+        - Display: Closed
+        - Return: CLOSED
+      - Entry:
+        - Display: Suppressed
+        - Return: SUPPRESSED
+  - LOV
+    - Name: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Low
+        - Return: LOW
+      - Entry:
+        - Display: Medium
+        - Return: MEDIUM
+      - Entry:
+        - Display: High
+        - Return: HIGH
+      - Entry:
+        - Display: Critical
+        - Return: CRITICAL
+  - LOV
+    - Name: LOV_RETURNS_RETURN_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Customer Return
+        - Return: CUSTOMER_RETURN
+      - Entry:
+        - Display: Delivery Return
+        - Return: DELIVERY_RETURN
+      - Entry:
+        - Display: Internal Return
+        - Return: INTERNAL_RETURN
+      - Entry:
+        - Display: Supplier Return
+        - Return: SUPPLIER_RETURN
+  - LOV
+    - Name: LOV_RETURNS_RETURN_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: New
+        - Return: NEW
+      - Entry:
+        - Display: Received
+        - Return: RECEIVED
+      - Entry:
+        - Display: Under Review
+        - Return: UNDER_REVIEW
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Dispositioned
+        - Return: DISPOSITIONED
+      - Entry:
+        - Display: Closed
+        - Return: CLOSED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Good
+        - Return: GOOD
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Incomplete
+        - Return: INCOMPLETE
+      - Entry:
+        - Display: Expired
+        - Return: EXPIRED
+      - Entry:
+        - Display: Suspect
+        - Return: SUSPECT
+  - LOV
+    - Name: LOV_RETURN_LINES_DISPOSITION_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Return To Stock
+        - Return: RETURN_TO_STOCK
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Write Off
+        - Return: WRITE_OFF
+  - LOV
+    - Name: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Manual Adjustment
+        - Return: MANUAL_ADJUSTMENT
+      - Entry:
+        - Display: Status Correction
+        - Return: STATUS_CORRECTION
+      - Entry:
+        - Display: Write Off
+        - Return: WRITE_OFF
+      - Entry:
+        - Display: Count Variance
+        - Return: COUNT_VARIANCE
+  - LOV
+    - Name: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Applied
+        - Return: APPLIED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Available
+        - Return: AVAILABLE
+      - Entry:
+        - Display: Reserved
+        - Return: RESERVED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Available
+        - Return: AVAILABLE
+      - Entry:
+        - Display: Reserved
+        - Return: RESERVED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Increase
+        - Return: INCREASE
+      - Entry:
+        - Display: Decrease
+        - Return: DECREASE
+      - Entry:
+        - Display: Status Change
+        - Return: STATUS_CHANGE
+  - LOV
+    - Name: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Fifo
+        - Return: FIFO
+      - Entry:
+        - Display: Manual
+        - Return: MANUAL
+      - Entry:
+        - Display: Specific Lot
+        - Return: SPECIFIC_LOT
+  - LOV
+    - Name: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Allocated
+        - Return: ALLOCATED
+      - Entry:
+        - Display: Part Picked
+        - Return: PART_PICKED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: Part Dispatched
+        - Return: PART_DISPATCHED
+      - Entry:
+        - Display: Dispatched
+        - Return: DISPATCHED
+      - Entry:
+        - Display: Short
+        - Return: SHORT
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Warehouse
+        - Return: WAREHOUSE
+      - Entry:
+        - Display: Area
+        - Return: AREA
+      - Entry:
+        - Display: Location
+        - Return: LOCATION
+      - Entry:
+        - Display: Item
+        - Return: ITEM
+  - LOV
+    - Name: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Planned
+        - Return: PLANNED
+      - Entry:
+        - Display: In Progress
+        - Return: IN_PROGRESS
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Completed
+        - Return: COMPLETED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Counted
+        - Return: COUNTED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Putaway
+        - Return: PUTAWAY
+      - Entry:
+        - Display: Move
+        - Return: MOVE
+      - Entry:
+        - Display: Replenishment
+        - Return: REPLENISHMENT
+      - Entry:
+        - Display: Status Change
+        - Return: STATUS_CHANGE
+  - LOV
+    - Name: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Available
+        - Return: AVAILABLE
+      - Entry:
+        - Display: Reserved
+        - Return: RESERVED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Available
+        - Return: AVAILABLE
+      - Entry:
+        - Display: Reserved
+        - Return: RESERVED
+      - Entry:
+        - Display: Picked
+        - Return: PICKED
+      - Entry:
+        - Display: Packed
+        - Return: PACKED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Damaged
+        - Return: DAMAGED
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Released
+        - Return: RELEASED
+      - Entry:
+        - Display: In Progress
+        - Return: IN_PROGRESS
+      - Entry:
+        - Display: Completed
+        - Return: COMPLETED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Draft
+        - Return: DRAFT
+      - Entry:
+        - Display: Released
+        - Return: RELEASED
+      - Entry:
+        - Display: In Transit
+        - Return: IN_TRANSIT
+      - Entry:
+        - Display: Part Received
+        - Return: PART_RECEIVED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Completed
+        - Return: COMPLETED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Approved
+        - Return: APPROVED
+      - Entry:
+        - Display: Rejected
+        - Return: REJECTED
+      - Entry:
+        - Display: Resolved
+        - Return: RESOLVED
+  - LOV
+    - Name: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Open
+        - Return: OPEN
+      - Entry:
+        - Display: Shipped
+        - Return: SHIPPED
+      - Entry:
+        - Display: Part Received
+        - Return: PART_RECEIVED
+      - Entry:
+        - Display: Review Required
+        - Return: REVIEW_REQUIRED
+      - Entry:
+        - Display: Completed
+        - Return: COMPLETED
+      - Entry:
+        - Display: Cancelled
+        - Return: CANCELLED
+  - LOV
+    - Name: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Receiving
+        - Return: RECEIVING
+      - Entry:
+        - Display: Storage
+        - Return: STORAGE
+      - Entry:
+        - Display: Picking
+        - Return: PICKING
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Returns
+        - Return: RETURNS
+      - Entry:
+        - Display: Dispatch
+        - Return: DISPATCH
+      - Entry:
+        - Display: Staging
+        - Return: STAGING
+      - Entry:
+        - Display: Bin
+        - Return: BIN
+  - LOV
+    - Name: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_USER_ROLES_ROLE_SCOPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Enterprise
+        - Return: ENTERPRISE
+      - Entry:
+        - Display: Warehouse
+        - Return: WAREHOUSE
+      - Entry:
+        - Display: Quality
+        - Return: QUALITY
+      - Entry:
+        - Display: Finance
+        - Return: FINANCE
+      - Entry:
+        - Display: Admin
+        - Return: ADMIN
+  - LOV
+    - Name: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+  - LOV
+    - Name: LOV_WAREHOUSES_WAREHOUSE_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+  - LOV
+    - Name: LOV_WAREHOUSE_AREAS_AREA_TYPE_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Receiving
+        - Return: RECEIVING
+      - Entry:
+        - Display: Storage
+        - Return: STORAGE
+      - Entry:
+        - Display: Picking
+        - Return: PICKING
+      - Entry:
+        - Display: Quarantine
+        - Return: QUARANTINE
+      - Entry:
+        - Display: Returns
+        - Return: RETURNS
+      - Entry:
+        - Display: Dispatch
+        - Return: DISPATCH
+      - Entry:
+        - Display: Staging
+        - Return: STAGING
+  - LOV
+    - Name: LOV_WAREHOUSE_AREAS_AREA_STATUS_CODE
+    - Type: Static
+    - Entries:
+      - Entry:
+        - Display: Active
+        - Return: ACTIVE
+      - Entry:
+        - Display: Inactive
+        - Return: INACTIVE
+      - Entry:
+        - Display: Blocked
+        - Return: BLOCKED
+- Page Groups
+  - Page Group
+    - Name: Home
+    - Description: Home dashboard and operational summary landing pages.
+  - Page Group
+    - Name: Administration
+    - Description: Administrative user, role, assignment, and controlled-list pages.
+  - Page Group
+    - Name: Master Data
+    - Description: Business partner, warehouse, location, item, and policy setup pages.
+  - Page Group
+    - Name: Inventory Control
+    - Description: Inventory balance, lot, serial, policy, and replenishment pages.
+  - Page Group
+    - Name: Warehouse Operations
+    - Description: Receiving, movement, transfer, outbound, return, count, adjustment, allocation, and exception pages.
+  - Page Group
+    - Name: Traceability and Reporting
+    - Description: Inventory transaction and serial event reporting pages.
+- Menu
+  - Menu Name: Navigation Menu
+  - Entries:
+    - Entry
+      - Label: Home Dashboard
+      - Icon: fa-home
+      - Action: Navigate
+      - Target: Page 1
+      - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+    - Entry
+      - Label: Administration Hub
+      - Icon: fa-users
+      - Action: Navigate
+      - Target: Page 2
+      - Authorized Roles: Administrator
+    - Entry
+      - Label: Master Data Hub
+      - Icon: fa-list
+      - Action: Navigate
+      - Target: Page 3
+      - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+    - Entry
+      - Label: Inventory Control Hub
+      - Icon: fa-archive
+      - Action: Navigate
+      - Target: Page 4
+      - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+    - Entry
+      - Label: Warehouse Operations Hub
+      - Icon: fa-building
+      - Action: Navigate
+      - Target: Page 5
+      - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+    - Entry
+      - Label: Traceability Reports Hub
+      - Icon: fa-history
+      - Action: Navigate
+      - Target: Page 6
+      - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+- Breadcrumb
+  - Name: Breadcrumb
+  - Entries:
+    - Entry
+      - Name: Home Dashboard
+      - Page: Page 1
+    - Entry
+      - Name: Administration Hub
+      - Page: Page 2
+    - Entry
+      - Name: Master Data Hub
+      - Page: Page 3
+    - Entry
+      - Name: Inventory Control Hub
+      - Page: Page 4
+    - Entry
+      - Name: Warehouse Operations Hub
+      - Page: Page 5
+    - Entry
+      - Name: Traceability Reports Hub
+      - Page: Page 6
+    - Entry
+      - Name: Application Users Search
+      - Page: Page 7
+      - Parent Entry: Administration Hub
+    - Entry
+      - Name: Application User Detail
+      - Page: Page 8
+    - Entry
+      - Name: Business Lists Search
+      - Page: Page 10
+      - Parent Entry: Administration Hub
+    - Entry
+      - Name: Business List Detail
+      - Page: Page 11
+      - Parent Entry: Business Lists Search
+    - Entry
+      - Name: Business List Values Search
+      - Page: Page 13
+      - Parent Entry: Administration Hub
+    - Entry
+      - Name: Business Partners Search
+      - Page: Page 15
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Business Partner Detail
+      - Page: Page 16
+      - Parent Entry: Business Partners Search
+    - Entry
+      - Name: Inbound Receipts Search
+      - Page: Page 18
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Inbound Receipt Detail
+      - Page: Page 19
+    - Entry
+      - Name: Inbound Receipt Lines Search
+      - Page: Page 21
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Inventory Balances Search
+      - Page: Page 23
+      - Parent Entry: Inventory Control Hub
+    - Entry
+      - Name: Inventory Balance Detail
+      - Page: Page 24
+    - Entry
+      - Name: Inventory Lots Search
+      - Page: Page 26
+      - Parent Entry: Inventory Control Hub
+    - Entry
+      - Name: Inventory Lot Detail
+      - Page: Page 27
+    - Entry
+      - Name: Inventory Transactions Report
+      - Page: Page 29
+      - Parent Entry: Traceability Reports Hub
+    - Entry
+      - Name: Items Search
+      - Page: Page 30
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Item Detail
+      - Page: Page 31
+    - Entry
+      - Name: Item Serials Search
+      - Page: Page 33
+      - Parent Entry: Inventory Control Hub
+    - Entry
+      - Name: Item Serial Detail
+      - Page: Page 34
+    - Entry
+      - Name: Item Warehouse Policies Search
+      - Page: Page 36
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Item Warehouse Policy Detail
+      - Page: Page 37
+    - Entry
+      - Name: Operational Exceptions Search
+      - Page: Page 39
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Operational Exception Detail
+      - Page: Page 40
+    - Entry
+      - Name: Outbound Orders Search
+      - Page: Page 42
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Outbound Order Detail
+      - Page: Page 43
+    - Entry
+      - Name: Outbound Order Lines Search
+      - Page: Page 45
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Partner Sites Search
+      - Page: Page 47
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Partner Site Detail
+      - Page: Page 48
+    - Entry
+      - Name: Replenishment Alerts Search
+      - Page: Page 50
+      - Parent Entry: Inventory Control Hub
+    - Entry
+      - Name: Returns Search
+      - Page: Page 52
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Return Detail
+      - Page: Page 53
+    - Entry
+      - Name: Return Lines Search
+      - Page: Page 55
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Serial Events Report
+      - Page: Page 57
+      - Parent Entry: Traceability Reports Hub
+    - Entry
+      - Name: Stock Adjustments Search
+      - Page: Page 58
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Adjustment Detail
+      - Page: Page 59
+    - Entry
+      - Name: Stock Adjustment Lines Search
+      - Page: Page 61
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Allocations Search
+      - Page: Page 63
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Counts Search
+      - Page: Page 65
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Count Detail
+      - Page: Page 66
+    - Entry
+      - Name: Stock Count Lines Search
+      - Page: Page 68
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Movements Search
+      - Page: Page 70
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Transfers Search
+      - Page: Page 72
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Stock Transfer Detail
+      - Page: Page 73
+    - Entry
+      - Name: Stock Transfer Lines Search
+      - Page: Page 75
+      - Parent Entry: Warehouse Operations Hub
+    - Entry
+      - Name: Storage Locations Search
+      - Page: Page 77
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Storage Location Detail
+      - Page: Page 78
+    - Entry
+      - Name: User Roles Search
+      - Page: Page 80
+      - Parent Entry: Administration Hub
+    - Entry
+      - Name: User Role Detail
+      - Page: Page 81
+      - Parent Entry: User Roles Search
+    - Entry
+      - Name: User Role Assignments Search
+      - Page: Page 83
+      - Parent Entry: Administration Hub
+    - Entry
+      - Name: Warehouses Search
+      - Page: Page 85
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Warehouse Detail
+      - Page: Page 86
+      - Parent Entry: Warehouses Search
+    - Entry
+      - Name: Warehouse Areas Search
+      - Page: Page 88
+      - Parent Entry: Master Data Hub
+    - Entry
+      - Name: Warehouse Area Detail
+      - Page: Page 89
+- Lists
+  - List
+    - Name: Administration List
+    - Entries
+      - Entry
+        - Label: Application Users
+        - Icon: fa-users
+        - Action: Navigate
+        - Target: Page 7
+        - Authorized Roles: Administrator
+        - Description: Stores records for application users.
+      - Entry
+        - Label: Business Lists
+        - Icon: fa-list
+        - Action: Navigate
+        - Target: Page 10
+        - Authorized Roles: Administrator
+        - Description: Stores records for business lists.
+      - Entry
+        - Label: Business List Values
+        - Icon: fa-list
+        - Action: Navigate
+        - Target: Page 13
+        - Authorized Roles: Administrator
+        - Description: Stores records for business list values.
+      - Entry
+        - Label: User Roles
+        - Icon: fa-users
+        - Action: Navigate
+        - Target: Page 80
+        - Authorized Roles: Administrator
+        - Description: Stores records for user roles.
+      - Entry
+        - Label: User Role Assignments
+        - Icon: fa-users
+        - Action: Navigate
+        - Target: Page 83
+        - Authorized Roles: Administrator
+        - Description: Stores records for user role assignments.
+  - List
+    - Name: Master Data List
+    - Entries
+      - Entry
+        - Label: Business Partners
+        - Icon: fa-address-book
+        - Action: Navigate
+        - Target: Page 15
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for business partners.
+      - Entry
+        - Label: Items
+        - Icon: fa-archive
+        - Action: Navigate
+        - Target: Page 30
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for items.
+      - Entry
+        - Label: Item Warehouse Policies
+        - Icon: fa-building
+        - Action: Navigate
+        - Target: Page 36
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for item warehouse policies.
+      - Entry
+        - Label: Partner Sites
+        - Icon: fa-address-book
+        - Action: Navigate
+        - Target: Page 47
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for partner sites.
+      - Entry
+        - Label: Storage Locations
+        - Icon: fa-building
+        - Action: Navigate
+        - Target: Page 77
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for storage locations.
+      - Entry
+        - Label: Warehouses
+        - Icon: fa-building
+        - Action: Navigate
+        - Target: Page 85
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for warehouses.
+      - Entry
+        - Label: Warehouse Areas
+        - Icon: fa-building
+        - Action: Navigate
+        - Target: Page 88
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+        - Description: Stores records for warehouse areas.
+  - List
+    - Name: Inventory Control List
+    - Entries
+      - Entry
+        - Label: Inventory Balances
+        - Icon: fa-archive
+        - Action: Navigate
+        - Target: Page 23
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for inventory balances.
+      - Entry
+        - Label: Inventory Lots
+        - Icon: fa-archive
+        - Action: Navigate
+        - Target: Page 26
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for inventory lots.
+      - Entry
+        - Label: Item Serials
+        - Icon: fa-archive
+        - Action: Navigate
+        - Target: Page 33
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for item serials.
+      - Entry
+        - Label: Replenishment Alerts
+        - Icon: fa-bell
+        - Action: Navigate
+        - Target: Page 50
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for replenishment alerts.
+  - List
+    - Name: Warehouse Operations List
+    - Entries
+      - Entry
+        - Label: Inbound Receipts
+        - Icon: fa-truck
+        - Action: Navigate
+        - Target: Page 18
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for inbound receipts.
+      - Entry
+        - Label: Operational Exceptions
+        - Icon: fa-warning
+        - Action: Navigate
+        - Target: Page 39
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for operational exceptions.
+      - Entry
+        - Label: Outbound Orders
+        - Icon: fa-shopping-cart
+        - Action: Navigate
+        - Target: Page 42
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for outbound orders.
+      - Entry
+        - Label: Returns
+        - Icon: fa-undo
+        - Action: Navigate
+        - Target: Page 52
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for returns.
+      - Entry
+        - Label: Stock Adjustments
+        - Icon: fa-adjust
+        - Action: Navigate
+        - Target: Page 58
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for stock adjustments.
+      - Entry
+        - Label: Stock Allocations
+        - Icon: fa-building
+        - Action: Navigate
+        - Target: Page 63
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores FIFO stock allocation and outbound execution detail.
+      - Entry
+        - Label: Stock Counts
+        - Icon: fa-calculator
+        - Action: Navigate
+        - Target: Page 65
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for stock counts.
+      - Entry
+        - Label: Stock Movements
+        - Icon: fa-exchange
+        - Action: Navigate
+        - Target: Page 70
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores executable putaway, internal movement, and replenishment records.
+      - Entry
+        - Label: Stock Transfers
+        - Icon: fa-exchange
+        - Action: Navigate
+        - Target: Page 72
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Stores records for stock transfers.
+  - List
+    - Name: Traceability Reports List
+    - Entries
+      - Entry
+        - Label: Inventory Transactions
+        - Icon: fa-archive
+        - Action: Navigate
+        - Target: Page 29
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Provides operational history for receipts, putaway, moves, allocation, pick, pack, dispatch, transfer shipment, transfer receipt, returns, count adjustment, stock adjustment, status change, and write-off events.
+      - Entry
+        - Label: Serial Events
+        - Icon: fa-archive
+        - Action: Navigate
+        - Target: Page 57
+        - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+        - Description: Provides serial lifecycle history derived from serial records and inventory transactions.
+## Pages
+### Page 1: Home Dashboard
+- Description: Summarizes operational warehouse work, stock risk, exceptions, and traceability activity for role-scoped users.
+- Comments: Summarizes operational warehouse work, stock risk, exceptions, and traceability activity for role-scoped users.
+- Pattern: metric-chart-two-up
+- Page Mode: standard
+- Menu: true
+- Page Group: Home
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Open Receipts KPI
+- Comments: Open Receipts KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 1
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Open receiving workload
+- Metric Icon: fa-truck
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_INBOUND_RECEIPTS r
+where r.RECEIPT_STATUS_CODE in ('PLANNED', 'ARRIVED', 'PART_RECEIVED', 'REVIEW_REQUIRED')
+```
+  - Summary: Single-value metric for open receipts.
+- Columns:
+  - Column Name: value
+    - Label: Open Receipts
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Outbound Orders KPI
+- Comments: Open Outbound Orders KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 4
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Open outbound demand
+- Metric Icon: fa-shopping-cart
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_OUTBOUND_ORDERS o
+where o.OUTBOUND_STATUS_CODE not in ('DISPATCHED', 'CANCELLED', 'CLOSED')
+```
+  - Summary: Single-value metric for open outbound orders.
+- Columns:
+  - Column Name: value
+    - Label: Open Outbound Orders
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Transfers KPI
+- Comments: Open Transfers KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 7
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Open transfer workload
+- Metric Icon: fa-exchange
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_STOCK_TRANSFERS t
+where t.TRANSFER_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+```
+  - Summary: Single-value metric for open transfers.
+- Columns:
+  - Column Name: value
+    - Label: Open Transfers
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Returns KPI
+- Comments: Open Returns KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 10
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Open return workload
+- Metric Icon: fa-undo
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_RETURNS r
+where r.RETURN_STATUS_CODE not in ('CLOSED', 'CANCELLED')
+```
+  - Summary: Single-value metric for open returns.
+- Columns:
+  - Column Name: value
+    - Label: Open Returns
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Stock Counts KPI
+- Comments: Open Stock Counts KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 1
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Open count workload
+- Metric Icon: fa-calculator
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_STOCK_COUNTS c
+where c.COUNT_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+```
+  - Summary: Single-value metric for open stock counts.
+- Columns:
+  - Column Name: value
+    - Label: Open Stock Counts
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Adjustments KPI
+- Comments: Open Adjustments KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 4
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Pending corrections
+- Metric Icon: fa-adjust
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_STOCK_ADJUSTMENTS a
+where a.ADJUSTMENT_STATUS_CODE not in ('APPLIED', 'REJECTED', 'CANCELLED')
+```
+  - Summary: Single-value metric for open adjustments.
+- Columns:
+  - Column Name: value
+    - Label: Open Adjustments
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Exceptions KPI
+- Comments: Open Exceptions KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 7
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Exception queue
+- Metric Icon: fa-warning
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_OPERATIONAL_EXCEPTIONS e
+where e.REVIEW_STATUS_CODE in ('OPEN', 'REVIEW_REQUIRED')
+```
+  - Summary: Single-value metric for open exceptions.
+- Columns:
+  - Column Name: value
+    - Label: Open Exceptions
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Open Replenishment Alerts KPI
+- Comments: Open Replenishment Alerts KPI summarizes a role-scoped operational count for the home dashboard.
+- Position: body
+- Colstart: 10
+- Colspan: 3
+- Component:
+  - Component Type: Metric Card
+- Metric Subtitle: Replenishment risk
+- Metric Icon: fa-bell
+- Metric Icon Style: subtle
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select count(*) as value
+from SCM_REPLENISHMENT_ALERTS a
+where a.ALERT_STATUS_CODE in ('OPEN', 'IN_REVIEW')
+```
+  - Summary: Single-value metric for open replenishment alerts.
+- Columns:
+  - Column Name: value
+    - Label: Open Replenishment Alerts
+    - Datatype: number
+    - Render As: metric
+    - Visible: true
+    - Format Mask: 999G999G999G999G990
+##### Region: Inventory Stock Position Chart
+- Comments: Inventory Stock Position Chart visualizes warehouse operational distribution from schema-backed records.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Donut
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select b.STOCK_STATUS_CODE as label
+     , sum(b.QUANTITY_ON_HAND) as value
+from SCM_INVENTORY_BALANCES b
+group by b.STOCK_STATUS_CODE
+order by value desc
+```
+  - Summary: Chart series for inventory stock position chart.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Warehouse Workload Chart
+- Comments: Warehouse Workload Chart visualizes warehouse operational distribution from schema-backed records.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select w.WAREHOUSE_NAME as label
+     , sum(z.work_count) as value
+from SCM_WAREHOUSES w
+join (
+    select r.WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_INBOUND_RECEIPTS r
+    where r.RECEIPT_STATUS_CODE in ('PLANNED', 'ARRIVED', 'PART_RECEIVED', 'REVIEW_REQUIRED')
+    group by r.WAREHOUSE_ID
+    union all
+    select m.WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_STOCK_MOVEMENTS m
+    where m.MOVEMENT_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+    group by m.WAREHOUSE_ID
+    union all
+    select t.FROM_WAREHOUSE_ID as WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_STOCK_TRANSFERS t
+    where t.TRANSFER_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+    group by t.FROM_WAREHOUSE_ID
+    union all
+    select o.SHIP_FROM_WAREHOUSE_ID as WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_OUTBOUND_ORDERS o
+    where o.OUTBOUND_STATUS_CODE not in ('DISPATCHED', 'CANCELLED', 'CLOSED')
+    group by o.SHIP_FROM_WAREHOUSE_ID
+    union all
+    select rt.WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_RETURNS rt
+    where rt.RETURN_STATUS_CODE not in ('CLOSED', 'CANCELLED')
+    group by rt.WAREHOUSE_ID
+    union all
+    select c.WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_STOCK_COUNTS c
+    where c.COUNT_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+    group by c.WAREHOUSE_ID
+    union all
+    select a.WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_STOCK_ADJUSTMENTS a
+    where a.ADJUSTMENT_STATUS_CODE not in ('APPLIED', 'REJECTED', 'CANCELLED')
+    group by a.WAREHOUSE_ID
+    union all
+    select e.WAREHOUSE_ID
+         , count(*) as work_count
+    from SCM_OPERATIONAL_EXCEPTIONS e
+    where e.REVIEW_STATUS_CODE in ('OPEN', 'REVIEW_REQUIRED')
+    group by e.WAREHOUSE_ID
+) z
+    on z.WAREHOUSE_ID = w.WAREHOUSE_ID
+group by w.WAREHOUSE_NAME
+order by value desc
+```
+  - Summary: Chart series for warehouse workload chart.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Inbound and Outbound Flow Chart
+- Comments: Inbound and Outbound Flow Chart visualizes warehouse operational distribution from schema-backed records.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Line
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select trunc(cast(t.TRANSACTION_AT as date)) as label
+     , count(*) as value
+from SCM_INVENTORY_TRANSACTIONS t
+group by trunc(cast(t.TRANSACTION_AT as date))
+order by label
+```
+  - Summary: Chart series for inbound and outbound flow chart.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: date
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Exceptions by Severity Chart
+- Comments: Exceptions by Severity Chart visualizes warehouse operational distribution from schema-backed records.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select e.SEVERITY_CODE as label
+     , count(*) as value
+from SCM_OPERATIONAL_EXCEPTIONS e
+group by e.SEVERITY_CODE
+order by value desc
+```
+  - Summary: Chart series for exceptions by severity chart.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Replenishment Alert Priority Status Chart
+- Comments: Replenishment Alert Priority Status Chart shows open alert pressure by priority and workflow status.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select a.PRIORITY_CODE || ' - ' || a.ALERT_STATUS_CODE as label
+     , count(*) as value
+from SCM_REPLENISHMENT_ALERTS a
+group by a.PRIORITY_CODE, a.ALERT_STATUS_CODE
+order by value desc
+```
+  - Summary: Chart series for replenishment alert priority and status.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Adjustment Status Chart
+- Comments: Adjustment Status Chart shows correction workload by adjustment workflow state.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Donut
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select a.ADJUSTMENT_STATUS_CODE as label
+     , count(*) as value
+from SCM_STOCK_ADJUSTMENTS a
+group by a.ADJUSTMENT_STATUS_CODE
+order by value desc
+```
+  - Summary: Chart series for adjustment status distribution.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Count Variance Resolution Chart
+- Comments: Count Variance Resolution Chart shows inventory count variance outcomes for correction review.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select coalesce(l.RESOLUTION_CODE, 'UNRESOLVED') as label
+     , count(*) as value
+from SCM_STOCK_COUNT_LINES l
+where l.VARIANCE_QUANTITY <> 0
+group by coalesce(l.RESOLUTION_CODE, 'UNRESOLVED')
+order by value desc
+```
+  - Summary: Chart series for count variance resolution.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Return Condition and Disposition Chart
+- Comments: Return Condition and Disposition Chart shows returned stock quality outcomes for review work.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select l.RETURNED_CONDITION_CODE || ' - ' || l.DISPOSITION_CODE as label
+     , count(*) as value
+from SCM_RETURN_LINES l
+group by l.RETURNED_CONDITION_CODE, l.DISPOSITION_CODE
+order by value desc
+```
+  - Summary: Chart series for return condition and disposition.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Exceptions by Type Chart
+- Comments: Exceptions by Type Chart shows exception demand by business exception category.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select e.EXCEPTION_TYPE_CODE as label
+     , count(*) as value
+from SCM_OPERATIONAL_EXCEPTIONS e
+group by e.EXCEPTION_TYPE_CODE
+order by value desc
+```
+  - Summary: Chart series for exception type distribution.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Quarantine and Damaged Stock by Warehouse Chart
+- Comments: Quarantine and Damaged Stock by Warehouse Chart shows quality-risk stock quantities by warehouse.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select w.WAREHOUSE_NAME as label
+     , sum(b.QUANTITY_ON_HAND) as value
+from SCM_INVENTORY_BALANCES b
+join SCM_WAREHOUSES w
+  on w.WAREHOUSE_ID = b.WAREHOUSE_ID
+where b.STOCK_STATUS_CODE in ('QUARANTINE', 'DAMAGED')
+group by w.WAREHOUSE_NAME
+order by value desc
+```
+  - Summary: Chart series for quarantine and damaged stock by warehouse.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Fulfilment Allocation Status Chart
+- Comments: Fulfilment Allocation Status Chart shows outbound allocation progress by allocation state.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Donut
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select a.ALLOCATION_STATUS_CODE as label
+     , count(*) as value
+from SCM_STOCK_ALLOCATIONS a
+group by a.ALLOCATION_STATUS_CODE
+order by value desc
+```
+  - Summary: Chart series for fulfilment allocation status.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Assigned Operational Work by User Chart
+- Comments: Assigned Operational Work by User Chart shows open assigned workload across operational records.
+- Position: body
+- Colstart: 7
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select u.FULL_NAME as label
+     , count(*) as value
+from SCM_APPLICATION_USERS u
+join (
+    select r.ASSIGNED_USER_ID as application_user_id
+    from SCM_INBOUND_RECEIPTS r
+    where r.ASSIGNED_USER_ID is not null
+      and r.RECEIPT_STATUS_CODE in ('PLANNED', 'ARRIVED', 'PART_RECEIVED', 'REVIEW_REQUIRED')
+    union all
+    select o.ASSIGNED_USER_ID
+    from SCM_OUTBOUND_ORDERS o
+    where o.ASSIGNED_USER_ID is not null
+      and o.OUTBOUND_STATUS_CODE not in ('DISPATCHED', 'CANCELLED', 'CLOSED')
+    union all
+    select t.ASSIGNED_USER_ID
+    from SCM_STOCK_TRANSFERS t
+    where t.ASSIGNED_USER_ID is not null
+      and t.TRANSFER_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+    union all
+    select r.ASSIGNED_USER_ID
+    from SCM_RETURNS r
+    where r.ASSIGNED_USER_ID is not null
+      and r.RETURN_STATUS_CODE not in ('CLOSED', 'CANCELLED')
+    union all
+    select c.ASSIGNED_USER_ID
+    from SCM_STOCK_COUNTS c
+    where c.ASSIGNED_USER_ID is not null
+      and c.COUNT_STATUS_CODE not in ('COMPLETED', 'CANCELLED')
+    union all
+    select a.ASSIGNED_USER_ID
+    from SCM_STOCK_ADJUSTMENTS a
+    where a.ASSIGNED_USER_ID is not null
+      and a.ADJUSTMENT_STATUS_CODE not in ('APPLIED', 'REJECTED', 'CANCELLED')
+    union all
+    select e.ASSIGNED_USER_ID
+    from SCM_OPERATIONAL_EXCEPTIONS e
+    where e.ASSIGNED_USER_ID is not null
+      and e.REVIEW_STATUS_CODE in ('OPEN', 'REVIEW_REQUIRED')
+) w
+  on w.application_user_id = u.APPLICATION_USER_ID
+group by u.FULL_NAME
+order by value desc
+```
+  - Summary: Chart series for assigned operational work by user.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Transaction Activity by Document Type Chart
+- Comments: Transaction Activity by Document Type Chart shows traceability volume by reference document family.
+- Position: body
+- Colstart: 1
+- Colspan: 6
+- Component:
+  - Component Type: Chart
+  - Qualifier: Bar
+- Data Source:
+  - Type: SQL
+  - SQL:
+```sql
+select t.REFERENCE_DOCUMENT_TYPE as label
+     , count(*) as value
+from SCM_INVENTORY_TRANSACTIONS t
+group by t.REFERENCE_DOCUMENT_TYPE
+order by value desc
+```
+  - Summary: Chart series for transaction activity by document type.
+- Columns:
+  - Column Name: label
+    - Label: Label
+    - Datatype: varchar2
+    - Render As: label
+  - Column Name: value
+    - Label: Value
+    - Datatype: number
+    - Render As: value
+##### Region: Low Stock and Replenishment Risk Report
+- Comments: Guided queue shows open replenishment alerts and reorder risk from alert records.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Where: ALERT_STATUS_CODE in ('OPEN', 'IN_REVIEW')
+  - Summary: Low Stock and Replenishment Risk Report uses SCM_REPLENISHMENT_ALERTS records for operational review.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 51
+    - Link Passing: REPLENISHMENT_ALERT_ID
+    - Link Target Items: P51_REPLENISHMENT_ALERT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+### Page 2: Administration Hub
+- Description: Launches user, role, assignment, and controlled-list administration workspaces.
+- Comments: Launches user, role, assignment, and controlled-list administration workspaces.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Administration List
+- Comments: Administration List provides navigation to related role-scoped workspaces.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: List
+  - Qualifier: Media List
+### Page 3: Master Data Hub
+- Description: Launches partner, warehouse, location, item, and policy master data workspaces.
+- Comments: Launches partner, warehouse, location, item, and policy master data workspaces.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Master Data List
+- Comments: Master Data List provides navigation to related role-scoped workspaces.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: List
+  - Qualifier: Media List
+### Page 4: Inventory Control Hub
+- Description: Launches stock balance, lot, serial, policy, and replenishment control workspaces.
+- Comments: Launches stock balance, lot, serial, policy, and replenishment control workspaces.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inventory Control List
+- Comments: Inventory Control List provides navigation to related role-scoped workspaces.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: List
+  - Qualifier: Media List
+### Page 5: Warehouse Operations Hub
+- Description: Launches receiving, movement, transfer, outbound, return, count, adjustment, allocation, and exception workspaces.
+- Comments: Launches receiving, movement, transfer, outbound, return, count, adjustment, allocation, and exception workspaces.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Warehouse Operations List
+- Comments: Warehouse Operations List provides navigation to related role-scoped workspaces.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: List
+  - Qualifier: Media List
+### Page 6: Traceability Reports Hub
+- Description: Launches transaction and serial lifecycle analytical reports for audit and operational review.
+- Comments: Launches transaction and serial lifecycle analytical reports for audit and operational review.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: true
+- Page Group: Traceability and Reporting
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Traceability Reports List
+- Comments: Traceability Reports List provides navigation to related role-scoped workspaces.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: List
+  - Qualifier: Media List
+### Page 7: Application Users Search
+- Description: Search and review application users for warehouse operations.
+- Comments: Guided searchable list for application users with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Application User Smart Filters
+- Comments: Guided filters narrow application users by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Application User Search Results
+- Filters:
+  - Filter
+    - Name: P7_F_USER_STATUS_CODE
+     - Label: User Status
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS_USER_STATUS_CODE
+     - Database Column: USER_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P7_F_DEFAULT_WAREHOUSE_ID
+     - Label: Default Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: DEFAULT_WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P7_F_MANAGER_USER_ID
+     - Label: Manager User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: MANAGER_USER_ID
+     - Datatype: number
+##### Region: Application User Search Results
+- Comments: Search results list application users and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_APPLICATION_USERS
+  - Primary Keys: APPLICATION_USER_ID
+  - Summary: Application User Search Results uses SCM_APPLICATION_USERS records for operational review.
+- Columns:
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: USER_NAME
+    - Label: User Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FULL_NAME
+    - Label: Full Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: USER_STATUS_CODE
+    - Label: User Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS_USER_STATUS_CODE
+    - Visible: true
+  - Column Name: EMAIL_ADDRESS
+    - Label: Email Address
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: DEFAULT_WAREHOUSE_ID
+    - Label: Default Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MANAGER_USER_ID
+    - Label: Manager User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: USER_NOTES
+    - Label: User Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 8
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P8_APPLICATION_USER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator
+  - Link:
+    - Link To: Page 9
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P9_APPLICATION_USER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create Application User
+    - Link To: Page 9
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 8: Application User Detail
+- Description: Review the selected application user and related operational records.
+- Comments: Detail workspace keeps the selected application user context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Application User Context
+- Comments: Context region identifies the selected application user and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: APPLICATION_USER_ID
+  - SQL:
+```sql
+select t.APPLICATION_USER_ID
+     , t.USER_NAME
+     , t.FULL_NAME
+     , t.USER_STATUS_CODE
+     , t.EMAIL_ADDRESS
+     , t.DEFAULT_WAREHOUSE_ID
+     , t.MANAGER_USER_ID
+     , t.USER_NOTES
+from SCM_APPLICATION_USERS t
+where t.APPLICATION_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Single selected application user context row.
+- Hidden Page Items: P8_APPLICATION_USER_ID
+- Columns:
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: USER_NAME
+    - Label: User Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FULL_NAME
+    - Label: Full Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: USER_STATUS_CODE
+    - Label: User Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS_USER_STATUS_CODE
+    - Visible: true
+  - Column Name: EMAIL_ADDRESS
+    - Label: Email Address
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: DEFAULT_WAREHOUSE_ID
+    - Label: Default Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MANAGER_USER_ID
+    - Label: Manager User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: USER_NOTES
+    - Label: User Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 9
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P9_APPLICATION_USER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+##### Region: Application Users in Application User
+- Comments: Related application users filtered by the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_APPLICATION_USERS
+  - Primary Keys: APPLICATION_USER_ID
+  - Where: MANAGER_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+  - Summary: Application Users in Application User uses SCM_APPLICATION_USERS records for operational review.
+- Columns:
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: USER_NAME
+    - Label: User Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FULL_NAME
+    - Label: Full Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: USER_STATUS_CODE
+    - Label: User Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS_USER_STATUS_CODE
+    - Visible: true
+  - Column Name: EMAIL_ADDRESS
+    - Label: Email Address
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: DEFAULT_WAREHOUSE_ID
+    - Label: Default Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MANAGER_USER_ID
+    - Label: Manager User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: USER_NOTES
+    - Label: User Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 8
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P8_APPLICATION_USER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator
+  - Link:
+    - Link To: Page 9
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P9_APPLICATION_USER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+##### Region: Inbound Receipts in Application User
+- Comments: Consolidated related inbound receipts in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - SQL:
+```sql
+select t.INBOUND_RECEIPT_ID
+     , t.RECEIPT_NUMBER
+     , t.RECEIPT_SOURCE_CODE
+     , t.RECEIPT_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.REVIEW_REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.SOURCE_PARTNER_ID
+     , t.SOURCE_SITE_ID
+     , t.ASSIGNED_USER_ID
+     , t.EXPECTED_ARRIVAL_AT
+     , t.RECEIVED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.RECEIVED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Received By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_INBOUND_RECEIPTS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.RECEIVED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Inbound Receipts in Application User consolidates SCM_INBOUND_RECEIPTS records across relationship roles.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Visible: true
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_BY_USER_ID
+    - Label: Received By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 19
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P19_INBOUND_RECEIPT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Operational Exceptions in Application User
+- Comments: Consolidated related operational exceptions in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - SQL:
+```sql
+select t.OPERATIONAL_EXCEPTION_ID
+     , t.EXCEPTION_NUMBER
+     , t.EXCEPTION_TYPE_CODE
+     , t.RELATED_RECORD_TYPE_CODE
+     , t.RELATED_LINE_NUMBER
+     , t.REVIEW_STATUS_CODE
+     , t.SEVERITY_CODE
+     , t.RESOLUTION_CODE
+     , t.RELATED_RECORD_ID
+     , t.WAREHOUSE_ID
+     , t.STORAGE_LOCATION_ID
+     , t.ITEM_ID
+     , t.ASSIGNED_USER_ID
+     , t.REPORTED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.REPORTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reported By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_OPERATIONAL_EXCEPTIONS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REPORTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Operational Exceptions in Application User consolidates SCM_OPERATIONAL_EXCEPTIONS records across relationship roles.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REPORTED_BY_USER_ID
+    - Label: Reported By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Outbound Orders in Application User
+- Comments: Consolidated related outbound orders in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - SQL:
+```sql
+select t.OUTBOUND_ORDER_ID
+     , t.OUTBOUND_ORDER_NUMBER
+     , t.ORDER_TYPE_CODE
+     , t.OUTBOUND_STATUS_CODE
+     , t.PRIORITY_CODE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.SHIP_FROM_WAREHOUSE_ID
+     , t.CUSTOMER_PARTNER_ID
+     , t.SHIP_TO_SITE_ID
+     , t.CARRIER_PARTNER_ID
+     , t.ASSIGNED_USER_ID
+     , t.ORDER_DATE
+     , t.PICKED_BY_USER_ID
+     , t.PACKED_BY_USER_ID
+     , t.DISPATCHED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.PICKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Picked By User'
+           when t.PACKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Packed By User'
+           when t.DISPATCHED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Dispatched By User'
+       end as RELATIONSHIP_ROLE
+from SCM_OUTBOUND_ORDERS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.PICKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.PACKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.DISPATCHED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Outbound Orders in Application User consolidates SCM_OUTBOUND_ORDERS records across relationship roles.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: PICKED_BY_USER_ID
+    - Label: Picked By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PACKED_BY_USER_ID
+    - Label: Packed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: DISPATCHED_BY_USER_ID
+    - Label: Dispatched By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 43
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P43_OUTBOUND_ORDER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Replenishment Alerts in Application User
+- Comments: Related replenishment alerts filtered by the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Where: REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+  - Summary: Replenishment Alerts in Application User uses SCM_REPLENISHMENT_ALERTS records for operational review.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 51
+    - Link Passing: REPLENISHMENT_ALERT_ID
+    - Link Target Items: P51_REPLENISHMENT_ALERT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Returns in Application User
+- Comments: Consolidated related returns in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: RETURN_ID
+  - SQL:
+```sql
+select t.RETURN_ID
+     , t.RETURN_NUMBER
+     , t.RETURN_TYPE_CODE
+     , t.RETURN_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.RETURN_REASON_CODE
+     , t.REVIEW_REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.SOURCE_PARTNER_ID
+     , t.SOURCE_SITE_ID
+     , t.RELATED_OUTBOUND_ORDER_ID
+     , t.ASSIGNED_USER_ID
+     , t.RECEIVED_BY_USER_ID
+     , t.ASSESSED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.RECEIVED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Received By User'
+           when t.ASSESSED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assessed By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_RETURNS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.RECEIVED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.ASSESSED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Returns in Application User consolidates SCM_RETURNS records across relationship roles.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: RECEIVED_BY_USER_ID
+    - Label: Received By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ASSESSED_BY_USER_ID
+    - Label: Assessed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 53
+    - Link Passing: RETURN_ID
+    - Link Target Items: P53_RETURN_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Stock Adjustments in Application User
+- Comments: Consolidated related stock adjustments in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_ADJUSTMENT_ID
+  - SQL:
+```sql
+select t.STOCK_ADJUSTMENT_ID
+     , t.ADJUSTMENT_NUMBER
+     , t.ADJUSTMENT_TYPE_CODE
+     , t.ADJUSTMENT_STATUS_CODE
+     , t.REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.ASSIGNED_USER_ID
+     , t.REQUESTED_BY_USER_ID
+     , t.REQUESTED_AT
+     , t.REVIEWED_BY_USER_ID
+     , t.REVIEWED_AT
+     , t.APPLIED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Requested By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+           when t.APPLIED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Applied By User'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_ADJUSTMENTS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.APPLIED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Stock Adjustments in Application User consolidates SCM_STOCK_ADJUSTMENTS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADJUSTMENT_NUMBER
+    - Label: Adjustment Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADJUSTMENT_TYPE_CODE
+    - Label: Adjustment Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_STATUS_CODE
+    - Label: Adjustment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: APPLIED_BY_USER_ID
+    - Label: Applied By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 59
+    - Link Passing: STOCK_ADJUSTMENT_ID
+    - Link Target Items: P59_STOCK_ADJUSTMENT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Stock Allocations in Application User
+- Comments: Consolidated related stock allocations in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - SQL:
+```sql
+select t.STOCK_ALLOCATION_ID
+     , t.ALLOCATION_NUMBER
+     , t.ALLOCATION_METHOD_CODE
+     , t.ALLOCATION_STATUS_CODE
+     , t.OUTBOUND_ORDER_LINE_ID
+     , t.INVENTORY_BALANCE_ID
+     , t.WAREHOUSE_ID
+     , t.SOURCE_LOCATION_ID
+     , t.ITEM_ID
+     , t.INVENTORY_LOT_ID
+     , t.ITEM_SERIAL_ID
+     , t.ALLOCATION_SEQUENCE
+     , t.ALLOCATED_BY_USER_ID
+     , t.PICKED_BY_USER_ID
+     , t.PACKED_BY_USER_ID
+     , t.DISPATCHED_BY_USER_ID
+     , case
+           when t.ALLOCATED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Allocated By User'
+           when t.PICKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Picked By User'
+           when t.PACKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Packed By User'
+           when t.DISPATCHED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Dispatched By User'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_ALLOCATIONS t
+where t.ALLOCATED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.PICKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.PACKED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.DISPATCHED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Stock Allocations in Application User consolidates SCM_STOCK_ALLOCATIONS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATED_BY_USER_ID
+    - Label: Allocated By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PICKED_BY_USER_ID
+    - Label: Picked By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PACKED_BY_USER_ID
+    - Label: Packed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: DISPATCHED_BY_USER_ID
+    - Label: Dispatched By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+##### Region: Stock Counts in Application User
+- Comments: Consolidated related stock counts in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_COUNT_ID
+  - SQL:
+```sql
+select t.STOCK_COUNT_ID
+     , t.COUNT_NUMBER
+     , t.COUNT_SCOPE_CODE
+     , t.COUNT_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REVIEW_REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.WAREHOUSE_AREA_ID
+     , t.STORAGE_LOCATION_ID
+     , t.ITEM_ID
+     , t.ASSIGNED_USER_ID
+     , t.PLANNED_START_AT
+     , t.REQUESTED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Requested By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_COUNTS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Stock Counts in Application User consolidates SCM_STOCK_COUNTS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 66
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P66_STOCK_COUNT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Stock Count Lines in Application User
+- Comments: Consolidated related stock count lines in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - SQL:
+```sql
+select t.STOCK_COUNT_LINE_ID
+     , t.LINE_NUMBER
+     , t.VARIANCE_REASON_CODE
+     , t.RESOLUTION_CODE
+     , t.LINE_STATUS_CODE
+     , t.STOCK_COUNT_ID
+     , t.ITEM_ID
+     , t.STORAGE_LOCATION_ID
+     , t.INVENTORY_LOT_ID
+     , t.EXPECTED_QUANTITY
+     , t.COUNTED_QUANTITY
+     , t.VARIANCE_QUANTITY
+     , t.FIRST_COUNTED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.FIRST_COUNTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'First Counted By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_COUNT_LINES t
+where t.FIRST_COUNTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Stock Count Lines in Application User consolidates SCM_STOCK_COUNT_LINES records across relationship roles.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: FIRST_COUNTED_BY_USER_ID
+    - Label: First Counted By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+##### Region: Stock Movements in Application User
+- Comments: Consolidated related stock movements in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - SQL:
+```sql
+select t.STOCK_MOVEMENT_ID
+     , t.MOVEMENT_NUMBER
+     , t.MOVEMENT_TYPE_CODE
+     , t.FROM_STATUS_CODE
+     , t.TO_STATUS_CODE
+     , t.MOVEMENT_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REASON_CODE
+     , t.REVIEW_REASON_CODE
+     , t.SOURCE_DOCUMENT_TYPE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.WAREHOUSE_ID
+     , t.ASSIGNED_USER_ID
+     , t.REQUESTED_BY_USER_ID
+     , t.CONFIRMED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Requested By User'
+           when t.CONFIRMED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Confirmed By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_MOVEMENTS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.CONFIRMED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Stock Movements in Application User consolidates SCM_STOCK_MOVEMENTS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: CONFIRMED_BY_USER_ID
+    - Label: Confirmed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+##### Region: Stock Transfers in Application User
+- Comments: Consolidated related stock transfers in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_TRANSFER_ID
+  - SQL:
+```sql
+select t.STOCK_TRANSFER_ID
+     , t.TRANSFER_NUMBER
+     , t.TRANSFER_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REVIEW_REASON_CODE
+     , t.REASON_CODE
+     , t.FROM_WAREHOUSE_ID
+     , t.TO_WAREHOUSE_ID
+     , t.ASSIGNED_USER_ID
+     , t.REQUESTED_SHIP_AT
+     , t.ACTUAL_SHIPPED_AT
+     , t.EXPECTED_RECEIPT_AT
+     , t.REQUESTED_BY_USER_ID
+     , t.REVIEWED_BY_USER_ID
+     , case
+           when t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned User'
+           when t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Requested By User'
+           when t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Reviewed By User'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_TRANSFERS t
+where t.ASSIGNED_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REQUESTED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.REVIEWED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: Stock Transfers in Application User consolidates SCM_STOCK_TRANSFERS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TRANSFER_NUMBER
+    - Label: Transfer Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TRANSFER_STATUS_CODE
+    - Label: Transfer Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_WAREHOUSE_ID
+    - Label: From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: TO_WAREHOUSE_ID
+    - Label: To Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_SHIPPED_AT
+    - Label: Actual Shipped At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: EXPECTED_RECEIPT_AT
+    - Label: Expected Receipt At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 73
+    - Link Passing: STOCK_TRANSFER_ID
+    - Link Target Items: P73_STOCK_TRANSFER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: User Role Assignments in Application User
+- Comments: Consolidated related user role assignments in application user rows by relationship role for the selected application user context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: USER_ROLE_ASSIGNMENT_ID
+  - SQL:
+```sql
+select t.USER_ROLE_ASSIGNMENT_ID
+     , t.APPLICATION_USER_ID
+     , t.ASSIGNMENT_STATUS_CODE
+     , t.USER_ROLE_ID
+     , t.WAREHOUSE_ID
+     , t.AUTHORITY_LEVEL_OVERRIDE
+     , t.EFFECTIVE_FROM_DATE
+     , t.EFFECTIVE_TO_DATE
+     , t.ASSIGNED_BY_USER_ID
+     , t.IS_PRIMARY_ROLE
+     , t.ASSIGNMENT_NOTES
+     , case
+           when t.APPLICATION_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Application User'
+           when t.ASSIGNED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID) then 'Assigned By User'
+       end as RELATIONSHIP_ROLE
+from SCM_USER_ROLE_ASSIGNMENTS t
+where t.APPLICATION_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+   or t.ASSIGNED_BY_USER_ID = to_number(:P8_APPLICATION_USER_ID)
+```
+  - Summary: User Role Assignments in Application User consolidates SCM_USER_ROLE_ASSIGNMENTS records across relationship roles.
+- Columns:
+  - Column Name: USER_ROLE_ASSIGNMENT_ID
+    - Label: User Role Assignment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ASSIGNMENT_STATUS_CODE
+    - Label: Assignment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: AUTHORITY_LEVEL_OVERRIDE
+    - Label: Authority Level Override
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EFFECTIVE_FROM_DATE
+    - Label: Effective From Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EFFECTIVE_TO_DATE
+    - Label: Effective To Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ASSIGNED_BY_USER_ID
+    - Label: Assigned By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: IS_PRIMARY_ROLE
+    - Label: Is Primary Role
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ASSIGNMENT_NOTES
+    - Label: Assignment Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+### Page 9: Application User Form
+- Description: Create or maintain a single application user record.
+- Comments: Modal maintenance form edits one application user record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Application User Form
+- Comments: Form maintains one application user record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_APPLICATION_USERS
+  - Primary Keys: APPLICATION_USER_ID
+  - Summary: Form source for application user maintenance.
+- Columns:
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Page Item Name: P9_APPLICATION_USER_ID
+    - Render As: hidden
+  - Column Name: USER_NAME
+    - Label: User Name
+    - Datatype: varchar2
+    - Page Item Name: P9_USER_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 128
+  - Column Name: FULL_NAME
+    - Label: Full Name
+    - Datatype: varchar2
+    - Page Item Name: P9_FULL_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: EMAIL_ADDRESS
+    - Label: Email Address
+    - Datatype: varchar2
+    - Page Item Name: P9_EMAIL_ADDRESS
+    - Render As: textField
+    - MaxLength: 320
+  - Column Name: USER_STATUS_CODE
+    - Label: User Status
+    - Datatype: varchar2
+    - Page Item Name: P9_USER_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS_USER_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: DEFAULT_WAREHOUSE_ID
+    - Label: Default Warehouse ID
+    - Datatype: number
+    - Page Item Name: P9_DEFAULT_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+  - Column Name: MANAGER_USER_ID
+    - Label: Manager User ID
+    - Datatype: number
+    - Page Item Name: P9_MANAGER_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: USER_NOTES
+    - Label: User Notes
+    - Datatype: varchar2
+    - Page Item Name: P9_USER_NOTES
+    - Render As: textarea
+    - MaxLength: 500
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 10: Business Lists Search
+- Description: Search and review business lists for warehouse operations.
+- Comments: Guided searchable list for business lists with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Business List Smart Filters
+- Comments: Guided filters narrow business lists by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Business List Search Results
+- Filters:
+  - Filter
+    - Name: P10_F_LIST_STATUS_CODE
+     - Label: List Status
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_LISTS_LIST_STATUS_CODE
+     - Database Column: LIST_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Business List Search Results
+- Comments: Search results list business lists and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_LISTS
+  - Primary Keys: BUSINESS_LIST_ID
+  - Summary: Business List Search Results uses SCM_BUSINESS_LISTS records for operational review.
+- Columns:
+  - Column Name: BUSINESS_LIST_ID
+    - Label: Business List ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LIST_CODE
+    - Label: List Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LIST_NAME
+    - Label: List Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LIST_STATUS_CODE
+    - Label: List Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_LISTS_LIST_STATUS_CODE
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 11
+    - Link Passing: BUSINESS_LIST_ID
+    - Link Target Items: P11_BUSINESS_LIST_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator
+  - Link:
+    - Link To: Page 12
+    - Link Passing: BUSINESS_LIST_ID
+    - Link Target Items: P12_BUSINESS_LIST_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create Business List
+    - Link To: Page 12
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 11: Business List Detail
+- Description: Review the selected business list and related operational records.
+- Comments: Detail workspace keeps the selected business list context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Business List Context
+- Comments: Context region identifies the selected business list and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: BUSINESS_LIST_ID
+  - SQL:
+```sql
+select t.BUSINESS_LIST_ID
+     , t.LIST_CODE
+     , t.LIST_NAME
+     , t.LIST_STATUS_CODE
+from SCM_BUSINESS_LISTS t
+where t.BUSINESS_LIST_ID = to_number(:P11_BUSINESS_LIST_ID)
+```
+  - Summary: Single selected business list context row.
+- Hidden Page Items: P11_BUSINESS_LIST_ID
+- Columns:
+  - Column Name: BUSINESS_LIST_ID
+    - Label: Business List ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LIST_CODE
+    - Label: List Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LIST_NAME
+    - Label: List Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LIST_STATUS_CODE
+    - Label: List Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_LISTS_LIST_STATUS_CODE
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 12
+    - Link Passing: BUSINESS_LIST_ID
+    - Link Target Items: P12_BUSINESS_LIST_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+##### Region: Business List Values in Business List
+- Comments: Related business list values filtered by the selected business list context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_LIST_VALUES
+  - Primary Keys: BUSINESS_LIST_VALUE_ID
+  - Where: BUSINESS_LIST_ID = to_number(:P11_BUSINESS_LIST_ID)
+  - Summary: Business List Values in Business List uses SCM_BUSINESS_LIST_VALUES records for operational review.
+- Columns:
+  - Column Name: BUSINESS_LIST_VALUE_ID
+    - Label: Business List Value ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: VALUE_CODE
+    - Label: Value Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VALUE_NAME
+    - Label: Value Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BUSINESS_LIST_ID
+    - Label: Business List ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_LISTS
+    - Visible: true
+  - Column Name: DISPLAY_SEQUENCE
+    - Label: Display Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 14
+    - Link Passing: BUSINESS_LIST_VALUE_ID
+    - Link Target Items: P14_BUSINESS_LIST_VALUE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create Value
+    - Link To: Page 14
+    - Link Passing: P11_BUSINESS_LIST_ID
+    - Link Target Items: P14_BUSINESS_LIST_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 12: Business List Form
+- Description: Create or maintain a single business list record.
+- Comments: Modal maintenance form edits one business list record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Business List Form
+- Comments: Form maintains one business list record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_LISTS
+  - Primary Keys: BUSINESS_LIST_ID
+  - Summary: Form source for business list maintenance.
+- Columns:
+  - Column Name: BUSINESS_LIST_ID
+    - Label: Business List ID
+    - Datatype: number
+    - Page Item Name: P12_BUSINESS_LIST_ID
+    - Render As: hidden
+  - Column Name: LIST_CODE
+    - Label: List Code
+    - Datatype: varchar2
+    - Page Item Name: P12_LIST_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 50
+  - Column Name: LIST_NAME
+    - Label: List Name
+    - Datatype: varchar2
+    - Page Item Name: P12_LIST_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: LIST_STATUS_CODE
+    - Label: List Status
+    - Datatype: varchar2
+    - Page Item Name: P12_LIST_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_LISTS_LIST_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 13: Business List Values Search
+- Description: Search and review business list values for warehouse operations.
+- Comments: Guided searchable list for business list values for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Business List Value Smart Filters
+- Comments: Guided filters narrow business list values by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Business List Value Search Results
+- Filters:
+  - Filter
+    - Name: P13_F_BUSINESS_LIST_ID
+     - Label: Business List ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_LISTS
+     - Database Column: BUSINESS_LIST_ID
+     - Datatype: number
+##### Region: Business List Value Search Results
+- Comments: Search results list business list values for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_LIST_VALUES
+  - Primary Keys: BUSINESS_LIST_VALUE_ID
+  - Summary: Business List Value Search Results uses SCM_BUSINESS_LIST_VALUES records for operational review.
+- Columns:
+  - Column Name: BUSINESS_LIST_VALUE_ID
+    - Label: Business List Value ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: VALUE_CODE
+    - Label: Value Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VALUE_NAME
+    - Label: Value Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BUSINESS_LIST_ID
+    - Label: Business List ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_LISTS
+    - Visible: true
+  - Column Name: DISPLAY_SEQUENCE
+    - Label: Display Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 14
+    - Link Passing: BUSINESS_LIST_VALUE_ID
+    - Link Target Items: P14_BUSINESS_LIST_VALUE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create Business List Value
+    - Link To: Page 14
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 14: Business List Value Form
+- Description: Create or maintain a single business list value record.
+- Comments: Modal maintenance form edits one business list value record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: Business List Value Form
+- Comments: Form maintains one business list value record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_LIST_VALUES
+  - Primary Keys: BUSINESS_LIST_VALUE_ID
+  - Summary: Form source for business list value maintenance.
+- Columns:
+  - Column Name: BUSINESS_LIST_VALUE_ID
+    - Label: Business List Value ID
+    - Datatype: number
+    - Page Item Name: P14_BUSINESS_LIST_VALUE_ID
+    - Render As: hidden
+  - Column Name: BUSINESS_LIST_ID
+    - Label: Business List ID
+    - Datatype: number
+    - Page Item Name: P14_BUSINESS_LIST_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_LISTS
+    - Required: true
+  - Column Name: VALUE_CODE
+    - Label: Value Code
+    - Datatype: varchar2
+    - Page Item Name: P14_VALUE_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 50
+  - Column Name: VALUE_NAME
+    - Label: Value Name
+    - Datatype: varchar2
+    - Page Item Name: P14_VALUE_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: DISPLAY_SEQUENCE
+    - Label: Display Sequence
+    - Datatype: number
+    - Page Item Name: P14_DISPLAY_SEQUENCE
+    - Render As: numberField
+    - Required: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Page Item Name: P14_IS_ACTIVE
+    - Render As: checkbox
+    - Required: true
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 15: Business Partners Search
+- Description: Search and review business partners for warehouse operations.
+- Comments: Guided searchable list for business partners with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Business Partner Smart Filters
+- Comments: Guided filters narrow business partners by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Business Partner Search Results
+- Filters:
+  - Filter
+    - Name: P15_F_PARTNER_TYPE_CODE
+     - Label: Partner Type
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS_PARTNER_TYPE_CODE
+     - Database Column: PARTNER_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P15_F_PARTNER_STATUS_CODE
+     - Label: Partner Status
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS_PARTNER_STATUS_CODE
+     - Database Column: PARTNER_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P15_F_CREATED_AT
+     - Label: Created At
+     - Render As: range
+     - Database Column: CREATED_AT
+     - Datatype: timestamp
+##### Region: Business Partner Search Results
+- Comments: Search results list business partners and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_PARTNERS
+  - Primary Keys: BUSINESS_PARTNER_ID
+  - Summary: Business Partner Search Results uses SCM_BUSINESS_PARTNERS records for operational review.
+- Columns:
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: PARTNER_NUMBER
+    - Label: Partner Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: PARTNER_TYPE_CODE
+    - Label: Partner Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS_PARTNER_TYPE_CODE
+    - Visible: true
+  - Column Name: PARTNER_NAME
+    - Label: Partner Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: PARTNER_STATUS_CODE
+    - Label: Partner Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS_PARTNER_STATUS_CODE
+    - Visible: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 16
+    - Link Passing: BUSINESS_PARTNER_ID
+    - Link Target Items: P16_BUSINESS_PARTNER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 17
+    - Link Passing: BUSINESS_PARTNER_ID
+    - Link Target Items: P17_BUSINESS_PARTNER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Business Partner
+    - Link To: Page 17
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 16: Business Partner Detail
+- Description: Review the selected business partner and related operational records.
+- Comments: Detail workspace keeps the selected business partner context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Business Partner Context
+- Comments: Context region identifies the selected business partner and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: BUSINESS_PARTNER_ID
+  - SQL:
+```sql
+select t.BUSINESS_PARTNER_ID
+     , t.PARTNER_NUMBER
+     , t.PARTNER_TYPE_CODE
+     , t.PARTNER_NAME
+     , t.PARTNER_STATUS_CODE
+     , t.CREATED_AT
+     , t.CREATED_BY
+from SCM_BUSINESS_PARTNERS t
+where t.BUSINESS_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+```
+  - Summary: Single selected business partner context row.
+- Hidden Page Items: P16_BUSINESS_PARTNER_ID
+- Columns:
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: PARTNER_NUMBER
+    - Label: Partner Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: PARTNER_TYPE_CODE
+    - Label: Partner Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS_PARTNER_TYPE_CODE
+    - Visible: true
+  - Column Name: PARTNER_NAME
+    - Label: Partner Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: PARTNER_STATUS_CODE
+    - Label: Partner Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS_PARTNER_STATUS_CODE
+    - Visible: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 17
+    - Link Passing: BUSINESS_PARTNER_ID
+    - Link Target Items: P17_BUSINESS_PARTNER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Inbound Receipts in Business Partner
+- Comments: Related inbound receipts filtered by the selected business partner context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPTS
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - Where: SOURCE_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+  - Summary: Inbound Receipts in Business Partner uses SCM_INBOUND_RECEIPTS records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Visible: true
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 19
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P19_INBOUND_RECEIPT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 20
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P20_INBOUND_RECEIPT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Items in Business Partner
+- Comments: Related items filtered by the selected business partner context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEMS
+  - Primary Keys: ITEM_ID
+  - Where: OWNER_CUSTOMER_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+  - Summary: Items in Business Partner uses SCM_ITEMS records for operational review.
+- Columns:
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_CODE
+    - Label: Item Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_NAME
+    - Label: Item Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_CATEGORY_CODE
+    - Label: Item Category
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BASE_UOM_CODE
+    - Label: Base Unit of Measure
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_STATUS_CODE
+    - Label: Item Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS_ITEM_STATUS_CODE
+    - Visible: true
+  - Column Name: ITEM_DESCRIPTION
+    - Label: Item Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOT_CONTROL_FLAG
+    - Label: Lot Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SERIAL_CONTROL_FLAG
+    - Label: Serial Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXPIRY_CONTROL_FLAG
+    - Label: Expiry Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FRAGILE_FLAG
+    - Label: Fragile Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: HIGH_VALUE_FLAG
+    - Label: High Value Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: OWNER_CUSTOMER_PARTNER_ID
+    - Label: Owner Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 31
+    - Link Passing: ITEM_ID
+    - Link Target Items: P31_ITEM_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 32
+    - Link Passing: ITEM_ID
+    - Link Target Items: P32_ITEM_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Outbound Orders in Business Partner
+- Comments: Consolidated related outbound orders in business partner rows by relationship role for the selected business partner context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - SQL:
+```sql
+select t.OUTBOUND_ORDER_ID
+     , t.OUTBOUND_ORDER_NUMBER
+     , t.ORDER_TYPE_CODE
+     , t.OUTBOUND_STATUS_CODE
+     , t.PRIORITY_CODE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.SHIP_FROM_WAREHOUSE_ID
+     , t.CUSTOMER_PARTNER_ID
+     , t.SHIP_TO_SITE_ID
+     , t.CARRIER_PARTNER_ID
+     , t.ASSIGNED_USER_ID
+     , t.ORDER_DATE
+     , case
+           when t.CUSTOMER_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID) then 'Customer Partner'
+           when t.CARRIER_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID) then 'Carrier Partner'
+       end as RELATIONSHIP_ROLE
+from SCM_OUTBOUND_ORDERS t
+where t.CUSTOMER_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+   or t.CARRIER_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+```
+  - Summary: Outbound Orders in Business Partner consolidates SCM_OUTBOUND_ORDERS records across relationship roles.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 43
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P43_OUTBOUND_ORDER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Partner Sites in Business Partner
+- Comments: Related partner sites filtered by the selected business partner context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_PARTNER_SITES
+  - Primary Keys: PARTNER_SITE_ID
+  - Where: BUSINESS_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+  - Summary: Partner Sites in Business Partner uses SCM_PARTNER_SITES records for operational review.
+- Columns:
+  - Column Name: PARTNER_SITE_ID
+    - Label: Partner Site ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SITE_CODE
+    - Label: Site Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SITE_NAME
+    - Label: Site Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SITE_ROLE_CODE
+    - Label: Site Role
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES_SITE_ROLE_CODE
+    - Visible: true
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_PRIMARY_SITE
+    - Label: Is Primary Site
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 48
+    - Link Passing: PARTNER_SITE_ID
+    - Link Target Items: P48_PARTNER_SITE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 49
+    - Link Passing: PARTNER_SITE_ID
+    - Link Target Items: P49_PARTNER_SITE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Partner Site
+    - Link To: Page 49
+    - Link Passing: P16_BUSINESS_PARTNER_ID
+    - Link Target Items: P49_BUSINESS_PARTNER_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Returns in Business Partner
+- Comments: Related returns filtered by the selected business partner context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURNS
+  - Primary Keys: RETURN_ID
+  - Where: SOURCE_PARTNER_ID = to_number(:P16_BUSINESS_PARTNER_ID)
+  - Summary: Returns in Business Partner uses SCM_RETURNS records for operational review.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 53
+    - Link Passing: RETURN_ID
+    - Link Target Items: P53_RETURN_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 54
+    - Link Passing: RETURN_ID
+    - Link Target Items: P54_RETURN_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 17: Business Partner Form
+- Description: Create or maintain a single business partner record.
+- Comments: Modal maintenance form edits one business partner record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Business Partner Form
+- Comments: Form maintains one business partner record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_BUSINESS_PARTNERS
+  - Primary Keys: BUSINESS_PARTNER_ID
+  - Summary: Form source for business partner maintenance.
+- Columns:
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Page Item Name: P17_BUSINESS_PARTNER_ID
+    - Render As: hidden
+  - Column Name: PARTNER_NUMBER
+    - Label: Partner Number
+    - Datatype: varchar2
+    - Page Item Name: P17_PARTNER_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: PARTNER_TYPE_CODE
+    - Label: Partner Type
+    - Datatype: varchar2
+    - Page Item Name: P17_PARTNER_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS_PARTNER_TYPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: PARTNER_NAME
+    - Label: Partner Name
+    - Datatype: varchar2
+    - Page Item Name: P17_PARTNER_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: PARTNER_STATUS_CODE
+    - Label: Partner Status
+    - Datatype: varchar2
+    - Page Item Name: P17_PARTNER_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS_PARTNER_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P17_CREATED_AT
+    - Render As: hidden
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Page Item Name: P17_CREATED_BY
+    - Render As: hidden
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 18: Inbound Receipts Search
+- Description: Search and review inbound receipts for warehouse operations.
+- Comments: Guided searchable list for inbound receipts with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inbound Receipt Smart Filters
+- Comments: Guided filters narrow inbound receipts by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Inbound Receipt Search Results
+- Filters:
+  - Filter
+    - Name: P18_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P18_F_SOURCE_PARTNER_ID
+     - Label: Source Partner ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS
+     - Database Column: SOURCE_PARTNER_ID
+     - Datatype: number
+  - Filter
+    - Name: P18_F_SOURCE_SITE_ID
+     - Label: Source Site ID
+     - Render As: checkboxGroup
+     - LOV: LOV_PARTNER_SITES
+     - Database Column: SOURCE_SITE_ID
+     - Datatype: number
+  - Filter
+    - Name: P18_F_ASSIGNED_USER_ID
+     - Label: Assigned User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: ASSIGNED_USER_ID
+     - Datatype: number
+  - Filter
+    - Name: P18_F_RECEIPT_STATUS_CODE
+     - Label: Receipt Status
+     - Render As: checkboxGroup
+     - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+     - Database Column: RECEIPT_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Inbound Receipt Search Results
+- Comments: Search results list inbound receipts and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPTS
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - Summary: Inbound Receipt Search Results uses SCM_INBOUND_RECEIPTS records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Visible: true
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_ARRIVAL_AT
+    - Label: Actual Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVING_COMPLETED_AT
+    - Label: Receiving Completed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_BY
+    - Label: Received By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIVED_BY_USER_ID
+    - Label: Received By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 19
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P19_INBOUND_RECEIPT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 20
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P20_INBOUND_RECEIPT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Inbound Receipt
+    - Link To: Page 20
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 19: Inbound Receipt Detail
+- Description: Review the selected inbound receipt and related operational records.
+- Comments: Detail workspace keeps the selected inbound receipt context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inbound Receipt Context
+- Comments: Context region identifies the selected inbound receipt and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - SQL:
+```sql
+select t.INBOUND_RECEIPT_ID
+     , t.RECEIPT_NUMBER
+     , t.RECEIPT_SOURCE_CODE
+     , t.RECEIPT_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.REVIEW_REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.SOURCE_PARTNER_ID
+     , t.SOURCE_SITE_ID
+     , t.ASSIGNED_USER_ID
+     , t.EXPECTED_ARRIVAL_AT
+from SCM_INBOUND_RECEIPTS t
+where t.INBOUND_RECEIPT_ID = to_number(:P19_INBOUND_RECEIPT_ID)
+```
+  - Summary: Single selected inbound receipt context row.
+- Hidden Page Items: P19_INBOUND_RECEIPT_ID
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Visible: true
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 20
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P20_INBOUND_RECEIPT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Inbound Receipt Lines in Inbound Receipt
+- Comments: Related inbound receipt lines filtered by the selected inbound receipt context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPT_LINES
+  - Primary Keys: INBOUND_RECEIPT_LINE_ID
+  - Where: INBOUND_RECEIPT_ID = to_number(:P19_INBOUND_RECEIPT_ID)
+  - Summary: Inbound Receipt Lines in Inbound Receipt uses SCM_INBOUND_RECEIPT_LINES records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_LINE_ID
+    - Label: Inbound Receipt Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIVED_CONDITION_CODE
+    - Label: Received Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: RECEIVING_LOCATION_ID
+    - Label: Receiving Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: FINAL_PUTAWAY_LOCATION_ID
+    - Label: Final Putaway Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 22
+    - Link Passing: INBOUND_RECEIPT_LINE_ID
+    - Link Target Items: P22_INBOUND_RECEIPT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Line
+    - Link To: Page 22
+    - Link Passing: P19_INBOUND_RECEIPT_ID
+    - Link Target Items: P22_INBOUND_RECEIPT_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 20: Inbound Receipt Form
+- Description: Create or maintain a single inbound receipt record.
+- Comments: Modal maintenance form edits one inbound receipt record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Inbound Receipt Form
+- Comments: Form maintains one inbound receipt record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPTS
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - Summary: Form source for inbound receipt maintenance.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Page Item Name: P20_INBOUND_RECEIPT_ID
+    - Render As: hidden
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Page Item Name: P20_RECEIPT_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Page Item Name: P20_RECEIPT_SOURCE_CODE
+    - Render As: selectList
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P20_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Page Item Name: P20_SOURCE_PARTNER_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Page Item Name: P20_SOURCE_SITE_ID
+    - Render As: selectList
+    - LOV: LOV_PARTNER_SITES
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P20_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Page Item Name: P20_RECEIPT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Page Item Name: P20_REVIEW_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Page Item Name: P20_SOURCE_DOCUMENT_NUMBER
+    - Render As: textField
+    - MaxLength: 50
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P20_EXPECTED_ARRIVAL_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_ARRIVAL_AT
+    - Label: Actual Arrival At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P20_ACTUAL_ARRIVAL_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVING_COMPLETED_AT
+    - Label: Receiving Completed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P20_RECEIVING_COMPLETED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_BY
+    - Label: Received By
+    - Datatype: varchar2
+    - Page Item Name: P20_RECEIVED_BY
+    - Render As: textField
+    - MaxLength: 128
+  - Column Name: RECEIVED_BY_USER_ID
+    - Label: Received By User ID
+    - Datatype: number
+    - Page Item Name: P20_RECEIVED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P20_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P20_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P20_REVIEW_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P20_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 21: Inbound Receipt Lines Search
+- Description: Search and review inbound receipt lines for warehouse operations.
+- Comments: Guided searchable list for inbound receipt lines for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inbound Receipt Line Smart Filters
+- Comments: Guided filters narrow inbound receipt lines by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Inbound Receipt Line Search Results
+- Filters:
+  - Filter
+    - Name: P21_F_INBOUND_RECEIPT_ID
+     - Label: Inbound Receipt ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INBOUND_RECEIPTS
+     - Database Column: INBOUND_RECEIPT_ID
+     - Datatype: number
+  - Filter
+    - Name: P21_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P21_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P21_F_RECEIVING_LOCATION_ID
+     - Label: Receiving Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: RECEIVING_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P21_F_FINAL_PUTAWAY_LOCATION_ID
+     - Label: Final Putaway Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: FINAL_PUTAWAY_LOCATION_ID
+     - Datatype: number
+##### Region: Inbound Receipt Line Search Results
+- Comments: Search results list inbound receipt lines for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPT_LINES
+  - Primary Keys: INBOUND_RECEIPT_LINE_ID
+  - Summary: Inbound Receipt Line Search Results uses SCM_INBOUND_RECEIPT_LINES records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_LINE_ID
+    - Label: Inbound Receipt Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIVED_CONDITION_CODE
+    - Label: Received Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: RECEIVING_LOCATION_ID
+    - Label: Receiving Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: FINAL_PUTAWAY_LOCATION_ID
+    - Label: Final Putaway Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: ACCEPTED_QUANTITY
+    - Label: Accepted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORTAGE_QUANTITY
+    - Label: Shortage Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: OVERAGE_QUANTITY
+    - Label: Overage Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REJECTED_QUANTITY
+    - Label: Rejected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 22
+    - Link Passing: INBOUND_RECEIPT_LINE_ID
+    - Link Target Items: P22_INBOUND_RECEIPT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Inbound Receipt Line
+    - Link To: Page 22
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 22: Inbound Receipt Line Form
+- Description: Create or maintain a single inbound receipt line record.
+- Comments: Modal maintenance form edits one inbound receipt line record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Inbound Receipt Line Form
+- Comments: Form maintains one inbound receipt line record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPT_LINES
+  - Primary Keys: INBOUND_RECEIPT_LINE_ID
+  - Summary: Form source for inbound receipt line maintenance.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_LINE_ID
+    - Label: Inbound Receipt Line ID
+    - Datatype: number
+    - Page Item Name: P22_INBOUND_RECEIPT_LINE_ID
+    - Render As: hidden
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Page Item Name: P22_INBOUND_RECEIPT_ID
+    - Render As: selectList
+    - LOV: LOV_INBOUND_RECEIPTS
+    - Required: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Page Item Name: P22_LINE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P22_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P22_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: RECEIVING_LOCATION_ID
+    - Label: Receiving Location ID
+    - Datatype: number
+    - Page Item Name: P22_RECEIVING_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Required: true
+  - Column Name: FINAL_PUTAWAY_LOCATION_ID
+    - Label: Final Putaway Location ID
+    - Datatype: number
+    - Page Item Name: P22_FINAL_PUTAWAY_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Page Item Name: P22_EXPECTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Page Item Name: P22_RECEIVED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: ACCEPTED_QUANTITY
+    - Label: Accepted Quantity
+    - Datatype: number
+    - Page Item Name: P22_ACCEPTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Page Item Name: P22_QUARANTINE_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Page Item Name: P22_DAMAGED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORTAGE_QUANTITY
+    - Label: Shortage Quantity
+    - Datatype: number
+    - Page Item Name: P22_SHORTAGE_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: OVERAGE_QUANTITY
+    - Label: Overage Quantity
+    - Datatype: number
+    - Page Item Name: P22_OVERAGE_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REJECTED_QUANTITY
+    - Label: Rejected Quantity
+    - Datatype: number
+    - Page Item Name: P22_REJECTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_CONDITION_CODE
+    - Label: Received Condition
+    - Datatype: varchar2
+    - Page Item Name: P22_RECEIVED_CONDITION_CODE
+    - Render As: selectList
+    - LOV: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Page Item Name: P22_LINE_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P22_DISCREPANCY_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 23: Inventory Balances Search
+- Description: Search and review inventory balances for warehouse operations.
+- Comments: Guided searchable list for inventory balances with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inventory Balance Smart Filters
+- Comments: Guided filters narrow inventory balances by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Inventory Balance Search Results
+- Filters:
+  - Filter
+    - Name: P23_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P23_F_STORAGE_LOCATION_ID
+     - Label: Storage Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: STORAGE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P23_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P23_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P23_F_STOCK_STATUS_CODE
+     - Label: Stock Status
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+     - Database Column: STOCK_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Inventory Balance Search Results
+- Comments: Search results list inventory balances and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_BALANCES
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - Summary: Inventory Balance Search Results uses SCM_INVENTORY_BALANCES records for operational review.
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 24
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P24_INVENTORY_BALANCE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 25
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P25_INVENTORY_BALANCE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+- Actions:
+  - Action
+    - Label: Create Inventory Balance
+    - Link To: Page 25
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+### Page 24: Inventory Balance Detail
+- Description: Review the selected inventory balance and related operational records.
+- Comments: Detail workspace keeps the selected inventory balance context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inventory Balance Context
+- Comments: Context region identifies the selected inventory balance and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - SQL:
+```sql
+select t.INVENTORY_BALANCE_ID
+     , t.ITEM_ID
+     , t.STOCK_STATUS_CODE
+     , t.WAREHOUSE_ID
+     , t.STORAGE_LOCATION_ID
+     , t.INVENTORY_LOT_ID
+     , t.QUANTITY_ON_HAND
+     , t.QUANTITY_RESERVED
+     , t.QUANTITY_AVAILABLE
+     , t.LAST_COUNTED_AT
+     , t.LAST_MOVED_AT
+from SCM_INVENTORY_BALANCES t
+where t.INVENTORY_BALANCE_ID = to_number(:P24_INVENTORY_BALANCE_ID)
+```
+  - Summary: Single selected inventory balance context row.
+- Hidden Page Items: P24_INVENTORY_BALANCE_ID
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 25
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P25_INVENTORY_BALANCE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Stock Allocations in Inventory Balance
+- Comments: Related stock allocations filtered by the selected inventory balance context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Where: INVENTORY_BALANCE_ID = to_number(:P24_INVENTORY_BALANCE_ID)
+  - Summary: Stock Allocations in Inventory Balance uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 25: Inventory Balance Form
+- Description: Create or maintain a single inventory balance record.
+- Comments: Modal maintenance form edits one inventory balance record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+#### Regions
+##### Region: Inventory Balance Form
+- Comments: Form maintains one inventory balance record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_BALANCES
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - Summary: Form source for inventory balance maintenance.
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Page Item Name: P25_INVENTORY_BALANCE_ID
+    - Render As: hidden
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P25_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Page Item Name: P25_STORAGE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P25_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P25_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Page Item Name: P25_STOCK_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Page Item Name: P25_QUANTITY_ON_HAND
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Page Item Name: P25_QUANTITY_RESERVED
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Page Item Name: P25_QUANTITY_AVAILABLE
+    - Render As: hidden
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P25_LAST_COUNTED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P25_LAST_MOVED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 26: Inventory Lots Search
+- Description: Search and review inventory lots for warehouse operations.
+- Comments: Guided searchable list for inventory lots with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inventory Lot Smart Filters
+- Comments: Guided filters narrow inventory lots by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Inventory Lot Search Results
+- Filters:
+  - Filter
+    - Name: P26_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P26_F_RECEIVED_ON_DATE
+     - Label: Received On Date
+     - Render As: range
+     - Database Column: RECEIVED_ON_DATE
+     - Datatype: date
+  - Filter
+    - Name: P26_F_BEST_BEFORE_DATE
+     - Label: Best Before Date
+     - Render As: range
+     - Database Column: BEST_BEFORE_DATE
+     - Datatype: date
+  - Filter
+    - Name: P26_F_EXPIRY_ON_DATE
+     - Label: Expiry On Date
+     - Render As: range
+     - Database Column: EXPIRY_ON_DATE
+     - Datatype: date
+  - Filter
+    - Name: P26_F_LOT_STATUS_CODE
+     - Label: Lot Status
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS_LOT_STATUS_CODE
+     - Database Column: LOT_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Inventory Lot Search Results
+- Comments: Search results list inventory lots and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_LOTS
+  - Primary Keys: INVENTORY_LOT_ID
+  - Summary: Inventory Lot Search Results uses SCM_INVENTORY_LOTS records for operational review.
+- Columns:
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOT_NUMBER
+    - Label: Lot Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SUPPLIER_LOT_NUMBER
+    - Label: Supplier Lot Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOT_STATUS_CODE
+    - Label: Lot Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS_LOT_STATUS_CODE
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: RECEIVED_ON_DATE
+    - Label: Received On Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: BEST_BEFORE_DATE
+    - Label: Best Before Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EXPIRY_ON_DATE
+    - Label: Expiry On Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 27
+    - Link Passing: INVENTORY_LOT_ID
+    - Link Target Items: P27_INVENTORY_LOT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 28
+    - Link Passing: INVENTORY_LOT_ID
+    - Link Target Items: P28_INVENTORY_LOT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+- Actions:
+  - Action
+    - Label: Create Inventory Lot
+    - Link To: Page 28
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+### Page 27: Inventory Lot Detail
+- Description: Review the selected inventory lot and related operational records.
+- Comments: Detail workspace keeps the selected inventory lot context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inventory Lot Context
+- Comments: Context region identifies the selected inventory lot and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: INVENTORY_LOT_ID
+  - SQL:
+```sql
+select t.INVENTORY_LOT_ID
+     , t.LOT_NUMBER
+     , t.SUPPLIER_LOT_NUMBER
+     , t.LOT_STATUS_CODE
+     , t.ITEM_ID
+     , t.RECEIVED_ON_DATE
+     , t.BEST_BEFORE_DATE
+     , t.EXPIRY_ON_DATE
+from SCM_INVENTORY_LOTS t
+where t.INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+```
+  - Summary: Single selected inventory lot context row.
+- Hidden Page Items: P27_INVENTORY_LOT_ID
+- Columns:
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOT_NUMBER
+    - Label: Lot Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SUPPLIER_LOT_NUMBER
+    - Label: Supplier Lot Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOT_STATUS_CODE
+    - Label: Lot Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS_LOT_STATUS_CODE
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: RECEIVED_ON_DATE
+    - Label: Received On Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: BEST_BEFORE_DATE
+    - Label: Best Before Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EXPIRY_ON_DATE
+    - Label: Expiry On Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 28
+    - Link Passing: INVENTORY_LOT_ID
+    - Link Target Items: P28_INVENTORY_LOT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Inbound Receipt Lines in Inventory Lot
+- Comments: Related inbound receipt lines filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPT_LINES
+  - Primary Keys: INBOUND_RECEIPT_LINE_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Inbound Receipt Lines in Inventory Lot uses SCM_INBOUND_RECEIPT_LINES records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_LINE_ID
+    - Label: Inbound Receipt Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIVED_CONDITION_CODE
+    - Label: Received Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: RECEIVING_LOCATION_ID
+    - Label: Receiving Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: FINAL_PUTAWAY_LOCATION_ID
+    - Label: Final Putaway Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 22
+    - Link Passing: INBOUND_RECEIPT_LINE_ID
+    - Link Target Items: P22_INBOUND_RECEIPT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Inventory Balances in Inventory Lot
+- Comments: Related inventory balances filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_BALANCES
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Inventory Balances in Inventory Lot uses SCM_INVENTORY_BALANCES records for operational review.
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 24
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P24_INVENTORY_BALANCE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 25
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P25_INVENTORY_BALANCE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Item Serials in Inventory Lot
+- Comments: Related item serials filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_SERIALS
+  - Primary Keys: ITEM_SERIAL_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Item Serials in Inventory Lot uses SCM_ITEM_SERIALS records for operational review.
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Visible: true
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 34
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P34_ITEM_SERIAL_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 35
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P35_ITEM_SERIAL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Operational Exceptions in Inventory Lot
+- Comments: Related operational exceptions filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Operational Exceptions in Inventory Lot uses SCM_OPERATIONAL_EXCEPTIONS records for operational review.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Outbound Order Lines in Inventory Lot
+- Comments: Related outbound order lines filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDER_LINES
+  - Primary Keys: OUTBOUND_ORDER_LINE_ID
+  - Where: PREFERRED_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Outbound Order Lines in Inventory Lot uses SCM_OUTBOUND_ORDER_LINES records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: PREFERRED_LOT_ID
+    - Label: Preferred Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 46
+    - Link Passing: OUTBOUND_ORDER_LINE_ID
+    - Link Target Items: P46_OUTBOUND_ORDER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Return Lines in Inventory Lot
+- Comments: Related return lines filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURN_LINES
+  - Primary Keys: RETURN_LINE_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Return Lines in Inventory Lot uses SCM_RETURN_LINES records for operational review.
+- Columns:
+  - Column Name: RETURN_LINE_ID
+    - Label: Return Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURNED_CONDITION_CODE
+    - Label: Returned Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+    - Visible: true
+  - Column Name: DISPOSITION_CODE
+    - Label: Disposition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_DISPOSITION_CODE
+    - Visible: true
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REUSABLE_QUANTITY
+    - Label: Reusable Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 56
+    - Link Passing: RETURN_LINE_ID
+    - Link Target Items: P56_RETURN_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Adjustment Lines in Inventory Lot
+- Comments: Related stock adjustment lines filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Stock Adjustment Lines in Inventory Lot uses SCM_STOCK_ADJUSTMENT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Visible: true
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 62
+    - Link Passing: STOCK_ADJUSTMENT_LINE_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Allocations in Inventory Lot
+- Comments: Related stock allocations filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Stock Allocations in Inventory Lot uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Count Lines in Inventory Lot
+- Comments: Related stock count lines filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNT_LINES
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Stock Count Lines in Inventory Lot uses SCM_STOCK_COUNT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 69
+    - Link Passing: STOCK_COUNT_LINE_ID
+    - Link Target Items: P69_STOCK_COUNT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Movements in Inventory Lot
+- Comments: Related stock movements filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_MOVEMENTS
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Stock Movements in Inventory Lot uses SCM_STOCK_MOVEMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 71
+    - Link Passing: STOCK_MOVEMENT_ID
+    - Link Target Items: P71_STOCK_MOVEMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Transfer Lines in Inventory Lot
+- Comments: Related stock transfer lines filtered by the selected inventory lot context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFER_LINES
+  - Primary Keys: STOCK_TRANSFER_LINE_ID
+  - Where: INVENTORY_LOT_ID = to_number(:P27_INVENTORY_LOT_ID)
+  - Summary: Stock Transfer Lines in Inventory Lot uses SCM_STOCK_TRANSFER_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_TRANSFER_LINE_ID
+    - Label: Stock Transfer Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHIPPED_QUANTITY
+    - Label: Shipped Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 76
+    - Link Passing: STOCK_TRANSFER_LINE_ID
+    - Link Target Items: P76_STOCK_TRANSFER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 28: Inventory Lot Form
+- Description: Create or maintain a single inventory lot record.
+- Comments: Modal maintenance form edits one inventory lot record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+#### Regions
+##### Region: Inventory Lot Form
+- Comments: Form maintains one inventory lot record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_LOTS
+  - Primary Keys: INVENTORY_LOT_ID
+  - Summary: Form source for inventory lot maintenance.
+- Columns:
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P28_INVENTORY_LOT_ID
+    - Render As: hidden
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P28_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: LOT_NUMBER
+    - Label: Lot Number
+    - Datatype: varchar2
+    - Page Item Name: P28_LOT_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 80
+  - Column Name: SUPPLIER_LOT_NUMBER
+    - Label: Supplier Lot Number
+    - Datatype: varchar2
+    - Page Item Name: P28_SUPPLIER_LOT_NUMBER
+    - Render As: textField
+    - MaxLength: 80
+  - Column Name: RECEIVED_ON_DATE
+    - Label: Received On Date
+    - Datatype: date
+    - Page Item Name: P28_RECEIVED_ON_DATE
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY
+  - Column Name: BEST_BEFORE_DATE
+    - Label: Best Before Date
+    - Datatype: date
+    - Page Item Name: P28_BEST_BEFORE_DATE
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EXPIRY_ON_DATE
+    - Label: Expiry On Date
+    - Datatype: date
+    - Page Item Name: P28_EXPIRY_ON_DATE
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY
+  - Column Name: LOT_STATUS_CODE
+    - Label: Lot Status
+    - Datatype: varchar2
+    - Page Item Name: P28_LOT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS_LOT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 29: Inventory Transactions Report
+- Description: Analyze inventory transactions for traceability and operational audit.
+- Comments: Interactive traceability report supports plain-language analysis of inventory transactions records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Traceability and Reporting
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Inventory Transactions Report
+- Comments: Interactive report exposes inventory transactions for audit, traceability, and natural-language analysis.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Interactive Report
+- Report Context: Provides operational history for receipts, putaway, moves, allocation, pick, pack, dispatch, transfer shipment, transfer receipt, returns, count adjustment, stock adjustment, status change, and write-off events.
+- Data Source:
+  - Type: View
+  - Name: SCM_INVENTORY_TRANSACTIONS
+  - Primary Keys: INVENTORY_TRANSACTION_ID
+  - Summary: Interactive report over SCM_INVENTORY_TRANSACTIONS view records.
+- Columns:
+  - Column Name: TRANSACTION_TYPE_CODE
+    - Label: Transaction Type Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Operational history event type for receipts, putaway, moves, allocation, pick, pack, dispatch, transfer shipment, transfer receipt, returns, count adjustment, stock adjustment, status change, or write-off events.
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Source stock status for the inventory transaction history row where available.
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Destination stock status for the inventory transaction history row where available.
+  - Column Name: REFERENCE_DOCUMENT_TYPE
+    - Label: Reference Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Reference document type for the inventory transaction history row.
+  - Column Name: REFERENCE_DOCUMENT_NUMBER
+    - Label: Reference Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Reference document number for the inventory transaction history row.
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Reason associated with the inventory transaction history row where available.
+  - Column Name: INVENTORY_TRANSACTION_ID
+    - Label: Inventory Transaction ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Identifier for the inventory transaction history row.
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Warehouse associated with the inventory transaction history row.
+  - Column Name: FROM_LOCATION_ID
+    - Label: From Location ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Source location for the inventory transaction history row where available.
+  - Column Name: TO_LOCATION_ID
+    - Label: To Location ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Destination location for the inventory transaction history row where available.
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Item associated with the inventory transaction history row.
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Lot associated with the inventory transaction history row where available.
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Serial associated with the inventory transaction history row where available.
+  - Column Name: QUANTITY
+    - Label: Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Quantity associated with the inventory transaction history row.
+  - Column Name: TRANSACTION_AT
+    - Label: Transaction At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Timestamp for the inventory transaction history row.
+  - Column Name: PERFORMED_BY_USER_ID
+    - Label: Performed By User ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Actor associated with the inventory transaction history row where available.
+### Page 30: Items Search
+- Description: Search and review items for warehouse operations.
+- Comments: Guided searchable list for items with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Item Smart Filters
+- Comments: Guided filters narrow items by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Item Search Results
+- Filters:
+  - Filter
+    - Name: P30_F_ITEM_STATUS_CODE
+     - Label: Item Status
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS_ITEM_STATUS_CODE
+     - Database Column: ITEM_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P30_F_OWNER_CUSTOMER_PARTNER_ID
+     - Label: Owner Customer Partner ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS
+     - Database Column: OWNER_CUSTOMER_PARTNER_ID
+     - Datatype: number
+  - Filter
+    - Name: P30_F_CREATED_AT
+     - Label: Created At
+     - Render As: range
+     - Database Column: CREATED_AT
+     - Datatype: timestamp
+##### Region: Item Search Results
+- Comments: Search results list items and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEMS
+  - Primary Keys: ITEM_ID
+  - Summary: Item Search Results uses SCM_ITEMS records for operational review.
+- Columns:
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_CODE
+    - Label: Item Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_NAME
+    - Label: Item Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_CATEGORY_CODE
+    - Label: Item Category
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BASE_UOM_CODE
+    - Label: Base Unit of Measure
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_STATUS_CODE
+    - Label: Item Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS_ITEM_STATUS_CODE
+    - Visible: true
+  - Column Name: ITEM_DESCRIPTION
+    - Label: Item Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOT_CONTROL_FLAG
+    - Label: Lot Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SERIAL_CONTROL_FLAG
+    - Label: Serial Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXPIRY_CONTROL_FLAG
+    - Label: Expiry Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FRAGILE_FLAG
+    - Label: Fragile Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: HIGH_VALUE_FLAG
+    - Label: High Value Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: HAZARDOUS_FLAG
+    - Label: Hazardous Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TEMPERATURE_CONTROL_FLAG
+    - Label: Temperature Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESTRICTED_ITEM_FLAG
+    - Label: Restricted Item Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: OWNER_CUSTOMER_PARTNER_ID
+    - Label: Owner Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 31
+    - Link Passing: ITEM_ID
+    - Link Target Items: P31_ITEM_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 32
+    - Link Passing: ITEM_ID
+    - Link Target Items: P32_ITEM_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Item
+    - Link To: Page 32
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 31: Item Detail
+- Description: Review the selected item and related operational records.
+- Comments: Detail workspace keeps the selected item context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Item Context
+- Comments: Context region identifies the selected item and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: ITEM_ID
+  - SQL:
+```sql
+select t.ITEM_ID
+     , t.ITEM_CODE
+     , t.ITEM_NAME
+     , t.ITEM_CATEGORY_CODE
+     , t.BASE_UOM_CODE
+     , t.ITEM_STATUS_CODE
+     , t.ITEM_DESCRIPTION
+     , t.LOT_CONTROL_FLAG
+     , t.SERIAL_CONTROL_FLAG
+     , t.EXPIRY_CONTROL_FLAG
+     , t.FRAGILE_FLAG
+     , t.HIGH_VALUE_FLAG
+from SCM_ITEMS t
+where t.ITEM_ID = to_number(:P31_ITEM_ID)
+```
+  - Summary: Single selected item context row.
+- Hidden Page Items: P31_ITEM_ID
+- Columns:
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_CODE
+    - Label: Item Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_NAME
+    - Label: Item Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_CATEGORY_CODE
+    - Label: Item Category
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BASE_UOM_CODE
+    - Label: Base Unit of Measure
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_STATUS_CODE
+    - Label: Item Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS_ITEM_STATUS_CODE
+    - Visible: true
+  - Column Name: ITEM_DESCRIPTION
+    - Label: Item Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOT_CONTROL_FLAG
+    - Label: Lot Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SERIAL_CONTROL_FLAG
+    - Label: Serial Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXPIRY_CONTROL_FLAG
+    - Label: Expiry Control Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FRAGILE_FLAG
+    - Label: Fragile Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: HIGH_VALUE_FLAG
+    - Label: High Value Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 32
+    - Link Passing: ITEM_ID
+    - Link Target Items: P32_ITEM_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Inbound Receipt Lines in Item
+- Comments: Related inbound receipt lines filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPT_LINES
+  - Primary Keys: INBOUND_RECEIPT_LINE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Inbound Receipt Lines in Item uses SCM_INBOUND_RECEIPT_LINES records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_LINE_ID
+    - Label: Inbound Receipt Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIVED_CONDITION_CODE
+    - Label: Received Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: RECEIVING_LOCATION_ID
+    - Label: Receiving Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: FINAL_PUTAWAY_LOCATION_ID
+    - Label: Final Putaway Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 22
+    - Link Passing: INBOUND_RECEIPT_LINE_ID
+    - Link Target Items: P22_INBOUND_RECEIPT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Inventory Balances in Item
+- Comments: Related inventory balances filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_BALANCES
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Inventory Balances in Item uses SCM_INVENTORY_BALANCES records for operational review.
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 24
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P24_INVENTORY_BALANCE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 25
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P25_INVENTORY_BALANCE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Inventory Lots in Item
+- Comments: Related inventory lots filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_LOTS
+  - Primary Keys: INVENTORY_LOT_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Inventory Lots in Item uses SCM_INVENTORY_LOTS records for operational review.
+- Columns:
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOT_NUMBER
+    - Label: Lot Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SUPPLIER_LOT_NUMBER
+    - Label: Supplier Lot Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOT_STATUS_CODE
+    - Label: Lot Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS_LOT_STATUS_CODE
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: RECEIVED_ON_DATE
+    - Label: Received On Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: BEST_BEFORE_DATE
+    - Label: Best Before Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EXPIRY_ON_DATE
+    - Label: Expiry On Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 27
+    - Link Passing: INVENTORY_LOT_ID
+    - Link Target Items: P27_INVENTORY_LOT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 28
+    - Link Passing: INVENTORY_LOT_ID
+    - Link Target Items: P28_INVENTORY_LOT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+- Actions:
+  - Action
+    - Label: Create Lot
+    - Link To: Page 28
+    - Link Passing: P31_ITEM_ID
+    - Link Target Items: P28_ITEM_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Item Serials in Item
+- Comments: Related item serials filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_SERIALS
+  - Primary Keys: ITEM_SERIAL_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Item Serials in Item uses SCM_ITEM_SERIALS records for operational review.
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Visible: true
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 34
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P34_ITEM_SERIAL_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 35
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P35_ITEM_SERIAL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+- Actions:
+  - Action
+    - Label: Create Serial
+    - Link To: Page 35
+    - Link Passing: P31_ITEM_ID
+    - Link Target Items: P35_ITEM_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Item Warehouse Policies in Item
+- Comments: Related item warehouse policies filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_WAREHOUSE_POLICIES
+  - Primary Keys: ITEM_WAREHOUSE_POLICY_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Item Warehouse Policies in Item uses SCM_ITEM_WAREHOUSE_POLICIES records for operational review.
+- Columns:
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MINIMUM_STOCK_QUANTITY
+    - Label: Minimum Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REORDER_POINT_QUANTITY
+    - Label: Reorder Point Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REORDER_TARGET_QUANTITY
+    - Label: Reorder Target Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: SAFETY_STOCK_QUANTITY
+    - Label: Safety Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REPLENISHMENT_LEAD_TIME_DAYS
+    - Label: Replenishment Lead Time Days
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOW_STOCK_ALERT_ENABLED_FLAG
+    - Label: Low Stock Alert Enabled Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 37
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P37_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 38
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P38_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Policy
+    - Link To: Page 38
+    - Link Passing: P31_ITEM_ID
+    - Link Target Items: P38_ITEM_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Operational Exceptions in Item
+- Comments: Related operational exceptions filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Operational Exceptions in Item uses SCM_OPERATIONAL_EXCEPTIONS records for operational review.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Outbound Order Lines in Item
+- Comments: Related outbound order lines filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDER_LINES
+  - Primary Keys: OUTBOUND_ORDER_LINE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Outbound Order Lines in Item uses SCM_OUTBOUND_ORDER_LINES records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: PREFERRED_LOT_ID
+    - Label: Preferred Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 46
+    - Link Passing: OUTBOUND_ORDER_LINE_ID
+    - Link Target Items: P46_OUTBOUND_ORDER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Replenishment Alerts in Item
+- Comments: Related replenishment alerts filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Replenishment Alerts in Item uses SCM_REPLENISHMENT_ALERTS records for operational review.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+- Links:
+  - Link:
+    - Link To: Page 51
+    - Link Passing: REPLENISHMENT_ALERT_ID
+    - Link Target Items: P51_REPLENISHMENT_ALERT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Return Lines in Item
+- Comments: Related return lines filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURN_LINES
+  - Primary Keys: RETURN_LINE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Return Lines in Item uses SCM_RETURN_LINES records for operational review.
+- Columns:
+  - Column Name: RETURN_LINE_ID
+    - Label: Return Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURNED_CONDITION_CODE
+    - Label: Returned Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+    - Visible: true
+  - Column Name: DISPOSITION_CODE
+    - Label: Disposition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_DISPOSITION_CODE
+    - Visible: true
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REUSABLE_QUANTITY
+    - Label: Reusable Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 56
+    - Link Passing: RETURN_LINE_ID
+    - Link Target Items: P56_RETURN_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Adjustment Lines in Item
+- Comments: Related stock adjustment lines filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Stock Adjustment Lines in Item uses SCM_STOCK_ADJUSTMENT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Visible: true
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 62
+    - Link Passing: STOCK_ADJUSTMENT_LINE_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Allocations in Item
+- Comments: Related stock allocations filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Stock Allocations in Item uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Counts in Item
+- Comments: Related stock counts filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNTS
+  - Primary Keys: STOCK_COUNT_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Stock Counts in Item uses SCM_STOCK_COUNTS records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 66
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P66_STOCK_COUNT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 67
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P67_STOCK_COUNT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Count Lines in Item
+- Comments: Related stock count lines filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNT_LINES
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Stock Count Lines in Item uses SCM_STOCK_COUNT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 69
+    - Link Passing: STOCK_COUNT_LINE_ID
+    - Link Target Items: P69_STOCK_COUNT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Movements in Item
+- Comments: Related stock movements filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_MOVEMENTS
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Stock Movements in Item uses SCM_STOCK_MOVEMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 71
+    - Link Passing: STOCK_MOVEMENT_ID
+    - Link Target Items: P71_STOCK_MOVEMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Transfer Lines in Item
+- Comments: Related stock transfer lines filtered by the selected item context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFER_LINES
+  - Primary Keys: STOCK_TRANSFER_LINE_ID
+  - Where: ITEM_ID = to_number(:P31_ITEM_ID)
+  - Summary: Stock Transfer Lines in Item uses SCM_STOCK_TRANSFER_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_TRANSFER_LINE_ID
+    - Label: Stock Transfer Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHIPPED_QUANTITY
+    - Label: Shipped Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 76
+    - Link Passing: STOCK_TRANSFER_LINE_ID
+    - Link Target Items: P76_STOCK_TRANSFER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 32: Item Form
+- Description: Create or maintain a single item record.
+- Comments: Modal maintenance form edits one item record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Item Form
+- Comments: Form maintains one item record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEMS
+  - Primary Keys: ITEM_ID
+  - Summary: Form source for item maintenance.
+- Columns:
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P32_ITEM_ID
+    - Render As: hidden
+  - Column Name: ITEM_CODE
+    - Label: Item Code
+    - Datatype: varchar2
+    - Page Item Name: P32_ITEM_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 50
+  - Column Name: ITEM_NAME
+    - Label: Item Name
+    - Datatype: varchar2
+    - Page Item Name: P32_ITEM_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: ITEM_DESCRIPTION
+    - Label: Item Description
+    - Datatype: varchar2
+    - Page Item Name: P32_ITEM_DESCRIPTION
+    - Render As: textarea
+    - MaxLength: 1000
+  - Column Name: ITEM_CATEGORY_CODE
+    - Label: Item Category
+    - Datatype: varchar2
+    - Page Item Name: P32_ITEM_CATEGORY_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: BASE_UOM_CODE
+    - Label: Base Unit of Measure
+    - Datatype: varchar2
+    - Page Item Name: P32_BASE_UOM_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 10
+  - Column Name: ITEM_STATUS_CODE
+    - Label: Item Status
+    - Datatype: varchar2
+    - Page Item Name: P32_ITEM_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_ITEMS_ITEM_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: LOT_CONTROL_FLAG
+    - Label: Lot Control Flag
+    - Datatype: boolean
+    - Page Item Name: P32_LOT_CONTROL_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: SERIAL_CONTROL_FLAG
+    - Label: Serial Control Flag
+    - Datatype: boolean
+    - Page Item Name: P32_SERIAL_CONTROL_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: EXPIRY_CONTROL_FLAG
+    - Label: Expiry Control Flag
+    - Datatype: boolean
+    - Page Item Name: P32_EXPIRY_CONTROL_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: FRAGILE_FLAG
+    - Label: Fragile Flag
+    - Datatype: boolean
+    - Page Item Name: P32_FRAGILE_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: HIGH_VALUE_FLAG
+    - Label: High Value Flag
+    - Datatype: boolean
+    - Page Item Name: P32_HIGH_VALUE_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: HAZARDOUS_FLAG
+    - Label: Hazardous Flag
+    - Datatype: boolean
+    - Page Item Name: P32_HAZARDOUS_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: TEMPERATURE_CONTROL_FLAG
+    - Label: Temperature Control Flag
+    - Datatype: boolean
+    - Page Item Name: P32_TEMPERATURE_CONTROL_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: RESTRICTED_ITEM_FLAG
+    - Label: Restricted Item Flag
+    - Datatype: boolean
+    - Page Item Name: P32_RESTRICTED_ITEM_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: OWNER_CUSTOMER_PARTNER_ID
+    - Label: Owner Customer Partner ID
+    - Datatype: number
+    - Page Item Name: P32_OWNER_CUSTOMER_PARTNER_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P32_CREATED_AT
+    - Render As: hidden
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Page Item Name: P32_CREATED_BY
+    - Render As: hidden
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 33: Item Serials Search
+- Description: Search and review item serials for warehouse operations.
+- Comments: Guided searchable list for item serials with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Item Serial Smart Filters
+- Comments: Guided filters narrow item serials by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Item Serial Search Results
+- Filters:
+  - Filter
+    - Name: P33_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P33_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P33_F_CURRENT_WAREHOUSE_ID
+     - Label: Current Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: CURRENT_WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P33_F_CURRENT_STORAGE_LOCATION_ID
+     - Label: Current Storage Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: CURRENT_STORAGE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P33_F_CURRENT_STATUS_CODE
+     - Label: Current Status Code
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+     - Database Column: CURRENT_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Item Serial Search Results
+- Comments: Search results list item serials and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_SERIALS
+  - Primary Keys: ITEM_SERIAL_ID
+  - Summary: Item Serial Search Results uses SCM_ITEM_SERIALS records for operational review.
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Visible: true
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 34
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P34_ITEM_SERIAL_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 35
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P35_ITEM_SERIAL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+- Actions:
+  - Action
+    - Label: Create Item Serial
+    - Link To: Page 35
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+### Page 34: Item Serial Detail
+- Description: Review the selected item serial and related operational records.
+- Comments: Detail workspace keeps the selected item serial context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Item Serial Context
+- Comments: Context region identifies the selected item serial and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: ITEM_SERIAL_ID
+  - SQL:
+```sql
+select t.ITEM_SERIAL_ID
+     , t.SERIAL_NUMBER
+     , t.CURRENT_STATUS_CODE
+     , t.SERIAL_CONDITION_CODE
+     , t.LAST_DOCUMENT_TYPE
+     , t.LAST_DOCUMENT_NUMBER
+     , t.ITEM_ID
+     , t.INVENTORY_LOT_ID
+     , t.CURRENT_WAREHOUSE_ID
+     , t.CURRENT_STORAGE_LOCATION_ID
+     , t.RECEIVED_AT
+     , t.LAST_MOVED_AT
+from SCM_ITEM_SERIALS t
+where t.ITEM_SERIAL_ID = to_number(:P34_ITEM_SERIAL_ID)
+```
+  - Summary: Single selected item serial context row.
+- Hidden Page Items: P34_ITEM_SERIAL_ID
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Visible: true
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 35
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P35_ITEM_SERIAL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Operational Exceptions in Item Serial
+- Comments: Related operational exceptions filtered by the selected item serial context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Where: ITEM_SERIAL_ID = to_number(:P34_ITEM_SERIAL_ID)
+  - Summary: Operational Exceptions in Item Serial uses SCM_OPERATIONAL_EXCEPTIONS records for operational review.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Adjustment Lines in Item Serial
+- Comments: Related stock adjustment lines filtered by the selected item serial context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Where: ITEM_SERIAL_ID = to_number(:P34_ITEM_SERIAL_ID)
+  - Summary: Stock Adjustment Lines in Item Serial uses SCM_STOCK_ADJUSTMENT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Visible: true
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 62
+    - Link Passing: STOCK_ADJUSTMENT_LINE_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Allocations in Item Serial
+- Comments: Related stock allocations filtered by the selected item serial context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Where: ITEM_SERIAL_ID = to_number(:P34_ITEM_SERIAL_ID)
+  - Summary: Stock Allocations in Item Serial uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Movements in Item Serial
+- Comments: Related stock movements filtered by the selected item serial context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_MOVEMENTS
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - Where: ITEM_SERIAL_ID = to_number(:P34_ITEM_SERIAL_ID)
+  - Summary: Stock Movements in Item Serial uses SCM_STOCK_MOVEMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 71
+    - Link Passing: STOCK_MOVEMENT_ID
+    - Link Target Items: P71_STOCK_MOVEMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 35: Item Serial Form
+- Description: Create or maintain a single item serial record.
+- Comments: Modal maintenance form edits one item serial record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+#### Regions
+##### Region: Item Serial Form
+- Comments: Form maintains one item serial record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_SERIALS
+  - Primary Keys: ITEM_SERIAL_ID
+  - Summary: Form source for item serial maintenance.
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Page Item Name: P35_ITEM_SERIAL_ID
+    - Render As: hidden
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P35_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Page Item Name: P35_SERIAL_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 100
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P35_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Page Item Name: P35_CURRENT_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Page Item Name: P35_CURRENT_STORAGE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Page Item Name: P35_CURRENT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Page Item Name: P35_SERIAL_CONDITION_CODE
+    - Render As: selectList
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Page Item Name: P35_LAST_DOCUMENT_TYPE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Page Item Name: P35_LAST_DOCUMENT_NUMBER
+    - Render As: textField
+    - MaxLength: 50
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P35_RECEIVED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P35_LAST_MOVED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Page Item Name: P35_IS_ACTIVE
+    - Render As: checkbox
+    - Required: true
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 36: Item Warehouse Policies Search
+- Description: Search and review item warehouse policies for warehouse operations.
+- Comments: Guided searchable list for item warehouse policies with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Item Warehouse Policy Smart Filters
+- Comments: Guided filters narrow item warehouse policies by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Item Warehouse Policy Search Results
+- Filters:
+  - Filter
+    - Name: P36_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P36_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+##### Region: Item Warehouse Policy Search Results
+- Comments: Search results list item warehouse policies and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_WAREHOUSE_POLICIES
+  - Primary Keys: ITEM_WAREHOUSE_POLICY_ID
+  - Summary: Item Warehouse Policy Search Results uses SCM_ITEM_WAREHOUSE_POLICIES records for operational review.
+- Columns:
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MINIMUM_STOCK_QUANTITY
+    - Label: Minimum Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REORDER_POINT_QUANTITY
+    - Label: Reorder Point Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REORDER_TARGET_QUANTITY
+    - Label: Reorder Target Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: SAFETY_STOCK_QUANTITY
+    - Label: Safety Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REPLENISHMENT_LEAD_TIME_DAYS
+    - Label: Replenishment Lead Time Days
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOW_STOCK_ALERT_ENABLED_FLAG
+    - Label: Low Stock Alert Enabled Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 37
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P37_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 38
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P38_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Item Warehouse Policy
+    - Link To: Page 38
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 37: Item Warehouse Policy Detail
+- Description: Review the selected item warehouse policy and related operational records.
+- Comments: Detail workspace keeps the selected item warehouse policy context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Item Warehouse Policy Context
+- Comments: Context region identifies the selected item warehouse policy and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: ITEM_WAREHOUSE_POLICY_ID
+  - SQL:
+```sql
+select t.ITEM_WAREHOUSE_POLICY_ID
+     , t.ITEM_ID
+     , t.WAREHOUSE_ID
+     , t.MINIMUM_STOCK_QUANTITY
+     , t.REORDER_POINT_QUANTITY
+     , t.REORDER_TARGET_QUANTITY
+     , t.SAFETY_STOCK_QUANTITY
+     , t.REPLENISHMENT_LEAD_TIME_DAYS
+     , t.LOW_STOCK_ALERT_ENABLED_FLAG
+     , t.IS_ACTIVE
+from SCM_ITEM_WAREHOUSE_POLICIES t
+where t.ITEM_WAREHOUSE_POLICY_ID = to_number(:P37_ITEM_WAREHOUSE_POLICY_ID)
+```
+  - Summary: Single selected item warehouse policy context row.
+- Hidden Page Items: P37_ITEM_WAREHOUSE_POLICY_ID
+- Columns:
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MINIMUM_STOCK_QUANTITY
+    - Label: Minimum Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REORDER_POINT_QUANTITY
+    - Label: Reorder Point Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REORDER_TARGET_QUANTITY
+    - Label: Reorder Target Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: SAFETY_STOCK_QUANTITY
+    - Label: Safety Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REPLENISHMENT_LEAD_TIME_DAYS
+    - Label: Replenishment Lead Time Days
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOW_STOCK_ALERT_ENABLED_FLAG
+    - Label: Low Stock Alert Enabled Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 38
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P38_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Replenishment Alerts in Item Warehouse Policy
+- Comments: Related replenishment alerts filtered by the selected item warehouse policy context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Where: ITEM_WAREHOUSE_POLICY_ID = to_number(:P37_ITEM_WAREHOUSE_POLICY_ID)
+  - Summary: Replenishment Alerts in Item Warehouse Policy uses SCM_REPLENISHMENT_ALERTS records for operational review.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+- Links:
+  - Link:
+    - Link To: Page 51
+    - Link Passing: REPLENISHMENT_ALERT_ID
+    - Link Target Items: P51_REPLENISHMENT_ALERT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+### Page 38: Item Warehouse Policy Form
+- Description: Create or maintain a single item warehouse policy record.
+- Comments: Modal maintenance form edits one item warehouse policy record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Item Warehouse Policy Form
+- Comments: Form maintains one item warehouse policy record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_WAREHOUSE_POLICIES
+  - Primary Keys: ITEM_WAREHOUSE_POLICY_ID
+  - Summary: Form source for item warehouse policy maintenance.
+- Columns:
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Page Item Name: P38_ITEM_WAREHOUSE_POLICY_ID
+    - Render As: hidden
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P38_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P38_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: MINIMUM_STOCK_QUANTITY
+    - Label: Minimum Stock Quantity
+    - Datatype: number
+    - Page Item Name: P38_MINIMUM_STOCK_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REORDER_POINT_QUANTITY
+    - Label: Reorder Point Quantity
+    - Datatype: number
+    - Page Item Name: P38_REORDER_POINT_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REORDER_TARGET_QUANTITY
+    - Label: Reorder Target Quantity
+    - Datatype: number
+    - Page Item Name: P38_REORDER_TARGET_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: SAFETY_STOCK_QUANTITY
+    - Label: Safety Stock Quantity
+    - Datatype: number
+    - Page Item Name: P38_SAFETY_STOCK_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REPLENISHMENT_LEAD_TIME_DAYS
+    - Label: Replenishment Lead Time Days
+    - Datatype: number
+    - Page Item Name: P38_REPLENISHMENT_LEAD_TIME_DAYS
+    - Render As: numberField
+  - Column Name: LOW_STOCK_ALERT_ENABLED_FLAG
+    - Label: Low Stock Alert Enabled Flag
+    - Datatype: boolean
+    - Page Item Name: P38_LOW_STOCK_ALERT_ENABLED_FLAG
+    - Render As: checkbox
+    - Required: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Page Item Name: P38_IS_ACTIVE
+    - Render As: checkbox
+    - Required: true
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 39: Operational Exceptions Search
+- Description: Search and review operational exceptions for warehouse operations.
+- Comments: Guided searchable list for operational exceptions with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Operational Exception Smart Filters
+- Comments: Guided filters narrow operational exceptions by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Operational Exception Search Results
+- Filters:
+  - Filter
+    - Name: P39_F_EXCEPTION_TYPE_CODE
+     - Label: Exception Type Code
+     - Render As: checkboxGroup
+     - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+     - Database Column: EXCEPTION_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P39_F_RELATED_RECORD_TYPE_CODE
+     - Label: Related Record Type
+     - Render As: checkboxGroup
+     - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+     - Database Column: RELATED_RECORD_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P39_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P39_F_STORAGE_LOCATION_ID
+     - Label: Storage Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: STORAGE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P39_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+##### Region: Operational Exception Search Results
+- Comments: Search results list operational exceptions and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Summary: Operational Exception Search Results uses SCM_OPERATIONAL_EXCEPTIONS records for operational review.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: AFFECTED_QUANTITY
+    - Label: Affected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REPORTED_BY_USER_ID
+    - Label: Reported By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REPORTED_AT
+    - Label: Reported At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: EXCEPTION_NOTES
+    - Label: Exception Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Operational Exception
+    - Link To: Page 41
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 40: Operational Exception Detail
+- Description: Review the selected operational exception and related operational records.
+- Comments: Detail workspace keeps the selected operational exception context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Operational Exception Context
+- Comments: Context region identifies the selected operational exception and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - SQL:
+```sql
+select t.OPERATIONAL_EXCEPTION_ID
+     , t.EXCEPTION_NUMBER
+     , t.EXCEPTION_TYPE_CODE
+     , t.RELATED_RECORD_TYPE_CODE
+     , t.RELATED_LINE_NUMBER
+     , t.REVIEW_STATUS_CODE
+     , t.SEVERITY_CODE
+     , t.RESOLUTION_CODE
+     , t.RELATED_RECORD_ID
+     , t.WAREHOUSE_ID
+     , t.STORAGE_LOCATION_ID
+     , t.ITEM_ID
+from SCM_OPERATIONAL_EXCEPTIONS t
+where t.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+```
+  - Summary: Single selected operational exception context row.
+- Hidden Page Items: P40_OPERATIONAL_EXCEPTION_ID
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Related Exception Record Context
+- Comments: Related Exception Record Context shows the business record identified by the selected exception without requiring a separate search.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - SQL:
+```sql
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , ir.RECEIPT_NUMBER as RELATED_RECORD_NUMBER
+     , ir.RECEIPT_STATUS_CODE as RECORD_STATUS_CODE
+     , ir.REVIEW_STATUS_CODE
+     , ir.WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_INBOUND_RECEIPTS ir
+  on e.RELATED_RECORD_TYPE_CODE = 'RECEIPT'
+ and ir.INBOUND_RECEIPT_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+union all
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , st.TRANSFER_NUMBER
+     , st.TRANSFER_STATUS_CODE
+     , st.REVIEW_STATUS_CODE
+     , st.FROM_WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_STOCK_TRANSFERS st
+  on e.RELATED_RECORD_TYPE_CODE = 'TRANSFER'
+ and st.STOCK_TRANSFER_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+union all
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , o.OUTBOUND_ORDER_NUMBER
+     , o.OUTBOUND_STATUS_CODE
+     , null as REVIEW_STATUS_CODE
+     , o.SHIP_FROM_WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_OUTBOUND_ORDERS o
+  on e.RELATED_RECORD_TYPE_CODE = 'OUTBOUND_ORDER'
+ and o.OUTBOUND_ORDER_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+union all
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , r.RETURN_NUMBER
+     , r.RETURN_STATUS_CODE
+     , r.REVIEW_STATUS_CODE
+     , r.WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_RETURNS r
+  on e.RELATED_RECORD_TYPE_CODE = 'RETURN'
+ and r.RETURN_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+union all
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , c.COUNT_NUMBER
+     , c.COUNT_STATUS_CODE
+     , c.REVIEW_STATUS_CODE
+     , c.WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_STOCK_COUNTS c
+  on e.RELATED_RECORD_TYPE_CODE = 'COUNT'
+ and c.STOCK_COUNT_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+union all
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , a.ADJUSTMENT_NUMBER
+     , a.ADJUSTMENT_STATUS_CODE
+     , null as REVIEW_STATUS_CODE
+     , a.WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_STOCK_ADJUSTMENTS a
+  on e.RELATED_RECORD_TYPE_CODE = 'ADJUSTMENT'
+ and a.STOCK_ADJUSTMENT_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+union all
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.RELATED_RECORD_TYPE_CODE
+     , to_char(b.INVENTORY_BALANCE_ID)
+     , b.STOCK_STATUS_CODE
+     , null as REVIEW_STATUS_CODE
+     , b.WAREHOUSE_ID
+from SCM_OPERATIONAL_EXCEPTIONS e
+join SCM_INVENTORY_BALANCES b
+  on e.RELATED_RECORD_TYPE_CODE = 'INVENTORY'
+ and b.INVENTORY_BALANCE_ID = e.RELATED_RECORD_ID
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+```
+  - Summary: Related business record context for the selected operational exception.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_NUMBER
+    - Label: Related Record Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECORD_STATUS_CODE
+    - Label: Record Status
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+##### Region: Exception Item and Location Context
+- Comments: Exception Item and Location Context shows affected item, lot, serial, and location references carried by the selected exception.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - SQL:
+```sql
+select e.OPERATIONAL_EXCEPTION_ID
+     , e.WAREHOUSE_ID
+     , e.STORAGE_LOCATION_ID
+     , e.ITEM_ID
+     , e.INVENTORY_LOT_ID
+     , e.ITEM_SERIAL_ID
+     , e.AFFECTED_QUANTITY
+     , e.ASSIGNED_USER_ID
+     , e.REPORTED_BY_USER_ID
+     , e.REPORTED_AT
+     , e.REVIEWED_BY_USER_ID
+     , e.REVIEWED_AT
+from SCM_OPERATIONAL_EXCEPTIONS e
+where e.OPERATIONAL_EXCEPTION_ID = to_number(:P40_OPERATIONAL_EXCEPTION_ID)
+```
+  - Summary: Affected stock, item, and reviewer context for the selected operational exception.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: AFFECTED_QUANTITY
+    - Label: Affected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REPORTED_BY_USER_ID
+    - Label: Reported By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REPORTED_AT
+    - Label: Reported At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+### Page 41: Operational Exception Form
+- Description: Create or maintain a single operational exception record.
+- Comments: Modal maintenance form edits one operational exception record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Operational Exception Form
+- Comments: Form maintains one operational exception record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Summary: Form source for operational exception maintenance.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Page Item Name: P41_OPERATIONAL_EXCEPTION_ID
+    - Render As: hidden
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Page Item Name: P41_EXCEPTION_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Page Item Name: P41_EXCEPTION_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Required: true
+    - MaxLength: 30
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Page Item Name: P41_RELATED_RECORD_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Required: true
+    - MaxLength: 30
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Page Item Name: P41_RELATED_RECORD_ID
+    - Render As: numberField
+    - Required: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Page Item Name: P41_RELATED_LINE_NUMBER
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P41_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Page Item Name: P41_STORAGE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P41_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P41_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Page Item Name: P41_ITEM_SERIAL_ID
+    - Render As: selectList
+    - LOV: LOV_ITEM_SERIALS
+  - Column Name: AFFECTED_QUANTITY
+    - Label: Affected Quantity
+    - Datatype: number
+    - Page Item Name: P41_AFFECTED_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Page Item Name: P41_REVIEW_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Page Item Name: P41_SEVERITY_CODE
+    - Render As: selectList
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P41_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REPORTED_BY_USER_ID
+    - Label: Reported By User ID
+    - Datatype: number
+    - Page Item Name: P41_REPORTED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+    - Required: true
+  - Column Name: REPORTED_AT
+    - Label: Reported At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P41_REPORTED_AT
+    - Render As: datePicker
+    - Required: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P41_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P41_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Page Item Name: P41_RESOLUTION_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: EXCEPTION_NOTES
+    - Label: Exception Notes
+    - Datatype: varchar2
+    - Page Item Name: P41_EXCEPTION_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 42: Outbound Orders Search
+- Description: Search and review outbound orders for warehouse operations.
+- Comments: Guided searchable list for outbound orders with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Outbound Order Smart Filters
+- Comments: Guided filters narrow outbound orders by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Outbound Order Search Results
+- Filters:
+  - Filter
+    - Name: P42_F_ORDER_TYPE_CODE
+     - Label: Order Type
+     - Render As: checkboxGroup
+     - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+     - Database Column: ORDER_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P42_F_SHIP_FROM_WAREHOUSE_ID
+     - Label: Ship From Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: SHIP_FROM_WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P42_F_CUSTOMER_PARTNER_ID
+     - Label: Customer Partner ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS
+     - Database Column: CUSTOMER_PARTNER_ID
+     - Datatype: number
+  - Filter
+    - Name: P42_F_SHIP_TO_SITE_ID
+     - Label: Ship To Site ID
+     - Render As: checkboxGroup
+     - LOV: LOV_PARTNER_SITES
+     - Database Column: SHIP_TO_SITE_ID
+     - Datatype: number
+  - Filter
+    - Name: P42_F_CARRIER_PARTNER_ID
+     - Label: Carrier Partner ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS
+     - Database Column: CARRIER_PARTNER_ID
+     - Datatype: number
+##### Region: Outbound Order Search Results
+- Comments: Search results list outbound orders and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDERS
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - Summary: Outbound Order Search Results uses SCM_OUTBOUND_ORDERS records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PICKED_BY_USER_ID
+    - Label: Picked By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PACKED_BY_USER_ID
+    - Label: Packed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: DISPATCHED_AT
+    - Label: Dispatched At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: DISPATCHED_BY_USER_ID
+    - Label: Dispatched By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: DISPATCH_REFERENCE
+    - Label: Dispatch Reference
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 43
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P43_OUTBOUND_ORDER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 44
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P44_OUTBOUND_ORDER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Outbound Order
+    - Link To: Page 44
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 43: Outbound Order Detail
+- Description: Review the selected outbound order and related operational records.
+- Comments: Detail workspace keeps the selected outbound order context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Outbound Order Context
+- Comments: Context region identifies the selected outbound order and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - SQL:
+```sql
+select t.OUTBOUND_ORDER_ID
+     , t.OUTBOUND_ORDER_NUMBER
+     , t.ORDER_TYPE_CODE
+     , t.OUTBOUND_STATUS_CODE
+     , t.PRIORITY_CODE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.SHIP_FROM_WAREHOUSE_ID
+     , t.CUSTOMER_PARTNER_ID
+     , t.SHIP_TO_SITE_ID
+     , t.CARRIER_PARTNER_ID
+     , t.ASSIGNED_USER_ID
+     , t.ORDER_DATE
+from SCM_OUTBOUND_ORDERS t
+where t.OUTBOUND_ORDER_ID = to_number(:P43_OUTBOUND_ORDER_ID)
+```
+  - Summary: Single selected outbound order context row.
+- Hidden Page Items: P43_OUTBOUND_ORDER_ID
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 44
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P44_OUTBOUND_ORDER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Outbound Order Lines in Outbound Order
+- Comments: Related outbound order lines filtered by the selected outbound order context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDER_LINES
+  - Primary Keys: OUTBOUND_ORDER_LINE_ID
+  - Where: OUTBOUND_ORDER_ID = to_number(:P43_OUTBOUND_ORDER_ID)
+  - Summary: Outbound Order Lines in Outbound Order uses SCM_OUTBOUND_ORDER_LINES records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: PREFERRED_LOT_ID
+    - Label: Preferred Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 46
+    - Link Passing: OUTBOUND_ORDER_LINE_ID
+    - Link Target Items: P46_OUTBOUND_ORDER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Line
+    - Link To: Page 46
+    - Link Passing: P43_OUTBOUND_ORDER_ID
+    - Link Target Items: P46_OUTBOUND_ORDER_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Returns in Outbound Order
+- Comments: Related returns filtered by the selected outbound order context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURNS
+  - Primary Keys: RETURN_ID
+  - Where: RELATED_OUTBOUND_ORDER_ID = to_number(:P43_OUTBOUND_ORDER_ID)
+  - Summary: Returns in Outbound Order uses SCM_RETURNS records for operational review.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 53
+    - Link Passing: RETURN_ID
+    - Link Target Items: P53_RETURN_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 54
+    - Link Passing: RETURN_ID
+    - Link Target Items: P54_RETURN_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 44: Outbound Order Form
+- Description: Create or maintain a single outbound order record.
+- Comments: Modal maintenance form edits one outbound order record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Outbound Order Form
+- Comments: Form maintains one outbound order record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDERS
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - Summary: Form source for outbound order maintenance.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Page Item Name: P44_OUTBOUND_ORDER_ID
+    - Render As: hidden
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Page Item Name: P44_OUTBOUND_ORDER_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Page Item Name: P44_ORDER_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Page Item Name: P44_SHIP_FROM_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Page Item Name: P44_CUSTOMER_PARTNER_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Page Item Name: P44_SHIP_TO_SITE_ID
+    - Render As: selectList
+    - LOV: LOV_PARTNER_SITES
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Page Item Name: P44_CARRIER_PARTNER_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P44_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Page Item Name: P44_OUTBOUND_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Page Item Name: P44_PRIORITY_CODE
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Page Item Name: P44_ORDER_DATE
+    - Render As: datePicker
+    - Required: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P44_REQUESTED_SHIP_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PICKED_BY_USER_ID
+    - Label: Picked By User ID
+    - Datatype: number
+    - Page Item Name: P44_PICKED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: PACKED_BY_USER_ID
+    - Label: Packed By User ID
+    - Datatype: number
+    - Page Item Name: P44_PACKED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: DISPATCHED_AT
+    - Label: Dispatched At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P44_DISPATCHED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: DISPATCHED_BY_USER_ID
+    - Label: Dispatched By User ID
+    - Datatype: number
+    - Page Item Name: P44_DISPATCHED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Page Item Name: P44_SOURCE_DOCUMENT_NUMBER
+    - Render As: textField
+    - MaxLength: 50
+  - Column Name: DISPATCH_REFERENCE
+    - Label: Dispatch Reference
+    - Datatype: varchar2
+    - Page Item Name: P44_DISPATCH_REFERENCE
+    - Render As: textField
+    - MaxLength: 50
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P44_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 45: Outbound Order Lines Search
+- Description: Search and review outbound order lines for warehouse operations.
+- Comments: Guided searchable list for outbound order lines for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Outbound Order Line Smart Filters
+- Comments: Guided filters narrow outbound order lines by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Outbound Order Line Search Results
+- Filters:
+  - Filter
+    - Name: P45_F_OUTBOUND_ORDER_ID
+     - Label: Outbound Order ID
+     - Render As: checkboxGroup
+     - LOV: LOV_OUTBOUND_ORDERS
+     - Database Column: OUTBOUND_ORDER_ID
+     - Datatype: number
+  - Filter
+    - Name: P45_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P45_F_PREFERRED_LOT_ID
+     - Label: Preferred Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: PREFERRED_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P45_F_ALLOCATION_STATUS_CODE
+     - Label: Allocation Status
+     - Render As: checkboxGroup
+     - LOV: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+     - Database Column: ALLOCATION_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Outbound Order Line Search Results
+- Comments: Search results list outbound order lines for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDER_LINES
+  - Primary Keys: OUTBOUND_ORDER_LINE_ID
+  - Summary: Outbound Order Line Search Results uses SCM_OUTBOUND_ORDER_LINES records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: PREFERRED_LOT_ID
+    - Label: Preferred Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 46
+    - Link Passing: OUTBOUND_ORDER_LINE_ID
+    - Link Target Items: P46_OUTBOUND_ORDER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Outbound Order Line
+    - Link To: Page 46
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 46: Outbound Order Line Form
+- Description: Create or maintain a single outbound order line record.
+- Comments: Modal maintenance form edits one outbound order line record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Outbound Order Line Form
+- Comments: Form maintains one outbound order line record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDER_LINES
+  - Primary Keys: OUTBOUND_ORDER_LINE_ID
+  - Summary: Form source for outbound order line maintenance.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Page Item Name: P46_OUTBOUND_ORDER_LINE_ID
+    - Render As: hidden
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Page Item Name: P46_OUTBOUND_ORDER_ID
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Required: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Page Item Name: P46_LINE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P46_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: PREFERRED_LOT_ID
+    - Label: Preferred Lot ID
+    - Datatype: number
+    - Page Item Name: P46_PREFERRED_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Page Item Name: P46_REQUESTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Page Item Name: P46_RESERVED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Page Item Name: P46_PICKED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Page Item Name: P46_PACKED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Page Item Name: P46_DISPATCHED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Page Item Name: P46_SHORT_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Page Item Name: P46_ALLOCATION_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDER_LINES_ALLOCATION_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 47: Partner Sites Search
+- Description: Search and review partner sites for warehouse operations.
+- Comments: Guided searchable list for partner sites with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Partner Site Smart Filters
+- Comments: Guided filters narrow partner sites by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Partner Site Search Results
+- Filters:
+  - Filter
+    - Name: P47_F_BUSINESS_PARTNER_ID
+     - Label: Business Partner ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS
+     - Database Column: BUSINESS_PARTNER_ID
+     - Datatype: number
+  - Filter
+    - Name: P47_F_CREATED_AT
+     - Label: Created At
+     - Render As: range
+     - Database Column: CREATED_AT
+     - Datatype: timestamp
+##### Region: Partner Site Search Results
+- Comments: Search results list partner sites and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_PARTNER_SITES
+  - Primary Keys: PARTNER_SITE_ID
+  - Summary: Partner Site Search Results uses SCM_PARTNER_SITES records for operational review.
+- Columns:
+  - Column Name: PARTNER_SITE_ID
+    - Label: Partner Site ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SITE_CODE
+    - Label: Site Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SITE_NAME
+    - Label: Site Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SITE_ROLE_CODE
+    - Label: Site Role
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES_SITE_ROLE_CODE
+    - Visible: true
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_PRIMARY_SITE
+    - Label: Is Primary Site
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 48
+    - Link Passing: PARTNER_SITE_ID
+    - Link Target Items: P48_PARTNER_SITE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 49
+    - Link Passing: PARTNER_SITE_ID
+    - Link Target Items: P49_PARTNER_SITE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Partner Site
+    - Link To: Page 49
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 48: Partner Site Detail
+- Description: Review the selected partner site and related operational records.
+- Comments: Detail workspace keeps the selected partner site context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Partner Site Context
+- Comments: Context region identifies the selected partner site and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: PARTNER_SITE_ID
+  - SQL:
+```sql
+select t.PARTNER_SITE_ID
+     , t.SITE_CODE
+     , t.SITE_NAME
+     , t.SITE_ROLE_CODE
+     , t.CITY_NAME
+     , t.STATE_REGION_NAME
+     , t.POSTAL_CODE
+     , t.COUNTRY_CODE
+     , t.BUSINESS_PARTNER_ID
+     , t.ADDRESS_LINE_1
+     , t.ADDRESS_LINE_2
+     , t.IS_PRIMARY_SITE
+from SCM_PARTNER_SITES t
+where t.PARTNER_SITE_ID = to_number(:P48_PARTNER_SITE_ID)
+```
+  - Summary: Single selected partner site context row.
+- Hidden Page Items: P48_PARTNER_SITE_ID
+- Columns:
+  - Column Name: PARTNER_SITE_ID
+    - Label: Partner Site ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SITE_CODE
+    - Label: Site Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SITE_NAME
+    - Label: Site Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SITE_ROLE_CODE
+    - Label: Site Role
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES_SITE_ROLE_CODE
+    - Visible: true
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_PRIMARY_SITE
+    - Label: Is Primary Site
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 49
+    - Link Passing: PARTNER_SITE_ID
+    - Link Target Items: P49_PARTNER_SITE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Inbound Receipts in Partner Site
+- Comments: Related inbound receipts filtered by the selected partner site context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPTS
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - Where: SOURCE_SITE_ID = to_number(:P48_PARTNER_SITE_ID)
+  - Summary: Inbound Receipts in Partner Site uses SCM_INBOUND_RECEIPTS records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Visible: true
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 19
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P19_INBOUND_RECEIPT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 20
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P20_INBOUND_RECEIPT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Outbound Orders in Partner Site
+- Comments: Related outbound orders filtered by the selected partner site context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDERS
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - Where: SHIP_TO_SITE_ID = to_number(:P48_PARTNER_SITE_ID)
+  - Summary: Outbound Orders in Partner Site uses SCM_OUTBOUND_ORDERS records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 43
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P43_OUTBOUND_ORDER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 44
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P44_OUTBOUND_ORDER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Returns in Partner Site
+- Comments: Related returns filtered by the selected partner site context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURNS
+  - Primary Keys: RETURN_ID
+  - Where: SOURCE_SITE_ID = to_number(:P48_PARTNER_SITE_ID)
+  - Summary: Returns in Partner Site uses SCM_RETURNS records for operational review.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 53
+    - Link Passing: RETURN_ID
+    - Link Target Items: P53_RETURN_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 54
+    - Link Passing: RETURN_ID
+    - Link Target Items: P54_RETURN_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 49: Partner Site Form
+- Description: Create or maintain a single partner site record.
+- Comments: Modal maintenance form edits one partner site record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Partner Site Form
+- Comments: Form maintains one partner site record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_PARTNER_SITES
+  - Primary Keys: PARTNER_SITE_ID
+  - Summary: Form source for partner site maintenance.
+- Columns:
+  - Column Name: PARTNER_SITE_ID
+    - Label: Partner Site ID
+    - Datatype: number
+    - Page Item Name: P49_PARTNER_SITE_ID
+    - Render As: hidden
+  - Column Name: BUSINESS_PARTNER_ID
+    - Label: Business Partner ID
+    - Datatype: number
+    - Page Item Name: P49_BUSINESS_PARTNER_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Required: true
+  - Column Name: SITE_CODE
+    - Label: Site Code
+    - Datatype: varchar2
+    - Page Item Name: P49_SITE_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: SITE_NAME
+    - Label: Site Name
+    - Datatype: varchar2
+    - Page Item Name: P49_SITE_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: SITE_ROLE_CODE
+    - Label: Site Role
+    - Datatype: varchar2
+    - Page Item Name: P49_SITE_ROLE_CODE
+    - Render As: selectList
+    - LOV: LOV_PARTNER_SITES_SITE_ROLE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Page Item Name: P49_ADDRESS_LINE_1
+    - Render As: textarea
+    - Required: true
+    - MaxLength: 200
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Page Item Name: P49_ADDRESS_LINE_2
+    - Render As: textarea
+    - MaxLength: 200
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Page Item Name: P49_CITY_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 100
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Page Item Name: P49_STATE_REGION_NAME
+    - Render As: textField
+    - MaxLength: 100
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Page Item Name: P49_POSTAL_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Page Item Name: P49_COUNTRY_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 2
+  - Column Name: IS_PRIMARY_SITE
+    - Label: Is Primary Site
+    - Datatype: boolean
+    - Page Item Name: P49_IS_PRIMARY_SITE
+    - Render As: checkbox
+    - Required: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Page Item Name: P49_IS_ACTIVE
+    - Render As: checkbox
+    - Required: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P49_CREATED_AT
+    - Render As: hidden
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Page Item Name: P49_CREATED_BY
+    - Render As: hidden
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 50: Replenishment Alerts Search
+- Description: Search and review replenishment alerts for warehouse operations.
+- Comments: Guided searchable list for replenishment alerts for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Replenishment Alert Smart Filters
+- Comments: Guided filters narrow replenishment alerts by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Replenishment Alert Search Results
+- Filters:
+  - Filter
+    - Name: P50_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P50_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P50_F_ITEM_WAREHOUSE_POLICY_ID
+     - Label: Item Warehouse Policy ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+     - Database Column: ITEM_WAREHOUSE_POLICY_ID
+     - Datatype: number
+  - Filter
+    - Name: P50_F_PICK_LOCATION_ID
+     - Label: Pick Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: PICK_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P50_F_RESERVE_LOCATION_ID
+     - Label: Reserve Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: RESERVE_LOCATION_ID
+     - Datatype: number
+##### Region: Replenishment Alert Search Results
+- Comments: Search results list replenishment alerts for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Summary: Replenishment Alert Search Results uses SCM_REPLENISHMENT_ALERTS records for operational review.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TARGET_QUANTITY
+    - Label: Target Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: RECOMMENDED_REPLENISHMENT_QUANTITY
+    - Label: Recommended Replenishment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: RAISED_AT
+    - Label: Raised At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ALERT_NOTES
+    - Label: Alert Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 51
+    - Link Passing: REPLENISHMENT_ALERT_ID
+    - Link Target Items: P51_REPLENISHMENT_ALERT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+- Actions:
+  - Action
+    - Label: Create Replenishment Alert
+    - Link To: Page 51
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+### Page 51: Replenishment Alert Form
+- Description: Create or maintain a single replenishment alert record.
+- Comments: Modal maintenance form edits one replenishment alert record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Inventory Control
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+#### Regions
+##### Region: Replenishment Alert Form
+- Comments: Form maintains one replenishment alert record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Summary: Form source for replenishment alert maintenance.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Page Item Name: P51_REPLENISHMENT_ALERT_ID
+    - Render As: hidden
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Page Item Name: P51_ALERT_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P51_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P51_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Page Item Name: P51_ITEM_WAREHOUSE_POLICY_ID
+    - Render As: selectList
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Page Item Name: P51_PICK_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Page Item Name: P51_RESERVE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Page Item Name: P51_ALERT_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Required: true
+    - MaxLength: 30
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Page Item Name: P51_ALERT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Page Item Name: P51_PRIORITY_CODE
+    - Render As: selectList
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Page Item Name: P51_AVAILABLE_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Page Item Name: P51_TRIGGER_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TARGET_QUANTITY
+    - Label: Target Quantity
+    - Datatype: number
+    - Page Item Name: P51_TARGET_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: RECOMMENDED_REPLENISHMENT_QUANTITY
+    - Label: Recommended Replenishment Quantity
+    - Datatype: number
+    - Page Item Name: P51_RECOMMENDED_REPLENISHMENT_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: RAISED_AT
+    - Label: Raised At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P51_RAISED_AT
+    - Render As: datePicker
+    - Required: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P51_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P51_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: ALERT_NOTES
+    - Label: Alert Notes
+    - Datatype: varchar2
+    - Page Item Name: P51_ALERT_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 52: Returns Search
+- Description: Search and review returns for warehouse operations.
+- Comments: Guided searchable list for returns with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Return Smart Filters
+- Comments: Guided filters narrow returns by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Return Search Results
+- Filters:
+  - Filter
+    - Name: P52_F_RETURN_TYPE_CODE
+     - Label: Return Type
+     - Render As: checkboxGroup
+     - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+     - Database Column: RETURN_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P52_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P52_F_SOURCE_PARTNER_ID
+     - Label: Source Partner ID
+     - Render As: checkboxGroup
+     - LOV: LOV_BUSINESS_PARTNERS
+     - Database Column: SOURCE_PARTNER_ID
+     - Datatype: number
+  - Filter
+    - Name: P52_F_SOURCE_SITE_ID
+     - Label: Source Site ID
+     - Render As: checkboxGroup
+     - LOV: LOV_PARTNER_SITES
+     - Database Column: SOURCE_SITE_ID
+     - Datatype: number
+  - Filter
+    - Name: P52_F_RELATED_OUTBOUND_ORDER_ID
+     - Label: Related Outbound Order ID
+     - Render As: checkboxGroup
+     - LOV: LOV_OUTBOUND_ORDERS
+     - Database Column: RELATED_OUTBOUND_ORDER_ID
+     - Datatype: number
+##### Region: Return Search Results
+- Comments: Search results list returns and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURNS
+  - Primary Keys: RETURN_ID
+  - Summary: Return Search Results uses SCM_RETURNS records for operational review.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_BY_USER_ID
+    - Label: Received By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ASSESSED_AT
+    - Label: Assessed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ASSESSED_BY_USER_ID
+    - Label: Assessed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 53
+    - Link Passing: RETURN_ID
+    - Link Target Items: P53_RETURN_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 54
+    - Link Passing: RETURN_ID
+    - Link Target Items: P54_RETURN_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Return
+    - Link To: Page 54
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 53: Return Detail
+- Description: Review the selected return and related operational records.
+- Comments: Detail workspace keeps the selected return context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Return Context
+- Comments: Context region identifies the selected return and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: RETURN_ID
+  - SQL:
+```sql
+select t.RETURN_ID
+     , t.RETURN_NUMBER
+     , t.RETURN_TYPE_CODE
+     , t.RETURN_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.RETURN_REASON_CODE
+     , t.REVIEW_REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.SOURCE_PARTNER_ID
+     , t.SOURCE_SITE_ID
+     , t.RELATED_OUTBOUND_ORDER_ID
+     , t.ASSIGNED_USER_ID
+from SCM_RETURNS t
+where t.RETURN_ID = to_number(:P53_RETURN_ID)
+```
+  - Summary: Single selected return context row.
+- Hidden Page Items: P53_RETURN_ID
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 54
+    - Link Passing: RETURN_ID
+    - Link Target Items: P54_RETURN_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Return Lines in Return
+- Comments: Related return lines filtered by the selected return context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURN_LINES
+  - Primary Keys: RETURN_LINE_ID
+  - Where: RETURN_ID = to_number(:P53_RETURN_ID)
+  - Summary: Return Lines in Return uses SCM_RETURN_LINES records for operational review.
+- Columns:
+  - Column Name: RETURN_LINE_ID
+    - Label: Return Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURNED_CONDITION_CODE
+    - Label: Returned Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+    - Visible: true
+  - Column Name: DISPOSITION_CODE
+    - Label: Disposition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_DISPOSITION_CODE
+    - Visible: true
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REUSABLE_QUANTITY
+    - Label: Reusable Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 56
+    - Link Passing: RETURN_LINE_ID
+    - Link Target Items: P56_RETURN_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Line
+    - Link To: Page 56
+    - Link Passing: P53_RETURN_ID
+    - Link Target Items: P56_RETURN_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 54: Return Form
+- Description: Create or maintain a single return record.
+- Comments: Modal maintenance form edits one return record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Return Form
+- Comments: Form maintains one return record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURNS
+  - Primary Keys: RETURN_ID
+  - Summary: Form source for return maintenance.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Page Item Name: P54_RETURN_ID
+    - Render As: hidden
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Page Item Name: P54_RETURN_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Page Item Name: P54_RETURN_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P54_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Page Item Name: P54_SOURCE_PARTNER_ID
+    - Render As: selectList
+    - LOV: LOV_BUSINESS_PARTNERS
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Page Item Name: P54_SOURCE_SITE_ID
+    - Render As: selectList
+    - LOV: LOV_PARTNER_SITES
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Page Item Name: P54_RELATED_OUTBOUND_ORDER_ID
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDERS
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P54_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Page Item Name: P54_RETURN_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Page Item Name: P54_REVIEW_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P54_RETURN_REASON_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P54_EXPECTED_ARRIVAL_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P54_RECEIVED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RECEIVED_BY_USER_ID
+    - Label: Received By User ID
+    - Datatype: number
+    - Page Item Name: P54_RECEIVED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: ASSESSED_AT
+    - Label: Assessed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P54_ASSESSED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ASSESSED_BY_USER_ID
+    - Label: Assessed By User ID
+    - Datatype: number
+    - Page Item Name: P54_ASSESSED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P54_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P54_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P54_REVIEW_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P54_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 55: Return Lines Search
+- Description: Search and review return lines for warehouse operations.
+- Comments: Guided searchable list for return lines for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Return Line Smart Filters
+- Comments: Guided filters narrow return lines by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Return Line Search Results
+- Filters:
+  - Filter
+    - Name: P55_F_RETURN_ID
+     - Label: Return ID
+     - Render As: checkboxGroup
+     - LOV: LOV_RETURNS
+     - Database Column: RETURN_ID
+     - Datatype: number
+  - Filter
+    - Name: P55_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P55_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P55_F_RETURNED_CONDITION_CODE
+     - Label: Returned Condition
+     - Render As: checkboxGroup
+     - LOV: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+     - Database Column: RETURNED_CONDITION_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P55_F_DISPOSITION_CODE
+     - Label: Disposition Code
+     - Render As: checkboxGroup
+     - LOV: LOV_RETURN_LINES_DISPOSITION_CODE
+     - Database Column: DISPOSITION_CODE
+     - Datatype: varchar2
+##### Region: Return Line Search Results
+- Comments: Search results list return lines for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURN_LINES
+  - Primary Keys: RETURN_LINE_ID
+  - Summary: Return Line Search Results uses SCM_RETURN_LINES records for operational review.
+- Columns:
+  - Column Name: RETURN_LINE_ID
+    - Label: Return Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURNED_CONDITION_CODE
+    - Label: Returned Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+    - Visible: true
+  - Column Name: DISPOSITION_CODE
+    - Label: Disposition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURN_LINES_DISPOSITION_CODE
+    - Visible: true
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REUSABLE_QUANTITY
+    - Label: Reusable Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: WRITEOFF_QUANTITY
+    - Label: Write-Off Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 56
+    - Link Passing: RETURN_LINE_ID
+    - Link Target Items: P56_RETURN_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Return Line
+    - Link To: Page 56
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 56: Return Line Form
+- Description: Create or maintain a single return line record.
+- Comments: Modal maintenance form edits one return line record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Return Line Form
+- Comments: Form maintains one return line record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURN_LINES
+  - Primary Keys: RETURN_LINE_ID
+  - Summary: Form source for return line maintenance.
+- Columns:
+  - Column Name: RETURN_LINE_ID
+    - Label: Return Line ID
+    - Datatype: number
+    - Page Item Name: P56_RETURN_LINE_ID
+    - Render As: hidden
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Page Item Name: P56_RETURN_ID
+    - Render As: selectList
+    - LOV: LOV_RETURNS
+    - Required: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Page Item Name: P56_LINE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P56_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P56_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Page Item Name: P56_EXPECTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Page Item Name: P56_RECEIVED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RETURNED_CONDITION_CODE
+    - Label: Returned Condition
+    - Datatype: varchar2
+    - Page Item Name: P56_RETURNED_CONDITION_CODE
+    - Render As: selectList
+    - LOV: LOV_RETURN_LINES_RETURNED_CONDITION_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REUSABLE_QUANTITY
+    - Label: Reusable Quantity
+    - Datatype: number
+    - Page Item Name: P56_REUSABLE_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUARANTINE_QUANTITY
+    - Label: Quarantine Quantity
+    - Datatype: number
+    - Page Item Name: P56_QUARANTINE_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DAMAGED_QUANTITY
+    - Label: Damaged Quantity
+    - Datatype: number
+    - Page Item Name: P56_DAMAGED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: WRITEOFF_QUANTITY
+    - Label: Write-Off Quantity
+    - Datatype: number
+    - Page Item Name: P56_WRITEOFF_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPOSITION_CODE
+    - Label: Disposition Code
+    - Datatype: varchar2
+    - Page Item Name: P56_DISPOSITION_CODE
+    - Render As: selectList
+    - LOV: LOV_RETURN_LINES_DISPOSITION_CODE
+    - Required: true
+    - MaxLength: 20
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 57: Serial Events Report
+- Description: Analyze serial events for traceability and operational audit.
+- Comments: Interactive traceability report supports plain-language analysis of serial events records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Traceability and Reporting
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Serial Events Report
+- Comments: Interactive report exposes serial events for audit, traceability, and natural-language analysis.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Interactive Report
+- Report Context: Provides serial lifecycle history derived from serial records and inventory transactions.
+- Data Source:
+  - Type: View
+  - Name: SCM_SERIAL_EVENTS
+  - Primary Keys: SERIAL_EVENT_ID
+  - Summary: Interactive report over SCM_SERIAL_EVENTS view records.
+- Columns:
+  - Column Name: EVENT_TYPE_CODE
+    - Label: Event Type Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Event type for the serial lifecycle history row.
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Source stock status for the serial lifecycle history row where available.
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Destination stock status for the serial lifecycle history row where available.
+  - Column Name: REFERENCE_DOCUMENT_TYPE
+    - Label: Reference Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Reference document type for the serial lifecycle history row.
+  - Column Name: REFERENCE_DOCUMENT_NUMBER
+    - Label: Reference Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Reference document number for the serial lifecycle history row.
+  - Column Name: SERIAL_EVENT_ID
+    - Label: Serial Event ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Identifier for the serial lifecycle history row.
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Serial associated with the serial lifecycle history row.
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Warehouse associated with the serial lifecycle history row.
+  - Column Name: FROM_LOCATION_ID
+    - Label: From Location ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Source location for the serial lifecycle history row where available.
+  - Column Name: TO_LOCATION_ID
+    - Label: To Location ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Destination location for the serial lifecycle history row where available.
+  - Column Name: EVENT_AT
+    - Label: Event At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Timestamp for the serial lifecycle history row.
+  - Column Name: PERFORMED_BY_USER_ID
+    - Label: Performed By User ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Actor associated with the serial lifecycle history row where available.
+  - Column Name: EVENT_NOTES
+    - Label: Event Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+    - Column Context: Notes for the serial lifecycle history row.
+### Page 58: Stock Adjustments Search
+- Description: Search and review stock adjustments for warehouse operations.
+- Comments: Guided searchable list for stock adjustments with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Adjustment Smart Filters
+- Comments: Guided filters narrow stock adjustments by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Adjustment Search Results
+- Filters:
+  - Filter
+    - Name: P58_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P58_F_ASSIGNED_USER_ID
+     - Label: Assigned User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: ASSIGNED_USER_ID
+     - Datatype: number
+  - Filter
+    - Name: P58_F_ADJUSTMENT_TYPE_CODE
+     - Label: Adjustment Type
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+     - Database Column: ADJUSTMENT_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P58_F_ADJUSTMENT_STATUS_CODE
+     - Label: Adjustment Status
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+     - Database Column: ADJUSTMENT_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P58_F_REQUESTED_BY_USER_ID
+     - Label: Requested By User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: REQUESTED_BY_USER_ID
+     - Datatype: number
+##### Region: Stock Adjustment Search Results
+- Comments: Search results list stock adjustments and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENTS
+  - Primary Keys: STOCK_ADJUSTMENT_ID
+  - Summary: Stock Adjustment Search Results uses SCM_STOCK_ADJUSTMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ADJUSTMENT_NUMBER
+    - Label: Adjustment Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADJUSTMENT_TYPE_CODE
+    - Label: Adjustment Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_STATUS_CODE
+    - Label: Adjustment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: APPLIED_BY_USER_ID
+    - Label: Applied By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: APPLIED_AT
+    - Label: Applied At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 59
+    - Link Passing: STOCK_ADJUSTMENT_ID
+    - Link Target Items: P59_STOCK_ADJUSTMENT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 60
+    - Link Passing: STOCK_ADJUSTMENT_ID
+    - Link Target Items: P60_STOCK_ADJUSTMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Adjustment
+    - Link To: Page 60
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 59: Stock Adjustment Detail
+- Description: Review the selected stock adjustment and related operational records.
+- Comments: Detail workspace keeps the selected stock adjustment context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Adjustment Context
+- Comments: Context region identifies the selected stock adjustment and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_ADJUSTMENT_ID
+  - SQL:
+```sql
+select t.STOCK_ADJUSTMENT_ID
+     , t.ADJUSTMENT_NUMBER
+     , t.ADJUSTMENT_TYPE_CODE
+     , t.ADJUSTMENT_STATUS_CODE
+     , t.REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.ASSIGNED_USER_ID
+     , t.REQUESTED_BY_USER_ID
+     , t.REQUESTED_AT
+     , t.REVIEWED_BY_USER_ID
+     , t.REVIEWED_AT
+     , t.APPLIED_BY_USER_ID
+from SCM_STOCK_ADJUSTMENTS t
+where t.STOCK_ADJUSTMENT_ID = to_number(:P59_STOCK_ADJUSTMENT_ID)
+```
+  - Summary: Single selected stock adjustment context row.
+- Hidden Page Items: P59_STOCK_ADJUSTMENT_ID
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ADJUSTMENT_NUMBER
+    - Label: Adjustment Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADJUSTMENT_TYPE_CODE
+    - Label: Adjustment Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_STATUS_CODE
+    - Label: Adjustment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: APPLIED_BY_USER_ID
+    - Label: Applied By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 60
+    - Link Passing: STOCK_ADJUSTMENT_ID
+    - Link Target Items: P60_STOCK_ADJUSTMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Adjustment Lines in Stock Adjustment
+- Comments: Related stock adjustment lines filtered by the selected stock adjustment context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Where: STOCK_ADJUSTMENT_ID = to_number(:P59_STOCK_ADJUSTMENT_ID)
+  - Summary: Stock Adjustment Lines in Stock Adjustment uses SCM_STOCK_ADJUSTMENT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Visible: true
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 62
+    - Link Passing: STOCK_ADJUSTMENT_LINE_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Line
+    - Link To: Page 62
+    - Link Passing: P59_STOCK_ADJUSTMENT_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 60: Stock Adjustment Form
+- Description: Create or maintain a single stock adjustment record.
+- Comments: Modal maintenance form edits one stock adjustment record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Adjustment Form
+- Comments: Form maintains one stock adjustment record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENTS
+  - Primary Keys: STOCK_ADJUSTMENT_ID
+  - Summary: Form source for stock adjustment maintenance.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Page Item Name: P60_STOCK_ADJUSTMENT_ID
+    - Render As: hidden
+  - Column Name: ADJUSTMENT_NUMBER
+    - Label: Adjustment Number
+    - Datatype: varchar2
+    - Page Item Name: P60_ADJUSTMENT_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P60_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P60_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: ADJUSTMENT_TYPE_CODE
+    - Label: Adjustment Type
+    - Datatype: varchar2
+    - Page Item Name: P60_ADJUSTMENT_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+    - Required: true
+    - MaxLength: 30
+  - Column Name: ADJUSTMENT_STATUS_CODE
+    - Label: Adjustment Status
+    - Datatype: varchar2
+    - Page Item Name: P60_ADJUSTMENT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P60_REASON_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Page Item Name: P60_REQUESTED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+    - Required: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P60_REQUESTED_AT
+    - Render As: datePicker
+    - Required: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P60_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P60_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: APPLIED_BY_USER_ID
+    - Label: Applied By User ID
+    - Datatype: number
+    - Page Item Name: P60_APPLIED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: APPLIED_AT
+    - Label: Applied At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P60_APPLIED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P60_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 61: Stock Adjustment Lines Search
+- Description: Search and review stock adjustment lines for warehouse operations.
+- Comments: Guided searchable list for stock adjustment lines for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Adjustment Line Smart Filters
+- Comments: Guided filters narrow stock adjustment lines by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Adjustment Line Search Results
+- Filters:
+  - Filter
+    - Name: P61_F_STOCK_ADJUSTMENT_ID
+     - Label: Stock Adjustment ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_ADJUSTMENTS
+     - Database Column: STOCK_ADJUSTMENT_ID
+     - Datatype: number
+  - Filter
+    - Name: P61_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P61_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P61_F_ITEM_SERIAL_ID
+     - Label: Item Serial ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEM_SERIALS
+     - Database Column: ITEM_SERIAL_ID
+     - Datatype: number
+  - Filter
+    - Name: P61_F_STORAGE_LOCATION_ID
+     - Label: Storage Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: STORAGE_LOCATION_ID
+     - Datatype: number
+##### Region: Stock Adjustment Line Search Results
+- Comments: Search results list stock adjustment lines for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Summary: Stock Adjustment Line Search Results uses SCM_STOCK_ADJUSTMENT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Visible: true
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 62
+    - Link Passing: STOCK_ADJUSTMENT_LINE_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Adjustment Line
+    - Link To: Page 62
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 62: Stock Adjustment Line Form
+- Description: Create or maintain a single stock adjustment line record.
+- Comments: Modal maintenance form edits one stock adjustment line record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Adjustment Line Form
+- Comments: Form maintains one stock adjustment line record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Summary: Form source for stock adjustment line maintenance.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Page Item Name: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Render As: hidden
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Page Item Name: P62_STOCK_ADJUSTMENT_ID
+    - Render As: selectList
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Required: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Page Item Name: P62_LINE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P62_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P62_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Page Item Name: P62_ITEM_SERIAL_ID
+    - Render As: selectList
+    - LOV: LOV_ITEM_SERIALS
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Page Item Name: P62_STORAGE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Required: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Page Item Name: P62_FROM_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - MaxLength: 20
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Page Item Name: P62_TO_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - MaxLength: 20
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Page Item Name: P62_ADJUSTMENT_DIRECTION_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Page Item Name: P62_ADJUSTMENT_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Page Item Name: P62_REASON_DESCRIPTION
+    - Render As: textarea
+    - MaxLength: 500
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 63: Stock Allocations Search
+- Description: Search and review stock allocations for warehouse operations.
+- Comments: Guided searchable list for stock allocations for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Allocation Smart Filters
+- Comments: Guided filters narrow stock allocations by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Allocation Search Results
+- Filters:
+  - Filter
+    - Name: P63_F_OUTBOUND_ORDER_LINE_ID
+     - Label: Outbound Order Line ID
+     - Render As: checkboxGroup
+     - LOV: LOV_OUTBOUND_ORDER_LINES
+     - Database Column: OUTBOUND_ORDER_LINE_ID
+     - Datatype: number
+  - Filter
+    - Name: P63_F_INVENTORY_BALANCE_ID
+     - Label: Inventory Balance ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_BALANCES
+     - Database Column: INVENTORY_BALANCE_ID
+     - Datatype: number
+  - Filter
+    - Name: P63_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P63_F_SOURCE_LOCATION_ID
+     - Label: Source Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: SOURCE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P63_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+##### Region: Stock Allocation Search Results
+- Comments: Search results list stock allocations for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Summary: Stock Allocation Search Results uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATED_QUANTITY
+    - Label: Allocated Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: FIFO_BASIS_DATE
+    - Label: FIFO Basis Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ALLOCATED_BY_USER_ID
+    - Label: Allocated By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ALLOCATED_AT
+    - Label: Allocated At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PICKED_BY_USER_ID
+    - Label: Picked By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PICKED_AT
+    - Label: Picked At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PACKED_BY_USER_ID
+    - Label: Packed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PACKED_AT
+    - Label: Packed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: DISPATCHED_BY_USER_ID
+    - Label: Dispatched By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: DISPATCHED_AT
+    - Label: Dispatched At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Allocation
+    - Link To: Page 64
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 64: Stock Allocation Form
+- Description: Create or maintain a single stock allocation record.
+- Comments: Modal maintenance form edits one stock allocation record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Allocation Form
+- Comments: Form maintains one stock allocation record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Summary: Form source for stock allocation maintenance.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Page Item Name: P64_STOCK_ALLOCATION_ID
+    - Render As: hidden
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Page Item Name: P64_ALLOCATION_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 40
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Page Item Name: P64_OUTBOUND_ORDER_LINE_ID
+    - Render As: selectList
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Required: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Page Item Name: P64_INVENTORY_BALANCE_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_BALANCES
+    - Required: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P64_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Page Item Name: P64_SOURCE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P64_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P64_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Page Item Name: P64_ITEM_SERIAL_ID
+    - Render As: selectList
+    - LOV: LOV_ITEM_SERIALS
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Page Item Name: P64_ALLOCATION_SEQUENCE
+    - Render As: numberField
+    - Required: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Page Item Name: P64_ALLOCATION_METHOD_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Page Item Name: P64_ALLOCATION_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ALLOCATED_QUANTITY
+    - Label: Allocated Quantity
+    - Datatype: number
+    - Page Item Name: P64_ALLOCATED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RESERVED_QUANTITY
+    - Label: Reserved Quantity
+    - Datatype: number
+    - Page Item Name: P64_RESERVED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PICKED_QUANTITY
+    - Label: Picked Quantity
+    - Datatype: number
+    - Page Item Name: P64_PICKED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: PACKED_QUANTITY
+    - Label: Packed Quantity
+    - Datatype: number
+    - Page Item Name: P64_PACKED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: DISPATCHED_QUANTITY
+    - Label: Dispatched Quantity
+    - Datatype: number
+    - Page Item Name: P64_DISPATCHED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHORT_QUANTITY
+    - Label: Short Quantity
+    - Datatype: number
+    - Page Item Name: P64_SHORT_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: FIFO_BASIS_DATE
+    - Label: FIFO Basis Date
+    - Datatype: date
+    - Page Item Name: P64_FIFO_BASIS_DATE
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ALLOCATED_BY_USER_ID
+    - Label: Allocated By User ID
+    - Datatype: number
+    - Page Item Name: P64_ALLOCATED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: ALLOCATED_AT
+    - Label: Allocated At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P64_ALLOCATED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PICKED_BY_USER_ID
+    - Label: Picked By User ID
+    - Datatype: number
+    - Page Item Name: P64_PICKED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: PICKED_AT
+    - Label: Picked At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P64_PICKED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PACKED_BY_USER_ID
+    - Label: Packed By User ID
+    - Datatype: number
+    - Page Item Name: P64_PACKED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: PACKED_AT
+    - Label: Packed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P64_PACKED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: DISPATCHED_BY_USER_ID
+    - Label: Dispatched By User ID
+    - Datatype: number
+    - Page Item Name: P64_DISPATCHED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: DISPATCHED_AT
+    - Label: Dispatched At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P64_DISPATCHED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 65: Stock Counts Search
+- Description: Search and review stock counts for warehouse operations.
+- Comments: Guided searchable list for stock counts with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Count Smart Filters
+- Comments: Guided filters narrow stock counts by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Count Search Results
+- Filters:
+  - Filter
+    - Name: P65_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P65_F_WAREHOUSE_AREA_ID
+     - Label: Warehouse Area ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSE_AREAS
+     - Database Column: WAREHOUSE_AREA_ID
+     - Datatype: number
+  - Filter
+    - Name: P65_F_STORAGE_LOCATION_ID
+     - Label: Storage Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: STORAGE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P65_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P65_F_ASSIGNED_USER_ID
+     - Label: Assigned User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: ASSIGNED_USER_ID
+     - Datatype: number
+##### Region: Stock Count Search Results
+- Comments: Search results list stock counts and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNTS
+  - Primary Keys: STOCK_COUNT_ID
+  - Summary: Stock Count Search Results uses SCM_STOCK_COUNTS records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PLANNED_END_AT
+    - Label: Planned End At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: STARTED_AT
+    - Label: Started At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: COMPLETED_AT
+    - Label: Completed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 66
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P66_STOCK_COUNT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 67
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P67_STOCK_COUNT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Count
+    - Link To: Page 67
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 66: Stock Count Detail
+- Description: Review the selected stock count and related operational records.
+- Comments: Detail workspace keeps the selected stock count context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Count Context
+- Comments: Context region identifies the selected stock count and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_COUNT_ID
+  - SQL:
+```sql
+select t.STOCK_COUNT_ID
+     , t.COUNT_NUMBER
+     , t.COUNT_SCOPE_CODE
+     , t.COUNT_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REVIEW_REASON_CODE
+     , t.WAREHOUSE_ID
+     , t.WAREHOUSE_AREA_ID
+     , t.STORAGE_LOCATION_ID
+     , t.ITEM_ID
+     , t.ASSIGNED_USER_ID
+     , t.PLANNED_START_AT
+from SCM_STOCK_COUNTS t
+where t.STOCK_COUNT_ID = to_number(:P66_STOCK_COUNT_ID)
+```
+  - Summary: Single selected stock count context row.
+- Hidden Page Items: P66_STOCK_COUNT_ID
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 67
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P67_STOCK_COUNT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Count Lines in Stock Count
+- Comments: Related stock count lines filtered by the selected stock count context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNT_LINES
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - Where: STOCK_COUNT_ID = to_number(:P66_STOCK_COUNT_ID)
+  - Summary: Stock Count Lines in Stock Count uses SCM_STOCK_COUNT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 69
+    - Link Passing: STOCK_COUNT_LINE_ID
+    - Link Target Items: P69_STOCK_COUNT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Line
+    - Link To: Page 69
+    - Link Passing: P66_STOCK_COUNT_ID
+    - Link Target Items: P69_STOCK_COUNT_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 67: Stock Count Form
+- Description: Create or maintain a single stock count record.
+- Comments: Modal maintenance form edits one stock count record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Count Form
+- Comments: Form maintains one stock count record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNTS
+  - Primary Keys: STOCK_COUNT_ID
+  - Summary: Form source for stock count maintenance.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Page Item Name: P67_STOCK_COUNT_ID
+    - Render As: hidden
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Page Item Name: P67_COUNT_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P67_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Page Item Name: P67_WAREHOUSE_AREA_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSE_AREAS
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Page Item Name: P67_STORAGE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P67_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P67_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Page Item Name: P67_COUNT_SCOPE_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Page Item Name: P67_COUNT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Page Item Name: P67_REVIEW_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P67_PLANNED_START_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: PLANNED_END_AT
+    - Label: Planned End At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P67_PLANNED_END_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: STARTED_AT
+    - Label: Started At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P67_STARTED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: COMPLETED_AT
+    - Label: Completed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P67_COMPLETED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Page Item Name: P67_REQUESTED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+    - Required: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P67_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P67_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P67_REVIEW_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P67_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 68: Stock Count Lines Search
+- Description: Search and review stock count lines for warehouse operations.
+- Comments: Guided searchable list for stock count lines for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Count Line Smart Filters
+- Comments: Guided filters narrow stock count lines by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Count Line Search Results
+- Filters:
+  - Filter
+    - Name: P68_F_STOCK_COUNT_ID
+     - Label: Stock Count ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_COUNTS
+     - Database Column: STOCK_COUNT_ID
+     - Datatype: number
+  - Filter
+    - Name: P68_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P68_F_STORAGE_LOCATION_ID
+     - Label: Storage Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: STORAGE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P68_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P68_F_FIRST_COUNTED_BY_USER_ID
+     - Label: First Counted By User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: FIRST_COUNTED_BY_USER_ID
+     - Datatype: number
+##### Region: Stock Count Line Search Results
+- Comments: Search results list stock count lines for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNT_LINES
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - Summary: Stock Count Line Search Results uses SCM_STOCK_COUNT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: FIRST_COUNTED_BY_USER_ID
+    - Label: First Counted By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: FIRST_COUNTED_AT
+    - Label: First Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 69
+    - Link Passing: STOCK_COUNT_LINE_ID
+    - Link Target Items: P69_STOCK_COUNT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Count Line
+    - Link To: Page 69
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 69: Stock Count Line Form
+- Description: Create or maintain a single stock count line record.
+- Comments: Modal maintenance form edits one stock count line record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Count Line Form
+- Comments: Form maintains one stock count line record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNT_LINES
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - Summary: Form source for stock count line maintenance.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Page Item Name: P69_STOCK_COUNT_LINE_ID
+    - Render As: hidden
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Page Item Name: P69_STOCK_COUNT_ID
+    - Render As: selectList
+    - LOV: LOV_STOCK_COUNTS
+    - Required: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Page Item Name: P69_LINE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P69_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Page Item Name: P69_STORAGE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P69_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Page Item Name: P69_EXPECTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Page Item Name: P69_COUNTED_QUANTITY
+    - Render As: numberField
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Page Item Name: P69_VARIANCE_QUANTITY
+    - Render As: hidden
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P69_VARIANCE_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: FIRST_COUNTED_BY_USER_ID
+    - Label: First Counted By User ID
+    - Datatype: number
+    - Page Item Name: P69_FIRST_COUNTED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: FIRST_COUNTED_AT
+    - Label: First Counted At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P69_FIRST_COUNTED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P69_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P69_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Page Item Name: P69_RESOLUTION_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Page Item Name: P69_LINE_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 70: Stock Movements Search
+- Description: Search and review stock movements for warehouse operations.
+- Comments: Guided searchable list for stock movements for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Movement Smart Filters
+- Comments: Guided filters narrow stock movements by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Movement Search Results
+- Filters:
+  - Filter
+    - Name: P70_F_MOVEMENT_TYPE_CODE
+     - Label: Movement Type
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+     - Database Column: MOVEMENT_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P70_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P70_F_SOURCE_LOCATION_ID
+     - Label: Source Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: SOURCE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P70_F_DESTINATION_LOCATION_ID
+     - Label: Destination Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: DESTINATION_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P70_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+##### Region: Stock Movement Search Results
+- Comments: Search results list stock movements for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_MOVEMENTS
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - Summary: Stock Movement Search Results uses SCM_STOCK_MOVEMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: MOVED_QUANTITY
+    - Label: Moved Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: CONFIRMED_BY_USER_ID
+    - Label: Confirmed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: CONFIRMED_AT
+    - Label: Confirmed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 71
+    - Link Passing: STOCK_MOVEMENT_ID
+    - Link Target Items: P71_STOCK_MOVEMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Movement
+    - Link To: Page 71
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 71: Stock Movement Form
+- Description: Create or maintain a single stock movement record.
+- Comments: Modal maintenance form edits one stock movement record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Movement Form
+- Comments: Form maintains one stock movement record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_MOVEMENTS
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - Summary: Form source for stock movement maintenance.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Page Item Name: P71_STOCK_MOVEMENT_ID
+    - Render As: hidden
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Page Item Name: P71_MOVEMENT_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Page Item Name: P71_MOVEMENT_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Required: true
+    - MaxLength: 30
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P71_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Page Item Name: P71_SOURCE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Page Item Name: P71_DESTINATION_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P71_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P71_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Page Item Name: P71_ITEM_SERIAL_ID
+    - Render As: selectList
+    - LOV: LOV_ITEM_SERIALS
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Page Item Name: P71_FROM_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - MaxLength: 20
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Page Item Name: P71_TO_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - MaxLength: 20
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Page Item Name: P71_REQUESTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: MOVED_QUANTITY
+    - Label: Moved Quantity
+    - Datatype: number
+    - Page Item Name: P71_MOVED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Page Item Name: P71_MOVEMENT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Page Item Name: P71_REVIEW_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P71_REASON_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P71_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Page Item Name: P71_REQUESTED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+    - Required: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P71_REQUESTED_AT
+    - Render As: datePicker
+    - Required: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: CONFIRMED_BY_USER_ID
+    - Label: Confirmed By User ID
+    - Datatype: number
+    - Page Item Name: P71_CONFIRMED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: CONFIRMED_AT
+    - Label: Confirmed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P71_CONFIRMED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P71_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P71_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P71_REVIEW_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Page Item Name: P71_SOURCE_DOCUMENT_TYPE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Page Item Name: P71_SOURCE_DOCUMENT_NUMBER
+    - Render As: textField
+    - MaxLength: 50
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P71_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 72: Stock Transfers Search
+- Description: Search and review stock transfers for warehouse operations.
+- Comments: Guided searchable list for stock transfers with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Transfer Smart Filters
+- Comments: Guided filters narrow stock transfers by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Transfer Search Results
+- Filters:
+  - Filter
+    - Name: P72_F_FROM_WAREHOUSE_ID
+     - Label: From Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: FROM_WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P72_F_TO_WAREHOUSE_ID
+     - Label: To Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: TO_WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P72_F_ASSIGNED_USER_ID
+     - Label: Assigned User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: ASSIGNED_USER_ID
+     - Datatype: number
+  - Filter
+    - Name: P72_F_TRANSFER_STATUS_CODE
+     - Label: Transfer Status
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+     - Database Column: TRANSFER_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P72_F_REVIEW_STATUS_CODE
+     - Label: Review Status
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+     - Database Column: REVIEW_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Stock Transfer Search Results
+- Comments: Search results list stock transfers and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFERS
+  - Primary Keys: STOCK_TRANSFER_ID
+  - Summary: Stock Transfer Search Results uses SCM_STOCK_TRANSFERS records for operational review.
+- Columns:
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: TRANSFER_NUMBER
+    - Label: Transfer Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TRANSFER_STATUS_CODE
+    - Label: Transfer Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_WAREHOUSE_ID
+    - Label: From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: TO_WAREHOUSE_ID
+    - Label: To Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_SHIPPED_AT
+    - Label: Actual Shipped At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: EXPECTED_RECEIPT_AT
+    - Label: Expected Receipt At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_RECEIVED_AT
+    - Label: Actual Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 73
+    - Link Passing: STOCK_TRANSFER_ID
+    - Link Target Items: P73_STOCK_TRANSFER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 74
+    - Link Passing: STOCK_TRANSFER_ID
+    - Link Target Items: P74_STOCK_TRANSFER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Transfer
+    - Link To: Page 74
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 73: Stock Transfer Detail
+- Description: Review the selected stock transfer and related operational records.
+- Comments: Detail workspace keeps the selected stock transfer context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Transfer Context
+- Comments: Context region identifies the selected stock transfer and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_TRANSFER_ID
+  - SQL:
+```sql
+select t.STOCK_TRANSFER_ID
+     , t.TRANSFER_NUMBER
+     , t.TRANSFER_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REVIEW_REASON_CODE
+     , t.REASON_CODE
+     , t.FROM_WAREHOUSE_ID
+     , t.TO_WAREHOUSE_ID
+     , t.ASSIGNED_USER_ID
+     , t.REQUESTED_SHIP_AT
+     , t.ACTUAL_SHIPPED_AT
+     , t.EXPECTED_RECEIPT_AT
+from SCM_STOCK_TRANSFERS t
+where t.STOCK_TRANSFER_ID = to_number(:P73_STOCK_TRANSFER_ID)
+```
+  - Summary: Single selected stock transfer context row.
+- Hidden Page Items: P73_STOCK_TRANSFER_ID
+- Columns:
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: TRANSFER_NUMBER
+    - Label: Transfer Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TRANSFER_STATUS_CODE
+    - Label: Transfer Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_WAREHOUSE_ID
+    - Label: From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: TO_WAREHOUSE_ID
+    - Label: To Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_SHIPPED_AT
+    - Label: Actual Shipped At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: EXPECTED_RECEIPT_AT
+    - Label: Expected Receipt At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 74
+    - Link Passing: STOCK_TRANSFER_ID
+    - Link Target Items: P74_STOCK_TRANSFER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Transfer Lines in Stock Transfer
+- Comments: Related stock transfer lines filtered by the selected stock transfer context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFER_LINES
+  - Primary Keys: STOCK_TRANSFER_LINE_ID
+  - Where: STOCK_TRANSFER_ID = to_number(:P73_STOCK_TRANSFER_ID)
+  - Summary: Stock Transfer Lines in Stock Transfer uses SCM_STOCK_TRANSFER_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_TRANSFER_LINE_ID
+    - Label: Stock Transfer Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHIPPED_QUANTITY
+    - Label: Shipped Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 76
+    - Link Passing: STOCK_TRANSFER_LINE_ID
+    - Link Target Items: P76_STOCK_TRANSFER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Line
+    - Link To: Page 76
+    - Link Passing: P73_STOCK_TRANSFER_ID
+    - Link Target Items: P76_STOCK_TRANSFER_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 74: Stock Transfer Form
+- Description: Create or maintain a single stock transfer record.
+- Comments: Modal maintenance form edits one stock transfer record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Transfer Form
+- Comments: Form maintains one stock transfer record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFERS
+  - Primary Keys: STOCK_TRANSFER_ID
+  - Summary: Form source for stock transfer maintenance.
+- Columns:
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Page Item Name: P74_STOCK_TRANSFER_ID
+    - Render As: hidden
+  - Column Name: TRANSFER_NUMBER
+    - Label: Transfer Number
+    - Datatype: varchar2
+    - Page Item Name: P74_TRANSFER_NUMBER
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: FROM_WAREHOUSE_ID
+    - Label: From Warehouse ID
+    - Datatype: number
+    - Page Item Name: P74_FROM_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: TO_WAREHOUSE_ID
+    - Label: To Warehouse ID
+    - Datatype: number
+    - Page Item Name: P74_TO_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Page Item Name: P74_ASSIGNED_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: TRANSFER_STATUS_CODE
+    - Label: Transfer Status
+    - Datatype: varchar2
+    - Page Item Name: P74_TRANSFER_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Page Item Name: P74_REVIEW_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P74_REQUESTED_SHIP_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_SHIPPED_AT
+    - Label: Actual Shipped At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P74_ACTUAL_SHIPPED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: EXPECTED_RECEIPT_AT
+    - Label: Expected Receipt At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P74_EXPECTED_RECEIPT_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_RECEIVED_AT
+    - Label: Actual Received At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P74_ACTUAL_RECEIVED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Page Item Name: P74_REQUESTED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+    - Required: true
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Page Item Name: P74_REVIEWED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P74_REVIEWED_AT
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P74_REVIEW_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P74_REASON_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P74_NOTES
+    - Render As: textarea
+    - MaxLength: 1000
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 75: Stock Transfer Lines Search
+- Description: Search and review stock transfer lines for warehouse operations.
+- Comments: Guided searchable list for stock transfer lines for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+#### Regions
+##### Region: Stock Transfer Line Smart Filters
+- Comments: Guided filters narrow stock transfer lines by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Stock Transfer Line Search Results
+- Filters:
+  - Filter
+    - Name: P75_F_STOCK_TRANSFER_ID
+     - Label: Stock Transfer ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STOCK_TRANSFERS
+     - Database Column: STOCK_TRANSFER_ID
+     - Datatype: number
+  - Filter
+    - Name: P75_F_ITEM_ID
+     - Label: Item ID
+     - Render As: checkboxGroup
+     - LOV: LOV_ITEMS
+     - Database Column: ITEM_ID
+     - Datatype: number
+  - Filter
+    - Name: P75_F_INVENTORY_LOT_ID
+     - Label: Inventory Lot ID
+     - Render As: checkboxGroup
+     - LOV: LOV_INVENTORY_LOTS
+     - Database Column: INVENTORY_LOT_ID
+     - Datatype: number
+  - Filter
+    - Name: P75_F_SOURCE_LOCATION_ID
+     - Label: Source Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: SOURCE_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P75_F_DESTINATION_LOCATION_ID
+     - Label: Destination Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: DESTINATION_LOCATION_ID
+     - Datatype: number
+##### Region: Stock Transfer Line Search Results
+- Comments: Search results list stock transfer lines for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFER_LINES
+  - Primary Keys: STOCK_TRANSFER_LINE_ID
+  - Summary: Stock Transfer Line Search Results uses SCM_STOCK_TRANSFER_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_TRANSFER_LINE_ID
+    - Label: Stock Transfer Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHIPPED_QUANTITY
+    - Label: Shipped Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_DISCREPANCY
+    - Label: Quantity Discrepancy
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 76
+    - Link Passing: STOCK_TRANSFER_LINE_ID
+    - Link Target Items: P76_STOCK_TRANSFER_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+- Actions:
+  - Action
+    - Label: Create Stock Transfer Line
+    - Link To: Page 76
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+### Page 76: Stock Transfer Line Form
+- Description: Create or maintain a single stock transfer line record.
+- Comments: Modal maintenance form edits one stock transfer line record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Warehouse Operations
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+#### Regions
+##### Region: Stock Transfer Line Form
+- Comments: Form maintains one stock transfer line record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_TRANSFER_LINES
+  - Primary Keys: STOCK_TRANSFER_LINE_ID
+  - Summary: Form source for stock transfer line maintenance.
+- Columns:
+  - Column Name: STOCK_TRANSFER_LINE_ID
+    - Label: Stock Transfer Line ID
+    - Datatype: number
+    - Page Item Name: P76_STOCK_TRANSFER_LINE_ID
+    - Render As: hidden
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Page Item Name: P76_STOCK_TRANSFER_ID
+    - Render As: selectList
+    - LOV: LOV_STOCK_TRANSFERS
+    - Required: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Page Item Name: P76_LINE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Page Item Name: P76_ITEM_ID
+    - Render As: selectList
+    - LOV: LOV_ITEMS
+    - Required: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Page Item Name: P76_INVENTORY_LOT_ID
+    - Render As: selectList
+    - LOV: LOV_INVENTORY_LOTS
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Page Item Name: P76_SOURCE_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Required: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Page Item Name: P76_DESTINATION_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Page Item Name: P76_REQUESTED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHIPPED_QUANTITY
+    - Label: Shipped Quantity
+    - Datatype: number
+    - Page Item Name: P76_SHIPPED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Page Item Name: P76_RECEIVED_QUANTITY
+    - Render As: numberField
+    - Required: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_DISCREPANCY
+    - Label: Quantity Discrepancy
+    - Datatype: number
+    - Page Item Name: P76_QUANTITY_DISCREPANCY
+    - Render As: hidden
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Page Item Name: P76_LINE_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Page Item Name: P76_DISCREPANCY_REASON_CODE
+    - Render As: textField
+    - MaxLength: 30
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 77: Storage Locations Search
+- Description: Search and review storage locations for warehouse operations.
+- Comments: Guided searchable list for storage locations with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Storage Location Smart Filters
+- Comments: Guided filters narrow storage locations by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Storage Location Search Results
+- Filters:
+  - Filter
+    - Name: P77_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P77_F_WAREHOUSE_AREA_ID
+     - Label: Warehouse Area ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSE_AREAS
+     - Database Column: WAREHOUSE_AREA_ID
+     - Datatype: number
+  - Filter
+    - Name: P77_F_PARENT_LOCATION_ID
+     - Label: Parent Location ID
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS
+     - Database Column: PARENT_LOCATION_ID
+     - Datatype: number
+  - Filter
+    - Name: P77_F_LOCATION_TYPE_CODE
+     - Label: Location Type
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+     - Database Column: LOCATION_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P77_F_LOCATION_STATUS_CODE
+     - Label: Location Status
+     - Render As: checkboxGroup
+     - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+     - Database Column: LOCATION_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Storage Location Search Results
+- Comments: Search results list storage locations and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STORAGE_LOCATIONS
+  - Primary Keys: STORAGE_LOCATION_ID
+  - Summary: Storage Location Search Results uses SCM_STORAGE_LOCATIONS records for operational review.
+- Columns:
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOCATION_CODE
+    - Label: Location Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_NAME
+    - Label: Location Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_TYPE_CODE
+    - Label: Location Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Visible: true
+  - Column Name: LOCATION_STATUS_CODE
+    - Label: Location Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: AISLE_CODE
+    - Label: Aisle Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BAY_CODE
+    - Label: Bay Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LEVEL_CODE
+    - Label: Level Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSITION_CODE
+    - Label: Position Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: PARENT_LOCATION_ID
+    - Label: Parent Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: IS_PICKABLE
+    - Label: Is Pickable
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 78
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P78_STORAGE_LOCATION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 79
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P79_STORAGE_LOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Storage Location
+    - Link To: Page 79
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 78: Storage Location Detail
+- Description: Review the selected storage location and related operational records.
+- Comments: Detail workspace keeps the selected storage location context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Storage Location Context
+- Comments: Context region identifies the selected storage location and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STORAGE_LOCATION_ID
+  - SQL:
+```sql
+select t.STORAGE_LOCATION_ID
+     , t.LOCATION_CODE
+     , t.LOCATION_NAME
+     , t.LOCATION_TYPE_CODE
+     , t.LOCATION_STATUS_CODE
+     , t.AISLE_CODE
+     , t.BAY_CODE
+     , t.LEVEL_CODE
+     , t.POSITION_CODE
+     , t.WAREHOUSE_ID
+     , t.WAREHOUSE_AREA_ID
+     , t.PARENT_LOCATION_ID
+from SCM_STORAGE_LOCATIONS t
+where t.STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+```
+  - Summary: Single selected storage location context row.
+- Hidden Page Items: P78_STORAGE_LOCATION_ID
+- Columns:
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOCATION_CODE
+    - Label: Location Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_NAME
+    - Label: Location Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_TYPE_CODE
+    - Label: Location Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Visible: true
+  - Column Name: LOCATION_STATUS_CODE
+    - Label: Location Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: AISLE_CODE
+    - Label: Aisle Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BAY_CODE
+    - Label: Bay Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LEVEL_CODE
+    - Label: Level Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSITION_CODE
+    - Label: Position Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: PARENT_LOCATION_ID
+    - Label: Parent Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 79
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P79_STORAGE_LOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Inbound Receipt Lines in Storage Location
+- Comments: Consolidated related inbound receipt lines in storage location rows by relationship role for the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: INBOUND_RECEIPT_LINE_ID
+  - SQL:
+```sql
+select t.INBOUND_RECEIPT_LINE_ID
+     , t.LINE_NUMBER
+     , t.RECEIVED_CONDITION_CODE
+     , t.LINE_STATUS_CODE
+     , t.DISCREPANCY_REASON_CODE
+     , t.INBOUND_RECEIPT_ID
+     , t.ITEM_ID
+     , t.INVENTORY_LOT_ID
+     , t.RECEIVING_LOCATION_ID
+     , t.FINAL_PUTAWAY_LOCATION_ID
+     , t.EXPECTED_QUANTITY
+     , t.RECEIVED_QUANTITY
+     , case
+           when t.RECEIVING_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Receiving Location'
+           when t.FINAL_PUTAWAY_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Final Putaway Location'
+       end as RELATIONSHIP_ROLE
+from SCM_INBOUND_RECEIPT_LINES t
+where t.RECEIVING_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+   or t.FINAL_PUTAWAY_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+```
+  - Summary: Inbound Receipt Lines in Storage Location consolidates SCM_INBOUND_RECEIPT_LINES records across relationship roles.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_LINE_ID
+    - Label: Inbound Receipt Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIVED_CONDITION_CODE
+    - Label: Received Condition
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_RECEIVED_CONDITION_CODE
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: RECEIVING_LOCATION_ID
+    - Label: Receiving Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: FINAL_PUTAWAY_LOCATION_ID
+    - Label: Final Putaway Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+##### Region: Inventory Balances in Storage Location
+- Comments: Related inventory balances filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_BALANCES
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - Where: STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Inventory Balances in Storage Location uses SCM_INVENTORY_BALANCES records for operational review.
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 24
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P24_INVENTORY_BALANCE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 25
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P25_INVENTORY_BALANCE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Item Serials in Storage Location
+- Comments: Related item serials filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_SERIALS
+  - Primary Keys: ITEM_SERIAL_ID
+  - Where: CURRENT_STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Item Serials in Storage Location uses SCM_ITEM_SERIALS records for operational review.
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Visible: true
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 34
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P34_ITEM_SERIAL_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 35
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P35_ITEM_SERIAL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Operational Exceptions in Storage Location
+- Comments: Related operational exceptions filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Where: STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Operational Exceptions in Storage Location uses SCM_OPERATIONAL_EXCEPTIONS records for operational review.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Replenishment Alerts in Storage Location
+- Comments: Consolidated related replenishment alerts in storage location rows by relationship role for the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - SQL:
+```sql
+select t.REPLENISHMENT_ALERT_ID
+     , t.ALERT_NUMBER
+     , t.ALERT_TYPE_CODE
+     , t.ALERT_STATUS_CODE
+     , t.PRIORITY_CODE
+     , t.WAREHOUSE_ID
+     , t.ITEM_ID
+     , t.ITEM_WAREHOUSE_POLICY_ID
+     , t.PICK_LOCATION_ID
+     , t.RESERVE_LOCATION_ID
+     , t.AVAILABLE_QUANTITY
+     , t.TRIGGER_QUANTITY
+     , case
+           when t.PICK_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Pick Location'
+           when t.RESERVE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Reserve Location'
+       end as RELATIONSHIP_ROLE
+from SCM_REPLENISHMENT_ALERTS t
+where t.PICK_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+   or t.RESERVE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+```
+  - Summary: Replenishment Alerts in Storage Location consolidates SCM_REPLENISHMENT_ALERTS records across relationship roles.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+##### Region: Stock Adjustment Lines in Storage Location
+- Comments: Related stock adjustment lines filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENT_LINES
+  - Primary Keys: STOCK_ADJUSTMENT_LINE_ID
+  - Where: STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Stock Adjustment Lines in Storage Location uses SCM_STOCK_ADJUSTMENT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_LINE_ID
+    - Label: Stock Adjustment Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_DIRECTION_CODE
+    - Label: Adjustment Direction
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENT_LINES_ADJUSTMENT_DIRECTION_CODE
+    - Visible: true
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ADJUSTMENT_QUANTITY
+    - Label: Adjustment Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REASON_DESCRIPTION
+    - Label: Reason Description
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 62
+    - Link Passing: STOCK_ADJUSTMENT_LINE_ID
+    - Link Target Items: P62_STOCK_ADJUSTMENT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Allocations in Storage Location
+- Comments: Related stock allocations filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Where: SOURCE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Stock Allocations in Storage Location uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Counts in Storage Location
+- Comments: Related stock counts filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNTS
+  - Primary Keys: STOCK_COUNT_ID
+  - Where: STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Stock Counts in Storage Location uses SCM_STOCK_COUNTS records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 66
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P66_STOCK_COUNT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 67
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P67_STOCK_COUNT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Count Lines in Storage Location
+- Comments: Related stock count lines filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNT_LINES
+  - Primary Keys: STOCK_COUNT_LINE_ID
+  - Where: STORAGE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Stock Count Lines in Storage Location uses SCM_STOCK_COUNT_LINES records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_LINE_ID
+    - Label: Stock Count Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: VARIANCE_REASON_CODE
+    - Label: Variance Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNT_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: EXPECTED_QUANTITY
+    - Label: Expected Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: COUNTED_QUANTITY
+    - Label: Counted Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: VARIANCE_QUANTITY
+    - Label: Variance Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+- Links:
+  - Link:
+    - Link To: Page 69
+    - Link Passing: STOCK_COUNT_LINE_ID
+    - Link Target Items: P69_STOCK_COUNT_LINE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Movements in Storage Location
+- Comments: Consolidated related stock movements in storage location rows by relationship role for the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - SQL:
+```sql
+select t.STOCK_MOVEMENT_ID
+     , t.MOVEMENT_NUMBER
+     , t.MOVEMENT_TYPE_CODE
+     , t.FROM_STATUS_CODE
+     , t.TO_STATUS_CODE
+     , t.MOVEMENT_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REASON_CODE
+     , t.REVIEW_REASON_CODE
+     , t.SOURCE_DOCUMENT_TYPE
+     , t.SOURCE_DOCUMENT_NUMBER
+     , t.WAREHOUSE_ID
+     , t.SOURCE_LOCATION_ID
+     , t.DESTINATION_LOCATION_ID
+     , case
+           when t.SOURCE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Source Location'
+           when t.DESTINATION_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Destination Location'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_MOVEMENTS t
+where t.SOURCE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+   or t.DESTINATION_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+```
+  - Summary: Stock Movements in Storage Location consolidates SCM_STOCK_MOVEMENTS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+##### Region: Stock Transfer Lines in Storage Location
+- Comments: Consolidated related stock transfer lines in storage location rows by relationship role for the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_TRANSFER_LINE_ID
+  - SQL:
+```sql
+select t.STOCK_TRANSFER_LINE_ID
+     , t.LINE_NUMBER
+     , t.LINE_STATUS_CODE
+     , t.DISCREPANCY_REASON_CODE
+     , t.STOCK_TRANSFER_ID
+     , t.ITEM_ID
+     , t.INVENTORY_LOT_ID
+     , t.SOURCE_LOCATION_ID
+     , t.DESTINATION_LOCATION_ID
+     , t.REQUESTED_QUANTITY
+     , t.SHIPPED_QUANTITY
+     , t.RECEIVED_QUANTITY
+     , case
+           when t.SOURCE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Source Location'
+           when t.DESTINATION_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID) then 'Destination Location'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_TRANSFER_LINES t
+where t.SOURCE_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+   or t.DESTINATION_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+```
+  - Summary: Stock Transfer Lines in Storage Location consolidates SCM_STOCK_TRANSFER_LINES records across relationship roles.
+- Columns:
+  - Column Name: STOCK_TRANSFER_LINE_ID
+    - Label: Stock Transfer Line ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_NUMBER
+    - Label: Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LINE_STATUS_CODE
+    - Label: Line Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFER_LINES_LINE_STATUS_CODE
+    - Visible: true
+  - Column Name: DISCREPANCY_REASON_CODE
+    - Label: Discrepancy Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: DESTINATION_LOCATION_ID
+    - Label: Destination Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: REQUESTED_QUANTITY
+    - Label: Requested Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: SHIPPED_QUANTITY
+    - Label: Shipped Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: RECEIVED_QUANTITY
+    - Label: Received Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+##### Region: Storage Locations in Storage Location
+- Comments: Related storage locations filtered by the selected storage location context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STORAGE_LOCATIONS
+  - Primary Keys: STORAGE_LOCATION_ID
+  - Where: PARENT_LOCATION_ID = to_number(:P78_STORAGE_LOCATION_ID)
+  - Summary: Storage Locations in Storage Location uses SCM_STORAGE_LOCATIONS records for operational review.
+- Columns:
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOCATION_CODE
+    - Label: Location Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_NAME
+    - Label: Location Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_TYPE_CODE
+    - Label: Location Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Visible: true
+  - Column Name: LOCATION_STATUS_CODE
+    - Label: Location Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: AISLE_CODE
+    - Label: Aisle Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BAY_CODE
+    - Label: Bay Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LEVEL_CODE
+    - Label: Level Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSITION_CODE
+    - Label: Position Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: PARENT_LOCATION_ID
+    - Label: Parent Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 78
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P78_STORAGE_LOCATION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 79
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P79_STORAGE_LOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Child Location
+    - Link To: Page 79
+    - Link Passing: P78_STORAGE_LOCATION_ID
+    - Link Target Items: P79_PARENT_LOCATION_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 79: Storage Location Form
+- Description: Create or maintain a single storage location record.
+- Comments: Modal maintenance form edits one storage location record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Storage Location Form
+- Comments: Form maintains one storage location record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_STORAGE_LOCATIONS
+  - Primary Keys: STORAGE_LOCATION_ID
+  - Summary: Form source for storage location maintenance.
+- Columns:
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Page Item Name: P79_STORAGE_LOCATION_ID
+    - Render As: hidden
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P79_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Page Item Name: P79_WAREHOUSE_AREA_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Required: true
+  - Column Name: PARENT_LOCATION_ID
+    - Label: Parent Location ID
+    - Datatype: number
+    - Page Item Name: P79_PARENT_LOCATION_ID
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS
+  - Column Name: LOCATION_CODE
+    - Label: Location Code
+    - Datatype: varchar2
+    - Page Item Name: P79_LOCATION_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 50
+  - Column Name: LOCATION_NAME
+    - Label: Location Name
+    - Datatype: varchar2
+    - Page Item Name: P79_LOCATION_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: LOCATION_TYPE_CODE
+    - Label: Location Type
+    - Datatype: varchar2
+    - Page Item Name: P79_LOCATION_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: LOCATION_STATUS_CODE
+    - Label: Location Status
+    - Datatype: varchar2
+    - Page Item Name: P79_LOCATION_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: AISLE_CODE
+    - Label: Aisle Code
+    - Datatype: varchar2
+    - Page Item Name: P79_AISLE_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: BAY_CODE
+    - Label: Bay Code
+    - Datatype: varchar2
+    - Page Item Name: P79_BAY_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: LEVEL_CODE
+    - Label: Level Code
+    - Datatype: varchar2
+    - Page Item Name: P79_LEVEL_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: POSITION_CODE
+    - Label: Position Code
+    - Datatype: varchar2
+    - Page Item Name: P79_POSITION_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: IS_PICKABLE
+    - Label: Is Pickable
+    - Datatype: boolean
+    - Page Item Name: P79_IS_PICKABLE
+    - Render As: checkbox
+    - Required: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Page Item Name: P79_IS_ACTIVE
+    - Render As: checkbox
+    - Required: true
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 80: User Roles Search
+- Description: Search and review user roles for warehouse operations.
+- Comments: Guided searchable list for user roles with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: User Role Smart Filters
+- Comments: Guided filters narrow user roles by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: User Role Search Results
+- Filters:
+  - Filter
+    - Name: P80_F_ROLE_SCOPE_CODE
+     - Label: Role Scope
+     - Render As: checkboxGroup
+     - LOV: LOV_USER_ROLES_ROLE_SCOPE_CODE
+     - Database Column: ROLE_SCOPE_CODE
+     - Datatype: varchar2
+##### Region: User Role Search Results
+- Comments: Search results list user roles and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_USER_ROLES
+  - Primary Keys: USER_ROLE_ID
+  - Summary: User Role Search Results uses SCM_USER_ROLES records for operational review.
+- Columns:
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ROLE_CODE
+    - Label: Role Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ROLE_NAME
+    - Label: Role Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ROLE_SCOPE_CODE
+    - Label: Role Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLES_ROLE_SCOPE_CODE
+    - Visible: true
+  - Column Name: APPROVAL_AUTHORITY_LEVEL
+    - Label: Approval Authority Level
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_SYSTEM_ROLE
+    - Label: Is System Role
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ROLE_NOTES
+    - Label: Role Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 81
+    - Link Passing: USER_ROLE_ID
+    - Link Target Items: P81_USER_ROLE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator
+  - Link:
+    - Link To: Page 82
+    - Link Passing: USER_ROLE_ID
+    - Link Target Items: P82_USER_ROLE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create User Role
+    - Link To: Page 82
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 81: User Role Detail
+- Description: Review the selected user role and related operational records.
+- Comments: Detail workspace keeps the selected user role context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: User Role Context
+- Comments: Context region identifies the selected user role and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: USER_ROLE_ID
+  - SQL:
+```sql
+select t.USER_ROLE_ID
+     , t.ROLE_CODE
+     , t.ROLE_NAME
+     , t.ROLE_SCOPE_CODE
+     , t.APPROVAL_AUTHORITY_LEVEL
+     , t.IS_SYSTEM_ROLE
+     , t.IS_ACTIVE
+     , t.ROLE_NOTES
+from SCM_USER_ROLES t
+where t.USER_ROLE_ID = to_number(:P81_USER_ROLE_ID)
+```
+  - Summary: Single selected user role context row.
+- Hidden Page Items: P81_USER_ROLE_ID
+- Columns:
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ROLE_CODE
+    - Label: Role Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ROLE_NAME
+    - Label: Role Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ROLE_SCOPE_CODE
+    - Label: Role Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLES_ROLE_SCOPE_CODE
+    - Visible: true
+  - Column Name: APPROVAL_AUTHORITY_LEVEL
+    - Label: Approval Authority Level
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_SYSTEM_ROLE
+    - Label: Is System Role
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ROLE_NOTES
+    - Label: Role Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 82
+    - Link Passing: USER_ROLE_ID
+    - Link Target Items: P82_USER_ROLE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+##### Region: User Role Assignments in User Role
+- Comments: Related user role assignments filtered by the selected user role context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_USER_ROLE_ASSIGNMENTS
+  - Primary Keys: USER_ROLE_ASSIGNMENT_ID
+  - Where: USER_ROLE_ID = to_number(:P81_USER_ROLE_ID)
+  - Summary: User Role Assignments in User Role uses SCM_USER_ROLE_ASSIGNMENTS records for operational review.
+- Columns:
+  - Column Name: USER_ROLE_ASSIGNMENT_ID
+    - Label: User Role Assignment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ASSIGNMENT_STATUS_CODE
+    - Label: Assignment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: AUTHORITY_LEVEL_OVERRIDE
+    - Label: Authority Level Override
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EFFECTIVE_FROM_DATE
+    - Label: Effective From Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EFFECTIVE_TO_DATE
+    - Label: Effective To Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ASSIGNED_BY_USER_ID
+    - Label: Assigned By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: IS_PRIMARY_ROLE
+    - Label: Is Primary Role
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ASSIGNMENT_NOTES
+    - Label: Assignment Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 84
+    - Link Passing: USER_ROLE_ASSIGNMENT_ID
+    - Link Target Items: P84_USER_ROLE_ASSIGNMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create Assignment
+    - Link To: Page 84
+    - Link Passing: P81_USER_ROLE_ID
+    - Link Target Items: P84_USER_ROLE_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 82: User Role Form
+- Description: Create or maintain a single user role record.
+- Comments: Modal maintenance form edits one user role record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: User Role Form
+- Comments: Form maintains one user role record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_USER_ROLES
+  - Primary Keys: USER_ROLE_ID
+  - Summary: Form source for user role maintenance.
+- Columns:
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Page Item Name: P82_USER_ROLE_ID
+    - Render As: hidden
+  - Column Name: ROLE_CODE
+    - Label: Role Code
+    - Datatype: varchar2
+    - Page Item Name: P82_ROLE_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: ROLE_NAME
+    - Label: Role Name
+    - Datatype: varchar2
+    - Page Item Name: P82_ROLE_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 100
+  - Column Name: ROLE_SCOPE_CODE
+    - Label: Role Scope
+    - Datatype: varchar2
+    - Page Item Name: P82_ROLE_SCOPE_CODE
+    - Render As: selectList
+    - LOV: LOV_USER_ROLES_ROLE_SCOPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: APPROVAL_AUTHORITY_LEVEL
+    - Label: Approval Authority Level
+    - Datatype: number
+    - Page Item Name: P82_APPROVAL_AUTHORITY_LEVEL
+    - Render As: numberField
+    - Required: true
+  - Column Name: IS_SYSTEM_ROLE
+    - Label: Is System Role
+    - Datatype: boolean
+    - Page Item Name: P82_IS_SYSTEM_ROLE
+    - Render As: checkbox
+    - Required: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Page Item Name: P82_IS_ACTIVE
+    - Render As: checkbox
+    - Required: true
+  - Column Name: ROLE_NOTES
+    - Label: Role Notes
+    - Datatype: varchar2
+    - Page Item Name: P82_ROLE_NOTES
+    - Render As: textarea
+    - MaxLength: 500
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 83: User Role Assignments Search
+- Description: Search and review user role assignments for warehouse operations.
+- Comments: Guided searchable list for user role assignments for leaf-row review and modal maintenance.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: User Role Assignment Smart Filters
+- Comments: Guided filters narrow user role assignments by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: User Role Assignment Search Results
+- Filters:
+  - Filter
+    - Name: P83_F_APPLICATION_USER_ID
+     - Label: Application User ID
+     - Render As: checkboxGroup
+     - LOV: LOV_APPLICATION_USERS
+     - Database Column: APPLICATION_USER_ID
+     - Datatype: number
+  - Filter
+    - Name: P83_F_USER_ROLE_ID
+     - Label: User Role ID
+     - Render As: checkboxGroup
+     - LOV: LOV_USER_ROLES
+     - Database Column: USER_ROLE_ID
+     - Datatype: number
+  - Filter
+    - Name: P83_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P83_F_ASSIGNMENT_STATUS_CODE
+     - Label: Assignment Status
+     - Render As: checkboxGroup
+     - LOV: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+     - Database Column: ASSIGNMENT_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P83_F_EFFECTIVE_FROM_DATE
+     - Label: Effective From Date
+     - Render As: range
+     - Database Column: EFFECTIVE_FROM_DATE
+     - Datatype: date
+##### Region: User Role Assignment Search Results
+- Comments: Search results list user role assignments for review without opening a separate detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_USER_ROLE_ASSIGNMENTS
+  - Primary Keys: USER_ROLE_ASSIGNMENT_ID
+  - Summary: User Role Assignment Search Results uses SCM_USER_ROLE_ASSIGNMENTS records for operational review.
+- Columns:
+  - Column Name: USER_ROLE_ASSIGNMENT_ID
+    - Label: User Role Assignment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ASSIGNMENT_STATUS_CODE
+    - Label: Assignment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: AUTHORITY_LEVEL_OVERRIDE
+    - Label: Authority Level Override
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EFFECTIVE_FROM_DATE
+    - Label: Effective From Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EFFECTIVE_TO_DATE
+    - Label: Effective To Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ASSIGNED_BY_USER_ID
+    - Label: Assigned By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: IS_PRIMARY_ROLE
+    - Label: Is Primary Role
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ASSIGNMENT_NOTES
+    - Label: Assignment Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 84
+    - Link Passing: USER_ROLE_ASSIGNMENT_ID
+    - Link Target Items: P84_USER_ROLE_ASSIGNMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+- Actions:
+  - Action
+    - Label: Create User Role Assignment
+    - Link To: Page 84
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator
+### Page 84: User Role Assignment Form
+- Description: Create or maintain a single user role assignment record.
+- Comments: Modal maintenance form edits one user role assignment record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Administration
+- Security Requirements:
+  - Authorized Roles: Administrator
+#### Regions
+##### Region: User Role Assignment Form
+- Comments: Form maintains one user role assignment record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_USER_ROLE_ASSIGNMENTS
+  - Primary Keys: USER_ROLE_ASSIGNMENT_ID
+  - Summary: Form source for user role assignment maintenance.
+- Columns:
+  - Column Name: USER_ROLE_ASSIGNMENT_ID
+    - Label: User Role Assignment ID
+    - Datatype: number
+    - Page Item Name: P84_USER_ROLE_ASSIGNMENT_ID
+    - Render As: hidden
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Page Item Name: P84_APPLICATION_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+    - Required: true
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Page Item Name: P84_USER_ROLE_ID
+    - Render As: selectList
+    - LOV: LOV_USER_ROLES
+    - Required: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P84_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+  - Column Name: ASSIGNMENT_STATUS_CODE
+    - Label: Assignment Status
+    - Datatype: varchar2
+    - Page Item Name: P84_ASSIGNMENT_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: AUTHORITY_LEVEL_OVERRIDE
+    - Label: Authority Level Override
+    - Datatype: number
+    - Page Item Name: P84_AUTHORITY_LEVEL_OVERRIDE
+    - Render As: numberField
+  - Column Name: EFFECTIVE_FROM_DATE
+    - Label: Effective From Date
+    - Datatype: date
+    - Page Item Name: P84_EFFECTIVE_FROM_DATE
+    - Render As: datePicker
+    - Required: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EFFECTIVE_TO_DATE
+    - Label: Effective To Date
+    - Datatype: date
+    - Page Item Name: P84_EFFECTIVE_TO_DATE
+    - Render As: datePicker
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ASSIGNED_BY_USER_ID
+    - Label: Assigned By User ID
+    - Datatype: number
+    - Page Item Name: P84_ASSIGNED_BY_USER_ID
+    - Render As: selectList
+    - LOV: LOV_APPLICATION_USERS
+  - Column Name: IS_PRIMARY_ROLE
+    - Label: Is Primary Role
+    - Datatype: boolean
+    - Page Item Name: P84_IS_PRIMARY_ROLE
+    - Render As: checkbox
+    - Required: true
+  - Column Name: ASSIGNMENT_NOTES
+    - Label: Assignment Notes
+    - Datatype: varchar2
+    - Page Item Name: P84_ASSIGNMENT_NOTES
+    - Render As: textarea
+    - MaxLength: 500
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 85: Warehouses Search
+- Description: Search and review warehouses for warehouse operations.
+- Comments: Guided searchable list for warehouses with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Warehouse Smart Filters
+- Comments: Guided filters narrow warehouses by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Warehouse Search Results
+- Filters:
+  - Filter
+    - Name: P85_F_WAREHOUSE_STATUS_CODE
+     - Label: Warehouse Status
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES_WAREHOUSE_STATUS_CODE
+     - Database Column: WAREHOUSE_STATUS_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P85_F_CREATED_AT
+     - Label: Created At
+     - Render As: range
+     - Database Column: CREATED_AT
+     - Datatype: timestamp
+##### Region: Warehouse Search Results
+- Comments: Search results list warehouses and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_WAREHOUSES
+  - Primary Keys: WAREHOUSE_ID
+  - Summary: Warehouse Search Results uses SCM_WAREHOUSES records for operational review.
+- Columns:
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: WAREHOUSE_CODE
+    - Label: Warehouse Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_NAME
+    - Label: Warehouse Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_STATUS_CODE
+    - Label: Warehouse Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES_WAREHOUSE_STATUS_CODE
+    - Visible: true
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 86
+    - Link Passing: WAREHOUSE_ID
+    - Link Target Items: P86_WAREHOUSE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 87
+    - Link Passing: WAREHOUSE_ID
+    - Link Target Items: P87_WAREHOUSE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Warehouse
+    - Link To: Page 87
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Warehouse Location Map
+- Comments: Map shows warehouse geometry alongside the searchable warehouse list.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Map
+  - Qualifier: sdoGeometry
+- Data Source:
+  - Type: Table
+  - Name: SCM_WAREHOUSES
+  - Primary Keys: WAREHOUSE_ID
+  - Summary: Warehouse map uses WAREHOUSE_GEOMETRY for location visualization.
+- Columns:
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: WAREHOUSE_GEOMETRY
+    - Label: Warehouse Geometry
+    - Datatype: sdoGeometry
+    - Render As: geometryCol
+    - Visible: true
+  - Column Name: WAREHOUSE_NAME
+    - Label: Warehouse Name
+    - Datatype: varchar2
+    - Render As: tooltip
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 86
+    - Link Type: Edit
+    - Link Passing: WAREHOUSE_ID
+    - Link Target Items: P86_WAREHOUSE_ID
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+### Page 86: Warehouse Detail
+- Description: Review the selected warehouse and related operational records.
+- Comments: Detail workspace keeps the selected warehouse context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Warehouse Context
+- Comments: Context region identifies the selected warehouse and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: WAREHOUSE_ID
+  - SQL:
+```sql
+select t.WAREHOUSE_ID
+     , t.WAREHOUSE_CODE
+     , t.WAREHOUSE_NAME
+     , t.WAREHOUSE_STATUS_CODE
+     , t.CITY_NAME
+     , t.STATE_REGION_NAME
+     , t.POSTAL_CODE
+     , t.COUNTRY_CODE
+     , t.ADDRESS_LINE_1
+     , t.ADDRESS_LINE_2
+     , t.CREATED_AT
+     , t.CREATED_BY
+from SCM_WAREHOUSES t
+where t.WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+```
+  - Summary: Single selected warehouse context row.
+- Hidden Page Items: P86_WAREHOUSE_ID
+- Columns:
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: WAREHOUSE_CODE
+    - Label: Warehouse Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_NAME
+    - Label: Warehouse Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_STATUS_CODE
+    - Label: Warehouse Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES_WAREHOUSE_STATUS_CODE
+    - Visible: true
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 87
+    - Link Passing: WAREHOUSE_ID
+    - Link Target Items: P87_WAREHOUSE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Application Users in Warehouse
+- Comments: Related application users filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_APPLICATION_USERS
+  - Primary Keys: APPLICATION_USER_ID
+  - Where: DEFAULT_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Application Users in Warehouse uses SCM_APPLICATION_USERS records for operational review.
+- Columns:
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: USER_NAME
+    - Label: User Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FULL_NAME
+    - Label: Full Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: USER_STATUS_CODE
+    - Label: User Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS_USER_STATUS_CODE
+    - Visible: true
+  - Column Name: EMAIL_ADDRESS
+    - Label: Email Address
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: DEFAULT_WAREHOUSE_ID
+    - Label: Default Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MANAGER_USER_ID
+    - Label: Manager User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: USER_NOTES
+    - Label: User Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 8
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P8_APPLICATION_USER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator
+  - Link:
+    - Link To: Page 9
+    - Link Passing: APPLICATION_USER_ID
+    - Link Target Items: P9_APPLICATION_USER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+##### Region: Inbound Receipts in Warehouse
+- Comments: Related inbound receipts filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INBOUND_RECEIPTS
+  - Primary Keys: INBOUND_RECEIPT_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Inbound Receipts in Warehouse uses SCM_INBOUND_RECEIPTS records for operational review.
+- Columns:
+  - Column Name: INBOUND_RECEIPT_ID
+    - Label: Inbound Receipt ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RECEIPT_NUMBER
+    - Label: Receipt Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RECEIPT_SOURCE_CODE
+    - Label: Receipt Source
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_SOURCE_CODE
+    - Visible: true
+  - Column Name: RECEIPT_STATUS_CODE
+    - Label: Receipt Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_RECEIPT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INBOUND_RECEIPTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: EXPECTED_ARRIVAL_AT
+    - Label: Expected Arrival At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 19
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P19_INBOUND_RECEIPT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 20
+    - Link Passing: INBOUND_RECEIPT_ID
+    - Link Target Items: P20_INBOUND_RECEIPT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Inventory Balances in Warehouse
+- Comments: Related inventory balances filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_INVENTORY_BALANCES
+  - Primary Keys: INVENTORY_BALANCE_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Inventory Balances in Warehouse uses SCM_INVENTORY_BALANCES records for operational review.
+- Columns:
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: STOCK_STATUS_CODE
+    - Label: Stock Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES_STOCK_STATUS_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: QUANTITY_ON_HAND
+    - Label: Quantity On Hand
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_RESERVED
+    - Label: Quantity Reserved
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: QUANTITY_AVAILABLE
+    - Label: Quantity Available
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: LAST_COUNTED_AT
+    - Label: Last Counted At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 24
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P24_INVENTORY_BALANCE_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 25
+    - Link Passing: INVENTORY_BALANCE_ID
+    - Link Target Items: P25_INVENTORY_BALANCE_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Item Serials in Warehouse
+- Comments: Related item serials filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_SERIALS
+  - Primary Keys: ITEM_SERIAL_ID
+  - Where: CURRENT_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Item Serials in Warehouse uses SCM_ITEM_SERIALS records for operational review.
+- Columns:
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: SERIAL_NUMBER
+    - Label: Serial Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: CURRENT_STATUS_CODE
+    - Label: Current Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_CURRENT_STATUS_CODE
+    - Visible: true
+  - Column Name: SERIAL_CONDITION_CODE
+    - Label: Serial Condition Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS_SERIAL_CONDITION_CODE
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_TYPE
+    - Label: Last Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LAST_DOCUMENT_NUMBER
+    - Label: Last Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: CURRENT_WAREHOUSE_ID
+    - Label: Current Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CURRENT_STORAGE_LOCATION_ID
+    - Label: Current Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RECEIVED_AT
+    - Label: Received At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: LAST_MOVED_AT
+    - Label: Last Moved At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 34
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P34_ITEM_SERIAL_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 35
+    - Link Passing: ITEM_SERIAL_ID
+    - Link Target Items: P35_ITEM_SERIAL_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Item Warehouse Policies in Warehouse
+- Comments: Related item warehouse policies filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_ITEM_WAREHOUSE_POLICIES
+  - Primary Keys: ITEM_WAREHOUSE_POLICY_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Item Warehouse Policies in Warehouse uses SCM_ITEM_WAREHOUSE_POLICIES records for operational review.
+- Columns:
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: MINIMUM_STOCK_QUANTITY
+    - Label: Minimum Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REORDER_POINT_QUANTITY
+    - Label: Reorder Point Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REORDER_TARGET_QUANTITY
+    - Label: Reorder Target Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: SAFETY_STOCK_QUANTITY
+    - Label: Safety Stock Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: REPLENISHMENT_LEAD_TIME_DAYS
+    - Label: Replenishment Lead Time Days
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOW_STOCK_ALERT_ENABLED_FLAG
+    - Label: Low Stock Alert Enabled Flag
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: IS_ACTIVE
+    - Label: Is Active
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 37
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P37_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 38
+    - Link Passing: ITEM_WAREHOUSE_POLICY_ID
+    - Link Target Items: P38_ITEM_WAREHOUSE_POLICY_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Operational Exceptions in Warehouse
+- Comments: Related operational exceptions filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OPERATIONAL_EXCEPTIONS
+  - Primary Keys: OPERATIONAL_EXCEPTION_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Operational Exceptions in Warehouse uses SCM_OPERATIONAL_EXCEPTIONS records for operational review.
+- Columns:
+  - Column Name: OPERATIONAL_EXCEPTION_ID
+    - Label: Operational Exception ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: EXCEPTION_NUMBER
+    - Label: Exception Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EXCEPTION_TYPE_CODE
+    - Label: Exception Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_EXCEPTION_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_RECORD_TYPE_CODE
+    - Label: Related Record Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_RELATED_RECORD_TYPE_CODE
+    - Visible: true
+  - Column Name: RELATED_LINE_NUMBER
+    - Label: Related Line Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: SEVERITY_CODE
+    - Label: Severity Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OPERATIONAL_EXCEPTIONS_SEVERITY_CODE
+    - Visible: true
+  - Column Name: RESOLUTION_CODE
+    - Label: Resolution Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RELATED_RECORD_ID
+    - Label: Related Record ID
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 40
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P40_OPERATIONAL_EXCEPTION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 41
+    - Link Passing: OPERATIONAL_EXCEPTION_ID
+    - Link Target Items: P41_OPERATIONAL_EXCEPTION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Outbound Orders in Warehouse
+- Comments: Related outbound orders filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_OUTBOUND_ORDERS
+  - Primary Keys: OUTBOUND_ORDER_ID
+  - Where: SHIP_FROM_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Outbound Orders in Warehouse uses SCM_OUTBOUND_ORDERS records for operational review.
+- Columns:
+  - Column Name: OUTBOUND_ORDER_ID
+    - Label: Outbound Order ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: OUTBOUND_ORDER_NUMBER
+    - Label: Outbound Order Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ORDER_TYPE_CODE
+    - Label: Order Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_ORDER_TYPE_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_STATUS_CODE
+    - Label: Outbound Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_OUTBOUND_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SHIP_FROM_WAREHOUSE_ID
+    - Label: Ship From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: CUSTOMER_PARTNER_ID
+    - Label: Customer Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SHIP_TO_SITE_ID
+    - Label: Ship To Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: CARRIER_PARTNER_ID
+    - Label: Carrier Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ORDER_DATE
+    - Label: Order Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+- Links:
+  - Link:
+    - Link To: Page 43
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P43_OUTBOUND_ORDER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 44
+    - Link Passing: OUTBOUND_ORDER_ID
+    - Link Target Items: P44_OUTBOUND_ORDER_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Replenishment Alerts in Warehouse
+- Comments: Related replenishment alerts filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_REPLENISHMENT_ALERTS
+  - Primary Keys: REPLENISHMENT_ALERT_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Replenishment Alerts in Warehouse uses SCM_REPLENISHMENT_ALERTS records for operational review.
+- Columns:
+  - Column Name: REPLENISHMENT_ALERT_ID
+    - Label: Replenishment Alert ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALERT_NUMBER
+    - Label: Alert Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALERT_TYPE_CODE
+    - Label: Alert Type Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_TYPE_CODE
+    - Visible: true
+  - Column Name: ALERT_STATUS_CODE
+    - Label: Alert Status Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_ALERT_STATUS_CODE
+    - Visible: true
+  - Column Name: PRIORITY_CODE
+    - Label: Priority Code
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_REPLENISHMENT_ALERTS_PRIORITY_CODE
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ITEM_WAREHOUSE_POLICY_ID
+    - Label: Item Warehouse Policy ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_WAREHOUSE_POLICIES
+    - Visible: true
+  - Column Name: PICK_LOCATION_ID
+    - Label: Pick Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: RESERVE_LOCATION_ID
+    - Label: Reserve Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: AVAILABLE_QUANTITY
+    - Label: Available Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+  - Column Name: TRIGGER_QUANTITY
+    - Label: Trigger Quantity
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: FM999G999G999G990D0000
+- Links:
+  - Link:
+    - Link To: Page 51
+    - Link Passing: REPLENISHMENT_ALERT_ID
+    - Link Target Items: P51_REPLENISHMENT_ALERT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Quality User
+##### Region: Returns in Warehouse
+- Comments: Related returns filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_RETURNS
+  - Primary Keys: RETURN_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Returns in Warehouse uses SCM_RETURNS records for operational review.
+- Columns:
+  - Column Name: RETURN_ID
+    - Label: Return ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RETURN_NUMBER
+    - Label: Return Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: RETURN_TYPE_CODE
+    - Label: Return Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_TYPE_CODE
+    - Visible: true
+  - Column Name: RETURN_STATUS_CODE
+    - Label: Return Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_RETURN_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_RETURNS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: RETURN_REASON_CODE
+    - Label: Return Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_PARTNER_ID
+    - Label: Source Partner ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_BUSINESS_PARTNERS
+    - Visible: true
+  - Column Name: SOURCE_SITE_ID
+    - Label: Source Site ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_PARTNER_SITES
+    - Visible: true
+  - Column Name: RELATED_OUTBOUND_ORDER_ID
+    - Label: Related Outbound Order ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDERS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 53
+    - Link Passing: RETURN_ID
+    - Link Target Items: P53_RETURN_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 54
+    - Link Passing: RETURN_ID
+    - Link Target Items: P54_RETURN_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Adjustments in Warehouse
+- Comments: Related stock adjustments filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ADJUSTMENTS
+  - Primary Keys: STOCK_ADJUSTMENT_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Stock Adjustments in Warehouse uses SCM_STOCK_ADJUSTMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_ADJUSTMENT_ID
+    - Label: Stock Adjustment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ADJUSTMENT_NUMBER
+    - Label: Adjustment Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ADJUSTMENT_TYPE_CODE
+    - Label: Adjustment Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: ADJUSTMENT_STATUS_CODE
+    - Label: Adjustment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ADJUSTMENTS_ADJUSTMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_BY_USER_ID
+    - Label: Requested By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_AT
+    - Label: Requested At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: REVIEWED_BY_USER_ID
+    - Label: Reviewed By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REVIEWED_AT
+    - Label: Reviewed At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: APPLIED_BY_USER_ID
+    - Label: Applied By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 59
+    - Link Passing: STOCK_ADJUSTMENT_ID
+    - Link Target Items: P59_STOCK_ADJUSTMENT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 60
+    - Link Passing: STOCK_ADJUSTMENT_ID
+    - Link Target Items: P60_STOCK_ADJUSTMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Allocations in Warehouse
+- Comments: Related stock allocations filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_ALLOCATIONS
+  - Primary Keys: STOCK_ALLOCATION_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Stock Allocations in Warehouse uses SCM_STOCK_ALLOCATIONS records for operational review.
+- Columns:
+  - Column Name: STOCK_ALLOCATION_ID
+    - Label: Stock Allocation ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: ALLOCATION_NUMBER
+    - Label: Allocation Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ALLOCATION_METHOD_CODE
+    - Label: Allocation Method
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_METHOD_CODE
+    - Visible: true
+  - Column Name: ALLOCATION_STATUS_CODE
+    - Label: Allocation Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_ALLOCATIONS_ALLOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: OUTBOUND_ORDER_LINE_ID
+    - Label: Outbound Order Line ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_OUTBOUND_ORDER_LINES
+    - Visible: true
+  - Column Name: INVENTORY_BALANCE_ID
+    - Label: Inventory Balance ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_BALANCES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: SOURCE_LOCATION_ID
+    - Label: Source Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: INVENTORY_LOT_ID
+    - Label: Inventory Lot ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_INVENTORY_LOTS
+    - Visible: true
+  - Column Name: ITEM_SERIAL_ID
+    - Label: Item Serial ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEM_SERIALS
+    - Visible: true
+  - Column Name: ALLOCATION_SEQUENCE
+    - Label: Allocation Sequence
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 64
+    - Link Passing: STOCK_ALLOCATION_ID
+    - Link Target Items: P64_STOCK_ALLOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Counts in Warehouse
+- Comments: Related stock counts filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNTS
+  - Primary Keys: STOCK_COUNT_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Stock Counts in Warehouse uses SCM_STOCK_COUNTS records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 66
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P66_STOCK_COUNT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 67
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P67_STOCK_COUNT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Movements in Warehouse
+- Comments: Related stock movements filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_MOVEMENTS
+  - Primary Keys: STOCK_MOVEMENT_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Stock Movements in Warehouse uses SCM_STOCK_MOVEMENTS records for operational review.
+- Columns:
+  - Column Name: STOCK_MOVEMENT_ID
+    - Label: Stock Movement ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: MOVEMENT_NUMBER
+    - Label: Movement Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: MOVEMENT_TYPE_CODE
+    - Label: Movement Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_TYPE_CODE
+    - Visible: true
+  - Column Name: FROM_STATUS_CODE
+    - Label: From Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_FROM_STATUS_CODE
+    - Visible: true
+  - Column Name: TO_STATUS_CODE
+    - Label: To Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_TO_STATUS_CODE
+    - Visible: true
+  - Column Name: MOVEMENT_STATUS_CODE
+    - Label: Movement Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_MOVEMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_MOVEMENTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_TYPE
+    - Label: Source Document Type
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: SOURCE_DOCUMENT_NUMBER
+    - Label: Source Document Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 71
+    - Link Passing: STOCK_MOVEMENT_ID
+    - Link Target Items: P71_STOCK_MOVEMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Stock Transfers in Warehouse
+- Comments: Consolidated related stock transfers in warehouse rows by relationship role for the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: SQL
+  - Primary Keys: STOCK_TRANSFER_ID
+  - SQL:
+```sql
+select t.STOCK_TRANSFER_ID
+     , t.TRANSFER_NUMBER
+     , t.TRANSFER_STATUS_CODE
+     , t.REVIEW_STATUS_CODE
+     , t.REVIEW_REASON_CODE
+     , t.REASON_CODE
+     , t.FROM_WAREHOUSE_ID
+     , t.TO_WAREHOUSE_ID
+     , t.ASSIGNED_USER_ID
+     , t.REQUESTED_SHIP_AT
+     , t.ACTUAL_SHIPPED_AT
+     , t.EXPECTED_RECEIPT_AT
+     , case
+           when t.FROM_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID) then 'From Warehouse'
+           when t.TO_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID) then 'To Warehouse'
+       end as RELATIONSHIP_ROLE
+from SCM_STOCK_TRANSFERS t
+where t.FROM_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+   or t.TO_WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+```
+  - Summary: Stock Transfers in Warehouse consolidates SCM_STOCK_TRANSFERS records across relationship roles.
+- Columns:
+  - Column Name: STOCK_TRANSFER_ID
+    - Label: Stock Transfer ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: RELATIONSHIP_ROLE
+    - Label: Relationship Role
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TRANSFER_NUMBER
+    - Label: Transfer Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: TRANSFER_STATUS_CODE
+    - Label: Transfer Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_TRANSFER_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_TRANSFERS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: REASON_CODE
+    - Label: Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: FROM_WAREHOUSE_ID
+    - Label: From Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: TO_WAREHOUSE_ID
+    - Label: To Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: REQUESTED_SHIP_AT
+    - Label: Requested Ship At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: ACTUAL_SHIPPED_AT
+    - Label: Actual Shipped At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+  - Column Name: EXPECTED_RECEIPT_AT
+    - Label: Expected Receipt At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 73
+    - Link Passing: STOCK_TRANSFER_ID
+    - Link Target Items: P73_STOCK_TRANSFER_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+##### Region: Storage Locations in Warehouse
+- Comments: Related storage locations filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STORAGE_LOCATIONS
+  - Primary Keys: STORAGE_LOCATION_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Storage Locations in Warehouse uses SCM_STORAGE_LOCATIONS records for operational review.
+- Columns:
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOCATION_CODE
+    - Label: Location Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_NAME
+    - Label: Location Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_TYPE_CODE
+    - Label: Location Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Visible: true
+  - Column Name: LOCATION_STATUS_CODE
+    - Label: Location Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: AISLE_CODE
+    - Label: Aisle Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BAY_CODE
+    - Label: Bay Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LEVEL_CODE
+    - Label: Level Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSITION_CODE
+    - Label: Position Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: PARENT_LOCATION_ID
+    - Label: Parent Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 78
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P78_STORAGE_LOCATION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 79
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P79_STORAGE_LOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Location
+    - Link To: Page 79
+    - Link Passing: P86_WAREHOUSE_ID
+    - Link Target Items: P79_WAREHOUSE_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: User Role Assignments in Warehouse
+- Comments: Related user role assignments filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_USER_ROLE_ASSIGNMENTS
+  - Primary Keys: USER_ROLE_ASSIGNMENT_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: User Role Assignments in Warehouse uses SCM_USER_ROLE_ASSIGNMENTS records for operational review.
+- Columns:
+  - Column Name: USER_ROLE_ASSIGNMENT_ID
+    - Label: User Role Assignment ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: APPLICATION_USER_ID
+    - Label: Application User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: ASSIGNMENT_STATUS_CODE
+    - Label: Assignment Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLE_ASSIGNMENTS_ASSIGNMENT_STATUS_CODE
+    - Visible: true
+  - Column Name: USER_ROLE_ID
+    - Label: User Role ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_USER_ROLES
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: AUTHORITY_LEVEL_OVERRIDE
+    - Label: Authority Level Override
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: EFFECTIVE_FROM_DATE
+    - Label: Effective From Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: EFFECTIVE_TO_DATE
+    - Label: Effective To Date
+    - Datatype: date
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY
+  - Column Name: ASSIGNED_BY_USER_ID
+    - Label: Assigned By User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: IS_PRIMARY_ROLE
+    - Label: Is Primary Role
+    - Datatype: boolean
+    - Render As: plainText
+    - Visible: true
+  - Column Name: ASSIGNMENT_NOTES
+    - Label: Assignment Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 84
+    - Link Passing: USER_ROLE_ASSIGNMENT_ID
+    - Link Target Items: P84_USER_ROLE_ASSIGNMENT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator
+##### Region: Warehouse Areas in Warehouse
+- Comments: Related warehouse areas filtered by the selected warehouse context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_WAREHOUSE_AREAS
+  - Primary Keys: WAREHOUSE_AREA_ID
+  - Where: WAREHOUSE_ID = to_number(:P86_WAREHOUSE_ID)
+  - Summary: Warehouse Areas in Warehouse uses SCM_WAREHOUSE_AREAS records for operational review.
+- Columns:
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: AREA_CODE
+    - Label: Area Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: AREA_NAME
+    - Label: Area Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: AREA_TYPE_CODE
+    - Label: Area Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_TYPE_CODE
+    - Visible: true
+  - Column Name: AREA_STATUS_CODE
+    - Label: Area Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_STATUS_CODE
+    - Visible: true
+  - Column Name: SEQUENCE_NUMBER
+    - Label: Sequence Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 89
+    - Link Passing: WAREHOUSE_AREA_ID
+    - Link Target Items: P89_WAREHOUSE_AREA_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 90
+    - Link Passing: WAREHOUSE_AREA_ID
+    - Link Target Items: P90_WAREHOUSE_AREA_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Area
+    - Link To: Page 90
+    - Link Passing: P86_WAREHOUSE_ID
+    - Link Target Items: P90_WAREHOUSE_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 87: Warehouse Form
+- Description: Create or maintain a single warehouse record.
+- Comments: Modal maintenance form edits one warehouse record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Warehouse Form
+- Comments: Form maintains one warehouse record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_WAREHOUSES
+  - Primary Keys: WAREHOUSE_ID
+  - Summary: Form source for warehouse maintenance.
+- Columns:
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P87_WAREHOUSE_ID
+    - Render As: hidden
+  - Column Name: WAREHOUSE_CODE
+    - Label: Warehouse Code
+    - Datatype: varchar2
+    - Page Item Name: P87_WAREHOUSE_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: WAREHOUSE_NAME
+    - Label: Warehouse Name
+    - Datatype: varchar2
+    - Page Item Name: P87_WAREHOUSE_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: WAREHOUSE_STATUS_CODE
+    - Label: Warehouse Status
+    - Datatype: varchar2
+    - Page Item Name: P87_WAREHOUSE_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES_WAREHOUSE_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: ADDRESS_LINE_1
+    - Label: Address Line 1
+    - Datatype: varchar2
+    - Page Item Name: P87_ADDRESS_LINE_1
+    - Render As: textarea
+    - MaxLength: 200
+  - Column Name: ADDRESS_LINE_2
+    - Label: Address Line 2
+    - Datatype: varchar2
+    - Page Item Name: P87_ADDRESS_LINE_2
+    - Render As: textarea
+    - MaxLength: 200
+  - Column Name: CITY_NAME
+    - Label: City Name
+    - Datatype: varchar2
+    - Page Item Name: P87_CITY_NAME
+    - Render As: textField
+    - MaxLength: 100
+  - Column Name: STATE_REGION_NAME
+    - Label: State or Region Name
+    - Datatype: varchar2
+    - Page Item Name: P87_STATE_REGION_NAME
+    - Render As: textField
+    - MaxLength: 100
+  - Column Name: POSTAL_CODE
+    - Label: Postal Code
+    - Datatype: varchar2
+    - Page Item Name: P87_POSTAL_CODE
+    - Render As: textField
+    - MaxLength: 30
+  - Column Name: COUNTRY_CODE
+    - Label: Country Code
+    - Datatype: varchar2
+    - Page Item Name: P87_COUNTRY_CODE
+    - Render As: textField
+    - MaxLength: 2
+  - Column Name: WAREHOUSE_GEOMETRY
+    - Label: Warehouse Geometry
+    - Datatype: sdoGeometry
+    - Page Item Name: P87_WAREHOUSE_GEOMETRY
+    - Render As: hidden
+  - Column Name: CREATED_AT
+    - Label: Created At
+    - Datatype: timestampWithTimeZone
+    - Page Item Name: P87_CREATED_AT
+    - Render As: datePicker
+    - Required: true
+  - Column Name: CREATED_BY
+    - Label: Created By
+    - Datatype: varchar2
+    - Page Item Name: P87_CREATED_BY
+    - Render As: textField
+    - Required: true
+    - MaxLength: 128
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+### Page 88: Warehouse Areas Search
+- Description: Search and review warehouse areas for warehouse operations.
+- Comments: Guided searchable list for warehouse areas with drill-down navigation to business detail.
+- Pattern: smart-filter
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Warehouse Area Smart Filters
+- Comments: Guided filters narrow warehouse areas by schema-backed operational attributes.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Smart Filters
+- Filtered Region: Warehouse Area Search Results
+- Filters:
+  - Filter
+    - Name: P88_F_WAREHOUSE_ID
+     - Label: Warehouse ID
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSES
+     - Database Column: WAREHOUSE_ID
+     - Datatype: number
+  - Filter
+    - Name: P88_F_AREA_TYPE_CODE
+     - Label: Area Type
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSE_AREAS_AREA_TYPE_CODE
+     - Database Column: AREA_TYPE_CODE
+     - Datatype: varchar2
+  - Filter
+    - Name: P88_F_AREA_STATUS_CODE
+     - Label: Area Status
+     - Render As: checkboxGroup
+     - LOV: LOV_WAREHOUSE_AREAS_AREA_STATUS_CODE
+     - Database Column: AREA_STATUS_CODE
+     - Datatype: varchar2
+##### Region: Warehouse Area Search Results
+- Comments: Search results list warehouse areas and pass selected row keys to the detail workspace.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_WAREHOUSE_AREAS
+  - Primary Keys: WAREHOUSE_AREA_ID
+  - Summary: Warehouse Area Search Results uses SCM_WAREHOUSE_AREAS records for operational review.
+- Columns:
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: AREA_CODE
+    - Label: Area Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: AREA_NAME
+    - Label: Area Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: AREA_TYPE_CODE
+    - Label: Area Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_TYPE_CODE
+    - Visible: true
+  - Column Name: AREA_STATUS_CODE
+    - Label: Area Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_STATUS_CODE
+    - Visible: true
+  - Column Name: SEQUENCE_NUMBER
+    - Label: Sequence Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 89
+    - Link Passing: WAREHOUSE_AREA_ID
+    - Link Target Items: P89_WAREHOUSE_AREA_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 90
+    - Link Passing: WAREHOUSE_AREA_ID
+    - Link Target Items: P90_WAREHOUSE_AREA_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Warehouse Area
+    - Link To: Page 90
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 89: Warehouse Area Detail
+- Description: Review the selected warehouse area and related operational records.
+- Comments: Detail workspace keeps the selected warehouse area context while showing related schema-backed records.
+- Pattern: vertical-stack
+- Page Mode: standard
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+#### Regions
+##### Region: Warehouse Area Context
+- Comments: Context region identifies the selected warehouse area and owns the page key for related records.
+- Position: breadcrumb-bar
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Contextual Info
+- Data Source:
+  - Type: SQL
+  - Primary Keys: WAREHOUSE_AREA_ID
+  - SQL:
+```sql
+select t.WAREHOUSE_AREA_ID
+     , t.AREA_CODE
+     , t.AREA_NAME
+     , t.AREA_TYPE_CODE
+     , t.AREA_STATUS_CODE
+     , t.SEQUENCE_NUMBER
+     , t.WAREHOUSE_ID
+     , t.NOTES
+from SCM_WAREHOUSE_AREAS t
+where t.WAREHOUSE_AREA_ID = to_number(:P89_WAREHOUSE_AREA_ID)
+```
+  - Summary: Single selected warehouse area context row.
+- Hidden Page Items: P89_WAREHOUSE_AREA_ID
+- Columns:
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: AREA_CODE
+    - Label: Area Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: AREA_NAME
+    - Label: Area Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: AREA_TYPE_CODE
+    - Label: Area Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_TYPE_CODE
+    - Visible: true
+  - Column Name: AREA_STATUS_CODE
+    - Label: Area Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_STATUS_CODE
+    - Visible: true
+  - Column Name: SEQUENCE_NUMBER
+    - Label: Sequence Number
+    - Datatype: number
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 90
+    - Link Passing: WAREHOUSE_AREA_ID
+    - Link Target Items: P90_WAREHOUSE_AREA_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+##### Region: Stock Counts in Warehouse Area
+- Comments: Related stock counts filtered by the selected warehouse area context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STOCK_COUNTS
+  - Primary Keys: STOCK_COUNT_ID
+  - Where: WAREHOUSE_AREA_ID = to_number(:P89_WAREHOUSE_AREA_ID)
+  - Summary: Stock Counts in Warehouse Area uses SCM_STOCK_COUNTS records for operational review.
+- Columns:
+  - Column Name: STOCK_COUNT_ID
+    - Label: Stock Count ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: COUNT_NUMBER
+    - Label: Count Number
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: COUNT_SCOPE_CODE
+    - Label: Count Scope
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_SCOPE_CODE
+    - Visible: true
+  - Column Name: COUNT_STATUS_CODE
+    - Label: Count Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_COUNT_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_STATUS_CODE
+    - Label: Review Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STOCK_COUNTS_REVIEW_STATUS_CODE
+    - Visible: true
+  - Column Name: REVIEW_REASON_CODE
+    - Label: Review Reason Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+  - Column Name: ITEM_ID
+    - Label: Item ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_ITEMS
+    - Visible: true
+  - Column Name: ASSIGNED_USER_ID
+    - Label: Assigned User ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_APPLICATION_USERS
+    - Visible: true
+  - Column Name: PLANNED_START_AT
+    - Label: Planned Start At
+    - Datatype: timestampWithTimeZone
+    - Render As: plainText
+    - Visible: true
+    - Format Mask: DD-MON-YYYY HH24:MI
+- Links:
+  - Link:
+    - Link To: Page 66
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P66_STOCK_COUNT_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+  - Link:
+    - Link To: Page 67
+    - Link Passing: STOCK_COUNT_ID
+    - Link Target Items: P67_STOCK_COUNT_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User
+##### Region: Storage Locations in Warehouse Area
+- Comments: Related storage locations filtered by the selected warehouse area context.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Classic Report
+  - Qualifier: Standard
+- Data Source:
+  - Type: Table
+  - Name: SCM_STORAGE_LOCATIONS
+  - Primary Keys: STORAGE_LOCATION_ID
+  - Where: WAREHOUSE_AREA_ID = to_number(:P89_WAREHOUSE_AREA_ID)
+  - Summary: Storage Locations in Warehouse Area uses SCM_STORAGE_LOCATIONS records for operational review.
+- Columns:
+  - Column Name: STORAGE_LOCATION_ID
+    - Label: Storage Location ID
+    - Datatype: number
+    - Render As: hidden
+    - Visible: false
+  - Column Name: LOCATION_CODE
+    - Label: Location Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_NAME
+    - Label: Location Name
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LOCATION_TYPE_CODE
+    - Label: Location Type
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_TYPE_CODE
+    - Visible: true
+  - Column Name: LOCATION_STATUS_CODE
+    - Label: Location Status
+    - Datatype: varchar2
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS_LOCATION_STATUS_CODE
+    - Visible: true
+  - Column Name: AISLE_CODE
+    - Label: Aisle Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: BAY_CODE
+    - Label: Bay Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: LEVEL_CODE
+    - Label: Level Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: POSITION_CODE
+    - Label: Position Code
+    - Datatype: varchar2
+    - Render As: plainText
+    - Visible: true
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSES
+    - Visible: true
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_WAREHOUSE_AREAS
+    - Visible: true
+  - Column Name: PARENT_LOCATION_ID
+    - Label: Parent Location ID
+    - Datatype: number
+    - Render As: plainTextBasedOnLov
+    - LOV: LOV_STORAGE_LOCATIONS
+    - Visible: true
+- Links:
+  - Link:
+    - Link To: Page 78
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P78_STORAGE_LOCATION_ID
+    - Label: Details
+    - Link Icon: fa-angle-right
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Business Viewer
+  - Link:
+    - Link To: Page 79
+    - Link Passing: STORAGE_LOCATION_ID
+    - Link Target Items: P79_STORAGE_LOCATION_ID
+    - Label: Edit
+    - Link Icon: fa-edit
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+- Actions:
+  - Action
+    - Label: Create Location
+    - Link To: Page 79
+    - Link Passing: P89_WAREHOUSE_AREA_ID
+    - Link Target Items: P79_WAREHOUSE_AREA_ID
+    - slot: CREATE
+    - Action Type: navigate
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+### Page 90: Warehouse Area Form
+- Description: Create or maintain a single warehouse area record.
+- Comments: Modal maintenance form edits one warehouse area record without replacing the standard detail workspace.
+- Pattern: modal-drawer
+- Page Mode: modalDialog
+- Menu: false
+- Page Group: Master Data
+- Security Requirements:
+  - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+#### Regions
+##### Region: Warehouse Area Form
+- Comments: Form maintains one warehouse area record using schema-required fields and LOV-backed references.
+- Position: body
+- Colstart: 1
+- Colspan: 12
+- Component:
+  - Component Type: Form
+- Data Source:
+  - Type: Table
+  - Name: SCM_WAREHOUSE_AREAS
+  - Primary Keys: WAREHOUSE_AREA_ID
+  - Summary: Form source for warehouse area maintenance.
+- Columns:
+  - Column Name: WAREHOUSE_AREA_ID
+    - Label: Warehouse Area ID
+    - Datatype: number
+    - Page Item Name: P90_WAREHOUSE_AREA_ID
+    - Render As: hidden
+  - Column Name: WAREHOUSE_ID
+    - Label: Warehouse ID
+    - Datatype: number
+    - Page Item Name: P90_WAREHOUSE_ID
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSES
+    - Required: true
+  - Column Name: AREA_CODE
+    - Label: Area Code
+    - Datatype: varchar2
+    - Page Item Name: P90_AREA_CODE
+    - Render As: textField
+    - Required: true
+    - MaxLength: 30
+  - Column Name: AREA_NAME
+    - Label: Area Name
+    - Datatype: varchar2
+    - Page Item Name: P90_AREA_NAME
+    - Render As: textField
+    - Required: true
+    - MaxLength: 200
+  - Column Name: AREA_TYPE_CODE
+    - Label: Area Type
+    - Datatype: varchar2
+    - Page Item Name: P90_AREA_TYPE_CODE
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_TYPE_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: AREA_STATUS_CODE
+    - Label: Area Status
+    - Datatype: varchar2
+    - Page Item Name: P90_AREA_STATUS_CODE
+    - Render As: selectList
+    - LOV: LOV_WAREHOUSE_AREAS_AREA_STATUS_CODE
+    - Required: true
+    - MaxLength: 20
+  - Column Name: SEQUENCE_NUMBER
+    - Label: Sequence Number
+    - Datatype: number
+    - Page Item Name: P90_SEQUENCE_NUMBER
+    - Render As: numberField
+    - Required: true
+  - Column Name: NOTES
+    - Label: Notes
+    - Datatype: varchar2
+    - Page Item Name: P90_NOTES
+    - Render As: textarea
+    - MaxLength: 500
+- Actions:
+  - Action
+    - Label: Create
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Create
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Apply Changes
+    - slot: CHANGE
+    - Action Type: submit
+    - Process: Apply
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Delete
+    - slot: DELETE
+    - Action Type: submit
+    - Process: Delete
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller
+  - Action
+    - Label: Cancel
+    - slot: CLOSE
+    - Action Type: navigate
+    - Process: cancelDialog
+    - Authorized Roles: Administrator, Warehouse Manager, Inventory Controller, Operations User, Quality User, Business Viewer
+
+## Validation Findings
+- Status: Valid
+- Failures list: None
