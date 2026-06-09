@@ -1,0 +1,3584 @@
+# Table: SCM_APPLICATION_USERS
+
+## Columns:
+  - APPLICATION_USER_ID - NUMBER NOT NULL [pk]
+  - USER_NAME - VARCHAR2(128) NOT NULL [uk]
+  - FULL_NAME - VARCHAR2(200) NOT NULL
+  - EMAIL_ADDRESS - VARCHAR2(320)
+  - USER_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - DEFAULT_WAREHOUSE_ID - NUMBER [fk]
+  - MANAGER_USER_ID - NUMBER [fk]
+  - USER_NOTES - VARCHAR2(500)
+
+## Column Display Attributes:
+  - APPLICATION_USER_ID
+    - description: Surrogate key for the application user.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Application User ID
+    - semantic-type: identifier
+  - USER_NAME
+    - description: Business user name used to sign in and record work.
+    - display-label: User Name
+    - semantic-type: user_name
+    - value-required: true
+  - FULL_NAME
+    - description: Full business name of the user.
+    - display-label: Full Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - EMAIL_ADDRESS
+    - description: Business email address used for alerts and workflow notices.
+    - display-label: Email Address
+    - semantic-type: email_address
+  - USER_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE, LOCKED.
+    - description: Current business status of the user.
+    - display-label: User Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - DEFAULT_WAREHOUSE_ID
+    - description: Default warehouse used for the user where relevant.
+    - display-as-lov: select-list
+    - display-label: Default Warehouse ID
+    - semantic-type: identifier
+  - MANAGER_USER_ID
+    - description: User that supervises this user where relevant.
+    - display-as-lov: select-list
+    - display-label: Manager User ID
+    - semantic-type: identifier
+  - USER_NOTES
+    - description: Business notes for the user.
+    - display-label: User Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_APPLICATION_USERS_01 - CHECK (USER_STATUS_CODE)
+  - PK_SCM_APPLICATION_USERS - PRIMARY KEY (APPLICATION_USER_ID)
+  - UQ_SCM_APPLICATION_USERS_01 - UNIQUE (USER_NAME)
+  - FK_SCM_APPLICATION_USERS_01 - FOREIGN KEY (DEFAULT_WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_APPLICATION_USERS_02 - FOREIGN KEY (MANAGER_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for application users.
+  - display-label: Application Users
+
+# Table: SCM_BUSINESS_LISTS
+
+## Columns:
+  - BUSINESS_LIST_ID - NUMBER NOT NULL [pk]
+  - LIST_CODE - VARCHAR2(50) NOT NULL [uk]
+  - LIST_NAME - VARCHAR2(200) NOT NULL
+  - LIST_STATUS_CODE - VARCHAR2(20) NOT NULL
+
+## Column Display Attributes:
+  - BUSINESS_LIST_ID
+    - description: Surrogate key for the business list.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Business List ID
+    - semantic-type: identifier
+  - LIST_CODE
+    - description: Business code used to identify the list.
+    - display-label: List Code
+    - semantic-type: code
+    - value-required: true
+  - LIST_NAME
+    - description: Business name of the list.
+    - display-label: List Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - LIST_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE.
+    - description: Current business status of the list.
+    - display-label: List Status
+    - search-facet: distinct-list
+    - semantic-type: status
+
+## Constraints:
+  - CK_SCM_BUSINESS_LISTS_01 - CHECK (LIST_STATUS_CODE)
+  - PK_SCM_BUSINESS_LISTS - PRIMARY KEY (BUSINESS_LIST_ID)
+  - UQ_SCM_BUSINESS_LISTS_01 - UNIQUE (LIST_CODE)
+
+## Table Attributes:
+  - description: Stores records for business lists.
+  - display-label: Business Lists
+
+# Table: SCM_BUSINESS_LIST_VALUES
+
+## Columns:
+  - BUSINESS_LIST_VALUE_ID - NUMBER NOT NULL [pk]
+  - BUSINESS_LIST_ID - NUMBER NOT NULL [uk] [fk]
+  - VALUE_CODE - VARCHAR2(50) NOT NULL [uk]
+  - VALUE_NAME - VARCHAR2(200) NOT NULL
+  - DISPLAY_SEQUENCE - NUMBER(10) NOT NULL
+  - IS_ACTIVE - BOOLEAN NOT NULL
+
+## Column Display Attributes:
+  - BUSINESS_LIST_VALUE_ID
+    - description: Surrogate key for the business list value.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Business List Value ID
+    - semantic-type: identifier
+  - BUSINESS_LIST_ID
+    - description: Business list that the value belongs to.
+    - display-as-lov: select-list
+    - display-label: Business List ID
+    - semantic-type: identifier
+    - value-required: true
+  - VALUE_CODE
+    - description: Business code used to identify the value.
+    - display-label: Value Code
+    - semantic-type: code
+    - value-required: true
+  - VALUE_NAME
+    - description: Business name of the list value.
+    - display-label: Value Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - DISPLAY_SEQUENCE
+    - description: Display order of the list value.
+    - display-label: Display Sequence
+    - semantic-type: sequence
+  - IS_ACTIVE
+    - description: Indicates whether the list value is active.
+    - display-label: Is Active
+    - search-facet: distinct-list
+    - semantic-type: flag
+
+## Constraints:
+  - PK_SCM_BUSINESS_LIST_VALUES - PRIMARY KEY (BUSINESS_LIST_VALUE_ID)
+  - UQ_SCM_BUSINESS_LIST_VALUES_01 - UNIQUE (BUSINESS_LIST_ID, VALUE_CODE)
+  - FK_SCM_BUSINESS_LIST_VALUES_01 - FOREIGN KEY (BUSINESS_LIST_ID) -> SCM_BUSINESS_LISTS(BUSINESS_LIST_ID)
+
+## Table Attributes:
+  - description: Stores records for business list values.
+  - display-label: Business List Values
+
+# Table: SCM_BUSINESS_PARTNERS
+
+## Columns:
+  - BUSINESS_PARTNER_ID - NUMBER NOT NULL [pk]
+  - PARTNER_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - PARTNER_TYPE_CODE - VARCHAR2(20) NOT NULL
+  - PARTNER_NAME - VARCHAR2(200) NOT NULL
+  - PARTNER_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - CREATED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - CREATED_BY - VARCHAR2(128) NOT NULL
+
+## Column Display Attributes:
+  - BUSINESS_PARTNER_ID
+    - description: Surrogate key for the business partner.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Business Partner ID
+    - semantic-type: identifier
+  - PARTNER_NUMBER
+    - description: Business reference used to identify the supplier, customer, carrier, or internal partner.
+    - display-label: Partner Number
+    - semantic-type: reference_number
+    - value-required: true
+  - PARTNER_TYPE_CODE
+    - ai-context: Valid values include SUPPLIER, CUSTOMER, CARRIER, INTERNAL.
+    - description: Business role of the partner within the inventory and warehouse process.
+    - display-label: Partner Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - PARTNER_NAME
+    - description: Full business name of the partner.
+    - display-label: Partner Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - PARTNER_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE, ON_HOLD.
+    - description: Current business status of the partner record.
+    - display-label: Partner Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - CREATED_AT
+    - description: Date and time when the partner record was created.
+    - display-in-form: false
+    - display-label: Created At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - CREATED_BY
+    - description: Database user that created the partner record.
+    - display-in-form: false
+    - display-label: Created By
+    - semantic-type: user_name
+
+## Constraints:
+  - CK_SCM_BUSINESS_PARTNERS_01 - CHECK (PARTNER_TYPE_CODE)
+  - CK_SCM_BUSINESS_PARTNERS_02 - CHECK (PARTNER_STATUS_CODE)
+  - PK_SCM_BUSINESS_PARTNERS - PRIMARY KEY (BUSINESS_PARTNER_ID)
+  - UQ_SCM_BUSINESS_PARTNERS_01 - UNIQUE (PARTNER_NUMBER)
+
+## Table Attributes:
+  - description: Stores records for business partners.
+  - display-label: Business Partners
+
+# Table: SCM_INBOUND_RECEIPTS
+
+## Columns:
+  - INBOUND_RECEIPT_ID - NUMBER NOT NULL [pk]
+  - RECEIPT_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - RECEIPT_SOURCE_CODE - VARCHAR2(20) NOT NULL
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - SOURCE_PARTNER_ID - NUMBER [fk]
+  - SOURCE_SITE_ID - NUMBER [fk]
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - RECEIPT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REVIEW_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - SOURCE_DOCUMENT_NUMBER - VARCHAR2(50)
+  - EXPECTED_ARRIVAL_AT - TIMESTAMP WITH TIMEZONE
+  - ACTUAL_ARRIVAL_AT - TIMESTAMP WITH TIMEZONE
+  - RECEIVING_COMPLETED_AT - TIMESTAMP WITH TIMEZONE
+  - RECEIVED_BY - VARCHAR2(128)
+  - RECEIVED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEW_REASON_CODE - VARCHAR2(30)
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - INBOUND_RECEIPT_ID
+    - description: Surrogate key for the inbound receipt.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Inbound Receipt ID
+    - semantic-type: identifier
+  - RECEIPT_NUMBER
+    - description: Business reference used to identify the inbound receipt.
+    - display-label: Receipt Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - RECEIPT_SOURCE_CODE
+    - ai-context: Valid values include SUPPLIER, TRANSFER, CUSTOMER_RETURN, INTERNAL_RETURN, OTHER.
+    - description: Business source of the inbound receipt.
+    - display-label: Receipt Source
+    - semantic-type: source
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse receiving the goods.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - SOURCE_PARTNER_ID
+    - description: Partner that sent the goods where relevant.
+    - display-as-lov: select-list
+    - display-label: Source Partner ID
+    - semantic-type: identifier
+  - SOURCE_SITE_ID
+    - description: Site that sent the goods where relevant.
+    - display-as-lov: select-list
+    - display-label: Source Site ID
+    - semantic-type: identifier
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the record.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - RECEIPT_STATUS_CODE
+    - ai-context: Valid values include PLANNED, ARRIVED, PART_RECEIVED, RECEIVED, REVIEW_REQUIRED, CANCELLED, CLOSED.
+    - description: Current business status of the inbound receipt.
+    - display-label: Receipt Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REVIEW_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, REJECTED, RESOLVED.
+    - description: Current review status of the record.
+    - display-label: Review Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - SOURCE_DOCUMENT_NUMBER
+    - description: Business reference number from the source document such as purchase order or transfer.
+    - display-label: Source Document Number
+    - semantic-type: reference_number
+  - EXPECTED_ARRIVAL_AT
+    - description: Expected arrival date and time for the receipt.
+    - display-label: Expected Arrival At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - ACTUAL_ARRIVAL_AT
+    - description: Actual arrival date and time for the receipt.
+    - display-label: Actual Arrival At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - RECEIVING_COMPLETED_AT
+    - description: Date and time when receiving was completed.
+    - display-label: Receiving Completed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - RECEIVED_BY
+    - description: User who completed receipt of the goods.
+    - display-label: Received By
+    - semantic-type: user_name
+  - RECEIVED_BY_USER_ID
+    - description: Application user who received the goods for the record.
+    - display-as-lov: select-list
+    - display-label: Received By User ID
+    - semantic-type: identifier
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the record was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEW_REASON_CODE
+    - description: Reason code that explains the review outcome or exception handling decision.
+    - display-label: Review Reason Code
+    - semantic-type: reason
+  - NOTES
+    - description: Business notes for the inbound receipt.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_INBOUND_RECEIPTS_01 - CHECK (RECEIPT_SOURCE_CODE)
+  - CK_SCM_INBOUND_RECEIPTS_02 - CHECK (RECEIPT_STATUS_CODE)
+  - CK_SCM_INBOUND_RECEIPTS_03 - CHECK (REVIEW_STATUS_CODE)
+  - PK_SCM_INBOUND_RECEIPTS - PRIMARY KEY (INBOUND_RECEIPT_ID)
+  - UQ_SCM_INBOUND_RECEIPTS_01 - UNIQUE (RECEIPT_NUMBER)
+  - FK_SCM_INBOUND_RECEIPTS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_INBOUND_RECEIPTS_02 - FOREIGN KEY (SOURCE_PARTNER_ID) -> SCM_BUSINESS_PARTNERS(BUSINESS_PARTNER_ID)
+  - FK_SCM_INBOUND_RECEIPTS_03 - FOREIGN KEY (SOURCE_SITE_ID) -> SCM_PARTNER_SITES(PARTNER_SITE_ID)
+  - FK_SCM_INBOUND_RECEIPTS_04 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_INBOUND_RECEIPTS_05 - FOREIGN KEY (RECEIVED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_INBOUND_RECEIPTS_06 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for inbound receipts.
+  - display-label: Inbound Receipts
+
+# Table: SCM_INBOUND_RECEIPT_LINES
+
+## Columns:
+  - INBOUND_RECEIPT_LINE_ID - NUMBER NOT NULL [pk]
+  - INBOUND_RECEIPT_ID - NUMBER NOT NULL [uk] [fk]
+  - LINE_NUMBER - NUMBER(10) NOT NULL [uk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - RECEIVING_LOCATION_ID - NUMBER NOT NULL [fk]
+  - FINAL_PUTAWAY_LOCATION_ID - NUMBER [fk]
+  - EXPECTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RECEIVED_QUANTITY - NUMBER(14,4) NOT NULL
+  - ACCEPTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - QUARANTINE_QUANTITY - NUMBER(14,4) NOT NULL
+  - DAMAGED_QUANTITY - NUMBER(14,4) NOT NULL
+  - SHORTAGE_QUANTITY - NUMBER(14,4) NOT NULL
+  - OVERAGE_QUANTITY - NUMBER(14,4) NOT NULL
+  - REJECTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RECEIVED_CONDITION_CODE - VARCHAR2(20) NOT NULL
+  - LINE_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - DISCREPANCY_REASON_CODE - VARCHAR2(30)
+
+## Column Display Attributes:
+  - INBOUND_RECEIPT_LINE_ID
+    - description: Surrogate key for the inbound receipt line.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Inbound Receipt Line ID
+    - semantic-type: identifier
+  - INBOUND_RECEIPT_ID
+    - description: Inbound receipt that the line belongs to.
+    - display-as-lov: select-list
+    - display-label: Inbound Receipt ID
+    - semantic-type: identifier
+    - value-required: true
+  - LINE_NUMBER
+    - description: Line number within the inbound receipt.
+    - display-label: Line Number
+    - primary-display-column: true
+    - semantic-type: sequence
+    - value-required: true
+  - ITEM_ID
+    - description: Item expected or received on the line.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot associated with the receipt line where relevant.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - RECEIVING_LOCATION_ID
+    - description: Initial location where goods were placed on arrival.
+    - display-as-lov: select-list
+    - display-label: Receiving Location ID
+    - semantic-type: identifier
+  - FINAL_PUTAWAY_LOCATION_ID
+    - description: Final storage location used after putaway.
+    - display-as-lov: select-list
+    - display-label: Final Putaway Location ID
+    - semantic-type: identifier
+  - EXPECTED_QUANTITY
+    - description: Quantity expected to arrive on the line.
+    - display-label: Expected Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - RECEIVED_QUANTITY
+    - description: Quantity physically received on the line.
+    - display-label: Received Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - ACCEPTED_QUANTITY
+    - description: Quantity accepted into warehouse control.
+    - display-label: Accepted Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - QUARANTINE_QUANTITY
+    - description: Quantity sent to quarantine from the receipt line.
+    - display-label: Quarantine Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - DAMAGED_QUANTITY
+    - description: Quantity identified as damaged on the receipt line.
+    - display-label: Damaged Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - SHORTAGE_QUANTITY
+    - description: Quantity short against the expected quantity.
+    - display-label: Shortage Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - OVERAGE_QUANTITY
+    - description: Quantity received above the expected quantity.
+    - display-label: Overage Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - REJECTED_QUANTITY
+    - description: Quantity rejected back to the source or refused at the receipt point.
+    - display-label: Rejected Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - RECEIVED_CONDITION_CODE
+    - ai-context: Valid values include GOOD, DAMAGED, SUSPECT, MISMATCH, SHORT, OVER.
+    - description: Condition of the goods received on the line.
+    - display-label: Received Condition
+    - search-facet: distinct-list
+    - semantic-type: condition
+  - LINE_STATUS_CODE
+    - ai-context: Valid values include OPEN, PART_RECEIVED, RECEIVED, REVIEW_REQUIRED, CLOSED.
+    - description: Current business status of the receipt line.
+    - display-label: Line Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - DISCREPANCY_REASON_CODE
+    - description: Reason code for a receipt discrepancy where relevant.
+    - display-label: Discrepancy Reason Code
+    - semantic-type: reason_code
+
+## Constraints:
+  - CK_SCM_INBOUND_RECEIPT_LINES_01 - CHECK (RECEIVED_CONDITION_CODE)
+  - CK_SCM_INBOUND_RECEIPT_LINES_02 - CHECK (LINE_STATUS_CODE)
+  - CK_SCM_INBOUND_RECEIPT_LINES_03 - CHECK (EXPECTED_QUANTITY, RECEIVED_QUANTITY, ACCEPTED_QUANTITY, QUARANTINE_QUANTITY, DAMAGED_QUANTITY, SHORTAGE_QUANTITY, OVERAGE_QUANTITY, REJECTED_QUANTITY)
+  - PK_SCM_INBOUND_RECEIPT_LINES - PRIMARY KEY (INBOUND_RECEIPT_LINE_ID)
+  - UQ_SCM_INBOUND_RECEIPT_LINES_01 - UNIQUE (INBOUND_RECEIPT_ID, LINE_NUMBER)
+  - FK_SCM_INBOUND_RECEIPT_LINES_01 - FOREIGN KEY (INBOUND_RECEIPT_ID) -> SCM_INBOUND_RECEIPTS(INBOUND_RECEIPT_ID)
+  - FK_SCM_INBOUND_RECEIPT_LINES_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_INBOUND_RECEIPT_LINES_03 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_INBOUND_RECEIPT_LINES_04 - FOREIGN KEY (RECEIVING_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_INBOUND_RECEIPT_LINES_05 - FOREIGN KEY (FINAL_PUTAWAY_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+
+## Table Attributes:
+  - description: Stores records for inbound receipt lines.
+  - display-label: Inbound Receipt Lines
+
+# Table: SCM_INVENTORY_BALANCES
+
+## Columns:
+  - INVENTORY_BALANCE_ID - NUMBER NOT NULL [pk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [uk] [fk]
+  - STORAGE_LOCATION_ID - NUMBER NOT NULL [uk] [fk]
+  - ITEM_ID - NUMBER NOT NULL [uk] [fk]
+  - INVENTORY_LOT_ID - NUMBER [uk] [fk]
+  - STOCK_STATUS_CODE - VARCHAR2(20) NOT NULL [uk]
+  - QUANTITY_ON_HAND - NUMBER(14,4) NOT NULL
+  - QUANTITY_RESERVED - NUMBER(14,4) NOT NULL
+  - QUANTITY_AVAILABLE - NUMBER(14,4) NOT NULL
+  - LAST_COUNTED_AT - TIMESTAMP WITH TIMEZONE
+  - LAST_MOVED_AT - TIMESTAMP WITH TIMEZONE
+
+## Column Display Attributes:
+  - INVENTORY_BALANCE_ID
+    - description: Surrogate key for the inventory balance row.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Inventory Balance ID
+    - semantic-type: identifier
+  - WAREHOUSE_ID
+    - description: Reference to the warehouse.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - STORAGE_LOCATION_ID
+    - description: Location where the stock is currently held.
+    - display-as-lov: select-list
+    - display-label: Storage Location ID
+    - semantic-type: identifier
+    - value-required: true
+  - ITEM_ID
+    - description: Item held in the location.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - primary-display-column: true
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot associated with the stock where lot control applies.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - STOCK_STATUS_CODE
+    - ai-context: Valid values include AVAILABLE, RESERVED, PICKED, PACKED, IN_TRANSIT, QUARANTINE, DAMAGED, BLOCKED.
+    - description: Business status of the stock held in the location.
+    - display-label: Stock Status
+    - search-facet: distinct-list
+    - semantic-type: status
+    - value-required: true
+  - QUANTITY_ON_HAND
+    - description: Physical quantity currently held in the location.
+    - display-label: Quantity On Hand
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - QUANTITY_RESERVED
+    - description: Quantity already reserved for outbound demand.
+    - display-label: Quantity Reserved
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - QUANTITY_AVAILABLE
+    - description: Usable quantity remaining after reservation for available stock.
+    - display-in-form: false
+    - display-label: Quantity Available
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - LAST_COUNTED_AT
+    - description: Date and time when this stock balance was last physically counted.
+    - display-label: Last Counted At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - LAST_MOVED_AT
+    - description: Date and time when this stock balance last changed location or quantity.
+    - display-label: Last Moved At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+
+## Constraints:
+  - CK_SCM_INVENTORY_BALANCES_01 - CHECK (STOCK_STATUS_CODE)
+  - CK_SCM_INVENTORY_BALANCES_02 - CHECK (QUANTITY_ON_HAND, QUANTITY_RESERVED, QUANTITY_AVAILABLE)
+  - PK_SCM_INVENTORY_BALANCES - PRIMARY KEY (INVENTORY_BALANCE_ID)
+  - UQ_SCM_INVENTORY_BALANCES_01 - UNIQUE (WAREHOUSE_ID, STORAGE_LOCATION_ID, ITEM_ID, INVENTORY_LOT_ID, STOCK_STATUS_CODE)
+  - FK_SCM_INVENTORY_BALANCES_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_INVENTORY_BALANCES_02 - FOREIGN KEY (STORAGE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_INVENTORY_BALANCES_03 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_INVENTORY_BALANCES_04 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+
+## Table Attributes:
+  - description: Stores records for inventory balances.
+  - display-label: Inventory Balances
+
+# Table: SCM_INVENTORY_LOTS
+
+## Columns:
+  - INVENTORY_LOT_ID - NUMBER NOT NULL [pk]
+  - ITEM_ID - NUMBER NOT NULL [uk] [fk]
+  - LOT_NUMBER - VARCHAR2(80) NOT NULL [uk]
+  - SUPPLIER_LOT_NUMBER - VARCHAR2(80)
+  - RECEIVED_ON_DATE - DATE
+  - BEST_BEFORE_DATE - DATE
+  - EXPIRY_ON_DATE - DATE
+  - LOT_STATUS_CODE - VARCHAR2(20) NOT NULL
+
+## Column Display Attributes:
+  - INVENTORY_LOT_ID
+    - description: Surrogate key for the inventory lot or batch.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item that the lot belongs to.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - LOT_NUMBER
+    - description: Business lot or batch number used to track the item group.
+    - display-label: Lot Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - SUPPLIER_LOT_NUMBER
+    - description: Supplier-provided lot or batch number where this differs from the internal lot number.
+    - display-label: Supplier Lot Number
+    - semantic-type: reference_number
+  - RECEIVED_ON_DATE
+    - description: Date when the lot was first received into warehouse control.
+    - display-label: Received On Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - BEST_BEFORE_DATE
+    - description: Best-before date for the lot where relevant.
+    - display-label: Best Before Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - EXPIRY_ON_DATE
+    - description: Expiry date for the lot where relevant.
+    - display-label: Expiry On Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - LOT_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, HOLD, EXPIRED, CLOSED.
+    - description: Current business status of the lot.
+    - display-label: Lot Status
+    - search-facet: distinct-list
+    - semantic-type: status
+
+## Constraints:
+  - CK_SCM_INVENTORY_LOTS_01 - CHECK (LOT_STATUS_CODE)
+  - PK_SCM_INVENTORY_LOTS - PRIMARY KEY (INVENTORY_LOT_ID)
+  - UQ_SCM_INVENTORY_LOTS_01 - UNIQUE (ITEM_ID, LOT_NUMBER)
+  - FK_SCM_INVENTORY_LOTS_01 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+
+## Table Attributes:
+  - description: Stores records for inventory lots.
+  - display-label: Inventory Lots
+
+# View: SCM_INVENTORY_TRANSACTIONS
+
+## Columns:
+  - INVENTORY_TRANSACTION_ID - NUMBER [pk]
+  - WAREHOUSE_ID - NUMBER
+  - TRANSACTION_TYPE_CODE - VARCHAR2(16)
+  - FROM_LOCATION_ID - NUMBER
+  - TO_LOCATION_ID - NUMBER
+  - ITEM_ID - NUMBER
+  - INVENTORY_LOT_ID - NUMBER
+  - ITEM_SERIAL_ID - NUMBER
+  - FROM_STATUS_CODE - VARCHAR2(20)
+  - TO_STATUS_CODE - VARCHAR2(20)
+  - QUANTITY - NUMBER
+  - REFERENCE_DOCUMENT_TYPE - VARCHAR2(120)
+  - REFERENCE_DOCUMENT_NUMBER - VARCHAR2(50)
+  - REASON_CODE - VARCHAR2(30)
+  - TRANSACTION_AT - TIMESTAMP WITH TIMEZONE
+  - PERFORMED_BY_USER_ID - NUMBER
+
+## Column Display Attributes:
+  - INVENTORY_TRANSACTION_ID
+    - description: Identifier for the inventory transaction history row.
+    - display-label: Inventory Transaction ID
+    - semantic-type: identifier
+  - WAREHOUSE_ID
+    - description: Warehouse associated with the inventory transaction history row.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+  - TRANSACTION_TYPE_CODE
+    - description: Operational history event type for receipts, putaway, moves, allocation, pick, pack, dispatch, transfer shipment, transfer receipt, returns, count adjustment, stock adjustment, status change, or write-off events.
+    - display-label: Transaction Type Code
+    - semantic-type: type
+  - FROM_LOCATION_ID
+    - description: Source location for the inventory transaction history row where available.
+    - display-as-lov: select-list
+    - display-label: From Location ID
+    - semantic-type: identifier
+  - TO_LOCATION_ID
+    - description: Destination location for the inventory transaction history row where available.
+    - display-as-lov: select-list
+    - display-label: To Location ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item associated with the inventory transaction history row.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+  - INVENTORY_LOT_ID
+    - description: Lot associated with the inventory transaction history row where available.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - ITEM_SERIAL_ID
+    - description: Serial associated with the inventory transaction history row where available.
+    - display-as-lov: select-list
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - FROM_STATUS_CODE
+    - description: Source stock status for the inventory transaction history row where available.
+    - display-label: From Status Code
+    - semantic-type: status
+  - TO_STATUS_CODE
+    - description: Destination stock status for the inventory transaction history row where available.
+    - display-label: To Status Code
+    - semantic-type: status
+  - QUANTITY
+    - description: Quantity associated with the inventory transaction history row.
+    - display-label: Quantity
+    - semantic-type: quantity
+  - REFERENCE_DOCUMENT_TYPE
+    - description: Reference document type for the inventory transaction history row.
+    - display-label: Reference Document Type
+    - semantic-type: type
+  - REFERENCE_DOCUMENT_NUMBER
+    - description: Reference document number for the inventory transaction history row.
+    - display-label: Reference Document Number
+    - semantic-type: reference_number
+  - REASON_CODE
+    - description: Reason associated with the inventory transaction history row where available.
+    - display-label: Reason Code
+    - semantic-type: reason_code
+  - TRANSACTION_AT
+    - description: Timestamp for the inventory transaction history row.
+    - display-label: Transaction At
+    - semantic-type: datetime
+  - PERFORMED_BY_USER_ID
+    - description: Actor associated with the inventory transaction history row where available.
+    - display-as-lov: select-list
+    - display-label: Performed By User ID
+    - semantic-type: identifier
+
+## View Attributes:
+  - description: Provides operational history for receipts, putaway, moves, allocation, pick, pack, dispatch, transfer shipment, transfer receipt, returns, count adjustment, stock adjustment, status change, and write-off events.
+  - display-label: Inventory Transactions
+
+## Constraints:
+  - PK_SCM_INVENTORY_TRANSACTIONS - PRIMARY KEY (INVENTORY_TRANSACTION_ID)
+
+
+# Table: SCM_ITEMS
+
+## Columns:
+  - ITEM_ID - NUMBER NOT NULL [pk]
+  - ITEM_CODE - VARCHAR2(50) NOT NULL [uk]
+  - ITEM_NAME - VARCHAR2(200) NOT NULL
+  - ITEM_DESCRIPTION - VARCHAR2(1000)
+  - ITEM_CATEGORY_CODE - VARCHAR2(30) NOT NULL
+  - BASE_UOM_CODE - VARCHAR2(10) NOT NULL
+  - ITEM_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - LOT_CONTROL_FLAG - BOOLEAN NOT NULL
+  - SERIAL_CONTROL_FLAG - BOOLEAN NOT NULL
+  - EXPIRY_CONTROL_FLAG - BOOLEAN NOT NULL
+  - FRAGILE_FLAG - BOOLEAN NOT NULL
+  - HIGH_VALUE_FLAG - BOOLEAN NOT NULL
+  - HAZARDOUS_FLAG - BOOLEAN NOT NULL
+  - TEMPERATURE_CONTROL_FLAG - BOOLEAN NOT NULL
+  - RESTRICTED_ITEM_FLAG - BOOLEAN NOT NULL
+  - OWNER_CUSTOMER_PARTNER_ID - NUMBER [fk]
+  - CREATED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - CREATED_BY - VARCHAR2(128) NOT NULL
+
+## Column Display Attributes:
+  - ITEM_ID
+    - description: Surrogate key for the inventory item.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Item ID
+    - semantic-type: identifier
+  - ITEM_CODE
+    - description: Business code used to identify the inventory item.
+    - display-label: Item Code
+    - semantic-type: code
+    - value-required: true
+  - ITEM_NAME
+    - description: Business name of the inventory item.
+    - display-label: Item Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - ITEM_DESCRIPTION
+    - description: Business description of the inventory item.
+    - display-label: Item Description
+    - semantic-type: description
+  - ITEM_CATEGORY_CODE
+    - description: Business category of the item.
+    - display-label: Item Category
+    - search-facet: distinct-list
+    - semantic-type: category
+    - value-required: true
+  - BASE_UOM_CODE
+    - description: Default unit of measure used for inventory quantities.
+    - display-label: Base Unit of Measure
+    - search-facet: distinct-list
+    - semantic-type: unit_of_measure
+    - value-required: true
+  - ITEM_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE, BLOCKED.
+    - description: Current business status of the item.
+    - display-label: Item Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - LOT_CONTROL_FLAG
+    - description: Indicates whether the item must be tracked by lot or batch.
+    - display-label: Lot Control Flag
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - SERIAL_CONTROL_FLAG
+    - description: Indicates whether the item must be tracked by serial number.
+    - display-label: Serial Control Flag
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - EXPIRY_CONTROL_FLAG
+    - description: Indicates whether the item requires expiry or best-before tracking.
+    - display-label: Expiry Control Flag
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - FRAGILE_FLAG
+    - description: Indicates whether the item needs fragile handling.
+    - display-label: Fragile Flag
+    - semantic-type: flag
+  - HIGH_VALUE_FLAG
+    - description: Indicates whether the item should be treated as high value inventory.
+    - display-label: High Value Flag
+    - semantic-type: flag
+  - HAZARDOUS_FLAG
+    - description: Indicates whether the item needs hazardous handling controls.
+    - display-label: Hazardous Flag
+    - semantic-type: flag
+  - TEMPERATURE_CONTROL_FLAG
+    - description: Indicates whether the item needs temperature-controlled handling.
+    - display-label: Temperature Control Flag
+    - semantic-type: flag
+  - RESTRICTED_ITEM_FLAG
+    - description: Indicates whether the item requires restricted storage or controlled release.
+    - display-label: Restricted Item Flag
+    - semantic-type: flag
+  - OWNER_CUSTOMER_PARTNER_ID
+    - description: Customer that owns the item where the stock is customer-owned or consigned.
+    - display-as-lov: select-list
+    - display-label: Owner Customer Partner ID
+    - semantic-type: identifier
+  - CREATED_AT
+    - description: Date and time when the item record was created.
+    - display-in-form: false
+    - display-label: Created At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - CREATED_BY
+    - description: Database user that created the item record.
+    - display-in-form: false
+    - display-label: Created By
+    - semantic-type: user_name
+
+## Constraints:
+  - CK_SCM_ITEMS_01 - CHECK (ITEM_STATUS_CODE)
+  - PK_SCM_ITEMS - PRIMARY KEY (ITEM_ID)
+  - UQ_SCM_ITEMS_01 - UNIQUE (ITEM_CODE)
+  - FK_SCM_ITEMS_01 - FOREIGN KEY (OWNER_CUSTOMER_PARTNER_ID) -> SCM_BUSINESS_PARTNERS(BUSINESS_PARTNER_ID)
+
+## Table Attributes:
+  - description: Stores records for items.
+  - display-label: Items
+
+# Table: SCM_ITEM_SERIALS
+
+## Columns:
+  - ITEM_SERIAL_ID - NUMBER NOT NULL [pk]
+  - ITEM_ID - NUMBER NOT NULL [uk] [fk]
+  - SERIAL_NUMBER - VARCHAR2(100) NOT NULL [uk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - CURRENT_WAREHOUSE_ID - NUMBER [fk]
+  - CURRENT_STORAGE_LOCATION_ID - NUMBER [fk]
+  - CURRENT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - SERIAL_CONDITION_CODE - VARCHAR2(20) NOT NULL
+  - LAST_DOCUMENT_TYPE - VARCHAR2(30)
+  - LAST_DOCUMENT_NUMBER - VARCHAR2(50)
+  - RECEIVED_AT - TIMESTAMP WITH TIMEZONE
+  - LAST_MOVED_AT - TIMESTAMP WITH TIMEZONE
+  - IS_ACTIVE - BOOLEAN NOT NULL
+
+## Column Display Attributes:
+  - ITEM_SERIAL_ID
+    - description: Surrogate key for the tracked serial number.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item that the serial number belongs to.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - SERIAL_NUMBER
+    - description: Business serial number used to track one individual item.
+    - display-label: Serial Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot linked to the serial number where both controls apply.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - CURRENT_WAREHOUSE_ID
+    - description: Warehouse currently responsible for the serial number where it remains under warehouse control.
+    - display-as-lov: select-list
+    - display-label: Current Warehouse ID
+    - semantic-type: identifier
+  - CURRENT_STORAGE_LOCATION_ID
+    - description: Current location of the serial number where it remains in warehouse stock.
+    - display-as-lov: select-list
+    - display-label: Current Storage Location ID
+    - semantic-type: identifier
+  - CURRENT_STATUS_CODE
+    - ai-context: Valid values include AVAILABLE, RESERVED, PICKED, PACKED, IN_TRANSIT, QUARANTINE, DAMAGED, BLOCKED, SHIPPED, WRITTEN_OFF.
+    - description: Current business status of the serial number.
+    - display-label: Current Status Code
+    - search-facet: distinct-list
+    - semantic-type: status
+  - SERIAL_CONDITION_CODE
+    - ai-context: Valid values include GOOD, DAMAGED, SUSPECT, EXPIRED.
+    - description: Current condition of the serial controlled item.
+    - display-label: Serial Condition Code
+    - search-facet: distinct-list
+    - semantic-type: condition
+  - LAST_DOCUMENT_TYPE
+    - description: Business document type linked to the most recent serial movement.
+    - display-label: Last Document Type
+    - semantic-type: type
+  - LAST_DOCUMENT_NUMBER
+    - description: Business document number linked to the most recent serial movement.
+    - display-label: Last Document Number
+    - semantic-type: reference_number
+  - RECEIVED_AT
+    - description: Date and time when the serial number was first received.
+    - display-label: Received At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - LAST_MOVED_AT
+    - description: Date and time when the serial number last changed status or location.
+    - display-label: Last Moved At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - IS_ACTIVE
+    - description: Indicates whether the serial number remains active for warehouse tracking.
+    - display-label: Is Active
+    - search-facet: distinct-list
+    - semantic-type: flag
+
+## Constraints:
+  - CK_SCM_ITEM_SERIALS_01 - CHECK (CURRENT_STATUS_CODE)
+  - CK_SCM_ITEM_SERIALS_02 - CHECK (SERIAL_CONDITION_CODE)
+  - PK_SCM_ITEM_SERIALS - PRIMARY KEY (ITEM_SERIAL_ID)
+  - UQ_SCM_ITEM_SERIALS_01 - UNIQUE (ITEM_ID, SERIAL_NUMBER)
+  - FK_SCM_ITEM_SERIALS_01 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_ITEM_SERIALS_02 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_ITEM_SERIALS_03 - FOREIGN KEY (CURRENT_WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_ITEM_SERIALS_04 - FOREIGN KEY (CURRENT_STORAGE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+
+## Table Attributes:
+  - description: Stores records for item serials.
+  - display-label: Item Serials
+
+# Table: SCM_ITEM_WAREHOUSE_POLICIES
+
+## Columns:
+  - ITEM_WAREHOUSE_POLICY_ID - NUMBER NOT NULL [pk]
+  - ITEM_ID - NUMBER NOT NULL [uk] [fk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [uk] [fk]
+  - MINIMUM_STOCK_QUANTITY - NUMBER(14,4) NOT NULL
+  - REORDER_POINT_QUANTITY - NUMBER(18,4)
+  - REORDER_TARGET_QUANTITY - NUMBER(18,4)
+  - SAFETY_STOCK_QUANTITY - NUMBER(18,4)
+  - REPLENISHMENT_LEAD_TIME_DAYS - NUMBER(6)
+  - LOW_STOCK_ALERT_ENABLED_FLAG - BOOLEAN NOT NULL
+  - IS_ACTIVE - BOOLEAN NOT NULL
+
+## Column Display Attributes:
+  - ITEM_WAREHOUSE_POLICY_ID
+    - description: Surrogate key for the item and warehouse policy.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Item Warehouse Policy ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item covered by the policy.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - primary-display-column: true
+    - semantic-type: identifier
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse where the policy applies.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - MINIMUM_STOCK_QUANTITY
+    - description: Minimum stock level that should be maintained in the warehouse.
+    - display-label: Minimum Stock Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - REORDER_POINT_QUANTITY
+    - description: Quantity level that triggers replenishment review.
+    - display-label: Reorder Point Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - REORDER_TARGET_QUANTITY
+    - description: Target stock quantity after replenishment.
+    - display-label: Reorder Target Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - SAFETY_STOCK_QUANTITY
+    - description: Safety stock quantity that should remain protected before replenishment risk is escalated.
+    - display-label: Safety Stock Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - REPLENISHMENT_LEAD_TIME_DAYS
+    - description: Lead time in days used when evaluating replenishment urgency and alert timing.
+    - display-label: Replenishment Lead Time Days
+    - semantic-type: duration_days
+  - LOW_STOCK_ALERT_ENABLED_FLAG
+    - description: Indicates whether low stock alerts should be raised for the item in the warehouse.
+    - display-label: Low Stock Alert Enabled Flag
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - IS_ACTIVE
+    - description: Indicates whether the policy is active.
+    - display-label: Is Active
+    - search-facet: distinct-list
+    - semantic-type: flag
+
+## Constraints:
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_01 - CHECK (MINIMUM_STOCK_QUANTITY)
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_02 - CHECK (REORDER_POINT_QUANTITY)
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_03 - CHECK (REORDER_TARGET_QUANTITY)
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_04 - CHECK (SAFETY_STOCK_QUANTITY)
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_05 - CHECK (REPLENISHMENT_LEAD_TIME_DAYS)
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_06 - CHECK (REORDER_POINT_QUANTITY, REORDER_TARGET_QUANTITY)
+  - CK_SCM_ITEM_WAREHOUSE_POLICIES_07 - CHECK (REORDER_POINT_QUANTITY, SAFETY_STOCK_QUANTITY)
+  - PK_SCM_ITEM_WAREHOUSE_POLICIES - PRIMARY KEY (ITEM_WAREHOUSE_POLICY_ID)
+  - UQ_SCM_ITEM_WAREHOUSE_POLICIES_01 - UNIQUE (ITEM_ID, WAREHOUSE_ID)
+  - FK_SCM_ITEM_WAREHOUSE_POLICIES_01 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_ITEM_WAREHOUSE_POLICIES_02 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+
+## Table Attributes:
+  - description: Stores records for item warehouse policies.
+  - display-label: Item Warehouse Policies
+
+# Table: SCM_OPERATIONAL_EXCEPTIONS
+
+## Columns:
+  - OPERATIONAL_EXCEPTION_ID - NUMBER NOT NULL [pk]
+  - EXCEPTION_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - EXCEPTION_TYPE_CODE - VARCHAR2(30) NOT NULL
+  - RELATED_RECORD_TYPE_CODE - VARCHAR2(30) NOT NULL
+  - RELATED_RECORD_ID - NUMBER NOT NULL
+  - RELATED_LINE_NUMBER - NUMBER
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - STORAGE_LOCATION_ID - NUMBER [fk]
+  - ITEM_ID - NUMBER [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - ITEM_SERIAL_ID - NUMBER [fk]
+  - AFFECTED_QUANTITY - NUMBER(14,4)
+  - REVIEW_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - SEVERITY_CODE - VARCHAR2(20) NOT NULL
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - REPORTED_BY_USER_ID - NUMBER NOT NULL [fk]
+  - REPORTED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - RESOLUTION_CODE - VARCHAR2(30)
+  - EXCEPTION_NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - OPERATIONAL_EXCEPTION_ID
+    - description: Surrogate key for the operational exception.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Operational Exception ID
+    - semantic-type: identifier
+  - EXCEPTION_NUMBER
+    - description: Business reference used to identify the exception.
+    - display-label: Exception Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - EXCEPTION_TYPE_CODE
+    - ai-context: Valid values include RECEIPT_DISCREPANCY, TRANSFER_DISCREPANCY, PICK_SHORTAGE, ITEM_NOT_FOUND, RETURN_REVIEW, COUNT_VARIANCE, STATUS_PROBLEM, OTHER.
+    - description: Business type of exception.
+    - display-label: Exception Type Code
+    - search-facet: distinct-list
+    - semantic-type: classification
+    - value-required: true
+  - RELATED_RECORD_TYPE_CODE
+    - ai-context: Valid values include RECEIPT, TRANSFER, OUTBOUND_ORDER, RETURN, COUNT, ADJUSTMENT, INVENTORY.
+    - description: Type of business record linked to the exception.
+    - display-label: Related Record Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - RELATED_RECORD_ID
+    - description: Identifier of the business record linked to the exception.
+    - display-label: Related Record ID
+    - semantic-type: identifier
+    - value-required: true
+  - RELATED_LINE_NUMBER
+    - description: Line number of the related business record, when applicable.
+    - display-label: Related Line Number
+    - format-mask: FM999G999G999G990
+    - semantic-type: sequence_number
+  - WAREHOUSE_ID
+    - description: Warehouse responsible for the exception.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - STORAGE_LOCATION_ID
+    - description: Location linked to the exception where relevant.
+    - display-as-lov: select-list
+    - display-label: Storage Location ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item linked to the exception where relevant.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+  - INVENTORY_LOT_ID
+    - description: Lot linked to the exception where relevant.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - ITEM_SERIAL_ID
+    - description: Reference to the item serial.
+    - display-as-lov: select-list
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - AFFECTED_QUANTITY
+    - description: Quantity affected by the exception where relevant.
+    - display-label: Affected Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - REVIEW_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, REJECTED, RESOLVED.
+    - description: Current review status of the record.
+    - display-label: Review Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - SEVERITY_CODE
+    - ai-context: Valid values include LOW, MEDIUM, HIGH, CRITICAL.
+    - description: Business severity of the exception.
+    - display-label: Severity Code
+    - semantic-type: priority
+  - ASSIGNED_USER_ID
+    - description: User responsible for reviewing the exception where assigned to a person.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - REPORTED_BY_USER_ID
+    - description: User who reported the exception.
+    - display-as-lov: select-list
+    - display-label: Reported By User ID
+    - semantic-type: identifier
+  - REPORTED_AT
+    - description: Date and time when the exception was reported.
+    - display-label: Reported At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the record was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - RESOLUTION_CODE
+    - description: Business resolution applied to the exception.
+    - display-label: Resolution Code
+    - semantic-type: resolution
+  - EXCEPTION_NOTES
+    - description: Business notes for the exception.
+    - display-label: Exception Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_OPERATIONAL_EXCEPTIONS_01 - CHECK (EXCEPTION_TYPE_CODE)
+  - CK_SCM_OPERATIONAL_EXCEPTIONS_02 - CHECK (RELATED_RECORD_TYPE_CODE)
+  - CK_SCM_OPERATIONAL_EXCEPTIONS_03 - CHECK (REVIEW_STATUS_CODE)
+  - CK_SCM_OPERATIONAL_EXCEPTIONS_04 - CHECK (SEVERITY_CODE)
+  - PK_SCM_OPERATIONAL_EXCEPTIONS - PRIMARY KEY (OPERATIONAL_EXCEPTION_ID)
+  - UQ_SCM_OPERATIONAL_EXCEPTIONS_01 - UNIQUE (EXCEPTION_NUMBER)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_02 - FOREIGN KEY (STORAGE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_03 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_04 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_05 - FOREIGN KEY (ITEM_SERIAL_ID) -> SCM_ITEM_SERIALS(ITEM_SERIAL_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_06 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_07 - FOREIGN KEY (REPORTED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_OPERATIONAL_EXCEPTIONS_08 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for operational exceptions.
+  - display-label: Operational Exceptions
+
+# Table: SCM_OUTBOUND_ORDERS
+
+## Columns:
+  - OUTBOUND_ORDER_ID - NUMBER NOT NULL [pk]
+  - OUTBOUND_ORDER_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - ORDER_TYPE_CODE - VARCHAR2(20) NOT NULL
+  - SHIP_FROM_WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - CUSTOMER_PARTNER_ID - NUMBER [fk]
+  - SHIP_TO_SITE_ID - NUMBER [fk]
+  - CARRIER_PARTNER_ID - NUMBER [fk]
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - OUTBOUND_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - PRIORITY_CODE - VARCHAR2(20) NOT NULL
+  - ORDER_DATE - DATE NOT NULL
+  - REQUESTED_SHIP_AT - TIMESTAMP WITH TIMEZONE
+  - PICKED_BY_USER_ID - NUMBER [fk]
+  - PACKED_BY_USER_ID - NUMBER [fk]
+  - DISPATCHED_AT - TIMESTAMP WITH TIMEZONE
+  - DISPATCHED_BY_USER_ID - NUMBER [fk]
+  - SOURCE_DOCUMENT_NUMBER - VARCHAR2(50)
+  - DISPATCH_REFERENCE - VARCHAR2(50)
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - OUTBOUND_ORDER_ID
+    - description: Surrogate key for the outbound order.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Outbound Order ID
+    - semantic-type: identifier
+  - OUTBOUND_ORDER_NUMBER
+    - description: Business reference used to identify the outbound order.
+    - display-label: Outbound Order Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - ORDER_TYPE_CODE
+    - ai-context: Valid values include CUSTOMER_ORDER, INTERNAL_REQUEST.
+    - description: Type of outbound demand such as customer order or internal request.
+    - display-label: Order Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - SHIP_FROM_WAREHOUSE_ID
+    - description: Warehouse fulfilling the outbound order.
+    - display-as-lov: select-list
+    - display-label: Ship From Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - CUSTOMER_PARTNER_ID
+    - description: Customer or requesting partner associated with the outbound order.
+    - display-as-lov: select-list
+    - display-label: Customer Partner ID
+    - semantic-type: identifier
+  - SHIP_TO_SITE_ID
+    - description: Destination site for the outbound order.
+    - display-as-lov: select-list
+    - display-label: Ship To Site ID
+    - semantic-type: identifier
+  - CARRIER_PARTNER_ID
+    - description: Carrier used for the outbound order where relevant.
+    - display-as-lov: select-list
+    - display-label: Carrier Partner ID
+    - semantic-type: identifier
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the record.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - OUTBOUND_STATUS_CODE
+    - ai-context: Valid values include NEW, RELEASED, ALLOCATED, PICKING, PICKED, PACKED, DISPATCHED, REVIEW_REQUIRED, CANCELLED, CLOSED.
+    - description: Current business status of the outbound order.
+    - display-label: Outbound Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - PRIORITY_CODE
+    - ai-context: Valid values include LOW, MEDIUM, HIGH, CRITICAL.
+    - description: Business priority assigned to the outbound order.
+    - display-label: Priority Code
+    - semantic-type: priority
+  - ORDER_DATE
+    - description: Business order date used to capture when the demand was created.
+    - display-label: Order Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - REQUESTED_SHIP_AT
+    - description: Requested shipment date and time.
+    - display-label: Requested Ship At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - PICKED_BY_USER_ID
+    - description: Application user who completed picking for the outbound order.
+    - display-as-lov: select-list
+    - display-label: Picked By User ID
+    - semantic-type: identifier
+  - PACKED_BY_USER_ID
+    - description: Application user who completed packing for the outbound order.
+    - display-as-lov: select-list
+    - display-label: Packed By User ID
+    - semantic-type: identifier
+  - DISPATCHED_AT
+    - description: Date and time when the goods left the warehouse.
+    - display-label: Dispatched At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - DISPATCHED_BY_USER_ID
+    - description: Application user who confirmed dispatch of the outbound order.
+    - display-as-lov: select-list
+    - display-label: Dispatched By User ID
+    - semantic-type: identifier
+  - SOURCE_DOCUMENT_NUMBER
+    - description: Business reference number from the source order or request.
+    - display-label: Source Document Number
+    - semantic-type: reference_number
+  - DISPATCH_REFERENCE
+    - description: Business dispatch reference used when the shipment leaves the warehouse.
+    - display-label: Dispatch Reference
+    - semantic-type: reference_number
+  - NOTES
+    - description: Business notes for the outbound order.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_OUTBOUND_ORDERS_01 - CHECK (ORDER_TYPE_CODE)
+  - CK_SCM_OUTBOUND_ORDERS_02 - CHECK (OUTBOUND_STATUS_CODE)
+  - CK_SCM_OUTBOUND_ORDERS_03 - CHECK (PRIORITY_CODE)
+  - PK_SCM_OUTBOUND_ORDERS - PRIMARY KEY (OUTBOUND_ORDER_ID)
+  - UQ_SCM_OUTBOUND_ORDERS_01 - UNIQUE (OUTBOUND_ORDER_NUMBER)
+  - FK_SCM_OUTBOUND_ORDERS_01 - FOREIGN KEY (SHIP_FROM_WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_OUTBOUND_ORDERS_02 - FOREIGN KEY (CUSTOMER_PARTNER_ID) -> SCM_BUSINESS_PARTNERS(BUSINESS_PARTNER_ID)
+  - FK_SCM_OUTBOUND_ORDERS_03 - FOREIGN KEY (SHIP_TO_SITE_ID) -> SCM_PARTNER_SITES(PARTNER_SITE_ID)
+  - FK_SCM_OUTBOUND_ORDERS_04 - FOREIGN KEY (CARRIER_PARTNER_ID) -> SCM_BUSINESS_PARTNERS(BUSINESS_PARTNER_ID)
+  - FK_SCM_OUTBOUND_ORDERS_05 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_OUTBOUND_ORDERS_06 - FOREIGN KEY (PICKED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_OUTBOUND_ORDERS_07 - FOREIGN KEY (PACKED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_OUTBOUND_ORDERS_08 - FOREIGN KEY (DISPATCHED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for outbound orders.
+  - display-label: Outbound Orders
+
+# Table: SCM_OUTBOUND_ORDER_LINES
+
+## Columns:
+  - OUTBOUND_ORDER_LINE_ID - NUMBER NOT NULL [pk]
+  - OUTBOUND_ORDER_ID - NUMBER NOT NULL [uk] [fk]
+  - LINE_NUMBER - NUMBER(10) NOT NULL [uk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - PREFERRED_LOT_ID - NUMBER [fk]
+  - REQUESTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RESERVED_QUANTITY - NUMBER(14,4) NOT NULL
+  - PICKED_QUANTITY - NUMBER(14,4) NOT NULL
+  - PACKED_QUANTITY - NUMBER(14,4) NOT NULL
+  - DISPATCHED_QUANTITY - NUMBER(14,4) NOT NULL
+  - SHORT_QUANTITY - NUMBER(14,4) NOT NULL
+  - ALLOCATION_STATUS_CODE - VARCHAR2(20) NOT NULL
+
+## Column Display Attributes:
+  - OUTBOUND_ORDER_LINE_ID
+    - description: Surrogate key for the outbound order line.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Outbound Order Line ID
+    - semantic-type: identifier
+  - OUTBOUND_ORDER_ID
+    - description: Outbound order that the line belongs to.
+    - display-as-lov: select-list
+    - display-label: Outbound Order ID
+    - semantic-type: identifier
+    - value-required: true
+  - LINE_NUMBER
+    - description: Line number within the outbound order.
+    - display-label: Line Number
+    - primary-display-column: true
+    - semantic-type: sequence
+    - value-required: true
+  - ITEM_ID
+    - description: Item requested on the outbound order line.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - PREFERRED_LOT_ID
+    - description: Preferred lot for allocation where the business requires a specific lot.
+    - display-as-lov: select-list
+    - display-label: Preferred Lot ID
+    - semantic-type: identifier
+  - REQUESTED_QUANTITY
+    - description: Quantity requested on the line.
+    - display-label: Requested Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+    - value-required: true
+  - RESERVED_QUANTITY
+    - description: Quantity reserved against available stock.
+    - display-label: Reserved Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - PICKED_QUANTITY
+    - description: Quantity physically picked.
+    - display-label: Picked Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - PACKED_QUANTITY
+    - description: Quantity packed and ready for dispatch.
+    - display-label: Packed Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - DISPATCHED_QUANTITY
+    - description: Quantity that has left the warehouse.
+    - display-label: Dispatched Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - SHORT_QUANTITY
+    - description: Quantity that could not be fulfilled.
+    - display-label: Short Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - ALLOCATION_STATUS_CODE
+    - ai-context: Valid values include OPEN, ALLOCATED, PART_PICKED, PICKED, PACKED, PART_DISPATCHED, DISPATCHED, SHORT, CANCELLED.
+    - description: Current business status of the outbound order line.
+    - display-label: Allocation Status
+    - search-facet: distinct-list
+    - semantic-type: status
+
+## Constraints:
+  - CK_SCM_OUTBOUND_ORDER_LINES_01 - CHECK (ALLOCATION_STATUS_CODE)
+  - CK_SCM_OUTBOUND_ORDER_LINES_02 - CHECK (REQUESTED_QUANTITY, RESERVED_QUANTITY, PICKED_QUANTITY, PACKED_QUANTITY, DISPATCHED_QUANTITY, SHORT_QUANTITY)
+  - PK_SCM_OUTBOUND_ORDER_LINES - PRIMARY KEY (OUTBOUND_ORDER_LINE_ID)
+  - UQ_SCM_OUTBOUND_ORDER_LINES_01 - UNIQUE (OUTBOUND_ORDER_ID, LINE_NUMBER)
+  - FK_SCM_OUTBOUND_ORDER_LINES_01 - FOREIGN KEY (OUTBOUND_ORDER_ID) -> SCM_OUTBOUND_ORDERS(OUTBOUND_ORDER_ID)
+  - FK_SCM_OUTBOUND_ORDER_LINES_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_OUTBOUND_ORDER_LINES_03 - FOREIGN KEY (PREFERRED_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+
+## Table Attributes:
+  - description: Stores records for outbound order lines.
+  - display-label: Outbound Order Lines
+
+# Table: SCM_PARTNER_SITES
+
+## Columns:
+  - PARTNER_SITE_ID - NUMBER NOT NULL [pk]
+  - BUSINESS_PARTNER_ID - NUMBER NOT NULL [uk] [fk]
+  - SITE_CODE - VARCHAR2(30) NOT NULL [uk]
+  - SITE_NAME - VARCHAR2(200) NOT NULL
+  - SITE_ROLE_CODE - VARCHAR2(20) NOT NULL
+  - ADDRESS_LINE_1 - VARCHAR2(200) NOT NULL
+  - ADDRESS_LINE_2 - VARCHAR2(200)
+  - CITY_NAME - VARCHAR2(100) NOT NULL
+  - STATE_REGION_NAME - VARCHAR2(100)
+  - POSTAL_CODE - VARCHAR2(30)
+  - COUNTRY_CODE - VARCHAR2(2) NOT NULL
+  - IS_PRIMARY_SITE - BOOLEAN NOT NULL
+  - IS_ACTIVE - BOOLEAN NOT NULL
+  - CREATED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - CREATED_BY - VARCHAR2(128) NOT NULL
+
+## Column Display Attributes:
+  - PARTNER_SITE_ID
+    - description: Surrogate key for the business partner site.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Partner Site ID
+    - semantic-type: identifier
+  - BUSINESS_PARTNER_ID
+    - description: Partner that owns or uses this site.
+    - display-as-lov: select-list
+    - display-label: Business Partner ID
+    - semantic-type: identifier
+    - value-required: true
+  - SITE_CODE
+    - description: Business code used to identify the partner site.
+    - display-label: Site Code
+    - semantic-type: code
+    - value-required: true
+  - SITE_NAME
+    - description: Business name for the partner site.
+    - display-label: Site Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - SITE_ROLE_CODE
+    - ai-context: Valid values include PRIMARY, SHIP_FROM, SHIP_TO, PICKUP, DELIVERY, RETURN.
+    - description: Business role of the site such as ship to, delivery, return, or pickup.
+    - display-label: Site Role
+    - semantic-type: role
+    - value-required: true
+  - ADDRESS_LINE_1
+    - description: First address line for the site.
+    - display-label: Address Line 1
+    - semantic-type: street_address
+    - value-required: true
+  - ADDRESS_LINE_2
+    - description: Second address line for the site.
+    - display-label: Address Line 2
+    - semantic-type: street_address
+  - CITY_NAME
+    - description: City or town for the site address.
+    - display-label: City Name
+    - semantic-type: city
+    - value-required: true
+  - STATE_REGION_NAME
+    - description: State, province, or region for the site address.
+    - display-label: State or Region Name
+    - semantic-type: region
+  - POSTAL_CODE
+    - description: Postal or zip code for the site address.
+    - display-label: Postal Code
+    - semantic-type: postal_code
+  - COUNTRY_CODE
+    - description: Two-character country code for the site address.
+    - display-label: Country Code
+    - semantic-type: country_code
+    - value-required: true
+  - IS_PRIMARY_SITE
+    - description: Indicates whether this is the main site for the partner.
+    - display-label: Is Primary Site
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - IS_ACTIVE
+    - description: Indicates whether this site can still be used in business transactions.
+    - display-label: Is Active
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - CREATED_AT
+    - description: Date and time when the site record was created.
+    - display-in-form: false
+    - display-label: Created At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - CREATED_BY
+    - description: Database user that created the site record.
+    - display-in-form: false
+    - display-label: Created By
+    - semantic-type: user_name
+
+## Constraints:
+  - CK_SCM_PARTNER_SITES_01 - CHECK (SITE_ROLE_CODE)
+  - PK_SCM_PARTNER_SITES - PRIMARY KEY (PARTNER_SITE_ID)
+  - UQ_SCM_PARTNER_SITES_01 - UNIQUE (BUSINESS_PARTNER_ID, SITE_CODE)
+  - FK_SCM_PARTNER_SITES_01 - FOREIGN KEY (BUSINESS_PARTNER_ID) -> SCM_BUSINESS_PARTNERS(BUSINESS_PARTNER_ID)
+
+## Table Attributes:
+  - description: Stores records for partner sites.
+  - display-label: Partner Sites
+
+# Table: SCM_REPLENISHMENT_ALERTS
+
+## Columns:
+  - REPLENISHMENT_ALERT_ID - NUMBER NOT NULL [pk]
+  - ALERT_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - ITEM_WAREHOUSE_POLICY_ID - NUMBER [fk]
+  - PICK_LOCATION_ID - NUMBER [fk]
+  - RESERVE_LOCATION_ID - NUMBER [fk]
+  - ALERT_TYPE_CODE - VARCHAR2(30) NOT NULL
+  - ALERT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - PRIORITY_CODE - VARCHAR2(20) NOT NULL
+  - AVAILABLE_QUANTITY - NUMBER(18,4)
+  - TRIGGER_QUANTITY - NUMBER(18,4)
+  - TARGET_QUANTITY - NUMBER(18,4)
+  - RECOMMENDED_REPLENISHMENT_QUANTITY - NUMBER(18,4)
+  - RAISED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - ALERT_NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - REPLENISHMENT_ALERT_ID
+    - description: Surrogate key for the replenishment alert.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Replenishment Alert ID
+    - semantic-type: identifier
+  - ALERT_NUMBER
+    - description: Business reference used to identify the replenishment alert.
+    - display-label: Alert Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse where the replenishment need was identified.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - ITEM_ID
+    - description: Item that requires replenishment review.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - ITEM_WAREHOUSE_POLICY_ID
+    - description: Warehouse policy that triggered the alert where relevant.
+    - display-as-lov: select-list
+    - display-label: Item Warehouse Policy ID
+    - semantic-type: identifier
+  - PICK_LOCATION_ID
+    - description: Pick location that needs replenishment where relevant.
+    - display-as-lov: select-list
+    - display-label: Pick Location ID
+    - semantic-type: identifier
+  - RESERVE_LOCATION_ID
+    - description: Reserve location expected to supply the replenishment where known.
+    - display-as-lov: select-list
+    - display-label: Reserve Location ID
+    - semantic-type: identifier
+  - ALERT_TYPE_CODE
+    - ai-context: Valid values include LOW_STOCK, OUT_OF_STOCK, PICK_FACE_REPLENISHMENT, AGING_REVIEW, SHORT_DATED_REVIEW.
+    - description: Business type of replenishment alert.
+    - display-label: Alert Type Code
+    - search-facet: distinct-list
+    - semantic-type: classification
+    - value-required: true
+  - ALERT_STATUS_CODE
+    - ai-context: Valid values include OPEN, IN_REVIEW, ACTIONED, CLOSED, SUPPRESSED.
+    - description: Current business status of the replenishment alert.
+    - display-label: Alert Status Code
+    - search-facet: distinct-list
+    - semantic-type: status
+  - PRIORITY_CODE
+    - ai-context: Valid values include LOW, MEDIUM, HIGH, CRITICAL.
+    - description: Business priority of the replenishment alert.
+    - display-label: Priority Code
+    - semantic-type: priority
+  - AVAILABLE_QUANTITY
+    - description: Available quantity seen when the alert was raised.
+    - display-label: Available Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - TRIGGER_QUANTITY
+    - description: Quantity threshold that triggered the alert.
+    - display-label: Trigger Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - TARGET_QUANTITY
+    - description: Target quantity the business wants to recover to.
+    - display-label: Target Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - RECOMMENDED_REPLENISHMENT_QUANTITY
+    - description: Suggested quantity to move or review as the replenishment action.
+    - display-label: Recommended Replenishment Quantity
+    - format-mask: FM999G999G999G990D0000
+    - semantic-type: quantity
+  - RAISED_AT
+    - description: Date and time when the replenishment alert was raised.
+    - display-label: Raised At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEWED_AT
+    - description: Date and time when the alert was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEWED_BY_USER_ID
+    - description: User who reviewed the replenishment alert.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - ALERT_NOTES
+    - description: Business notes for the replenishment alert.
+    - display-label: Alert Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_REPLENISHMENT_ALERTS_01 - CHECK (ALERT_TYPE_CODE)
+  - CK_SCM_REPLENISHMENT_ALERTS_02 - CHECK (ALERT_STATUS_CODE)
+  - CK_SCM_REPLENISHMENT_ALERTS_03 - CHECK (PRIORITY_CODE)
+  - CK_SCM_REPLENISHMENT_ALERTS_04 - CHECK (AVAILABLE_QUANTITY)
+  - CK_SCM_REPLENISHMENT_ALERTS_05 - CHECK (TRIGGER_QUANTITY)
+  - CK_SCM_REPLENISHMENT_ALERTS_06 - CHECK (TARGET_QUANTITY)
+  - CK_SCM_REPLENISHMENT_ALERTS_07 - CHECK (RECOMMENDED_REPLENISHMENT_QUANTITY)
+  - PK_SCM_REPLENISHMENT_ALERTS - PRIMARY KEY (REPLENISHMENT_ALERT_ID)
+  - UQ_SCM_REPLENISHMENT_ALERTS_01 - UNIQUE (ALERT_NUMBER)
+  - FK_SCM_REPLENISHMENT_ALERTS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_REPLENISHMENT_ALERTS_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_REPLENISHMENT_ALERTS_03 - FOREIGN KEY (ITEM_WAREHOUSE_POLICY_ID) -> SCM_ITEM_WAREHOUSE_POLICIES(ITEM_WAREHOUSE_POLICY_ID)
+  - FK_SCM_REPLENISHMENT_ALERTS_04 - FOREIGN KEY (PICK_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_REPLENISHMENT_ALERTS_05 - FOREIGN KEY (RESERVE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_REPLENISHMENT_ALERTS_06 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for replenishment alerts.
+  - display-label: Replenishment Alerts
+
+# Table: SCM_RETURNS
+
+## Columns:
+  - RETURN_ID - NUMBER NOT NULL [pk]
+  - RETURN_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - RETURN_TYPE_CODE - VARCHAR2(20) NOT NULL
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - SOURCE_PARTNER_ID - NUMBER [fk]
+  - SOURCE_SITE_ID - NUMBER [fk]
+  - RELATED_OUTBOUND_ORDER_ID - NUMBER [fk]
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - RETURN_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REVIEW_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - RETURN_REASON_CODE - VARCHAR2(30) NOT NULL
+  - EXPECTED_ARRIVAL_AT - TIMESTAMP WITH TIMEZONE
+  - RECEIVED_AT - TIMESTAMP WITH TIMEZONE
+  - RECEIVED_BY_USER_ID - NUMBER [fk]
+  - ASSESSED_AT - TIMESTAMP WITH TIMEZONE
+  - ASSESSED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEW_REASON_CODE - VARCHAR2(30)
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - RETURN_ID
+    - description: Surrogate key for the return.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Return ID
+    - semantic-type: identifier
+  - RETURN_NUMBER
+    - description: Business reference used to identify the return.
+    - display-label: Return Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - RETURN_TYPE_CODE
+    - ai-context: Valid values include CUSTOMER_RETURN, DELIVERY_RETURN, INTERNAL_RETURN, SUPPLIER_RETURN.
+    - description: Business type of the return.
+    - display-label: Return Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse that receives or manages the return.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - SOURCE_PARTNER_ID
+    - description: Partner sending or associated with the return.
+    - display-as-lov: select-list
+    - display-label: Source Partner ID
+    - semantic-type: identifier
+  - SOURCE_SITE_ID
+    - description: Site sending or associated with the return.
+    - display-as-lov: select-list
+    - display-label: Source Site ID
+    - semantic-type: identifier
+  - RELATED_OUTBOUND_ORDER_ID
+    - description: Outbound order linked to the return where relevant.
+    - display-as-lov: select-list
+    - display-label: Related Outbound Order ID
+    - semantic-type: identifier
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the record.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - RETURN_STATUS_CODE
+    - ai-context: Valid values include NEW, RECEIVED, UNDER_REVIEW, REVIEW_REQUIRED, DISPOSITIONED, CLOSED, CANCELLED.
+    - description: Current business status of the return.
+    - display-label: Return Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REVIEW_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, REJECTED, RESOLVED.
+    - description: Current review status of the record.
+    - display-label: Review Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - RETURN_REASON_CODE
+    - description: Business reason for the return.
+    - display-label: Return Reason Code
+    - semantic-type: reason_code
+    - value-required: true
+  - EXPECTED_ARRIVAL_AT
+    - description: Expected arrival date and time of the return.
+    - display-label: Expected Arrival At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - RECEIVED_AT
+    - description: Actual date and time when the return arrived.
+    - display-label: Received At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - RECEIVED_BY_USER_ID
+    - description: Application user who received the goods for the record.
+    - display-as-lov: select-list
+    - display-label: Received By User ID
+    - semantic-type: identifier
+  - ASSESSED_AT
+    - description: Date and time when the returned goods were assessed.
+    - display-label: Assessed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - ASSESSED_BY_USER_ID
+    - description: Application user who assessed the returned goods.
+    - display-as-lov: select-list
+    - display-label: Assessed By User ID
+    - semantic-type: identifier
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the record was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEW_REASON_CODE
+    - description: Reason code that explains the review outcome or exception handling decision.
+    - display-label: Review Reason Code
+    - semantic-type: reason
+  - NOTES
+    - description: Business notes for the return.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_RETURNS_01 - CHECK (RETURN_TYPE_CODE)
+  - CK_SCM_RETURNS_02 - CHECK (RETURN_STATUS_CODE)
+  - CK_SCM_RETURNS_03 - CHECK (REVIEW_STATUS_CODE)
+  - PK_SCM_RETURNS - PRIMARY KEY (RETURN_ID)
+  - UQ_SCM_RETURNS_01 - UNIQUE (RETURN_NUMBER)
+  - FK_SCM_RETURNS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_RETURNS_02 - FOREIGN KEY (SOURCE_PARTNER_ID) -> SCM_BUSINESS_PARTNERS(BUSINESS_PARTNER_ID)
+  - FK_SCM_RETURNS_03 - FOREIGN KEY (SOURCE_SITE_ID) -> SCM_PARTNER_SITES(PARTNER_SITE_ID)
+  - FK_SCM_RETURNS_04 - FOREIGN KEY (RELATED_OUTBOUND_ORDER_ID) -> SCM_OUTBOUND_ORDERS(OUTBOUND_ORDER_ID)
+  - FK_SCM_RETURNS_05 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_RETURNS_06 - FOREIGN KEY (RECEIVED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_RETURNS_07 - FOREIGN KEY (ASSESSED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_RETURNS_08 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for returns.
+  - display-label: Returns
+
+# Table: SCM_RETURN_LINES
+
+## Columns:
+  - RETURN_LINE_ID - NUMBER NOT NULL [pk]
+  - RETURN_ID - NUMBER NOT NULL [uk] [fk]
+  - LINE_NUMBER - NUMBER(10) NOT NULL [uk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - EXPECTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RECEIVED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RETURNED_CONDITION_CODE - VARCHAR2(20) NOT NULL
+  - REUSABLE_QUANTITY - NUMBER(14,4) NOT NULL
+  - QUARANTINE_QUANTITY - NUMBER(14,4) NOT NULL
+  - DAMAGED_QUANTITY - NUMBER(14,4) NOT NULL
+  - WRITEOFF_QUANTITY - NUMBER(14,4) NOT NULL
+  - DISPOSITION_CODE - VARCHAR2(20) NOT NULL
+
+## Column Display Attributes:
+  - RETURN_LINE_ID
+    - description: Surrogate key for the return line.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Return Line ID
+    - semantic-type: identifier
+  - RETURN_ID
+    - description: Return that the line belongs to.
+    - display-as-lov: select-list
+    - display-label: Return ID
+    - semantic-type: identifier
+    - value-required: true
+  - LINE_NUMBER
+    - description: Line number within the return.
+    - display-label: Line Number
+    - primary-display-column: true
+    - semantic-type: sequence
+    - value-required: true
+  - ITEM_ID
+    - description: Item being returned.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot associated with the returned stock where relevant.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - EXPECTED_QUANTITY
+    - description: Expected quantity on the return line.
+    - display-label: Expected Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - RECEIVED_QUANTITY
+    - description: Quantity actually received on the return line.
+    - display-label: Received Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - RETURNED_CONDITION_CODE
+    - ai-context: Valid values include GOOD, DAMAGED, INCOMPLETE, EXPIRED, SUSPECT.
+    - description: Condition of the goods received on the return line.
+    - display-label: Returned Condition
+    - search-facet: distinct-list
+    - semantic-type: condition
+  - REUSABLE_QUANTITY
+    - description: Quantity approved to return to available stock.
+    - display-label: Reusable Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - QUARANTINE_QUANTITY
+    - description: Quantity moved to quarantine after assessment.
+    - display-label: Quarantine Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - DAMAGED_QUANTITY
+    - description: Quantity found damaged on return.
+    - display-label: Damaged Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - WRITEOFF_QUANTITY
+    - description: Quantity approved for write-off.
+    - display-label: Write-Off Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - DISPOSITION_CODE
+    - ai-context: Valid values include RETURN_TO_STOCK, QUARANTINE, WRITE_OFF.
+    - description: Outcome applied to the return line after assessment.
+    - display-label: Disposition Code
+    - semantic-type: disposition
+
+## Constraints:
+  - CK_SCM_RETURN_LINES_01 - CHECK (RETURNED_CONDITION_CODE)
+  - CK_SCM_RETURN_LINES_02 - CHECK (DISPOSITION_CODE)
+  - CK_SCM_RETURN_LINES_03 - CHECK (EXPECTED_QUANTITY, RECEIVED_QUANTITY, REUSABLE_QUANTITY, QUARANTINE_QUANTITY, DAMAGED_QUANTITY, WRITEOFF_QUANTITY)
+  - PK_SCM_RETURN_LINES - PRIMARY KEY (RETURN_LINE_ID)
+  - UQ_SCM_RETURN_LINES_01 - UNIQUE (RETURN_ID, LINE_NUMBER)
+  - FK_SCM_RETURN_LINES_01 - FOREIGN KEY (RETURN_ID) -> SCM_RETURNS(RETURN_ID)
+  - FK_SCM_RETURN_LINES_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_RETURN_LINES_03 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+
+## Table Attributes:
+  - description: Stores records for return lines.
+  - display-label: Return Lines
+
+# View: SCM_SERIAL_EVENTS
+
+## Columns:
+  - SERIAL_EVENT_ID - NUMBER [pk]
+  - ITEM_SERIAL_ID - NUMBER
+  - WAREHOUSE_ID - NUMBER
+  - FROM_LOCATION_ID - NUMBER
+  - TO_LOCATION_ID - NUMBER
+  - EVENT_TYPE_CODE - VARCHAR2(16)
+  - FROM_STATUS_CODE - VARCHAR2(20)
+  - TO_STATUS_CODE - VARCHAR2(20)
+  - REFERENCE_DOCUMENT_TYPE - VARCHAR2(120)
+  - REFERENCE_DOCUMENT_NUMBER - VARCHAR2(50)
+  - EVENT_AT - TIMESTAMP WITH TIMEZONE
+  - PERFORMED_BY_USER_ID - NUMBER
+  - EVENT_NOTES - VARCHAR2(66)
+
+## Column Display Attributes:
+  - SERIAL_EVENT_ID
+    - description: Identifier for the serial lifecycle history row.
+    - display-label: Serial Event ID
+    - semantic-type: identifier
+  - ITEM_SERIAL_ID
+    - description: Serial associated with the serial lifecycle history row.
+    - display-as-lov: select-list
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - WAREHOUSE_ID
+    - description: Warehouse associated with the serial lifecycle history row.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+  - FROM_LOCATION_ID
+    - description: Source location for the serial lifecycle history row where available.
+    - display-as-lov: select-list
+    - display-label: From Location ID
+    - semantic-type: identifier
+  - TO_LOCATION_ID
+    - description: Destination location for the serial lifecycle history row where available.
+    - display-as-lov: select-list
+    - display-label: To Location ID
+    - semantic-type: identifier
+  - EVENT_TYPE_CODE
+    - description: Event type for the serial lifecycle history row.
+    - display-label: Event Type Code
+    - semantic-type: type
+  - FROM_STATUS_CODE
+    - description: Source stock status for the serial lifecycle history row where available.
+    - display-label: From Status Code
+    - semantic-type: status
+  - TO_STATUS_CODE
+    - description: Destination stock status for the serial lifecycle history row where available.
+    - display-label: To Status Code
+    - semantic-type: status
+  - REFERENCE_DOCUMENT_TYPE
+    - description: Reference document type for the serial lifecycle history row.
+    - display-label: Reference Document Type
+    - semantic-type: type
+  - REFERENCE_DOCUMENT_NUMBER
+    - description: Reference document number for the serial lifecycle history row.
+    - display-label: Reference Document Number
+    - semantic-type: reference_number
+  - EVENT_AT
+    - description: Timestamp for the serial lifecycle history row.
+    - display-label: Event At
+    - semantic-type: datetime
+  - PERFORMED_BY_USER_ID
+    - description: Actor associated with the serial lifecycle history row where available.
+    - display-as-lov: select-list
+    - display-label: Performed By User ID
+    - semantic-type: identifier
+  - EVENT_NOTES
+    - description: Notes for the serial lifecycle history row.
+    - display-label: Event Notes
+    - semantic-type: comment
+
+## View Attributes:
+  - description: Provides serial lifecycle history derived from serial records and inventory transactions.
+  - display-label: Serial Events
+
+## Constraints:
+  - PK_SCM_SERIAL_EVENTS - PRIMARY KEY (SERIAL_EVENT_ID)
+
+
+# Table: SCM_STOCK_ADJUSTMENTS
+
+## Columns:
+  - STOCK_ADJUSTMENT_ID - NUMBER NOT NULL [pk]
+  - ADJUSTMENT_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - ADJUSTMENT_TYPE_CODE - VARCHAR2(30) NOT NULL
+  - ADJUSTMENT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REASON_CODE - VARCHAR2(30) NOT NULL
+  - REQUESTED_BY_USER_ID - NUMBER NOT NULL [fk]
+  - REQUESTED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - APPLIED_BY_USER_ID - NUMBER [fk]
+  - APPLIED_AT - TIMESTAMP WITH TIMEZONE
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - STOCK_ADJUSTMENT_ID
+    - description: Surrogate key for the stock adjustment.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Adjustment ID
+    - semantic-type: identifier
+  - ADJUSTMENT_NUMBER
+    - description: Business reference used to identify the stock adjustment.
+    - display-label: Adjustment Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse where the stock adjustment applies.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the record.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - ADJUSTMENT_TYPE_CODE
+    - ai-context: Valid values include MANUAL_ADJUSTMENT, STATUS_CORRECTION, WRITE_OFF, COUNT_VARIANCE.
+    - description: Business type of the stock adjustment.
+    - display-label: Adjustment Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - ADJUSTMENT_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, APPLIED, REJECTED, CANCELLED.
+    - description: Current business status of the stock adjustment.
+    - display-label: Adjustment Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REASON_CODE
+    - description: Business reason for the stock adjustment.
+    - display-label: Reason Code
+    - semantic-type: reason_code
+    - value-required: true
+  - REQUESTED_BY_USER_ID
+    - description: Application user who requested the record.
+    - display-as-lov: select-list
+    - display-label: Requested By User ID
+    - semantic-type: identifier
+    - value-required: true
+  - REQUESTED_AT
+    - description: Date and time when the stock adjustment was requested.
+    - display-label: Requested At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the record was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - APPLIED_BY_USER_ID
+    - description: Application user who applied the stock adjustment.
+    - display-as-lov: select-list
+    - display-label: Applied By User ID
+    - semantic-type: identifier
+  - APPLIED_AT
+    - description: Date and time when the stock adjustment was applied to inventory.
+    - display-label: Applied At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - NOTES
+    - description: Business notes for the stock adjustment.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_STOCK_ADJUSTMENTS_01 - CHECK (ADJUSTMENT_TYPE_CODE)
+  - CK_SCM_STOCK_ADJUSTMENTS_02 - CHECK (ADJUSTMENT_STATUS_CODE)
+  - PK_SCM_STOCK_ADJUSTMENTS - PRIMARY KEY (STOCK_ADJUSTMENT_ID)
+  - UQ_SCM_STOCK_ADJUSTMENTS_01 - UNIQUE (ADJUSTMENT_NUMBER)
+  - FK_SCM_STOCK_ADJUSTMENTS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STOCK_ADJUSTMENTS_02 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_ADJUSTMENTS_03 - FOREIGN KEY (REQUESTED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_ADJUSTMENTS_04 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_ADJUSTMENTS_05 - FOREIGN KEY (APPLIED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for stock adjustments.
+  - display-label: Stock Adjustments
+
+# Table: SCM_STOCK_ADJUSTMENT_LINES
+
+## Columns:
+  - STOCK_ADJUSTMENT_LINE_ID - NUMBER NOT NULL [pk]
+  - STOCK_ADJUSTMENT_ID - NUMBER NOT NULL [uk] [fk]
+  - LINE_NUMBER - NUMBER(10) NOT NULL [uk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - ITEM_SERIAL_ID - NUMBER [fk]
+  - STORAGE_LOCATION_ID - NUMBER NOT NULL [fk]
+  - FROM_STATUS_CODE - VARCHAR2(20)
+  - TO_STATUS_CODE - VARCHAR2(20)
+  - ADJUSTMENT_DIRECTION_CODE - VARCHAR2(20) NOT NULL
+  - ADJUSTMENT_QUANTITY - NUMBER(14,4) NOT NULL
+  - REASON_DESCRIPTION - VARCHAR2(500)
+
+## Column Display Attributes:
+  - STOCK_ADJUSTMENT_LINE_ID
+    - description: Surrogate key for the stock adjustment line.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Adjustment Line ID
+    - semantic-type: identifier
+  - STOCK_ADJUSTMENT_ID
+    - description: Stock adjustment that the line belongs to.
+    - display-as-lov: select-list
+    - display-label: Stock Adjustment ID
+    - semantic-type: identifier
+    - value-required: true
+  - LINE_NUMBER
+    - description: Line number within the stock adjustment.
+    - display-label: Line Number
+    - primary-display-column: true
+    - semantic-type: sequence
+    - value-required: true
+  - ITEM_ID
+    - description: Item affected by the adjustment line.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot affected by the adjustment line where relevant.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - ITEM_SERIAL_ID
+    - description: Reference to the item serial.
+    - display-as-lov: select-list
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - STORAGE_LOCATION_ID
+    - description: Location where the stock adjustment applies.
+    - display-as-lov: select-list
+    - display-label: Storage Location ID
+    - semantic-type: identifier
+    - value-required: true
+  - FROM_STATUS_CODE
+    - ai-context: Valid values include AVAILABLE, RESERVED, PICKED, PACKED, IN_TRANSIT, QUARANTINE, DAMAGED, BLOCKED.
+    - description: Stock status before the adjustment where relevant.
+    - display-label: From Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - TO_STATUS_CODE
+    - ai-context: Valid values include AVAILABLE, RESERVED, PICKED, PACKED, IN_TRANSIT, QUARANTINE, DAMAGED, BLOCKED.
+    - description: Stock status after the adjustment where relevant.
+    - display-label: To Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - ADJUSTMENT_DIRECTION_CODE
+    - ai-context: Valid values include INCREASE, DECREASE, STATUS_CHANGE.
+    - description: Direction of the quantity change.
+    - display-label: Adjustment Direction
+    - search-facet: distinct-list
+    - semantic-type: direction
+    - value-required: true
+  - ADJUSTMENT_QUANTITY
+    - description: Quantity affected by the adjustment line.
+    - display-label: Adjustment Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+    - value-required: true
+  - REASON_DESCRIPTION
+    - description: Business explanation specific to the adjustment line.
+    - display-label: Reason Description
+    - semantic-type: description
+
+## Constraints:
+  - CK_SCM_STOCK_ADJUSTMENT_LINES_01 - CHECK (ADJUSTMENT_DIRECTION_CODE)
+  - CK_SCM_STOCK_ADJUSTMENT_LINES_02 - CHECK (ADJUSTMENT_QUANTITY)
+  - CK_SCM_STOCK_ADJUSTMENT_LINES_03 - CHECK (FROM_STATUS_CODE)
+  - CK_SCM_STOCK_ADJUSTMENT_LINES_04 - CHECK (TO_STATUS_CODE)
+  - PK_SCM_STOCK_ADJUSTMENT_LINES - PRIMARY KEY (STOCK_ADJUSTMENT_LINE_ID)
+  - UQ_SCM_STOCK_ADJUSTMENT_LINES_01 - UNIQUE (STOCK_ADJUSTMENT_ID, LINE_NUMBER)
+  - FK_SCM_STOCK_ADJUSTMENT_LINES_01 - FOREIGN KEY (STOCK_ADJUSTMENT_ID) -> SCM_STOCK_ADJUSTMENTS(STOCK_ADJUSTMENT_ID)
+  - FK_SCM_STOCK_ADJUSTMENT_LINES_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_STOCK_ADJUSTMENT_LINES_03 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_STOCK_ADJUSTMENT_LINES_04 - FOREIGN KEY (ITEM_SERIAL_ID) -> SCM_ITEM_SERIALS(ITEM_SERIAL_ID)
+  - FK_SCM_STOCK_ADJUSTMENT_LINES_05 - FOREIGN KEY (STORAGE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+
+## Table Attributes:
+  - description: Stores records for stock adjustment lines.
+  - display-label: Stock Adjustment Lines
+
+# Table: SCM_STOCK_ALLOCATIONS
+
+## Columns:
+  - STOCK_ALLOCATION_ID - NUMBER NOT NULL [pk]
+  - ALLOCATION_NUMBER - VARCHAR2(40) NOT NULL [uk]
+  - OUTBOUND_ORDER_LINE_ID - NUMBER NOT NULL [uk] [fk]
+  - INVENTORY_BALANCE_ID - NUMBER NOT NULL [fk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - SOURCE_LOCATION_ID - NUMBER NOT NULL [fk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - ITEM_SERIAL_ID - NUMBER [fk]
+  - ALLOCATION_SEQUENCE - NUMBER(10) NOT NULL [uk]
+  - ALLOCATION_METHOD_CODE - VARCHAR2(20) NOT NULL
+  - ALLOCATION_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - ALLOCATED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RESERVED_QUANTITY - NUMBER(14,4) NOT NULL
+  - PICKED_QUANTITY - NUMBER(14,4) NOT NULL
+  - PACKED_QUANTITY - NUMBER(14,4) NOT NULL
+  - DISPATCHED_QUANTITY - NUMBER(14,4) NOT NULL
+  - SHORT_QUANTITY - NUMBER(14,4) NOT NULL
+  - FIFO_BASIS_DATE - DATE
+  - ALLOCATED_BY_USER_ID - NUMBER [fk]
+  - ALLOCATED_AT - TIMESTAMP WITH TIMEZONE
+  - PICKED_BY_USER_ID - NUMBER [fk]
+  - PICKED_AT - TIMESTAMP WITH TIMEZONE
+  - PACKED_BY_USER_ID - NUMBER [fk]
+  - PACKED_AT - TIMESTAMP WITH TIMEZONE
+  - DISPATCHED_BY_USER_ID - NUMBER [fk]
+  - DISPATCHED_AT - TIMESTAMP WITH TIMEZONE
+
+## Column Display Attributes:
+  - STOCK_ALLOCATION_ID
+    - description: Surrogate key for the stock allocation.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Allocation ID
+    - semantic-type: identifier
+  - ALLOCATION_NUMBER
+    - description: Business reference used to identify the stock allocation.
+    - display-label: Allocation Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - OUTBOUND_ORDER_LINE_ID
+    - description: Outbound order line fulfilled by the allocation.
+    - display-as-lov: select-list
+    - display-label: Outbound Order Line ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_BALANCE_ID
+    - description: Inventory balance row selected for allocation.
+    - display-as-lov: select-list
+    - display-label: Inventory Balance ID
+    - semantic-type: identifier
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse from which stock is allocated.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - SOURCE_LOCATION_ID
+    - description: Location from which allocated stock is picked.
+    - display-as-lov: select-list
+    - display-label: Source Location ID
+    - semantic-type: identifier
+    - value-required: true
+  - ITEM_ID
+    - description: Item allocated to the outbound line.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot allocated where lot control applies.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - ITEM_SERIAL_ID
+    - description: Serial number allocated where serial control applies.
+    - display-as-lov: select-list
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - ALLOCATION_SEQUENCE
+    - description: FIFO allocation sequence within the outbound order line.
+    - display-label: Allocation Sequence
+    - semantic-type: sequence
+    - value-required: true
+  - ALLOCATION_METHOD_CODE
+    - ai-context: Valid values include FIFO, MANUAL, SPECIFIC_LOT.
+    - description: Method used to allocate stock.
+    - display-label: Allocation Method
+    - search-facet: distinct-list
+    - semantic-type: method
+  - ALLOCATION_STATUS_CODE
+    - ai-context: Valid values include OPEN, ALLOCATED, PART_PICKED, PICKED, PACKED, PART_DISPATCHED, DISPATCHED, SHORT, CANCELLED.
+    - description: Current lifecycle status of the allocation.
+    - display-label: Allocation Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - ALLOCATED_QUANTITY
+    - description: Quantity allocated from this balance.
+    - display-label: Allocated Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - RESERVED_QUANTITY
+    - description: Quantity reserved from this allocation.
+    - display-label: Reserved Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - PICKED_QUANTITY
+    - description: Quantity picked from this allocation.
+    - display-label: Picked Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - PACKED_QUANTITY
+    - description: Quantity packed from this allocation.
+    - display-label: Packed Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - DISPATCHED_QUANTITY
+    - description: Quantity dispatched from this allocation.
+    - display-label: Dispatched Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - SHORT_QUANTITY
+    - description: Quantity short against this allocation.
+    - display-label: Short Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - FIFO_BASIS_DATE
+    - description: Date used to order FIFO allocation candidates.
+    - display-label: FIFO Basis Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - ALLOCATED_BY_USER_ID
+    - description: Application user who allocated the stock.
+    - display-as-lov: select-list
+    - display-label: Allocated By User ID
+    - semantic-type: identifier
+  - ALLOCATED_AT
+    - description: Date and time when the stock was allocated.
+    - display-label: Allocated At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - PICKED_BY_USER_ID
+    - description: Application user who picked the allocation.
+    - display-as-lov: select-list
+    - display-label: Picked By User ID
+    - semantic-type: identifier
+  - PICKED_AT
+    - description: Date and time when the allocation was picked.
+    - display-label: Picked At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - PACKED_BY_USER_ID
+    - description: Application user who packed the allocation.
+    - display-as-lov: select-list
+    - display-label: Packed By User ID
+    - semantic-type: identifier
+  - PACKED_AT
+    - description: Date and time when the allocation was packed.
+    - display-label: Packed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - DISPATCHED_BY_USER_ID
+    - description: Application user who dispatched the allocation.
+    - display-as-lov: select-list
+    - display-label: Dispatched By User ID
+    - semantic-type: identifier
+  - DISPATCHED_AT
+    - description: Date and time when the allocation was dispatched.
+    - display-label: Dispatched At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+
+## Constraints:
+  - CK_SCM_STOCK_ALLOCATIONS_01 - CHECK (ALLOCATION_SEQUENCE)
+  - CK_SCM_STOCK_ALLOCATIONS_02 - CHECK (ALLOCATION_METHOD_CODE)
+  - CK_SCM_STOCK_ALLOCATIONS_03 - CHECK (ALLOCATION_STATUS_CODE)
+  - CK_SCM_STOCK_ALLOCATIONS_04 - CHECK (ALLOCATED_QUANTITY, RESERVED_QUANTITY, PICKED_QUANTITY, PACKED_QUANTITY, DISPATCHED_QUANTITY, SHORT_QUANTITY)
+  - PK_SCM_STOCK_ALLOCATIONS - PRIMARY KEY (STOCK_ALLOCATION_ID)
+  - UQ_SCM_STOCK_ALLOCATIONS_01 - UNIQUE (ALLOCATION_NUMBER)
+  - UQ_SCM_STOCK_ALLOCATIONS_02 - UNIQUE (OUTBOUND_ORDER_LINE_ID, ALLOCATION_SEQUENCE)
+  - FK_SCM_STOCK_ALLOCATIONS_01 - FOREIGN KEY (OUTBOUND_ORDER_LINE_ID) -> SCM_OUTBOUND_ORDER_LINES(OUTBOUND_ORDER_LINE_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_02 - FOREIGN KEY (INVENTORY_BALANCE_ID) -> SCM_INVENTORY_BALANCES(INVENTORY_BALANCE_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_03 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_04 - FOREIGN KEY (SOURCE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_05 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_06 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_07 - FOREIGN KEY (ITEM_SERIAL_ID) -> SCM_ITEM_SERIALS(ITEM_SERIAL_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_08 - FOREIGN KEY (ALLOCATED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_09 - FOREIGN KEY (PICKED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_10 - FOREIGN KEY (PACKED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_ALLOCATIONS_11 - FOREIGN KEY (DISPATCHED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores FIFO stock allocation and outbound execution detail.
+  - display-label: Stock Allocations
+
+# Table: SCM_STOCK_COUNTS
+
+## Columns:
+  - STOCK_COUNT_ID - NUMBER NOT NULL [pk]
+  - COUNT_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - WAREHOUSE_AREA_ID - NUMBER [fk]
+  - STORAGE_LOCATION_ID - NUMBER [fk]
+  - ITEM_ID - NUMBER [fk]
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - COUNT_SCOPE_CODE - VARCHAR2(20) NOT NULL
+  - COUNT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REVIEW_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - PLANNED_START_AT - TIMESTAMP WITH TIMEZONE
+  - PLANNED_END_AT - TIMESTAMP WITH TIMEZONE
+  - STARTED_AT - TIMESTAMP WITH TIMEZONE
+  - COMPLETED_AT - TIMESTAMP WITH TIMEZONE
+  - REQUESTED_BY_USER_ID - NUMBER NOT NULL [fk]
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEW_REASON_CODE - VARCHAR2(30)
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - STOCK_COUNT_ID
+    - description: Surrogate key for the stock count event.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Count ID
+    - semantic-type: identifier
+  - COUNT_NUMBER
+    - description: Business reference used to identify the stock count.
+    - display-label: Count Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse where the stock count takes place.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - WAREHOUSE_AREA_ID
+    - description: Area counted when the count scope is area.
+    - display-as-lov: select-list
+    - display-label: Warehouse Area ID
+    - semantic-type: identifier
+  - STORAGE_LOCATION_ID
+    - description: Storage location counted when the count scope is location.
+    - display-as-lov: select-list
+    - display-label: Storage Location ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item counted when the count scope is item.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the record.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - COUNT_SCOPE_CODE
+    - ai-context: Valid values include WAREHOUSE, AREA, LOCATION, ITEM.
+    - description: Business scope of the stock count.
+    - display-label: Count Scope
+    - search-facet: distinct-list
+    - semantic-type: scope
+    - value-required: true
+  - COUNT_STATUS_CODE
+    - ai-context: Valid values include PLANNED, IN_PROGRESS, REVIEW_REQUIRED, COMPLETED, CANCELLED.
+    - description: Current business status of the stock count.
+    - display-label: Count Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REVIEW_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, REJECTED, RESOLVED.
+    - description: Current review status of the record.
+    - display-label: Review Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - PLANNED_START_AT
+    - description: Planned start date and time for the count.
+    - display-label: Planned Start At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - PLANNED_END_AT
+    - description: Planned end date and time for the count.
+    - display-label: Planned End At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - STARTED_AT
+    - description: Actual start date and time for the count.
+    - display-label: Started At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - COMPLETED_AT
+    - description: Actual completion date and time for the count.
+    - display-label: Completed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REQUESTED_BY_USER_ID
+    - description: Application user who requested the record.
+    - display-as-lov: select-list
+    - display-label: Requested By User ID
+    - semantic-type: identifier
+    - value-required: true
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the record was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEW_REASON_CODE
+    - description: Reason code that explains the review outcome or exception handling decision.
+    - display-label: Review Reason Code
+    - semantic-type: reason
+  - NOTES
+    - description: Business notes for the stock count.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_STOCK_COUNTS_01 - CHECK (COUNT_SCOPE_CODE)
+  - CK_SCM_STOCK_COUNTS_02 - CHECK (COUNT_STATUS_CODE)
+  - CK_SCM_STOCK_COUNTS_03 - CHECK (REVIEW_STATUS_CODE)
+  - CK_SCM_STOCK_COUNTS_04 - CHECK (WAREHOUSE_AREA_ID, STORAGE_LOCATION_ID, ITEM_ID, COUNT_SCOPE_CODE)
+  - PK_SCM_STOCK_COUNTS - PRIMARY KEY (STOCK_COUNT_ID)
+  - UQ_SCM_STOCK_COUNTS_01 - UNIQUE (COUNT_NUMBER)
+  - FK_SCM_STOCK_COUNTS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STOCK_COUNTS_02 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_COUNTS_03 - FOREIGN KEY (REQUESTED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_COUNTS_04 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_COUNTS_05 - FOREIGN KEY (WAREHOUSE_AREA_ID) -> SCM_WAREHOUSE_AREAS(WAREHOUSE_AREA_ID)
+  - FK_SCM_STOCK_COUNTS_06 - FOREIGN KEY (STORAGE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_STOCK_COUNTS_07 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+
+## Table Attributes:
+  - description: Stores records for stock counts.
+  - display-label: Stock Counts
+
+# Table: SCM_STOCK_COUNT_LINES
+
+## Columns:
+  - STOCK_COUNT_LINE_ID - NUMBER NOT NULL [pk]
+  - STOCK_COUNT_ID - NUMBER NOT NULL [uk] [fk]
+  - LINE_NUMBER - NUMBER(10) NOT NULL [uk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - STORAGE_LOCATION_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - EXPECTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - COUNTED_QUANTITY - NUMBER(14,4)
+  - VARIANCE_QUANTITY - NUMBER(14,4)
+  - VARIANCE_REASON_CODE - VARCHAR2(30)
+  - FIRST_COUNTED_BY_USER_ID - NUMBER [fk]
+  - FIRST_COUNTED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - RESOLUTION_CODE - VARCHAR2(30)
+  - LINE_STATUS_CODE - VARCHAR2(20) NOT NULL
+
+## Column Display Attributes:
+  - STOCK_COUNT_LINE_ID
+    - description: Surrogate key for the stock count line.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Count Line ID
+    - semantic-type: identifier
+  - STOCK_COUNT_ID
+    - description: Stock count that the line belongs to.
+    - display-as-lov: select-list
+    - display-label: Stock Count ID
+    - semantic-type: identifier
+    - value-required: true
+  - LINE_NUMBER
+    - description: Line number within the stock count.
+    - display-label: Line Number
+    - primary-display-column: true
+    - semantic-type: sequence
+    - value-required: true
+  - ITEM_ID
+    - description: Item counted on the line.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - STORAGE_LOCATION_ID
+    - description: Location counted on the line.
+    - display-as-lov: select-list
+    - display-label: Storage Location ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot counted on the line where relevant.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - EXPECTED_QUANTITY
+    - description: Recorded quantity before the physical count.
+    - display-label: Expected Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - COUNTED_QUANTITY
+    - description: Physical quantity counted.
+    - display-label: Counted Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - VARIANCE_QUANTITY
+    - description: Difference between counted quantity and recorded quantity.
+    - display-in-form: false
+    - display-label: Variance Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - VARIANCE_REASON_CODE
+    - description: Business reason for the variance where the cause is known.
+    - display-label: Variance Reason Code
+    - semantic-type: reason_code
+  - FIRST_COUNTED_BY_USER_ID
+    - description: Application user who recorded the first physical count.
+    - display-as-lov: select-list
+    - display-label: First Counted By User ID
+    - semantic-type: identifier
+  - FIRST_COUNTED_AT
+    - description: Date and time when the first count was completed.
+    - display-label: First Counted At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the count line was reviewed or resolved.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - RESOLUTION_CODE
+    - description: Business resolution applied to the count line.
+    - display-label: Resolution Code
+    - semantic-type: resolution
+  - LINE_STATUS_CODE
+    - ai-context: Valid values include OPEN, COUNTED, REVIEW_REQUIRED, RESOLVED.
+    - description: Current business status of the count line.
+    - display-label: Line Status
+    - search-facet: distinct-list
+    - semantic-type: status
+
+## Constraints:
+  - CK_SCM_STOCK_COUNT_LINES_01 - CHECK (RESOLUTION_CODE)
+  - CK_SCM_STOCK_COUNT_LINES_02 - CHECK (LINE_STATUS_CODE)
+  - PK_SCM_STOCK_COUNT_LINES - PRIMARY KEY (STOCK_COUNT_LINE_ID)
+  - UQ_SCM_STOCK_COUNT_LINES_01 - UNIQUE (STOCK_COUNT_ID, LINE_NUMBER)
+  - FK_SCM_STOCK_COUNT_LINES_01 - FOREIGN KEY (STOCK_COUNT_ID) -> SCM_STOCK_COUNTS(STOCK_COUNT_ID)
+  - FK_SCM_STOCK_COUNT_LINES_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_STOCK_COUNT_LINES_03 - FOREIGN KEY (STORAGE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_STOCK_COUNT_LINES_04 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_STOCK_COUNT_LINES_05 - FOREIGN KEY (FIRST_COUNTED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_COUNT_LINES_06 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for stock count lines.
+  - display-label: Stock Count Lines
+
+# Table: SCM_STOCK_MOVEMENTS
+
+## Columns:
+  - STOCK_MOVEMENT_ID - NUMBER NOT NULL [pk]
+  - MOVEMENT_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - MOVEMENT_TYPE_CODE - VARCHAR2(30) NOT NULL
+  - WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - SOURCE_LOCATION_ID - NUMBER [fk]
+  - DESTINATION_LOCATION_ID - NUMBER [fk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - ITEM_SERIAL_ID - NUMBER [fk]
+  - FROM_STATUS_CODE - VARCHAR2(20)
+  - TO_STATUS_CODE - VARCHAR2(20)
+  - REQUESTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - MOVED_QUANTITY - NUMBER(14,4) NOT NULL
+  - MOVEMENT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REVIEW_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REASON_CODE - VARCHAR2(30) NOT NULL
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - REQUESTED_BY_USER_ID - NUMBER NOT NULL [fk]
+  - REQUESTED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - CONFIRMED_BY_USER_ID - NUMBER [fk]
+  - CONFIRMED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEW_REASON_CODE - VARCHAR2(30)
+  - SOURCE_DOCUMENT_TYPE - VARCHAR2(30)
+  - SOURCE_DOCUMENT_NUMBER - VARCHAR2(50)
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - STOCK_MOVEMENT_ID
+    - description: Surrogate key for the stock movement.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Movement ID
+    - semantic-type: identifier
+  - MOVEMENT_NUMBER
+    - description: Business reference used to identify the stock movement.
+    - display-label: Movement Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - MOVEMENT_TYPE_CODE
+    - ai-context: Valid values include PUTAWAY, MOVE, REPLENISHMENT, STATUS_CHANGE.
+    - description: Type of operational stock movement.
+    - display-label: Movement Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse where the movement is performed.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - SOURCE_LOCATION_ID
+    - description: Location that stock moves from where relevant.
+    - display-as-lov: select-list
+    - display-label: Source Location ID
+    - semantic-type: identifier
+  - DESTINATION_LOCATION_ID
+    - description: Location that stock moves to where relevant.
+    - display-as-lov: select-list
+    - display-label: Destination Location ID
+    - semantic-type: identifier
+  - ITEM_ID
+    - description: Item moved by the stock movement.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot moved where lot control applies.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - ITEM_SERIAL_ID
+    - description: Serial number moved where serial control applies.
+    - display-as-lov: select-list
+    - display-label: Item Serial ID
+    - semantic-type: identifier
+  - FROM_STATUS_CODE
+    - ai-context: Valid values include AVAILABLE, RESERVED, PICKED, PACKED, IN_TRANSIT, QUARANTINE, DAMAGED, BLOCKED.
+    - description: Stock status before the movement where relevant.
+    - display-label: From Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - TO_STATUS_CODE
+    - ai-context: Valid values include AVAILABLE, RESERVED, PICKED, PACKED, IN_TRANSIT, QUARANTINE, DAMAGED, BLOCKED.
+    - description: Stock status after the movement where relevant.
+    - display-label: To Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REQUESTED_QUANTITY
+    - description: Quantity requested for movement.
+    - display-label: Requested Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+    - value-required: true
+  - MOVED_QUANTITY
+    - description: Quantity actually moved.
+    - display-label: Moved Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - MOVEMENT_STATUS_CODE
+    - ai-context: Valid values include OPEN, RELEASED, IN_PROGRESS, COMPLETED, REVIEW_REQUIRED, CANCELLED.
+    - description: Current business status of the stock movement.
+    - display-label: Movement Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REVIEW_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, REJECTED, RESOLVED.
+    - description: Current review status of the movement.
+    - display-label: Review Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REASON_CODE
+    - description: Business reason for the movement.
+    - display-label: Reason Code
+    - semantic-type: reason_code
+    - value-required: true
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the movement.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - REQUESTED_BY_USER_ID
+    - description: Application user who requested the movement.
+    - display-as-lov: select-list
+    - display-label: Requested By User ID
+    - semantic-type: identifier
+    - value-required: true
+  - REQUESTED_AT
+    - description: Date and time when the movement was requested.
+    - display-label: Requested At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - CONFIRMED_BY_USER_ID
+    - description: Application user who confirmed the movement.
+    - display-as-lov: select-list
+    - display-label: Confirmed By User ID
+    - semantic-type: identifier
+  - CONFIRMED_AT
+    - description: Date and time when the movement was confirmed.
+    - display-label: Confirmed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the movement.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the movement was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEW_REASON_CODE
+    - description: Reason code that explains the review outcome.
+    - display-label: Review Reason Code
+    - semantic-type: reason
+  - SOURCE_DOCUMENT_TYPE
+    - description: Type of source document that created the movement.
+    - display-label: Source Document Type
+    - semantic-type: type
+  - SOURCE_DOCUMENT_NUMBER
+    - description: Business source document reference for the movement.
+    - display-label: Source Document Number
+    - semantic-type: reference_number
+  - NOTES
+    - description: Business notes for the stock movement.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_STOCK_MOVEMENTS_01 - CHECK (MOVEMENT_TYPE_CODE)
+  - CK_SCM_STOCK_MOVEMENTS_02 - CHECK (MOVEMENT_STATUS_CODE)
+  - CK_SCM_STOCK_MOVEMENTS_03 - CHECK (REVIEW_STATUS_CODE)
+  - CK_SCM_STOCK_MOVEMENTS_04 - CHECK (FROM_STATUS_CODE)
+  - CK_SCM_STOCK_MOVEMENTS_05 - CHECK (TO_STATUS_CODE)
+  - CK_SCM_STOCK_MOVEMENTS_06 - CHECK (REQUESTED_QUANTITY, MOVED_QUANTITY)
+  - CK_SCM_STOCK_MOVEMENTS_07 - CHECK (SOURCE_LOCATION_ID, DESTINATION_LOCATION_ID)
+  - PK_SCM_STOCK_MOVEMENTS - PRIMARY KEY (STOCK_MOVEMENT_ID)
+  - UQ_SCM_STOCK_MOVEMENTS_01 - UNIQUE (MOVEMENT_NUMBER)
+  - FK_SCM_STOCK_MOVEMENTS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STOCK_MOVEMENTS_02 - FOREIGN KEY (SOURCE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_STOCK_MOVEMENTS_03 - FOREIGN KEY (DESTINATION_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_STOCK_MOVEMENTS_04 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_STOCK_MOVEMENTS_05 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_STOCK_MOVEMENTS_06 - FOREIGN KEY (ITEM_SERIAL_ID) -> SCM_ITEM_SERIALS(ITEM_SERIAL_ID)
+  - FK_SCM_STOCK_MOVEMENTS_07 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_MOVEMENTS_08 - FOREIGN KEY (REQUESTED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_MOVEMENTS_09 - FOREIGN KEY (CONFIRMED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_MOVEMENTS_10 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores executable putaway, internal movement, and replenishment records.
+  - display-label: Stock Movements
+
+# Table: SCM_STOCK_TRANSFERS
+
+## Columns:
+  - STOCK_TRANSFER_ID - NUMBER NOT NULL [pk]
+  - TRANSFER_NUMBER - VARCHAR2(30) NOT NULL [uk]
+  - FROM_WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - TO_WAREHOUSE_ID - NUMBER NOT NULL [fk]
+  - ASSIGNED_USER_ID - NUMBER [fk]
+  - TRANSFER_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REVIEW_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - REQUESTED_SHIP_AT - TIMESTAMP WITH TIMEZONE
+  - ACTUAL_SHIPPED_AT - TIMESTAMP WITH TIMEZONE
+  - EXPECTED_RECEIPT_AT - TIMESTAMP WITH TIMEZONE
+  - ACTUAL_RECEIVED_AT - TIMESTAMP WITH TIMEZONE
+  - REQUESTED_BY_USER_ID - NUMBER NOT NULL [fk]
+  - REVIEWED_BY_USER_ID - NUMBER [fk]
+  - REVIEWED_AT - TIMESTAMP WITH TIMEZONE
+  - REVIEW_REASON_CODE - VARCHAR2(30)
+  - REASON_CODE - VARCHAR2(30) NOT NULL
+  - NOTES - VARCHAR2(1000)
+
+## Column Display Attributes:
+  - STOCK_TRANSFER_ID
+    - description: Surrogate key for the stock transfer.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Transfer ID
+    - semantic-type: identifier
+  - TRANSFER_NUMBER
+    - description: Business reference used to identify the stock transfer.
+    - display-label: Transfer Number
+    - primary-display-column: true
+    - semantic-type: reference_number
+    - value-required: true
+  - FROM_WAREHOUSE_ID
+    - description: Warehouse sending the stock.
+    - display-as-lov: select-list
+    - display-label: From Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - TO_WAREHOUSE_ID
+    - description: Warehouse receiving the stock.
+    - display-as-lov: select-list
+    - display-label: To Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - ASSIGNED_USER_ID
+    - description: Application user assigned to work on the record.
+    - display-as-lov: select-list
+    - display-label: Assigned User ID
+    - semantic-type: identifier
+  - TRANSFER_STATUS_CODE
+    - ai-context: Valid values include DRAFT, RELEASED, IN_TRANSIT, PART_RECEIVED, REVIEW_REQUIRED, COMPLETED, CANCELLED.
+    - description: Current business status of the stock transfer.
+    - display-label: Transfer Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REVIEW_STATUS_CODE
+    - ai-context: Valid values include OPEN, REVIEW_REQUIRED, APPROVED, REJECTED, RESOLVED.
+    - description: Current review status of the record.
+    - display-label: Review Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - REQUESTED_SHIP_AT
+    - description: Requested shipment date and time for the transfer.
+    - display-label: Requested Ship At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - ACTUAL_SHIPPED_AT
+    - description: Actual shipment date and time for the transfer.
+    - display-label: Actual Shipped At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - EXPECTED_RECEIPT_AT
+    - description: Expected receipt date and time at the destination warehouse.
+    - display-label: Expected Receipt At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - ACTUAL_RECEIVED_AT
+    - description: Actual receipt date and time at the destination warehouse.
+    - display-label: Actual Received At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REQUESTED_BY_USER_ID
+    - description: Application user who requested the record.
+    - display-as-lov: select-list
+    - display-label: Requested By User ID
+    - semantic-type: identifier
+    - value-required: true
+  - REVIEWED_BY_USER_ID
+    - description: Application user who reviewed the record.
+    - display-as-lov: select-list
+    - display-label: Reviewed By User ID
+    - semantic-type: identifier
+  - REVIEWED_AT
+    - description: Date and time when the record was reviewed.
+    - display-label: Reviewed At
+    - format-mask: DD-MON-YYYY HH24:MI TZH:TZM
+    - semantic-type: datetime
+  - REVIEW_REASON_CODE
+    - description: Reason code that explains the review outcome or exception handling decision.
+    - display-label: Review Reason Code
+    - semantic-type: reason
+  - REASON_CODE
+    - description: Business reason for the transfer.
+    - display-label: Reason Code
+    - semantic-type: reason_code
+    - value-required: true
+  - NOTES
+    - description: Business notes for the stock transfer.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_STOCK_TRANSFERS_01 - CHECK (FROM_WAREHOUSE_ID, TO_WAREHOUSE_ID)
+  - CK_SCM_STOCK_TRANSFERS_02 - CHECK (TRANSFER_STATUS_CODE)
+  - CK_SCM_STOCK_TRANSFERS_03 - CHECK (REVIEW_STATUS_CODE)
+  - PK_SCM_STOCK_TRANSFERS - PRIMARY KEY (STOCK_TRANSFER_ID)
+  - UQ_SCM_STOCK_TRANSFERS_01 - UNIQUE (TRANSFER_NUMBER)
+  - FK_SCM_STOCK_TRANSFERS_01 - FOREIGN KEY (FROM_WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STOCK_TRANSFERS_02 - FOREIGN KEY (TO_WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STOCK_TRANSFERS_03 - FOREIGN KEY (ASSIGNED_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_TRANSFERS_04 - FOREIGN KEY (REQUESTED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_STOCK_TRANSFERS_05 - FOREIGN KEY (REVIEWED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for stock transfers.
+  - display-label: Stock Transfers
+
+# Table: SCM_STOCK_TRANSFER_LINES
+
+## Columns:
+  - STOCK_TRANSFER_LINE_ID - NUMBER NOT NULL [pk]
+  - STOCK_TRANSFER_ID - NUMBER NOT NULL [uk] [fk]
+  - LINE_NUMBER - NUMBER(10) NOT NULL [uk]
+  - ITEM_ID - NUMBER NOT NULL [fk]
+  - INVENTORY_LOT_ID - NUMBER [fk]
+  - SOURCE_LOCATION_ID - NUMBER NOT NULL [fk]
+  - DESTINATION_LOCATION_ID - NUMBER [fk]
+  - REQUESTED_QUANTITY - NUMBER(14,4) NOT NULL
+  - SHIPPED_QUANTITY - NUMBER(14,4) NOT NULL
+  - RECEIVED_QUANTITY - NUMBER(14,4) NOT NULL
+  - QUANTITY_DISCREPANCY - NUMBER(14,4) NOT NULL
+  - LINE_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - DISCREPANCY_REASON_CODE - VARCHAR2(30)
+
+## Column Display Attributes:
+  - STOCK_TRANSFER_LINE_ID
+    - description: Surrogate key for the stock transfer line.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Stock Transfer Line ID
+    - semantic-type: identifier
+  - STOCK_TRANSFER_ID
+    - description: Stock transfer that the line belongs to.
+    - display-as-lov: select-list
+    - display-label: Stock Transfer ID
+    - semantic-type: identifier
+    - value-required: true
+  - LINE_NUMBER
+    - description: Line number within the stock transfer.
+    - display-label: Line Number
+    - primary-display-column: true
+    - semantic-type: sequence
+    - value-required: true
+  - ITEM_ID
+    - description: Item being transferred.
+    - display-as-lov: select-list
+    - display-label: Item ID
+    - semantic-type: identifier
+    - value-required: true
+  - INVENTORY_LOT_ID
+    - description: Lot being transferred where lot control applies.
+    - display-as-lov: select-list
+    - display-label: Inventory Lot ID
+    - semantic-type: identifier
+  - SOURCE_LOCATION_ID
+    - description: Location the stock is transferred from where known.
+    - display-as-lov: select-list
+    - display-label: Source Location ID
+    - semantic-type: identifier
+  - DESTINATION_LOCATION_ID
+    - description: Target location in the receiving warehouse where known.
+    - display-as-lov: select-list
+    - display-label: Destination Location ID
+    - semantic-type: identifier
+  - REQUESTED_QUANTITY
+    - description: Quantity requested for transfer.
+    - display-label: Requested Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+    - value-required: true
+  - SHIPPED_QUANTITY
+    - description: Quantity actually shipped.
+    - display-label: Shipped Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - RECEIVED_QUANTITY
+    - description: Quantity actually received by the destination warehouse.
+    - display-label: Received Quantity
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - QUANTITY_DISCREPANCY
+    - description: Difference between shipped quantity and received quantity.
+    - display-in-form: false
+    - display-label: Quantity Discrepancy
+    - format-mask: FM999G999G999G990
+    - semantic-type: quantity
+  - LINE_STATUS_CODE
+    - ai-context: Valid values include OPEN, SHIPPED, PART_RECEIVED, REVIEW_REQUIRED, COMPLETED, CANCELLED.
+    - description: Current business status of the transfer line.
+    - display-label: Line Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - DISCREPANCY_REASON_CODE
+    - description: Reason code that explains the discrepancy on the line.
+    - display-label: Discrepancy Reason Code
+    - semantic-type: reason
+
+## Constraints:
+  - CK_SCM_STOCK_TRANSFER_LINES_01 - CHECK (LINE_STATUS_CODE)
+  - CK_SCM_STOCK_TRANSFER_LINES_02 - CHECK (REQUESTED_QUANTITY, SHIPPED_QUANTITY, RECEIVED_QUANTITY)
+  - PK_SCM_STOCK_TRANSFER_LINES - PRIMARY KEY (STOCK_TRANSFER_LINE_ID)
+  - UQ_SCM_STOCK_TRANSFER_LINES_01 - UNIQUE (STOCK_TRANSFER_ID, LINE_NUMBER)
+  - FK_SCM_STOCK_TRANSFER_LINES_01 - FOREIGN KEY (STOCK_TRANSFER_ID) -> SCM_STOCK_TRANSFERS(STOCK_TRANSFER_ID)
+  - FK_SCM_STOCK_TRANSFER_LINES_02 - FOREIGN KEY (ITEM_ID) -> SCM_ITEMS(ITEM_ID)
+  - FK_SCM_STOCK_TRANSFER_LINES_03 - FOREIGN KEY (INVENTORY_LOT_ID) -> SCM_INVENTORY_LOTS(INVENTORY_LOT_ID)
+  - FK_SCM_STOCK_TRANSFER_LINES_04 - FOREIGN KEY (SOURCE_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+  - FK_SCM_STOCK_TRANSFER_LINES_05 - FOREIGN KEY (DESTINATION_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+
+## Table Attributes:
+  - description: Stores records for stock transfer lines.
+  - display-label: Stock Transfer Lines
+
+# Table: SCM_STORAGE_LOCATIONS
+
+## Columns:
+  - STORAGE_LOCATION_ID - NUMBER NOT NULL [pk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [uk] [fk]
+  - WAREHOUSE_AREA_ID - NUMBER NOT NULL [fk]
+  - PARENT_LOCATION_ID - NUMBER [fk]
+  - LOCATION_CODE - VARCHAR2(50) NOT NULL [uk]
+  - LOCATION_NAME - VARCHAR2(200) NOT NULL
+  - LOCATION_TYPE_CODE - VARCHAR2(20) NOT NULL
+  - LOCATION_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - AISLE_CODE - VARCHAR2(30)
+  - BAY_CODE - VARCHAR2(30)
+  - LEVEL_CODE - VARCHAR2(30)
+  - POSITION_CODE - VARCHAR2(30)
+  - IS_PICKABLE - BOOLEAN NOT NULL
+  - IS_ACTIVE - BOOLEAN NOT NULL
+
+## Column Display Attributes:
+  - STORAGE_LOCATION_ID
+    - description: Surrogate key for the storage location.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Storage Location ID
+    - semantic-type: identifier
+  - WAREHOUSE_ID
+    - description: Warehouse that contains the storage location.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - WAREHOUSE_AREA_ID
+    - description: Area that contains the storage location.
+    - display-as-lov: select-list
+    - display-label: Warehouse Area ID
+    - semantic-type: identifier
+    - value-required: true
+  - PARENT_LOCATION_ID
+    - description: Parent location when the location is part of a hierarchy.
+    - display-as-lov: select-list
+    - display-label: Parent Location ID
+    - semantic-type: identifier
+  - LOCATION_CODE
+    - description: Business code used to identify the storage location.
+    - display-label: Location Code
+    - semantic-type: code
+    - value-required: true
+  - LOCATION_NAME
+    - description: Business name of the storage location.
+    - display-label: Location Name
+    - primary-display-column: true
+    - semantic-type: name
+  - LOCATION_TYPE_CODE
+    - ai-context: Valid values include RECEIVING, STORAGE, PICKING, QUARANTINE, RETURNS, DISPATCH, STAGING, BIN.
+    - description: Business purpose of the storage location.
+    - display-label: Location Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - LOCATION_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE, BLOCKED.
+    - description: Current operating status of the location.
+    - display-label: Location Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - AISLE_CODE
+    - description: Aisle identifier used for warehouse navigation.
+    - display-label: Aisle Code
+    - semantic-type: code
+  - BAY_CODE
+    - description: Bay identifier used for warehouse navigation.
+    - display-label: Bay Code
+    - semantic-type: code
+  - LEVEL_CODE
+    - description: Level or shelf identifier used for warehouse navigation.
+    - display-label: Level Code
+    - semantic-type: code
+  - POSITION_CODE
+    - description: Position identifier within the location.
+    - display-label: Position Code
+    - semantic-type: code
+  - IS_PICKABLE
+    - description: Indicates whether stock can be picked directly from this location.
+    - display-label: Is Pickable
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - IS_ACTIVE
+    - description: Indicates whether the location is active for operations.
+    - display-label: Is Active
+    - semantic-type: flag
+
+## Constraints:
+  - CK_SCM_STORAGE_LOCATIONS_01 - CHECK (LOCATION_TYPE_CODE)
+  - CK_SCM_STORAGE_LOCATIONS_02 - CHECK (LOCATION_STATUS_CODE)
+  - PK_SCM_STORAGE_LOCATIONS - PRIMARY KEY (STORAGE_LOCATION_ID)
+  - UQ_SCM_STORAGE_LOCATIONS_01 - UNIQUE (WAREHOUSE_ID, LOCATION_CODE)
+  - FK_SCM_STORAGE_LOCATIONS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_STORAGE_LOCATIONS_02 - FOREIGN KEY (WAREHOUSE_AREA_ID) -> SCM_WAREHOUSE_AREAS(WAREHOUSE_AREA_ID)
+  - FK_SCM_STORAGE_LOCATIONS_03 - FOREIGN KEY (PARENT_LOCATION_ID) -> SCM_STORAGE_LOCATIONS(STORAGE_LOCATION_ID)
+
+## Table Attributes:
+  - description: Stores records for storage locations.
+  - display-label: Storage Locations
+
+# Table: SCM_USER_ROLES
+
+## Columns:
+  - USER_ROLE_ID - NUMBER NOT NULL [pk]
+  - ROLE_CODE - VARCHAR2(30) NOT NULL [uk]
+  - ROLE_NAME - VARCHAR2(100) NOT NULL
+  - ROLE_SCOPE_CODE - VARCHAR2(20) NOT NULL
+  - APPROVAL_AUTHORITY_LEVEL - NUMBER(4) NOT NULL
+  - IS_SYSTEM_ROLE - BOOLEAN NOT NULL
+  - IS_ACTIVE - BOOLEAN NOT NULL
+  - ROLE_NOTES - VARCHAR2(500)
+
+## Column Display Attributes:
+  - USER_ROLE_ID
+    - description: Surrogate key for the application role.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: User Role ID
+    - semantic-type: identifier
+  - ROLE_CODE
+    - description: Business code used to identify the role.
+    - display-label: Role Code
+    - semantic-type: code
+    - value-required: true
+  - ROLE_NAME
+    - description: Business name of the role.
+    - display-label: Role Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - ROLE_SCOPE_CODE
+    - ai-context: Valid values include ENTERPRISE, WAREHOUSE, QUALITY, FINANCE, ADMIN.
+    - description: Business scope covered by the role.
+    - display-label: Role Scope
+    - search-facet: distinct-list
+    - semantic-type: scope
+  - APPROVAL_AUTHORITY_LEVEL
+    - description: Standard approval authority level attached to the role.
+    - display-label: Approval Authority Level
+    - search-facet: range
+    - semantic-type: ranking
+  - IS_SYSTEM_ROLE
+    - description: Indicates whether the role is delivered as a system-defined role.
+    - display-label: Is System Role
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - IS_ACTIVE
+    - description: Indicates whether the role is active for assignment.
+    - display-label: Is Active
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - ROLE_NOTES
+    - description: Business notes for the role.
+    - display-label: Role Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_USER_ROLES_01 - CHECK (ROLE_CODE)
+  - CK_SCM_USER_ROLES_02 - CHECK (ROLE_SCOPE_CODE)
+  - CK_SCM_USER_ROLES_03 - CHECK (APPROVAL_AUTHORITY_LEVEL)
+  - PK_SCM_USER_ROLES - PRIMARY KEY (USER_ROLE_ID)
+  - UQ_SCM_USER_ROLES_01 - UNIQUE (ROLE_CODE)
+
+## Table Attributes:
+  - description: Stores records for user roles.
+  - display-label: User Roles
+
+# Table: SCM_USER_ROLE_ASSIGNMENTS
+
+## Columns:
+  - USER_ROLE_ASSIGNMENT_ID - NUMBER NOT NULL [pk]
+  - APPLICATION_USER_ID - NUMBER NOT NULL [fk]
+  - USER_ROLE_ID - NUMBER NOT NULL [fk]
+  - WAREHOUSE_ID - NUMBER [fk]
+  - ASSIGNMENT_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - AUTHORITY_LEVEL_OVERRIDE - NUMBER(4)
+  - EFFECTIVE_FROM_DATE - DATE NOT NULL
+  - EFFECTIVE_TO_DATE - DATE
+  - ASSIGNED_BY_USER_ID - NUMBER [fk]
+  - IS_PRIMARY_ROLE - BOOLEAN NOT NULL
+  - ASSIGNMENT_NOTES - VARCHAR2(500)
+
+## Column Display Attributes:
+  - USER_ROLE_ASSIGNMENT_ID
+    - description: Surrogate key for the user role assignment.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: User Role Assignment ID
+    - semantic-type: identifier
+  - APPLICATION_USER_ID
+    - description: User receiving the role assignment.
+    - display-as-lov: select-list
+    - display-label: Application User ID
+    - primary-display-column: true
+    - semantic-type: identifier
+    - value-required: true
+  - USER_ROLE_ID
+    - description: Role assigned to the user.
+    - display-as-lov: select-list
+    - display-label: User Role ID
+    - semantic-type: identifier
+    - value-required: true
+  - WAREHOUSE_ID
+    - description: Warehouse where the assignment applies where the role is site specific.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+  - ASSIGNMENT_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE.
+    - description: Current business status of the role assignment.
+    - display-label: Assignment Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - AUTHORITY_LEVEL_OVERRIDE
+    - description: Role authority level override for this specific assignment where needed.
+    - display-label: Authority Level Override
+    - semantic-type: ranking
+  - EFFECTIVE_FROM_DATE
+    - description: Date when the role assignment starts.
+    - display-label: Effective From Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - EFFECTIVE_TO_DATE
+    - description: Date when the role assignment ends where known.
+    - display-label: Effective To Date
+    - format-mask: DD-MON-YYYY
+    - semantic-type: date
+  - ASSIGNED_BY_USER_ID
+    - description: User who assigned the role.
+    - display-as-lov: select-list
+    - display-label: Assigned By User ID
+    - semantic-type: identifier
+  - IS_PRIMARY_ROLE
+    - description: Indicates whether the role is the user's primary working role.
+    - display-label: Is Primary Role
+    - search-facet: distinct-list
+    - semantic-type: flag
+  - ASSIGNMENT_NOTES
+    - description: Business notes for the role assignment.
+    - display-label: Assignment Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_USER_ROLE_ASSIGNMENTS_01 - CHECK (ASSIGNMENT_STATUS_CODE)
+  - CK_SCM_USER_ROLE_ASSIGNMENTS_02 - CHECK (EFFECTIVE_FROM_DATE, EFFECTIVE_TO_DATE)
+  - CK_SCM_USER_ROLE_ASSIGNMENTS_03 - CHECK (AUTHORITY_LEVEL_OVERRIDE)
+  - PK_SCM_USER_ROLE_ASSIGNMENTS - PRIMARY KEY (USER_ROLE_ASSIGNMENT_ID)
+  - FK_SCM_USER_ROLE_ASSIGNMENTS_01 - FOREIGN KEY (APPLICATION_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+  - FK_SCM_USER_ROLE_ASSIGNMENTS_02 - FOREIGN KEY (USER_ROLE_ID) -> SCM_USER_ROLES(USER_ROLE_ID)
+  - FK_SCM_USER_ROLE_ASSIGNMENTS_03 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+  - FK_SCM_USER_ROLE_ASSIGNMENTS_04 - FOREIGN KEY (ASSIGNED_BY_USER_ID) -> SCM_APPLICATION_USERS(APPLICATION_USER_ID)
+
+## Table Attributes:
+  - description: Stores records for user role assignments.
+  - display-label: User Role Assignments
+
+# Table: SCM_WAREHOUSES
+
+## Columns:
+  - WAREHOUSE_ID - NUMBER NOT NULL [pk]
+  - WAREHOUSE_CODE - VARCHAR2(30) NOT NULL [uk]
+  - WAREHOUSE_NAME - VARCHAR2(200) NOT NULL
+  - WAREHOUSE_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - ADDRESS_LINE_1 - VARCHAR2(200)
+  - ADDRESS_LINE_2 - VARCHAR2(200)
+  - CITY_NAME - VARCHAR2(100)
+  - STATE_REGION_NAME - VARCHAR2(100)
+  - POSTAL_CODE - VARCHAR2(30)
+  - COUNTRY_CODE - VARCHAR2(2)
+  - WAREHOUSE_GEOMETRY - SDO_GEOMETRY
+  - CREATED_AT - TIMESTAMP WITH TIMEZONE NOT NULL
+  - CREATED_BY - VARCHAR2(128) NOT NULL
+
+## Column Display Attributes:
+  - WAREHOUSE_ID
+    - description: Surrogate key for the warehouse.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+  - WAREHOUSE_CODE
+    - description: Business code used to identify the warehouse.
+    - display-label: Warehouse Code
+    - semantic-type: code
+    - value-required: true
+  - WAREHOUSE_NAME
+    - description: Business name of the warehouse.
+    - display-label: Warehouse Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - WAREHOUSE_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE, BLOCKED.
+    - description: Current operating status of the warehouse.
+    - display-label: Warehouse Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - ADDRESS_LINE_1
+    - description: First address line of the warehouse.
+    - display-label: Address Line 1
+    - semantic-type: street_address
+    - value-required: true
+  - ADDRESS_LINE_2
+    - description: Second address line of the warehouse.
+    - display-label: Address Line 2
+    - semantic-type: street_address
+  - CITY_NAME
+    - description: City or town of the warehouse.
+    - display-label: City Name
+    - semantic-type: city
+    - value-required: true
+  - STATE_REGION_NAME
+    - description: State, province, or region of the warehouse.
+    - display-label: State or Region Name
+    - semantic-type: region
+  - POSTAL_CODE
+    - description: Postal or zip code of the warehouse.
+    - display-label: Postal Code
+    - semantic-type: postal_code
+  - COUNTRY_CODE
+    - description: Two-character country code of the warehouse address.
+    - display-label: Country Code
+    - semantic-type: country_code
+    - value-required: true
+  - WAREHOUSE_GEOMETRY
+    - description: Point geometry for the warehouse using WGS 84 longitude and latitude.
+    - display-label: Warehouse Geometry
+    - semantic-type: geometry
+
+## Constraints:
+  - CK_SCM_WAREHOUSES_01 - CHECK (WAREHOUSE_STATUS_CODE)
+  - PK_SCM_WAREHOUSES - PRIMARY KEY (WAREHOUSE_ID)
+  - UQ_SCM_WAREHOUSES_01 - UNIQUE (WAREHOUSE_CODE)
+
+## Table Attributes:
+  - description: Stores records for warehouses.
+  - display-label: Warehouses
+
+# Table: SCM_WAREHOUSE_AREAS
+
+## Columns:
+  - WAREHOUSE_AREA_ID - NUMBER NOT NULL [pk]
+  - WAREHOUSE_ID - NUMBER NOT NULL [uk] [fk]
+  - AREA_CODE - VARCHAR2(30) NOT NULL [uk]
+  - AREA_NAME - VARCHAR2(200) NOT NULL
+  - AREA_TYPE_CODE - VARCHAR2(20) NOT NULL
+  - AREA_STATUS_CODE - VARCHAR2(20) NOT NULL
+  - SEQUENCE_NUMBER - NUMBER(10) NOT NULL
+  - NOTES - VARCHAR2(500)
+
+## Column Display Attributes:
+  - WAREHOUSE_AREA_ID
+    - description: Surrogate key for the warehouse area.
+    - display-in-form: false
+    - display-in-report: false
+    - display-label: Warehouse Area ID
+    - semantic-type: identifier
+  - WAREHOUSE_ID
+    - description: Warehouse that contains the area.
+    - display-as-lov: select-list
+    - display-label: Warehouse ID
+    - semantic-type: identifier
+    - value-required: true
+  - AREA_CODE
+    - description: Business code used to identify the area within the warehouse.
+    - display-label: Area Code
+    - semantic-type: code
+    - value-required: true
+  - AREA_NAME
+    - description: Business name of the warehouse area.
+    - display-label: Area Name
+    - primary-display-column: true
+    - semantic-type: name
+    - value-required: true
+  - AREA_TYPE_CODE
+    - ai-context: Valid values include RECEIVING, STORAGE, PICKING, QUARANTINE, RETURNS, DISPATCH, STAGING.
+    - description: Business purpose of the area such as receiving, storage, picking, quarantine, or dispatch.
+    - display-label: Area Type
+    - search-facet: distinct-list
+    - semantic-type: type
+    - value-required: true
+  - AREA_STATUS_CODE
+    - ai-context: Valid values include ACTIVE, INACTIVE, BLOCKED.
+    - description: Current operating status of the area.
+    - display-label: Area Status
+    - search-facet: distinct-list
+    - semantic-type: status
+  - SEQUENCE_NUMBER
+    - description: Display or operational sequence of the area within the warehouse.
+    - display-label: Sequence Number
+    - semantic-type: sequence
+  - NOTES
+    - description: Business notes for the warehouse area.
+    - display-label: Notes
+    - semantic-type: comment
+
+## Constraints:
+  - CK_SCM_WAREHOUSE_AREAS_01 - CHECK (AREA_TYPE_CODE)
+  - CK_SCM_WAREHOUSE_AREAS_02 - CHECK (AREA_STATUS_CODE)
+  - PK_SCM_WAREHOUSE_AREAS - PRIMARY KEY (WAREHOUSE_AREA_ID)
+  - UQ_SCM_WAREHOUSE_AREAS_01 - UNIQUE (WAREHOUSE_ID, AREA_CODE)
+  - FK_SCM_WAREHOUSE_AREAS_01 - FOREIGN KEY (WAREHOUSE_ID) -> SCM_WAREHOUSES(WAREHOUSE_ID)
+
+## Table Attributes:
+  - description: Stores records for warehouse areas.
+  - display-label: Warehouse Areas
