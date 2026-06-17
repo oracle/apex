@@ -1,0 +1,371 @@
+page 23 (
+    name: Purchase Order Query
+    alias: PURCHASE-ORDER-QUERY
+    title: Purchase Order Query
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        chained: false
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>This query reads one purchase order document from <code>DV_PURCHASE_ORDER_DV</code> and formats the inbox/detail content.</p>
+                <p>Static view metadata, DDL, and generated JSON schema are shown here because they are the same for every selected purchase order.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--info
+                t-Alert--removeHeading js-removeLandmark
+            ]
+        }
+    )
+
+    region display-query (
+        name: Display Query
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="po-query-code"><code>select po_id,
+                      po_number,
+                      status,
+                      status_state,
+                      order_date,
+                      total_amount,
+                      last_updated,
+                      customer_name,
+                      customer_email,
+                      customer_phone,
+                      customer_company_name,
+                      customer_address,
+                      delivery_instructions
+                 from (
+                   select json_value(data, '$._id' returning number) po_id,
+                          json_value(data, '$.po_number') po_number,
+                          json_value(data, '$.status') status,
+                          case json_value(data, '$.status')
+                            when 'COMPLETED' then 'success'
+                            when 'REJECTED' then 'danger'
+                            else 'info'
+                          end status_state,
+                          to_char(to_date(substr(json_value(data, '$.date'), 1, 10), 'YYYY-MM-DD'), 'Mon DD, YYYY') order_date,
+                          to_char(json_value(data, '$.total_amount' returning number), 'FML999G999G990D00') total_amount,
+                          to_char(to_date(substr(json_value(data, '$.last_updated'), 1, 10), 'YYYY-MM-DD'), 'Mon DD, YYYY') last_updated,
+                          json_value(data, '$.customer.name') customer_name,
+                          json_value(data, '$.customer.email') customer_email,
+                          json_value(data, '$.customer.phone') customer_phone,
+                          json_value(data, '$.customer.company_name') customer_company_name,
+                          json_value(data, '$.customer.address') || ', ' ||
+                          json_value(data, '$.customer.city') || ', ' ||
+                          json_value(data, '$.customer.state') || ' ' ||
+                          json_value(data, '$.customer.zip_code') customer_address,
+                          json_value(data, '$.delivery_instructions') delivery_instructions
+                     from dv_purchase_order_dv
+                 )
+                where po_id = :P20_PO_ID</code></pre>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region duality-view-ddl (
+        name: JSON Relational Duality View DDL
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="po-query-code"><code>CREATE OR REPLACE FORCE EDITIONABLE JSON RELATIONAL DUALITY VIEW "DV_PURCHASE_ORDER_DV" AS
+                dv_purchase_orders @alias(as: po) @insert @update @delete
+                {
+                  _id: po_id
+                  po_number: po_number
+                  status: status
+                  date: po_date
+                  customer: dv_customers @insert @update @nodelete
+                  {
+                    customer_id: customer_id
+                    name: name
+                    company_name: company_name
+                    phone: phone
+                    email: email
+                    address: address
+                    city: city
+                    state: state
+                    zip_code: zip_code
+                  }
+                  delivery_instructions: delivery_instructions
+                  line_items: dv_po_line_items @insert @update @delete
+                  [{
+                    line_item_id: line_id
+                    product: dv_products @noinsert @noupdate @nodelete
+                    {
+                      product_id: product_id
+                      product_code: product_code
+                      desc: description
+                      unit_price: unit_price
+                    }
+                    quantity: quantity
+                    unit_price: unit_price
+                    updated_on: updated_on
+                  }]
+                  total_amount @generated(sql: "select nvl(sum(i.unit_price * i.quantity), 0) from dv_po_line_items i where i.po_id = po.po_id")
+                  last_updated @generated(sql: "select greatest(nvl(max(i.updated_on), po.po_date), po.po_date) from dv_po_line_items i where i.po_id = po.po_id")
+                };</code></pre>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region json-schema (
+        name: JSON Schema
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <pre class="po-query-code"><code>select json_serialize(
+                         dbms_json_schema.describe('DV_PURCHASE_ORDER_DV')
+                         returning clob pretty
+                       ) schema_json
+                  from dual;</code></pre>
+                
+                <br />
+                
+                <pre class="po-query-code"><code>{
+                  "title" : "DV_PURCHASE_ORDER_DV",
+                  "dbObject" : "ORACLE.DV_PURCHASE_ORDER_DV",
+                  "dbObjectType" : "dualityView",
+                  "dbObjectProperties" : [ "insert", "update", "delete", "check" ],
+                  "properties" : {
+                    "_id" : {
+                      "type" : "number",
+                      "dbAssigned" : true
+                    },
+                    "total_amount" : {
+                      "dbGenerated" : true
+                    },
+                    "last_updated" : {
+                      "dbGenerated" : true
+                    },
+                    "customer" : {
+                      "type" : "object",
+                      "dbPrimaryKey" : [ "customer_id" ]
+                    },
+                    "line_items" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "dbPrimaryKey" : [ "line_item_id" ],
+                        "properties" : {
+                          "updated_on" : {
+                            "type" : "string",
+                            "format" : "date-time"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "dbPrimaryKey" : [ "_id" ],
+                  "additionalProperties" : false
+                }</code></pre>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region query (
+        name: Query
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'DV_PURCHASE_ORDER_DV'      as "JSON Relational Duality View",
+                       'JSON Relational Duality'   as "View Type",
+                       '_id / po_id'               as "Root Key",
+                       'line_items'                as "Child Array",
+                       'Purchase Orders - Inbox'   as "Used By",
+                       'read/write where allowed'  as "Update Mode"
+                  from dual
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column "Child Array" (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Child Array
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column "JSON Relational Duality View" (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: JSON Relational Duality View
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column "Root Key" (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Root Key
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column "Update Mode" (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Update Mode
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column "Used By" (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Used By
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column "View Type" (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: View Type
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: Purchase Order Source
+        }
+        settings {
+            includeShowAll: false
+        }
+    )
+
+)
+

@@ -1,0 +1,485 @@
+page 2 (
+    name: Create Purchase Order
+    alias: CREATE-PURCHASE-ORDER
+    title: Create Purchase Order
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region create-purchase-order-buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region create-purchase-order-form (
+        name: Purchase Order
+        type: form
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region line-items-container (
+        name: Line Items Container
+        title: Line Items
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region line-items-grid (
+        name: Line Items
+        type: interactiveGrid
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+        }
+        dataProfile {
+            nestedRows: @line-items-profile-column
+        }
+        localPostProcessing {
+            type: whereOrderByClause
+            whereClause: PO_ID = :P2_PO_ID and line_id is not null
+        }
+        layout {
+            sequence: 20
+            parentRegion: @line-items-container
+            slot: subRegions
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+            addRowIfEmpty: false
+        }
+        toolbar {
+            controls: actionsMenu
+            addButtonLabel: Add Line Item
+        }
+        download {
+            formats: [
+                csv
+                html
+                excel
+                pdf
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 35360578393689604
+        }
+
+        savedReport 116132 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @PO_ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @LINE_ID
+                layout {
+                    sequence: 15
+                }
+            )
+
+            displayColumn (
+                column: @PRODUCT_ID
+                layout {
+                    sequence: 16
+                }
+            )
+
+            displayColumn (
+                column: @QUANTITY
+                layout {
+                    sequence: 17
+                }
+            )
+
+            displayColumn (
+                column: @UNIT_PRICE
+                layout {
+                    sequence: 23
+                }
+            )
+
+        )
+
+        column LINE_ID (
+            type: hidden
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: LINE_ID
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column PO_ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: PO_ID
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column PRODUCT_ID (
+            type: selectList
+            heading {
+                heading: Product
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select description, product_id from dv_products
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: PRODUCT_ID
+                dataType: number
+                primaryKey: true
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+                lovType: useLov
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+            enableUsersTo {
+                sort: false
+            }
+        )
+
+        column QUANTITY (
+            type: numberField
+            heading {
+                heading: Quantity
+                alignment: end
+            }
+            layout {
+                sequence: 190
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: QUANTITY
+                dataType: number
+            }
+            default {
+                type: static
+                staticValue: 1
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        column UNIT_PRICE (
+            type: numberField
+            heading {
+                heading: Unit Price
+                alignment: end
+            }
+            layout {
+                sequence: 250
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: UNIT_PRICE
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+    )
+
+    pageItem P2_CUSTOMER_ID (
+        type: selectOne
+        label {
+            label: Customer
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+            valueHtmlExpression:
+                ```html
+                <b>&NAME!HTML.</b></br>
+                <small>Company: &COMPANY_NAME!HTML.</small>
+                
+                ```
+        }
+        lov {
+            type: sharedComponent
+            lov: @customers
+        }
+        layout {
+            sequence: 20
+            region: @create-purchase-order-form
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @create-purchase-order-form
+            column: CUSTOMER_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_PO_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @create-purchase-order-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @create-purchase-order-form
+            column: PO_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_PO_NUMBER (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @create-purchase-order-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @create-purchase-order-form
+            column: PO_NUMBER
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button create-button (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 10
+            region: @create-purchase-order-buttons
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction set-unit-price-da (
+        name: Set Unit Price
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: columns
+            interactiveGrid: @line-items-grid
+            columns: PRODUCT_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select unit_price
+                    from dv_products
+                    where product_id = :PRODUCT_ID
+                    ```
+                itemsToSubmit: PRODUCT_ID
+            }
+            affectedElements {
+                selectionType: columns
+                columns: UNIT_PRICE
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process assign-po-id (
+        name: Assign ID
+        type: executeCode
+        editableRegion: @line-items-grid
+        source {
+            plsqlCode: :PO_ID := :P2_PO_ID;
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 3078365622037666
+        }
+    )
+
+    process initialize-create-purchase-order (
+        name: Initialize form Create Purchase Order
+        type: formInitialization
+        formRegion: @create-purchase-order-form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3071802710037656
+        }
+    )
+
+    process process-purchase-order (
+        name: Process form Purchase Order
+        type: formAutoRowProcessing
+        formRegion: @create-purchase-order-form
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Purchase Order Created
+        }
+        advanced {
+            executionMappingIdentifier: 3072238960037656
+        }
+    )
+
+    process save-line-items-grid (
+        name: Line Items - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @line-items-grid
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Purchase Order Created
+        }
+        advanced {
+            executionMappingIdentifier: 3077918446037666
+        }
+    )
+
+    branch (
+        name: Go to Page 6
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 6
+                items: {
+                    P6_PO_ID: &P2_PO_ID.
+                    P6_CUSTOMER_ID: &P2_CUSTOMER_ID.
+                }
+                clearCache: 6
+            }
+        }
+    )
+
+)
+

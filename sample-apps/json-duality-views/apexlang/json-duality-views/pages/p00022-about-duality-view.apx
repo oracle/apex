@@ -1,0 +1,379 @@
+page 22 (
+    name: About JSON Relational Duality View
+    alias: ABOUT-DUALITY-VIEW
+    title: About JSON Relational Duality View
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region apex-usage (
+        name: APEX Usage
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    This sample app uses the JSON Relational Duality View <code>DV_PURCHASE_ORDER_DV</code>
+                    as the purchase order data source. The shared APEX JSON Relational Duality View source
+                    <code>purchase-orders</code> exposes the purchase order document, including the nested
+                    <code>line_items</code> array used by the child regions.
+                </p>
+                <p>
+                    The view is defined with GraphQL/simple syntax and uses the <code>@alias</code> directive
+                    so generated SQL fields can reference the root purchase order row with a documented alias
+                    instead of the previous hidden alias workaround.
+                </p>
+                <p>
+                    <strong>Purchase Orders Report</strong> shows the vertical parent and child pattern:
+                    purchase order details on top and line items underneath, backed declaratively by the
+                    JSON Relational Duality View source.
+                </p>
+                <p>
+                    <strong>Purchase Orders Inbox</strong> shows the email-style pattern: purchase orders
+                    in the left side column and the selected order details on the right. Its line-item
+                    detail region is also backed by the JSON Relational Duality View source.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region duality-view-ddl (
+        name: JSON Relational Duality View DDL
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                                <p>
+                                    The supporting objects create the purchase order JSON Relational Duality View with GraphQL/simple syntax.
+                                    The root table uses <code>@alias(as: po)</code>, which lets generated fields
+                                    correlate back to the selected purchase order using <code>po.po_id</code>.
+                                </p>
+                                <pre><code>CREATE OR REPLACE FORCE EDITIONABLE JSON RELATIONAL DUALITY VIEW "DV_PURCHASE_ORDER_DV" AS
+                dv_purchase_orders @alias(as: po) @insert @update @delete
+                {
+                  _id: po_id
+                  po_number: po_number
+                  status: status
+                  date: po_date
+                  customer: dv_customers @insert @update @nodelete
+                  {
+                    customer_id: customer_id
+                    name: name
+                    company_name: company_name
+                    phone: phone
+                    email: email
+                    address: address
+                    city: city
+                    state: state
+                    zip_code: zip_code
+                  }
+                  delivery_instructions: delivery_instructions
+                  line_items: dv_po_line_items @insert @update @delete
+                  [{
+                    line_item_id: line_id
+                    product: dv_products @noinsert @noupdate @nodelete
+                    {
+                      product_id: product_id
+                      product_code: product_code
+                      desc: description
+                      unit_price: unit_price
+                    }
+                    quantity: quantity
+                    unit_price: unit_price
+                    updated_on: updated_on
+                  }]
+                  total_amount @generated(sql: "select nvl(sum(i.unit_price * i.quantity), 0) from dv_po_line_items i where i.po_id = po.po_id")
+                  last_updated @generated(sql: "select greatest(nvl(max(i.updated_on), po.po_date), po.po_date) from dv_po_line_items i where i.po_id = po.po_id")
+                };</code></pre>
+                                
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region json-schema (
+        name: JSON Schema
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                                <p>
+                                    Oracle Database can describe a JSON Relational Duality View as a JSON schema. This gives
+                                    the sample app a concrete way to show the document contract that comes from the underlying
+                                    tables, keys, update permissions, generated fields, and nested arrays.
+                                </p>
+                                <pre><code>select json_serialize(
+                         dbms_json_schema.describe('DV_PURCHASE_ORDER_DV')
+                         returning clob pretty
+                       ) schema_json
+                  from dual;</code></pre>
+                                <pre><code>{
+                  "title" : "DV_PURCHASE_ORDER_DV",
+                  "dbObject" : "ORACLE.DV_PURCHASE_ORDER_DV",
+                  "dbObjectType" : "dualityView",
+                  "dbObjectProperties" : [ "insert", "update", "delete", "check" ],
+                  "properties" : {
+                    "_id" : {
+                      "type" : "number",
+                      "dbAssigned" : true
+                    },
+                    "total_amount" : {
+                      "dbGenerated" : true
+                    },
+                    "last_updated" : {
+                      "dbGenerated" : true
+                    },
+                    "customer" : {
+                      "type" : "object",
+                      "dbPrimaryKey" : [ "customer_id" ]
+                    },
+                    "line_items" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "dbPrimaryKey" : [ "line_item_id" ],
+                        "properties" : {
+                          "updated_on" : {
+                            "type" : "string",
+                            "format" : "date-time"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "dbPrimaryKey" : [ "_id" ],
+                  "additionalProperties" : false
+                }</code></pre>
+                                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: navigation
+            landmarkLabel: JSON Relational Duality View Information
+        }
+    )
+
+    region sample-json-document (
+        name: Sample JSON Document
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                                <p>
+                                    This is the purchase order document shape used by the JSON Relational Duality View. The insert payload
+                                    omits database-generated fields such as <code>_id</code>, <code>_metadata</code>,
+                                    <code>total_amount</code>, <code>last_updated</code>, and line item identifiers.
+                                    Line item <code>updated_on</code> values can be supplied or defaulted by the table trigger.
+                                </p>
+                                <pre><code>{
+                  "po_number" : "93001001",
+                  "status" : "DRAFT",
+                  "date" : "2026-06-10T00:00:00",
+                  "customer" : {
+                    "customer_id" : 1005,
+                    "name" : "Sandra Lee",
+                    "company_name" : "Lee Engineering",
+                    "phone" : "517-367-7311",
+                    "email" : "sandra.lee@leeeng.com",
+                    "address" : "153 Maple Ave",
+                    "city" : "Ann Arbor",
+                    "state" : "MI",
+                    "zip_code" : "48103"
+                  },
+                  "delivery_instructions" : "Deliver after noon",
+                  "line_items" : [
+                    {
+                      "product" : {
+                        "product_id" : 3016,
+                        "product_code" : "198-56210",
+                        "desc" : "Air Filter",
+                        "unit_price" : 14.35
+                      },
+                      "quantity" : 2,
+                      "unit_price" : 14.35
+                    },
+                    {
+                      "product" : {
+                        "product_id" : 3015,
+                        "product_code" : "703-92034",
+                        "desc" : "Oil Filter",
+                        "unit_price" : 7.80
+                      },
+                      "quantity" : 1,
+                      "unit_price" : 7.80
+                    }
+                  ]
+                }</code></pre>
+                                <p>
+                                    After the document is stored, the view projects generated metadata and derived values
+                                    back into the JSON document.
+                                </p>
+                                <pre><code>{
+                  "_id" : 2004,
+                  "_metadata" : {
+                    "etag" : "D0767158D5838268137E0ECF3FC90291",
+                    "asof" : "000000000730D08E"
+                  },
+                  "po_number" : "50938",
+                  "status" : "REJECTED",
+                  "date" : "2022-07-03T00:00:00",
+                  "customer" : {
+                    "customer_id" : 1005,
+                    "name" : "Sandra Lee",
+                    "company_name" : "Lee Engineering",
+                    "phone" : "517-367-7311",
+                    "email" : "sandra.lee@leeeng.com",
+                    "address" : "153 Maple Ave",
+                    "city" : "Ann Arbor",
+                    "state" : "MI",
+                    "zip_code" : "48103"
+                  },
+                  "delivery_instructions" : null,
+                  "line_items" : [
+                    {
+                      "line_item_id" : 4010,
+                      "product" : {
+                        "product_id" : 3012,
+                        "product_code" : "872-33410",
+                        "desc" : "Fuel Injector",
+                        "unit_price" : 56.4
+                      },
+                      "quantity" : 3,
+                      "unit_price" : 56.4,
+                      "updated_on" : "2024-04-10T00:00:00"
+                    },
+                    {
+                      "line_item_id" : 4011,
+                      "product" : {
+                        "product_id" : 3015,
+                        "product_code" : "703-92034",
+                        "desc" : "Oil Filter",
+                        "unit_price" : 7.8
+                      },
+                      "quantity" : 1,
+                      "unit_price" : 7.8,
+                      "updated_on" : "2024-04-10T00:00:00"
+                    },
+                    {
+                      "line_item_id" : 4012,
+                      "product" : {
+                        "product_id" : 3016,
+                        "product_code" : "198-56210",
+                        "desc" : "Air Filter",
+                        "unit_price" : 14.35
+                      },
+                      "quantity" : 2,
+                      "unit_price" : 14.35,
+                      "updated_on" : "2024-04-10T00:00:00"
+                    }
+                  ],
+                  "total_amount" : 205.7,
+                  "last_updated" : "2024-04-10T00:00:00"
+                }</code></pre>
+                                
+                ```
+        }
+        layout {
+            sequence: 45
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

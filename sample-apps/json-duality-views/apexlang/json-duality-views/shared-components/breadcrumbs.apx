@@ -1,0 +1,60 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry about-duality-views (
+        name: About JSON Relational Duality Views
+        pageNumber: 22
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry my-purchase-orders (
+        name: Purchase Orders Report
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry purchase-order-amp-p6-po-id-details (
+        name: Purchase Order #&P6_PO_NUMBER.
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @my-purchase-orders
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry purchase-orders-inbox (
+        name: Purchase Orders Inbox
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+)
+

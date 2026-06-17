@@ -1,0 +1,1171 @@
+page 20 (
+    name: Purchase Orders - Inbox
+    alias: PURCHASE-ORDERS-INBOX
+    title: Purchase Orders - Inbox
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* Scroll Results Only in Side Column */
+            .t-Body-side {
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+            .search-results {
+                flex: 1;
+                overflow: auto;
+            }
+            /* Format Search Region */
+            .search-region {
+                border-bottom: 1px solid rgba(0,0,0,.1);
+                flex-shrink: 0;
+            }
+            
+            /* Minor List UI Customizations */
+            .t-MediaList {
+                --ut-medialist-icon-border-radius: .25rem;
+            }
+            .t-MediaList-desc {
+                white-space: pre-line;
+            }
+            
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region dv-po-line-items (
+        name: Line Items
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+            pageItemsToSubmit: P20_PO_ID
+        }
+        dataProfile {
+            nestedRows: @line-items-profile-column
+        }
+        localPostProcessing {
+            type: whereOrderByClause
+            whereClause: PO_ID = :P20_PO_ID and LINE_ID is not null
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: js-detail-region
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_PO_ID
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+        }
+        performance {
+            maxRowsToProcess: 5000
+        }
+        messages {
+            whenNoDataFound: No data found.
+        }
+
+        column CUSTOMER_ADDRESS (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 102
+            }
+        )
+
+        column CUSTOMER_CITY (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 52
+            }
+        )
+
+        column CUSTOMER_COMPANY_NAME (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 132
+            }
+        )
+
+        column CUSTOMER_EMAIL (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 72
+            }
+        )
+
+        column CUSTOMER_ID (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 122
+            }
+        )
+
+        column CUSTOMER_NAME (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 62
+            }
+        )
+
+        column CUSTOMER_PHONE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 82
+            }
+        )
+
+        column CUSTOMER_STATE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 92
+            }
+        )
+
+        column CUSTOMER_ZIP_CODE (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 112
+            }
+        )
+
+        column DATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 12
+            }
+        )
+
+        column DELIVERY_INSTRUCTIONS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 42
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 25
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 162
+            }
+        )
+
+        column LINE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                alignment: center
+            }
+            layout {
+                sequence: 5
+                columnAlignment: center
+            }
+            link {
+                target: {
+                    page: 8
+                    items: {
+                        P8_PO_ID: #PO_ID#
+                        P8_LINE_ID: #LINE_ID#
+                    }
+                    clearCache: 8
+                }
+                linkText: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            }
+            serverSideCondition {
+                type: expression
+                language: sql
+                sqlExpression:
+                    ```sql
+                    exists (
+                        select 1
+                          from dv_purchase_order_dv d
+                         where json_value(d.data, '$._id' returning number) = :P20_PO_ID
+                           and json_value(d.data, '$.status') = 'DRAFT'
+                    )
+                    ```
+            }
+        )
+
+        column LINE_ITEMS_POS (
+            reportColumnQueryId: 21
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 232
+            }
+        )
+
+        column PO_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column PO_NUMBER (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 22
+            }
+        )
+
+        column PRODUCT_DESC (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PRODUCT_ID (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 182
+            }
+        )
+
+        column PRODUCT_PRODUCT_CODE (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: Code
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column PRODUCT_UNIT_PRICE (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 202
+            }
+        )
+
+        column QUANTITY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Qty
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 24
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 152
+            }
+        )
+
+        column TOTAL_AMOUNT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 32
+            }
+        )
+
+        column UNIT_PRICE (
+            reportColumnQueryId: 23
+            derivedColumn: N
+            heading {
+                heading: Unit Price
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column amount (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            heading {
+                heading: Line Total
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+    )
+
+    region dv-purchase-orders (
+        name: Purchase Order
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select po_id,
+                       po_number,
+                       status,
+                       status_state,
+                       order_date,
+                       total_amount,
+                       last_updated,
+                       customer_name,
+                       customer_email,
+                       customer_phone,
+                       customer_company_name,
+                       customer_address,
+                       delivery_instructions
+                  from (
+                    select json_value(data, '$._id' returning number) po_id,
+                           json_value(data, '$.po_number') po_number,
+                           json_value(data, '$.status') status,
+                           case json_value(data, '$.status')
+                             when 'COMPLETED' then 'success'
+                             when 'REJECTED' then 'danger'
+                             else 'info'
+                           end status_state,
+                           to_char(to_date(substr(json_value(data, '$.date'), 1, 10), 'YYYY-MM-DD'), 'Mon DD, YYYY') order_date,
+                           to_char(json_value(data, '$.total_amount' returning number), 'FML999G999G990D00') total_amount,
+                           to_char(to_date(substr(json_value(data, '$.last_updated'), 1, 10), 'YYYY-MM-DD'), 'Mon DD, YYYY') last_updated,
+                           json_value(data, '$.customer.name') customer_name,
+                           json_value(data, '$.customer.email') customer_email,
+                           json_value(data, '$.customer.phone') customer_phone,
+                           json_value(data, '$.customer.company_name') customer_company_name,
+                           json_value(data, '$.customer.address') || ', ' ||
+                           json_value(data, '$.customer.city') || ', ' ||
+                           json_value(data, '$.customer.state') || ' ' ||
+                           json_value(data, '$.customer.zip_code') customer_address,
+                           json_value(data, '$.delivery_instructions') delivery_instructions
+                      from dv_purchase_order_dv
+                  )
+                 where po_id = :P20_PO_ID
+                ```
+            pageItemsToSubmit: P20_PO_ID
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                js-master-region
+                po-document-region
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_PO_ID
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: PO #&PO_NUMBER.
+            title: &CUSTOMER_NAME!HTML.
+            description:
+                ```html
+                <strong>&CUSTOMER_COMPANY_NAME!HTML.</strong><br>
+                &CUSTOMER_EMAIL!HTML. &middot; &CUSTOMER_PHONE!HTML.<br>
+                &CUSTOMER_ADDRESS!HTML.
+                {if DELIVERY_INSTRUCTIONS/}<br><br>
+                <strong>Delivery Instructions</strong><br>
+                &DELIVERY_INSTRUCTIONS!HTML.
+                {endif/}
+                ```
+            miscellaneous:
+                ```html
+                <span class="u-text-subtitle-6">&TOTAL_AMOUNT!HTML.</span><br>
+                Order Date: <strong>&ORDER_DATE!HTML.</strong><br>
+                Last Updated: <strong>&LAST_UPDATED!HTML.</strong>
+                ```
+            displayBadge: true
+        }
+        plugin-badge {
+            label: Status
+            value: STATUS
+            state: STATUS_STATE
+            style: subtle
+            shape: rounded
+            size: medium
+            columnWidth: auto
+        }
+        pagination {
+            entitiesPerPage: 1
+        }
+
+        column CUSTOMER_ADDRESS (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: CUSTOMER_ADDRESS
+                dataType: varchar2
+            }
+        )
+
+        column CUSTOMER_COMPANY_NAME (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: CUSTOMER_COMPANY_NAME
+                dataType: varchar2
+            }
+        )
+
+        column CUSTOMER_EMAIL (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: CUSTOMER_EMAIL
+                dataType: varchar2
+            }
+        )
+
+        column CUSTOMER_NAME (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: CUSTOMER_NAME
+                dataType: varchar2
+            }
+        )
+
+        column CUSTOMER_PHONE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: CUSTOMER_PHONE
+                dataType: varchar2
+            }
+        )
+
+        column DELIVERY_INSTRUCTIONS (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: DELIVERY_INSTRUCTIONS
+                dataType: varchar2
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: varchar2
+            }
+        )
+
+        column ORDER_DATE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ORDER_DATE
+                dataType: varchar2
+            }
+        )
+
+        column PO_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: PO_ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column PO_NUMBER (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: PO_NUMBER
+                dataType: varchar2
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column STATUS_STATE (
+            layout {
+                sequence: 95
+            }
+            source {
+                databaseColumn: STATUS_STATE
+                dataType: varchar2
+            }
+        )
+
+        column TOTAL_AMOUNT (
+            layout {
+                sequence: 35
+            }
+            source {
+                databaseColumn: TOTAL_AMOUNT
+                dataType: varchar2
+            }
+        )
+
+        action edit (
+            position: primaryActions
+            template: button
+            label: Edit
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 21
+                    items: {
+                        P21_PO_ID: &PO_ID.
+                    }
+                    clearCache: 21
+                    action: resetPagination
+                }
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-pencil-square-o
+            }
+        )
+
+    )
+
+    region master-records (
+        name: Purchase Orders
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+            pageItemsToSubmit: P20_SEARCH
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select "PO_ID",
+                    null LINK_CLASS,
+                    apex_page.get_url(p_items => 'P20_PO_ID', p_values => "PO_ID") LINK,
+                    -- null ICON_CLASS,
+                   case STATUS
+                     when 'COMPLETED' then 'fa fa-file-check'
+                     when 'REJECTED' then 'fa fa-file-x'
+                     else 'fa fa-file-edit'
+                   end ICON_CLASS,
+                    null LINK_ATTR,
+                   case STATUS
+                     when 'COMPLETED' then 'u-success'
+                     when 'REJECTED' then 'u-danger'
+                     else 'u-info'
+                   end ICON_COLOR_CLASS,
+                    case when coalesce(:P20_PO_ID,'0') = "PO_ID"
+                      then 'is-selected' 
+                      else ' '
+                    end LIST_CLASS,
+                    'PO #' || "PO_NUMBER" LIST_TITLE,
+                    substr(
+                        coalesce("CUSTOMER_COMPANY_NAME", "CUSTOMER_NAME") ||
+                        chr(10) ||
+                        to_char("TOTAL_AMOUNT", 'FML999G999G990D00') ||
+                        ' · ' ||
+                        to_char("DATE", 'Mon DD, YYYY'),
+                        1,
+                        200
+                    ) LIST_TEXT,
+                    "STATUS" LIST_BADGE
+                from #APEX$SOURCE_DATA#
+                where :P20_SEARCH is null
+                   or instr(
+                        upper(
+                            "PO_NUMBER" || ' ' ||
+                            "STATUS" || ' ' ||
+                            coalesce("CUSTOMER_COMPANY_NAME", "CUSTOMER_NAME") || ' ' ||
+                            "CUSTOMER_EMAIL"
+                        ),
+                        upper(:P20_SEARCH)
+                      ) > 0
+                order by "LAST_UPDATED" desc nulls last, "PO_NUMBER"
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: search-results
+        }
+        reportLayout {
+            numberOfRows: 1000
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                t-MediaList--showIcons
+                t-MediaList--showDesc
+                t-MediaList--stack
+            ]
+        }
+        messages {
+            whenNoDataFound: <div class="u-tC">No data found.</div>
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Icon Class
+            }
+            layout {
+                sequence: 210
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Icon Color Class
+            }
+            layout {
+                sequence: 230
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Link
+            }
+            layout {
+                sequence: 200
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Link Attr
+            }
+            layout {
+                sequence: 220
+            }
+        )
+
+        column LINK_CLASS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Link Class
+            }
+            layout {
+                sequence: 190
+            }
+        )
+
+        column LIST_BADGE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: List Badge
+            }
+            layout {
+                sequence: 260
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: List Class
+            }
+            layout {
+                sequence: 240
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: List Text
+            }
+            layout {
+                sequence: 250
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: List Title
+            }
+            layout {
+                sequence: 180
+            }
+        )
+
+        column PO_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Po Id
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    region no-record-selected (
+        name: No Record Selected
+        type: staticContent
+        source {
+            htmlCode: No Record Selected
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P20_PO_ID
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+            cssClasses: js-detail-rds
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P20_PO_ID
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+            cssClasses: [
+                search-region
+                padding-md
+            ]
+        }
+    )
+
+    pageItem P20_PO_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @dv-purchase-orders
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P20_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: right
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--postTextBlock
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search...
+        }
+        advanced {
+            customAttributes: autocomplete="off"
+        }
+    )
+
+    button actions (
+        buttonName: ACTIONS
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu show-query (
+            label: Show Query
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 23
+                    clearCache: 23
+                }
+            }
+        )
+
+    )
+
+    button pop-dv-po-line-items (
+        buttonName: POP_DV_PO_LINE_ITEMS
+        label: Add Line Item
+        layout {
+            sequence: 10
+            region: @dv-po-line-items
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_PO_ID: &P20_PO_ID.
+                }
+                clearCache: 9
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Refresh Line Items and Purchase Order
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @dv-po-line-items
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-2 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @dv-purchase-orders
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh-4 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @master-records
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction dialog-closed-2 (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @dv-purchase-orders
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @dv-purchase-orders
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction perform-search (
+        name: Perform Search
+        execution {
+            sequence: 150
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P20_SEARCH
+        }
+        clientSideCondition {
+            type: item=value
+            item: JAVASCRIPT_EXPRESSION
+            value: this.browserEvent.which === apex.jQuery.ui.keyCode.ENTER
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @master-records
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process select-first-purchase-order (
+        name: Select First Purchase Order
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    select po_id
+                      into :P20_PO_ID
+                      from (
+                          select json_value(data, '$._id' returning number) po_id
+                            from dv_purchase_order_dv
+                           order by json_value(data, '$.last_updated') desc nulls last,
+                                    json_value(data, '$.po_number')
+                      )
+                     where rownum = 1;
+                exception
+                    when no_data_found then
+                        null;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 2427822935534829
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P20_PO_ID
+        }
+    )
+
+)
+

@@ -1,0 +1,908 @@
+page 6 (
+    name: Purchase Order &P6_PO_ID. Details
+    alias: PURCHASE-ORDER-P6-PO-ID-DETAILS
+    title: Purchase Order &P6_PO_ID. Details
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    readOnly {
+        type: item!=value
+        item: P6_STATUS
+        value: DRAFT
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region line-items-report (
+        name: Line Items
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+            pageItemsToSubmit: [
+                P6_PO_ID
+                P6_STATUS
+            ]
+        }
+        dataProfile {
+            nestedRows: @line-items-profile-column
+        }
+        localPostProcessing {
+            type: whereOrderByClause
+            whereClause: PO_ID = :P6_PO_ID and LINE_ID is not null
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column LINE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            layout {
+                sequence: 150
+            }
+            link {
+                target: {
+                    page: 8
+                    items: {
+                        P8_PO_ID: #PO_ID#
+                        P8_LINE_ID: #LINE_ID#
+                    }
+                    clearCache: 8
+                }
+                linkText: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            }
+            serverSideCondition {
+                type: item=value
+                item: P6_STATUS
+                value: DRAFT
+            }
+        )
+
+        column PO_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 240
+            }
+        )
+
+        column PRODUCT_DESC (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Product
+            }
+            layout {
+                sequence: 190
+            }
+        )
+
+        column PRODUCT_PRODUCT_CODE (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: Code
+            }
+            layout {
+                sequence: 170
+            }
+        )
+
+        column QUANTITY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Quantity
+                alignment: center
+            }
+            layout {
+                sequence: 200
+                columnAlignment: center
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column UNIT_PRICE (
+            reportColumnQueryId: 23
+            derivedColumn: N
+            heading {
+                heading: Purchase Price
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column amount (
+            reportColumnQueryId: 22
+            derivedColumn: N
+            heading {
+                heading: Amount
+                alignment: end
+            }
+            layout {
+                sequence: 230
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+    )
+
+    region order-details-region (
+        name: Order Details
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+            pageItemsToSubmit: P6_PO_ID
+        }
+        localPostProcessing {
+            type: whereOrderByClause
+            whereClause: PO_ID = :P6_PO_ID
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-left-md
+            ]
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo-label--stacked
+                t-ContextualInfo--hideNulls
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+
+        column CUSTOMER_ID (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column DATE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Created On
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column PO_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column PO_NUMBER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: P.O. Number
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Status
+                alignment: center
+            }
+            layout {
+                sequence: 180
+                columnAlignment: center
+            }
+            columnFormatting {
+                cssClasses: u-textInitCap
+            }
+        )
+
+        column TOTAL_AMOUNT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Order Total
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+    )
+
+    region purchase-order-details-form (
+        name: Customer
+        type: form
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-Region--removeHeader js-removeLandmark
+                margin-bottom-md
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P6_CUSTOMER_ADDRESS (
+        type: textarea
+        label {
+            label: Customer Address
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @purchase-order-details-form
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+            height: 3
+        }
+        validation {
+            maxLength: 200
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: CUSTOMER_ADDRESS
+            dataType: varchar2
+        }
+    )
+
+    pageItem P6_CUSTOMER_COMPANY_NAME (
+        type: textField
+        label {
+            label: Company Name
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @purchase-order-details-form
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: CUSTOMER_COMPANY_NAME
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+    )
+
+    pageItem P6_CUSTOMER_EMAIL (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        settings {
+            subtype: email
+        }
+        layout {
+            sequence: 100
+            region: @purchase-order-details-form
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: CUSTOMER_EMAIL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P6_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @purchase-order-details-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: CUSTOMER_ID
+            dataType: number
+            primaryKey: true
+        }
+        default {
+            type: static
+            staticValue: 1003
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_CUSTOMER_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @purchase-order-details-form
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            column: 7
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: CUSTOMER_NAME
+            dataType: varchar2
+        }
+        readOnly {
+            type: always
+        }
+    )
+
+    pageItem P6_CUSTOMER_PHONE (
+        type: textField
+        label {
+            label: Phone
+            alignment: left
+        }
+        settings {
+            subtype: phone
+        }
+        layout {
+            sequence: 110
+            region: @purchase-order-details-form
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            column: 7
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 20
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: CUSTOMER_PHONE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P6_DATE (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @purchase-order-details-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: date in header
+        }
+    )
+
+    pageItem P6_DELIVERY_INSTRUCTIONS (
+        type: textarea
+        label {
+            label: Delivery Instructions
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @purchase-order-details-form
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+            column: 7
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 3
+        }
+        validation {
+            maxLength: 500
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: DELIVERY_INSTRUCTIONS
+            dataType: varchar2
+        }
+    )
+
+    pageItem P6_PO_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @purchase-order-details-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: PO_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_PO_NUMBER (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @purchase-order-details-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: PO_NUMBER
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_STATUS (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @purchase-order-details-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: STATUS
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_TOTAL_AMOUNT (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @purchase-order-details-form
+            slot: regionBody
+        }
+        source {
+            formRegion: @purchase-order-details-form
+            column: TOTAL_AMOUNT
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+        comments {
+            comments: nicer display (larger)
+        }
+    )
+
+    button add-line-item-button (
+        buttonName: ADD_LINE_ITEM
+        label: Add
+        layout {
+            sequence: 10
+            region: @line-items-report
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_PO_ID: &P6_PO_ID.
+                }
+                clearCache: 9
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: item=value
+            item: P6_STATUS
+            value: DRAFT
+        }
+    )
+
+    button complete-order-button (
+        buttonName: COMPLETE
+        label: Complete
+        layout {
+            sequence: 70
+            region: @breadcrumb
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--success
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: item=value
+            item: P6_STATUS
+            value: DRAFT
+        }
+    )
+
+    button create-purchase-order-button (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 60
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: :P6_PO_ID is null or :P6_CUSTOMER_ID is null
+        }
+    )
+
+    button delete-purchase-order-button (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: :P6_PO_ID is not null and :P6_CUSTOMER_ID is not null and :P6_STATUS = 'DRAFT'
+        }
+    )
+
+    button reject-order-button (
+        buttonName: REJECT
+        label: Reject
+        layout {
+            sequence: 80
+            region: @breadcrumb
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: item=value
+            item: P6_STATUS
+            value: DRAFT
+        }
+    )
+
+    button save-purchase-order-button (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 50
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: expression
+            language: sql
+            sqlExpression: :P6_PO_ID is not null and :P6_CUSTOMER_ID is not null and :P6_STATUS = 'DRAFT'
+        }
+    )
+
+    dynamicAction refresh-line-items-total-da_1 (
+        name: Refresh Line Items/Total
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jsExpression
+            javaScriptExpression: window
+        }
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: RELOAD
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process initialize-purchase-order (
+        name: Initialize form Purchase Order
+        type: formInitialization
+        formRegion: @purchase-order-details-form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3146672814051777
+        }
+    )
+
+    process process-purchase-order-details (
+        name: Process form Purchase Order
+        type: formAutoRowProcessing
+        formRegion: @purchase-order-details-form
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 3147037639051777
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: RELOAD
+        }
+    )
+
+    process set-status-completed (
+        name: Set Status Completed
+        type: executeCode
+        source {
+            plsqlCode: :P6_STATUS := 'COMPLETED';
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Purchase Order set to Completed.
+        }
+        advanced {
+            executionMappingIdentifier: 3164293888051788
+        }
+        serverSideCondition {
+            whenButtonPressed: @complete-order-button
+        }
+    )
+
+    process set-status-rejected (
+        name: Set Status Rejected
+        type: executeCode
+        source {
+            plsqlCode: :P6_STATUS := 'REJECTED';
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Purchase Order set to Rejected.
+        }
+        advanced {
+            executionMappingIdentifier: 3164622121051788
+        }
+        serverSideCondition {
+            whenButtonPressed: @reject-order-button
+        }
+    )
+
+    branch (
+        execution {
+            sequence: 1
+        }
+        behavior {
+            target: {
+                page: 10
+            }
+        }
+        serverSideCondition {
+            type: request!=Value
+            value: RELOAD
+        }
+    )
+
+)
+

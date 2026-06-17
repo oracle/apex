@@ -1,0 +1,65 @@
+app JSON-DUALITY-VIEWS (
+    name: Sample Duality Views
+    logo {
+        type: text
+        text: Sample Duality Views
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        addBuiltWithApexToFooter: false
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    authorization {
+        scheme: mustNotBePublicUser
+    }
+    sessionStateProtection {
+        checksumSalt: D34EECD14C472E5A1BB288515A37BD39E9E588F9C03EAF0DDC480C8571CB32E1
+    }
+    sessionManagement {
+        maxSessionLength: 28800
+        maxSessionIdleTime: 7200
+    }
+    runtime {
+        allowFeedback: true
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: JSON Relational Duality Views
+        }
+    )
+
+)
+

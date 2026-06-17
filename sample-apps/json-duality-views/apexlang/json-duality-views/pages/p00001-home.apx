@@ -1,0 +1,118 @@
+page 1 (
+    name: Home
+    alias: HOME
+    title: Sample Duality Views
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region about (
+        name: About This App
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <strong>JSON Relational Duality Views</strong> expose relational data as JSON documents
+                    while preserving the tables, constraints, and transactional behavior of Oracle Database.
+                    This sample app uses purchase orders, customers, products, and line items to show how
+                    APEX can work directly with a JSON Relational Duality View source.
+                </p>
+                <p>
+                    The app demonstrates common parent-child page patterns backed by
+                    <code>DV_PURCHASE_ORDER_DV</code>. Purchase order details come from the root document,
+                    customer data is nested as an object, and line items are projected as a nested JSON array.
+                </p>
+                <p>
+                    The app also includes declarative create and edit flows, the current JSON Relational Duality View DDL,
+                    generated JSON schema,
+                    and sample JSON document payloads.
+                </p>
+                <p>
+                    Use the examples below to explore the page patterns and the underlying JSON Relational Duality View
+                    metadata used by this sample.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region app-navigation (
+        name: App Navigation
+        type: list
+        source {
+            list: @home
+        }
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                t-MediaList--showBadges
+                t-MediaList--iconsRounded
+            ]
+        }
+    )
+
+    region duality-view-demo-region (
+        name: Sample Duality Views
+        type: staticContent
+        source {
+            htmlCode: Demonstration of JSON Relational Duality Views in APEX
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+        }
+        image {
+            fileUrl: #APP_FILES#icons/app-icon-512.png
+        }
+    )
+
+)
+

@@ -1,0 +1,516 @@
+page 10 (
+    name: Purchase Orders - Stacked
+    alias: PURCHASE-ORDERS-STACKED
+    title: Purchase Orders - Stacked
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Colorful Badges */
+            .t-Badge--COMPLETED {
+                --ut-badge-text-color: var(--ut-badge-subtle-success-text-color, var(--a-palette-success));
+                --ut-badge-background-color: var(--ut-badge-subtle-success-background-color, var(--a-palette-success-shade));
+            }
+            .t-Badge--REJECTED {
+                --ut-badge-text-color: var(--ut-badge-subtle-danger-text-color, var(--a-palette-danger));
+                --ut-badge-background-color: var(--ut-badge-subtle-danger-background-color, var(--a-palette-danger-shade));
+            }
+            .t-Badge--DRAFT {
+                --ut-badge-text-color: var(--ut-badge-subtle-info-text-color, var(--a-palette-info));
+                --ut-badge-background-color: var(--ut-badge-subtle-info-background-color, var(--a-palette-info-shade));
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region duality-view-demo-region (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region purchase-orders-report (
+        name: Purchase Orders
+        type: interactiveReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @purchase-orders
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 35489932199300093
+        }
+
+        column CUSTOMER_ADDRESS (
+            type: plainText
+            heading {
+                heading: Customer Address
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column CUSTOMER_CITY (
+            type: plainText
+            heading {
+                heading: Customer City
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CUSTOMER_COMPANY_NAME (
+            type: plainText
+            heading {
+                heading: Company
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column CUSTOMER_EMAIL (
+            type: plainText
+            heading {
+                heading: Customer Email
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CUSTOMER_ID (
+            type: hidden
+            heading {
+                heading: Customer Id
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: plainText
+            heading {
+                heading: Customer Name
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column CUSTOMER_PHONE (
+            type: plainText
+            heading {
+                heading: Customer Phone
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CUSTOMER_STATE (
+            type: plainText
+            heading {
+                heading: Customer State
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column CUSTOMER_ZIP_CODE (
+            type: plainText
+            heading {
+                heading: Customer Zip Code
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column DATE (
+            type: plainText
+            heading {
+                heading: PO Date
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column DELIVERY_INSTRUCTIONS (
+            type: plainText
+            heading {
+                heading: Delivery Instructions
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column LAST_UPDATED (
+            type: plainText
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column LINE_ITEMS (
+            type: plainText
+            heading {
+                heading: Line Items
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: CLOB
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: O
+            }
+            enableUsersTo {
+                sort: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column PO_ID (
+            type: hidden
+            heading {
+                heading: Po Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                primaryKey: true
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PO_NUMBER (
+            type: link
+            heading {
+                heading: PO Number
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                cssClasses: u-bold
+            }
+            link {
+                target: {
+                    page: 6
+                    items: {
+                        P6_PO_ID: #PO_ID#
+                        P6_CUSTOMER_ID: #CUSTOMER_ID#
+                    }
+                    clearCache: 6
+                }
+                linkText: #PO_NUMBER#
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column STATUS (
+            type: themeTemplateComponent/badge
+            heading {
+                heading: Status
+                alignment: center
+            }
+            settings {
+                label: Status
+                value: STATUS
+                state: STATUS
+                style: subtle
+                size: small
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column TOTAL_AMOUNT (
+            type: plainText
+            heading {
+                heading: Total Amount
+                alignment: end
+            }
+            layout {
+                sequence: 70
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 115905 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CUSTOMER_CITY (
+                sequence: 7
+            )
+
+            displayColumn CUSTOMER_COMPANY_NAME (
+                sequence: 6
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 5
+            )
+
+            displayColumn CUSTOMER_ZIP_CODE (
+                sequence: 8
+            )
+
+            displayColumn DATE (
+                sequence: 3
+            )
+
+            displayColumn LAST_UPDATED (
+                sequence: 4
+            )
+
+            displayColumn PO_NUMBER (
+                sequence: 1
+            )
+
+            displayColumn STATUS (
+                sequence: 2
+            )
+
+            displayColumn TOTAL_AMOUNT (
+                sequence: 9
+            )
+
+            sort (
+                column: LAST_UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: DATE
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button create-purchase-order-button (
+        buttonName: CREATE
+        label: Create Purchase Order
+        layout {
+            sequence: 10
+            region: @duality-view-demo-region
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+                clearCache: 2
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset-report (
+        buttonName: RESET_REPORT
+        label: Reset
+        layout {
+            sequence: 10
+            region: @purchase-orders-report
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10
+                action: resetRegions
+            }
+        }
+    )
+
+)
+

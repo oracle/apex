@@ -849,6 +849,59 @@
             }
         },
         {
+            "internalName": "SAMPLE_JSON_DUALITY_VIEWS",
+            "author": "Oracle",
+            "version": "26.1.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-json-duality-views.svg",
+            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/json-duality-views",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-duality-views/sql/json-duality-views.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-duality-views/sql/json-duality-views.zip",
+            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-duality-views/apexlang/json-duality-views.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Sample Duality Views",
+                    "description": "This application demonstrates JSON Relational Duality Views in Oracle APEX using purchase orders, customers, products, and line items. It shows how APEX can work directly with a JSON Relational Duality View source, including stacked and inbox-style order pages, declarative create and edit flows, current JSON Relational Duality View DDL, generated JSON schema examples, and sample data inserted through JSON document payloads."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_MAPS",
             "author": "Oracle",
             "version": "26.1.0",

@@ -1,0 +1,207 @@
+list home (
+    name: Home
+
+    entry about-duality-view (
+        label: About JSON Relational Duality Views
+        icon {
+            imageIconCssClasses: fa-info-circle
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Review the JSON Relational Duality View DDL, generated JSON schema, and sample JSON document shape used by the app.
+        }
+    )
+
+    entry purchase-orders-inbox (
+        label: Purchase Orders Inbox
+        icon {
+            imageIconCssClasses: fa-inbox
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Explore the email-style parent and child pattern with purchase orders in the left sidebar and details on the right.
+        }
+    )
+
+    entry purchase-orders-stacked (
+        label: Purchase Orders Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Use the vertical parent and child pattern with the purchase order parent above nested line items.
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry about-duality-view (
+        label: About
+        icon {
+            imageIconCssClasses: fa-info-circle-o
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: 22
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 20
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+        serverSideCondition {
+            type: userIsAuthenticated
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: 1
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry purchase-orders-inbox (
+        label: Purchase Orders Inbox
+        icon {
+            imageIconCssClasses: fa-inbox
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry purchase-orders-stacked (
+        label: Purchase Orders Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                10
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+)
+

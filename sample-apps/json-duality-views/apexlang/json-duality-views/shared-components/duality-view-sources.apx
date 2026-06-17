@@ -1,0 +1,357 @@
+jsonDualityView purchase-orders (
+    name: Purchase Orders
+    source {
+        location: localDatabase
+        tableName: DV_PURCHASE_ORDER_DV
+    }
+    dataProfile {
+        name: Purchase Orders
+        rowSelector: .
+    }
+
+    dataProfileColumn DATE (
+        columnName: DATE
+        source {
+            sequence: 6
+            dataType: date
+        }
+        parsing {
+            pathExpression: date
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn QUANTITY (
+        columnName: QUANTITY
+        source {
+            sequence: 20
+            parentColumn: @line-items-profile-column
+            dataType: number
+        }
+        parsing {
+            pathExpression: quantity
+        }
+    )
+
+    dataProfileColumn STATUS (
+        columnName: STATUS
+        source {
+            sequence: 54
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: status
+        }
+    )
+
+    dataProfileColumn amount (
+        columnName: amount
+        source {
+            sequence: 34
+            type: sqlExpression
+            parentColumn: @line-items-profile-column
+            dataType: number
+        }
+        computation {
+            sqlExpression: quantity * unit_price
+        }
+    )
+
+    dataProfileColumn customer-address-profile-column (
+        columnName: CUSTOMER_ADDRESS
+        source {
+            sequence: 15
+            dataType: varchar2
+            maxLength: 200
+        }
+        parsing {
+            pathExpression: customer.address
+        }
+    )
+
+    dataProfileColumn customer-city-profile-column (
+        columnName: CUSTOMER_CITY
+        source {
+            sequence: 10
+            dataType: varchar2
+            maxLength: 50
+        }
+        parsing {
+            pathExpression: customer.city
+        }
+    )
+
+    dataProfileColumn customer-company-name-profile-column (
+        columnName: CUSTOMER_COMPANY_NAME
+        source {
+            sequence: 18
+            dataType: varchar2
+            maxLength: 100
+        }
+        parsing {
+            pathExpression: customer.company_name
+        }
+    )
+
+    dataProfileColumn customer-email-profile-column (
+        columnName: CUSTOMER_EMAIL
+        source {
+            sequence: 12
+            dataType: varchar2
+            maxLength: 100
+        }
+        parsing {
+            pathExpression: customer.email
+        }
+    )
+
+    dataProfileColumn customer-id-profile-column (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 17
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: customer.customer_id
+        }
+    )
+
+    dataProfileColumn customer-name-profile-column (
+        columnName: CUSTOMER_NAME
+        source {
+            sequence: 11
+            dataType: varchar2
+            maxLength: 100
+        }
+        parsing {
+            pathExpression: customer.name
+        }
+    )
+
+    dataProfileColumn customer-phone-profile-column (
+        columnName: CUSTOMER_PHONE
+        source {
+            sequence: 13
+            dataType: varchar2
+            maxLength: 20
+        }
+        parsing {
+            pathExpression: customer.phone
+        }
+    )
+
+    dataProfileColumn customer-state-profile-column (
+        columnName: CUSTOMER_STATE
+        source {
+            sequence: 14
+            dataType: varchar2
+            maxLength: 2
+        }
+        parsing {
+            pathExpression: customer.state
+        }
+    )
+
+    dataProfileColumn customer-zip-code-profile-column (
+        columnName: CUSTOMER_ZIP_CODE
+        source {
+            sequence: 16
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            pathExpression: customer.zip_code
+        }
+    )
+
+    dataProfileColumn delivery-instructions-profile-column (
+        columnName: DELIVERY_INSTRUCTIONS
+        source {
+            sequence: 9
+            dataType: varchar2
+            maxLength: 500
+        }
+        parsing {
+            pathExpression: delivery_instructions
+        }
+    )
+
+    dataProfileColumn last-updated-profile-column (
+        columnName: LAST_UPDATED
+        source {
+            sequence: 64
+            dataType: date
+        }
+        parsing {
+            pathExpression: last_updated
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn line-id-profile-column (
+        columnName: LINE_ID
+        source {
+            sequence: 2
+            parentColumn: @line-items-profile-column
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: line_item_id
+        }
+    )
+
+    dataProfileColumn line-items-position-profile-column (
+        columnName: LINE_ITEMS_POS
+        source {
+            sequence: 24
+            parentColumn: @line-items-profile-column
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn line-items-profile-column (
+        columnName: LINE_ITEMS
+        source {
+            sequence: 19
+            dataType: array
+        }
+        parsing {
+            pathExpression: line_items
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn metadata-asof-profile-column (
+        columnName: APEX_METADATA_ASOF
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: _metadata.asof
+        }
+        advanced {
+            common: false
+            hidden: true
+        }
+    )
+
+    dataProfileColumn metadata-etag-profile-column (
+        columnName: APEX_METADATA_ETAG
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: _metadata.etag
+        }
+        advanced {
+            common: false
+            hidden: true
+        }
+    )
+
+    dataProfileColumn po-id-profile-column (
+        columnName: PO_ID
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: _id
+        }
+    )
+
+    dataProfileColumn po-number-profile-column (
+        columnName: PO_NUMBER
+        source {
+            sequence: 7
+            dataType: varchar2
+            maxLength: 20
+        }
+        parsing {
+            pathExpression: po_number
+        }
+    )
+
+    dataProfileColumn product-code-profile-column (
+        columnName: PRODUCT_PRODUCT_CODE
+        source {
+            sequence: 23
+            parentColumn: @line-items-profile-column
+            dataType: varchar2
+            maxLength: 20
+        }
+        parsing {
+            pathExpression: product.product_code
+        }
+    )
+
+    dataProfileColumn product-desc-profile-column (
+        columnName: PRODUCT_DESC
+        source {
+            sequence: 22
+            parentColumn: @line-items-profile-column
+            dataType: varchar2
+            maxLength: 200
+        }
+        parsing {
+            pathExpression: product.desc
+        }
+    )
+
+    dataProfileColumn product-id-profile-column (
+        columnName: PRODUCT_ID
+        source {
+            sequence: 3
+            parentColumn: @line-items-profile-column
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: product.product_id
+        }
+    )
+
+    dataProfileColumn product-unit-price-profile-column (
+        columnName: PRODUCT_UNIT_PRICE
+        source {
+            sequence: 21
+            parentColumn: @line-items-profile-column
+            dataType: number
+        }
+        parsing {
+            pathExpression: product.unit_price
+        }
+    )
+
+    dataProfileColumn total-amount-profile-column (
+        columnName: TOTAL_AMOUNT
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: total_amount
+        }
+    )
+
+    dataProfileColumn unit-price-profile-column (
+        columnName: UNIT_PRICE
+        source {
+            sequence: 44
+            parentColumn: @line-items-profile-column
+            dataType: number
+        }
+        parsing {
+            pathExpression: unit_price
+        }
+    )
+
+)
+
