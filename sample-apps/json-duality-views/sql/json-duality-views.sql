@@ -100,7 +100,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'Release 1.0'
+,p_flow_version=>'26.1.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'

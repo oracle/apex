@@ -1,5 +1,6 @@
 app JSON-DUALITY-VIEWS (
     name: Sample Duality Views
+    version: 26.1.0
     logo {
         type: text
         text: Sample Duality Views
@@ -62,4 +63,3 @@ app JSON-DUALITY-VIEWS (
     )
 
 )
-
