@@ -1,0 +1,1233 @@
+page 310 (
+    name: Item Detail – Summary
+    alias: ITEM-DETAIL-SUMMARY
+    title: Item Detail – Summary
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Keep contextual information compact and make its status badges easy to scan. */
+            .app-ContextualInfo {
+              --ut-contextualinfo-item-label-stacked-margin-y: 0;
+              --ut-badge-font-weight: 600;
+            }
+            
+            /* Establish visual hierarchy between featured, standard, and compact activity rows. */
+            .app-ActivityTimeline .is-standard {
+              --ut-cr-title-font-weight: 600;
+            }
+            
+            .app-ActivityTimeline .is-compact {
+              --ut-cr-title-font-size: 0.875rem;
+              --ut-cr-title-font-weight: 400;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Demonstrates an item detail summary pattern for inspecting one record quickly before taking action. The page combines item context, a concise summary, key details, supporting metrics, related information, and recent activity.
+            
+            ## When to Use
+            
+            Use when users need a scan-first view of one item and a small number of clear next actions. This pattern works well when users need current state, ownership, timing, supporting context, and links to related information in one place.
+            
+            ## When to Avoid
+            
+            Avoid when users need to compare many records, perform complex filtering, edit large amounts of data, or complete a multi-step workflow. Use a sectioned, tabbed, or master-detail pattern when the item has substantially more information or deeper related tasks.
+            
+            ## AI Guidance
+            
+            Preserve the item-detail hierarchy: item identity and context first, primary and secondary actions next, followed by summary information, supporting details, related information, and activity. Keep the terminology generic and domain-neutral. Keep summaries concise and decision-relevant. Use semantic state values consistently for badges and status indicators. Keep primary actions prominent, secondary actions subordinate, and lower-frequency actions in the overflow menu. Do not add visible instructional text to the page. Use component comments to explain region intent, action hierarchy, data mappings, and custom behavior.
+            ```
+    }
+
+    region activity-2 (
+        name: Recent Activity
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Activity timeline guidance for AI:
+                
+                1. The timeline should show the meaningful payload of the event at a glance.
+                2. Attribute changes should use the title to describe the new value or state.
+                3. File events should name the file in the title so the user can identify it immediately.
+                4. Comment events should surface the comment text itself; the title can be the comment body, or the description can carry it if the title is a short summary.
+                5. Use the description only when it adds useful context such as previous value, author, or a short supporting note.
+                6. Keep some rows title-only to demonstrate that not every activity needs a description.
+                7. Keep the mix of row shapes so the timeline can represent simple and rich events.
+                */
+                
+                select 'Today' as activity_group,
+                       10 as display_sequence,
+                       sysdate - interval '1' hour as activity_time,
+                       'Maya Chen' as actioned_by,
+                       'Updated' as action_type,
+                       null as badge_label,
+                       'Status changed to On Track' as title,
+                       'Previous status: Needs Review' as description,
+                       'fa-check-circle-o u-success-text' as icon_class,
+                       'is-featured' as row_class,
+                       1 as id
+                  from sys.dual
+                union all
+                select 'Today',
+                       20,
+                       sysdate - interval '4' hour,
+                       'Jordan Lee',
+                       'Reviewed',
+                       null,
+                       'Review completed',
+                       'Next step confirmed for the current owner',
+                       'fa-check-circle-o u-success-text',
+                       'is-standard',
+                       2
+                  from sys.dual
+                union all
+                select 'This Week',
+                       30,
+                       trunc(sysdate) - 2 + (9/24),
+                       'Maya Chen',
+                       'Commented',
+                       null,
+                       'We should confirm the owner before moving this forward.',
+                       'Comment added to the current record',
+                       'fa-comments-o u-info-text',
+                       'is-standard',
+                       3
+                  from sys.dual
+                union all
+                select 'This Week',
+                       40,
+                       trunc(sysdate) - 3 + (14/24),
+                       'Jordan Lee',
+                       'Adjusted',
+                       null,
+                       'Target Date set to October 1',
+                       'Previous target date: September 18',
+                       'fa-calendar-o u-info-text',
+                       'is-standard',
+                       4
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       50,
+                       trunc(sysdate) - 7 + (11/24),
+                       null,
+                       null,
+                       null,
+                       'Ownership assigned to Avery Smith for ongoing follow-up',
+                       null,
+                       'fa-user u-info-text',
+                       'is-compact',
+                       5
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       60,
+                       trunc(sysdate) - 9 + (10/24),
+                       null,
+                       null,
+                       null,
+                       'Standard Intake linked to support the current record',
+                       null,
+                       'fa-link u-info-text',
+                       'is-compact',
+                       6
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       70,
+                       trunc(sysdate) - 10 + (12/24),
+                       null,
+                       null,
+                       null,
+                       'Reference removed after duplicate values were identified',
+                       null,
+                       'fa-minus-circle-o u-danger-text',
+                       'is-compact',
+                       7
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       80,
+                       trunc(sysdate) - 11 + (16/24),
+                       null,
+                       null,
+                       null,
+                       'Initial record created and prepared for first review',
+                       null,
+                       'fa-plus-circle-o u-info-text',
+                       'is-compact',
+                       8
+                  from sys.dual;
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: display_sequence, activity_group
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows meaningful changes, decisions, comments, and events associated with the current item.
+                
+                Pattern role: Activity timeline.
+                
+                AI guidance: Make the event title carry the meaningful payload at a glance. Attribute changes should describe the new value or state. File events should identify the file. Comment events should surface the comment text. Use the description only for useful supporting context such as a previous value, author, or note. Keep some rows title-only and retain a mix of featured, standard, and compact rows to demonstrate different event shapes. Use featured rows for especially important events and compact rows for lower-detail history.
+                ```
+        }
+        componentAppearance {
+            display: report
+            cssClasses: app-ActivityTimeline
+        }
+        settings {
+            overline:
+                ```html
+                {if ACTIONED_BY/}
+                    &ACTIONED_BY.{if ACTION_TYPE/} &middot; &ACTION_TYPE.{endif/}
+                {elseif ACTION_TYPE/}
+                    &ACTION_TYPE.
+                {endif/}
+                ```
+            title: &TITLE.
+            description: &DESCRIPTION.
+            miscellaneous: &ACTIVITY_TIME.
+            displayAvatar: true
+            itemCssClasses: &ROW_CLASS.
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS.
+            shape: noShape
+            size: small
+        }
+        plugin-grouping {
+            title: <div class="u-text-uppercase u-text-muted-color u-text-body-xs u-text-bold">&ACTIVITY_GROUP.</div>
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column ACTIONED_BY (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ACTIONED_BY
+                dataType: varchar2
+            }
+        )
+
+        column ACTION_TYPE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ACTION_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column ACTIVITY_GROUP (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIVITY_GROUP
+                dataType: varchar2
+            }
+            appearance {
+                group: true
+            }
+        )
+
+        column ACTIVITY_TIME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ACTIVITY_TIME
+                dataType: date
+            }
+        )
+
+        column BADGE_LABEL (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: DISPLAY_SEQUENCE
+                dataType: number
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ROW_CLASS (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: ROW_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region details (
+        name: Details 1
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'REC-1001' as reference,
+                       'Standard Intake' as source,
+                       'Summary Record' as type,
+                       'Tracked, Reviewable' as tags
+                  from dual;
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @summary-container
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents supporting item attributes in compact value-and-attribute groups.
+                
+                Pattern role: Attribute-pair detail layout.
+                
+                AI guidance: Group related attributes together and order them according to the decisions users need to make. Keep labels concise and values consistently formatted. Format percentages, dates, durations, counts, and units for scanning. Use separate groups when the item has distinct categories of supporting information, such as classification versus ownership and timing.
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column REFERENCE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Reference
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column SOURCE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Source
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+    )
+
+    region details-2 (
+        name: Details 2
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select '72%'        as progress,
+                       'Medium'     as priority,
+                       'Maya Chen'  as owner,
+                       sysdate + 14     as due
+                  from dual;
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @summary-container
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents supporting item attributes in compact value-and-attribute groups.
+                
+                Pattern role: Attribute-pair detail layout.
+                
+                AI guidance: Group related attributes together and order them according to the decisions users need to make. Keep labels concise and values consistently formatted. Format percentages, dates, durations, counts, and units for scanning. Use separate groups when the item has distinct categories of supporting information, such as classification versus ownership and timing.
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column DUE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Due
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column PROGRESS (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Progress
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region item-header (
+        name: Item Details
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Establishes the identity and current state of the item before users inspect details or take action.
+                
+                Pattern role: Item detail header with contextual information.
+                
+                AI guidance: Keep the most important identity, ownership, status, impact, and timing information near the item title. Use contextual information for quick scanning rather than a full attribute report. Map status values to supported semantic states such as success, warning, danger, or info. Keep badge value, state, label, and styling semantically aligned. Use relative time only when it is useful for recency; use an explicit date when the exact date matters.
+                ```
+        }
+    )
+
+    region item-summary-details (
+        name: Summary
+        type: staticContent
+        source {
+            htmlCode: This record represents a standard item that is being reviewed, tracked, or acted on. The summary explains the current state, expected outcome, and any context needed before taking action.
+        }
+        layout {
+            sequence: 20
+            parentRegion: @summary-container
+            slot: regionBody
+            columnSpan: 4
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        comments {
+            comments:
+                ```
+                Intent: Gives users concise narrative context about what the item represents and why it matters.
+                
+                Pattern role: Item summary narrative.
+                
+                AI guidance: Keep the summary short, generic, and decision-relevant. Explain the item's current purpose, state, or expected outcome without adding instructional or tutorial text. Move detailed attributes, history, and related records into their dedicated regions.
+                ```
+        }
+    )
+
+    region key-facts (
+        name: Item Contextual Info
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'Record Owner' as owner,
+                       'Standard Category' as category,
+                       'On Track' as status,
+                       'success' as status_state,
+                       sysdate - 1/24 as last_updated,
+                       'High' as impact,
+                       'danger' as impact_state,
+                       sysdate + 14 as target_date
+                  from dual;
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @item-header
+            slot: searchFieldAndSmartFilters
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-ContextualInfo
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents the highest-value item facts for quick assessment before users take action.
+                
+                Pattern role: Contextual information summary.
+                
+                AI guidance: Keep this region limited to ownership, classification, status, impact, recency, and timing information that users need for quick decisions. Keep visible values and their semantic state columns aligned. Use supported state values such as success, warning, danger, or info. Expose target timing when it materially affects the user’s decision; otherwise remove the unused supporting column.
+                ```
+        }
+        componentAppearance {
+            template: @/contextual-info
+            templateOptions: [
+                #DEFAULT#
+                t-ContextualInfo--hideNulls
+                t-ContextualInfo-label--stacked
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column CATEGORY (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Category
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column IMPACT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Impact
+            }
+            layout {
+                sequence: 80
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                      LABEL:=Impact
+                      VALUE:=#IMPACT#
+                      STATE:=#IMPACT_STATE#
+                      LABEL_DISPLAY:=N
+                      STYLE:=t-Badge--subtle
+                      SIZE:=t-Badge--sm
+                    {apply THEME$BADGE/}
+                    ```
+            }
+            serverSideCondition {
+                type: never
+            }
+        )
+
+        column IMPACT_STATE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                      LABEL:=Status
+                      VALUE:=#STATUS#
+                      STATE:=#STATUS_STATE#
+                      LABEL_DISPLAY:=Y
+                      STYLE:=t-Badge--subtle margin-top-xs
+                      SIZE:=t-Badge--md
+                    {apply THEME$BADGE/}
+                    ```
+            }
+        )
+
+        column STATUS_STATE (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column TARGET_DATE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+    )
+
+    region metric-cards (
+        name: Key Metrics
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-line-chart'    icon,
+                    'Primary KPI'      label,
+                    84200              metric_value
+                from sys.dual
+                union all
+                select
+                    'fa-bar-chart'     icon,
+                    'Secondary KPI'    label,
+                    12800              metric_value
+                from sys.dual
+                union all
+                select
+                    'fa-area-chart'    icon,
+                    'Trend KPI'        label,
+                    64                 metric_value
+                from sys.dual
+                union all
+                select
+                    'fa-dashboard'     icon,
+                    'Status KPI'       label,
+                    348                metric_value
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            cssClasses: app-MetricCards
+        }
+        comments {
+            comments:
+                ```
+                Intent: Highlights a small number of measures that help users assess the current item quickly.
+                
+                Pattern role: Item-level KPI summary.
+                
+                AI guidance: Use only the most relevant measures for this item, generally two to four cards. Keep metrics comparable in importance and avoid turning the region into a dense report. Format large values with thousands separators and use consistent units. If badges or icons are added, keep their value, state, and icon semantically aligned.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            metric: &METRIC_VALUE.
+            metricCssClasses: u-text-subheading-md
+            meta: &LABEL.
+            layout: 4Columns
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: &ICON.
+            style: subtle
+            position: inline
+        }
+
+        column ICON (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column LABEL (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+        )
+
+        column METRIC_VALUE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: METRIC_VALUE
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+    )
+
+    region status-list (
+        name: Related Information
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'fa-users'                     as icon,
+                       'People'                      as title,
+                       'Associated people and owners' as description,
+                       4                             as item_count,
+                       'PEOPLE'                      as page_alias
+                  from sys.dual
+                union all
+                select 'fa-file-o'                   as icon,
+                       'Files'                       as title,
+                       'Documents and attachments'   as description,
+                       12                            as item_count,
+                       'FILES'                       as page_alias
+                  from sys.dual
+                union all
+                select 'fa-comments-o'               as icon,
+                       'Comments'                    as title,
+                       'Discussion and feedback'     as description,
+                       18                            as item_count,
+                       'COMMENTS'                    as page_alias
+                  from sys.dual
+                union all
+                select 'fa-sitemap'                  as icon,
+                       'Child Records'               as title,
+                       'Associated child records'    as description,
+                       6                             as item_count,
+                       'CHILD_RECORDS'               as page_alias
+                  from sys.dual
+                union all
+                select 'fa-link'                     as icon,
+                       'Related Records'             as title,
+                       'Connected business entities' as description,
+                       3                             as item_count,
+                       'RELATED_RECORDS'             as page_alias
+                  from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+            columnSpan: 4
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides compact entry points to related information without overwhelming the item summary.
+                
+                Pattern role: Related-content navigation list.
+                
+                AI guidance: Keep rows concise and use the description to clarify what the related area contains. Use the badge to show the number of related items when that count is meaningful. Row titles should navigate to the corresponding related area or item-level detail. Keep this region focused on navigation and summary; use a full report or dedicated page for extensive related data.
+                
+                Implementation note: Each row represents a navigation entry to a related-information area. Replace the placeholder action target with the destination represented by PAGE_ALIAS, passing the current item context and selected related-information category.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-badge {
+            label: Related Item Count
+            value: ITEM_COUNT
+            style: subtle
+            columnWidth: auto
+            position: end
+            alignment: center
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ITEM_COUNT (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: ITEM_COUNT
+                dataType: number
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region summary-container (
+        name: Overview
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides the primary scan-first container for the item detail summary.
+                
+                Pattern role: Item detail overview.
+                
+                AI guidance: Keep this region visually dominant and place the most decision-relevant summary content here. Use a concise narrative summary alongside logically grouped attribute pairs. Preserve the overview-first structure and avoid turning this region into a dense report or long-form documentation area.
+                ```
+        }
+    )
+
+    button actions-menu (
+        buttonName: ACTIONS_MENU
+        label: Actions Menu
+        layout {
+            sequence: 40
+            region: @item-header
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+        comments {
+            comments:
+                ```
+                Intent: Groups optional or lower-frequency actions so they remain available without competing with the primary action hierarchy.
+                
+                Pattern role: Overflow actions.
+                
+                AI guidance: Place destructive, administrative, export, duplicate, or infrequently used actions here when they do not need persistent prominence. Do not hide the primary task in the overflow menu. Use clear action labels and preserve a logical menu order.
+                ```
+        }
+
+        menu menu-action-a (
+            label: Action 1
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-b (
+            label: Action 2
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-c (
+            label: Action 3
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    button back (
+        buttonName: BACK
+        label: Back
+        layout {
+            sequence: 10
+            region: @item-header
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Returns users to the previous browse, search, or parent context.
+                
+                Pattern role: Detail-page exit action.
+                
+                AI guidance: Keep Back visually separate from the forward actions. Preserve the user’s prior context when returning to the originating page.
+                ```
+        }
+    )
+
+    button primary-action (
+        buttonName: PRIMARY_ACTION
+        label: Primary Action
+        layout {
+            sequence: 30
+            region: @item-header
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Represents the most important next step available from the item detail page.
+                
+                Pattern role: Primary page action.
+                
+                AI guidance: Keep this action prominent and use a clear, domain-specific verb when adapting the pattern. There should normally be one primary action. The action should be directly related to the item's current state and intended workflow.
+                ```
+        }
+    )
+
+    button secondary-action (
+        buttonName: SECONDARY_ACTION
+        label: Secondary Action
+        layout {
+            sequence: 20
+            region: @item-header
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides a useful follow-up action that is less important than the primary action.
+                
+                Pattern role: Secondary page action.
+                
+                AI guidance: Keep this action visually subordinate to the primary action. Use it for a common but non-primary path, and avoid presenting several actions with equal visual emphasis.
+                ```
+        }
+    )
+
+    button view-details-link-3 (
+        buttonName: VIEW_ALL_ACTIVITY
+        label: View All Activity
+        layout {
+            sequence: 30
+            region: @activity-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+                t-Button--padTop
+            ]
+            icon: fa-arrow-right
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides a contextual path from the activity summary to the complete activity history.
+                
+                Pattern role: Region-level detail action.
+                
+                AI guidance: Use this action when the summary is intentionally truncated or when users may need to inspect the full history. Keep it visually attached to the Recent Activity region and lower in emphasis than the page's primary action. Omit it when the region already contains the complete activity history.
+                
+                Implementation note: This action should navigate to the complete activity history for the current item. Replace the placeholder target URL when the activity-history destination is available.
+                ```
+        }
+    )
+
+)
+

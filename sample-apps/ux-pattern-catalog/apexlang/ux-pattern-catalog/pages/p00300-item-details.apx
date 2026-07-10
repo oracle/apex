@@ -1,0 +1,182 @@
+page 300 (
+    name: Item Details
+    alias: ITEM-DETAILS
+    title: Item Details
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Organize and explain item detail patterns in the catalog. This is a category context page, not a pattern implementation.
+            
+            ## When to Use
+            
+            Use when this page's primary user task matches the pattern represented by its title and structure.
+            
+            ## When to Avoid
+            
+            Avoid when another catalog pattern better supports the user's task, information density, or workflow complexity.
+            
+            ## AI Guidance
+            
+            Preserve the page's pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.
+                        
+            ```
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Item detail patterns help users inspect one record with the right amount of context, supporting information, and follow-up action. Use these patterns when the primary task is understanding a specific item rather than browsing many records or entering a new one.
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region browse-and-search (
+        name: Item Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-id-card-o
+        }
+    )
+
+    region patterns (
+        name: Patterns
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-id-card-o' as icon_class,
+                    'Item Detail - Summary' as title,
+                    'A focused detail page with key attributes, status, supporting context, and a clear action hierarchy for one record.' as description,
+                    'item-detail-summary' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-layout-header-1col-3col' as icon_class,
+                    'Item Detail - Full' as title,
+                    'A complete detail page with organized sections, related information, and supporting actions for a single record.' as description,
+                    'item-detail-full' as page_alias
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS. fa-2x u-opacity-50
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: PAGE_ALIAS
+            }
+        )
+
+    )
+
+)
+

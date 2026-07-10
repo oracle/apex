@@ -1,0 +1,189 @@
+page 2 (
+    name: Patterns
+    alias: PATTERNS
+    title: Patterns
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region apex-ux-pattern-catalog (
+        name: Pattern Catalog
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Browse reusable Oracle APEX UX patterns organized by common application tasks. Each pattern combines representative implementations with documented design intent to help developers and AI coding assistants produce more consistent, high-quality application experiences.</p>
+                
+                <p>Choose the pattern that best supports the user's primary task, then adapt it to your application's specific requirements.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-Region--removeHeader js-removeLandmark
+                margin-bottom-md
+            ]
+        }
+    )
+
+    region patterns (
+        name: Pattern Categories
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-dashboard' as icon_class,
+                    'Dashboards' as title,
+                    'Summarize status, highlight exceptions, and guide users toward meaningful follow-up actions.' as description,
+                    'dashboards' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-mouse-pointer' as icon_class,
+                    'Browse and Search' as title,
+                    'Help users find, filter, compare, and open records using the right browsing experience for the task.' as description,
+                    'browse-search' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-id-card-o' as icon_class,
+                    'Item Details' as title,
+                    'Inspect one record with the right amount of context, supporting information, and follow-up action.' as description,
+                    'item-details' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-forms' as icon_class,
+                    'Data Entry' as title,
+                    'Create and update information with form patterns that match the complexity, context, and confidence required by the task.' as description,
+                    'data-entry' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-files-o' as icon_class,
+                    'Master Detail' as title,
+                    'Work across parent and child records with layouts that preserve context, support comparison, and keep related actions close to the data.' as description,
+                    'master-detail' as page_alias
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                margin-top-md
+            ]
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS. fa-2x u-opacity-50
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: PAGE_ALIAS
+            }
+        )
+
+    )
+
+    region reusable-apex-ux-patterns (
+        name: Patterns
+        type: staticContent
+        layout {
+            sequence: 90
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-cards
+        }
+    )
+
+)
+

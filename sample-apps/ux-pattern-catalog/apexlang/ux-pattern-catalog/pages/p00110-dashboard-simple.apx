@@ -1,0 +1,1256 @@
+page 110 (
+    name: Dashboard – Simple
+    alias: DASHBOARD-SIMPLE
+    title: Dashboard – Simple
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Scope metric-card layout adjustments to the Metric Cards region. */
+            .app-MetricCards .t-MetricCard { flex-wrap: wrap; }
+            .app-MetricCards .t-MetricCard-badge { margin-inline-start: auto; }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Demonstrates a simple dashboard pattern for giving users a fast overview of current state and clear paths to inspect supporting information.
+            
+            ## When to Use
+            
+            Use when users need a scan-first summary built from a small set of measures, lightweight visual summaries, and concise supporting records.
+            
+            ## When to Avoid
+            
+            Avoid when users need deep analysis, complex filtering, dense report comparison, or multi-step workflows.
+            
+            ## AI Guidance
+            
+            Preserve the overview-first structure. Keep terminology generic, production-like, and domain-neutral. Do not add visible instructional text to the page. Use component comments to explain the role of each region, action, and custom behavior.
+            ```
+    }
+
+    region chart-1 (
+        name: Line with Area Chart
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Highlights directional movement across ordered categories or periods.
+                Pattern role: Lightweight trend visual.
+                AI guidance: Use when the shape of change is more important than individual values. Keep styling subtle and avoid adding multiple competing series.
+                ```
+        }
+        chart {
+            type: lineWithArea
+        }
+        chartLayout {
+            height: 220
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'Series A' label, 12 value from sys.dual
+                    union all
+                    select 'Series B' label, 26 value from sys.dual
+                    union all
+                    select 'Series C' label, 18 value from sys.dual
+                    union all
+                    select 'Series D' label, 34 value from sys.dual
+                    union all
+                    select 'Series E' label, 29 value from sys.dual
+                    union all
+                    select 'Series F' label, 51 value from sys.dual
+                    union all
+                    select 'Series G' label, 46 value from sys.dual
+                    union all
+                    select 'Series H' label, 74 value from sys.dual
+                    order by 1
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #4251bf
+            }
+            line {
+                width: 2
+                type: curved
+            }
+            marker {
+                show: false
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region chart-2 (
+        name: Bar Chart
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Compares values across a small set of categories.
+                Pattern role: Category comparison.
+                AI guidance: Use when users need to compare magnitudes quickly. Keep category labels short and avoid too many bars.
+                ```
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'Series A' label, 12 value from sys.dual
+                    union all
+                    select 'Series B' label, 26 value from sys.dual
+                    union all
+                    select 'Series C' label, 18 value from sys.dual
+                    union all
+                    select 'Series D' label, 34 value from sys.dual
+                    union all
+                    select 'Series E' label, 29 value from sys.dual
+                    union all
+                    select 'Series F' label, 51 value from sys.dual
+                    union all
+                    select 'Series G' label, 46 value from sys.dual
+                    union all
+                    select 'Series H' label, 74 value from sys.dual
+                    order by 1
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #8e6ac8
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region chart-3 (
+        name: Pie Chart
+        type: chart
+        layout {
+            sequence: 60
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows a simple proportional breakdown across a small number of categories.
+                Pattern role: Part-to-whole summary.
+                AI guidance: Use only when there are a few meaningful categories and approximate proportion is more important than precise comparison.
+                ```
+        }
+        chart {
+            type: pie
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'Series A' label, 18 value from sys.dual
+                    union all
+                    select 'Series B' label, 34 value from sys.dual
+                    union all
+                    select 'Series C' label, 21 value from sys.dual
+                    union all
+                    select 'Series D' label, 27 value from sys.dual
+                    order by 1
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+    )
+
+    region content-row (
+        name: Status List
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Task'             overline,
+                    'Dashboard Item 1' title,
+                    'Representative workflow item one' description,
+                    'fa-clipboard-list' icon,
+                    'Complete'         badge,
+                    'success'          badge_state,
+                    null               badge_icon
+                from sys.dual
+                union all
+                select
+                    'Document'         overline,
+                    'Dashboard Item 2' title,
+                    'Representative workflow item two' description,
+                    'fa-file-text-o'   icon,
+                    'In Progress'      badge,
+                    'warning'          badge_state,
+                    null               badge_icon
+                from sys.dual
+                union all
+                select
+                    'Approval'         overline,
+                    'Dashboard Item 3' title,
+                    'Representative workflow item three' description,
+                    'fa-user-check'    icon,
+                    'Needs Review'     badge,
+                    'danger'           badge_state,
+                    null               badge_icon
+                from sys.dual
+                union all
+                select
+                    'Dataset'          overline,
+                    'Dashboard Item 4' title,
+                    'Representative workflow item four' description,
+                    'fa-database'      icon,
+                    'Available'        badge,
+                    'info'             badge_state,
+                    null               badge_icon
+                from sys.dual
+                union all
+                select
+                    'Configuration'    overline,
+                    'Dashboard Item 5' title,
+                    'Representative workflow item five' description,
+                    'fa-cogs'          icon,
+                    'Updated'          badge,
+                    'success'          badge_state,
+                    null               badge_icon
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows a short set of high-level status items that support the dashboard summary.
+                Pattern role: Supporting status list.
+                AI guidance: Keep rows concise and scannable. Use badges only when status needs to be visible at a glance, and keep badge value, state, and icon semantically aligned. Row titles may link to related application areas or item-level details. Avoid turning this region into a full report.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &OVERLINE.
+            title: &TITLE.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-badge {
+            label: Badge
+            value: BADGE
+            state: BADGE_STATE
+            style: subtle
+            columnWidth: auto
+            position: end
+            alignment: center
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column OVERLINE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: OVERLINE
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region content-row-2 (
+        name: Section Summary
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Section 1'                                 title,
+                    'Representative summary text for the first section'   description,
+                    'fa-line-chart'                                       icon,
+                    '12 metrics'                                          meta,
+                    null                                                  badge,
+                    null                                                  badge_state,
+                    null                                                  badge_icon
+                from sys.dual
+                union all
+                select
+                    'Section 2'                                 title,
+                    'Representative summary text for the second section'  description,
+                    'fa-database'                                         icon,
+                    'Updated 10m ago'                                     meta,
+                    null                                                  badge,
+                    null                                                  badge_state,
+                    null                                                  badge_icon
+                from sys.dual
+                union all
+                select
+                    'Section 3'                                 title,
+                    'Representative summary text for the third section'   description,
+                    'fa-users'                                            icon,
+                    '4 groups'                                            meta,
+                    null                                                  badge,
+                    null                                                  badge_state,
+                    null                                                  badge_icon
+                from sys.dual
+                union all
+                select
+                    'Section 4'                                 title,
+                    'Representative summary text for the fourth section'  description,
+                    'fa-shield'                                           icon,
+                    '2 reviews'                                           meta,
+                    null                                                  badge,
+                    null                                                  badge_state,
+                    null                                                  badge_icon
+                from sys.dual
+                union all
+                select
+                    'Section 5'                                 title,
+                    'Representative summary text for the fifth section'   description,
+                    'fa-cogs'                                             icon,
+                    '5 settings'                                          meta,
+                    null                                                  badge,
+                    null                                                  badge_state,
+                    null                                                  badge_icon
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows a compact summary of related sections or areas represented by the dashboard.
+                Pattern role: Supporting section summary.
+                AI guidance: Use this variation when the dashboard needs lightweight navigation or orientation across related areas. Keep text brief and high-level. Row titles may link to the corresponding section or application area. Avoid duplicating the status list or adding dense operational detail.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            miscellaneous: &META.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            size: extraSmall
+        }
+        plugin-appearance {
+            style: compact
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column META (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: META
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region dashboard-title (
+        name: Dashboard – Simple
+        type: staticContent
+        source {
+            htmlCode: Track key measures and supporting activity from one overview.
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Establishes the dashboard title, short context, and page-level actions.
+                Pattern role: Dashboard header.
+                AI guidance: Keep this region concise and action-oriented. Do not use it for instructional pattern documentation.
+                ```
+        }
+    )
+
+    region metric-cards (
+        name: Metric Cards
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-line-chart'    icon,
+                    'Primary KPI'      label,
+                    84200              metric_value,
+                    'Trend'            badge,
+                    '+12%'             badge_value,
+                    'success'          badge_state,
+                    'fa-trend-up'      badge_icon
+                from sys.dual
+                union all
+                select
+                    'fa-bar-chart'     icon,
+                    'Secondary KPI'    label,
+                    12800              metric_value,
+                    'Trend'            badge,
+                    '+320 units'       badge_value,
+                    'success'          badge_state,
+                    'fa-trend-up'      badge_icon
+                from sys.dual
+                union all
+                select
+                    'fa-area-chart'    icon,
+                    'Trend KPI'        label,
+                    64                 metric_value,
+                    'Trend'            badge,
+                    '20m faster'       badge_value,
+                    'success'          badge_state,
+                    'fa-trend-up'      badge_icon
+                from sys.dual
+                union all
+                select
+                    'fa-dashboard'     icon,
+                    'Status KPI'       label,
+                    348                metric_value,
+                    'Trend'            badge,
+                    '-14 items'        badge_value,
+                    'danger'           badge_state,
+                    'fa-trend-down'    badge_icon
+                from sys.dual
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: BADGE_VALUE
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+            cssClasses: app-MetricCards
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents the highest-priority dashboard measures for immediate scanning.
+                Pattern role: KPI summary.
+                AI guidance: Use a small number of comparable metrics, usually two to four when the dashboard needs a KPI group. Badge value, badge state, and badge icon should be semantically aligned. Format the key metric value for quick scanning, typically with thousands separators for large numbers. Avoid turning this region into a dense report.
+                Implementation note: The app-MetricCards CSS class scopes page-level CSS to this region.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            metric: &METRIC_VALUE.
+            metricCssClasses: u-text-subheading-md
+            meta: &LABEL.
+            layout: 4Columns
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: &ICON.
+            style: subtle
+            position: inline
+        }
+        plugin-badge {
+            displayBadge: true
+            label: Trend
+            value: BADGE_VALUE
+            state: BADGE_STATE
+            icon: &BADGE_ICON.
+            style: subtle
+            size: medium
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_VALUE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_VALUE
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column LABEL (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+        )
+
+        column METRIC_VALUE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: METRIC_VALUE
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+    )
+
+    region time-series (
+        name: Time Series
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows how a key measure changes over a recent period.
+                Pattern role: Trend summary.
+                AI guidance: Use for time-based movement where direction and change matter more than exact point comparison. Keep the series count low and labels readable.
+                ```
+        }
+        chart {
+            type: lineWithArea
+        }
+        chartLayout {
+            height: 220
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select trunc(sysdate) - 23 + (level - 1) as label,
+                           round(
+                               65
+                               + (level * 0.7)
+                               + (sin(level / 0.9) * 22)
+                               + (cos(level / 1.7) * 15)
+                               + case
+                                   when level between 3 and 4 then 28
+                                   when level between 6 and 8 then -24
+                                   when level between 10 and 11 then 34
+                                   when level between 13 and 15 then -30
+                                   when level between 17 and 19 then 26
+                                   when level between 21 and 22 then -22
+                                   when level = 24 then 18
+                                   else 0
+                                 end,
+                               1
+                           ) as value
+                    from sys.dual
+                    connect by level <= 24
+                    order by label
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #1fb6a6
+            }
+            line {
+                width: 2
+                type: curved
+            }
+            marker {
+                show: false
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            value {
+                format: dateShort
+            }
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    button actions-menu (
+        buttonName: ACTIONS_MENU
+        label: Actions
+        layout {
+            sequence: 40
+            region: @dashboard-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+        comments {
+            comments:
+                ```
+                Intent: Groups lower-frequency or optional page actions.
+                Pattern role: Overflow actions.
+                AI guidance: Use for actions that should remain available without competing with the primary action.
+                ```
+        }
+
+        menu menu-action-a (
+            label: Action 1
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-b (
+            label: Action 2
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-c (
+            label: Action 3
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    button primary-action (
+        buttonName: PRIMARY_ACTION
+        label: Primary Action
+        layout {
+            sequence: 30
+            region: @dashboard-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Represents the main follow-up action from the dashboard overview.
+                Pattern role: Primary page action.
+                AI guidance: Keep prominent. Use a domain-specific label only when adapting this pattern to a real application.
+                ```
+        }
+    )
+
+    button secondary-action (
+        buttonName: SECONDARY_ACTION
+        label: Secondary Action
+        layout {
+            sequence: 20
+            region: @dashboard-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Represents a useful but lower-priority follow-up action.
+                Pattern role: Secondary page action.
+                AI guidance: Keep visually subordinate to the primary action.
+                ```
+        }
+    )
+
+    button view-details (
+        buttonName: VIEW_DETAILS_LINK
+        label: View Details Link
+        layout {
+            sequence: 10
+            region: @chart-1
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-arrow-right
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+    )
+
+    button view-details-link-3 (
+        buttonName: VIEW_DETAILS_LINK_3
+        label: View Details Link
+        layout {
+            sequence: 30
+            region: @content-row
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-arrow-right
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+    )
+
+    button view-details-popup (
+        buttonName: VIEW_DETAILS_POPUP
+        label: View Details
+        layout {
+            sequence: 20
+            region: @chart-2
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+    )
+
+    button view-details-popup-3 (
+        buttonName: VIEW_DETAILS_POPUP_3
+        label: View Details
+        layout {
+            sequence: 40
+            region: @content-row-2
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+    )
+
+    button view-details-popup_2 (
+        buttonName: VIEW_DETAILS_POPUP_2
+        label: View Details
+        layout {
+            sequence: 30
+            region: @chart-3
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+            ]
+            icon: fa-external-link
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+    )
+
+    button view-details_2 (
+        buttonName: VIEW_DETAILS_LINK_2
+        label: View Details Link
+        layout {
+            sequence: 20
+            region: @time-series
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-arrow-right
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+    )
+
+)
+

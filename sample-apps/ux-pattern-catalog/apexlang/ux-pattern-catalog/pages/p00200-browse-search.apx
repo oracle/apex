@@ -1,0 +1,189 @@
+page 200 (
+    name: Browse and Search
+    alias: BROWSE-SEARCH
+    title: Browse and Search
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Organize and explain browse and search patterns in the catalog. This is a category context page, not a pattern implementation.
+            
+            ## When to Use
+            
+            Use when this page's primary user task matches the pattern represented by its title and structure.
+            
+            ## When to Avoid
+            
+            Avoid when another catalog pattern better supports the user's task, information density, or workflow complexity.
+            
+            ## AI Guidance
+            
+            Preserve the page's pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.
+                        
+            ```
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Browse and search patterns help users find the right record across a larger set of information. These pages demonstrate different ways to support scanning, filtering, comparison, and drill-down depending on how much structure users need and how they prefer to explore results.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region dashboards (
+        name: Browse and Search
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region patterns (
+        name: Patterns
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-cards' as icon_class,
+                    'Browse - Cards' as title,
+                    'A visual browsing pattern for scanning records as distinct items with prominent titles, supporting details, badges, and clear follow-up actions.' as description,
+                    'faceted-search-cards' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-list-alt' as icon_class,
+                    'Browse - Content Row' as title,
+                    'A compact list-style pattern for comparing records with consistent summaries, secondary attributes, status indicators, and row-level actions.' as description,
+                    'faceted-search-content-row' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-table' as icon_class,
+                    'Browse - Interactive Report' as title,
+                    'A data-dense browsing pattern for users who need sorting, filtering, saved views, column control, and precise comparison across many records.' as description,
+                    'browse-interactive-report' as page_alias
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS. fa-2x u-opacity-50
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: PAGE_ALIAS
+            }
+        )
+
+    )
+
+)
+

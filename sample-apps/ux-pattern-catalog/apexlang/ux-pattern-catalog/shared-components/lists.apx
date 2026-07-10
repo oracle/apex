@@ -1,0 +1,466 @@
+list item-details-side-actions (
+    name: Item Details - Side Actions
+
+    entry delete (
+        label: Delete
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry duplicate (
+        label: Duplicate
+        icon {
+            imageIconCssClasses: fa-copy
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry edit (
+        label: Edit
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry export (
+        label: Export
+        icon {
+            imageIconCssClasses: fa-download
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry share (
+        label: Share
+        icon {
+            imageIconCssClasses: fa-share-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry watch-changes (
+        label: Watch Changes
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+
+list navigation-bar (
+    name: Navigation Bar
+
+    entry about (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+    )
+
+)
+
+list navigation-menu (
+    name: Navigation Menu
+
+    entry about (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry browse-cards (
+        label: Browse – Cards
+        layout {
+            sequence: 40
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 210
+            }
+        }
+    )
+
+    entry browse-content-row (
+        label: Browse – Content Row
+        layout {
+            sequence: 50
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 220
+            }
+        }
+    )
+
+    entry complex-dashboard (
+        label: Advanced
+        layout {
+            sequence: 80
+            parentEntry: @dashboards
+        }
+        link {
+            target: {
+                page: 120
+            }
+        }
+    )
+
+    entry dashboards (
+        label: Dashboards
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 20
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry data-entry (
+        label: Data Entry
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 100
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry data-entry-drawer-form (
+        label: Data Entry – Drawer Form
+        layout {
+            sequence: 90
+            parentEntry: @data-entry
+        }
+        link {
+            target: {
+                page: 420
+            }
+        }
+    )
+
+    entry data-entry-simple-form (
+        label: Data Entry – Simple Form
+        layout {
+            sequence: 140
+            parentEntry: @data-entry
+        }
+        link {
+            target: {
+                page: 410
+            }
+        }
+    )
+
+    entry home (
+        label: Getting Started
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-report (
+        label: Interactive Report
+        layout {
+            sequence: 60
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 230
+            }
+        }
+    )
+
+    entry item-detail-full (
+        label: Item Detail – Full
+        layout {
+            sequence: 130
+            parentEntry: @item-details
+        }
+        link {
+            target: {
+                page: 320
+            }
+        }
+    )
+
+    entry item-detail-summary (
+        label: Item Detail – Summary
+        layout {
+            sequence: 120
+            parentEntry: @item-details
+        }
+        link {
+            target: {
+                page: 310
+            }
+        }
+    )
+
+    entry item-details (
+        label: Item Details
+        icon {
+            imageIconCssClasses: fa-id-card-o
+        }
+        layout {
+            sequence: 90
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 110
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry patterns (
+        label: Patterns
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry reports (
+        label: Browse and Search
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 30
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry simple-dashboard (
+        label: Simple
+        layout {
+            sequence: 70
+            parentEntry: @dashboards
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+    )
+
+)
+
+list page-navigation (
+    name: Page Navigation
+
+    entry browse-and-seach (
+        label: Browse and Seach
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            1: Help users discover, filter, compare, and open records using cards, lists, reports, and search-oriented layouts.
+        }
+    )
+
+    entry dashboards (
+        label: Dashboards
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: Summarize key information, highlight status, and guide users toward high-value follow-up actions.
+        }
+    )
+
+    entry data-entry (
+        label: Data Entry
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 4
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            1: Guide users through creating or changing information with forms, dialogs, drawers, and wizards.
+        }
+    )
+
+    entry item-details (
+        label: Item Details
+        icon {
+            imageIconCssClasses: fa-id-card-o
+        }
+        layout {
+            sequence: 3
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            1: Present a single record with the right balance of summary, supporting detail, and related information.
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        userDefinedAttributes {
+            1: Show parent-child relationships where users need context, comparison, and focused detail editing.
+        }
+    )
+
+)
+

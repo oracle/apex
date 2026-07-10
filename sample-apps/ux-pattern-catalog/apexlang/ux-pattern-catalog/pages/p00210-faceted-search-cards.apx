@@ -1,0 +1,546 @@
+page 210 (
+    name: Faceted Search – Cards
+    alias: FACETED-SEARCH-CARDS
+    title: Faceted Search – Cards
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Demonstrate this page pattern as a reusable, production-quality Oracle APEX experience.
+            
+            ## When to Use
+            
+            Use when this page's primary user task matches the pattern represented by its title and structure.
+            
+            ## When to Avoid
+            
+            Avoid when another catalog pattern better supports the user's task, information density, or workflow complexity.
+            
+            ## AI Guidance
+            
+            Preserve the page's pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.
+                        
+            ```
+    }
+
+    region active-facets (
+        name: Active Facets Go Here
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: active_facets
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows the filters currently applied so users can understand and adjust the result set.
+                Pattern role: Active-filter summary.
+                AI guidance: Keep this region visually associated with the results and ensure clearing individual or all filters is discoverable.
+                ```
+        }
+    )
+
+    region button-bar (
+        name: Faceted Search with Cards
+        type: staticContent
+        source {
+            htmlCode: <span class="u-text-body-sm u-text-muted-color"><span id="total_row_count">Loading</span> Rows</span>
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides the page context and current result count for the faceted card search experience.
+                Pattern role: Search context and result summary.
+                AI guidance: Keep the result count concise and update it as filters change. Do not use this region for instructional text or competing page actions.
+                ```
+        }
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides the primary filtering surface for narrowing a larger set of card results.
+                Pattern role: Faceted search controls.
+                AI guidance: Keep facets limited to meaningful filtering dimensions. Put the broadest or most frequently used filters first, preserve accessible labels, and avoid exposing filters that do not help users decide which cards to inspect.
+                ```
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: selector
+            totalRowCountSelector: #total_row_count
+            displayChartForTopNValues: 10
+        }
+
+        facet P210_CATEGORY (
+            type: checkboxGroup
+            label {
+                label: Category
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                icon: fa-shapes
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CATEGORY
+            }
+        )
+
+        facet P210_PRIORITY (
+            type: radioGroup
+            label {
+                label: Priority
+            }
+            settings {
+                hideRadioButtons: true
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                icon: fa-exclamation-square-o
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: PRIORITY
+            }
+        )
+
+        facet P210_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P210_UPDATED_ON (
+            type: range
+            label {
+                label: Last Updated
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                icon: fa-calendar-month
+            }
+            source {
+                databaseColumn: UPDATED_ON
+                dataType: date
+            }
+        )
+
+        facetGroup feature-flags (
+            label: Feature Flags
+            layout {
+                sequence: 90
+            }
+            appearance {
+                icon: fa-flag-checkered
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            comments {
+                comments:
+                    ```
+                    Intent: Groups related boolean filters under one conceptual facet category.
+                    Pattern role: Grouped facet controls.
+                    AI guidance: Group related filters only when they represent a coherent dimension. Avoid using a facet group to collect unrelated options.
+                    ```
+            }
+
+            checkbox P210_FLAG_1 (
+                type: checkbox
+                label {
+                    label: Feature Flag 1
+                }
+                settings {
+                    useDefaults: false
+                    checkedValue: Y
+                }
+                layout {
+                    sequence: 10
+                }
+                source {
+                    databaseColumn: FLAG_1
+                }
+            )
+
+            checkbox P210_FLAG_2 (
+                type: checkbox
+                label {
+                    label: Feature Flag 2
+                }
+                settings {
+                    useDefaults: false
+                    checkedValue: Y
+                }
+                layout {
+                    sequence: 20
+                }
+                source {
+                    databaseColumn: FLAG_2
+                }
+            )
+
+            checkbox P210_FLAG_3 (
+                type: checkbox
+                label {
+                    label: Feature Flag 3
+                }
+                settings {
+                    useDefaults: false
+                    checkedValue: Y
+                }
+                layout {
+                    sequence: 30
+                }
+                source {
+                    databaseColumn: FLAG_3
+                }
+            )
+
+            checkbox P210_FLAG_4 (
+                type: checkbox
+                label {
+                    label: Feature Flag 4
+                }
+                settings {
+                    useDefaults: false
+                    checkedValue: Y
+                }
+                layout {
+                    sequence: 40
+                }
+                source {
+                    databaseColumn: FLAG_4
+                }
+            )
+
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Sample data for browse-oriented UX patterns.
+                
+                The values in this query are intentionally generic and synthetic.
+                Replace the query with application-specific data while preserving
+                the same overall shape:
+                
+                - Primary label
+                - Secondary description
+                - Category facet
+                - Priority facet
+                - Date facet
+                - Boolean flag facets
+                - Icon
+                - Badge
+                
+                This allows the same content row, cards, and faceted search patterns
+                to be reused across different application domains.
+                */
+                select * from (
+                    select
+                        level as id,
+                        'Item ' || level as title,
+                        case mod(level - 1, 4)
+                            when 0 then 'Summary for item ' || level
+                            when 1 then 'Description for item ' || level
+                            when 2 then 'Supporting text for item ' || level
+                            else 'Additional note for item ' || level
+                        end as description,
+                        case mod(level - 1, 5)
+                            when 0 then 'Category A'
+                            when 1 then 'Category B'
+                            when 2 then 'Category C'
+                            when 3 then 'Category D'
+                            else 'Category E'
+                        end as category,
+                        trunc(sysdate) - mod(level, 30) as updated_on,
+                        case mod(level - 1, 6)
+                            when 0 then 'fa-columns'
+                            when 1 then 'fa-search'
+                            when 2 then 'fa-table'
+                            when 3 then 'fa-id-card-o'
+                            when 4 then 'fa-edit'
+                            else 'fa-clone'
+                        end as icon,
+                        case mod(level - 1, 3)
+                            when 0 then 'High'
+                            when 1 then 'Medium'
+                            else 'Low'
+                        end as priority,
+                        case mod(level - 1, 3)
+                            when 0 then 'danger'
+                            when 1 then 'warning'
+                            else 'success'
+                        end as badge_state,
+                        case when mod(level, 2) = 0 then 'Y' else 'N' end as flag_1,
+                        case when mod(level, 3) = 0 then 'Y' else 'N' end as flag_2,
+                        case when mod(level, 4) = 0 then 'Y' else 'N' end as flag_3,
+                        case when mod(level, 5) = 0 then 'Y' else 'N' end as flag_4,
+                        'Category ' || chr(64 + mod(level - 1, 5) + 1) as overline,
+                        'Updated ' || to_char(trunc(sysdate) - mod(level, 30), 'Mon DD') as meta
+                    from dual
+                    connect by level <= 24
+                    order by level
+                )
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+                t-CardsRegion--styleC
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents filtered records as visual cards for quick scanning and selection.
+                Pattern role: Faceted card results.
+                AI guidance: Keep card content consistent and scannable. Use the title, description, category, date, icon, and badge to support comparison without turning each card into a dense report. Preserve one clear path to item detail.
+                ```
+        }
+        title {
+            column: TITLE
+        }
+        subtitle {
+            column: CATEGORY
+        }
+        body {
+            column: DESCRIPTION
+        }
+        iconAndBadge {
+            iconSource: iconClass
+            iconCssClasses: fa &ICON.
+            badgeColumn: PRIORITY
+            badgeLabel: Priority
+            badgeCssClasses: u-&BADGE_STATE.
+        }
+
+        action action (
+            type: title
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        action action_1 (
+            label: Edit
+            layout {
+                position: secondary
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-edit
+                cssClasses: t-Button--noUI
+            }
+        )
+
+        action action_1_1 (
+            label: Primary Action
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                displayType: icon
+                icon: fa-heart-o u-danger-text
+                cssClasses: t-Button--noUI
+            }
+        )
+
+    )
+
+    button actions-menu (
+        buttonName: ACTIONS_MENU
+        label: Actions Menu
+        layout {
+            sequence: 40
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu menu-action-1 (
+            label: Menu Action 1
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-2 (
+            label: Menu Action 2
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-3 (
+            label: Menu Action 3
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    button primary-action (
+        buttonName: PRIMARY_ACTION
+        label: Primary Action
+        layout {
+            sequence: 30
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button secondary-action (
+        buttonName: SECONDARY_ACTION
+        label: Secondary Action
+        layout {
+            sequence: 20
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

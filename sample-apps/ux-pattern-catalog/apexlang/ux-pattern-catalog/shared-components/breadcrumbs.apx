@@ -1,0 +1,73 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry faceted-search (
+        name: Faceted Search
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-report (
+        name: Interactive Report
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry reports (
+        name: Reports
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry simple-dashboard (
+        name: Simple Dashboard
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,203 @@
+page 400 (
+    name: Data Entry
+    alias: DATA-ENTRY
+    title: Data Entry
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Organize and explain data-entry patterns in the catalog. This is a category context page, not a pattern implementation.
+            
+            ## When to Use
+            
+            Use when this page's primary user task matches the pattern represented by its title and structure.
+            
+            ## When to Avoid
+            
+            Avoid when another catalog pattern better supports the user's task, information density, or workflow complexity.
+            
+            ## AI Guidance
+            
+            Preserve the page's pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.
+                        
+            ```
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Data entry patterns help users create, update, and submit information with the right amount of structure for the task. Use these patterns to choose between focused entry, full-page forms, modal flows, and guided experiences based on complexity, context, and user confidence.
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region data-entry (
+        name: Data Entry
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: #DEFAULT#
+            icon: fa-forms
+        }
+    )
+
+    region patterns (
+        name: Patterns
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-edit' as icon_class,
+                    'Data Entry - Simple Form' as title,
+                    'A straightforward create or edit pattern for capturing a small to moderate amount of information on a dedicated page.' as description,
+                    'data-entry-simple-form' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-window-maximize' as icon_class,
+                    'Data Entry - Drawer Form' as title,
+                    'A focused contextual entry pattern for creating or updating a small amount of information without leaving the current page.' as description,
+                    'data-entry-drawer-form' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-align-left' as icon_class,
+                    'Data Entry - Sectioned Form' as title,
+                    'A longer form pattern that groups related fields into meaningful sections for clearer scanning, completion, and review.' as description,
+                    null as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-list-ol' as icon_class,
+                    'Data Entry - Wizard' as title,
+                    'A guided entry pattern for multi-step workflows where information should be collected, validated, or reviewed in sequence.' as description,
+                    null as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-check-square-o' as icon_class,
+                    'Data Entry - Bulk Edit' as title,
+                    'A batch update pattern for applying the same change to multiple selected records while keeping scope, impact, and confirmation clear.' as description,
+                    null as page_alias
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+            ]
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS. fa-2x u-opacity-50
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: PAGE_ALIAS
+            }
+        )
+
+    )
+
+)
+
