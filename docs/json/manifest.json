@@ -1220,6 +1220,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_UX_PATTERN_CATALOG",
+            "author": "Oracle",
+            "version": "26.1.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-ux-pattern-catalog.svg",
+            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/ux-pattern-catalog",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Oracle APEX UX Pattern Catalog",
+                    "description": "A portable reference application for Oracle APEX developers and AI coding agents. Explore working examples for dashboards, browse and search, item details, data entry, and master-detail layouts, with reusable design rationale and implementation context."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_VECTOR_SEARCH",
             "author": "Oracle",
             "version": "26.1.0",

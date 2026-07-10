@@ -1,0 +1,702 @@
+page 230 (
+    name: Browse – Interactive Report
+    alias: BROWSE-INTERACTIVE-REPORT
+    title: Browse – Interactive Report
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Demonstrate this page pattern as a reusable, production-quality Oracle APEX experience.
+            
+            ## When to Use
+            
+            Use when this page's primary user task matches the pattern represented by its title and structure.
+            
+            ## When to Avoid
+            
+            Avoid when another catalog pattern better supports the user's task, information density, or workflow complexity.
+            
+            ## AI Guidance
+            
+            Preserve the page's pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.
+                        
+            ```
+    }
+
+    region interactive-report (
+        name: Interactive Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Sample data for browse-oriented UX patterns.
+                
+                The values in this query are intentionally generic and synthetic.
+                Replace the query with application-specific data while preserving
+                the same overall shape:
+                
+                - Primary label
+                - Secondary description
+                - Category facet
+                - Priority facet
+                - Date facet
+                - Boolean flag facets
+                - Icon
+                - Badge
+                
+                This allows the same content row, cards, and faceted search patterns
+                to be reused across different application domains.
+                */
+                select * from (
+                    select
+                        level as id,
+                        'Item ' || level as title,
+                        case mod(level - 1, 4)
+                            when 0 then 'Summary for item ' || level
+                            when 1 then 'Description for item ' || level
+                            when 2 then 'Supporting text for item ' || level
+                            else 'Additional note for item ' || level
+                        end as description,
+                        case mod(level - 1, 5)
+                            when 0 then 'Category A'
+                            when 1 then 'Category B'
+                            when 2 then 'Category C'
+                            when 3 then 'Category D'
+                            else 'Category E'
+                        end as category,
+                        trunc(sysdate) - mod(level, 30) as updated_on,
+                        case mod(level - 1, 6)
+                            when 0 then 'fa-columns'
+                            when 1 then 'fa-search'
+                            when 2 then 'fa-table'
+                            when 3 then 'fa-id-card-o'
+                            when 4 then 'fa-edit'
+                            else 'fa-clone'
+                        end as icon,
+                        case mod(level - 1, 3)
+                            when 0 then 'High'
+                            when 1 then 'Medium'
+                            else 'Low'
+                        end as priority,
+                        case mod(level - 1, 3)
+                            when 0 then 'danger'
+                            when 1 then 'warning'
+                            else 'success'
+                        end as badge_state,
+                        case when mod(level, 2) = 0 then 'Y' else 'N' end as flag_1,
+                        case when mod(level, 3) = 0 then 'Y' else 'N' end as flag_2,
+                        case when mod(level, 4) = 0 then 'Y' else 'N' end as flag_3,
+                        case when mod(level, 5) = 0 then 'Y' else 'N' end as flag_4,
+                        'Category ' || chr(64 + mod(level - 1, 5) + 1) as overline,
+                        'Updated ' || to_char(trunc(sysdate) - mod(level, 30), 'Mon DD') as meta
+                    from dual
+                    connect by level <= 48
+                    order by level
+                )
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents a structured record set that users can filter, sort, group, and compare through Interactive Report controls.
+                Pattern role: Flexible tabular browse and analysis surface.
+                AI guidance: Keep columns purposeful and labels readable. Use interactive capabilities to support the task rather than expose every available field. Preserve a clear path to record detail and keep the default saved report focused on the most useful comparison fields.
+                ```
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        advanced {
+            savedReportMappingIdentifier: 5620159979477157
+        }
+
+        column BADGE_STATE (
+            type: hidden
+            heading {
+                heading: Badge State
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CATEGORY (
+            type: themeTemplateComponent/badge
+            heading {
+                heading: Category
+            }
+            settings {
+                label: Category
+                value: CATEGORY
+                style: subtle
+                shape: rounded
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column FLAG_1 (
+            type: plainText
+            heading {
+                heading: Flag 1
+                alignment: center
+            }
+            layout {
+                sequence: 90
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if FLAG_1/}
+                      <span aria-hidden="true" class="fa fa-check-circle u-success-text" title="Yes"></span>
+                    {else /}
+                      <span aria-hidden="true" class="fa fa-circle-o u-opacity-50" title="No"></span>
+                    {endif /}
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column FLAG_2 (
+            type: plainText
+            heading {
+                heading: Flag 2
+                alignment: center
+            }
+            layout {
+                sequence: 100
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if FLAG_2/}
+                      <span aria-hidden="true" class="fa fa-check-circle u-success-text" title="Yes"></span>
+                    {else /}
+                      <span aria-hidden="true" class="fa fa-circle-o u-opacity-50" title="No"></span>
+                    {endif /}
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column FLAG_3 (
+            type: plainText
+            heading {
+                heading: Flag 3
+                alignment: center
+            }
+            layout {
+                sequence: 110
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if FLAG_3/}
+                      <span aria-hidden="true" class="fa fa-check-circle u-success-text" title="Yes"></span>
+                    {else /}
+                      <span aria-hidden="true" class="fa fa-circle-o u-opacity-50" title="No"></span>
+                    {endif /}
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column FLAG_4 (
+            type: plainText
+            heading {
+                heading: Flag 4
+                alignment: center
+            }
+            layout {
+                sequence: 120
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {if FLAG_4/}
+                      <span aria-hidden="true" class="fa fa-check-circle u-success-text" title="Yes"></span>
+                    {else /}
+                      <span aria-hidden="true" class="fa fa-circle-o u-opacity-50" title="No"></span>
+                    {endif /}
+                    ```
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column ICON (
+            type: themeTemplateComponent/avatar
+            heading {
+                heading: Icon
+                alignment: center
+            }
+            settings {
+                type: icon
+                icon: &ICON. fa-lg
+                shape: noShape
+            }
+            layout {
+                sequence: 60
+                columnAlignment: center
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column ID (
+            type: themeTemplateComponent/actions
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 10
+                columnAlignment: center
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: A
+            }
+            enableUsersTo {
+                hide: false
+                sort: false
+                filter: false
+            }
+
+            action primary-row-action_1 (
+                position: actions
+                template: button
+                label: Primary Row Action
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 7
+                    }
+                }
+                appearance {
+                    displayType: icon
+                    icon: fa-edit
+                    cssClasses: t-Button--noUI
+                }
+            )
+
+            action row-actions-menu (
+                position: actions
+                template: menu
+                label: Row Actions Menu
+                layout {
+                    sequence: 20
+                }
+                appearance {
+                    displayType: icon
+                    icon: fa-ellipsis-v-o
+                    cssClasses: t-Button--noUI
+                }
+
+                menu row-action-1 (
+                    label: Row Action 1
+                    layout {
+                        sequence: 10
+                    }
+                    behavior {
+                        type: redirectUrl
+                        targetUrl: #
+                    }
+                )
+
+                menu row-action-2 (
+                    label: Row Action 2
+                    layout {
+                        sequence: 20
+                    }
+                    behavior {
+                        type: redirectUrl
+                        targetUrl: #
+                    }
+                )
+
+                menu row-action-3 (
+                    label: Row Action 3
+                    layout {
+                        sequence: 30
+                    }
+                    behavior {
+                        type: redirectUrl
+                        targetUrl: #
+                    }
+                )
+
+            )
+
+        )
+
+        column META (
+            type: hidden
+            heading {
+                heading: Meta
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column OVERLINE (
+            type: hidden
+            heading {
+                heading: Overline
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column PRIORITY (
+            type: themeTemplateComponent/badge
+            heading {
+                heading: Priority
+            }
+            settings {
+                label: Priority
+                value: PRIORITY
+                state: BADGE_STATE
+                style: subtle
+                shape: circular
+                size: medium
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column TITLE (
+            type: themeTemplateComponent/contentRow
+            heading {
+                heading: Title
+            }
+            settings {
+                title: &TITLE.
+                description: #DESCRIPTION#
+                displayAvatar: true
+                itemCssClasses: u-padding-none
+            }
+            plugin-avatar {
+                icon: #ICON# fa-lg
+                shape: noShape
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+
+            action action (
+                position: titleLink
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+        )
+
+        column UPDATED_ON (
+            type: plainText
+            heading {
+                heading: Updated On
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CATEGORY (
+                sequence: 2
+            )
+
+            displayColumn FLAG_1 (
+                sequence: 4
+            )
+
+            displayColumn FLAG_2 (
+                sequence: 5
+            )
+
+            displayColumn FLAG_3 (
+                sequence: 6
+            )
+
+            displayColumn FLAG_4 (
+                sequence: 7
+            )
+
+            displayColumn ID (
+                sequence: 9
+            )
+
+            displayColumn PRIORITY (
+                sequence: 3
+            )
+
+            displayColumn TITLE (
+                sequence: 1
+            )
+
+            displayColumn UPDATED_ON (
+                sequence: 8
+            )
+
+        )
+
+    )
+
+    region interactive-report-2 (
+        name: Interactive Report
+        type: staticContent
+        source {
+            htmlCode: Interactive Report
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides context and an optional action area for the interactive report.
+                Pattern role: Report context and optional action container.
+                AI guidance: Keep the description concise and production-like. Use this area for secondary or infrequent report actions when needed; do not imply that a drawer, editor, or other specific interaction is required by the pattern.
+                ```
+        }
+    )
+
+    button actions-menu (
+        buttonName: ACTIONS_MENU
+        label: Actions Menu
+        layout {
+            sequence: 40
+            region: @interactive-report-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu menu-action-1 (
+            label: Menu Action 1
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-2 (
+            label: Menu Action 2
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-3 (
+            label: Menu Action 3
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    button primary-action (
+        buttonName: PRIMARY_ACTION
+        label: Primary Action
+        layout {
+            sequence: 30
+            region: @interactive-report-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button secondary-action (
+        buttonName: SECONDARY_ACTION
+        label: Secondary Action
+        layout {
+            sequence: 20
+            region: @interactive-report-2
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

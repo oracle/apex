@@ -1,0 +1,621 @@
+page 420 (
+    name: Data Entry – Drawer Form
+    alias: DATA-ENTRY-DRAWER-FORM
+    title: Data Entry – Drawer Form
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    css {
+        inline:
+            ```css
+            .app-Form .t-ContentBlock--h3 {
+                --ut-content-block-header-font-size: 1rem;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Demonstrate contextual data entry in a drawer while preserving the user's originating page and surrounding context.
+            
+            ## When to Use
+            
+            Use for short create or edit tasks that users may perform without losing their place in a browse or work surface.
+            
+            ## When to Avoid
+            
+            Avoid for long forms, complex workflows, or tasks requiring sustained focus and substantial supporting context.
+            
+            ## AI Guidance
+            
+            Keep the drawer focused and compact. Make save and cancel behavior explicit, preserve the underlying context, and avoid placing a full-page workflow inside a drawer.
+                        
+            ```
+    }
+
+    region assignment (
+        name: Supporting Details
+        type: staticContent
+        source {
+            htmlCode: <p>Captures supporting dates, classification, and administrative information.</p>
+        }
+        layout {
+            sequence: 30
+            parentRegion: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            icon: fa-globe fa-2x u-opacity-50
+            renderComponents: belowContent
+        }
+        comments {
+            comments:
+                ```
+                Intent: Groups secondary record details that support the entry task.
+                Pattern role: Supporting drawer form section.
+                AI guidance: Include only fields relevant to the short edit task. Keep secondary sections compact so the drawer remains easy to scan.
+                ```
+        }
+    )
+
+    region basic-information (
+        name: Basic Information
+        type: staticContent
+        source {
+            htmlCode: <p>Core identifying information and contact details for this record.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            icon: fa-id-card-o fa-2x u-opacity-50
+            renderComponents: belowContent
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents the core identifying information needed for the drawer form.
+                Pattern role: Primary drawer form section.
+                AI guidance: Put the most important fields first and keep this section concise enough to work within the drawer's constrained context.
+                ```
+        }
+    )
+
+    region buttons-container (
+        name: Buttons Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Holds the drawer's completion and dismissal actions.
+                Pattern role: Drawer form action area.
+                AI guidance: Make Save and Cancel clear and consistently placed. Keep the primary completion action visually distinct and preserve an easy path to dismiss without submitting.
+                ```
+        }
+    )
+
+    region form (
+        name: Edit Form
+        type: form
+        source {
+            location: sampleData
+            sampleData: employees
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: app-Form
+        }
+        comments {
+            comments:
+                ```
+                Intent: Collects a short edit task while keeping the originating page context available behind the drawer.
+                Pattern role: Drawer data-entry form.
+                AI guidance: Keep the form compact, group related fields, provide meaningful validation, and avoid turning the drawer into a full-page workflow.
+                ```
+        }
+    )
+
+    region organization (
+        name: Ownership and Classification
+        type: staticContent
+        source {
+            htmlCode: <p>Defines the record's role, ownership, and classification relationships.</p>
+        }
+        layout {
+            sequence: 20
+            parentRegion: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            icon: fa-briefcase fa-2x u-opacity-50
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P420_DEPARTMENT (
+        type: selectList
+        label {
+            label: Department
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Department A;A,Department B;B
+        }
+        layout {
+            sequence: 60
+            region: @organization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-building
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: DEPARTMENT
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_EMAIL (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        settings {
+            subtype: email
+        }
+        layout {
+            sequence: 60
+            region: @basic-information
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-envelope-o
+            width: 30
+        }
+        validation {
+            maxLength: 267
+        }
+        source {
+            formRegion: @form
+            column: EMAIL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_EMPLOYMENT_TYPE (
+        type: selectList
+        label {
+            label: Employment Type
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Full Time;FTE,Part Time;PT,Contractor;C
+        }
+        layout {
+            sequence: 10
+            region: @assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-laptop
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: WORK_MODE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @assignment
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 25
+        }
+        source {
+            formRegion: @form
+            column: WORK_MODE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P420_JOB (
+        type: selectList
+        label {
+            label: Job Code
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Job A;A,Job B;B
+        }
+        layout {
+            sequence: 40
+            region: @organization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-briefcase
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: JOB
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_JOB_TITLE (
+        type: selectList
+        label {
+            label: Job Title
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Job A;A,Job B;B
+        }
+        layout {
+            sequence: 50
+            region: @organization
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-briefcase
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: JOB
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_LOCATION (
+        type: textField
+        label {
+            label: Location
+            alignment: left
+        }
+        settings {
+            subtype: phone
+        }
+        layout {
+            sequence: 80
+            region: @basic-information
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-location-circle-o
+            width: 30
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            formRegion: @form
+            column: TIME_ZONE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_MANAGER (
+        type: selectList
+        label {
+            label: Manager
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Manager A;A,Manager B;B
+        }
+        layout {
+            sequence: 70
+            region: @organization
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-user-secret
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: MANAGERNO
+            dataType: number
+        }
+    )
+
+    pageItem P420_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @basic-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-user
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @form
+            column: NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_PHONE (
+        type: textField
+        label {
+            label: Phone
+            alignment: left
+        }
+        settings {
+            subtype: phone
+        }
+        layout {
+            sequence: 70
+            region: @basic-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-globe
+            width: 30
+        }
+        validation {
+            maxLength: 10
+        }
+        source {
+            formRegion: @form
+            column: TIME_ZONE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P420_SALARY (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @assignment
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--postTextBlock
+            ]
+            icon: fa-dollar
+            width: 30
+        }
+        advanced {
+            postText: USD
+        }
+        source {
+            formRegion: @form
+            column: SALARY
+            dataType: number
+        }
+    )
+
+    pageItem P420_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @assignment
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 25
+        }
+        source {
+            formRegion: @form
+            column: WORK_MODE
+            dataType: varchar2
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: triggerAction
+        }
+
+        triggerAction native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons-container
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: triggerAction
+        }
+
+        triggerAction close-dialog (
+            name: Close Dialog
+            action: closeDialog
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process initialize-form-drawer-form (
+        name: Initialize form Drawer Form
+        type: formInitialization
+        formRegion: @form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3423105975535939
+        }
+    )
+
+)
+

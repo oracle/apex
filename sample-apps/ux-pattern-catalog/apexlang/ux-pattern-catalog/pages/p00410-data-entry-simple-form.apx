@@ -1,0 +1,503 @@
+page 410 (
+    name: Data Entry – Simple Form
+    alias: DATA-ENTRY-SIMPLE-FORM
+    title: Data Entry – Simple Form
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    css {
+        inline:
+            ```css
+            .app-Form .t-ContentBlock--h3 {
+                --ut-content-block-header-font-size: 1rem;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Demonstrate a focused form for entering a small, straightforward set of related fields.
+            
+            ## When to Use
+            
+            Use when users can complete the task in one pass and do not need a long workflow or extensive surrounding context.
+            
+            ## When to Avoid
+            
+            Avoid when the form has many sections, complex dependencies, or requires a guided sequence.
+            
+            ## AI Guidance
+            
+            Order fields by the user's task, group related inputs, keep inline help brief, and provide one clear primary submit action. Preserve accessible validation and generic sample data.
+                        
+            ```
+    }
+
+    region basic-fields-container (
+        name: Basic Fields
+        type: staticContent
+        source {
+            htmlCode: <p>Start with the fields users complete first.</p>
+        }
+        layout {
+            sequence: 10
+            parentRegion: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            renderComponents: belowContent
+        }
+        comments {
+            comments:
+                ```
+                Intent: Introduces the fields users complete first in the simple entry task.
+                Pattern role: Primary form section.
+                AI guidance: Keep this section focused on the minimum information needed to begin. Order fields by task sequence and avoid adding unrelated inputs.
+                ```
+        }
+    )
+
+    region buttons-container_1 (
+        name: Buttons Container
+        type: staticContent
+        layout {
+            sequence: 60
+            parentRegion: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region data-entry-simple-form (
+        name: Data Entry – Simple Form
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides the context and title for the focused form experience.
+                Pattern role: Form context and heading.
+                AI guidance: Keep the heading concise and production-like. Do not use this region for visible pattern documentation.
+                ```
+        }
+    )
+
+    region form (
+        name: Edit Form
+        type: form
+        source {
+            location: sampleData
+            sampleData: employees
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: app-Form
+        }
+        comments {
+            comments:
+                ```
+                Intent: Collects a small, related set of values in one focused interaction.
+                Pattern role: Simple data-entry form.
+                AI guidance: Group related fields, keep the form compact, provide meaningful validation, and maintain one clear primary submit action.
+                ```
+        }
+    )
+
+    region organization (
+        name: Field Guidance
+        type: staticContent
+        source {
+            htmlCode: <p>Keep inline help brief and reserve help dialogs for additional context.</p>
+        }
+        layout {
+            sequence: 40
+            parentRegion: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+            icon: fa-briefcase fa-2x u-opacity-50
+            renderComponents: belowContent
+        }
+        comments {
+            comments:
+                ```
+                Intent: Demonstrates how brief contextual guidance can support form completion.
+                Pattern role: Inline-help support section.
+                AI guidance: Keep inline help short and task-specific. Reserve longer explanations or reference material for a help dialog or external documentation.
+                ```
+        }
+    )
+
+    pageItem P410_EMAIL (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        settings {
+            subtype: email
+        }
+        layout {
+            sequence: 30
+            region: @basic-fields-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-envelope-o
+            width: 30
+        }
+        validation {
+            maxLength: 267
+        }
+        source {
+            formRegion: @form
+            column: EMAIL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P410_FIELD_HELP (
+        type: selectList
+        label {
+            label: Help Dialog
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Manager A;A,Manager B;B
+        }
+        layout {
+            sequence: 10
+            region: @organization
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: MANAGERNO
+            dataType: number
+        }
+        help {
+            helpText: Use contextual help for information that is useful but not required during every interaction. This may include field definitions, formatting rules, business guidance, examples, or links to related documentation. Keep dialog help concise and focused on helping users complete the current task.
+        }
+    )
+
+    pageItem P410_ID (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P410_INLINE_HELP (
+        type: selectList
+        label {
+            label: Inline Help
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Job A;A,Job B;B
+        }
+        layout {
+            sequence: 20
+            region: @organization
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: JOB
+            dataType: varchar2
+        }
+        help {
+            inlineHelpText: Brief guidance that remains visible while users complete this field.
+        }
+    )
+
+    pageItem P410_JOB (
+        type: selectList
+        label {
+            label: Job Code
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Job A;A,Job B;B
+        }
+        layout {
+            sequence: 40
+            region: @basic-fields-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @form
+            column: JOB
+            dataType: varchar2
+        }
+        help {
+            inlineHelpText: Choose the standardized job code used by your organization.
+        }
+    )
+
+    pageItem P410_NAME (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @basic-fields-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            icon: fa-user
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @form
+            column: NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P410_NOTES (
+        type: textarea
+        label {
+            label: Notes
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @basic-fields-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 30
+            height: 5
+        }
+    )
+
+    pageItem P410_SALARY (
+        type: numberField
+        label {
+            label: Salary
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @basic-fields-container
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--postTextBlock
+            ]
+            width: 30
+        }
+        advanced {
+            postText: USD
+        }
+        source {
+            formRegion: @form
+            column: SALARY
+            dataType: number
+        }
+    )
+
+    pageItem P410_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @basic-fields-container
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 25
+        }
+        source {
+            formRegion: @form
+            column: WORK_MODE
+            dataType: varchar2
+        }
+    )
+
+    button apply (
+        buttonName: PRIMARY_ACTION
+        label: Primary Action
+        layout {
+            sequence: 20
+            region: @buttons-container_1
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: BACK
+        label: Back
+        layout {
+            sequence: 10
+            region: @data-entry-simple-form
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-left
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel_1 (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons-container_1
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--large
+                t-Button--noUI
+                t-Button--gapRight
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process initialize-form-drawer-form (
+        name: Initialize form Drawer Form
+        type: formInitialization
+        formRegion: @form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3717724488007248
+        }
+    )
+
+)
+
