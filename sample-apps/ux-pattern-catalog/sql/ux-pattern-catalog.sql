@@ -18,7 +18,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.1'
+,p_release=>'26.1.2'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7990
 ,p_default_id_offset=>0
@@ -32,15 +32,15 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 -- Application Export:
 --   Application:     7990
 --   Name:            Oracle APEX UX Pattern Catalog
---   Date and Time:   17:53 Friday July 10, 2026
---   Exported By:     SHAKEEB
+--   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     18
---       Items:                   39
+--     Pages:                     19
+--       Items:                   44
 --       Processes:                2
---       Regions:                 92
---       Buttons:                 46
+--       Regions:                105
+--       Buttons:                 50
+--       Dynamic Actions:          4
 --     Shared Components:
 --       Logic:
 --         Build Options:          2
@@ -59,9 +59,9 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 --       Globalization:
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Included
---   Version:         26.1.1
---   Instance ID:     746097808176641
+--     Supporting Objects:  Excluded
+--   Version:         26.1.2
+--   Instance ID:     746065270072029
 --
 
 prompt --application/delete_application
@@ -94,7 +94,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle APEX UX Pattern Catalog'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.1.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -104,11 +104,9 @@ wwv_imp_workspace.create_flow(
 ,p_csv_encoding=>'Y'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
-,p_last_updated_on=>wwv_flow_imp.dz('20260710175257Z')
-,p_last_updated_by=>'SHAKEEB'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
-,p_files_version=>2461232175257
-,p_version_scn=>'199949153'
+,p_files_version=>2461239195654
+,p_version_scn=>'209119838'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -325,6 +323,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(21567805958407901)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
+,p_version_scn=>'SH256:CL0su3EMkb4dxOFFpLI1DQNTll6ESj-kva_MTPcm3Z8'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(4122700310762295)
@@ -447,12 +446,22 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(4765901069045231)
+,p_list_item_display_sequence=>170
+,p_list_item_link_text=>'Item Selection and Details'
+,p_static_id=>'item-selection-and-details'
+,p_list_item_link_target=>'f?p=&APP_ID.:330:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_imp.id(7062482903936409)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(7063337366936410)
 ,p_list_item_display_sequence=>110
 ,p_list_item_link_text=>'Master Detail'
 ,p_static_id=>'master-detail'
-,p_list_item_link_target=>'f?p=&APP_ID.:500:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:500:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-files-o'
+,p_list_item_disp_cond_type=>'NEVER'
 ,p_parent_list_item_id=>wwv_flow_imp.id(4121346834702588)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -5667,6 +5676,82 @@ wwv_flow_imp_shared.create_app_static_file(
 );
 end;
 /
+prompt --application/shared_components/files/js_split_view_selection_js
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '2F2A0A202A2073706C69742D766965772D73656C656374696F6E2E6A730A202A0A202A205265757361626C652073656C656374696F6E206265686176696F7220666F72204F7261636C6520415045582073706C69742D7669657720706167657320776974';
+wwv_flow_imp.g_varchar2_table(2) := '683A0A202A202D20412073696E676C652D73656C656374696F6E20436F6E74656E7420526F7720726567696F6E0A202A202D20412055492073656C656374696F6E206974656D206D61696E7461696E65642062792074686520726567696F6E0A202A202D';
+wwv_flow_imp.g_varchar2_table(3) := '20412063616E6F6E6963616C2073656C65637465642D6974656D2070616765206974656D0A202A202D2044657461696C20726567696F6E73207468617420646570656E64206F6E207468652073656C6563746564206974656D0A202A202D20416E206F70';
+wwv_flow_imp.g_varchar2_table(4) := '74696F6E616C20706167652D6C6576656C20656D7074792073746174650A202A0A202A20506167652D73706563696669632044796E616D696320416374696F6E732072656D61696E20726573706F6E7369626C6520666F723A0A202A202D20436F707969';
+wwv_flow_imp.g_varchar2_table(5) := '6E67207468652055492073656C656374696F6E206974656D20696E746F207468652063616E6F6E6963616C206974656D0A202A202D2052656672657368696E6720646570656E64656E742064657461696C20726567696F6E730A202A202D2043616C6C69';
+wwv_flow_imp.g_varchar2_table(6) := '6E67207265636F6E63696C65282920616674657220746865206C697374206D6F64656C206368616E6765730A202A2F0A0A2866756E6374696F6E2028617065782C202429207B0A202020202275736520737472696374223B0A0A2020202076617220636F';
+wwv_flow_imp.g_varchar2_table(7) := '6E6669673B0A0A2020202066756E6374696F6E20676574526F77732829207B0A202020202020202072657475726E202428222322202B20636F6E6669672E726567696F6E4964202B20222022202B20636F6E6669672E726F7753656C6563746F72293B0A';
+wwv_flow_imp.g_varchar2_table(8) := '202020207D0A0A2020202066756E6374696F6E20736574436F6E74656E7453746174652868617353656C656374696F6E29207B0A20202020202020202428636F6E6669672E636F6E74656E7453656C6563746F72290A2020202020202020202020202E74';
+wwv_flow_imp.g_varchar2_table(9) := '6F67676C65436C6173732822752D68696464656E222C202168617353656C656374696F6E293B0A0A20202020202020202428636F6E6669672E656D70747953656C6563746F72290A2020202020202020202020202E746F67676C65436C6173732822752D';
+wwv_flow_imp.g_varchar2_table(10) := '68696464656E222C2068617353656C656374696F6E293B0A202020207D0A0A2020202066756E6374696F6E2073656C656374526F7728726F77242C206E6F7469667929207B0A20202020202020206966202821726F7724207C7C2021726F77242E6C656E';
+wwv_flow_imp.g_varchar2_table(11) := '67746829207B0A20202020202020202020202072657475726E3B0A20202020202020207D0A0A20202020202020202F2A0A2020202020202020202A20446F206E6F74206D6F7665206B6579626F61726420666F6375732E0A2020202020202020202A2053';
+wwv_flow_imp.g_varchar2_table(12) := '75707072657373206E6F74696669636174696F6E206F6E6C79207768656E20726573746F72696E6720746865206578697374696E672073656C656374696F6E2E0A2020202020202020202A2F0A2020202020202020617065782E726567696F6E28636F6E';
+wwv_flow_imp.g_varchar2_table(13) := '6669672E726567696F6E4964292E73657453656C656374696F6E280A202020202020202020202020726F77242E666972737428292C0A20202020202020202020202066616C73652C0A202020202020202020202020216E6F746966790A20202020202020';
+wwv_flow_imp.g_varchar2_table(14) := '20293B0A0A2020202020202020726F77245B305D2E7363726F6C6C496E746F56696577287B0A202020202020202020202020626C6F636B3A20226E656172657374220A20202020202020207D293B0A202020207D0A0A2020202066756E6374696F6E2066';
+wwv_flow_imp.g_varchar2_table(15) := '696E644D61746368696E67526F7728726F7773242C20636F6E74657874496429207B0A202020202020202072657475726E20726F7773242E66696C7465722866756E6374696F6E202829207B0A20202020202020202020202072657475726E2053747269';
+wwv_flow_imp.g_varchar2_table(16) := '6E6728242874686973292E617474722822646174612D6964222929203D3D3D20537472696E6728636F6E746578744964293B0A20202020202020207D292E666972737428293B0A202020207D0A0A202020202F2A0A20202020202A205265636F6E63696C';
+wwv_flow_imp.g_varchar2_table(17) := '65207468652063616E6F6E6963616C2073656C6563746564206974656D2077697468207468652063757272656E746C792072656E646572656420726F77732E0A20202020202A0A20202020202A202D205072657365727665207468652063757272656E74';
+wwv_flow_imp.g_varchar2_table(18) := '206974656D207768656E2069742072656D61696E7320696E2074686520726573756C74207365742E0A20202020202A202D204F74686572776973652073656C6563742074686520666972737420617661696C61626C6520726F772E0A20202020202A202D';
+wwv_flow_imp.g_varchar2_table(19) := '20436C6561722073656C656374696F6E20616E642073686F772074686520656D707479207374617465207768656E206E6F20726F77732072656D61696E2E0A20202020202A2F0A2020202066756E6374696F6E207265636F6E63696C652829207B0A2020';
+wwv_flow_imp.g_varchar2_table(20) := '20202020202076617220726F777324203D20676574526F777328293B0A20202020202020207661722075694974656D203D20617065782E6974656D28636F6E6669672E75694974656D293B0A202020202020202076617220636F6E746578744974656D20';
+wwv_flow_imp.g_varchar2_table(21) := '3D20617065782E6974656D28636F6E6669672E636F6E746578744974656D293B0A202020202020202076617220636F6E746578744964203D20636F6E746578744974656D2E67657456616C756528293B0A0A20202020202020206966202821726F777324';
+wwv_flow_imp.g_varchar2_table(22) := '2E6C656E67746829207B0A20202020202020202020202075694974656D2E73657456616C75652822222C206E756C6C2C2074727565293B0A202020202020202020202020636F6E746578744974656D2E73657456616C75652822222C206E756C6C2C2074';
+wwv_flow_imp.g_varchar2_table(23) := '727565293B0A0A202020202020202020202020736574436F6E74656E7453746174652866616C7365293B0A20202020202020202020202072657475726E3B0A20202020202020207D0A0A202020202020202069662028636F6E74657874496429207B0A20';
+wwv_flow_imp.g_varchar2_table(24) := '2020202020202020202020766172206D61746368696E67526F7724203D2066696E644D61746368696E67526F7728726F7773242C20636F6E746578744964293B0A0A202020202020202020202020696620286D61746368696E67526F77242E6C656E6774';
+wwv_flow_imp.g_varchar2_table(25) := '6829207B0A202020202020202020202020202020202F2A0A20202020202020202020202020202020202A20526573746F72652073696C656E746C792062656361757365207468652063616E6F6E6963616C206974656D20686173206E6F74206368616E67';
+wwv_flow_imp.g_varchar2_table(26) := '65640A20202020202020202020202020202020202A20616E6420746865206578697374696E672064657461696C20636F6E74656E74206973207374696C6C2076616C69642E0A20202020202020202020202020202020202A2F0A20202020202020202020';
+wwv_flow_imp.g_varchar2_table(27) := '20202020202073656C656374526F77286D61746368696E67526F77242C2066616C7365293B0A2020202020202020202020202020202075694974656D2E73657456616C756528636F6E7465787449642C206E756C6C2C2074727565293B0A0A2020202020';
+wwv_flow_imp.g_varchar2_table(28) := '2020202020202020202020736574436F6E74656E7453746174652874727565293B0A2020202020202020202020202020202072657475726E3B0A2020202020202020202020207D0A20202020202020207D0A0A20202020202020202F2A0A202020202020';
+wwv_flow_imp.g_varchar2_table(29) := '2020202A204E6F746966792073656C656374696F6E2068616E646C65727320736F20706167652D73706563696669632044796E616D696320416374696F6E732063616E0A2020202020202020202A20757064617465207468652063616E6F6E6963616C20';
+wwv_flow_imp.g_varchar2_table(30) := '6974656D20616E64207265667265736820646570656E64656E742064657461696C20726567696F6E732E0A2020202020202020202A2F0A202020202020202073656C656374526F7728726F7773242E666972737428292C2074727565293B0A2020202020';
+wwv_flow_imp.g_varchar2_table(31) := '202020736574436F6E74656E7453746174652874727565293B0A202020207D0A0A2020202066756E6374696F6E20696E697469616C697A65286F7074696F6E7329207B0A2020202020202020636F6E666967203D20242E657874656E64280A2020202020';
+wwv_flow_imp.g_varchar2_table(32) := '202020202020207B0A20202020202020202020202020202020726F7753656C6563746F723A20222E742D436F6E74656E74526F772D6974656D222C0A20202020202020202020202020202020636F6E74656E7453656C6563746F723A20222E6A732D7365';
+wwv_flow_imp.g_varchar2_table(33) := '6C65637465642D6974656D2D636F6E74656E74222C0A20202020202020202020202020202020656D70747953656C6563746F723A20222E6A732D73656C65637465642D6974656D2D656D707479220A2020202020202020202020207D2C0A202020202020';
+wwv_flow_imp.g_varchar2_table(34) := '2020202020206F7074696F6E730A2020202020202020293B0A0A20202020202020206966202821636F6E6669672E726567696F6E496429207B0A2020202020202020202020207468726F77206E6577204572726F72280A20202020202020202020202020';
+wwv_flow_imp.g_varchar2_table(35) := '2020202261707053706C69745669657753656C656374696F6E20726571756972657320726567696F6E49642E220A202020202020202020202020293B0A20202020202020207D0A0A20202020202020206966202821636F6E6669672E75694974656D2920';
+wwv_flow_imp.g_varchar2_table(36) := '7B0A2020202020202020202020207468726F77206E6577204572726F72280A202020202020202020202020202020202261707053706C69745669657753656C656374696F6E2072657175697265732075694974656D2E220A202020202020202020202020';
+wwv_flow_imp.g_varchar2_table(37) := '293B0A20202020202020207D0A0A20202020202020206966202821636F6E6669672E636F6E746578744974656D29207B0A2020202020202020202020207468726F77206E6577204572726F72280A20202020202020202020202020202020226170705370';
+wwv_flow_imp.g_varchar2_table(38) := '6C69745669657753656C656374696F6E20726571756972657320636F6E746578744974656D2E220A202020202020202020202020293B0A20202020202020207D0A0A20202020202020207265636F6E63696C6528293B0A202020207D0A0A202020207769';
+wwv_flow_imp.g_varchar2_table(39) := '6E646F772E61707053706C69745669657753656C656374696F6E203D207B0A2020202020202020696E697469616C697A653A20696E697469616C697A652C0A20202020202020207265636F6E63696C653A207265636F6E63696C652C0A20202020202020';
+wwv_flow_imp.g_varchar2_table(40) := '20736574436F6E74656E7453746174653A20736574436F6E74656E7453746174650A202020207D3B0A0A7D2928617065782C20617065782E6A5175657279293B';
+wwv_flow_imp_shared.create_app_static_file(
+ p_id=>wwv_flow_imp.id(5124569142523029)
+,p_file_name=>'js/split-view-selection.js'
+,p_mime_type=>'text/javascript'
+,p_file_charset=>'utf-8'
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/shared_components/files/js_split_view_selection_min_js
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '2166756E6374696F6E28652C74297B2275736520737472696374223B76617220693B66756E6374696F6E206E2865297B7428692E636F6E74656E7453656C6563746F72292E746F67676C65436C6173732822752D68696464656E222C2165292C7428692E';
+wwv_flow_imp.g_varchar2_table(2) := '656D70747953656C6563746F72292E746F67676C65436C6173732822752D68696464656E222C65297D66756E6374696F6E207228742C6E297B742626742E6C656E677468262628652E726567696F6E28692E726567696F6E4964292E73657453656C6563';
+wwv_flow_imp.g_varchar2_table(3) := '74696F6E28742E666972737428292C21312C216E292C745B305D2E7363726F6C6C496E746F56696577287B626C6F636B3A226E656172657374227D29297D66756E6374696F6E206F28297B766172206F3D74282223222B692E726567696F6E49642B2220';
+wwv_flow_imp.g_varchar2_table(4) := '222B692E726F7753656C6563746F72292C6C3D652E6974656D28692E75694974656D292C633D652E6974656D28692E636F6E746578744974656D292C753D632E67657456616C756528293B696628216F2E6C656E6774682972657475726E206C2E736574';
+wwv_flow_imp.g_varchar2_table(5) := '56616C75652822222C6E756C6C2C2130292C632E73657456616C75652822222C6E756C6C2C2130292C766F6964206E282131293B69662875297B76617220733D66756E6374696F6E28652C69297B72657475726E20652E66696C7465722866756E637469';
+wwv_flow_imp.g_varchar2_table(6) := '6F6E28297B72657475726E20537472696E6728742874686973292E617474722822646174612D69642229293D3D3D537472696E672869297D292E666972737428297D286F2C75293B696628732E6C656E6774682972657475726E207228732C2131292C6C';
+wwv_flow_imp.g_varchar2_table(7) := '2E73657456616C756528752C6E756C6C2C2130292C766F6964206E282130297D72286F2E666972737428292C2130292C6E282130297D77696E646F772E61707053706C69745669657753656C656374696F6E3D7B696E697469616C697A653A66756E6374';
+wwv_flow_imp.g_varchar2_table(8) := '696F6E2865297B6966282128693D742E657874656E64287B726F7753656C6563746F723A222E742D436F6E74656E74526F772D6974656D222C636F6E74656E7453656C6563746F723A222E6A732D73656C65637465642D6974656D2D636F6E74656E7422';
+wwv_flow_imp.g_varchar2_table(9) := '2C656D70747953656C6563746F723A222E6A732D73656C65637465642D6974656D2D656D707479227D2C6529292E726567696F6E4964297468726F77206E6577204572726F72282261707053706C69745669657753656C656374696F6E20726571756972';
+wwv_flow_imp.g_varchar2_table(10) := '657320726567696F6E49642E22293B69662821692E75694974656D297468726F77206E6577204572726F72282261707053706C69745669657753656C656374696F6E2072657175697265732075694974656D2E22293B69662821692E636F6E7465787449';
+wwv_flow_imp.g_varchar2_table(11) := '74656D297468726F77206E6577204572726F72282261707053706C69745669657753656C656374696F6E20726571756972657320636F6E746578744974656D2E22293B6F28297D2C7265636F6E63696C653A6F2C736574436F6E74656E7453746174653A';
+wwv_flow_imp.g_varchar2_table(12) := '6E7D7D28617065782C617065782E6A5175657279293B';
+wwv_flow_imp_shared.create_app_static_file(
+ p_id=>wwv_flow_imp.id(5124723863523031)
+,p_file_name=>'js/split-view-selection.min.js'
+,p_mime_type=>'text/javascript'
+,p_file_charset=>'utf-8'
+,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
 prompt --application/shared_components/files/standards_shared_guidelines_md
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
@@ -5709,10 +5794,6 @@ wwv_flow_imp_shared.create_app_static_file(
 ,p_mime_type=>'text/markdown'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260710175257Z')
-,p_updated_on=>wwv_flow_imp.dz('20260710175257Z')
-,p_created_by=>'SHAKEEB'
-,p_updated_by=>'SHAKEEB'
 );
 end;
 /
@@ -5874,13 +5955,14 @@ wwv_flow_imp_shared.create_theme(
 ,p_default_required_label=>1610598484065263269
 ,p_default_navbar_list_template=>2849019392706229583
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
-,p_files_version=>2461232174938
+,p_files_version=>2461236193253
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
 ,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
+,p_version_scn=>'SH256:7usefdiEH6kkcjOtX-765oI_i_mzNI6oHXgBNKzM7eA'
 ,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
 );
 end;
@@ -5897,13 +5979,14 @@ wwv_flow_imp_shared.create_theme_style(
 ,p_is_accessible=>true
 ,p_theme_roller_input_file_urls=>'#THEME_FILES#less/theme/Iris.less'
 ,p_theme_roller_config=>'{"classes":[],"vars":{"@g_FontFamily":"system","@g_Nav_Style":"light","@g_Header_Style":"pillar","@g_Accent-Pillar":"custom","@g_CustomAccent-BG":"#4251bf","@g_Color-Palette-1":"#5463d6","@g_Color-Palette-1-FG":"#ffffff","@g_Link-Base":"#2f3a8d","@Ac'
-||'tions-Exp":"320px"},"customCSS":":root {\n--u-color-1: #4251BF;\n--u-color-1-contrast: #FFF;\n\n--u-color-2: #3F8EFC;\n--u-color-2-contrast: #FFF;\n\n--u-color-3: #1FB6A6;\n--u-color-3-contrast: #FFF;\n\n--u-color-4: #4CBF7A;\n--u-color-4-contrast: #'
-||'FFF;\n\n--u-color-5: #E5B73B;\n--u-color-5-contrast: #FFF;\n\n--u-color-6: #F28C52;\n--u-color-6-contrast: #FFF;\n\n--u-color-7: #E76F6A;\n--u-color-7-contrast: #FFF;\n\n--u-color-8: #A86BD8;\n--u-color-8-contrast: #FFF;\n\n--u-color-9: #D65C97;\n--u'
-||'-color-9-contrast: #FFF;\n\n--u-color-10: #6B7A90;\n--u-color-10-contrast: #FFF;\n\n--u-color-11: #5C6EE5;\n--u-color-11-contrast: #FFF;\n\n--u-color-12: #28C7D9;\n--u-color-12-contrast: #FFF;\n\n--u-color-13: #72C95F;\n--u-color-13-contrast: #FFF;\n'
-||'\n--u-color-14: #C5A23A;\n--u-color-14-contrast: #FFF;\n\n--u-color-15: #8E6AC8;\n--u-color-15-contrast: #FFF;\n\n--ut-body-title-background-color: #FFF;\n--ut-body-sidebar-background-color: #FBFBFE;\n--ut-body-background-color: #FBFBFE;\n\n--ut-pale'
-||'tte-danger: #B73122;\n--ut-palette-danger-contrast: #FFFFFF;\n--ut-palette-danger-shade: #FDECEA;\n--ut-palette-danger-text: #9F271B;\n\n--ut-palette-warning: #9A5B00;\n--ut-palette-warning-contrast: #FFFFFF;\n--ut-palette-warning-shade: #FFF4DB;\n--'
-||'ut-palette-warning-text: #7A4700;\n\n--ut-palette-success: #1D7A52;\n--ut-palette-success-contrast: #FFFFFF;\n--ut-palette-success-shade: #E7F6EE;\n--ut-palette-success-text: #166341;\n\n--ut-palette-info: #2B6CB0;\n--ut-palette-info-contrast: #FFFFF'
-||'F;\n--ut-palette-info-shade: #EAF2FF;\n--ut-palette-info-text: #20548A;\n\n}   ","useCustomLess":"N"}'
+||'tions-Exp":"320px","@Side-Exp":"320px"},"customCSS":":root {\n--u-color-1: #4251BF;\n--u-color-1-contrast: #FFF;\n\n--u-color-2: #3F8EFC;\n--u-color-2-contrast: #FFF;\n\n--u-color-3: #1FB6A6;\n--u-color-3-contrast: #FFF;\n\n--u-color-4: #4CBF7A;\n--u'
+||'-color-4-contrast: #FFF;\n\n--u-color-5: #E5B73B;\n--u-color-5-contrast: #FFF;\n\n--u-color-6: #F28C52;\n--u-color-6-contrast: #FFF;\n\n--u-color-7: #E76F6A;\n--u-color-7-contrast: #FFF;\n\n--u-color-8: #A86BD8;\n--u-color-8-contrast: #FFF;\n\n--u-co'
+||'lor-9: #D65C97;\n--u-color-9-contrast: #FFF;\n\n--u-color-10: #6B7A90;\n--u-color-10-contrast: #FFF;\n\n--u-color-11: #5C6EE5;\n--u-color-11-contrast: #FFF;\n\n--u-color-12: #28C7D9;\n--u-color-12-contrast: #FFF;\n\n--u-color-13: #72C95F;\n--u-color-'
+||'13-contrast: #FFF;\n\n--u-color-14: #C5A23A;\n--u-color-14-contrast: #FFF;\n\n--u-color-15: #8E6AC8;\n--u-color-15-contrast: #FFF;\n\n--ut-body-title-background-color: #FFF;\n--ut-body-sidebar-background-color: #FBFBFE;\n--ut-body-background-color: #'
+||'FBFBFE;\n\n--ut-palette-danger: #B73122;\n--ut-palette-danger-contrast: #FFFFFF;\n--ut-palette-danger-shade: #FDECEA;\n--ut-palette-danger-text: #9F271B;\n\n--ut-palette-warning: #9A5B00;\n--ut-palette-warning-contrast: #FFFFFF;\n--ut-palette-warning'
+||'-shade: #FFF4DB;\n--ut-palette-warning-text: #7A4700;\n\n--ut-palette-success: #1D7A52;\n--ut-palette-success-contrast: #FFFFFF;\n--ut-palette-success-shade: #E7F6EE;\n--ut-palette-success-text: #166341;\n\n--ut-palette-info: #2B6CB0;\n--ut-palette-i'
+||'nfo-contrast: #FFFFFF;\n--ut-palette-info-shade: #EAF2FF;\n--ut-palette-info-text: #20548A;\n\n}   \n\n.t-ContentRow-item.is-selected {\n    --ut-cr-item-background-color: var(--a-palette-primary);\n    --ut-cr-item-text-color: var(--a-palette-primar'
+||'y-contrast);\n    --ut-component-text-title-color: var(--ut-cr-item-text-color);\n    --ut-component-text-muted-color: var(--ut-cr-item-text-color);\n}","useCustomLess":"N"}'
 ,p_theme_roller_output_file_url=>'#THEME_DB_FILES#6021538955896218.css'
 ,p_theme_roller_read_only=>false
 );
@@ -6853,8 +6936,6 @@ wwv_flow_imp_shared.create_theme_file(
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260710174938Z')
-,p_updated_on=>wwv_flow_imp.dz('20260710174938Z')
 );
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
 wwv_flow_imp.g_varchar2_table(1) := '2F2A210D0A20436F707972696768742028632920323032352C204F7261636C6520616E642F6F722069747320616666696C69617465732E0D0A202A2F0D0A3A726F6F74207B0D0A20202D2D612D626173652D666F6E742D66616D696C793A20274F726163';
@@ -7281,7 +7362,7 @@ wwv_flow_imp.g_varchar2_table(421) := '6F6C6F723A207267626128302C20302C20302C203
 wwv_flow_imp.g_varchar2_table(422) := '3A20236536653665363B0D0A20202D2D612D67762D6865616465722D63656C6C2D626F726465722D636F6C6F723A20236536653665363B0D0A20202D2D612D7265706F72742D636F6E74726F6C732D63656C6C2D6C6162656C2D746578742D636F6C6F72';
 wwv_flow_imp.g_varchar2_table(423) := '3A20233236323632363B0D0A20202D2D612D7265706F72742D636F6E74726F6C732D63656C6C2D6C6162656C2D6261636B67726F756E642D636F6C6F723A20236666663B0D0A7D0D0A3A726F6F74207B0D0A20202D2D75742D6865616465722D68656967';
 wwv_flow_imp.g_varchar2_table(424) := '68743A20332E3572656D3B0D0A7D0D0A3A726F6F74207B0D0A20202D2D75742D6E61762D77696474683A20313572656D3B0D0A7D0D0A3A726F6F74207B0D0A20202D2D75742D626F64792D616374696F6E732D77696474683A2033323070783B0D0A7D0D';
-wwv_flow_imp.g_varchar2_table(425) := '0A3A726F6F74207B0D0A20202D2D75742D626F64792D736964656261722D77696474683A20313572656D3B0D0A7D0D0A3A726F6F74207B0D0A20202D2D75742D626F64792D636F6E74656E742D6D61782D77696474683A20313030253B0D0A7D0D0A2E74';
+wwv_flow_imp.g_varchar2_table(425) := '0A3A726F6F74207B0D0A20202D2D75742D626F64792D736964656261722D77696474683A2033323070783B0D0A7D0D0A3A726F6F74207B0D0A20202D2D75742D626F64792D636F6E74656E742D6D61782D77696474683A20313030253B0D0A7D0D0A2E74';
 wwv_flow_imp.g_varchar2_table(426) := '2D427574746F6E2D2D686561646572207B0D0A20202D2D612D627574746F6E2D6261636B67726F756E642D636F6C6F723A207472616E73706172656E743B0D0A20202D2D612D627574746F6E2D746578742D636F6C6F723A20696E697469616C3B0D0A20';
 wwv_flow_imp.g_varchar2_table(427) := '202D2D612D627574746F6E2D626F726465722D636F6C6F723A207472616E73706172656E743B0D0A20202D2D612D627574746F6E2D736861646F773A206E6F6E653B0D0A20202D2D612D627574746F6E2D686F7665722D6261636B67726F756E642D636F';
 wwv_flow_imp.g_varchar2_table(428) := '6C6F723A207267626128302C20302C20302C20302E31293B0D0A20202D2D612D627574746F6E2D686F7665722D626F726465722D636F6C6F723A207472616E73706172656E743B0D0A20202D2D612D627574746F6E2D6163746976652D6261636B67726F';
@@ -7796,7 +7877,10 @@ wwv_flow_imp.g_varchar2_table(936) := '413B0D0A2D2D75742D70616C657474652D64616E6
 wwv_flow_imp.g_varchar2_table(937) := '6173743A20234646464646463B0D0A2D2D75742D70616C657474652D7761726E696E672D73686164653A20234646463444423B0D0A2D2D75742D70616C657474652D7761726E696E672D746578743A20233741343730303B0D0A0D0A2D2D75742D70616C';
 wwv_flow_imp.g_varchar2_table(938) := '657474652D737563636573733A20233144374135323B0D0A2D2D75742D70616C657474652D737563636573732D636F6E74726173743A20234646464646463B0D0A2D2D75742D70616C657474652D737563636573732D73686164653A2023453746364545';
 wwv_flow_imp.g_varchar2_table(939) := '3B0D0A2D2D75742D70616C657474652D737563636573732D746578743A20233136363334313B0D0A0D0A2D2D75742D70616C657474652D696E666F3A20233242364342303B0D0A2D2D75742D70616C657474652D696E666F2D636F6E74726173743A2023';
-wwv_flow_imp.g_varchar2_table(940) := '4646464646463B0D0A2D2D75742D70616C657474652D696E666F2D73686164653A20234541463246463B0D0A2D2D75742D70616C657474652D696E666F2D746578743A20233230353438413B0D0A0D0A7D202020';
+wwv_flow_imp.g_varchar2_table(940) := '4646464646463B0D0A2D2D75742D70616C657474652D696E666F2D73686164653A20234541463246463B0D0A2D2D75742D70616C657474652D696E666F2D746578743A20233230353438413B0D0A0D0A7D2020200D0A0D0A2E742D436F6E74656E74526F';
+wwv_flow_imp.g_varchar2_table(941) := '772D6974656D2E69732D73656C6563746564207B0D0A202020202D2D75742D63722D6974656D2D6261636B67726F756E642D636F6C6F723A20766172282D2D612D70616C657474652D7072696D617279293B0D0A202020202D2D75742D63722D6974656D';
+wwv_flow_imp.g_varchar2_table(942) := '2D746578742D636F6C6F723A20766172282D2D612D70616C657474652D7072696D6172792D636F6E7472617374293B0D0A202020202D2D75742D636F6D706F6E656E742D746578742D7469746C652D636F6C6F723A20766172282D2D75742D63722D6974';
+wwv_flow_imp.g_varchar2_table(943) := '656D2D746578742D636F6C6F72293B0D0A202020202D2D75742D636F6D706F6E656E742D746578742D6D757465642D636F6C6F723A20766172282D2D75742D63722D6974656D2D746578742D636F6C6F72293B0D0A7D';
 wwv_flow_imp_shared.create_theme_file(
  p_id=>wwv_flow_imp.id(3853725486706913)
 ,p_theme_id=>42
@@ -7804,8 +7888,6 @@ wwv_flow_imp_shared.create_theme_file(
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260710174938Z')
-,p_updated_on=>wwv_flow_imp.dz('20260710174938Z')
 );
 end;
 /
@@ -7820,11 +7902,6 @@ null;
 end;
 /
 prompt --application/shared_components/globalization/language
-begin
-null;
-end;
-/
-prompt --application/shared_components/globalization/translations
 begin
 null;
 end;
@@ -7865,10 +7942,6 @@ wwv_flow_imp_shared.create_authentication(
 ,p_invalid_session_type=>'LOGIN'
 ,p_use_secure_cookie_yn=>'N'
 ,p_ras_mode=>0
-,p_created_on=>wwv_flow_imp.dz('20260710174938Z')
-,p_updated_on=>wwv_flow_imp.dz('20260710174938Z')
-,p_created_by=>'ORACLE'
-,p_updated_by=>'ORACLE'
 );
 end;
 /
@@ -7920,8 +7993,6 @@ wwv_flow_imp_page.create_page(
 'Preserve the page''s pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.',
 '            '))
 ,p_page_component_map=>'13'
-,p_last_updated_on=>wwv_flow_imp.dz('20260710175024Z')
-,p_last_updated_by=>'SHAKEEB'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(7217070046791760)
@@ -8030,7 +8101,7 @@ wwv_flow_imp_page.create_page_plug(
 'select',
 '    ''fa-id-card-o'' as icon_class,',
 '    ''Item Details'' as title,',
-'    ''Inspect one record with the right amount of context, supporting information, and follow-up action.'' as description,',
+'    ''Inspect one record with supporting context and actions in a standalone or selection-driven detail view.'' as description,',
 '    ''item-details'' as page_alias',
 'from sys.dual',
 'union all',
@@ -8039,13 +8110,6 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Data Entry'' as title,',
 '    ''Create and update information with form patterns that match the complexity, context, and confidence required by the task.'' as description,',
 '    ''data-entry'' as page_alias',
-'from sys.dual',
-'union all',
-'select',
-'    ''fa-files-o'' as icon_class,',
-'    ''Master Detail'' as title,',
-'    ''Work across parent and child records with layouts that preserve context, support comparison, and keep related actions close to the data.'' as description,',
-'    ''master-detail'' as page_alias',
 'from sys.dual'))
 ,p_template_component_type=>'REPORT'
 ,p_lazy_loading=>false
@@ -8202,7 +8266,7 @@ wwv_flow_imp_page.create_page_plug(
 'select',
 '    ''fa-id-card-o'' as icon_class,',
 '    ''Item Details'' as title,',
-'    ''Inspect one record with the right amount of context, supporting information, and follow-up action.'' as description,',
+'    ''Inspect one record with supporting context and actions in a standalone or selection-driven detail view.'' as description,',
 '    ''item-details'' as page_alias',
 'from sys.dual',
 'union all',
@@ -8211,13 +8275,6 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Data Entry'' as title,',
 '    ''Create and update information with form patterns that match the complexity, context, and confidence required by the task.'' as description,',
 '    ''data-entry'' as page_alias',
-'from sys.dual',
-'union all',
-'select',
-'    ''fa-files-o'' as icon_class,',
-'    ''Master Detail'' as title,',
-'    ''Work across parent and child records with layouts that preserve context, support comparison, and keep related actions close to the data.'' as description,',
-'    ''master-detail'' as page_alias',
 'from sys.dual'))
 ,p_template_component_type=>'REPORT'
 ,p_lazy_loading=>false
@@ -8328,8 +8385,6 @@ wwv_flow_imp_page.create_page(
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'27'
-,p_last_updated_on=>wwv_flow_imp.dz('20260710175109Z')
-,p_last_updated_by=>'SHAKEEB'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(15478695420537157)
@@ -8360,6 +8415,13 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Track notable changes to the catalog, including new patterns, guidance updates, and structural refinements.</p>',
 '',
+'<h3 class="u-text-subheading-sm">Version 26.1.1</h3>',
+'<p><strong>Item Detail Pattern Updates</strong></p>',
+'<ul>',
+'  <li>Added the Item Selection and Details pattern, combining a selectable item list with an adjacent detail view.</li>',
+'  <li>Consolidated the placeholder Master-Detail category into Item Details.</li>',
+'</ul>',
+'',
 '<h3 class="u-text-subheading-sm">Version 26.1.0</h3>',
 '<p><strong>Initial Release</strong></p>',
 '<ul>',
@@ -8371,8 +8433,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
-,p_updated_on=>wwv_flow_imp.dz('20260710175109Z')
-,p_updated_by=>'SHAKEEB'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30356454461457886)
@@ -11746,8 +11806,6 @@ wwv_flow_imp_page.create_page(
 'Preserve the page''s pattern-first structure, generic terminology, accessible labels, semantic formatting, and clear action hierarchy. Keep documentation in metadata rather than visible instructional text.',
 '            '))
 ,p_page_component_map=>'27'
-,p_last_updated_on=>wwv_flow_imp.dz('20260710175043Z')
-,p_last_updated_by=>'SHAKEEB'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(10919672328652687)
@@ -13688,8 +13746,10 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>'Item detail patterns help users inspect one record with the right amount of context, supporting information, and follow-up action. Use these patterns when the primary task is understanding a specific item rather than browsing many records or entering'
-||' a new one.'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Item detail patterns help users inspect one record with the right amount of context, supporting information, and follow-up action. They include both standalone detail pages and selection-driven layouts where users choose an item from a list and view '
+||'its details alongside it. Use these patterns when the primary task is understanding a specific item rather than browsing many records, comparing large sets of data, or completing data entry.',
+''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -13731,6 +13791,13 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Item Detail - Full'' as title,',
 '    ''A complete detail page with organized sections, related information, and supporting actions for a single record.'' as description,',
 '    ''item-detail-full'' as page_alias',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-layout-2col'' as icon_class,',
+'    ''Item Selection and Details'' as title,',
+'    ''A selection-first layout with a list of items alongside details for the currently selected record.'' as description,',
+'    ''item-selection-with-details'' as page_alias',
 'from sys.dual'))
 ,p_template_component_type=>'REPORT'
 ,p_lazy_loading=>false
@@ -14475,6 +14542,7 @@ wwv_flow_imp_page.create_report_columns(
 '  STATE:=#STATUS_STATE#',
 '  LABEL_DISPLAY:=Y',
 '  STYLE:=t-Badge--subtle margin-top-xs',
+'  SHAPE:=t-Badge--circle',
 '  SIZE:=t-Badge--md',
 '{apply THEME$BADGE/}'))
 ,p_heading_alignment=>'LEFT'
@@ -16154,6 +16222,7 @@ wwv_flow_imp_page.create_report_columns(
 '  STATE:=#STATUS_STATE#',
 '  LABEL_DISPLAY:=Y',
 '  STYLE:=t-Badge--subtle margin-top-xs',
+'  SHAPE:=t-Badge--circle',
 '  SIZE:=t-Badge--md',
 '{apply THEME$BADGE/}'))
 ,p_heading_alignment=>'LEFT'
@@ -16900,6 +16969,1658 @@ wwv_flow_imp_page.create_page_item(
   'character_counter', 'N',
   'resizable', 'N',
   'trim_spaces', 'BOTH')).to_clob
+);
+end;
+/
+prompt --application/pages/page_00330
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>330
+,p_name=>'Item Selection with Details'
+,p_alias=>'ITEM-SELECTION-WITH-DETAILS'
+,p_step_title=>'Item Selection with Details'
+,p_autocomplete_on_off=>'OFF'
+,p_javascript_file_urls=>'#APP_FILES#js/split-view-selection#MIN#.js'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'/* Keep contextual information compact and make its status badges easy to scan. */',
+'.app-ContextualInfo {',
+'  --ut-contextualinfo-item-label-stacked-margin-y: 0;',
+'  --ut-badge-font-weight: 600;',
+'}',
+'',
+'/* Establish visual hierarchy between featured, standard, and compact activity rows. */',
+'.app-ActivityTimeline .is-standard {',
+'  --ut-cr-title-font-weight: 600;',
+'}',
+'',
+'.app-ActivityTimeline .is-compact {',
+'  --ut-cr-title-font-size: 0.875rem;',
+'  --ut-cr-title-font-weight: 400;',
+'}',
+'',
+'/* Temporarily loading utility class for full height */',
+'.u-block-size-full {',
+'  block-size: 100%;',
+'}'))
+,p_step_template=>2528119710305719084
+,p_page_template_options=>'#DEFAULT#'
+,p_page_is_public_y_n=>'Y'
+,p_protection_level=>'C'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a split-view item detail pattern with a searchable, selectable list on the left and contextual details for the selected item on the right.',
+'',
+'## When to Use',
+'',
+'Use when users need to inspect several items one at a time while keeping the surrounding list visible. This works well for inbox, review, triage, queue, and administrative experiences.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need bulk actions, detailed comparison, extensive editing, or a long multi-step workflow. Use a report, browse, sectioned, or tabbed pattern instead.',
+'',
+'## AI Guidance',
+'',
+'Preserve the split-view hierarchy: search and filtering, single-selection list, then selected-item identity, actions, summary, supporting details, related information, and activity.',
+'',
+'The page loads `split-view-selection.js` to restore or reconcile list selection, select the first available row when needed, handle empty results, toggle detail and empty-state regions, and keep the selected row visible.',
+'',
+'Initialize `appSplitViewSelection` on Page Ready and call `reconcile()` after `tablemodelviewpagechange`.',
+'',
+'Use `P330_SELECTED_ITEM_ID_UI` for the Content Row selection and `P330_SELECTED_ITEM_ID` as the canonical context used by detail-region queries.',
+'',
+'Mark data-dependent regions with `.js-item-refresh` and submit `P330_SELECTED_ITEM_ID` when they refresh. Mark selected-item content with `.js-selected-item-content` and the empty-state region with `.js-selected-item-empty`.',
+'',
+'Keep terminology generic, summaries concise, semantic states consistent, and the action hierarchy clear. Use component comments to explain intent, data mappings, refresh dependencies, and custom behavior.',
+''))
+,p_page_component_map=>'22'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(13392794329032080)
+,p_plug_name=>'Recent Activity'
+,p_static_id=>'activity'
+,p_region_css_classes=>'js-item-refresh js-selected-item-content'
+,p_region_sub_css_classes=>'app-ActivityTimeline'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>50
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'/*',
+'Activity timeline pattern sample',
+'',
+'Purpose:',
+'',
+'* Demonstrates how to build a representative activity timeline for an item detail pattern.',
+'* Shows a balanced mix of event types, row densities, and content shapes so AI-generated pages can learn the intended UX structure.',
+'',
+'Implementation notes:',
+'',
+'* The timeline is intentionally data-driven but not business-dependent.',
+'* The selected item ID is used as a seed so the example changes when the current record changes, while remaining stable for the same record.',
+'* Hash-based variation is used to produce realistic-looking labels, titles, and metrics without hardcoding business data.',
+'* Some rows are rich and descriptive; others are compact or title-only to show that not every activity needs equal detail.',
+'* Attribute changes should communicate the new state directly in the title.',
+'* Comment and file events should surface the meaningful payload as early as possible.',
+'* Description text should add only supporting context such as prior value, author, or follow-up note.',
+'',
+'Pattern guidance:',
+'',
+'* Use this region as a reusable reference for AI-generated item detail pages.',
+'* Keep labels generic and interaction-focused so the pattern can be adapted to any business domain.',
+'* Prefer representative structure over realistic transactional completeness.',
+'* Avoid encoding domain-specific meaning into the sample unless the pattern is explicitly tied to that domain.',
+'  */',
+'',
+'',
+'with seed as (',
+'    select nvl(:P330_SELECTED_ITEM_ID, ''0'') as item_id',
+'    from dual',
+')',
+'select ''Today'' as activity_group,',
+'       10 as display_sequence,',
+'       sysdate - interval ''1'' hour as activity_time,',
+'       ''Maya Chen'' as actioned_by,',
+'       ''Updated'' as action_type,',
+'       null as badge_label,',
+'       ''Status changed to '' ||',
+'           case mod(ora_hash(seed.item_id || '':status''), 4)',
+'               when 0 then ''On Track''',
+'               when 1 then ''Needs Review''',
+'               when 2 then ''At Risk''',
+'               else ''Blocked''',
+'           end as title,',
+'       ''Previous status: '' ||',
+'           case mod(ora_hash(seed.item_id || '':prev_status''), 4)',
+'               when 0 then ''On Track''',
+'               when 1 then ''Needs Review''',
+'               when 2 then ''At Risk''',
+'               else ''Blocked''',
+'           end as description,',
+'       ''fa-check-circle-o u-success-text'' as icon_class,',
+'       ''is-featured'' as row_class,',
+'       1 as id',
+'  from seed',
+'union all',
+'select ''Today'',',
+'       20,',
+'       sysdate - interval ''4'' hour,',
+'       ''Jordan Lee'',',
+'       ''Reviewed'',',
+'       null,',
+'       ''Review completed for item '' || seed.item_id,',
+'       ''Next step confirmed for the current owner'',',
+'       ''fa-check-circle-o u-success-text'',',
+'       ''is-standard'',',
+'       2',
+'  from seed',
+'union all',
+'select ''This Week'',',
+'       30,',
+'       trunc(sysdate) - 2 + (9/24),',
+'       ''Maya Chen'',',
+'       ''Commented'',',
+'       null,',
+'       ''We should confirm the owner before moving item '' || seed.item_id || '' forward.'',',
+'       ''Comment added to the current record'',',
+'       ''fa-comments-o u-info-text'',',
+'       ''is-standard'',',
+'       3',
+'  from seed',
+'union all',
+'select ''This Week'',',
+'       40,',
+'       trunc(sysdate) - 3 + (14/24),',
+'       ''Jordan Lee'',',
+'       ''Adjusted'',',
+'       null,',
+'       ''Target Date set to October 1'',',
+'       ''Previous target date: September 18'',',
+'       ''fa-calendar-o u-info-text'',',
+'       ''is-standard'',',
+'       4',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       50,',
+'       trunc(sysdate) - 7 + (11/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Ownership assigned to Avery Smith for ongoing follow-up'',',
+'       null,',
+'       ''fa-user u-info-text'',',
+'       ''is-compact'',',
+'       5',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       60,',
+'       trunc(sysdate) - 9 + (10/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Standard Intake linked to support the current record'',',
+'       null,',
+'       ''fa-link u-info-text'',',
+'       ''is-compact'',',
+'       6',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       70,',
+'       trunc(sysdate) - 10 + (12/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Reference removed after duplicate values were identified'',',
+'       null,',
+'       ''fa-minus-circle-o u-danger-text'',',
+'       ''is-compact'',',
+'       7',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       80,',
+'       trunc(sysdate) - 11 + (16/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Initial record created and prepared for first review'',',
+'       null,',
+'       ''fa-plus-circle-o u-info-text'',',
+'       ''is-compact'',',
+'       8',
+'  from seed;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'display_sequence, activity_group'
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P330_SELECTED_ITEM_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'N',
+  'AVATAR_ICON', '&ICON_CLASS.',
+  'AVATAR_SHAPE', 't-Avatar--noShape',
+  'AVATAR_SIZE', 't-Avatar--sm',
+  'AVATAR_TYPE', 'icon',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'N',
+  'GROUP_TITLE', '<div class="u-text-uppercase u-text-muted-color u-text-body-xs u-text-bold">&ACTIVITY_GROUP.</div>',
+  'HIDE_BORDERS', 'N',
+  'ITEM_CSS_CLASSES', '&ROW_CLASS.',
+  'MISC', '&ACTIVITY_TIME.',
+  'OVERLINE', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{if ACTIONED_BY/}',
+    '    &ACTIONED_BY.{if ACTION_TYPE/} &middot; &ACTION_TYPE.{endif/}',
+    '{elseif ACTION_TYPE/}',
+    '    &ACTION_TYPE.',
+    '{endif/}')),
+  'REMOVE_PADDING', 'N',
+  'STACK_MOBILE', 'N',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Shows meaningful changes, decisions, comments, and events associated with the current item.',
+'',
+'Pattern role: Activity timeline.',
+'',
+'AI guidance: Make the event title carry the meaningful payload at a glance. Attribute changes should describe the new value or state. File events should identify the file. Comment events should surface the comment text. Use the description only for u'
+||'seful supporting context such as a previous value, author, or note. Keep some rows title-only and retain a mix of featured, standard, and compact rows to demonstrate different event shapes. Use featured rows for especially important events and compac'
+||'t rows for lower-detail history.',
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393228601032084)
+,p_name=>'ACTIONED_BY'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTIONED_BY'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393322826032085)
+,p_name=>'ACTION_TYPE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTION_TYPE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13392929614032081)
+,p_name=>'ACTIVITY_GROUP'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTIVITY_GROUP'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>true
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393122939032083)
+,p_name=>'ACTIVITY_TIME'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTIVITY_TIME'
+,p_data_type=>'DATE'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393407791032086)
+,p_name=>'BADGE_LABEL'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_LABEL'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393615864032088)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>80
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393044677032082)
+,p_name=>'DISPLAY_SEQUENCE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DISPLAY_SEQUENCE'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393768647032089)
+,p_name=>'ICON_CLASS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON_CLASS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>90
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393985565032091)
+,p_name=>'ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ID'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>110
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393804310032090)
+,p_name=>'ROW_CLASS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ROW_CLASS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>100
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13393526115032087)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(13249518477446079)
+,p_name=>'Details 1'
+,p_static_id=>'details'
+,p_parent_plug_id=>wwv_flow_imp.id(13312671694903870)
+,p_template=>3372714138756020509
+,p_display_sequence=>40
+,p_region_css_classes=>'js-item-refresh'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-AVPList--leftAligned'
+,p_new_grid_row=>false
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ''Item Reference '' || nvl(:P330_SELECTED_ITEM_ID, 0) as reference,',
+'       ''Standard Intake'' as source,',
+'       ''Summary Record'' as type,',
+'       ''Tracked, Reviewable'' as tags',
+'  from dual;'))
+,p_ajax_enabled=>'Y'
+,p_ajax_items_to_submit=>'P330_SELECTED_ITEM_ID'
+,p_lazy_loading=>false
+,p_query_row_template=>2101991776017792140
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents stable, descriptive attributes that characterize the selected item.',
+'',
+'Pattern role: Attribute-pair detail layout.',
+'',
+'AI guidance: Use this group for classification-style properties such as type, category, source, and tags. Keep labels concise and values consistently formatted for scanning. Do not mix in ownership, timing, progress, or operational status; place thos'
+||'e in separate groups.',
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4789558940047525)
+,p_query_column_id=>1
+,p_column_alias=>'REFERENCE'
+,p_column_display_sequence=>10
+,p_column_heading=>'Reference'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4789975217047525)
+,p_query_column_id=>2
+,p_column_alias=>'SOURCE'
+,p_column_display_sequence=>20
+,p_column_heading=>'Source'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4790365245047525)
+,p_query_column_id=>4
+,p_column_alias=>'TAGS'
+,p_column_display_sequence=>60
+,p_column_heading=>'Tags'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4790736590047525)
+,p_query_column_id=>3
+,p_column_alias=>'TYPE'
+,p_column_display_sequence=>30
+,p_column_heading=>'Type'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(13312732854903871)
+,p_name=>'Details 2'
+,p_static_id=>'details-2'
+,p_parent_plug_id=>wwv_flow_imp.id(13312671694903870)
+,p_template=>3372714138756020509
+,p_display_sequence=>50
+,p_region_css_classes=>'js-item-refresh'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-AVPList--leftAligned'
+,p_new_grid_row=>false
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    to_char(mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'')), 101)) || ''%'' as progress,',
+'    case mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':priority''), 4)',
+'        when 0 then ''Low''',
+'        when 1 then ''Medium''',
+'        when 2 then ''High''',
+'        else ''Critical''',
+'    end as priority,',
+'    case mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':owner''), 4)',
+'        when 0 then ''Maya Chen''',
+'        when 1 then ''Alex Rivera''',
+'        when 2 then ''Jordan Patel''',
+'        else ''Sam Taylor''',
+'    end as owner,',
+'    trunc(sysdate) + mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':due''), 21) as due',
+'from dual;'))
+,p_ajax_enabled=>'Y'
+,p_ajax_items_to_submit=>'P330_SELECTED_ITEM_ID'
+,p_lazy_loading=>false
+,p_query_row_template=>2101991776017792140
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents supporting item attributes in compact value-and-attribute groups.',
+'',
+'Pattern role: Attribute-pair detail layout.',
+'',
+'AI guidance: Use this group for additional descriptive properties that do not fit into the primary classification set. Maintain consistency in formatting and avoid introducing operational, ownership, or timing-related fields.',
+'',
+'Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P330_SELECTED_ITEM_ID when refreshed.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4791660593047526)
+,p_query_column_id=>4
+,p_column_alias=>'DUE'
+,p_column_display_sequence=>40
+,p_column_heading=>'Due'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4792087671047526)
+,p_query_column_id=>3
+,p_column_alias=>'OWNER'
+,p_column_display_sequence=>30
+,p_column_heading=>'Owner'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4792491626047526)
+,p_query_column_id=>2
+,p_column_alias=>'PRIORITY'
+,p_column_display_sequence=>20
+,p_column_heading=>'Priority'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4792882986047526)
+,p_query_column_id=>1
+,p_column_alias=>'PROGRESS'
+,p_column_display_sequence=>10
+,p_column_heading=>'Progress'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(9495763530376718)
+,p_plug_name=>'Faceted Search'
+,p_static_id=>'faceted-search'
+,p_parent_plug_id=>wwv_flow_imp.id(9495390129376714)
+,p_region_css_classes=>'u-flex-shrink-0'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'PLUGIN_BODY'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_FACETED_SEARCH'
+,p_filtered_region_id=>wwv_flow_imp.id(8780213005443757)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'batch_facet_search', 'N',
+  'compact_numbers_threshold', '10000',
+  'display_chart_for_top_n_values', '10',
+  'show_charts', 'Y',
+  'show_current_facets', 'Y',
+  'show_total_row_count', 'N')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Helps users narrow the primary item list before selecting a record.',
+'',
+'Pattern role: List search and filtering controls.',
+'',
+'AI guidance: Expose facets only through the Add Filter dialog; do not display them inline. Use faceted search primarily to power search and provide advanced filtering via the popup dialog button. Include only facets that materially help users locate '
+||'an item, keeping the set small and high-value so the selection list remains visually dominant.',
+'',
+'Implementation note: This region filters the List Selection region. After filtering, ensure the page still has a valid selected row or deliberately clear the detail context when no matching rows remain.'))
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(9502918649376729)
+,p_name=>'P330_CATEGORY'
+,p_source_data_type=>'VARCHAR2'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(9495763530376718)
+,p_prompt=>'Category'
+,p_source=>'CATEGORY'
+,p_source_type=>'FACET_COLUMN'
+,p_display_as=>'NATIVE_CHECKBOX'
+,p_lov_sort_direction=>'ASC'
+,p_item_template_options=>'#DEFAULT#'
+,p_fc_show_label=>true
+,p_fc_compute_counts=>true
+,p_fc_show_counts=>true
+,p_fc_zero_count_entries=>'H'
+,p_fc_show_more_count=>7
+,p_fc_filter_values=>false
+,p_fc_sort_by_top_counts=>true
+,p_fc_show_selected_first=>false
+,p_fc_show_chart=>true
+,p_fc_display_as=>'FILTER_DIALOG'
+,p_fc_exclude_allowed=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(9502471401376725)
+,p_name=>'P330_SEARCH'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(9495763530376718)
+,p_prompt=>'Search'
+,p_source_type=>'FACET_COLUMN'
+,p_display_as=>'NATIVE_SEARCH'
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'input_field', 'FACET',
+  'search_type', 'ROW')).to_clob
+,p_fc_show_chart=>false
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(9502622978376726)
+,p_name=>'P330_STATUS'
+,p_source_data_type=>'VARCHAR2'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(9495763530376718)
+,p_prompt=>'Status'
+,p_source=>'STATUS'
+,p_source_type=>'FACET_COLUMN'
+,p_display_as=>'NATIVE_CHECKBOX'
+,p_lov_sort_direction=>'ASC'
+,p_item_template_options=>'#DEFAULT#'
+,p_fc_show_label=>true
+,p_fc_compute_counts=>true
+,p_fc_show_counts=>true
+,p_fc_zero_count_entries=>'H'
+,p_fc_show_more_count=>7
+,p_fc_filter_values=>false
+,p_fc_sort_by_top_counts=>true
+,p_fc_show_selected_first=>false
+,p_fc_show_chart=>false
+,p_fc_display_as=>'FILTER_DIALOG'
+,p_fc_exclude_allowed=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(9495390129376714)
+,p_plug_name=>'Flex Container'
+,p_static_id=>'flex-container'
+,p_region_sub_css_classes=>'u-block-size-full'
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_02'
+,p_location=>null
+,p_template_component_type=>'REGION_ONLY'
+,p_plug_source_type=>'TMPL_THEME_42$FLEXBOX_CONTAINER'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'DIRECTION', 'u-flex-direction-column',
+  'OVERFLOW', 'u-overflow-hidden')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Organizes the search controls and selectable item list as one continuous left-side selection panel.',
+'',
+'Pattern role: Structural container for the master-list area.',
+'',
+'AI guidance: Keep search and filtering above the results they control. Allow the list region to grow into the remaining available space. Do not place unrelated detail content inside this container.'))
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(15508037917397553)
+,p_plug_name=>'Item Details'
+,p_static_id=>'item-header'
+,p_region_css_classes=>'js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noBorder'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_08'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Establishes the identity and current state of the item before users inspect details or take action.',
+'',
+'Pattern role: Item detail header with contextual information.',
+'',
+'AI guidance: Keep the most important identity, ownership, status, impact, and timing information near the item title. Use contextual information for quick scanning rather than a full attribute report. Map status values to supported semantic states su'
+||'ch as success, warning, danger, or info. Keep badge value, state, label, and styling semantically aligned. Use relative time only when it is useful for recency; use an explicit date when the exact date matters.'))
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(13249407603446078)
+,p_plug_name=>'Summary'
+,p_static_id=>'item-summary-details'
+,p_parent_plug_id=>wwv_flow_imp.id(13312671694903870)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_grid_column_span=>4
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'This record represents a standard item that is being reviewed, tracked, or acted on. The summary explains the current state, expected outcome, and any context needed before taking action.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Gives users concise narrative context about what the item represents and why it matters.',
+'',
+'Pattern role: Item summary narrative.',
+'',
+'AI guidance: Keep the summary short, generic, and decision-relevant. Explain the item''s current purpose, state, or expected outcome without adding instructional or tutorial text. Move detailed attributes, history, and related records into their dedic'
+||'ated regions.'))
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(15508087527397554)
+,p_name=>'Item Contextual Info'
+,p_static_id=>'key-facts'
+,p_parent_plug_id=>wwv_flow_imp.id(15508037917397553)
+,p_template=>3372714138756020509
+,p_display_sequence=>10
+,p_region_css_classes=>'app-ContextualInfo js-item-refresh'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-ContextualInfo--hideNulls:t-ContextualInfo-label--stacked:t-Report--hideNoPagination'
+,p_display_point=>'SUB_REGIONS'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Item '' || nvl(:P330_SELECTED_ITEM_ID, 0) as item_title,',
+'    ''Record Owner'' as owner,',
+'    ''Standard Category'' as category,',
+'    case mod(nvl(:P330_SELECTED_ITEM_ID, 0), 4)',
+'        when 1 then ''On Track''',
+'        when 2 then ''Paused''',
+'        when 3 then ''Blocked''',
+'        else ''Pending Review''',
+'    end as status,',
+'    case mod(nvl(:P330_SELECTED_ITEM_ID, 0), 4)',
+'        when 1 then ''success''',
+'        when 2 then ''warning''',
+'        when 3 then ''danger''',
+'        else ''info''',
+'    end as status_state,',
+'    sysdate - 1 / 24 as last_updated,',
+'    ''High'' as impact,',
+'    ''danger'' as impact_state,',
+'    sysdate + 14 as target_date',
+'from dual;'))
+,p_ajax_enabled=>'Y'
+,p_ajax_items_to_submit=>'P330_SELECTED_ITEM_ID'
+,p_lazy_loading=>false
+,p_query_row_template=>2117249020861433971
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents the highest-value item facts for quick assessment before users take action.',
+'',
+'Pattern role: Contextual information summary.',
+'',
+'AI guidance: Keep this region limited to ownership, classification, status, impact, recency, and timing information that users need for quick decisions. Keep visible values and their semantic state columns aligned. Use supported state values such as '
+||unistr('success, warning, danger, or info. Expose target timing when it materially affects the user\2019s decision; otherwise remove the unused supporting column.'),
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4783615799047522)
+,p_query_column_id=>3
+,p_column_alias=>'CATEGORY'
+,p_column_display_sequence=>40
+,p_column_heading=>'Category'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4780823078047521)
+,p_query_column_id=>7
+,p_column_alias=>'IMPACT'
+,p_column_display_sequence=>80
+,p_column_heading=>'Impact'
+,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'{with/}',
+'  LABEL:=Impact',
+'  VALUE:=#IMPACT#',
+'  STATE:=#IMPACT_STATE#',
+'  LABEL_DISPLAY:=N',
+'  STYLE:=t-Badge--subtle',
+'  SIZE:=t-Badge--sm',
+'{apply THEME$BADGE/}'))
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_display_when_cond_type=>'NEVER'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4781256807047521)
+,p_query_column_id=>8
+,p_column_alias=>'IMPACT_STATE'
+,p_column_display_sequence=>90
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4780473695047521)
+,p_query_column_id=>1
+,p_column_alias=>'ITEM_TITLE'
+,p_column_display_sequence=>10
+,p_column_html_expression=>'<div class="u-text-subheading-sm">#ITEM_TITLE#</div>'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4781680137047521)
+,p_query_column_id=>6
+,p_column_alias=>'LAST_UPDATED'
+,p_column_display_sequence=>50
+,p_column_heading=>'Last Updated'
+,p_column_format=>'SINCE'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4782002500047521)
+,p_query_column_id=>2
+,p_column_alias=>'OWNER'
+,p_column_display_sequence=>30
+,p_column_heading=>'Owner'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4782492511047521)
+,p_query_column_id=>4
+,p_column_alias=>'STATUS'
+,p_column_display_sequence=>20
+,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'{with/}',
+'  LABEL:=Status',
+'  VALUE:=#STATUS#',
+'  STATE:=#STATUS_STATE#',
+'  LABEL_DISPLAY:=Y',
+'  STYLE:=t-Badge--subtle margin-top-xs',
+'  SHAPE:=t-Badge--circle',
+'  SIZE:=t-Badge--md',
+'{apply THEME$BADGE/}'))
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4782814316047522)
+,p_query_column_id=>5
+,p_column_alias=>'STATUS_STATE'
+,p_column_display_sequence=>70
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(4783265907047522)
+,p_query_column_id=>9
+,p_column_alias=>'TARGET_DATE'
+,p_column_display_sequence=>60
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(8780213005443757)
+,p_plug_name=>'List Selection'
+,p_static_id=>'list-selection'
+,p_region_name=>'primary_items_list'
+,p_parent_plug_id=>wwv_flow_imp.id(9495390129376714)
+,p_region_css_classes=>'u-flex-grow-1 u-overflow-auto'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'PLUGIN_BODY'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    q.item_id,',
+'    q.title,',
+'    q.category,',
+'    q.last_updated,',
+'    q.badge as status,',
+'    q.badge_state',
+'from (',
+'    /*',
+'      Content Row Pattern Guidance',
+'      ----------------------------',
+'      Use this region to present a primary collection on the left and the',
+'      detail view for the selected row on the right.',
+'',
+'      Design intent:',
+'- Show one clear primary item per row.',
+'- Keep titles simple and representative.',
+'- Use category as a general-purpose facet.',
+'- Use the badge to surface the item''s current status.',
+'- Show a date-based field that makes the list feel more realistic and varied.',
+'- Use single selection because the detail area represents one current item.',
+'- Store the selected primary key in the configured Current Selection Page Item.',
+'- Use multi-selection only when the adapted page supports bulk actions rather than a single contextual detail view.',
+'- Change the hard-coded row_count value below to show 10 or 50 rows.',
+'    */',
+'    with params as (',
+'        select 50 as row_count from dual   -- change 10 to 50 when needed',
+'    )',
+'    select',
+'        level as item_id,',
+'        ''Item '' || level as title,',
+'        case mod(level - 1, 4)',
+'            when 0 then ''Planning''',
+'            when 1 then ''Operations''',
+'            when 2 then ''Review''',
+'            else ''Reporting''',
+'        end as category,',
+'        sysdate - mod(level - 1, 14) as last_updated,',
+'        case mod(level, 4)',
+'            when 1 then ''On Track''',
+'            when 2 then ''Paused''',
+'            when 3 then ''Blocked''',
+'            else ''Pending Review''',
+'        end as badge,',
+'        case mod(level, 4)',
+'            when 1 then ''success''',
+'            when 2 then ''warning''',
+'            when 3 then ''danger''',
+'            else ''info''',
+'        end as badge_state',
+'    from dual',
+'    connect by level <= (select row_count from params)',
+') q'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_plug_query_num_rows=>100
+,p_plug_query_num_rows_type=>'SET'
+,p_plug_query_no_data_found=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'No items found',
+''))
+,p_show_total_row_count=>false
+,p_landmark_type=>'region'
+,p_row_selection_type=>'SINGLE'
+,p_current_selection_page_item=>'P330_SELECTED_ITEM_ID_UI'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'N',
+  'BADGE_ALIGNMENT', 't-ContentRow-badge--alignEnd',
+  'BADGE_COL_WIDTH', 't-ContentRow-badge--auto',
+  'BADGE_LABEL', 'Status',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_POS', 't-ContentRow-badge--posEnd',
+  'BADGE_SHAPE', 't-Badge--circle',
+  'BADGE_SIZE', 't-Badge--sm',
+  'BADGE_STATE', 'BADGE_STATE',
+  'BADGE_STYLE', 't-Badge--subtle',
+  'BADGE_VALUE', 'STATUS',
+  'DESCRIPTION', '&LAST_UPDATED.',
+  'DISPLAY_AVATAR', 'N',
+  'DISPLAY_BADGE', 'Y',
+  'HIDE_BORDERS', 'N',
+  'REMOVE_PADDING', 'N',
+  'STACK_MOBILE', 'N',
+  'STYLE', 't-ContentRow--styleCompact',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides the searchable, single-selection collection that controls the item shown in the detail area.',
+'',
+'Pattern role: Master list and UI selection source.',
+'',
+'AI guidance: Keep each row concise and make its title, status, category, and recency easy to scan. Use a stable primary key for selection. Preserve single-selection behavior when the right side represents one current item. Do not enable multi-selecti'
+||'on controls unless the adapted workflow supports bulk actions.',
+'',
+'Implementation note: The Content Row writes the selected primary key to P330_SELECTED_ITEM_ID_UI through Current Selection Page Item. The primary_items_list Static ID is used by the page-load JavaScript to restore an existing selection or select the '
+||'first row.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(9495170152376712)
+,p_name=>'BADGE_STATE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_STATE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(9496238068376722)
+,p_name=>'CATEGORY'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'CATEGORY'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8780323194443758)
+,p_name=>'ITEM_ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ITEM_ID'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(9495039021376710)
+,p_name=>'LAST_UPDATED'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'LAST_UPDATED'
+,p_data_type=>'DATE'
+,p_display_sequence=>30
+,p_format_mask=>'SINCE'
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(9496099212376721)
+,p_name=>'STATUS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'STATUS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(8780376084443759)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38206525958246599)
+,p_plug_name=>'Key Metrics'
+,p_static_id=>'metric-cards'
+,p_region_css_classes=>'app-MetricCards js-item-refresh js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>40
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''fa-line-chart'' as icon,',
+'    ''Primary KPI''   as label,',
+'    50000 + mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':primary''), 50000) as metric_value',
+'from dual',
+'union all',
+'select',
+'    ''fa-bar-chart''  as icon,',
+'    ''Secondary KPI'' as label,',
+'    5000 + mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':secondary''), 20000) as metric_value',
+'from dual',
+'union all',
+'select',
+'    ''fa-area-chart'' as icon,',
+'    ''Trend KPI''     as label,',
+'    mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':trend''), 100) as metric_value',
+'from dual',
+'union all',
+'select',
+'    ''fa-dashboard''  as icon,',
+'    ''Status KPI''    as label,',
+'    100 + mod(ora_hash(nvl(:P330_SELECTED_ITEM_ID, ''0'') || '':status''), 900) as metric_value',
+'from dual'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$METRIC_CARD'
+,p_ajax_items_to_submit=>'P330_SELECTED_ITEM_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'AVATAR_ALIGNMENT', 't-MetricCard-body--avatarAlignmentStart',
+  'AVATAR_ICON', '&ICON.',
+  'AVATAR_POSITION', 't-MetricCard-body--avatarPositionInline',
+  'AVATAR_SHAPE', 't-Avatar--rounded',
+  'AVATAR_STYLE', 't-MetricCard-avatar--subtle',
+  'AVATAR_TYPE', 'icon',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'N',
+  'LAYOUT', '4cols',
+  'META', '&LABEL.',
+  'METRIC', '&METRIC_VALUE.',
+  'METRIC_CSS_CLASSES', 'u-text-subheading-md')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Highlights a small number of measures that help users assess the current item quickly.',
+'',
+'Pattern role: Item-level KPI summary.',
+'',
+'AI guidance: Use only the most relevant measures for this item, generally two to four cards. Keep metrics comparable in importance and avoid turning the region into a dense report. Format large values with thousands separators and use consistent unit'
+||'s. If badges or icons are added, keep their value, state, and icon semantically aligned.',
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(38206593787246600)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(38206768119246602)
+,p_name=>'LABEL'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'LABEL'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(38206910012246603)
+,p_name=>'METRIC_VALUE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'METRIC_VALUE'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>40
+,p_format_mask=>'999G999G999G999G999G999G990'
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(4732660492329242)
+,p_plug_name=>'No Item Selected'
+,p_static_id=>'no-item-selected'
+,p_region_css_classes=>'js-selected-item-empty u-hidden u-tC'
+,p_icon_css_classes=>'fa-search'
+,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--customIcons:t-Alert--info:t-Alert--removeHeading js-removeLandmark'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>70
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'Select an item to view its details.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38151832247405894)
+,p_plug_name=>'Related Information'
+,p_static_id=>'related-information'
+,p_region_css_classes=>'js-item-refresh js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>60
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>4
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with seed as (',
+'    select nvl(:P330_SELECTED_ITEM_ID, ''0'') as item_id',
+'    from dual',
+')',
+'select ''fa-users'' as icon,',
+'       ''People'' as title,',
+'       ''Associated people and owners'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':people''), 10) as item_count,',
+'       ''PEOPLE'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-file-o'' as icon,',
+'       ''Files'' as title,',
+'       ''Documents and attachments'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':files''), 20) as item_count,',
+'       ''FILES'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-comments-o'' as icon,',
+'       ''Comments'' as title,',
+'       ''Discussion and feedback'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':comments''), 30) as item_count,',
+'       ''COMMENTS'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-sitemap'' as icon,',
+'       ''Child Records'' as title,',
+'       ''Associated child records'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':child_records''), 15) as item_count,',
+'       ''CHILD_RECORDS'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-link'' as icon,',
+'       ''Related Records'' as title,',
+'       ''Connected business entities'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':related_records''), 8) as item_count,',
+'       ''RELATED_RECORDS'' as page_alias',
+'  from seed;'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P330_SELECTED_ITEM_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'N',
+  'AVATAR_ICON', '&ICON. fa-lg',
+  'AVATAR_SHAPE', 't-Avatar--noShape',
+  'AVATAR_TYPE', 'icon',
+  'BADGE_ALIGNMENT', 't-ContentRow-badge--alignCenter',
+  'BADGE_COL_WIDTH', 't-ContentRow-badge--auto',
+  'BADGE_LABEL', 'Related Item Count',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_POS', 't-ContentRow-badge--posEnd',
+  'BADGE_STYLE', 't-Badge--subtle',
+  'BADGE_VALUE', 'ITEM_COUNT',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'Y',
+  'HIDE_BORDERS', 'N',
+  'REMOVE_PADDING', 'N',
+  'STACK_MOBILE', 'N',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides compact entry points to related information without overwhelming the item summary.',
+'',
+'Pattern role: Related-content navigation list.',
+'',
+'AI guidance: Keep rows concise and use the description to clarify what the related area contains. Use the badge to show the number of related items when that count is meaningful. Row titles should navigate to the corresponding related area or item-le'
+||'vel detail. Keep this region focused on navigation and summary; use a full report or dedicated page for extensive related data.',
+'',
+'Implementation note: Each row represents a navigation entry to a related-information area. Replace the placeholder action target with the destination represented by PAGE_ALIAS, passing the current item context and selected related-information categor'
+||'y.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(38152543111405901)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(38152652262405902)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13313747923903881)
+,p_name=>'ITEM_COUNT'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ITEM_COUNT'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(13313648307903880)
+,p_name=>'PAGE_ALIAS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PAGE_ALIAS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(38152393332405900)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_component_action(
+ p_id=>wwv_flow_imp.id(19942207584682643)
+,p_region_id=>wwv_flow_imp.id(38151832247405894)
+,p_position_id=>350199314123390058
+,p_display_sequence=>10
+,p_static_id=>'action'
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(13312671694903870)
+,p_plug_name=>'Overview'
+,p_static_id=>'summary-container'
+,p_region_css_classes=>'js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--lightBG'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides the primary scan-first container for the item detail summary.',
+'',
+'Pattern role: Item detail overview.',
+'',
+'AI guidance: Keep this region visually dominant and place the most decision-relevant summary content here. Use a concise narrative summary alongside logically grouped attribute pairs. Preserve the overview-first structure and avoid turning this regio'
+||'n into a dense report or long-form documentation area.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(4777652284047519)
+,p_button_sequence=>40
+,p_button_plug_id=>wwv_flow_imp.id(15508037917397553)
+,p_button_name=>'ACTIONS_MENU'
+,p_static_id=>'actions-menu'
+,p_show_as_disabled=>false
+,p_button_type=>'MENU'
+,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>'Actions Menu'
+,p_button_position=>'NEXT'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-ellipsis-v'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Groups optional or lower-frequency actions so they remain available without competing with the primary action hierarchy.',
+'',
+'Pattern role: Overflow actions.',
+'',
+'AI guidance: Place destructive, administrative, export, duplicate, or infrequently used actions here when they do not need persistent prominence. Do not hide the primary task in the overflow menu. Use clear action labels and preserve a logical menu o'
+||'rder.'))
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(40497243538861538)
+,p_button_id=>wwv_flow_imp.id(4777652284047519)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 1'
+,p_static_id=>'menu-action-a'
+,p_display_sequence=>10
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(40497318929861539)
+,p_button_id=>wwv_flow_imp.id(4777652284047519)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 2'
+,p_static_id=>'menu-action-b'
+,p_display_sequence=>20
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(40497431100861540)
+,p_button_id=>wwv_flow_imp.id(4777652284047519)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 3'
+,p_static_id=>'menu-action-c'
+,p_display_sequence=>30
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(4779289715047520)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(15508037917397553)
+,p_button_name=>'PRIMARY_ACTION'
+,p_static_id=>'primary-action'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Primary Action'
+,p_button_position=>'NEXT'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Represents the most important next step available from the item detail page.',
+'',
+'Pattern role: Primary page action.',
+'',
+'AI guidance: Keep this action prominent and use a clear, domain-specific verb when adapting the pattern. There should normally be one primary action. The action should be directly related to the item''s current state and intended workflow.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(4779672305047520)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(15508037917397553)
+,p_button_name=>'SECONDARY_ACTION'
+,p_static_id=>'secondary-action'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Secondary Action'
+,p_button_position=>'NEXT'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides a useful follow-up action that is less important than the primary action.',
+'',
+'Pattern role: Secondary page action.',
+'',
+'AI guidance: Keep this action visually subordinate to the primary action. Use it for a common but non-primary path, and avoid presenting several actions with equal visual emphasis.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(4771672012047514)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(13392794329032080)
+,p_button_name=>'VIEW_ALL_ACTIVITY'
+,p_static_id=>'view-details-link-3'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_URL'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconRight:t-Button--padTop'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>'View All Activity'
+,p_button_position=>'NEXT'
+,p_button_redirect_url=>'#'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-arrow-right'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides a contextual path from the activity summary to the complete activity history.',
+'',
+'Pattern role: Region-level detail action.',
+'',
+'AI guidance: Use this action when the summary is intentionally truncated or when users may need to inspect the full history. Keep it visually attached to the Recent Activity region and lower in emphasis than the page''s primary action. Omit it when th'
+||'e region already contains the complete activity history.',
+'',
+'Implementation note: This action should navigate to the complete activity history for the current item. Replace the placeholder target URL when the activity-history destination is available.'))
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(9505677022376723)
+,p_name=>'P330_SELECTED_ITEM_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(8780213005443757)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_item_comment=>'Stores the canonical selected-item context used by the detail-region queries. Changes to this item refresh all dependent regions marked with .js-item-refresh.'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(4731174006329227)
+,p_name=>'P330_SELECTED_ITEM_ID_UI'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(8780213005443757)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'Y')).to_clob
+,p_item_comment=>'Stores the current primary-key selection maintained by the Content Row component. Changes to this item are synchronized into P330_SELECTED_ITEM_ID.'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(4794305067047528)
+,p_name=>'Initialize List Selection'
+,p_static_id=>'focus-first-item-in-list'
+,p_event_sequence=>20
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'ready'
+,p_da_event_comment=>'Initializes the reusable split-view selection controller. The controller restores the canonical item when it remains in the list, selects the first available row when necessary, or shows the empty state when no rows are available.'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(4794739151047530)
+,p_event_id=>wwv_flow_imp.id(4794305067047528)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'appSplitViewSelection.initialize({',
+    '    regionId: "primary_items_list",',
+    '    uiItem: "P330_SELECTED_ITEM_ID_UI",',
+    '    contextItem: "P330_SELECTED_ITEM_ID"',
+    '});')))).to_clob
+,p_da_action_comment=>'Configures split-view-selection.js with the List Selection region Static ID, the Content Row UI selection item, and the canonical selected-item context.'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(4732471525329240)
+,p_name=>'Reconcile Selection After List Refresh'
+,p_static_id=>'reconcile-selection-after-list-refresh'
+,p_event_sequence=>40
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(8780213005443757)
+,p_bind_type=>'live'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'custom'
+,p_bind_event_type_custom=>'tablemodelviewpagechange'
+,p_da_event_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Runs after the Content Row model view changes because of search, filtering, pagination, or another list update. It reconciles the selected-item context after the refreshed rows are available.',
+'',
+'Implementation Note: This page uses the dynamically scoped tablemodelviewpagechange event because it reliably runs after the Content Row model view has updated for this workflow.'))
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(4732748092329243)
+,p_event_id=>wwv_flow_imp.id(4732471525329240)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Console Log'
+,p_static_id=>'console-log'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'console.warn(',
+    '    "List Selection after refresh fired",',
+    '    new Date().toISOString(),',
+    '    $("#primary_items_list .t-ContentRow-item").length',
+    ');')))).to_clob
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(4732546654329241)
+,p_event_id=>wwv_flow_imp.id(4732471525329240)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', 'appSplitViewSelection.reconcile();')).to_clob
+,p_da_action_comment=>'Calls the reusable split-view controller to preserve the current selection when possible, select the first available row when necessary, or show the empty state when no rows remain.'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(4795242062047531)
+,p_name=>'Sync Selected Item Context'
+,p_static_id=>'refresh-item-contextual-details'
+,p_event_sequence=>10
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P330_SELECTED_ITEM_ID_UI'
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+,p_da_event_comment=>'Runs when the Content Row updates its UI selection item. This separates the selection state maintained by the component from the canonical item context used by the detail regions.'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(4731434885329230)
+,p_event_id=>wwv_flow_imp.id(4795242062047531)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Set Item Context from UI Selection'
+,p_static_id=>'set-p330-selected-item-id'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '/*',
+    ' * Copy the component-managed UI selection into the canonical item',
+    ' * context only when the value has actually changed.',
+    ' */',
+    'var uiId =',
+    '    apex.item("P330_SELECTED_ITEM_ID_UI").getValue();',
+    '',
+    'var contextId =',
+    '    apex.item("P330_SELECTED_ITEM_ID").getValue();',
+    '',
+    '/*',
+    ' * Do not suppress this change event. Updating the canonical item is',
+    ' * what triggers the dependent detail-region refresh Dynamic Action.',
+    ' */',
+    'if (uiId && uiId !== contextId) {',
+    '    apex.item("P330_SELECTED_ITEM_ID").setValue(uiId);',
+    '}')))).to_clob
+,p_da_action_comment=>'Copies the current UI selection into P330_SELECTED_ITEM_ID only when the value has changed. This item is the canonical context used by the detail-region queries.'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(4731675253329232)
+,p_name=>'Refresh Selected Item Details'
+,p_static_id=>'selection-item-changes'
+,p_event_sequence=>30
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P330_SELECTED_ITEM_ID'
+,p_condition_element=>'P330_SELECTED_ITEM_ID'
+,p_triggering_condition_type=>'NOT_NULL'
+,p_bind_type=>'live'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+,p_da_event_comment=>'Runs when the canonical selected-item context changes. It refreshes all dependent regions marked with .js-item-refresh so the detail area reflects the selected row.'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(4795691649047531)
+,p_event_id=>wwv_flow_imp.id(4731675253329232)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Item Detail Regions'
+,p_static_id=>'native-refresh'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'JQUERY_SELECTOR'
+,p_affected_elements=>'.js-item-refresh'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
+,p_da_action_comment=>'Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P330_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.'
 );
 end;
 /
@@ -18113,21 +19834,6 @@ wwv_flow_imp_page.create_component_action(
 ,p_condition_expr1=>'PAGE_ALIAS'
 ,p_exec_cond_for_each_row=>true
 );
-end;
-/
-prompt --application/deployment/definition
-begin
-null;
-end;
-/
-prompt --application/deployment/checks
-begin
-null;
-end;
-/
-prompt --application/deployment/buildoptions
-begin
-null;
 end;
 /
 prompt --application/end_environment

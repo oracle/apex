@@ -932,7 +932,7 @@
   --ut-body-actions-width: 320px;
 }
 :root {
-  --ut-body-sidebar-width: 15rem;
+  --ut-body-sidebar-width: 320px;
 }
 :root {
   --ut-body-content-max-width: 100%;
@@ -2277,3 +2277,10 @@ a-workflow-diagram .a-Toolbar--simple .a-Toolbar-group .a-Button:hover {
 --ut-palette-info-text: #20548A;
 
 }   
+
+.t-ContentRow-item.is-selected {
+    --ut-cr-item-background-color: var(--a-palette-primary);
+    --ut-cr-item-text-color: var(--a-palette-primary-contrast);
+    --ut-component-text-title-color: var(--ut-cr-item-text-color);
+    --ut-component-text-muted-color: var(--ut-cr-item-text-color);
+}

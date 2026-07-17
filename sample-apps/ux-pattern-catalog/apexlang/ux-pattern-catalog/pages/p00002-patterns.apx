@@ -66,7 +66,7 @@ page 2 (
                 select
                     'fa-id-card-o' as icon_class,
                     'Item Details' as title,
-                    'Inspect one record with the right amount of context, supporting information, and follow-up action.' as description,
+                    'Inspect one record with supporting context and actions in a standalone or selection-driven detail view.' as description,
                     'item-details' as page_alias
                 from sys.dual
                 union all
@@ -75,13 +75,6 @@ page 2 (
                     'Data Entry' as title,
                     'Create and update information with form patterns that match the complexity, context, and confidence required by the task.' as description,
                     'data-entry' as page_alias
-                from sys.dual
-                union all
-                select
-                    'fa-files-o' as icon_class,
-                    'Master Detail' as title,
-                    'Work across parent and child records with layouts that preserve context, support comparison, and keep related actions close to the data.' as description,
-                    'master-detail' as page_alias
                 from sys.dual
                 ```
         }
