@@ -40,7 +40,11 @@ page 300 (
         name: About
         type: staticContent
         source {
-            htmlCode: Item detail patterns help users inspect one record with the right amount of context, supporting information, and follow-up action. Use these patterns when the primary task is understanding a specific item rather than browsing many records or entering a new one.
+            htmlCode:
+                ```html
+                Item detail patterns help users inspect one record with the right amount of context, supporting information, and follow-up action. They include both standalone detail pages and selection-driven layouts where users choose an item from a list and view its details alongside it. Use these patterns when the primary task is understanding a specific item rather than browsing many records, comparing large sets of data, or completing data entry.
+                
+                ```
         }
         layout {
             sequence: 20
@@ -90,6 +94,13 @@ page 300 (
                     'Item Detail - Full' as title,
                     'A complete detail page with organized sections, related information, and supporting actions for a single record.' as description,
                     'item-detail-full' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-layout-2col' as icon_class,
+                    'Item Selection and Details' as title,
+                    'A selection-first layout with a list of items alongside details for the currently selected record.' as description,
+                    'item-selection-with-details' as page_alias
                 from sys.dual
                 ```
         }

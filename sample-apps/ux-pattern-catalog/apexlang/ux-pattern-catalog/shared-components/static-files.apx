@@ -23,6 +23,16 @@ file "icons/app-icon-512.png" (
     charSet: utf-8
 )
 
+file "js/split-view-selection.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "js/split-view-selection.min.js" (
+    mimeType: text/javascript
+    charSet: utf-8
+)
+
 file "standards/shared-guidelines.md" (
     mimeType: text/markdown
     charSet: utf-8

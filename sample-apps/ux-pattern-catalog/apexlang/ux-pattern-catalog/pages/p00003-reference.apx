@@ -48,6 +48,13 @@ page 3 (
                 ```html
                 <p>Track notable changes to the catalog, including new patterns, guidance updates, and structural refinements.</p>
                 
+                <h3 class="u-text-subheading-sm">Version 26.1.1</h3>
+                <p><strong>Item Detail Pattern Updates</strong></p>
+                <ul>
+                  <li>Added the Item Selection and Details pattern, combining a selectable item list with an adjacent detail view.</li>
+                  <li>Consolidated the placeholder Master-Detail category into Item Details.</li>
+                </ul>
+                
                 <h3 class="u-text-subheading-sm">Version 26.1.0</h3>
                 <p><strong>Initial Release</strong></p>
                 <ul>

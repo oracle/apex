@@ -307,6 +307,19 @@ list navigation-menu (
         }
     )
 
+    entry item-selection-and-details (
+        label: Item Selection and Details
+        layout {
+            sequence: 170
+            parentEntry: @item-details
+        }
+        link {
+            target: {
+                page: 330
+            }
+        }
+    )
+
     entry master-detail (
         label: Master Detail
         icon {
@@ -320,6 +333,9 @@ list navigation-menu (
             target: {
                 page: 500
             }
+        }
+        serverSideCondition {
+            type: never
         }
     )
 
