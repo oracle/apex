@@ -2284,3 +2284,20 @@ a-workflow-diagram .a-Toolbar--simple .a-Toolbar-group .a-Button:hover {
     --ut-component-text-title-color: var(--ut-cr-item-text-color);
     --ut-component-text-muted-color: var(--ut-cr-item-text-color);
 }
+
+/* Hide the processing spinner when it is first added to the page. */
+.u-Processing {
+    opacity: 0;
+    animation: spinner-fade-in 0.5s ease 0.5s forwards;
+}
+
+/* Gradually transition the spinner from hidden to fully visible. */
+@keyframes spinner-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

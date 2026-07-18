@@ -106,7 +106,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461239195654
-,p_version_scn=>'209119838'
+,p_version_scn=>'209175626'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -5955,14 +5955,14 @@ wwv_flow_imp_shared.create_theme(
 ,p_default_required_label=>1610598484065263269
 ,p_default_navbar_list_template=>2849019392706229583
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
-,p_files_version=>2461236193253
+,p_files_version=>2461239214339
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
 ,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
-,p_version_scn=>'SH256:7usefdiEH6kkcjOtX-765oI_i_mzNI6oHXgBNKzM7eA'
+,p_version_scn=>'SH256:Dw1laM6jQeHOxoHf-EFDi1117CnHEMH0In4U-dN-jfA'
 ,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
 );
 end;
@@ -5986,7 +5986,9 @@ wwv_flow_imp_shared.create_theme_style(
 ||'FBFBFE;\n\n--ut-palette-danger: #B73122;\n--ut-palette-danger-contrast: #FFFFFF;\n--ut-palette-danger-shade: #FDECEA;\n--ut-palette-danger-text: #9F271B;\n\n--ut-palette-warning: #9A5B00;\n--ut-palette-warning-contrast: #FFFFFF;\n--ut-palette-warning'
 ||'-shade: #FFF4DB;\n--ut-palette-warning-text: #7A4700;\n\n--ut-palette-success: #1D7A52;\n--ut-palette-success-contrast: #FFFFFF;\n--ut-palette-success-shade: #E7F6EE;\n--ut-palette-success-text: #166341;\n\n--ut-palette-info: #2B6CB0;\n--ut-palette-i'
 ||'nfo-contrast: #FFFFFF;\n--ut-palette-info-shade: #EAF2FF;\n--ut-palette-info-text: #20548A;\n\n}   \n\n.t-ContentRow-item.is-selected {\n    --ut-cr-item-background-color: var(--a-palette-primary);\n    --ut-cr-item-text-color: var(--a-palette-primar'
-||'y-contrast);\n    --ut-component-text-title-color: var(--ut-cr-item-text-color);\n    --ut-component-text-muted-color: var(--ut-cr-item-text-color);\n}","useCustomLess":"N"}'
+||'y-contrast);\n    --ut-component-text-title-color: var(--ut-cr-item-text-color);\n    --ut-component-text-muted-color: var(--ut-cr-item-text-color);\n}\n\n/* Hide the processing spinner when it is first added to the page. */\n.u-Processing {\n    opa'
+||'city: 0;\n    animation: spinner-fade-in 0.5s ease 0.5s forwards;\n}\n\n/* Gradually transition the spinner from hidden to fully visible. */\n@keyframes spinner-fade-in {\n    from {\n        opacity: 0;\n    }\n\n    to {\n        opacity: 1;\n    }'
+||'\n}","useCustomLess":"N"}'
 ,p_theme_roller_output_file_url=>'#THEME_DB_FILES#6021538955896218.css'
 ,p_theme_roller_read_only=>false
 );
@@ -7880,7 +7882,11 @@ wwv_flow_imp.g_varchar2_table(939) := '3B0D0A2D2D75742D70616C657474652D737563636
 wwv_flow_imp.g_varchar2_table(940) := '4646464646463B0D0A2D2D75742D70616C657474652D696E666F2D73686164653A20234541463246463B0D0A2D2D75742D70616C657474652D696E666F2D746578743A20233230353438413B0D0A0D0A7D2020200D0A0D0A2E742D436F6E74656E74526F';
 wwv_flow_imp.g_varchar2_table(941) := '772D6974656D2E69732D73656C6563746564207B0D0A202020202D2D75742D63722D6974656D2D6261636B67726F756E642D636F6C6F723A20766172282D2D612D70616C657474652D7072696D617279293B0D0A202020202D2D75742D63722D6974656D';
 wwv_flow_imp.g_varchar2_table(942) := '2D746578742D636F6C6F723A20766172282D2D612D70616C657474652D7072696D6172792D636F6E7472617374293B0D0A202020202D2D75742D636F6D706F6E656E742D746578742D7469746C652D636F6C6F723A20766172282D2D75742D63722D6974';
-wwv_flow_imp.g_varchar2_table(943) := '656D2D746578742D636F6C6F72293B0D0A202020202D2D75742D636F6D706F6E656E742D746578742D6D757465642D636F6C6F723A20766172282D2D75742D63722D6974656D2D746578742D636F6C6F72293B0D0A7D';
+wwv_flow_imp.g_varchar2_table(943) := '656D2D746578742D636F6C6F72293B0D0A202020202D2D75742D636F6D706F6E656E742D746578742D6D757465642D636F6C6F723A20766172282D2D75742D63722D6974656D2D746578742D636F6C6F72293B0D0A7D0D0A0D0A2F2A2048696465207468';
+wwv_flow_imp.g_varchar2_table(944) := '652070726F63657373696E67207370696E6E6572207768656E20697420697320666972737420616464656420746F2074686520706167652E202A2F0D0A2E752D50726F63657373696E67207B0D0A202020206F7061636974793A20303B0D0A2020202061';
+wwv_flow_imp.g_varchar2_table(945) := '6E696D6174696F6E3A207370696E6E65722D666164652D696E20302E3573206561736520302E357320666F7277617264733B0D0A7D0D0A0D0A2F2A204772616475616C6C79207472616E736974696F6E20746865207370696E6E65722066726F6D206869';
+wwv_flow_imp.g_varchar2_table(946) := '6464656E20746F2066756C6C792076697369626C652E202A2F0D0A406B65796672616D6573207370696E6E65722D666164652D696E207B0D0A2020202066726F6D207B0D0A20202020202020206F7061636974793A20303B0D0A202020207D0D0A0D0A20';
+wwv_flow_imp.g_varchar2_table(947) := '202020746F207B0D0A20202020202020206F7061636974793A20313B0D0A202020207D0D0A7D';
 wwv_flow_imp_shared.create_theme_file(
  p_id=>wwv_flow_imp.id(3853725486706913)
 ,p_theme_id=>42
