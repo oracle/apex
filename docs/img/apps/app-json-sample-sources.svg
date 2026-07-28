@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">JSON file icon</title>
+  <desc id="desc">A clean JSON document icon with a purple JSON label.</desc>
+  <rect width="512" height="512" fill="#ffffff"/>
+  <path d="M97 8h261l74 75v408c0 8.3-6.7 15-15 15H97c-8.3 0-15-6.7-15-15V23c0-8.3 6.7-15 15-15Z" fill="#f4f4f4"/>
+  <path d="M358 8v75h74Z" fill="#b9b9b9"/>
+  <path d="M181 96c-2 0-4 1.6-4 4v42c0 6.7-3.4 10-10 10h-3v9h3c6.6 0 10 3.3 10 10v42c0 2.4 1.6 4 4 4h28v-9h-14c-5.5 0-9-4.5-9-10v-31c0-8.6-4.3-13.4-10-15.5 5.7-2.1 10-6.9 10-15.5v-31c0-5.5 3.5-10 9-10h14v-9Zm127 0v9h9c5.5 0 9 4.5 9 10v31c0 8.6 4.3 13.4 10 15.5-5.7 2.1-10 6.9-10 15.5v31c0 5.5-3.5 10-9 10h-9v9h27c2.4 0 4-1.6 4-4v-42c0-6.7 3.4-10 10-10h3v-9h-3c-6.6 0-10-3.3-10-10v-42c0-2.4-1.6-4-4-4Z" fill="#8d69a1"/>
+  <circle cx="229" cy="186" r="7.5" fill="#8d69a1"/>
+  <circle cx="257" cy="186" r="7.5" fill="#8d69a1"/>
+  <circle cx="285" cy="186" r="7.5" fill="#8d69a1"/>
+  <path d="M36 277c0-5.5 4.5-10 10-10h421c5.5 0 10 4.5 10 10v155l-45 44v-44H82v44l-46-44Z" fill="#8d69a1"/>
+  <rect x="36" y="267" width="441" height="165" rx="10" fill="#8d69a1"/>
+  <text x="256" y="386" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="104" font-weight="700" text-anchor="middle">JSON</text>
+</svg>
