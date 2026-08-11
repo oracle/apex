@@ -1,0 +1,208 @@
+page 700 (
+    name: About
+    alias: ABOUT
+    title: About
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    htmlHeader {
+        htmlHeader:
+            ```html
+            <style>
+            div.helpContainer{width:960px;margin:16px auto;zoom:1}
+            div.helpContainer:before,div.helpContainer:after{content:"\0020";display:block;height:0;overflow:hidden}
+            div.helpContainer:after{clear:both}
+            div.helpContainer div.helpSide{float:left;width:300px}
+            div.helpContainer div.helpSide h1.appNameHeader{position:relative;font:bold 22px/36px Arial,sans-serif;color:#404040;padding:0;margin:0}
+            div.helpContainer div.helpSide h1.appNameHeader img{display:block;position:absolute;left:0;top:0}
+            div.helpContainer div.helpMain{float:right;border-left:1px solid #EEE;width:632px;padding-left:16px}
+            div.helpContainer div.helpMain h2{font:bold 20px/32px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h3{font:bold 16px/24px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain h4{font:bold 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain p{font:normal 12px/16px Arial,sans-serif;color:#404040;margin:0 0 8px 0}
+            div.helpContainer div.helpMain ul{list-style:outside disc;margin:0 0 0 24px}
+            div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}
+            div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}
+            </style>
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        reloadOnSubmit: always
+    }
+
+    region about-container (
+        name: About Container
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region about-this-application (
+        name: About this Application
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>About this Application</h2>
+                <p>
+                This Oracle APEX application demonstrates how to work with JSON data using modern Oracle Database features. It provides a structured and intuitive environment to explore JSON sources, transform data, and present it through rich and interactive components.
+                </p>
+                
+                <p>
+                The application showcases key capabilities such as JSON columns, JSON collection tables, and SQL/JSON functions, combined with relational duality views to bridge structured and semi-structured data. This enables a consistent and flexible data model while maintaining performance and scalability.
+                </p>
+                
+                <p>
+                Users can navigate through different modules including data sources, transformation functions, and presentation layers. The application also highlights practical use cases and administration tools, illustrating how Oracle APEX can be used to build modern, data-driven applications.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @about-container
+            slot: subRegions
+        }
+    )
+
+    region application-details (
+        name: Application Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select aa.version app_version,
+                       to_char(aa.pages,'999G999G990') pages,
+                       'Oracle' vendor
+                from apex_applications aa
+                where aa.application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--rightAligned
+            ]
+            showNullValuesAs: -
+        }
+
+        column APP_VERSION (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: App version
+            }
+            layout {
+                sequence: 1
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+        )
+
+        column PAGES (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Pages
+            }
+            layout {
+                sequence: 2
+            }
+        )
+
+        column VENDOR (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Vendor
+            }
+            layout {
+                sequence: 3
+            }
+        )
+
+    )
+
+    region features (
+        name: Features
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h2>Features</h2>
+                <ul>
+                <li>Support for multiple JSON data sources, including tables with JSON columns and JSON collection tables.</li>
+                <li>Use of SQL/JSON functions such as JSON_TABLE and JSON_TRANSFORM for data processing.</li>
+                <li>Integration of relational duality views for unified data access and manipulation.</li>
+                <li>Rich data presentation options including interactive grids, charts, maps, and master-detail views.</li>
+                <li>Advanced search capabilities such as faceted search for efficient data exploration.</li>
+                <li>End-to-end use cases for data loading and workflow integration.</li>
+                <li>Post-processing and transformation of JSON data within the database.</li>
+                <li>Administrative features including theme customization, data reset, and credential management.</li>
+                <li>Modular and scalable architecture following Oracle APEX best practices.</li>
+                <li>Responsive and user-friendly interface for seamless navigation across all modules.</li>
+                </ul>
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @about-container
+            slot: subRegions
+        }
+    )
+
+    region quick-start (
+        name: Quick Start
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <H2>Getting Started</h2>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <p>If you have questions, ask them on the <a target="_blank" rel="noopener noreferrer external" href="https://forums.oracle.com/ords/apexds/domain/dev-community/category/apex">Oracle APEX Forum</a>.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @about-container
+            slot: subRegions
+        }
+    )
+
+)
+

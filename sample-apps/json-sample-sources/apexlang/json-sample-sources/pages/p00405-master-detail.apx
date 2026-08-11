@@ -1,0 +1,991 @@
+page 405 (
+    name: Master Detail
+    alias: MASTER-DETAIL
+    title: Master Detail
+    pageGroup: @data-presentation
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* Scroll Results Only in Side Column */
+            .t-Body-side {
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+            .search-results {
+                flex: 1;
+                overflow: auto;
+            }
+            /* Format Search Region */
+            .search-region {
+                border-bottom: 1px solid rgba(0,0,0,.1);
+                flex-shrink: 0;
+            }
+            ```
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+    }
+    advanced {
+        enableDuplicatePageSubmissions: false
+        reloadOnSubmit: always
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region customers (
+        name: Customers
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @eba_demo_json_customer_orders_dv
+        }
+        localPostProcessing {
+            type: whereOrderByClause
+            whereClause: "ID" = :P405_ID
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: js-master-region
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P405_ID
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: No Record Selected
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EMAIL_ADDRESS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Email Address
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FULL_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Full Name
+            }
+            layout {
+                sequence: 2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+    )
+
+    region master-records (
+        name: Master Records
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @eba_demo_json_customer_orders_dv
+            pageItemsToSubmit: P405_SEARCH
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select "ID",
+                    null LINK_CLASS,
+                    apex_page.get_url(p_items => 'P405_ID', p_values => "ID") LINK,
+                    null ICON_CLASS,
+                    null LINK_ATTR,
+                    null ICON_COLOR_CLASS,
+                    case when coalesce(:P405_ID,'0') = "ID"
+                      then 'is-active' 
+                      else ' '
+                    end LIST_CLASS,
+                    (substr("FULL_NAME", 1, 50)||( case when length("FULL_NAME") > 50 then '...' else '' end )) LIST_TITLE,
+                    (substr("EMAIL_ADDRESS", 1, 50)||( case when length("EMAIL_ADDRESS") > 50 then '...' else '' end )) LIST_TEXT,
+                    null LIST_BADGE
+                from #APEX$SOURCE_DATA# x
+                where (:P405_SEARCH is null
+                        or upper(x."FULL_NAME") like '%'||upper(:P405_SEARCH)||'%'
+                        or upper(x."EMAIL_ADDRESS") like '%'||upper(:P405_SEARCH)||'%'
+                    )
+                order by "FULL_NAME"
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: search-results
+        }
+        reportLayout {
+            numberOfRows: 1000
+        }
+        componentAppearance {
+            template: @/media-list
+            templateOptions: [
+                t-MediaList--showDesc
+                t-MediaList--stack
+            ]
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: <div class="u-tC">No data found.</div>
+        }
+
+        column ICON_CLASS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: ICON_CLASS
+                alignment: center
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_COLOR_CLASS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: ICON_COLOR_CLASS
+                alignment: center
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: ID
+                alignment: center
+            }
+            layout {
+                sequence: 1
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: LINK
+                alignment: center
+            }
+            layout {
+                sequence: 3
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_ATTR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: LINK_ATTR
+                alignment: center
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LINK_CLASS (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: LINK_CLASS
+                alignment: center
+            }
+            layout {
+                sequence: 2
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_BADGE (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: LIST_BADGE
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_CLASS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: LIST_CLASS
+                alignment: center
+            }
+            layout {
+                sequence: 7
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TEXT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: LIST_TEXT
+                alignment: center
+            }
+            layout {
+                sequence: 9
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LIST_TITLE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: LIST_TITLE
+                alignment: center
+            }
+            layout {
+                sequence: 8
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region no-record-selected (
+        name: No Record Selected
+        type: staticContent
+        source {
+            htmlCode: No Record Selected
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P405_ID
+        }
+    )
+
+    region orders (
+        name: Orders
+        type: classicReport
+        source {
+            location: jsonDualityView
+            jsonDualityView: @eba_demo_json_customer_orders_dv
+        }
+        dataProfile {
+            nestedRows: @orders
+        }
+        localPostProcessing {
+            type: whereOrderByClause
+            whereClause: "ID" = :P405_ID
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            cssClasses: js-detail-region
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P405_ID
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                t-Report--stretch
+                #DEFAULT#
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        performance {
+            maxRowsToProcess: 5000
+        }
+        messages {
+            whenNoDataFound: No data found.
+        }
+        componentAdvanced {
+            stripHtml: true
+        }
+
+        column EMAIL_ADDRESS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Email Address
+            }
+            layout {
+                sequence: 4
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FULL_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Full Name
+            }
+            layout {
+                sequence: 3
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 1
+            }
+        )
+
+        column ORDERS_POS (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 8
+            }
+        )
+
+        column ORDER_DATETIME (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Order Datetime
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ORDER_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: link
+            heading {
+                heading: <span class="u-VisuallyHidden">Edit</span>
+            }
+            layout {
+                sequence: 2
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            link {
+                target: {
+                    page: 407
+                    items: {
+                        P407_ID: #ID#
+                        P407_ORDER_ID: #ORDER_ID#
+                    }
+                    action: resetPagination
+                }
+                linkText: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            }
+            sorting {
+                sortable: false
+            }
+            advanced {
+                cellWidth: 32
+            }
+        )
+
+        column ORDER_STATUS (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Order Status
+            }
+            layout {
+                sequence: 6
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STORE_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: plainTextBasedOnLov
+            heading {
+                heading: Store
+            }
+            lov {
+                type: sharedComponent
+                lov: @stores
+            }
+            layout {
+                sequence: 5
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page provides a master-detail view of customers and their orders using the <strong>EBA_DEMO_JSON_CUSTOMER_ORDERS_DV</strong> Duality View. The master section displays customer information, while the detail section shows the related orders for the selected customer, including order date and status. This layout allows easy navigation and exploration of customer activity in a single, unified interface.
+                </p>
+                
+                <p>
+                To get started, select a customer from the master section to view their related orders in the detail section. 
+                You can then explore, view, edit, and create orders for each customer, including order dates and order statuses, within the synchronized master-detail interface.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @breadcrumb
+            slot: searchFieldAndSmartFilters
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+            cssClasses: js-detail-rds
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P405_ID
+        }
+        settings {
+            rememberSelection: false
+        }
+    )
+
+    region search (
+        name: Search
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: [
+                #DEFAULT#
+                t-Form--stretchInputs
+            ]
+            cssClasses: [
+                search-region
+                padding-md
+            ]
+        }
+    )
+
+    pageItem P405_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @customers
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P405_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @search
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--large
+                t-Form-fieldContainer--postTextBlock
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Search...
+        }
+        advanced {
+            customAttributes: autocomplete="off"
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 406
+                clearCache: 406
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button edit (
+        buttonName: EDIT
+        label: Edit
+        layout {
+            sequence: 20
+            region: @customers
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-pencil-square-o
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 406
+                items: {
+                    P406_ID: &P405_ID.
+                }
+                clearCache: 406
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        advanced {
+            htmlDomId: edit_master_btn
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 500
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button pop (
+        buttonName: POP_
+        label: Add Orders
+        layout {
+            sequence: 10
+            region: @orders
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 407
+                items: {
+                    P407_ID: &P405_ID.
+                }
+                clearCache: 407
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 404
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+                t-Button--gapRight
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 405
+                clearCache: 405
+                action: resetPagination
+                request: RESET
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction dialog-closed (
+        name: Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @customers
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Master Detail row(s) updated.');
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @customers
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction dialog-closed-2 (
+        name: Dialog Closed
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @orders
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: apex.message.showPageSuccess('Orders row(s) updated.');
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @orders
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction perform-search (
+        name: Perform Search
+        execution {
+            sequence: 150
+        }
+        when {
+            event: keypress
+            selectionType: items
+            items: P405_SEARCH
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: this.browserEvent.which === apex.jQuery.ui.keyCode.ENTER
+        }
+
+        action native-cancel-event (
+            action: cancelEvent
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @master-records
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

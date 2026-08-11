@@ -1,0 +1,961 @@
+page 503 (
+    name: JSON and Workflow
+    alias: JSON-AND-WORKFLOW
+    title: JSON and Workflow
+    pageGroup: @use-cases
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button (
+        name: Button
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @start-workflow
+            slot: subRegions
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+        accessibility {
+            useLandmark: false
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                  This page demonstrates how to use Oracle APEX <strong>Workflow Designer</strong> 
+                  to orchestrate an order placement pipeline. By submitting the form, the workflow 
+                  validates the customer and store, fetches product pricing, creates order records, 
+                  determines the shipping method, enriches the order metadata, and sends an order confirmation email.
+                </p>
+                
+                <p>
+                  To get started, complete and submit the order form to trigger the workflow. 
+                  You can then use the <strong>Open Workflow Console</strong> button to inspect each workflow step, status, and variable value.
+                </p>
+                
+                <p>
+                  <strong>Note:</strong> Since customer data is randomly generated, enter 
+                  <strong>your own email address</strong> in the Email field to receive the order confirmation email.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region start-workflow (
+        name: Start Workflow
+        title: 1. Start Workflow
+        type: staticContent
+        source {
+            htmlCode: Please enter the order details and launch the workflow
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                t-Alert--accessibleHeading
+                js-headingLevel-2
+                t-Form--standardPadding
+                margin-bottom-sm
+            ]
+            icon: fa-number-1
+            renderComponents: belowContent
+        }
+    )
+
+    region workflow-console (
+        name: Workflow Console
+        title: 2. Workflow Console
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                After launching the process you can open the workflow console for more details about the workflow </br>
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--customIcons
+                t-Alert--info
+                t-Alert--accessibleHeading
+                js-headingLevel-2
+                t-Form--standardPadding
+                margin-bottom-md
+            ]
+            icon: fa-number-2
+            renderComponents: belowContent
+        }
+    )
+
+    pageItem P503_CITY (
+        type: textField
+        label {
+            label: City
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P503_COUNTRY (
+        type: textField
+        label {
+            label: Country
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P503_CUSTOMER_ID (
+        type: selectList
+        label {
+            label: Customer
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @customers
+            displayExtraValues: false
+            nullDisplayValue: - Select Customer -
+        }
+        layout {
+            sequence: 40
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P503_DEFAULT_ADDRESS (
+        type: switch
+        label {
+            label: Use customer's address as delivery address
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P503_EMAIL_ADDRESS (
+        type: textField
+        label {
+            label: Email Address
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P503_PAYMENT_METHOD (
+        type: selectList
+        label {
+            label: Payment Method
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @payment-method
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 90
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    pageItem P503_POSTAL_CODE (
+        type: textField
+        label {
+            label: Postal Code
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P503_PRODUCT_ID (
+        type: selectList
+        label {
+            label: Product
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @products
+            displayExtraValues: false
+            nullDisplayValue: - Select Product -
+        }
+        layout {
+            sequence: 70
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P503_QUANTITY (
+        type: numberField
+        label {
+            label: Quantity
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P503_STATE (
+        type: textField
+        label {
+            label: State
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P503_STORE_ID (
+        type: selectList
+        label {
+            label: Store
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @stores
+            displayExtraValues: false
+            nullDisplayValue: - Select Store -
+        }
+        layout {
+            sequence: 60
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P503_STREET (
+        type: textField
+        label {
+            label: Street
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @start-workflow
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P503_WF_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @start-workflow
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 200
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button open-workflow-console (
+        buttonName: Open_Workflow_Console
+        label: Open Workflow Console
+        layout {
+            sequence: 10
+            region: @workflow-console
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 504
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 502
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button start-workflow (
+        buttonName: START_WORKFLOW
+        label: Start Workflow
+        layout {
+            sequence: 10
+            region: @button
+            slot: regionBody
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction da-hide-fields-on-load (
+        name: DA - Hide Fields on Load
+        execution {
+            sequence: 70
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_EMAIL_ADDRESS
+                    P503_STORE_ID
+                    P503_PRODUCT_ID
+                    P503_QUANTITY
+                    P503_PAYMENT_METHOD
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction da-show-email-and-store (
+        name: DA - Show Email and Store
+        execution {
+            sequence: 60
+        }
+        when {
+            selectionType: items
+            items: P503_CUSTOMER_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P503_CUSTOMER_ID
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_EMAIL_ADDRESS
+                    P503_STORE_ID
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action show-email (
+            name: Show Email
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P503_EMAIL_ADDRESS
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action show-store (
+            name: " Show Store"
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P503_STORE_ID
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction da-show-product (
+        name: DA - Show Product
+        execution {
+            sequence: 80
+        }
+        when {
+            selectionType: items
+            items: P503_STORE_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P503_STORE_ID
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_PRODUCT_ID
+                    P503_QUANTITY
+                    P503_PAYMENT_METHOD
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action show-product (
+            name: Show Product
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P503_PRODUCT_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction da-show-quantity-payment-method-and-switch-button (
+        name: DA - Show Quantity , Payment Method and switch button
+        execution {
+            sequence: 90
+        }
+        when {
+            selectionType: items
+            items: P503_PRODUCT_ID
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P503_PRODUCT_ID
+        }
+
+        action hide-quantity-payment-method-and-and-switch-button (
+            name: Hide Quantity , Payment Method and and switch button
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_QUANTITY
+                    P503_PAYMENT_METHOD
+                    P503_DEFAULT_ADDRESS
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action show-quantity-payment-method-and-switch-button (
+            name: Show Quantity , Payment Method and switch button
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_QUANTITY
+                    P503_PAYMENT_METHOD
+                    P503_DEFAULT_ADDRESS
+                ]
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+    )
+
+    dynamicAction da-toggle-shipment-address-fields (
+        name: DA - Toggle Shipment Address Fields
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P503_DEFAULT_ADDRESS
+        }
+        clientSideCondition {
+            type: item=value
+            item: P503_DEFAULT_ADDRESS
+            value: Y
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_STREET
+                    P503_CITY
+                    P503_STATE
+                    P503_COUNTRY
+                    P503_POSTAL_CODE
+                ]
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: [
+                    P503_STREET
+                    P503_CITY
+                    P503_STATE
+                    P503_COUNTRY
+                    P503_POSTAL_CODE
+                ]
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction fetch-customer-email (
+        name: Fetch Customer Email
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P503_CUSTOMER_ID
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select email_address
+                      from eba_demo_json_customers
+                     where customer_id = :P503_CUSTOMER_ID
+                    
+                    ```
+                itemsToSubmit: P503_CUSTOMER_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P503_EMAIL_ADDRESS
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process clear-form-items (
+        name: CLEAR_FORM_ITEMS
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                  :P503_CUSTOMER_ID      := null;
+                  :P503_STORE_ID         := null;
+                  :P503_PRODUCT_ID       := null;
+                  :P503_QUANTITY         := 1;
+                  :P503_PAYMENT_METHOD   := 'Card';
+                  :P503_STREET           := null;
+                  :P503_CITY             := null;
+                  :P503_STATE            := null;
+                  :P503_COUNTRY          := null;
+                  :P503_POSTAL_CODE      := null;
+                  :P503_DEFAULT_ADDRESS  := 'Y';
+                  :P503_EMAIL_ADDRESS    := null;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 9599173390718216
+        }
+    )
+
+    process fetch-customer-address (
+        name: Fetch Customer Address
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                  select json_value(customer_metadata, '$.address.street')          as street,
+                         json_value(customer_metadata, '$.address.city')            as city,
+                         json_value(customer_metadata, '$.address.state_province')  as state,
+                         json_value(customer_metadata, '$.address.country')         as country,
+                         json_value(customer_metadata, '$.address.postal_code')     as postal_code
+                    into :P503_STREET,
+                         :P503_CITY,
+                         :P503_STATE,
+                         :P503_COUNTRY,
+                         :P503_POSTAL_CODE
+                    from eba_demo_json_customers
+                   where customer_id = :P503_CUSTOMER_ID;
+                exception
+                   when no_data_found then
+                      null;
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 5
+            point: afterSubmit
+        }
+        advanced {
+            executionMappingIdentifier: 13539640835675303
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P503_DEFAULT_ADDRESS = 'Y'
+                and :P503_CUSTOMER_ID is not null
+                ```
+        }
+    )
+
+    process start-a-new-workflow (
+        name: Start a new workflow
+        type: workflow
+        workflow {
+            definition: @ORDER_PLACEMENT_WORKFLOW_1
+        }
+        workflowInstance {
+            returnWorkflowIdItem: P503_WF_ID
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Workflow started
+        }
+        error {
+            errorMessage: Error
+        }
+        advanced {
+            executionMappingIdentifier: 6137831472528791
+        }
+
+        parameter (
+            name: @P_CUSTOMER_ID
+            value {
+                item: P503_CUSTOMER_ID
+            }
+        )
+
+        parameter (
+            name: @P_PRODUCT_ID
+            value {
+                item: P503_PRODUCT_ID
+            }
+        )
+
+        parameter (
+            name: @P_QUANTITY
+            value {
+                item: P503_QUANTITY
+            }
+        )
+
+        parameter (
+            name: @P_STORE_ID
+            value {
+                item: P503_STORE_ID
+            }
+        )
+
+        parameter (
+            name: @P_PAYMENT_METHOD
+            value {
+                item: P503_PAYMENT_METHOD
+            }
+        )
+
+        parameter (
+            name: @P_STREET
+            value {
+                item: P503_STREET
+            }
+        )
+
+        parameter (
+            name: @P_CITY
+            value {
+                item: P503_CITY
+            }
+        )
+
+        parameter (
+            name: @P_STATE
+            value {
+                item: P503_STATE
+            }
+        )
+
+        parameter (
+            name: @P_COUNTRY
+            value {
+                item: P503_COUNTRY
+            }
+        )
+
+        parameter (
+            name: @P_POSTAL_CODE
+            value {
+                item: P503_POSTAL_CODE
+            }
+        )
+
+        parameter (
+            name: @P_EMAIL_ADDRESS
+            value {
+                item: P503_EMAIL_ADDRESS
+            }
+        )
+
+    )
+
+)
+

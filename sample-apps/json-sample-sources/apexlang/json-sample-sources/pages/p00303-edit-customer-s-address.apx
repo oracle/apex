@@ -1,0 +1,435 @@
+page 303 (
+    name: Edit Customer's Address
+    alias: EDIT-CUSTOMER-S-ADDRESS
+    title: Edit Customer's Address
+    pageGroup: @sql-json-functions
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region edit-customer-s-address (
+        name: Edit Customer's Address
+        type: form
+        source {
+            location: jsonSource
+            jsonSource: @eba_demo_json_customers
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: update
+        }
+    )
+
+    pageItem P303_ADDRESS_CITY (
+        type: textField
+        label {
+            label: City
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @edit-customer-s-address
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: ADDRESS_CITY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P303_ADDRESS_COUNTRY (
+        type: textField
+        label {
+            label: Country
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @edit-customer-s-address
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: ADDRESS_COUNTRY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P303_ADDRESS_POSTAL_CODE (
+        type: textField
+        label {
+            label: Postal Code
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @edit-customer-s-address
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: ADDRESS_POSTAL_CODE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P303_ADDRESS_STATE_PROVINCE (
+        type: textField
+        label {
+            label: State Province
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @edit-customer-s-address
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: ADDRESS_STATE_PROVINCE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P303_ADDRESS_STREET (
+        type: textField
+        label {
+            label: Street
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @edit-customer-s-address
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 4000
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: ADDRESS_STREET
+            dataType: varchar2
+        }
+    )
+
+    pageItem P303_CUSTOMER_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @edit-customer-s-address
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: CUSTOMER_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P303_FULL_NAME (
+        type: textField
+        label {
+            label: Full Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @edit-customer-s-address
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @edit-customer-s-address
+            column: FULL_NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P303_OLD_ADDRESS (
+        type: hidden
+        layout {
+            sequence: 190
+            region: @edit-customer-s-address
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P303_CUSTOMER_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 10716598599814414
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process get-old-customer-address (
+        name: Get old customer address
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                begin
+                    select json_query(customer_metadata, '$.address')
+                      into :P303_OLD_ADDRESS
+                      from eba_demo_json_customers
+                     where customer_id = :P303_CUSTOMER_ID;
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 11886679244269335
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process initialize-form-edit-customer-s-address (
+        name: Initialize form Edit Customer's Address
+        type: formInitialization
+        formRegion: @edit-customer-s-address
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 10715789789814413
+        }
+    )
+
+    process json-transform-process-for-order-metadata (
+        name: JSON TRANSFORM process for order_metadata
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_rows_updated number;
+                begin
+                    update eba_demo_json_orders o
+                       set o.order_metadata =
+                           json_transform( -- Updates specific attributes inside the JSON document
+                               o.order_metadata,
+                               set '$.delivery_address.street'         = :P303_ADDRESS_STREET,
+                               set '$.delivery_address.city'           = :P303_ADDRESS_CITY,
+                               set '$.delivery_address.state_province' = :P303_ADDRESS_STATE_PROVINCE,
+                               set '$.delivery_address.country'        = :P303_ADDRESS_COUNTRY,
+                               set '$.delivery_address.postal_code'    = :P303_ADDRESS_POSTAL_CODE
+                           )
+                     where o.customer_id = :P303_CUSTOMER_ID
+                       and o.order_status in ('Open', 'Paid')
+                       and json_equal( -- Compares two JSON documents for structural equality
+                             json_query(o.order_metadata, '$.delivery_address'), -- Extracts the delivery_address object from the JSON document
+                             :P303_OLD_ADDRESS
+                           );
+                
+                    l_rows_updated := SQL%ROWCOUNT;
+                
+                    apex_application.g_print_success_message :=
+                        case
+                            when l_rows_updated = 0 then
+                                apex_lang.message('NO_ORDER_UPDATED')
+                            when l_rows_updated = 1 then
+                                apex_lang.message('ONE_ORDER_UPDATED')
+                            else
+                                apex_lang.message('MANY_ORDERS_UPDATED', l_rows_updated)
+                        end;
+                end;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 10078347102950422
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+    process process-form-edit-customer-s-address (
+        name: Process form Edit Customer's Address
+        type: formAutoRowProcessing
+        formRegion: @edit-customer-s-address
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: "  "
+        }
+        advanced {
+            executionMappingIdentifier: 10716110021814413
+        }
+        serverSideCondition {
+            whenButtonPressed: @save
+        }
+    )
+
+)
+

@@ -1,0 +1,354 @@
+page 403 (
+    name: Faceted Search
+    alias: FACETED-SEARCH
+    title: Faceted Search
+    pageGroup: @data-presentation
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page provides a faceted search experience for support tickets using the <strong>EBA_DEMO_JSON_SUPPORT_TICKET</strong> JSON source. Users can filter tickets by status, priority, and creation date range, with results displayed as cards and highlighted using color-coded status badges.
+                </p>
+                
+                <p>
+                To get started, use the faceted search filters to refine the displayed tickets. Each card includes a <strong>Details</strong> button that opens the full support ticket information.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @breadcrumb
+            slot: searchFieldAndSmartFilters
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region search (
+        name: Search
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+            columnSpan: 4
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkLabel: Filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+            showTotalRowCount: true
+            displayChartForTopNValues: 10
+        }
+
+        facet P403_CREATION_DATE (
+            type: range
+            label {
+                label: Creation Date
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: CREATED_AT2
+                dataType: date
+            }
+        )
+
+        facet P403_PRIORITY (
+            type: checkboxGroup
+            label {
+                label: Priority
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: PRIORITY
+            }
+        )
+
+        facet P403_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: C_ID,TITLE,STATUS,PRIORITY,RESOLUTION,DESCRIPTION
+            }
+        )
+
+        facet P403_STATUS (
+            type: checkboxGroup
+            label {
+                label: Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: STATUS
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Search Results
+        type: cards
+        source {
+            location: jsonSource
+            jsonSource: @eba_demo_json_support_ticket
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select s.c_id,
+                       s.title,
+                       s.status,
+                       s.priority,
+                       s.ticket_id,
+                       s.created_at2,
+                       s.description,
+                       s.comments,
+                       s.resolution,
+                       s.updated_at,
+                       s.customer_id,
+                       s.concern_order_id,
+                       s.concern_store_id,
+                       s.concern_product_id,
+                       c.full_name,
+                       p.product_name,
+                       st.store_name,
+                       case 
+                         when upper(s.status) = 'OPEN'     then 'u-color-9'
+                         when upper(s.status) = 'RESOLVED' then 'u-color-5'
+                         when upper(s.status) = 'PENDING'  then 'u-color-22'
+                         else 'u-color-14'
+                       end as badge_class
+                  from #APEX$SOURCE_DATA# s,
+                       eba_demo_json_customers c,
+                       eba_demo_json_products  p,
+                       eba_demo_json_stores    st
+                 where c.customer_id  (+) = s.customer_id
+                   and p.product_id   (+) = s.concern_product_id
+                   and st.store_id    (+) = s.concern_store_id
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+                t-CardsRegion--styleA
+            ]
+        }
+        advanced {
+            htmlDomId: tickets_card
+        }
+        title {
+            column: TITLE
+        }
+        body {
+            column: DESCRIPTION
+        }
+        secondaryBody {
+            advancedFormatting: true
+            htmlExpression: <p><strong>Ticket N°</strong> &TICKET_ID. &nbsp;|&nbsp; <strong>Priority:</strong> &PRIORITY.</p>
+        }
+        iconAndBadge {
+            badgeColumn: STATUS
+            badgeCssClasses: &BADGE_CLASS.
+        }
+
+        action action (
+            label: Details
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 411
+                    items: {
+                        P411_TICKET_ID: &C_ID.
+                    }
+                }
+            }
+        )
+
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 408
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 402
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 403
+                clearCache: 403
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

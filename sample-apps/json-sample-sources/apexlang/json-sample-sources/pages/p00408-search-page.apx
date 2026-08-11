@@ -1,0 +1,189 @@
+page 408 (
+    name: Search Page
+    alias: SEARCH-PAGE
+    title: Search Page
+    pageGroup: @data-presentation
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page demonstrates how to configure and use the standard search functionality in your application based on the <strong>EBA_DEMO_JSON_PRODUCTS</strong> table.
+                </p>
+                
+                <p>
+                In this example, the search is powered by a local data source that extracts product attributes from the product_details JSON column, enabling searchable fields such as brand, colour, and description alongside relational data like product name and price.
+                </p>
+                
+                <p>
+                To search, start typing your query (for example, "red"). The results will update as you type, displaying a list of all products that match the entered keywords across the available searchable attributes.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @breadcrumb
+            slot: searchFieldAndSmartFilters
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 20
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            useLandmark: false
+        }
+        settings {
+            searchPageItem: P408_SEARCH
+        }
+        messages {
+            noQueryEnteredMessage: Enter a query to search for products.
+            noResultsFoundMessage: No products found.
+        }
+
+        searchSource products-search (
+            name: Products_Search
+            searchConfig: @product_search
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P408_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: searchFieldAndSmartFilters
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            cssClasses: [
+                mxw800
+                t-Form-fieldContainer--noPadding
+            ]
+            icon: fa-search
+            valuePlaceholder: Search...
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 404
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 403
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

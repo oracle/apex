@@ -1,0 +1,556 @@
+workflow ORDER_PLACEMENT_WORKFLOW_1 (
+    name: Create Order
+    title: Create Order
+
+    parameter P_CITY (
+        label {
+            label: P_CITY
+        }
+    )
+
+    parameter P_COUNTRY (
+        label {
+            label: P_COUNTRY
+        }
+    )
+
+    parameter P_CUSTOMER_ID (
+        label {
+            label: P_CUSTOMER_ID
+        }
+        parameter {
+            dataType: number
+        }
+    )
+
+    parameter P_EMAIL_ADDRESS (
+        label {
+            label: P_EMAIL_ADDRESS
+        }
+    )
+
+    parameter P_PAYMENT_METHOD (
+        label {
+            label: P_PAYMENT_METHOD
+        }
+    )
+
+    parameter P_POSTAL_CODE (
+        label {
+            label: P_POSTAL_CODE
+        }
+    )
+
+    parameter P_PRODUCT_ID (
+        label {
+            label: P_PRODUCT_ID
+        }
+        parameter {
+            dataType: number
+        }
+    )
+
+    parameter P_QUANTITY (
+        label {
+            label: P_QUANTITY
+        }
+        parameter {
+            dataType: number
+        }
+    )
+
+    parameter P_STATE (
+        label {
+            label: P_STATE
+        }
+    )
+
+    parameter P_STORE_ID (
+        label {
+            label: P_STORE_ID
+        }
+        parameter {
+            dataType: number
+        }
+    )
+
+    parameter P_STREET (
+        label {
+            label: P_STREET
+        }
+    )
+
+    version 1.0 (
+        activity New (
+            name: Start
+            type: workflowStart
+            layout {
+                sequence: 10
+            }
+            advanced {
+                diagram: {"position":{"x":570,"y":970},"z":1}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_1
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":12,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_1 (
+            name: Fetch Customer and Store Details
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      -- Customer
+                      begin
+                        select c.full_name,
+                               json_value(c.customer_metadata, '$.loyalty_tier')
+                          into :V_CUSTOMER_NAME,
+                               :V_LOYALTY_TIER
+                          from eba_demo_json_customers c
+                         where c.customer_id = :P_CUSTOMER_ID;
+                      exception
+                        when no_data_found then
+                          raise_application_error(
+                            -20001,
+                            'Customer ' || :P_CUSTOMER_ID || ' not found.'
+                          );
+                      end;
+                    
+                      -- Store
+                      begin
+                        select s.store_name
+                          into :V_STORE_NAME
+                          from eba_demo_json_stores s
+                         where s.store_id = :P_STORE_ID;
+                      exception
+                        when no_data_found then
+                          raise_application_error(
+                            -20002,
+                            'Store ' || :P_STORE_ID || ' not found.'
+                          );
+                      end;
+                    
+                    end;
+                    ```
+            }
+            layout {
+                sequence: 20
+            }
+            advanced {
+                diagram: {"position":{"x":660,"y":970},"z":2}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_4
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":13,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_10 (
+            name: Send Email to Customer
+            type: sendEMail
+            emailHeader {
+                from: &P_EMAIL_ADDRESS.
+                to: &P_EMAIL_ADDRESS.
+            }
+            emailTemplate {
+                emailTemplate: @ORDER_CONFIRMATION
+                placeholderValues: {"ORDER_ID":"&V_ORDER_ID.","SHIPMENT_METHOD":"&V_SHIPMENT_METHOD.","ESTIMATED_DELIVERY":"&V_ESTIMATED_DELIVERY.","CUSTOMER_NAME":"&V_CUSTOMER_NAME.","STORE_NAME":"&V_STORE_NAME.","PRODUCT_NAME":"&V_PRODUCT_NAME.","QUANTITY":"&P_QUANTITY.","UNIT_PRICE":"&V_UNIT_PRICE.","TOTAL_AMOUNT":"&V_TOTAL_AMOUNT.","LOYALTY_TIER":"&V_LOYALTY_TIER.","PAYMENT_METHOD":"&P_PAYMENT_METHOD.","STREET":"&P_STREET.","CITY":"&P_CITY.","STATE":"&P_STATE.","POSTAL_CODE":"&P_POSTAL_CODE.","COUNTRY":"&P_COUNTRY."}
+            }
+            layout {
+                sequence: 110
+            }
+            advanced {
+                diagram: {"position":{"x":1560,"y":840},"z":11}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_2
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":20,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_2 (
+            name: End
+            type: workflowEnd
+            layout {
+                sequence: 30
+            }
+            advanced {
+                diagram: {"position":{"x":1830,"y":840},"z":3}
+            }
+        )
+
+        activity New_4 (
+            name: Fetch Product and Calculate Order Amount
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      select p.unit_price,
+                             p.product_name
+                        into :V_UNIT_PRICE,
+                             :V_PRODUCT_NAME
+                        from eba_demo_json_products p
+                       where p.product_id = :P_PRODUCT_ID;
+                    
+                      :V_TOTAL_AMOUNT := :V_UNIT_PRICE * :P_QUANTITY;
+                    
+                    exception
+                      when no_data_found then
+                        raise_application_error(
+                          -20003,
+                          'Product ' || :P_PRODUCT_ID || ' not found.'
+                        );
+                    end;
+                    
+                    ```
+            }
+            layout {
+                sequence: 50
+            }
+            advanced {
+                diagram: {"position":{"x":660,"y":830},"z":5}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_5
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[],\"z\":15,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_5 (
+            name: Create Order
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      -- Insert order
+                      insert into eba_demo_json_orders (
+                        order_datetime,
+                        customer_id,
+                        order_status,
+                        store_id,
+                        order_metadata
+                      ) values (
+                        systimestamp,
+                        :P_CUSTOMER_ID,
+                        'Open',
+                        :P_STORE_ID,
+                        json_object(
+                          'shipment' value json_object(
+                            'method'             value 'Pending',
+                            'status'             value 'Processing',
+                            'estimated_delivery' value null
+                          ),
+                          'payment' value json_object(
+                            'method' value :P_PAYMENT_METHOD,
+                            'status' value 'Paid'
+                          ),
+                          'delivery_address' value json_object(
+                            'street'         value :P_STREET,
+                            'city'           value :P_CITY,
+                            'state_province' value :P_STATE,
+                            'country'        value :P_COUNTRY,
+                            'postal_code'    value :P_POSTAL_CODE
+                          ) null on null
+                        )
+                      )
+                      returning order_id into :V_ORDER_ID;
+                    
+                      -- Insert order item
+                      insert into eba_demo_json_order_items (
+                        order_id,
+                        line_item_id,
+                        product_id,
+                        unit_price,
+                        quantity
+                      ) values (
+                        :V_ORDER_ID,
+                        1,
+                        :P_PRODUCT_ID,
+                        :V_UNIT_PRICE,
+                        :P_QUANTITY
+                      );
+                    
+                    end;
+                    
+                    ```
+            }
+            layout {
+                sequence: 60
+            }
+            advanced {
+                diagram: {"position":{"x":950,"y":830},"z":6}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_7
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[],\"z\":16,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_7 (
+            name: Shipping Decision
+            type: switch
+            switch {
+                type: checkWorkflowVar
+            }
+            compare {
+                compareVar: V_LOYALTY_TIER
+            }
+            layout {
+                sequence: 80
+            }
+            advanced {
+                diagram: {"position":{"x":1240,"y":830},"z":8}
+            }
+
+            connection (
+                name: Express
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: =
+                    value: Platinum
+                }
+                activity {
+                    to: @New_8
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":21,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+            connection (
+                name: Standard
+                execution {
+                    sequence: 10
+                }
+                condition {
+                    operator: !=
+                    value: Platinum
+                }
+                activity {
+                    to: @New_9
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{},\"vertices\":[],\"z\":22,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_8 (
+            name: Express Shipping
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      :V_SHIPMENT_METHOD    := 'Express';
+                      :V_ESTIMATED_DELIVERY := to_char(sysdate + 1, 'YYYY-MM-DD');
+                    
+                      update eba_demo_json_orders
+                         set order_status   = 'Paid',
+                             order_metadata = json_mergepatch(
+                                                order_metadata,
+                                                json_object(
+                                                  'shipment' value json_object(
+                                                    'method'             value 'Express',
+                                                    'status'             value 'Shipped',
+                                                    'estimated_delivery' value :V_ESTIMATED_DELIVERY
+                                                  )
+                                                )
+                                              )
+                       where order_id = :V_ORDER_ID;
+                    end;
+                    
+                    ```
+            }
+            layout {
+                sequence: 90
+            }
+            advanced {
+                diagram: {"position":{"x":1240,"y":710},"z":9}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_10
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[],\"z\":18,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        activity New_9 (
+            name: Standard Shipping
+            type: executeCode
+            source {
+                plsqlCode:
+                    ```plsql
+                    begin
+                      :V_SHIPMENT_METHOD    := 'Standard';
+                      :V_ESTIMATED_DELIVERY := to_char(sysdate + 3, 'YYYY-MM-DD');
+                    
+                      update eba_demo_json_orders
+                         set order_status   = 'Paid',
+                             order_metadata = json_mergepatch(
+                                                order_metadata,
+                                                json_object(
+                                                  'shipment' value json_object(
+                                                    'method'             value 'Standard',
+                                                    'status'             value 'Shipped',
+                                                    'estimated_delivery' value :V_ESTIMATED_DELIVERY
+                                                  )
+                                                )
+                                              )
+                       where order_id = :V_ORDER_ID;
+                    end;
+                    
+                    ```
+            }
+            layout {
+                sequence: 100
+            }
+            advanced {
+                diagram: {"position":{"x":1240,"y":930},"z":10}
+            }
+
+            connection (
+                name: New
+                activity {
+                    to: @New_10
+                }
+                advanced {
+                    diagram: "{\"source\":{},\"target\":{\"args\":{\"dx\":\"50%\",\"dy\":\"50%\",\"rotate\":true},\"name\":\"topLeft\"},\"vertices\":[],\"z\":19,\"label\":{\"distance\":0.5,\"offset\":0}}"
+                }
+            )
+
+        )
+
+        variable V_CUSTOMER_NAME (
+            label {
+                label: V_CUSTOMER_NAME
+            }
+        )
+
+        variable V_ESTIMATED_DELIVERY (
+            label {
+                label: V_ESTIMATED_DELIVERY
+            }
+        )
+
+        variable V_LOYALTY_TIER (
+            label {
+                label: V_LOYALTY_TIER
+            }
+        )
+
+        variable V_ORDER_ID (
+            label {
+                label: V_ORDER_ID
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        variable V_PRODUCT_NAME (
+            label {
+                label: V_PRODUCT_NAME
+            }
+        )
+
+        variable V_SHIPMENT_METHOD (
+            label {
+                label: V_SHIPMENT_METHOD
+            }
+        )
+
+        variable V_STORE_NAME (
+            label {
+                label: V_STORE_NAME
+            }
+        )
+
+        variable V_TOTAL_AMOUNT (
+            label {
+                label: V_TOTAL_AMOUNT
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        variable V_UNIT_PRICE (
+            label {
+                label: V_UNIT_PRICE
+            }
+            parameter {
+                dataType: number
+            }
+        )
+
+        participant (
+            name: Admin
+            type: admin
+            value {
+                type: expression
+                plsqlExpression: v('APP_USER')
+            }
+        )
+
+        participant (
+            name: Owner
+            value {
+                type: expression
+                plsqlExpression: v('APP_USER')
+            }
+        )
+
+    )
+
+)
+

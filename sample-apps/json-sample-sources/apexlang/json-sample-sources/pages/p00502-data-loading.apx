@@ -1,0 +1,812 @@
+page 502 (
+    name: Data Loading
+    alias: DATA-LOADING
+    title: Data Loading
+    pageGroup: @use-cases
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region load-json (
+        name: Load JSON
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                  Upload a file with <em>Support Tickets</em> JSON documents, one per row.
+                  The <a href="#APP_FILES#additional-json-data.txt" download>additional-json-data.txt</a>
+                  file contains sample data to use.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size600x400
+            ]
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page demonstrates how to upload JSON documents directly through the UI and store them in the <strong>EBA_DEMO_JSON_SUPPORT_TICKET</strong> JSON collection table in Oracle APEX. It features views for both structured ticket data and raw JSON documents for easy viewing and management.
+                </p>
+                
+                <p>
+                To get started, click <strong>Upload Document</strong> to upload support ticket JSON documents into the collection table. 
+                A sample file is available in the upload dialog to help you test the feature and load example data.
+                </p>
+                
+                <p>
+                Use the region selector to switch between the <strong>Report View on Data Source</strong> and the <strong>Raw JSON Documents</strong> view.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region raw-json-documents (
+        name: Raw JSON Documents
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select json_value( data, '$.ticket_id') as ticket_id,
+                       data as json
+                from   eba_demo_json_support_ticket
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 12877549017378835
+        }
+
+        column JSON (
+            type: plainText
+            heading {
+                heading: Json
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: CLOB
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: B
+            }
+            enableUsersTo {
+                sort: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column TICKET_ID (
+            type: plainText
+            heading {
+                heading: Ticket ID
+            }
+            layout {
+                sequence: 10
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 138814 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn JSON (
+                sequence: 2
+            )
+
+            displayColumn TICKET_ID (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            includeShowAll: false
+        }
+    )
+
+    region report-view-on-data-source (
+        name: Report View on Data Source
+        type: interactiveReport
+        source {
+            location: jsonSource
+            jsonSource: @eba_demo_json_support_ticket
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 3802460971548525
+        }
+
+        column CONCERN_ORDER_ID (
+            type: plainText
+            heading {
+                heading: Order Number
+                alignment: end
+            }
+            layout {
+                sequence: 41
+                columnAlignment: end
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column CONCERN_PRODUCT_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Product
+            }
+            lov {
+                lov: @products
+            }
+            layout {
+                sequence: 61
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CONCERN_STORE_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Store
+            }
+            lov {
+                lov: @stores
+            }
+            layout {
+                sequence: 51
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column CREATED_AT2 (
+            type: hidden
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 91
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column CUSTOMER_ID (
+            type: plainTextBasedOnLov
+            heading {
+                heading: Customer
+            }
+            lov {
+                lov: @customers
+            }
+            layout {
+                sequence: 121
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column C_ID (
+            type: hidden
+            heading {
+                heading: C ID
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 131
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 71
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column RESOLUTION (
+            type: hidden
+            heading {
+                heading: Resolution
+            }
+            layout {
+                sequence: 101
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 31
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column TICKET_ID (
+            type: hidden
+            heading {
+                heading: Ticket ID
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 21
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column UPDATED_AT (
+            type: hidden
+            heading {
+                heading: Updated At
+            }
+            layout {
+                sequence: 111
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Data Loading
+        }
+
+        savedReport 38093 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CONCERN_ORDER_ID (
+                sequence: 4
+            )
+
+            displayColumn CONCERN_PRODUCT_ID (
+                sequence: 7
+            )
+
+            displayColumn CONCERN_STORE_ID (
+                sequence: 6
+            )
+
+            displayColumn CUSTOMER_ID (
+                sequence: 5
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 8
+            )
+
+            displayColumn PRIORITY (
+                sequence: 3
+            )
+
+            displayColumn STATUS (
+                sequence: 2
+            )
+
+            displayColumn TITLE (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    pageItem P502_JSON_FILE (
+        type: fileUpload
+        label {
+            label: JSON file
+            alignment: left
+        }
+        display {
+            displayAs: blockDropzone
+        }
+        storage {
+            type: appTempFiles
+        }
+        layout {
+            sequence: 10
+            region: @load-json
+            slot: regionBody
+            alignment: left
+            columnSpan: 12
+            labelColumnSpan: 0
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+            ]
+            width: 30
+        }
+    )
+
+    pageItem P502_LOADED_ROW_COUNT (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @load-json
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 30
+            region: @load-json
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 503
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 500
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button upload (
+        buttonName: UPLOAD
+        label: Upload
+        layout {
+            sequence: 30
+            region: @load-json
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button upload-document (
+        buttonName: upload_document
+        label: Upload Document
+        layout {
+            sequence: 10
+            region: @report-view-on-data-source
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-upload
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button upload-raw-document (
+        buttonName: upload_raw_document
+        label: Upload Document
+        layout {
+            sequence: 20
+            region: @raw-json-documents
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-upload
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close-region (
+        name: Close Region
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-close-region (
+            action: closeRegion
+            affectedElements {
+                selectionType: region
+                region: @load-json
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-load-data-dialog (
+        name: Open Load Data dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @upload-document
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @load-json
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction open-load-data-dialog-for-raw-document-region (
+        name: Open Load Data dialog for raw document region
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @upload-raw-document
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @load-json
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process load-additional-json (
+        name: Load additional JSON
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_uploaded_file blob;
+                    l_uploaded_text clob;
+                begin
+                    select blob_content
+                      into l_uploaded_file
+                      from apex_application_temp_files
+                     where name = :P502_JSON_FILE;
+                
+                    l_uploaded_text := apex_util.blob_to_clob( l_uploaded_file );
+                
+                    insert into eba_demo_json_support_ticket ( data )
+                    select rtrim( t.column_value, chr( 13 ) )
+                      from table( apex_string.split_clobs( l_uploaded_text, chr( 10 ) ) ) t
+                     where rtrim( t.column_value, chr( 13 ) ) is not null;
+                
+                    :P502_LOADED_ROW_COUNT := sql%rowcount;
+                end;
+                
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: &P502_LOADED_ROW_COUNT. JSON documents loaded into the JSON Collection Table.
+        }
+        advanced {
+            executionMappingIdentifier: 3780158475340711
+        }
+        serverSideCondition {
+            whenButtonPressed: @upload
+        }
+    )
+
+)
+

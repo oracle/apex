@@ -1,0 +1,133 @@
+emailTemplate ORDER_CONFIRMATION (
+    name: ORDER CONFIRMATION
+    emailSubject: Order #ORDER_ID# Confirmed — #SHIPMENT_METHOD# Shipping | Estimated Delivery: #ESTIMATED_DELIVERY#
+    htmlFormat {
+        header: <b style="font-size: 24px;">JSON Sample Sources</b>
+        body:
+            ```html
+            <!DOCTYPE html>
+            <html>
+            <body style="font-family:Arial,sans-serif;background:#f4f4f4;padding:20px">
+            <table width="600" style="background:#fff;border-radius:8px;margin:auto">
+            
+              <tr>
+                <td style="background:#5a5a5a;padding:24px;text-align:center">
+                  <h2 style="color:#fff;margin:0">Order Confirmation</h2>
+                  <p style="color:#d6d6d6;margin:6px 0 0">Your order has been placed successfully.</p>
+                </td>
+              </tr>
+            
+              <tr>
+                <td style="padding:24px">
+                  <p>Dear <strong>#CUSTOMER_NAME#</strong>,</p>
+                  <p style="color:#555">Thank you for your order. Here is your full summary.</p>
+            
+                  <h3 style="color:#5a5a5a;border-bottom:1px solid #e0e0e0;padding-bottom:6px">Customer</h3>
+                  <table width="100%" style="font-size:14px">
+                    <tr><td style="color:#888;width:40%">Name</td><td><strong>#CUSTOMER_NAME#</strong></td></tr>
+                    <tr><td style="color:#888">Loyalty Tier</td><td><span style="background:#e5e5e5;color:#5a5a5a;padding:2px 8px;border-radius:10px">#LOYALTY_TIER#</span></td></tr>
+                  </table>
+            
+                  <h3 style="color:#5a5a5a;border-bottom:1px solid #e0e0e0;padding-bottom:6px">Order</h3>
+                  <table width="100%" style="font-size:14px">
+                    <tr><td style="color:#888;width:40%">Order Number</td><td><strong>#ORDER_ID#</strong></td></tr>
+                    <tr><td style="color:#888">Store</td><td>#STORE_NAME#</td></tr>
+                    <tr><td style="color:#888">Product Name</td><td>#PRODUCT_NAME#</td></tr>
+                    <tr><td style="color:#888">Quantity</td><td>#QUANTITY#</td></tr>
+                    <tr><td style="color:#888">Unit Price</td><td>$#UNIT_PRICE#</td></tr>
+                    <tr><td style="color:#888">Total</td><td><strong style="color:#5a5a5a">$#TOTAL_AMOUNT#</strong></td></tr>
+                  </table>
+            
+                  <h3 style="color:#5a5a5a;border-bottom:1px solid #e0e0e0;padding-bottom:6px">Payment</h3>
+                  <table width="100%" style="font-size:14px">
+                    <tr><td style="color:#888;width:40%">Method</td><td>#PAYMENT_METHOD#</td></tr>
+                    <tr><td style="color:#888">Status</td><td><span style="background:#eaf3de;color:#3b6d11;padding:2px 8px;border-radius:10px">Paid</span></td></tr>
+                  </table>
+            
+                  <h3 style="color:#5a5a5a;border-bottom:1px solid #e0e0e0;padding-bottom:6px">Shipping</h3>
+                  <table width="100%" style="font-size:14px">
+                    <tr><td style="color:#888;width:40%">Method</td><td><strong>#SHIPMENT_METHOD#</strong></td></tr>
+                    <tr><td style="color:#888">Status</td><td><span style="background:#e6f1fb;color:#185fa5;padding:2px 8px;border-radius:10px">Shipped</span></td></tr>
+                    <tr><td style="color:#888">Estimated Delivery</td><td><strong>#ESTIMATED_DELIVERY#</strong></td></tr>
+                  </table>
+            
+                  <h3 style="color:#5a5a5a;border-bottom:1px solid #e0e0e0;padding-bottom:6px">Delivery Address</h3>
+                  <table width="100%" style="font-size:14px">
+                    <tr><td style="color:#888;width:40%">Street</td><td>#STREET#</td></tr>
+                    <tr><td style="color:#888">City</td><td>#CITY#</td></tr>
+                    <tr><td style="color:#888">State</td><td>#STATE#</td></tr>
+                    <tr><td style="color:#888">Postal Code</td><td>#POSTAL_CODE#</td></tr>
+                    <tr><td style="color:#888">Country</td><td>#COUNTRY#</td></tr>
+                  </table>
+            
+                  <table width="100%" style="background:#e5e5e5;border-radius:8px;margin-top:20px">
+                    <tr>
+                      <td style="color:#5a5a5a;text-align:center;padding:14px">
+                        Order <strong>#ORDER_ID#</strong> arrives by <strong>#ESTIMATED_DELIVERY#</strong> via <strong>#SHIPMENT_METHOD#</strong>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            
+            </table>
+            </body>
+            </html>
+            ```
+        footer:
+            ```html
+            <p style="font-size:12px;color:#aaa;text-align:center;margin-top:20px">
+                    This is an automated notification. Please do not reply.
+                  </p>
+            ```
+    }
+    plainTextFormat {
+        content:
+            ```html
+            Dear #CUSTOMER_NAME#,
+            
+            Thank you for your order. Here is your order summary.
+            
+            ORDER
+            -----
+            Order ID      : #ORDER_ID#
+            Store         : #STORE_NAME#
+            Product Name  : #PRODUCT_NAME#
+            Quantity      : #QUANTITY#
+            Unit Price    : $#UNIT_PRICE#
+            Total Amount  : $#TOTAL_AMOUNT#
+            
+            CUSTOMER
+            --------
+            Customer Name : #CUSTOMER_NAME#
+            Loyalty Tier  : #LOYALTY_TIER#
+            
+            PAYMENT
+            -------
+            Method        : #PAYMENT_METHOD#
+            Status        : Paid
+            
+            SHIPPING
+            --------
+            Method        : #SHIPMENT_METHOD#
+            Status        : Shipped
+            Est. Delivery : #ESTIMATED_DELIVERY#
+            
+            DELIVERY ADDRESS
+            ----------------
+            Street        : #STREET#
+            City          : #CITY#
+            State         : #STATE#
+            Postal Code   : #POSTAL_CODE#
+            Country       : #COUNTRY#
+            
+            Your order #ORDER_ID# will arrive by #ESTIMATED_DELIVERY# via #SHIPMENT_METHOD# shipping.
+            
+            This is an automated notification. Please do not reply.
+            ```
+    }
+    advanced {
+        versionNumber: 2
+    }
+)
+

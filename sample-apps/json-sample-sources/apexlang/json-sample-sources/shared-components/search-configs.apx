@@ -1,0 +1,38 @@
+searchConfig product_search (
+    name: Product Search
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_products
+        searchableColumns: [
+            BRAND
+            COLOUR
+            GENDER
+            DESCRIPTION
+            PRODUCT_NAME
+            IMAGE_FILENAME
+            IMAGE_CHARSET
+            IMAGE_LAST_UPDATED
+            SIZES
+            REVIEWS
+        ]
+    }
+    localPostProcessing {
+        type: whereOrderByClause
+        whereClause: 1=1
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+        mimeTypeColumn: IMAGE_MIME_TYPE
+        customColumn1: COLOUR
+        customColumn2: GENDER
+    }
+    iconAndBadge {
+        iconSource: imageBlobColumn
+        imageColumn: PRODUCT_IMAGE
+    }
+)
+

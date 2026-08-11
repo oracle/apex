@@ -1,0 +1,464 @@
+page 103 (
+    name: Post Processing
+    alias: POST-PROCESSING
+    title: Post Processing
+    pageGroup: @json-sources
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page demonstrates post-processing of JSON data in Oracle APEX using SQL and derived columns. Based on the <strong>EBA_DEMO_JSON_SUPPORT_TICKET</strong> source, it enriches the dataset by joining related tables and computing additional fields such as <strong>customer name</strong>, <strong>store name</strong>, and a dynamic <strong>status flag</strong> for enhanced data analysis.
+                </p>
+                
+                <p>
+                To get started, explore the report data and review how the original JSON ticket information is enhanced with additional relational and computed values. 
+                You can sort, filter, and analyze the derived columns to better understand how SQL post-processing can extend JSON-based datasets in Oracle APEX.
+                </p>
+                
+                <p>
+                <strong>Note:</strong> To see the SQL post-processing query, open the Page Designer for this page and review the query in the <strong>Local Post Processing</strong> section in the right panel.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region post-processing (
+        name: Post Processing
+        type: interactiveReport
+        source {
+            location: jsonSource
+            jsonSource: @eba_demo_json_support_ticket
+        }
+        localPostProcessing {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.ticket_id,
+                       t.title,
+                       t.description,
+                       t.status,
+                       t.priority,
+                       t.created_at2       as created_at,
+                       c.full_name         as customer_name,
+                       s.store_name        as store_name,
+                       case 
+                           when t.status   = 'Open' 
+                            and t.priority = 'High' 
+                            and t.created_at2 < sysdate - 7 
+                           then 'Overdue' 
+                           else t.status 
+                       end                 as status_flag
+                  from #APEX$SOURCE_DATA#  t,
+                       eba_demo_json_customers c,
+                       eba_demo_json_stores    s
+                 where t.customer_id        = c.customer_id
+                   and t.concern_store_id   = s.store_id
+                 order by case t.priority
+                             when 'High'   then 3
+                             when 'Medium' then 2
+                             else 1
+                         end desc,
+                         t.created_at2 desc
+                
+                
+                ```
+        }
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 4859421338008504
+        }
+
+        column CREATED_AT (
+            type: plainText
+            heading {
+                heading: Creation Date
+            }
+            layout {
+                sequence: 150
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CUSTOMER_NAME (
+            type: plainText
+            heading {
+                heading: Customer Name
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column STATUS_FLAG (
+            type: plainText
+            heading {
+                heading: Status Flag
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column STORE_NAME (
+            type: plainText
+            heading {
+                heading: Store Name
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column TICKET_ID (
+            type: hidden
+            heading {
+                heading: Ticket ID
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: NUMBER
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 48769 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED_AT (
+                sequence: 6
+            )
+
+            displayColumn CUSTOMER_NAME (
+                sequence: 7
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 5
+            )
+
+            displayColumn PRIORITY (
+                sequence: 3
+            )
+
+            displayColumn STATUS (
+                sequence: 2
+            )
+
+            displayColumn STATUS_FLAG (
+                sequence: 9
+            )
+
+            displayColumn STORE_NAME (
+                sequence: 8
+            )
+
+            displayColumn TICKET_ID (
+                sequence: 4
+            )
+
+            displayColumn TITLE (
+                sequence: 1
+            )
+
+            highlight ir-condition (
+                condition {
+                    column: STORE_NAME
+                    operator: isNotNull
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #e8e8e8
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+            highlight ir-condition-2 (
+                condition {
+                    column: STATUS_FLAG
+                    value: Resolved
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #d0f1cc
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+            highlight ir-condition-3 (
+                condition {
+                    column: STATUS_FLAG
+                    value: Pending
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #fff5ce
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+            highlight ir-condition-4 (
+                condition {
+                    column: STATUS_FLAG
+                    value: Overdue
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #ffd6d2
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+            highlight ir-condition-5 (
+                condition {
+                    column: CUSTOMER_NAME
+                    operator: isNotNull
+                }
+                highlight {
+                    type: cell
+                }
+                colors {
+                    background: #e8e8e8
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+        )
+
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 400
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 102
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

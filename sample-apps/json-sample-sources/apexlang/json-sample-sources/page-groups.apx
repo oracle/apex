@@ -1,0 +1,24 @@
+pageGroup administration (
+    name: Administration
+)
+
+pageGroup data-presentation (
+    name: Data Presentation
+)
+
+pageGroup duality-view (
+    name: Duality View
+)
+
+pageGroup json-sources (
+    name: JSON Sources
+)
+
+pageGroup sql-json-functions (
+    name: SQL/JSON Functions
+)
+
+pageGroup use-cases (
+    name: Use Cases
+)
+

@@ -1,0 +1,557 @@
+page 102 (
+    name: JSON Collection Table
+    alias: JSON-COLLECTION-TABLE
+    title: JSON Collection Table
+    pageGroup: @json-sources
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page demonstrates how to manage JSON data in Oracle APEX using two different approaches. It includes an Interactive Report that can be switched via a region selector to display support ticket data either from the <strong>EBA_DEMO_JSON_SUPPORT_TICKET</strong> JSON source (created on top of the underlying support ticket collection table) or as <strong>Raw JSON Documents</strong> showing the underlying JSON payloads directly. In both cases, the support ticket information is queried, displayed, and managed through Oracle APEX, enabling flexible exploration and maintenance of JSON-based data.
+                </p>
+                
+                <p>
+                To get started, use the region selector to switch between the <strong>Report View on Data Source</strong> and the <strong>Raw JSON Documents</strong>. In the report view, you can browse existing support tickets, create new entries, and perform search, filter, sort, edit, or delete operations directly from the Interactive Report. The Raw JSON Documents view allows you to inspect the underlying JSON documents that store the support ticket data.
+                </p>
+                
+                <p>
+                Below the report, the <strong>Status Distribution</strong> and <strong>Priority Distribution</strong> pie charts provide a visual overview of support tickets by status and priority, helping users quickly analyze ticket trends and workload distribution.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region priority-distribution (
+        name: Priority Distribution
+        type: chart
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        chartLayout {
+            height: 400
+        }
+
+        series priority (
+            name: Priority
+            execution {
+                sequence: 10
+            }
+            source {
+                location: jsonSource
+                jsonSource: @eba_demo_json_support_ticket
+            }
+            columnMapping {
+                label: PRIORITY
+                valueAggregation: count
+            }
+        )
+
+        axis x (
+            name: x
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region raw-json-documents (
+        name: Raw JSON Documents
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select json_value( data, '$.ticket_id') as ticket_id,
+                       data as json
+                from   eba_demo_json_support_ticket
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 12878589189378845
+        }
+
+        column JSON (
+            type: plainText
+            heading {
+                heading: Json
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: CLOB
+            }
+            columnFilter {
+                type: none
+            }
+            advanced {
+                endUserAlias: B
+            }
+            enableUsersTo {
+                sort: false
+                controlBreak: false
+                aggregate: false
+                compute: false
+                chart: false
+                groupBy: false
+                pivot: false
+            }
+        )
+
+        column TICKET_ID (
+            type: plainText
+            heading {
+                heading: Ticket ID
+            }
+            layout {
+                sequence: 10
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 139538 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn JSON (
+                sequence: 2
+            )
+
+            displayColumn TICKET_ID (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    region region-display-selector (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 15
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            includeShowAll: false
+        }
+    )
+
+    region report-view-on-data-source (
+        name: Report View on Data Source
+        type: interactiveReport
+        source {
+            location: jsonSource
+            jsonSource: @eba_demo_json_support_ticket
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 105
+                items: {
+                    P105_C_ID: \#C_ID#\
+                }
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        advanced {
+            savedReportMappingIdentifier: 9625836049416904
+        }
+
+        column CREATED_AT2 (
+            type: plainText
+            heading {
+                heading: Creation Date
+            }
+            layout {
+                sequence: 70
+            }
+            appearance {
+                formatMask: DD-MON-YYYY
+            }
+            source {
+                dataType: DATE
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column C_ID (
+            type: hidden
+            heading {
+                heading: C ID
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 40
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: STRING
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: JSON Collection Table
+        }
+
+        savedReport 26778 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 10
+            }
+
+            displayColumn CREATED_AT2 (
+                sequence: 4
+            )
+
+            displayColumn C_ID (
+                sequence: 5
+            )
+
+            displayColumn PRIORITY (
+                sequence: 3
+            )
+
+            displayColumn STATUS (
+                sequence: 2
+            )
+
+            displayColumn TITLE (
+                sequence: 1
+            )
+
+        )
+
+    )
+
+    region status-distribution (
+        name: Status Distribution
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: pie
+        }
+        chartLayout {
+            height: 400
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series status (
+            name: Status
+            execution {
+                sequence: 10
+            }
+            source {
+                location: jsonSource
+                jsonSource: @eba_demo_json_support_ticket
+            }
+            columnMapping {
+                label: STATUS
+                valueAggregation: count
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 10
+            region: @report-view-on-data-source
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 105
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 103
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 101
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction edit-report-dialog-closed (
+        name: Edit Report - Dialog Closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @report-view-on-data-source
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @report-view-on-data-source
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

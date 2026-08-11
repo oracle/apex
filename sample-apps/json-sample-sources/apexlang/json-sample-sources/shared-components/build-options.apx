@@ -1,0 +1,30 @@
+buildOption commented-out (
+    name: Commented Out
+)
+
+buildOption feature-about-page (
+    name: Feature: About Page
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_ABOUT_PAGE
+    }
+    comments {
+        comments: About this application page.
+    }
+)
+
+buildOption feature-theme-style-selection (
+    name: Feature: Theme Style Selection
+    status {
+        status: include
+    }
+    advanced {
+        featureIdentifier: APPLICATION_THEME_STYLE_SELECTION
+    }
+    comments {
+        comments: "Allow administrators to select a default color scheme (theme style) for the application. Administrators can also choose to allow end users to choose their own theme style. "
+    }
+)
+

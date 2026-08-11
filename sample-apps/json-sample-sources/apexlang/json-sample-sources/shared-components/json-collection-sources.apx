@@ -1,0 +1,1111 @@
+jsonSource eba_demo_json_customers (
+    name: EBA_DEMO_JSON_CUSTOMERS
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_CUSTOMERS
+    }
+    dataProfile {
+        name: EBA_DEMO_JSON_CUSTOMERS
+        rowSelector: .
+    }
+
+    dataProfileColumn address-city (
+        columnName: ADDRESS_CITY
+        source {
+            sequence: 8
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.city
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-country (
+        columnName: ADDRESS_COUNTRY
+        source {
+            sequence: 10
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.country
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-postal-code (
+        columnName: ADDRESS_POSTAL_CODE
+        source {
+            sequence: 11
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.postal_code
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-state-province (
+        columnName: ADDRESS_STATE_PROVINCE
+        source {
+            sequence: 12
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.state_province
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-street (
+        columnName: ADDRESS_STREET
+        source {
+            sequence: 9
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.street
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn birth-year (
+        columnName: BIRTH_YEAR
+        source {
+            sequence: 13
+            parentColumn: @customer-metadata
+            dataType: number
+        }
+        parsing {
+            pathExpression: birth_year
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 1
+            type: tableColumn
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            tableColumn: CUSTOMER_ID
+        }
+    )
+
+    dataProfileColumn customer-metadata (
+        columnName: CUSTOMER_METADATA
+        source {
+            sequence: 4
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: CUSTOMER_METADATA
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn email-address (
+        columnName: EMAIL_ADDRESS
+        source {
+            sequence: 3
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: EMAIL_ADDRESS
+        }
+    )
+
+    dataProfileColumn full-name (
+        columnName: FULL_NAME
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: FULL_NAME
+        }
+    )
+
+    dataProfileColumn gender (
+        columnName: GENDER
+        source {
+            sequence: 7
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: gender
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn latitude (
+        columnName: LATITUDE
+        source {
+            sequence: 5
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: LATITUDE
+        }
+    )
+
+    dataProfileColumn longitude (
+        columnName: LONGITUDE
+        source {
+            sequence: 6
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: LONGITUDE
+        }
+    )
+
+    dataProfileColumn loyalty-tier (
+        columnName: LOYALTY_TIER
+        source {
+            sequence: 15
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: loyalty_tier
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn preferred-lang (
+        columnName: PREFERRED_LANG
+        source {
+            sequence: 16
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: preferred_lang
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn signup-channel (
+        columnName: SIGNUP_CHANNEL
+        source {
+            sequence: 17
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: signup_channel
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn subscribed (
+        columnName: SUBSCRIBED
+        source {
+            sequence: 14
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: subscribed
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+
+jsonSource eba_demo_json_orders (
+    name: EBA_DEMO_JSON_ORDERS
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_ORDERS
+    }
+    dataProfile {
+        name: order_source
+        rowSelector: .
+    }
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 3
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: CUSTOMER_ID
+        }
+    )
+
+    dataProfileColumn delivery-address-city (
+        columnName: DELIVERY_ADDRESS_CITY
+        source {
+            sequence: 13
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.city
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-country (
+        columnName: DELIVERY_ADDRESS_COUNTRY
+        source {
+            sequence: 15
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.country
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-postal-code (
+        columnName: DELIVERY_ADDRESS_POSTAL_CODE
+        source {
+            sequence: 16
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.postal_code
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-state-province (
+        columnName: DELIVERY_ADDRESS_STATE_PROVINCE
+        source {
+            sequence: 17
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.state_province
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-street (
+        columnName: DELIVERY_ADDRESS_STREET
+        source {
+            sequence: 14
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.street
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn notes (
+        columnName: NOTES
+        source {
+            sequence: 7
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: notes
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn order-datetime (
+        columnName: ORDER_DATETIME
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: timestamp
+        }
+        parsing {
+            tableColumn: ORDER_DATETIME
+        }
+    )
+
+    dataProfileColumn order-id (
+        columnName: ORDER_ID
+        source {
+            sequence: 1
+            type: tableColumn
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            tableColumn: ORDER_ID
+        }
+    )
+
+    dataProfileColumn order-metadata (
+        columnName: ORDER_METADATA
+        source {
+            sequence: 6
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: ORDER_METADATA
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn order-status (
+        columnName: ORDER_STATUS
+        source {
+            sequence: 4
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: ORDER_STATUS
+        }
+    )
+
+    dataProfileColumn payment-method (
+        columnName: PAYMENT_METHOD
+        source {
+            sequence: 8
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: payment.method
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn payment-status (
+        columnName: PAYMENT_STATUS
+        source {
+            sequence: 9
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: payment.status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn shipment-estimated-delivery (
+        columnName: SHIPMENT_ESTIMATED_DELIVERY
+        source {
+            sequence: 12
+            parentColumn: @order-metadata
+            dataType: date
+        }
+        parsing {
+            pathExpression: shipment.estimated_delivery
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn shipment-method (
+        columnName: SHIPMENT_METHOD
+        source {
+            sequence: 10
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: shipment.method
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn shipment-status (
+        columnName: SHIPMENT_STATUS
+        source {
+            sequence: 11
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: shipment.status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn store-id (
+        columnName: STORE_ID
+        source {
+            sequence: 5
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: STORE_ID
+        }
+    )
+
+)
+
+jsonSource eba_demo_json_products (
+    name: EBA_DEMO_JSON_PRODUCTS
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_PRODUCTS
+    }
+    dataProfile {
+        name: Product source
+        rowSelector: .
+    }
+
+    dataProfileColumn brand (
+        columnName: BRAND
+        source {
+            sequence: 10
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: brand
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn colour (
+        columnName: COLOUR
+        source {
+            sequence: 12
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: colour
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn description (
+        columnName: DESCRIPTION
+        source {
+            sequence: 15
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: description
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn gender (
+        columnName: GENDER
+        source {
+            sequence: 13
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: gender
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn image-charset (
+        columnName: IMAGE_CHARSET
+        source {
+            sequence: 8
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: IMAGE_CHARSET
+        }
+    )
+
+    dataProfileColumn image-filename (
+        columnName: IMAGE_FILENAME
+        source {
+            sequence: 7
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: IMAGE_FILENAME
+        }
+    )
+
+    dataProfileColumn image-last-updated (
+        columnName: IMAGE_LAST_UPDATED
+        source {
+            sequence: 9
+            type: tableColumn
+            dataType: date
+        }
+        parsing {
+            tableColumn: IMAGE_LAST_UPDATED
+        }
+    )
+
+    dataProfileColumn image-mime-type (
+        columnName: IMAGE_MIME_TYPE
+        source {
+            sequence: 6
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: IMAGE_MIME_TYPE
+        }
+    )
+
+    dataProfileColumn product-details (
+        columnName: PRODUCT_DETAILS
+        source {
+            sequence: 4
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: PRODUCT_DETAILS
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn product-id (
+        columnName: PRODUCT_ID
+        source {
+            sequence: 1
+            type: tableColumn
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            tableColumn: PRODUCT_ID
+        }
+    )
+
+    dataProfileColumn product-image (
+        columnName: PRODUCT_IMAGE
+        source {
+            sequence: 5
+            type: tableColumn
+            dataType: blob
+        }
+        parsing {
+            tableColumn: PRODUCT_IMAGE
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn product-name (
+        columnName: PRODUCT_NAME
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: PRODUCT_NAME
+        }
+    )
+
+    dataProfileColumn rating (
+        columnName: RATING
+        source {
+            sequence: 16
+            parentColumn: @reviews
+            dataType: number
+        }
+        parsing {
+            pathExpression: rating
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn review (
+        columnName: REVIEW
+        source {
+            sequence: 17
+            parentColumn: @reviews
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: review
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn reviews (
+        columnName: REVIEWS
+        source {
+            sequence: 14
+            parentColumn: @product-details
+            dataType: array
+        }
+        parsing {
+            pathExpression: reviews
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn reviews-pos (
+        columnName: REVIEWS_POS
+        source {
+            sequence: 18
+            parentColumn: @reviews
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn sizes (
+        columnName: SIZES
+        source {
+            sequence: 11
+            parentColumn: @product-details
+            dataType: array
+        }
+        parsing {
+            pathExpression: sizes
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn sizes-2 (
+        columnName: SIZES2
+        source {
+            sequence: 19
+            parentColumn: @sizes
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: .
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn sizes-pos (
+        columnName: SIZES_POS
+        source {
+            sequence: 20
+            parentColumn: @sizes
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn unit-price (
+        columnName: UNIT_PRICE
+        source {
+            sequence: 3
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: UNIT_PRICE
+        }
+    )
+
+)
+
+jsonSource eba_demo_json_support_ticket (
+    name: EBA_DEMO_JSON_SUPPORT_TICKET
+    type: jsonCollectionTable
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_SUPPORT_TICKET
+    }
+    dataProfile {
+        name: support_ticket_json source
+    }
+
+    dataProfileColumn author (
+        columnName: AUTHOR
+        source {
+            sequence: 3
+            parentColumn: @comments
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: author
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn c-id (
+        columnName: C_ID
+        source {
+            sequence: 1
+            parentColumn: @data
+            dataType: varchar2
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: _id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn comment-id (
+        columnName: COMMENT_ID
+        source {
+            sequence: 5
+            parentColumn: @comments
+            dataType: number
+        }
+        parsing {
+            pathExpression: comment_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn comments (
+        columnName: COMMENTS
+        source {
+            sequence: 13
+            parentColumn: @data
+            dataType: array
+        }
+        parsing {
+            pathExpression: comments
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn comments-pos (
+        columnName: COMMENTS_POS
+        source {
+            sequence: 7
+            parentColumn: @comments
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn concern-order-id (
+        columnName: CONCERN_ORDER_ID
+        source {
+            sequence: 10
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: concern.order_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn concern-product-id (
+        columnName: CONCERN_PRODUCT_ID
+        source {
+            sequence: 12
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: concern.product_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn concern-store-id (
+        columnName: CONCERN_STORE_ID
+        source {
+            sequence: 11
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: concern.store_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn created-at (
+        columnName: CREATED_AT
+        source {
+            sequence: 6
+            parentColumn: @comments
+            dataType: date
+        }
+        parsing {
+            pathExpression: created_at
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn created-at-2 (
+        columnName: CREATED_AT2
+        source {
+            sequence: 16
+            parentColumn: @data
+            dataType: date
+        }
+        parsing {
+            pathExpression: created_at
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 19
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: customer_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn data (
+        columnName: DATA
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: DATA
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn description (
+        columnName: DESCRIPTION
+        source {
+            sequence: 20
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: description
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn message (
+        columnName: MESSAGE
+        source {
+            sequence: 4
+            parentColumn: @comments
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: message
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn priority (
+        columnName: PRIORITY
+        source {
+            sequence: 14
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: priority
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn resolution (
+        columnName: RESOLUTION
+        source {
+            sequence: 17
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: resolution
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn status (
+        columnName: STATUS
+        source {
+            sequence: 9
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn ticket-id (
+        columnName: TICKET_ID
+        source {
+            sequence: 15
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: ticket_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 8
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: title
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn updated-at (
+        columnName: UPDATED_AT
+        source {
+            sequence: 18
+            parentColumn: @data
+            dataType: date
+        }
+        parsing {
+            pathExpression: updated_at
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

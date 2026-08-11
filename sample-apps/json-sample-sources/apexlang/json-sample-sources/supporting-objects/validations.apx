@@ -1,0 +1,13 @@
+validation "Require Oracle AI Database 26ai or later" (
+    execution {
+        sequence: 10
+    }
+    validation {
+        type: expression
+        plsqlExpression: sys.dbms_db_version.version >= 23
+    }
+    error {
+        errorMessage: This sample application requires Oracle Database 26ai or later.
+    }
+)
+

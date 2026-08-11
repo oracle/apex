@@ -1,0 +1,425 @@
+page 401 (
+    name: Interactive Grid
+    alias: INTERACTIVE-GRID
+    title: Interactive Grid
+    pageGroup: @data-presentation
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region interactive-grid (
+        name: Interactive Grid
+        type: interactiveGrid
+        source {
+            location: jsonSource
+            jsonSource: @eba_demo_json_products
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        download {
+            formats: [
+                csv
+                html
+                pdf
+                excel
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 4136533134607024
+        }
+
+        savedReport 41370 (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @PRODUCT_ID
+                layout {
+                    sequence: 1
+                }
+            )
+
+            displayColumn (
+                column: @PRODUCT_NAME
+                layout {
+                    sequence: 2
+                }
+            )
+
+            displayColumn (
+                column: @UNIT_PRICE
+                layout {
+                    sequence: 3
+                }
+            )
+
+            displayColumn (
+                column: @BRAND
+                layout {
+                    sequence: 8
+                }
+            )
+
+            displayColumn (
+                column: @COLOUR
+                layout {
+                    sequence: 9
+                }
+            )
+
+            displayColumn (
+                column: @GENDER
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    sequence: 11
+                }
+            )
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 0
+                }
+            )
+
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 20
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 10
+            }
+        )
+
+        column BRAND (
+            type: textField
+            heading {
+                heading: Brand
+            }
+            layout {
+                sequence: 110
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: BRAND
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column COLOUR (
+            type: textField
+            heading {
+                heading: Colour
+            }
+            layout {
+                sequence: 120
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: COLOUR
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column DESCRIPTION (
+            type: textField
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 140
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column GENDER (
+            type: textField
+            heading {
+                heading: Gender
+            }
+            layout {
+                sequence: 130
+            }
+            validation {
+                maxLength: 4000
+            }
+            source {
+                databaseColumn: GENDER
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column PRODUCT_ID (
+            type: hidden
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: PRODUCT_ID
+                dataType: number
+                primaryKey: true
+            }
+            exportPrinting {
+                includeInExportPrint: false
+            }
+        )
+
+        column PRODUCT_NAME (
+            type: textField
+            heading {
+                heading: Product Name
+            }
+            layout {
+                sequence: 50
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                databaseColumn: PRODUCT_NAME
+                dataType: varchar2
+            }
+            columnFilter {
+                performanceImpactingOperators: [
+                    contains
+                    startsWith
+                    caseInsensitive
+                    regexp
+                ]
+            }
+        )
+
+        column UNIT_PRICE (
+            type: numberField
+            heading {
+                heading: Unit Price
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            source {
+                databaseColumn: UNIT_PRICE
+                dataType: number
+            }
+            columnFilter {
+                lovType: none
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Interactive Grid
+        }
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page provides an Interactive Grid for managing products using the <strong>EBA_DEMO_JSON_PRODUCTS</strong> JSON source. It allows users to view, add, edit, and delete product records while seamlessly handling the <strong>product_details</strong> JSON column. The grid demonstrates how relational data and JSON content can be managed together in a single interface, enabling interactive exploration and updates without requiring full JSON restructuring.
+                </p>
+                
+                <p>
+                To get started, browse the product records in the Interactive Grid or create a new product entry. 
+                You can directly edit relational fields and JSON-based product attributes, then save your changes to see how both structured and semi-structured data are managed together within Oracle APEX.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 402
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 400
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    process interactive-grid-save-interactive-grid-data (
+        name: Interactive Grid - Save Interactive Grid Data
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @interactive-grid
+        execution {
+            sequence: 10
+        }
+        advanced {
+            executionMappingIdentifier: 4096350832035318
+        }
+    )
+
+)
+

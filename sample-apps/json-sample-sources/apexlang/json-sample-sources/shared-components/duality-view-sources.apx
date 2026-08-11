@@ -1,0 +1,274 @@
+jsonDualityView eba_demo_json_customer_orders_dv (
+    name: eba_demo_json_customer_orders_dv
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_CUSTOMER_ORDERS_DV
+    }
+    dataProfile {
+        name: eba_demo_json_customer_orders_dv
+        rowSelector: .
+    }
+
+    dataProfileColumn apex-metadata-asof (
+        columnName: APEX_METADATA_ASOF
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: _metadata.asof
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn apex-metadata-etag (
+        columnName: APEX_METADATA_ETAG
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: _metadata.etag
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn email-address (
+        columnName: EMAIL_ADDRESS
+        source {
+            sequence: 6
+            dataType: varchar2
+            maxLength: 255
+        }
+        parsing {
+            pathExpression: email_address
+        }
+    )
+
+    dataProfileColumn full-name (
+        columnName: FULL_NAME
+        source {
+            sequence: 5
+            dataType: varchar2
+            maxLength: 255
+        }
+        parsing {
+            pathExpression: full_name
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: _id
+        }
+    )
+
+    dataProfileColumn order-datetime (
+        columnName: ORDER_DATETIME
+        source {
+            sequence: 10
+            parentColumn: @orders
+            dataType: timestamp
+        }
+        parsing {
+            pathExpression: order_datetime
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn order-id (
+        columnName: ORDER_ID
+        source {
+            sequence: 2
+            parentColumn: @orders
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: order_id
+        }
+    )
+
+    dataProfileColumn order-status (
+        columnName: ORDER_STATUS
+        source {
+            sequence: 9
+            parentColumn: @orders
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            pathExpression: order_status
+        }
+    )
+
+    dataProfileColumn orders (
+        columnName: ORDERS
+        source {
+            sequence: 7
+            dataType: array
+        }
+        parsing {
+            pathExpression: orders
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn orders-pos (
+        columnName: ORDERS_POS
+        source {
+            sequence: 11
+            parentColumn: @orders
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn store-id (
+        columnName: STORE_ID
+        source {
+            sequence: 8
+            parentColumn: @orders
+            dataType: number
+        }
+        parsing {
+            pathExpression: store_id
+        }
+    )
+
+)
+
+jsonDualityView eba_demo_json_store_dv (
+    name: EBA_DEMO_JSON_STORE_DV
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_STORES_DV
+    }
+    dataProfile {
+        name: EBA_DEMO_JSON_STORE_DV
+        rowSelector: .
+    }
+
+    dataProfileColumn address (
+        columnName: ADDRESS
+        source {
+            sequence: 7
+            dataType: varchar2
+            maxLength: 512
+        }
+        parsing {
+            pathExpression: address
+        }
+    )
+
+    dataProfileColumn apex-metadata-asof (
+        columnName: APEX_METADATA_ASOF
+        source {
+            sequence: 3
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: _metadata.asof
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn apex-metadata-etag (
+        columnName: APEX_METADATA_ETAG
+        source {
+            sequence: 2
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: _metadata.etag
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn country (
+        columnName: COUNTRY
+        source {
+            sequence: 4
+            dataType: varchar2
+            maxLength: 255
+        }
+        parsing {
+            pathExpression: country
+        }
+    )
+
+    dataProfileColumn country-code (
+        columnName: COUNTRY_CODE
+        source {
+            sequence: 6
+            dataType: varchar2
+            maxLength: 2
+        }
+        parsing {
+            pathExpression: country_code
+        }
+    )
+
+    dataProfileColumn id (
+        columnName: ID
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: _id
+        }
+    )
+
+    dataProfileColumn location-latitude (
+        columnName: LOCATION_LATITUDE
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: location.latitude
+        }
+    )
+
+    dataProfileColumn location-longitude (
+        columnName: LOCATION_LONGITUDE
+        source {
+            sequence: 9
+            dataType: number
+        }
+        parsing {
+            pathExpression: location.longitude
+        }
+    )
+
+    dataProfileColumn storename (
+        columnName: STORENAME
+        source {
+            sequence: 5
+            dataType: varchar2
+            maxLength: 255
+        }
+        parsing {
+            pathExpression: storeName
+        }
+    )
+
+)
+
