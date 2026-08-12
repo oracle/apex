@@ -1,0 +1,336 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry administration (
+        name: Administration
+        pageNumber: 600
+        execution {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 600
+            }
+        }
+    )
+
+    entry charts-from-json (
+        name: Charts from JSON
+        pageNumber: 402
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry data-loading (
+        name: Data Loading
+        pageNumber: 502
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+    )
+
+    entry data-presentation (
+        name: Data Presentation
+        pageNumber: 400
+        execution {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry duality-view (
+        name: Duality View
+        pageNumber: 200
+        execution {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry faceted-search (
+        name: Faceted Search
+        pageNumber: 403
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 403
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-grid (
+        name: Interactive Grid
+        pageNumber: 401
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry json-and-workflow (
+        name: JSON and Workflow
+        pageNumber: 503
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+    )
+
+    entry json-collection-table (
+        name: JSON Collection Table
+        pageNumber: 102
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @json-sources
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry json-sources (
+        name: JSON Sources
+        pageNumber: 100
+        execution {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry json-table (
+        name: JSON_TABLE
+        pageNumber: 301
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-json-functions
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+    )
+
+    entry json-transform (
+        name: JSON_TRANSFORM
+        pageNumber: 302
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @sql-json-functions
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+    )
+
+    entry map (
+        name: Map
+        pageNumber: 404
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 404
+            }
+        }
+    )
+
+    entry master-detail (
+        name: Master Detail
+        pageNumber: 405
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+    )
+
+    entry post-processing (
+        name: Post Processing
+        pageNumber: 103
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @json-sources
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry reset-data (
+        name: Reset Data
+        pageNumber: 602
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 602
+            }
+        }
+    )
+
+    entry search-page (
+        name: Search Page
+        pageNumber: 408
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 408
+            }
+        }
+    )
+
+    entry sql-json-functions (
+        name: SQL/JSON Functions
+        pageNumber: 300
+        execution {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry table-with-json-column (
+        name: Table with JSON Column
+        pageNumber: 101
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @json-sources
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry use-cases (
+        name: Use Cases
+        pageNumber: 500
+        execution {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry workflow-console (
+        name: Workflow Console
+        pageNumber: 504
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @json-and-workflow
+        }
+        link {
+            target: {
+                page: 504
+            }
+        }
+    )
+
+)
+

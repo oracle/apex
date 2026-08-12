@@ -1,0 +1,87 @@
+page 600 (
+    name: Administration
+    alias: ADMINISTRATION
+    title: Administration
+    pageGroup: @administration
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: @administration-rights
+        deepLinking: false
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            <p>The administration page allows application owners (Administrators) to configure the application and maintain common data used across the application.
+            By selecting one of the available settings, administrators can potentially change how the application is displayed and/or features available to the end users.</p>
+            <p>Access to this page should be limited to Administrators only.</p>
+            ```
+    }
+
+    region administration (
+        name: Administration
+        type: list
+        source {
+            list: @administration
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        accessibility {
+            landmarkType: navigation
+        }
+        config {
+            buildOption: @feature-theme-style-selection
+        }
+        componentAppearance {
+            listTemplate: @/media-list
+            templateOptions: [
+                #DEFAULT#
+                u-colors
+            ]
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+)
+

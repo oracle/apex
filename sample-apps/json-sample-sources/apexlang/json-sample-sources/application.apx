@@ -1,0 +1,71 @@
+app JSON-SAMPLE-SOURCES (
+    name: JSON Sample Sources
+    version: 26.1.0
+    logo {
+        type: text
+        text: JSON Sample Sources
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleA
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+        publicUser: APEX_PUBLIC_USER
+    }
+    security {
+        runtimeApiUsage: modifyThisApp
+    }
+    sessionStateProtection {
+        checksumSalt: B3AA5DCD414A638868C160D121FFC201778CF23010991A0DC0581511A7BC0462
+    }
+    runtime {
+        allowFeedback: true
+    }
+    advanced {
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: JSON Sample Sources
+            Copyright (c) 2012, 2026 Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: JSON Sample Sources
+        }
+    )
+
+)
+

@@ -213,6 +213,58 @@
             }
         },
         {
+            "internalName": "JSON_SAMPLE_SOURCES",
+            "author": "Oracle",
+            "version": "26.1.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-json-sample-sources.svg",
+            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/json-sample-sources",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-sample-sources/sql/json-sample-sources.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-sample-sources/sql/json-sample-sources.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "JSON Sample Sources",
+                    "description": "This application demonstrates how to work with JSON data using modern Oracle Database features. It provides a structured and intuitive environment to explore JSON sources, transform data, and present it through rich and interactive components."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_APPLICATION_SEARCH",
             "author": "Oracle",
             "version": "26.1.0",

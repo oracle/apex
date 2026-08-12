@@ -1,0 +1,567 @@
+page 404 (
+    name: Map
+    alias: MAP
+    title: Map
+    pageGroup: @data-presentation
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region map (
+        name: Map
+        type: map
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: stores_map
+        }
+        controls {
+            options: [
+                rectangleZoom
+                scaleBar
+            ]
+        }
+        initialPositionAndZoom {
+            zoomLevel: 2
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer stores (
+            name: Stores
+            layout {
+                sequence: 10
+            }
+            source {
+                location: jsonDualityView
+                jsonDualityView: @eba_demo_json_store_dv
+            }
+            localPostProcessing {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select id,
+                           apex_metadata_etag,
+                           apex_metadata_asof,
+                           country,
+                           storename,
+                           country_code,
+                           case when lower(country_code) = 'us' then 'red' when lower(country_code) = 'in' then 'green' else 'blue' end as pin_color,
+                           address,
+                           location_latitude,
+                           location_longitude
+                      from #APEX$SOURCE_DATA#
+                    ```
+            }
+            columnMapping {
+                geometryColumnDataType: longitudeLatitude
+                longitudeColumn: LOCATION_LONGITUDE
+                latitudeColumn: LOCATION_LATITUDE
+            }
+            appearance {
+                fillColor: &PIN_COLOR.
+            }
+            infoWindow {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <strong>&STORENAME.</strong><br>
+                    &ADDRESS.<br>&COUNTRY_CODE.<br>
+                    ```
+            }
+        )
+
+    )
+
+    region overview (
+        name: Overview
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                This page provides an interactive map view of store locations using the <strong>EBA_DEMO_JSON_STORE_DV</strong> Duality View. The map displays store records with color-coded pins based on country code, making it easy to distinguish locations at a glance. On the right, a classic report shows the stores currently visible on the map, updating dynamically as users zoom in and out to focus on specific regions. This layout combines geographic exploration with a synchronized list view for a clear and practical store lookup experience.
+                </p>
+                
+                <p>
+                To get started, navigate the map by zooming or panning to explore store locations in different regions. 
+                The report on the right updates automatically to display only the stores currently visible on the map.
+                </p>
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region raw-json-document (
+        name: Raw JSON Document
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                  select json_serialize(
+                             json_transform(
+                                 data,
+                                 remove '$._metadata'
+                             )
+                             pretty
+                         ) as json_content
+                    from eba_demo_json_stores_dv
+                   where json_value(data, '$._id') = :P404_STORE_ID;
+                
+                ```
+            pageItemsToSubmit: P404_STORE_ID
+        }
+        layout {
+            sequence: 90
+            slot: body
+        }
+        appearance {
+            template: @/inline-dialog
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-size600x400
+            ]
+        }
+        advanced {
+            htmlDomId: raw_json_dialog
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--inline
+                t-Report--hideNoPagination
+            ]
+        }
+        pagination {
+            type: nextAndPreviousLinks
+        }
+        heading {
+            type: none
+        }
+
+        column JSON_CONTENT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Json Content
+            }
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                htmlExpression: <pre>#JSON_CONTENT#</pre>
+            }
+        )
+
+    )
+
+    region stores-report (
+        name: Stores Report
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select json_value(data,'$._id')                            as store_id,
+                       json_value(data,'$.storeName')                      as store_name,
+                       json_value(data,'$.country')                        as country,
+                       json_value(data,'$.address')                        as physical_address
+                  from eba_demo_json_stores_dv
+                 where to_number(json_value(data,'$.location.latitude'))
+                       between nvl(:P404_MIN_LAT,-90)  and nvl(:P404_MAX_LAT,90)
+                   and to_number(json_value(data,'$.location.longitude'))
+                       between nvl(:P404_MIN_LON,-180) and nvl(:P404_MAX_LON,180)
+                ```
+            pageItemsToSubmit: [
+                P404_MIN_LAT
+                P404_MAX_LAT
+                P404_MIN_LON
+                P404_MAX_LON
+            ]
+        }
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        advanced {
+            htmlDomId: stores_report
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &STORE_NAME.
+            description: &PHYSICAL_ADDRESS.
+            miscellaneous: &COUNTRY.
+        }
+        pagination {
+            entitiesPerPage: 8
+        }
+
+        column COUNTRY (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: COUNTRY
+                dataType: varchar2
+            }
+        )
+
+        column PHYSICAL_ADDRESS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PHYSICAL_ADDRESS
+                dataType: varchar2
+            }
+        )
+
+        column STORE_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: STORE_ID
+                dataType: varchar2
+                primaryKey: true
+            }
+        )
+
+        column STORE_NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: STORE_NAME
+                dataType: varchar2
+            }
+        )
+
+        action view (
+            position: primaryActions
+            template: button
+            label: View
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+                linkAttributes: data-store-id="&STORE_ID."
+            }
+            appearance {
+                displayType: icon
+                icon: fa fa-eye
+                cssClasses: viewbutton
+            }
+        )
+
+    )
+
+    pageItem P404_MAX_LAT (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        default {
+            type: static
+            staticValue: 90
+        }
+    )
+
+    pageItem P404_MAX_LON (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        default {
+            type: static
+            staticValue:
+                ```
+                180
+                
+                ```
+        }
+    )
+
+    pageItem P404_MIN_LAT (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        default {
+            type: static
+            staticValue: -90
+        }
+    )
+
+    pageItem P404_MIN_LON (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        default {
+            type: static
+            staticValue:
+                ```
+                -180
+                
+                ```
+        }
+    )
+
+    pageItem P404_STORE_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 100
+            region: @raw-json-document
+            slot: regionBody
+        }
+    )
+
+    button next (
+        buttonName: NEXT
+        label: Next
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 405
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button previous (
+        buttonName: PREVIOUS
+        label: Previous
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: previous
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-angle-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 408
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction map-bounds-changed (
+        name: Map Bounds Changed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: region/map/spatialmapchanged
+            selectionType: region
+            region: @map
+        }
+
+        action refresh-report (
+            name: Refresh Report
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @stores-report
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action retrieve-map-bounds (
+            name: Retrieve Map Bounds
+            action: executeJsCode
+            settings {
+                jsCode:
+                    ```javascript-browser
+                    let map = apex.region("stores_map").call("getMapObject");
+                    let bounds = map.getBounds();
+                    apex.item("P404_MIN_LAT").setValue(bounds.getSouth());
+                    apex.item("P404_MAX_LAT").setValue(bounds.getNorth());
+                    apex.item("P404_MIN_LON").setValue(bounds.getWest());
+                    apex.item("P404_MAX_LON").setValue(bounds.getEast());
+                    ```
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction show-json (
+        name: Show JSON
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P404_STORE_ID
+        }
+
+        action native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @raw-json-document
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @raw-json-document
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction view-store-json (
+        name: View Store JSON
+        execution {
+            sequence: 30
+            eventScope: dynamic
+            staticContainer: #stores_report
+        }
+        when {
+            event: click
+            selectionType: jQuerySelector
+            jquerySelector: .viewbutton
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                type: jsExpression
+                jsExpression: this.triggeringElement.dataset.storeId
+            }
+            affectedElements {
+                selectionType: items
+                items: P404_STORE_ID
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

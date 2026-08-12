@@ -1,0 +1,32 @@
+textMessage MANY_ORDERS_UPDATED (
+    message {
+        text: Customer address saved. Shipment address updated for %0 orders.
+        language: en
+    }
+)
+
+textMessage NO_ORDER_UPDATED (
+    message {
+        text: Customer address saved. No orders required shipment update.
+        language: en
+    }
+)
+
+textMessage ONE_ORDER_UPDATED (
+    message {
+        text: Customer address saved. Shipment address updated for 1 order.
+        language: en
+    }
+)
+
+textMessage SEARCH_INDEX_NOT_CREATED (
+    message {
+        text:
+            ```
+            Search index could not be created in this environment. 
+            You can continue using the application without search functionality.
+            ```
+        language: en
+    }
+)
+

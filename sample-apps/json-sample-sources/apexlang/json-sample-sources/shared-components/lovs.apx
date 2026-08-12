@@ -1,0 +1,235 @@
+lov countries (
+    name: COUNTRIES
+    source {
+        location: jsonDualityView
+        jsonDualityView: @eba_demo_json_store_dv
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct 
+                   COUNTRY,
+                   COUNTRY_CODE
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: COUNTRY_CODE
+        display: COUNTRY
+        defaultSort: COUNTRY
+    }
+)
+
+lov customers (
+    name: CUSTOMERS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_customers
+    }
+    columnMapping {
+        return: CUSTOMER_ID
+        display: FULL_NAME
+        defaultSort: FULL_NAME
+    }
+)
+
+lov desktop-theme-styles (
+    name: DESKTOP THEME STYLES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select s.name d,
+                   s.theme_style_id r
+              from apex_application_theme_styles s,
+                   apex_application_themes t
+             where s.application_id = :app_id
+               and t.application_id = s.application_id
+               and t.theme_number   = s.theme_number
+               and t.is_current     = 'Yes'
+             order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+
+lov order-status (
+    name: ORDER STATUS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_orders
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct order_status
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: ORDER_STATUS
+        display: ORDER_STATUS
+    }
+)
+
+lov payment-method (
+    name: PAYMENT METHOD
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_orders
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct payment_method  
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: PAYMENT_METHOD
+        display: PAYMENT_METHOD
+    }
+)
+
+lov priority (
+    name: PRIORITY
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_support_ticket
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct priority
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: PRIORITY
+        display: PRIORITY
+    }
+)
+
+lov products (
+    name: PRODUCTS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_products
+    }
+    columnMapping {
+        return: PRODUCT_ID
+        display: PRODUCT_NAME
+        defaultSort: PRODUCT_NAME
+    }
+)
+
+lov status (
+    name: STATUS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_support_ticket
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct status
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: STATUS
+        display: STATUS
+    }
+)
+
+lov stores (
+    name: STORES
+    source {
+        location: jsonDualityView
+        jsonDualityView: @eba_demo_json_store_dv
+    }
+    columnMapping {
+        return: ID
+        display: STORENAME
+        defaultSort: STORENAME
+    }
+)
+
+lov user-theme-preference (
+    name: USER_THEME_PREFERENCE
+    source {
+        location: staticValues
+    }
+
+    entry allow-end-users-to-choose-theme-style (
+        sequence: 1
+        display: Allow End Users to choose Theme Style
+        return: Yes
+    )
+
+)
+
+lov workflow-console-lov-initiated (
+    name: WORKFLOW_CONSOLE.LOV.INITIATED
+    source {
+        location: staticValues
+    }
+
+    entry last-24-hours (
+        sequence: 2
+        display: Last 24 hours
+        return: 1|24
+    )
+
+    entry last-30-days (
+        sequence: 4
+        display: Last 30 days
+        return: 168|720
+    )
+
+    entry last-7-days (
+        sequence: 3
+        display: Last 7 days
+        return: 24|168
+    )
+
+    entry last-hour (
+        sequence: 1
+        display: Last hour
+        return: |1
+    )
+
+    entry older-than-30-days (
+        sequence: 5
+        display: Older than 30 days
+        return: 720|
+    )
+
+)
+
+lov workflow-console-lov-workflow-state (
+    name: WORKFLOW_CONSOLE.LOV.WORKFLOW_STATE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_workflow.get_lov_workflow_state )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+

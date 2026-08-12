@@ -1,0 +1,27 @@
+installScript " Load Data" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: -load-data.sql
+    }
+)
+
+installScript "Tables Definition" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: tables-definition.sql
+    }
+)
+
+installScript "create sequences" (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: create-sequences.sql
+    }
+)
+
