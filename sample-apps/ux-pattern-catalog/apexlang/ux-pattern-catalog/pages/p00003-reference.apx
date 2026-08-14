@@ -48,6 +48,14 @@ page 3 (
                 ```html
                 <p>Track notable changes to the catalog, including new patterns, guidance updates, and structural refinements.</p>
                 
+                <h3 class="u-text-subheading-sm">Version 26.1.2</h3>
+                <p><strong>Component Pattern Updates</strong></p>
+                <ul>
+                  <li>Added the Component Primitives section, including example use case patterns for Content Row.</li>
+                  <li>Renamed Patterns to Page Patterns to better distinguish page-level patterns from reusable component patterns.</li>
+                  <li>Fixed issues in the Item Selection and Details pattern.</li>
+                </ul>
+                
                 <h3 class="u-text-subheading-sm">Version 26.1.1</h3>
                 <p><strong>Item Detail Pattern Updates</strong></p>
                 <ul>

@@ -1511,6 +1511,9 @@ page 330 (
 
     pageItem P330_SELECTED_ITEM_ID (
         type: hidden
+        settings {
+            valueProtected: false
+        }
         layout {
             sequence: 10
             region: @list-selection
@@ -1523,6 +1526,9 @@ page 330 (
 
     pageItem P330_SELECTED_ITEM_ID_UI (
         type: hidden
+        settings {
+            valueProtected: false
+        }
         layout {
             sequence: 20
             region: @list-selection

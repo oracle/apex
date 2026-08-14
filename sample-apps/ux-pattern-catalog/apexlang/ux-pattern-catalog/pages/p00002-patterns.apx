@@ -1,5 +1,5 @@
 page 2 (
-    name: Patterns
+    name: Page Patterns
     alias: PATTERNS
     title: Patterns
     appearance {
@@ -16,7 +16,7 @@ page 2 (
     }
 
     region apex-ux-pattern-catalog (
-        name: Pattern Catalog
+        name: Page Pattern Catalog
         type: staticContent
         source {
             htmlCode:
@@ -42,7 +42,7 @@ page 2 (
     )
 
     region patterns (
-        name: Pattern Categories
+        name: Page Pattern Categories
         type: themeTemplateComponent/contentRow
         source {
             location: localDatabase
@@ -165,7 +165,7 @@ page 2 (
     )
 
     region reusable-apex-ux-patterns (
-        name: Patterns
+        name: Page Patterns
         type: staticContent
         layout {
             sequence: 90

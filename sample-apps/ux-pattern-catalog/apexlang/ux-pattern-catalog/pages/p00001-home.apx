@@ -82,6 +82,109 @@ page 1 (
         }
     )
 
+    region component-primitives (
+        name: Explore Component Primitives
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-media-list' as icon_class,
+                    'Content Rows' as title,
+                    'Present compact, scannable records with supporting metadata, status, icons, badges, and contextual actions.' as description,
+                    'content-rows' as page_alias
+                from sys.dual
+                
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                margin-top-md
+            ]
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS. fa-2x u-opacity-50
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: PAGE_ALIAS
+            }
+        )
+
+    )
+
     region for-apex-developers (
         name: Quick Start
         type: cards
@@ -93,7 +196,7 @@ page 1 (
                 select
                     'fa-cards' as icon_class,
                     'Explore Patterns' as title,
-                    'Browse common application page patterns organized by user task.' as description
+                    'Browse reusable page and component patterns organized by interaction type and user task.' as description
                 from sys.dual
                 union all
                 select
@@ -138,7 +241,7 @@ page 1 (
     )
 
     region patterns (
-        name: Browse Pattern Categories
+        name: Browse Page Patterns
         type: themeTemplateComponent/contentRow
         source {
             location: localDatabase

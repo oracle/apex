@@ -1,6 +1,6 @@
 app UX-PATTERN-CATALOG (
     name: Oracle APEX UX Pattern Catalog
-    version: 26.1.1
+    version: 26.1.2
     logo {
         type: text
         text: Oracle APEX UX Pattern Catalog
@@ -16,7 +16,7 @@ app UX-PATTERN-CATALOG (
             #DEFAULT#
             js-defaultCollapsed
             js-navCollapsed--hidden
-            t-TreeNav--styleA
+            t-TreeNav--styleB
         ]
         list: @navigation-menu
     }

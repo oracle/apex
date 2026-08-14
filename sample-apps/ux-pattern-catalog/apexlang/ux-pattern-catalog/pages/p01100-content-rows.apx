@@ -1,0 +1,2737 @@
+page 1100 (
+    name: Content Rows
+    alias: CONTENT-ROWS
+    title: Content Rows
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .ux-about-text {
+                padding: 1rem;
+                border-bottom: 1px solid var(--ut-component-border-color);
+                background: var(--ut-component-toolbar-background-color);
+            }
+            
+            .app-PatternGuidance > p:first-child {
+                font-weight: 600;
+            }
+            
+            .app-PatternGuidance h4 {
+              text-transform: uppercase;
+              font-size: 0.75rem;
+              color: var(u-text-muted-color);
+              margin-bottom: 0.25rem;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            The Content Rows pattern page demonstrates reusable row-based patterns for presenting structured information in a compact, scannable format. Examples show how content rows can support different purposes such as navigation, status, search results, selection, activity, related information, and people.
+            
+            ## When to Use
+            
+            Use content rows when users need to scan or interact with a collection of similarly structured items while retaining more context than a simple list provides.
+            
+            ## When to Avoid
+            
+            Avoid content rows when information is better represented as a comparison table, highly visual card layout, form, or unstructured text. Do not overload rows with excessive attributes or actions.
+            
+            ## AI Guidance
+            
+            Use the examples on this page as references for adapting Content Row to different interaction roles. Preserve a clear hierarchy between the primary label, supporting description, metadata, status, and actions. Include only the elements needed for the specific use case, and keep repeated rows structurally consistent and easy to scan.
+            
+            ```
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Helps users move between related areas by presenting each destination with enough context to understand where it leads.</p>
+                
+                <h4>Best For</h4>
+                <p>Small sets of peer destinations where a label alone may not be enough, such as related record areas, settings categories, or application sections.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @nav-list-container
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Summarizes the current condition of related items so exceptions and required attention are easy to spot.</p>
+                
+                <h4>Best For</h4>
+                <p>Small sets of checks, requirements, stages, or system conditions where concise labels and semantic status indicators support rapid scanning.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @status-list
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Provides a compact overview of the main information areas associated with one item, including what each section contains and any useful supporting context.</p>
+                
+                <h4>Best For</h4>
+                <p>Detail pages with several related sections where counts, recency, or short descriptions help users decide what to review next.</p>
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @section-overview
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_1_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Groups the supporting information associated with an item into clear categories, making related content easy to discover and open.</p>
+                
+                <h4>Best For</h4>
+                <p>Detail pages with several kinds of related content, such as people, files, comments, child records, or other connected records.</p>
+                ```
+        }
+        layout {
+            sequence: 110
+            parentRegion: @related-information_1
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_1_1_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Presents search matches with enough context to distinguish similar records and quickly identify the most relevant result.</p>
+                
+                <h4>Best For</h4>
+                <p>Search or filtered result sets where record type, descriptive context, tags, and recency help users evaluate results before opening them.</p>
+                ```
+        }
+        layout {
+            sequence: 150
+            parentRegion: @search-results_1
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_1_1_1_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Presents a selectable set of records where choosing an item updates or drives a related detail area.</p>
+                
+                <h4>Best For</h4>
+                <p>Master-detail or inspection layouts where users review one current item at a time and need concise status and supporting context before selecting it.</p>
+                ```
+        }
+        layout {
+            sequence: 190
+            parentRegion: @list-selection_1
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_1_1_1_1_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Presents items that may require a decision or review, keeping the relevant context, current state, and available actions together.</p>
+                
+                <h4>Best For</h4>
+                <p>Approval, review, and triage scenarios where users need to quickly distinguish actionable items from completed or informational ones.</p>
+                ```
+        }
+        layout {
+            sequence: 230
+            parentRegion: @decision-and-action-list
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_1_1_1_1_1_1 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Shows a chronological history of meaningful changes and events so users can quickly understand what happened, when, and by whom.</p>
+                
+                <h4>Best For</h4>
+                <p>Record histories, audit-style activity, comments, assignments, file changes, and status updates where recent events and their context matter.</p>
+                ```
+        }
+        layout {
+            sequence: 270
+            parentRegion: @recent-activity_1
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about_1_2 (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Displays a list of people with an avatar or initials, lightweight role context, and current presence or account state.</p>
+                
+                <h4>Best For</h4>
+                <p>Small to medium user lists where names, roles, presence, and recent activity help users quickly understand who is involved or available.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @users-list_1
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region action-list (
+        name: Pattern: Decision and Action List
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Decision and Action List Pattern Guidance
+                -----------------------------------------
+                Use this region to present items that may require a decision, review,
+                or no further action.
+                
+                Design intent:
+                - Use the icon as a reinforcing status cue rather than decoration.
+                - Keep the status available as text so meaning does not depend on icon or color alone.
+                - Show Approve and Reject only for rows awaiting a decision.
+                - Show Review only when additional inspection is required.
+                - Do not show actions for completed or informational rows.
+                - Keep descriptions focused on the context needed to make the decision.
+                - Map META_DATE to a date-aware display attribute and apply the SINCE format in APEX.
+                */
+                select
+                    1 as item_id,
+                    'Review proposed changes' as title,
+                    'Confirm whether the proposed updates should be accepted.' as description,
+                    'fa-hourglass-2 u-warning' as icon,
+                    'Pending Approval' as status,
+                    sysdate - interval '2' hour as meta_date,
+                    'PENDING_APPROVAL' as row_state
+                from sys.dual
+                
+                union all
+                
+                select
+                    2,
+                    'Evaluate access request',
+                    'Review the requested access level and supporting justification.',
+                    'fa-hourglass-2 u-warning',
+                    'Pending Approval',
+                    sysdate - interval '1' day,
+                    'PENDING_APPROVAL'
+                from sys.dual
+                
+                union all
+                
+                select
+                    3,
+                    'Review supporting details',
+                    'Additional context is available and should be reviewed before a decision.',
+                    'fa-search u-info',
+                    'Needs Review',
+                    sysdate - interval '3' hour,
+                    'NEEDS_REVIEW'
+                from sys.dual
+                
+                union all
+                
+                select
+                    4,
+                    'Approved configuration update',
+                    'The proposed configuration was reviewed and accepted.',
+                    'fa-check u-success',
+                    'Approved',
+                    trunc(sysdate) - 1,
+                    'APPROVED'
+                from sys.dual
+                
+                union all
+                
+                select
+                    5,
+                    'Reference information available',
+                    'Supporting information is available for context but requires no action.',
+                    'fa-info u-info',
+                    'No Action Required',
+                    trunc(sysdate) - 3,
+                    'INFORMATIONAL'
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 220
+            parentRegion: @decision-and-action-list
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates an action list for presenting items that may require a decision, review, or no further action. Each row combines a clear task or outcome, supporting context, status, recency, and conditional actions.
+                
+                ## When to Use
+                
+                Use when users need to scan a small set of items and quickly identify which ones require attention. This pattern works well for approvals, reviews, exception handling, and other lightweight work queues.
+                
+                ## When to Avoid
+                
+                Avoid when users need to process large volumes of work, compare many attributes, perform bulk actions, or follow a complex multi-step workflow. Use a report, interactive grid, dedicated task page, or workflow interface instead.
+                
+                ## AI Guidance
+                
+                Write titles that clearly describe the decision, review, or outcome. Use the description only for context needed to understand or complete the task. Keep status and date values separate so they can be mapped independently and formatted appropriately in APEX.
+                
+                Use icons as reinforcing status cues rather than decoration. Do not rely on icon shape or color alone; expose the status as text for accessibility and clarity. Show Approve and Reject only for rows awaiting a decision, show Review only when inspection is required, and omit actions for completed or informational rows.
+                
+                Keep routine review actions neutral. Reserve success and danger treatments for actions that commit meaningful state changes, and use confirmation when rejection or another consequential action cannot be easily reversed.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &STATUS.
+            title: &TITLE.
+            description: &DESCRIPTION.
+            miscellaneous: &META_DATE.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            shape: circular
+            size: extraSmall
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ITEM_ID (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: ITEM_ID
+                dataType: number
+            }
+        )
+
+        column META_DATE (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: META_DATE
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column ROW_STATE (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: ROW_STATE
+                dataType: varchar2
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        action reject (
+            position: primaryActions
+            template: button
+            label: Reject
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            serverSideCondition {
+                type: item=value
+                item: ROW_STATE
+                value: PENDING_APPROVAL
+            }
+        )
+
+        action review (
+            position: primaryActions
+            template: button
+            label: Approve
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                hot: true
+            }
+            serverSideCondition {
+                type: item=value
+                item: ROW_STATE
+                value: PENDING_APPROVAL
+            }
+        )
+
+        action review_2 (
+            position: primaryActions
+            template: button
+            label: Review
+            layout {
+                sequence: 40
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            serverSideCondition {
+                type: item=value
+                item: ROW_STATE
+                value: NEEDS_REVIEW
+            }
+        )
+
+    )
+
+    region dashboards (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Content row patterns help users scan repeated information, recognize important details, and take action without opening each record. Use these examples when a page needs to present records, statuses, navigation choices, activity, or related information in a consistent row-based layout.
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            cssClasses: margin-md
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region dashboards_1 (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region decision-and-action-list (
+        name: Decision and Action List
+        type: staticContent
+        layout {
+            sequence: 210
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region list-selection (
+        name: Pattern: List Selection
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Content Row Selection Pattern Guidance
+                --------------------------------------
+                Use this region to present a selectable list alongside a contextual
+                detail area.
+                
+                Design intent:
+                - Show one clear primary item per row.
+                - Use single selection when the detail area represents one current item.
+                - Store the selected primary key in the configured Current Selection Page Item.
+                - Use the badge to communicate the item's current status.
+                - Keep supporting metadata concise and consistent.
+                - Use multi-selection only when the adapted page supports bulk actions.
+                */
+                select
+                    1 as item_id,
+                    'Item Record A' as title,
+                    'Planning' as category,
+                    trunc(sysdate) as last_updated,
+                    'On Track' as status,
+                    'success' as badge_state
+                from sys.dual
+                
+                union all
+                
+                select
+                    2,
+                    'Item Record B',
+                    'Operations',
+                    trunc(sysdate) - 1,
+                    'Paused',
+                    'warning'
+                from sys.dual
+                
+                union all
+                
+                select
+                    3,
+                    'Item Record C',
+                    'Review',
+                    trunc(sysdate) - 3,
+                    'Blocked',
+                    'danger'
+                from sys.dual
+                
+                union all
+                
+                select
+                    4,
+                    'Item Record D',
+                    'Reporting',
+                    trunc(sysdate) - 5,
+                    'Pending Review',
+                    'info'
+                from sys.dual
+                
+                union all
+                
+                select
+                    5,
+                    'Item Record E',
+                    'Planning',
+                    trunc(sysdate) - 8,
+                    'On Track',
+                    'success'
+                from sys.dual
+                
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: item_id
+        }
+        layout {
+            sequence: 180
+            parentRegion: @list-selection_1
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        advanced {
+            htmlDomId: list_selection_region
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a selectable content-row list used to control a contextual detail view. Each row represents one record and exposes the key information users need to identify, compare, and select the current item.
+                
+                ## When to Use
+                
+                Use when users need to scan a small collection and inspect one item at a time without leaving the page. This pattern works well in list-detail, inbox-style, and master-detail layouts where the selected row determines the content shown in an adjacent region.
+                
+                ## When to Avoid
+                
+                Avoid when users primarily need bulk actions, side-by-side comparison, or editing across many records. Use a report, interactive grid, or multi-select pattern instead.
+                
+                ## AI Guidance
+                
+                Use single selection when one detail area represents the current record. Store the selected primary key in the configured Current Selection Page Item and refresh only the regions that depend on that value.
+                
+                Keep titles concise and use supporting fields such as category, date, and status only when they help distinguish records. Clearly indicate the selected row, preserve selection after refresh when possible, and establish a sensible initial selection when the page first loads.
+                
+                Use multi-selection only when the adapted experience supports bulk actions rather than a single contextual detail view.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &LAST_UPDATED.
+            displayBadge: true
+        }
+        plugin-badge {
+            label: Status
+            value: STATUS
+            state: BADGE_STATE
+            style: subtle
+            shape: circular
+            size: small
+            columnWidth: auto
+            position: end
+            alignment: end
+        }
+        plugin-appearance {
+            applyThemeColors: false
+            style: compact
+        }
+        rowSelection {
+            type: singleSelection
+            currentSelectionPageItem: P1100_SELECTED_ITEM_ID_UI
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+        messages {
+            whenNoDataFound:
+                ```
+                No items found
+                
+                ```
+        }
+
+        column BADGE_STATE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column CATEGORY (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: CATEGORY
+                dataType: varchar2
+            }
+        )
+
+        column ITEM_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ITEM_ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column LAST_UPDATED (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: LAST_UPDATED
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region list-selection_1 (
+        name: List Selection
+        type: staticContent
+        layout {
+            sequence: 170
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region nav-list-container (
+        name: Navigation List
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region patterns (
+        name: Pattern: Navigation List
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-home' as icon_class,
+                    'Overview' as title,
+                    'Review the primary summary, current status, and key information for this area.' as description,
+                    'content-rows' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-info-circle-o' as icon_class,
+                    'Details' as title,
+                    'View supporting attributes, context, and additional information.' as description,
+                    'content-rows' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-link' as icon_class,
+                    'Related Information' as title,
+                    'Open associated records, resources, and other relevant content.' as description,
+                    'related-content-rows' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-history' as icon_class,
+                    'Activity' as title,
+                    'Review recent changes, updates, and other notable events.' as description,
+                    'content-rows' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-cog' as icon_class,
+                    'Settings' as title,
+                    'Manage configuration, preferences, and supporting options.' as description,
+                    'content-rows' as page_alias
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @nav-list-container
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+            renderComponents: belowContent
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a navigation list for moving between related destinations within the same application area. Each row combines a clear destination label, optional supporting description, and recognizable icon.
+                
+                ## When to Use
+                
+                Use when users need to choose from a small set of peer destinations, such as overview, details, related information, activity, or settings. This pattern works best for approximately three to seven options that are distinct enough to require explanation.
+                
+                ## When to Avoid
+                
+                Avoid when the destinations represent a sequential process, a large navigation hierarchy, or frequently used global navigation. Use tabs, breadcrumbs, a navigation menu, or a step-based pattern instead.
+                
+                ## AI Guidance
+                
+                Use task-oriented labels that describe the destination clearly. Keep descriptions brief and explain what users will find after selecting the row. Use icons only when they reinforce meaning; do not rely on icons alone. Keep all rows visually consistent and make the entire row selectable.
+                
+                Set the target from a stable page alias or URL. Preserve the user’s current context when appropriate, and indicate the current destination when the list remains visible after navigation.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS. fa-2x u-opacity-50
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: PAGE_ALIAS
+            }
+        )
+
+    )
+
+    region recent-activity (
+        name: Pattern: Recent Activity
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Activity timeline guidance for AI:
+                
+                1. The timeline should show the meaningful payload of the event at a glance.
+                2. Attribute changes should use the title to describe the new value or state.
+                3. File events should name the file in the title so the user can identify it immediately.
+                4. Comment events should surface the comment text itself; the title can be the comment body, or the description can carry it if the title is a short summary.
+                5. Use the description only when it adds useful context such as previous value, author, or a short supporting note.
+                6. Keep some rows title-only to demonstrate that not every activity needs a description.
+                7. Keep the mix of row shapes so the timeline can represent simple and rich events.
+                */
+                
+                select 'Today' as activity_group,
+                       10 as display_sequence,
+                       sysdate - interval '1' hour as activity_time,
+                       'Maya Chen' as actioned_by,
+                       'Updated' as action_type,
+                       null as badge_label,
+                       'Status changed to On Track' as title,
+                       'Previous status: Needs Review' as description,
+                       'fa-check-circle-o u-success-text' as icon_class,
+                       'is-featured' as row_class,
+                       1 as id
+                  from sys.dual
+                union all
+                select 'Today',
+                       20,
+                       sysdate - interval '4' hour,
+                       'Jordan Lee',
+                       'Reviewed',
+                       null,
+                       'Review completed',
+                       'Next step confirmed for the current owner',
+                       'fa-check-circle-o u-success-text',
+                       'is-standard',
+                       2
+                  from sys.dual
+                union all
+                select 'This Week',
+                       30,
+                       trunc(sysdate) - 2 + (9/24),
+                       'Maya Chen',
+                       'Commented',
+                       null,
+                       'We should confirm the owner before moving this forward.',
+                       'Comment added to the current record',
+                       'fa-comments-o u-info-text',
+                       'is-standard',
+                       3
+                  from sys.dual
+                union all
+                select 'This Week',
+                       40,
+                       trunc(sysdate) - 3 + (14/24),
+                       'Jordan Lee',
+                       'Adjusted',
+                       null,
+                       'Target Date set to October 1',
+                       'Previous target date: September 18',
+                       'fa-calendar-o u-info-text',
+                       'is-standard',
+                       4
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       50,
+                       trunc(sysdate) - 7 + (11/24),
+                       null,
+                       null,
+                       null,
+                       'Ownership assigned to Avery Smith for ongoing follow-up',
+                       null,
+                       'fa-user u-info-text',
+                       'is-compact',
+                       5
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       60,
+                       trunc(sysdate) - 9 + (10/24),
+                       null,
+                       null,
+                       null,
+                       'Standard Intake linked to support the current record',
+                       null,
+                       'fa-link u-info-text',
+                       'is-compact',
+                       6
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       70,
+                       trunc(sysdate) - 10 + (12/24),
+                       null,
+                       null,
+                       null,
+                       'Reference removed after duplicate values were identified',
+                       null,
+                       'fa-minus-circle-o u-danger-text',
+                       'is-compact',
+                       7
+                  from sys.dual
+                union all
+                select 'Earlier',
+                       80,
+                       trunc(sysdate) - 11 + (16/24),
+                       null,
+                       null,
+                       null,
+                       'Initial record created and prepared for first review',
+                       null,
+                       'fa-plus-circle-o u-info-text',
+                       'is-compact',
+                       8
+                  from sys.dual;
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: display_sequence, activity_group
+        }
+        layout {
+            sequence: 260
+            parentRegion: @recent-activity_1
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a recent activity list for showing meaningful changes, comments, decisions, and system events associated with one record. Activities are grouped by relative time period so users can scan recent events first while retaining older history.
+                
+                ## When to Use
+                
+                Use when users need a concise chronological history of what changed, who acted, and when it occurred. This pattern works well on detail pages where activity provides supporting context without requiring a full audit report.
+                
+                ## When to Avoid
+                
+                Avoid when users need a legally complete audit trail, detailed field-by-field comparison, or analysis across many records. Use a dedicated audit report, change-history view, or timeline when those requirements are primary.
+                
+                ## AI Guidance
+                
+                Describe the meaningful result of each event, not only the action type. Attribute changes should state the new value in the title and use the description for the previous value or other supporting context. File events should name the file, and comments should expose the comment text directly.
+                
+                Group rows using clear, mutually exclusive time periods such as Today, This Week, and Earlier. Order groups from newest to oldest, and order events chronologically within each group. Keep the group labels stable and derive them from the event timestamp rather than storing them as unrelated display text.
+                
+                Use actor and action metadata when it adds context, but allow compact title-only rows for simple system events. Apply icons and semantic color only when they reinforce event meaning. Do not rely on color alone, and reserve stronger emphasis for genuinely important or featured activity.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+            cssClasses: app-ActivityTimeline
+        }
+        settings {
+            overline:
+                ```html
+                {if ACTIONED_BY/}
+                    &ACTIONED_BY.{if ACTION_TYPE/} &middot; &ACTION_TYPE.{endif/}
+                {elseif ACTION_TYPE/}
+                    &ACTION_TYPE.
+                {endif/}
+                ```
+            title: &TITLE.
+            description: &DESCRIPTION.
+            miscellaneous: &ACTIVITY_TIME.
+            displayAvatar: true
+            itemCssClasses: &ROW_CLASS.
+        }
+        plugin-avatar {
+            icon: &ICON_CLASS.
+            shape: noShape
+            size: small
+        }
+        plugin-grouping {
+            title: <div class="u-text-uppercase u-text-muted-color u-text-body-xs u-text-bold">&ACTIVITY_GROUP.</div>
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column ACTIONED_BY (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ACTIONED_BY
+                dataType: varchar2
+            }
+        )
+
+        column ACTION_TYPE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ACTION_TYPE
+                dataType: varchar2
+            }
+        )
+
+        column ACTIVITY_GROUP (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ACTIVITY_GROUP
+                dataType: varchar2
+            }
+            appearance {
+                group: true
+            }
+        )
+
+        column ACTIVITY_TIME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: ACTIVITY_TIME
+                dataType: date
+            }
+        )
+
+        column BADGE_LABEL (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: DISPLAY_SEQUENCE
+                dataType: number
+            }
+        )
+
+        column ICON_CLASS (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: ICON_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column ROW_CLASS (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: ROW_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region recent-activity_1 (
+        name: Recent Activity
+        type: staticContent
+        layout {
+            sequence: 250
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region related-information (
+        name: Pattern: Related Information
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-users' as icon,
+                    'People' as title,
+                    'View owners, participants, and other people associated with this item.' as description,
+                    4 as item_count,
+                    'PEOPLE' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-file-o' as icon,
+                    'Files' as title,
+                    'Open documents, attachments, and other supporting files.' as description,
+                    12 as item_count,
+                    'FILES' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-comments-o' as icon,
+                    'Comments' as title,
+                    'Review discussion, feedback, and notes related to this item.' as description,
+                    18 as item_count,
+                    'COMMENTS' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-sitemap' as icon,
+                    'Child Records' as title,
+                    'View records that belong to or depend on the current item.' as description,
+                    6 as item_count,
+                    'CHILD_RECORDS' as page_alias
+                from sys.dual
+                
+                union all
+                
+                select
+                    'fa-link' as icon,
+                    'Related Records' as title,
+                    'Open other records connected to the current item.' as description,
+                    3 as item_count,
+                    'RELATED_RECORDS' as page_alias
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 100
+            parentRegion: @related-information_1
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a related-information list for exposing the main collections and supporting content associated with one current record. Each row identifies a related content type, briefly explains what it contains, and shows the number of available items.
+                
+                ## When to Use
+                
+                Use on detail pages when a record has several related collections that users may need to inspect, such as people, files, comments, child records, or connected records. This pattern works well when the related content is important but does not need to be displayed directly on the current page.
+                
+                ## When to Avoid
+                
+                Avoid when there is only one related collection, when the related content is already visible nearby, or when users need to compare individual related records immediately. Use an inline report, tabs, cards, or a dedicated related-records region instead.
+                
+                ## AI Guidance
+                
+                Keep all rows scoped to the current record. Use clear plural labels for related content types, concise descriptions that explain what users will find, and counts that reflect the actual number of available items.
+                
+                Make the entire row selectable and navigate to a focused view of that related collection. Keep icons meaningful and visually consistent. Do not show counts when they are unavailable, misleading, or expensive to calculate. Order rows by relevance or expected frequency of use rather than alphabetically by default.
+                
+                This differs from **Section Overview** in one important way: Section Overview summarizes areas of the current page or record, while Related Information points to distinct collections of associated content.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-badge {
+            label: Related Item Count
+            value: ITEM_COUNT
+            style: subtle
+            columnWidth: auto
+            position: end
+            alignment: center
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ITEM_COUNT (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: ITEM_COUNT
+                dataType: number
+            }
+        )
+
+        column PAGE_ALIAS (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: PAGE_ALIAS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region related-information_1 (
+        name: Related Information
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region search-results (
+        name: Pattern: Search Results
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Sample data for a search-results content row.
+                
+                Each result includes:
+                
+                - Stable record type
+                - Primary result label
+                - Distinguishing description
+                - Search-relevant tags
+                - Last-updated date
+                - Optional secondary actions
+                
+                Map UPDATED_ON to the metadata attribute and apply the SINCE format
+                in APEX. TAGS contains a comma-separated set of short values that can
+                be rendered with template directives.
+                
+                Use tags for meaningful attributes that help users identify or
+                differentiate results. Keep the number of visible tags small and
+                avoid repeating the title, record type, or status.
+                */
+                select
+                    1 as id,
+                    'Record 001' as title,
+                    'Summary information and current context for this record.' as description,
+                    'Standard Record' as category,
+                    'assigned, customer-facing, current' as tags,
+                    sysdate - interval '30' minute as updated_on,
+                    'fa-file-text-o' as icon,
+                    'Standard Record' as overline
+                from sys.dual
+                
+                union all
+                
+                select
+                    2,
+                    'Record 002',
+                    'Supporting details are currently being prepared and reviewed.',
+                    'Review Record',
+                    'internal, draft, supporting-docs',
+                    sysdate - interval '3' hour,
+                    'fa-clipboard-check',
+                    'Review Record'
+                from sys.dual
+                
+                union all
+                
+                select
+                    3,
+                    'Record 003',
+                    'Recent changes require confirmation before work can continue.',
+                    'Tracked Record',
+                    'assigned, follow-up',
+                    sysdate - interval '1' day,
+                    'fa-list-alt',
+                    'Tracked Record'
+                from sys.dual
+                
+                union all
+                
+                select
+                    4,
+                    'Record 004',
+                    'Reference information and supporting material are available.',
+                    'Reference Record',
+                    'published, shared, documentation',
+                    sysdate - interval '4' day,
+                    'fa-book',
+                    'Reference Record'
+                from sys.dual
+                
+                union all
+                
+                select
+                    5,
+                    'Record 005',
+                    'All required work has been completed and validated.',
+                    'Standard Record',
+                    'validated, complete',
+                    sysdate - interval '7' day,
+                    'fa-check-square-o',
+                    'Standard Record'
+                from sys.dual;
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: updated_on desc
+        }
+        layout {
+            sequence: 140
+            parentRegion: @search-results_1
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a search-results list for presenting a small set of matching records in a compact, scannable format. Each row combines record identity, distinguishing context, current status, update metadata, and optional secondary actions.
+                
+                ## When to Use
+                
+                Use when users need to review and open records returned by a search, filter, or browse action. This pattern works well when titles alone are not enough to distinguish results and users benefit from supporting descriptions, categories, status, or recency.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare many attributes across records, edit values directly, or analyze large result sets. Use a report, interactive grid, cards, or faceted search pattern instead.
+                
+                ## AI Guidance
+                
+                Lead with the record title and include only the supporting details needed to distinguish one result from another. Use the overline for a stable category or record type, the badge for a meaningful status, and the metadata area for concise secondary information such as the last update date.
+                
+                Keep the entire row selectable when it opens the record. Reserve the row menu for less common secondary actions. Apply semantic badge states consistently, avoid decorative status colors, and keep row structure and metadata placement consistent across all results.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description:
+                ```html
+                &DESCRIPTION.
+                <div>
+                {loop "," TAGS/}
+                    <span class="t-Badge t-Badge--subtle t-Badge--sm"><span class="t-Badge-value">&APEX$ITEM.</span></span>
+                {endloop/}
+                </div>
+                ```
+            miscellaneous: Updated &UPDATED_ON.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column CATEGORY (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: CATEGORY
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column OVERLINE (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: OVERLINE
+                dataType: varchar2
+            }
+        )
+
+        column TAGS (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED_ON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: UPDATED_ON
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        action row-actions (
+            position: primaryActions
+            template: menu
+            label: Row Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu row-action-1 (
+                label: Row Action 1
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+            menu row-action-2 (
+                label: Row Action 2
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+            menu row-action-3 (
+                label: Row Action 3
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+        )
+
+    )
+
+    region search-results_1 (
+        name: Search Results
+        type: staticContent
+        layout {
+            sequence: 130
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region section-overview (
+        name: Section Overview
+        type: staticContent
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region section-summary (
+        name: Pattern: Section Overview
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Overview' as title,
+                    'Review the primary summary, current status, and key attributes for this item.' as description,
+                    'fa-id-card-o' as icon,
+                    '8 attributes' as meta,
+                    null as badge,
+                    null as badge_state,
+                    null as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'People' as title,
+                    'View associated people, ownership, responsibilities, and other participants.' as description,
+                    'fa-users' as icon,
+                    '4 people' as meta,
+                    null as badge,
+                    null as badge_state,
+                    null as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Files' as title,
+                    'Access supporting documents, attachments, and other reference material.' as description,
+                    'fa-file-text-o' as icon,
+                    '12 files' as meta,
+                    null as badge,
+                    null as badge_state,
+                    null as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Comments' as title,
+                    'Review discussion, feedback, and notes associated with this item.' as description,
+                    'fa-comments-o' as icon,
+                    '18 comments' as meta,
+                    null as badge,
+                    null as badge_state,
+                    null as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Activity' as title,
+                    'Review recent changes, decisions, and other notable events.' as description,
+                    'fa-history' as icon,
+                    'Updated 10m ago' as meta,
+                    null as badge,
+                    null as badge_state,
+                    null as badge_icon
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @section-overview
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a section overview for summarizing the major content areas associated with one item. Each row identifies a section, briefly explains its contents, and provides supporting metadata such as a count or recent update.
+                
+                ## When to Use
+                
+                Use on detail pages with several distinct information areas when users benefit from understanding what each section contains before opening or navigating to it. This pattern works well for sections such as overview, people, files, comments, and activity.
+                
+                ## When to Avoid
+                
+                Avoid when the page has only a few visible sections, when section labels are already clear, or when users need primary application navigation. Use headings, tabs, a navigation list, or a table of contents instead.
+                
+                ## AI Guidance
+                
+                Keep all rows scoped to one record or page context. Use concise section names, descriptions that explain the content available, and metadata that adds useful context, such as item counts or recency. Do not use decorative metrics that do not help users decide where to go.
+                
+                Make rows selectable when they navigate to the corresponding section. Keep icons consistent and meaningful, preserve a stable section order, and avoid using status colors unless the metadata represents an actual state.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            miscellaneous: &META.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            size: extraSmall
+        }
+        plugin-appearance {
+            style: compact
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column META (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: META
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region status-list (
+        name: Status List
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region status-list-2 (
+        name: Pattern: Status List
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Data'                         as overline,
+                    'Required Information'        as title,
+                    'All required fields have been completed.' as description,
+                    'fa-tasks-alt'              as icon,
+                    'Complete'                     as badge,
+                    'success'                      as badge_state,
+                    'fa-check'                     as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Review'                       as overline,
+                    'Content Review'              as title,
+                    'Updates are in progress and have not yet been finalized.' as description,
+                    'fa-search'                    as icon,
+                    'In Progress'                  as badge,
+                    'warning'                      as badge_state,
+                    'fa-clock-o'                   as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Approval'                     as overline,
+                    'Required Approval'            as title,
+                    'An outstanding decision is blocking further progress.' as description,
+                    'fa-user-check'                as icon,
+                    'Action Required'              as badge,
+                    'danger'                       as badge_state,
+                    'fa-exclamation'               as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Files'                        as overline,
+                    'Supporting Documents'        as title,
+                    'Reference files are available for review.' as description,
+                    'fa-file-text-o'               as icon,
+                    'Available'                    as badge,
+                    'info'                         as badge_state,
+                    'fa-info'                      as badge_icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Configuration'               as overline,
+                    'Application Settings'        as title,
+                    'The current configuration has been validated successfully.' as description,
+                    'fa-cogs'                      as icon,
+                    'Validated'                    as badge,
+                    'success'                      as badge_state,
+                    'fa-check'                     as badge_icon
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @status-list
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a status list for summarizing the condition of several related parts of a record, process, or application area. Each row combines a clear label, brief explanation, supporting icon, and semantic status badge.
+                
+                ## When to Use
+                
+                Use when users need to scan a small set of related checks, requirements, stages, or system conditions and quickly identify what is complete, in progress, available, or requires attention.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare many records, analyze status trends, or act on a complex workflow. Use a report, chart, timeline, or task-oriented view instead.
+                
+                ## AI Guidance
+                
+                Keep all rows within one coherent status context. Use concise titles for the item being evaluated and descriptions that explain the meaning or consequence of its current state. Apply semantic badge states consistently: success for positive completion, warning for incomplete or pending work, danger for blockers or required action, and info for neutral availability or context.
+                
+                Use icons to reinforce the item or status, but do not rely on color or icons alone. Order rows by importance when exceptions require attention; otherwise, follow the natural sequence of the process or information.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &OVERLINE.
+            title: &TITLE.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-badge {
+            label: Badge
+            value: BADGE
+            state: BADGE_STATE
+            style: subtle
+            columnWidth: auto
+            position: end
+            alignment: center
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column OVERLINE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: OVERLINE
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region tabs (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region users-list (
+        name: Pattern: Users List
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                /*
+                Users List Pattern Guidance
+                ---------------------------
+                Use this region to present people or application users with a clear
+                identity hierarchy and lightweight presence information.
+                
+                Design intent:
+                - Use the person's name as the primary label.
+                - Use initials as the avatar when no profile image is available.
+                - Use the description for one concise attribute such as role or team.
+                - Use the badge for a meaningful presence or account state.
+                - Use last-active time as secondary metadata and apply the SINCE format in APEX.
+                - Do not add row actions unless the adapted experience requires them.
+                */
+                select
+                    1 as user_id,
+                    'Maya Chen' as title,
+                    'Product Manager' as description,
+                    apex_string.get_initials('Maya Chen') as initials,
+                    'Active' as badge,
+                    'success' as badge_state,
+                    sysdate - interval '12' minute as last_active
+                from sys.dual
+                
+                union all
+                
+                select
+                    2,
+                    'Jordan Lee',
+                    'Senior Developer',
+                    apex_string.get_initials('Jordan Lee'),
+                    'Active',
+                    'success',
+                    sysdate - interval '45' minute
+                from sys.dual
+                
+                union all
+                
+                select
+                    3,
+                    'Avery Smith',
+                    'UX Designer',
+                    apex_string.get_initials('Avery Smith'),
+                    'Away',
+                    'warning',
+                    sysdate - interval '4' hour
+                from sys.dual
+                
+                union all
+                
+                select
+                    4,
+                    'Priya Patel',
+                    'Business Analyst',
+                    apex_string.get_initials('Priya Patel'),
+                    'Busy',
+                    'danger',
+                    sysdate - interval '1' day
+                from sys.dual
+                
+                union all
+                
+                select
+                    5,
+                    'Daniel Kim',
+                    'Reviewer',
+                    apex_string.get_initials('Daniel Kim'),
+                    'Inactive',
+                    'info',
+                    sysdate - interval '7' day
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @users-list_1
+            slot: regionBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a users list for presenting people with a clear identity hierarchy, concise role or team context, and lightweight presence or account state.
+                
+                ## When to Use
+                
+                Use when users need to scan a small or medium set of people associated with an application area, record, team, or task. This pattern works well when identity, role, availability, and recent activity are useful at a glance.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare many user attributes, manage accounts in bulk, or perform complex filtering and administration. Use a report, table, or dedicated user-management view instead.
+                
+                ## AI Guidance
+                
+                Use the person's name as the primary label and keep supporting information concise. Show one useful secondary attribute, such as role or team, rather than turning each row into a profile summary.
+                
+                Use initials as a fallback avatar when no profile image is available. Use badges only for meaningful presence or account states, and keep state labels and semantic colors consistent. Show recent activity as secondary metadata when it helps users understand availability or engagement.
+                
+                Do not add row actions by default. Add actions only when the adapted experience has a clear user-management or collaboration need.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            miscellaneous: &LAST_ACTIVE.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            type: initials
+            initials: INITIALS
+            shape: circular
+        }
+        plugin-badge {
+            label: Status
+            value: BADGE
+            state: BADGE_STATE
+            style: subtle
+            columnWidth: auto
+            position: end
+            alignment: center
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column INITIALS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: INITIALS
+                dataType: varchar2
+            }
+        )
+
+        column LAST_ACTIVE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: LAST_ACTIVE
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        column USER_ID (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: USER_ID
+                dataType: number
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region users-list_1 (
+        name: Users List
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P1100_SELECTED_ITEM_ID (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 10
+            region: @list-selection
+            slot: regionBody
+        }
+        comments {
+            comments: Stores the canonical selected-item context used by the detail-region queries. Changes to this item refresh all dependent regions marked with .js-item-refresh.
+        }
+    )
+
+    pageItem P1100_SELECTED_ITEM_ID_UI (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @list-selection
+            slot: regionBody
+        }
+        comments {
+            comments: Stores the current primary-key selection maintained by the Content Row component. Changes to this item are synchronized into P1100_SELECTED_ITEM_ID.
+        }
+    )
+
+    dynamicAction initialize-selection (
+        name: Initialize Selection
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: "apex.region(\"list_selection_region\").setSelectedValues([\"1\"]);"
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+
