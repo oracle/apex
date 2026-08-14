@@ -179,6 +179,37 @@ list navigation-menu (
         }
     )
 
+    entry component-primitives (
+        label: Component Primitives
+        icon {
+            imageIconCssClasses: fa-shapes
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry content-rows (
+        label: Content Rows
+        icon {
+            imageIconCssClasses: fa-media-list
+        }
+        layout {
+            sequence: 180
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1100
+            }
+        }
+    )
+
     entry dashboards (
         label: Dashboards
         icon {
@@ -340,7 +371,7 @@ list navigation-menu (
     )
 
     entry patterns (
-        label: Patterns
+        label: Page Patterns
         icon {
             imageIconCssClasses: fa-cards
         }

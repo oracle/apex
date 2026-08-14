@@ -1,6 +1,51 @@
 breadcrumb breadcrumb (
     name: Breadcrumb
 
+    entry cards (
+        name: Cards
+        pageNumber: 1110
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1110
+            }
+        }
+    )
+
+    entry component-primitives (
+        name: Component Primitives
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry content-rows (
+        name: Content Rows
+        pageNumber: 1100
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1100
+            }
+        }
+    )
+
     entry faceted-search (
         name: Faceted Search
         pageNumber: 5
