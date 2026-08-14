@@ -106,7 +106,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461239195654
-,p_version_scn=>'250710272'
+,p_version_scn=>'250735651'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -19301,7 +19301,7 @@ wwv_flow_imp_page.create_page(
 '.app-PatternGuidance h4 {',
 '  text-transform: uppercase;',
 '  font-size: 0.75rem;',
-'  color: var(u-text-muted-color);',
+'  color: var(--ut-component-text-muted-color);',
 '  margin-bottom: 0.25rem;',
 '}'))
 ,p_step_template=>2528119710305719084
@@ -20128,7 +20128,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-link'' as icon_class,',
 '    ''Related Information'' as title,',
 '    ''Open associated records, resources, and other relevant content.'' as description,',
-'    ''related-content-rows'' as page_alias',
+'    ''content-rows'' as page_alias',
 'from sys.dual',
 '',
 'union all',
