@@ -109,6 +109,7 @@ BEGIN
                         FROM sys.all_tab_columns col
                        WHERE col.column_name = d.column_name
                          AND col.table_name = e.object_name
+                         AND col.owner = e.object_owner
                     )
                   )
                 RETURNING CLOB)
@@ -187,6 +188,7 @@ BEGIN
                         FROM sys.all_tab_columns col
                        WHERE col.column_name = d.column_name
                          AND col.table_name = e.object_name
+                         AND col.owner = e.object_owner
                     )
                   RETURNING CLOB)
                 RETURNING CLOB)
@@ -258,6 +260,7 @@ BEGIN
     FROM sys.dual;
 END get_graph_metadata_proc;
 /
+
 /*
   Dynamically compute distinct vertex and edge counts from a user-provided graph query,
   using provided JSON arrays of vertex and edge column names.
