@@ -1,3 +1,58 @@
+file "avatars/persona-female01.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "avatars/persona-female02.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "avatars/persona-female03.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "avatars/persona-male01.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "avatars/persona-male02.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "avatars/persona-male03.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "documents/budget-forecast-preview.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "documents/launch-plan-preview.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "documents/project-charter-preview.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "documents/release-readiness-checklist-preview.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
+file "documents/research-findings-preview.jpg" (
+    mimeType: image/jpeg
+    charSet: utf-8
+)
+
 file "icons/app-icon-144-rounded.png" (
     mimeType: image/png
     charSet: utf-8
@@ -30,6 +85,26 @@ file "js/split-view-selection.js" (
 
 file "js/split-view-selection.min.js" (
     mimeType: text/javascript
+    charSet: utf-8
+)
+
+file "media-cards/business-travel-hotel.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "media-cards/city-hostel.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "media-cards/family-stay-hotel.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "media-cards/luxury-hotel.png" (
+    mimeType: image/png
     charSet: utf-8
 )
 
