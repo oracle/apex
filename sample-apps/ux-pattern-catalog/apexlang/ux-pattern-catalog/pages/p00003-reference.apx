@@ -48,6 +48,14 @@ page 3 (
                 ```html
                 <p>Track notable changes to the catalog, including new patterns, guidance updates, and structural refinements.</p>
                 
+                <h3 class="u-text-subheading-sm">Version 26.1.3</h3>
+                <p><strong>Component and Item Detail Pattern Updates</strong></p>
+                <ul>
+                  <li>Added example use case patterns for Cards in the Component Primitives section.</li>
+                  <li>Added the Tree Selection pattern to Item Details.</li>
+                  <li>Renamed Item Selection with Details to Item Selection.</li>
+                </ul>
+                
                 <h3 class="u-text-subheading-sm">Version 26.1.2</h3>
                 <p><strong>Component Pattern Updates</strong></p>
                 <ul>

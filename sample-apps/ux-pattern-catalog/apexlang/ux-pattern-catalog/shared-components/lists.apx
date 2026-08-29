@@ -166,6 +166,39 @@ list navigation-menu (
         }
     )
 
+    entry browse-tree (
+        label: Tree Selection
+        layout {
+            sequence: 200
+            parentEntry: @item-details
+        }
+        isCurrent {
+            type: pages
+            pages: 240
+        }
+        link {
+            target: {
+                page: 240
+            }
+        }
+    )
+
+    entry cards (
+        label: Cards
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 190
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1110
+            }
+        }
+    )
+
     entry complex-dashboard (
         label: Advanced
         layout {
@@ -284,7 +317,7 @@ list navigation-menu (
     )
 
     entry interactive-report (
-        label: Interactive Report
+        label: Browse - Interactive Report
         layout {
             sequence: 60
             parentEntry: @reports
@@ -339,7 +372,7 @@ list navigation-menu (
     )
 
     entry item-selection-and-details (
-        label: Item Selection and Details
+        label: Item Selection
         layout {
             sequence: 170
             parentEntry: @item-details

@@ -98,9 +98,16 @@ page 300 (
                 union all
                 select
                     'fa-layout-2col' as icon_class,
-                    'Item Selection and Details' as title,
+                    'Item Selection' as title,
                     'A selection-first layout with a list of items alongside details for the currently selected record.' as description,
                     'item-selection-with-details' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-tree-org' as icon_class,
+                    'Tree Selection' as title,
+                    'A selection-first layout with hierarchal navigation alongside details for the currently selected record.' as description,
+                    'tree-selection' as page_alias
                 from sys.dual
                 ```
         }

@@ -82,7 +82,7 @@ page 4 (
                     'fa-cards' as icon_class,
                     'Cards' as title,
                     'Group related content and actions into flexible visual containers for browsing, comparison, and summary views.' as description,
-                    null as page_alias
+                    'cards' as page_alias
                 from sys.dual
                 
                 union all
