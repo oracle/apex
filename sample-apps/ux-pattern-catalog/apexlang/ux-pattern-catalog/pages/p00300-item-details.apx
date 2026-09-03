@@ -100,7 +100,7 @@ page 300 (
                     'fa-layout-2col' as icon_class,
                     'Item Selection' as title,
                     'A selection-first layout with a list of items alongside details for the currently selected record.' as description,
-                    'item-selection-with-details' as page_alias
+                    'item-selection' as page_alias
                 from sys.dual
                 union all
                 select

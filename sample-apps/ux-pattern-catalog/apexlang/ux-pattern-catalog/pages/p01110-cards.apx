@@ -90,19 +90,19 @@ page 1110 (
             ```html
             ## Purpose
             
-            The Dashboards index is a catalog context page that introduces dashboard patterns and helps users choose an appropriate overview pattern. It is not itself a dashboard pattern to copy.
+            The Cards pattern page demonstrates reusable card-based patterns for presenting related information as distinct, visually grouped items. Examples show how cards can support navigation, people, item details, approvals and actions, product catalogs, media-rich content, and files or documents.
             
             ## When to Use
             
-            Use dashboard patterns when users need to understand status, monitor progress, identify exceptions, or decide where to focus next.
+            Use cards when users need to scan, compare, select, or act on a collection of items that benefit from a clear identity, supporting context, optional media, status, links, or actions.
             
             ## When to Avoid
             
-            Avoid dashboard patterns when users primarily need to browse individual records, complete data entry, or inspect the full details of a single item.
+            Avoid cards when information is better represented as a compact list, comparison table, data-entry form, or unstructured text. Do not use cards merely to decorate simple navigation or dense result sets, and do not overload each card with excessive attributes, badges, images, or competing actions.
             
             ## AI Guidance
             
-            Treat this page as catalog navigation, not as a dashboard pattern example. Use the linked dashboard pages as implementation references. Preserve the distinction between summary, exception, trend, and follow-up content when adapting dashboard patterns.
+            Use the examples on this page as references for adapting Cards regions to different interaction roles. Choose the card layout, hierarchy, media, icon, badge, link target, and actions according to the use case. Preserve a clear emphasis on the item identity and its primary purpose; include only the supporting information needed to scan, compare, navigate, or act confidently. Keep cards structurally consistent within a region, use one primary interaction per card, and ensure that buttons or links represent meaningful next steps.
             ```
     }
 
@@ -412,24 +412,19 @@ page 1110 (
                 ```
                 ## Purpose
                 
-                Demonstrates an action list for presenting items that may require a decision, review, or no further action. Each row combines a clear task or outcome, supporting context, status, recency, and conditional actions.
+                Demonstrates Cards for presenting files, documents, templates, and knowledge resources with enough context for users to recognize, evaluate, and act on them. Each card combines a visual preview, file-type icon, ownership, version, status, and update information.
                 
                 ## When to Use
                 
-                Use when users need to scan a small set of items and quickly identify which ones require attention. This pattern works well for approvals, reviews, exception handling, and other lightweight work queues.
+                Use for document libraries, project workspaces, attachment areas, template galleries, and knowledge bases where users need more context than a filename alone provides and commonly perform actions such as viewing or downloading.
                 
                 ## When to Avoid
                 
-                Avoid when users need to process large volumes of work, compare many attributes, perform bulk actions, or follow a complex multi-step workflow. Use a report, interactive grid, dedicated task page, or workflow interface instead.
+                Avoid when the collection is very large, when users need to compare detailed document metadata, or when a simple filename list is sufficient. Use a report, interactive grid, search result list, or file-management view instead.
                 
                 ## AI Guidance
                 
-                Write titles that clearly describe the decision, review, or outcome. Use the description only for context needed to understand or complete the task. Keep status and date values separate so they can be mapped independently and formatted appropriately in APEX.
-                
-                Use icons as reinforcing status cues rather than decoration. Do not rely on icon shape or color alone; expose the status as text for accessibility and clarity. Show Approve and Reject only for rows awaiting a decision, show Review only when inspection is required, and omit actions for completed or informational rows.
-                
-                Keep routine review actions neutral. Reserve success and danger treatments for actions that commit meaningful state changes, and use confirmation when rejection or another consequential action cannot be easily reversed.
-                
+                Use the document name as the title and link it to a document preview or detail page. Use the subtitle for file type, filename, or size; use the body for a concise summary; and use the secondary body for owner, version, and recency. Use a file preview as media when it aids recognition and a file-type icon to reinforce format. Use one badge for the document's most important state. Add actions such as View and Download only when they are common, meaningful operations.
                 ```
         }
         componentAppearance {
@@ -464,6 +459,7 @@ page 1110 (
             position: first
             appearance: square
             sizing: cover
+            imageDescription: &DOCUMENT_PREVIEW_DESCRIPTION.
         }
 
         action action (
@@ -622,7 +618,7 @@ page 1110 (
                     'fa-home' as icon_class,
                     'Overview' as title,
                     'Review the primary summary, current status, and key information for this area.' as description,
-                    'content-rows' as page_alias
+                    'cards' as page_alias
                 from sys.dual
                 
                 union all
@@ -631,7 +627,7 @@ page 1110 (
                     'fa-info-circle-o' as icon_class,
                     'Details' as title,
                     'View supporting attributes, context, and additional information.' as description,
-                    'content-rows' as page_alias
+                    'cards' as page_alias
                 from sys.dual
                 
                 union all
@@ -640,7 +636,7 @@ page 1110 (
                     'fa-link' as icon_class,
                     'Related Information' as title,
                     'Open associated records, resources, and other relevant content.' as description,
-                    'related-content-rows' as page_alias
+                    'cards' as page_alias
                 from sys.dual
                 
                 union all
@@ -649,7 +645,7 @@ page 1110 (
                     'fa-history' as icon_class,
                     'Activity' as title,
                     'Review recent changes, updates, and other notable events.' as description,
-                    'content-rows' as page_alias
+                    'cards' as page_alias
                 from sys.dual
                 
                 union all
@@ -658,7 +654,7 @@ page 1110 (
                     'fa-cog' as icon_class,
                     'Settings' as title,
                     'Manage configuration, preferences, and supporting options.' as description,
-                    'content-rows' as page_alias
+                    'cards' as page_alias
                 from sys.dual;
                 ```
         }
@@ -680,22 +676,19 @@ page 1110 (
                 ```
                 ## Purpose
                 
-                Demonstrates a navigation list for moving between related destinations within the same application area. Each row combines a clear destination label, optional supporting description, and recognizable icon.
+                Demonstrates Cards for moving between related destinations within the same application area. Each card gives a destination a clear label, supporting context, and recognizable icon so users understand where it leads before selecting it.
                 
                 ## When to Use
                 
-                Use when users need to choose from a small set of peer destinations, such as overview, details, related information, activity, or settings. This pattern works best for approximately three to seven options that are distinct enough to require explanation.
+                Use when users need to choose from a small set of peer destinations, such as an overview, details, related information, activity, or settings. This pattern works best when a label alone does not provide enough context.
                 
                 ## When to Avoid
                 
-                Avoid when the destinations represent a sequential process, a large navigation hierarchy, or frequently used global navigation. Use tabs, breadcrumbs, a navigation menu, or a step-based pattern instead.
+                Avoid when destinations represent a sequential process, a large navigation hierarchy, or frequently used global navigation. Use tabs, breadcrumbs, a navigation menu, or a step-based pattern instead.
                 
                 ## AI Guidance
                 
-                Use task-oriented labels that describe the destination clearly. Keep descriptions brief and explain what users will find after selecting the row. Use icons only when they reinforce meaning; do not rely on icons alone. Keep all rows visually consistent and make the entire row selectable.
-                
-                Set the target from a stable page alias or URL. Preserve the user’s current context when appropriate, and indicate the current destination when the list remains visible after navigation.
-                
+                Use a concise, task-oriented title and a brief description that explains what users will find after opening the destination. Use icons only when they reinforce meaning. Make the full card selectable and link it to a stable page alias or URL. Do not add buttons when opening the destination is the only meaningful action.
                 ```
         }
         title {
@@ -718,7 +711,7 @@ page 1110 (
             }
             behavior {
                 type: redirectUrl
-                targetUrl: #
+                targetUrl: f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::
             }
         )
 
@@ -741,19 +734,23 @@ page 1110 (
                 Design intent:
                 - Use HOTEL_NAME as the card title.
                 - Use Subtitle Advanced Formatting to combine HIGHLIGHT, RATING,
-                  and REVIEWS.
+                  and REVIEWS_DISPLAY.
+                - Use the secondary body for HOTEL_GRADE and TAGS.
                 - Use Body Advanced Formatting to display DEAL_PRICE when present;
                   otherwise display CURRENT_PRICE.
-                - Use the secondary body for HOTEL_GRADE and TAGS.
                 - Use the property photograph as the card media.
                 - Use one badge for the deal state.
                 - Use a dummy # target for Full Card and Button actions.
                 - Use Grid layout with the default Cards column behavior.
+                - Use REVIEWS for sorting and filtering.
+                - Use REVIEWS_DISPLAY for visible card text only.
+                - Store TAGS as comma-separated values and format them in the
+                  Secondary Body expression using Template Directives.
                 
                 Recommended Card column mappings:
                 - Primary Key Column 1: HOTEL_ID
                 - Title: HOTEL_NAME
-                - Subtitle: Advanced Formatting using HIGHLIGHT, RATING, REVIEWS
+                - Subtitle: Advanced Formatting using HIGHLIGHT, RATING, REVIEWS_DISPLAY
                 - Body: Advanced Formatting using CURRENT_PRICE and DEAL_PRICE
                 - Secondary Body: Advanced Formatting using HOTEL_GRADE and TAGS
                 - Badge Column: DEAL_LABEL
@@ -769,9 +766,10 @@ page 1110 (
                     '$310' as current_price,
                     '$265' as deal_price,
                     4.8 as rating,
-                    to_char(1257, 'FM999G999G999') as reviews,
+                    1257 as reviews,
+                    to_char(1257, 'FM999G999G999') as reviews_display,
                     '5-Star Hotel' as hotel_grade,
-                    'Free WiFi · Pool · Parking · Food' as tags,
+                    'Free WiFi,Pool,Parking,Food' as tags,
                     '#APP_FILES#media-cards/luxury-hotel.png' as image_url,
                     'Elegant luxury hotel exterior with landscaped entrance' as image_description,
                     'Deal' as deal_label,
@@ -785,15 +783,16 @@ page 1110 (
                     'Business Travel Hotel' as hotel_name,
                     'Connected to downtown' as highlight,
                     '$220' as current_price,
-                    null as deal_price,
+                    cast(null as varchar2(50)) as deal_price,
                     4.6 as rating,
-                    to_char(842, 'FM999G999G999') as reviews,
+                    842 as reviews,
+                    to_char(842, 'FM999G999G999') as reviews_display,
                     '4-Star Hotel' as hotel_grade,
-                    'Free WiFi · Parking · Business Center · Bar' as tags,
+                    'Free WiFi,Parking,Business Center,Bar' as tags,
                     '#APP_FILES#media-cards/business-travel-hotel.png' as image_url,
                     'Modern business hotel lobby with workspaces and natural light' as image_description,
-                    null as deal_label,
-                    null as deal_css_class
+                    cast(null as varchar2(50)) as deal_label,
+                    cast(null as varchar2(50)) as deal_css_class
                 from sys.dual
                 
                 union all
@@ -805,9 +804,10 @@ page 1110 (
                     '$285' as current_price,
                     '$249' as deal_price,
                     4.7 as rating,
-                    to_char(2103, 'FM999G999G999') as reviews,
+                    2103 as reviews,
+                    to_char(2103, 'FM999G999G999') as reviews_display,
                     '4-Star Hotel' as hotel_grade,
-                    'Free WiFi · Pool · Breakfast · Parking' as tags,
+                    'Free WiFi,Pool,Breakfast,Parking' as tags,
                     '#APP_FILES#media-cards/family-stay-hotel.png' as image_url,
                     'Family-friendly hotel with a bright outdoor pool area' as image_description,
                     'Deal' as deal_label,
@@ -823,9 +823,10 @@ page 1110 (
                     '$72' as current_price,
                     '$59' as deal_price,
                     4.4 as rating,
-                    to_char(693, 'FM999G999G999') as reviews,
+                    693 as reviews,
+                    to_char(693, 'FM999G999G999') as reviews_display,
                     'Hostel' as hotel_grade,
-                    'Free WiFi · Shared Kitchen · Lockers · Transit' as tags,
+                    'Free WiFi,Shared Kitchen,Lockers,Transit' as tags,
                     '#APP_FILES#media-cards/city-hostel.png' as image_url,
                     'Bright shared hostel lounge in a central city location' as image_description,
                     'Deal' as deal_label,
@@ -850,24 +851,19 @@ page 1110 (
                 ```
                 ## Purpose
                 
-                Demonstrates a related-information list for exposing the main collections and supporting content associated with one current record. Each row identifies a related content type, briefly explains what it contains, and shows the number of available items.
+                Demonstrates Cards for browsing and comparing visually identifiable offerings. Each card combines imagery with concise descriptions, key attributes, availability or deal status, and optional actions that help users evaluate and select an item.
                 
                 ## When to Use
                 
-                Use on detail pages when a record has several related collections that users may need to inspect, such as people, files, comments, child records, or connected records. This pattern works well when the related content is important but does not need to be displayed directly on the current page.
+                Use for product catalogs and media-rich lists where images help users recognize content, view high-level details, and take actions on items.
                 
                 ## When to Avoid
                 
-                Avoid when there is only one related collection, when the related content is already visible nearby, or when users need to compare individual related records immediately. Use an inline report, tabs, cards, or a dedicated related-records region instead.
+                Avoid when items do not benefit from visual recognition, when users need to compare many structured attributes, or when the collection is too dense for image-led browsing. Use a report, comparison table, or compact list instead.
                 
                 ## AI Guidance
                 
-                Keep all rows scoped to the current record. Use clear plural labels for related content types, concise descriptions that explain what users will find, and counts that reflect the actual number of available items.
-                
-                Make the entire row selectable and navigate to a focused view of that related collection. Keep icons meaningful and visually consistent. Do not show counts when they are unavailable, misleading, or expensive to calculate. Order rows by relevance or expected frequency of use rather than alphabetically by default.
-                
-                This differs from **Section Overview** in one important way: Section Overview summarizes areas of the current page or record, while Related Information points to distinct collections of associated content.
-                
+                Use meaningful media with an accurate image description. Use the title for the offering name, the subtitle for concise comparison context, and the body and secondary body for the attributes that influence selection. Use one badge for the most important availability, deal, or lifecycle state. Link the full card, title, or media to item details. Add a focused secondary action, such as Favorite or Save, only when it does not compete with the primary navigation action.
                 ```
         }
         componentAppearance {
@@ -881,7 +877,7 @@ page 1110 (
         }
         subtitle {
             advancedFormatting: true
-            htmlExpression: <span class="u-color-17-text">&#9733;</span> &RATING. (&REVIEWS. reviews) &middot; &HIGHLIGHT.
+            htmlExpression: <span class="u-color-17-text">&#9733;</span> &RATING. (&REVIEWS_DISPLAY. reviews) &middot; &HIGHLIGHT.
         }
         body {
             advancedFormatting: true
@@ -898,7 +894,13 @@ page 1110 (
         }
         secondaryBody {
             advancedFormatting: true
-            htmlExpression: <strong>&HOTEL_GRADE.</strong> &middot; &TAGS.
+            htmlExpression:
+                ```html
+                <strong>&HOTEL_GRADE.</strong>
+                {loop "," TAGS/}
+                &middot; &APEX$ITEM.
+                {endloop/}
+                ```
         }
         iconAndBadge {
             badgeColumn: DEAL_LABEL
@@ -910,6 +912,7 @@ page 1110 (
             position: first
             appearance: widescreen
             sizing: cover
+            imageDescription: &IMAGE_DESCRIPTION.
         }
 
         action action (
@@ -1152,22 +1155,19 @@ page 1110 (
                 ```
                 ## Purpose
                 
-                Demonstrates a section overview for summarizing the major content areas associated with one item. Each row identifies a section, briefly explains its contents, and provides supporting metadata such as a count or recent update.
+                Demonstrates Cards for presenting actionable work items that require a decision, review, or follow-up. Each card combines the work item identity, supporting context, workflow state, priority, timing, and actions that are appropriate for the item's current state.
                 
                 ## When to Use
                 
-                Use on detail pages with several distinct information areas when users benefit from understanding what each section contains before opening or navigating to it. This pattern works well for sections such as overview, people, files, comments, and activity.
+                Use for small to medium queues of approvals, requests, tasks, issues, or cases where users need to review information and take a direct action.
                 
                 ## When to Avoid
                 
-                Avoid when the page has only a few visible sections, when section labels are already clear, or when users need primary application navigation. Use headings, tabs, a navigation list, or a table of contents instead.
+                Avoid when users need to process large volumes of work, compare many attributes, perform bulk actions, or complete a complex multi-step workflow. Use a report, interactive grid, dedicated task page, or workflow interface instead.
                 
                 ## AI Guidance
                 
-                Keep all rows scoped to one record or page context. Use concise section names, descriptions that explain the content available, and metadata that adds useful context, such as item counts or recency. Do not use decorative metrics that do not help users decide where to go.
-                
-                Make rows selectable when they navigate to the corresponding section. Keep icons consistent and meaningful, preserve a stable section order, and avoid using status colors unless the metadata represents an actual state.
-                
+                Use the title as a link to the review or detail page. Include only the information needed to understand and prioritize the decision, such as requester, amount, due date, priority, and submission age. Use one badge for the visible workflow state and use status data separately to control when actions are available. Show buttons only when the current state permits an action. Do not make the full card a link when it contains decision buttons, as this creates competing interaction targets. Use confirmation for consequential or difficult-to-reverse actions.
                 ```
         }
         componentAppearance {
@@ -1300,10 +1300,9 @@ page 1110 (
                 - Use the body for a concise description of the item's purpose or context.
                 - Use the secondary body for a small number of key attributes, such as
                   owner, date, location, or related information.
-                - Use one badge for the item's most important current status.
                 - Use an icon to distinguish item types when imagery is unnecessary.
-                - Make the full card a link to the item detail page.
-                - Do not add buttons; opening the item is the primary action.
+                - Make the full card the primary action that links to the item's detail page.
+                - Make the Edit button a secondary action that opens the edit page or dialog.
                 */
                 select
                     101 as item_id,
@@ -1312,9 +1311,7 @@ page 1110 (
                     'Request to confirm reporting access for the quarterly close process.' as item_summary,
                     'Maya Chen' as assigned_to,
                     apex_util.get_since( sysdate - 2.5 ) as last_updated,
-                    'fa fa-key' as item_icon_class,
-                    'Active' as status_label,
-                    'u-success' as status_css_class
+                    'fa fa-key' as item_icon_class
                 from sys.dual
                 
                 union all
@@ -1326,9 +1323,7 @@ page 1110 (
                     'Replacement laptops and docking stations are being reviewed for approval.' as item_summary,
                     'Jordan Lee' as assigned_to,
                     apex_util.get_since( sysdate - 1 ) as last_updated,
-                    'fa fa-laptop' as item_icon_class,
-                    'In Review' as status_label,
-                    'u-warning' as status_css_class
+                    'fa fa-laptop' as item_icon_class
                 from sys.dual
                 
                 union all
@@ -1340,9 +1335,7 @@ page 1110 (
                     'Required setup activities and supporting materials are awaiting confirmation.' as item_summary,
                     'Avery Smith' as assigned_to,
                     apex_util.get_since( sysdate - 1 ) as last_updated,
-                    'fa fa-rocket' as item_icon_class,
-                    'Needs Attention' as status_label,
-                    'u-danger' as status_css_class
+                    'fa fa-rocket' as item_icon_class
                 from sys.dual
                 
                 union all
@@ -1354,9 +1347,7 @@ page 1110 (
                     'Renewal terms and supporting documentation are ready for stakeholder review.' as item_summary,
                     'Priya Patel' as assigned_to,
                     apex_util.get_since( sysdate - 1 ) as last_updated,
-                    'fa fa-file-text-o' as item_icon_class,
-                    'Pending' as status_label,
-                    'u-info' as status_css_class
+                    'fa fa-file-text-o' as item_icon_class
                 from sys.dual
                 
                 union all
@@ -1368,9 +1359,7 @@ page 1110 (
                     'The requested exception has been reviewed and recorded for reference.' as item_summary,
                     'Daniel Kim' as assigned_to,
                     apex_util.get_since( sysdate - 1 ) as last_updated,
-                    'fa fa-check-circle-o' as item_icon_class,
-                    'Complete' as status_label,
-                    'u-success' as status_css_class
+                    'fa fa-check-circle-o' as item_icon_class
                 from sys.dual;
                 ```
         }
@@ -1391,22 +1380,19 @@ page 1110 (
                 ```
                 ## Purpose
                 
-                Demonstrates a status list for summarizing the condition of several related parts of a record, process, or application area. Each row combines a clear label, brief explanation, supporting icon, and semantic status badge.
+                Demonstrates Cards for presenting identifiable business records with enough supporting context for users to recognize, compare, and open an item. Each card emphasizes the item identity, key attributes, and its most important current state.
                 
                 ## When to Use
                 
-                Use when users need to scan a small set of related checks, requirements, stages, or system conditions and quickly identify what is complete, in progress, available, or requires attention.
+                Use for small to medium collections of business records, such as requests, plans, contracts, assets, or related items, where a compact summary is more useful than a table row alone.
                 
                 ## When to Avoid
                 
-                Avoid when users need to compare many records, analyze status trends, or act on a complex workflow. Use a report, chart, timeline, or task-oriented view instead.
+                Avoid when users need to compare many attributes across a large result set, perform bulk actions, or edit records directly in the collection. Use a report, interactive grid, or dedicated form instead.
                 
                 ## AI Guidance
                 
-                Keep all rows within one coherent status context. Use concise titles for the item being evaluated and descriptions that explain the meaning or consequence of its current state. Apply semantic badge states consistently: success for positive completion, warning for incomplete or pending work, danger for blockers or required action, and info for neutral availability or context.
-                
-                Use icons to reinforce the item or status, but do not rely on color or icons alone. Order rows by importance when exceptions require attention; otherwise, follow the natural sequence of the process or information.
-                
+                Use the title for the item name, the subtitle for its type or category, and the body for a concise description or context. Use the secondary body for a small number of useful attributes, such as owner, date, location, or related information. Use an icon when imagery is unnecessary. Make the full card a link to the item detail page and the Edit button open the edit page or dialog; the full card action is the primary action, and the Edit button is the secondary action.
                 ```
         }
         card {
@@ -1434,7 +1420,8 @@ page 1110 (
         action action (
             label: Edit
             layout {
-                sequence: 10
+                position: secondary
+                sequence: 20
             }
             behavior {
                 type: redirectUrl
@@ -1443,6 +1430,17 @@ page 1110 (
             appearance {
                 displayType: icon
                 icon: fa-pencil
+            }
+        )
+
+        action action_1 (
+            type: fullCard
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
             }
         )
 
@@ -1565,11 +1563,11 @@ page 1110 (
                 ```
                 ## Purpose
                 
-                Demonstrates a users list for presenting people with a clear identity hierarchy, concise role or team context, and lightweight presence or account state.
+                Demonstrates Cards for presenting people or application users with a clear identity hierarchy, concise role or team context, and lightweight presence or account state.
                 
                 ## When to Use
                 
-                Use when users need to scan a small or medium set of people associated with an application area, record, team, or task. This pattern works well when identity, role, availability, and recent activity are useful at a glance.
+                Use for small to medium user lists where names, roles, presence, and recent activity help users quickly understand who is involved, responsible, or available.
                 
                 ## When to Avoid
                 
@@ -1577,11 +1575,7 @@ page 1110 (
                 
                 ## AI Guidance
                 
-                Use the person's name as the primary label and keep supporting information concise. Show one useful secondary attribute, such as role or team, rather than turning each row into a profile summary.
-                
-                Use initials as a fallback avatar when no profile image is available. Use badges only for meaningful presence or account states, and keep state labels and semantic colors consistent. Show recent activity as secondary metadata when it helps users understand availability or engagement.
-                
-                Do not add row actions by default. Add actions only when the adapted experience has a clear user-management or collaboration need.
+                Use the person's name as the card title and show one useful supporting attribute, such as role or team. Use an avatar or initials to establish identity; initials are an appropriate fallback when a profile image is unavailable. Use a badge only for a meaningful presence or account state, and show recent activity as secondary metadata only when it helps users understand availability or engagement. Keep the full card or title link focused on the user profile or related details. Do not add actions by default; add them only when the experience has a clear user-management or collaboration need.
                 ```
         }
         card {

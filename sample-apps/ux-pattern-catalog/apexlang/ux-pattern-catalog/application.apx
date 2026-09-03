@@ -1,6 +1,6 @@
 app UX-PATTERN-CATALOG (
     name: Oracle APEX UX Pattern Catalog
-    version: 26.1.3
+    version: 26.1.4
     logo {
         type: text
         text: Oracle APEX UX Pattern Catalog
