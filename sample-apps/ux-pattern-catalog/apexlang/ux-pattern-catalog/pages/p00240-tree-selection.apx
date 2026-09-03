@@ -19,6 +19,13 @@ page 240 (
                 --a-treeview-node-padding-y: 0.75rem;
             }
             
+            /* Add seperator between search and tree widgets */
+            .t-Body-side .app-SideSearchConainer {
+                border-width: 0 0 var(--a-fs-search-container-border-width, 1px) 0;
+                border-style: solid;
+                border-color: var(--a-fs-search-container-border-color, rgba(0, 0, 0, 0.1));
+            }
+            
             /* Keep contextual information compact and make its status badges easy to scan. */
             .app-ContextualInfo {
               --ut-contextualinfo-item-label-stacked-margin-y: 0;
@@ -259,7 +266,7 @@ page 240 (
                 
                 AI guidance: Make the event title carry the meaningful payload at a glance. Attribute changes should describe the new value or state. File events should identify the file. Comment events should surface the comment text. Use the description only for useful supporting context such as a previous value, author, or note. Keep some rows title-only and retain a mix of featured, standard, and compact rows to demonstrate different event shapes. Use featured rows for especially important events and compact rows for lower-detail history.
                 
-                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.
+                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.
                 ```
         }
         componentAppearance {
@@ -445,7 +452,7 @@ page 240 (
                 
                 AI guidance: Use this group for classification-style properties such as type, category, source, and tags. Keep labels concise and values consistently formatted for scanning. Do not mix in ownership, timing, progress, or operational status; place those in separate groups.
                 
-                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.
+                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.
                 ```
         }
         componentAppearance {
@@ -549,7 +556,7 @@ page 240 (
                 
                 AI guidance: Use this group for additional descriptive properties that do not fit into the primary classification set. Maintain consistency in formatting and avoid introducing operational, ownership, or timing-related fields.
                 
-                Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P330_SELECTED_ITEM_ID when refreshed.
+                Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P240_SELECTED_ITEM_ID when refreshed.
                 ```
         }
         componentAppearance {
@@ -742,7 +749,7 @@ page 240 (
                 
                 AI guidance: Keep this region limited to ownership, classification, status, impact, recency, and timing information that users need for quick decisions. Keep visible values and their semantic state columns aligned. Use supported state values such as success, warning, danger, or info. Expose target timing when it materially affects the user’s decision; otherwise remove the unused supporting column.
                 
-                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.
+                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.
                 ```
         }
         componentAppearance {
@@ -1022,13 +1029,13 @@ page 240 (
         comments {
             comments:
                 ```
-                Intent: Provides the searchable, single-selection collection that controls the item shown in the detail area.
+                Intent: Provides hierarchical navigation for the item collection, grouping item nodes by status and displaying the selected item's details in the adjacent detail area.
                 
-                Pattern role: Master list and UI selection source.
+                Pattern role: Master Tree and selected-item context source.
                 
-                AI guidance: Keep each row concise and make its title, status, category, and recency easy to scan. Use a stable primary key for selection. Preserve single-selection behavior when the right side represents one current item. Do not enable multi-selection controls unless the adapted workflow supports bulk actions.
+                AI guidance: Keep status groups meaningful and item labels concise. Use unique node IDs and parent keys to maintain the hierarchy. Only leaf item nodes should expose a positive node value that represents the item primary key; status-group nodes are navigation containers and do not represent an item detail context.
                 
-                Implementation note: The Content Row writes the selected primary key to P330_SELECTED_ITEM_ID_UI through Current Selection Page Item. The primary_items_list Static ID is used by the page-load JavaScript to restore an existing selection or select the first row.
+                Implementation note: The Tree Node Changed Dynamic Action reads the selected leaf node's NODE_VALUE and sets P240_SELECTED_ITEM_ID. A change to P240_SELECTED_ITEM_ID refreshes all dependent regions marked with .js-item-refresh. The Tree's Selected Node Page Item is also P240_SELECTED_ITEM_ID, allowing APEX to restore the selected leaf node when the Tree renders or refreshes.
                 ```
         }
         settings {
@@ -1104,7 +1111,7 @@ page 240 (
                 
                 AI guidance: Use only the most relevant measures for this item, generally two to four cards. Keep metrics comparable in importance and avoid turning the region into a dense report. Format large values with thousands separators and use consistent units. If badges or icons are added, keep their value, state, and icon semantically aligned.
                 
-                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.
+                Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.
                 ```
         }
         componentAppearance {
@@ -1362,10 +1369,10 @@ page 240 (
             slot: plugin-body
         }
         appearance {
-            template: @/item-container
+            template: @/blank-with-attributes-no-grid
             templateOptions: #DEFAULT#
             cssClasses: [
-                margin-sm
+                app-SideSearchConainer
                 u-flex-shrink-0
             ]
         }
@@ -1421,10 +1428,13 @@ page 240 (
             label: Tree Search
             alignment: left
         }
+        settings {
+            subtype: search
+        }
         layout {
             sequence: 20
             region: @search-container
-            slot: item
+            slot: regionBody
             alignment: left
         }
         appearance {
@@ -1433,6 +1443,10 @@ page 240 (
                 #DEFAULT#
                 t-Form-fieldContainer--stretchInputs
                 t-Form-fieldContainer--large
+            ]
+            cssClasses: [
+                padding-xs
+                margin-sm
             ]
             icon: fa-search
             width: 30
@@ -1599,53 +1613,38 @@ page 240 (
         }
     )
 
-    dynamicAction refresh-item-contextual-details (
-        name: Sync Selected Item Context
+    dynamicAction initialize-empty-node-state (
+        name: Initialize Empty Node State
         execution {
-            sequence: 10
+            sequence: 70
         }
         when {
-            selectionType: items
-            items: P240_SELECTED_ITEM_ID_UI
-        }
-        config {
-            buildOption: @commented-out
-        }
-        comments {
-            comments: Runs when the Content Row updates its UI selection item. This separates the selection state maintained by the component from the canonical item context used by the detail regions.
+            event: ready
         }
 
-        action set-p330-selected-item-id (
-            name: Set Item Context from UI Selection
+        action native-javascript-code (
             action: executeJsCode
             settings {
                 jsCode:
                     ```javascript-browser
                     /*
-                     * Copy the component-managed UI selection into the canonical item
-                     * context only when the value has actually changed.
+                     * The selected-item value may persist in session state. Show details only
+                     * when APEX restored a matching leaf node in the Tree; a null, stale, or
+                     * filtered-out value leaves the Tree without a valid selected item.
                      */
-                    var uiId =
-                        apex.item("P240_SELECTED_ITEM_ID_UI").getValue();
+                    var selectedNode = apex.region("list-selection").call("getSelectedNodes")[0];
+                    var hasSelectedItem = Number(selectedNode?.id) > 0;
                     
-                    var contextId =
-                        apex.item("P240_SELECTED_ITEM_ID").getValue();
-                    
-                    /*
-                     * Do not suppress this change event. Updating the canonical item is
-                     * what triggers the dependent detail-region refresh Dynamic Action.
-                     */
-                    if (uiId && uiId !== contextId) {
-                        apex.item("P240_SELECTED_ITEM_ID").setValue(uiId);
-                    }
+                    apex.jQuery(".js-selected-item-empty").toggleClass("u-hidden", hasSelectedItem);
+                    apex.jQuery(".js-selected-item-content").toggleClass("u-hidden", !hasSelectedItem);
                     ```
             }
             execution {
                 sequence: 10
-                fireOnInit: false
             }
-            comments {
-                comments: Copies the current UI selection into P330_SELECTED_ITEM_ID only when the value has changed. This item is the canonical context used by the detail-region queries.
+            clientSideCondition {
+                type: itemIsNull
+                item: P240_SELECTED_ITEM_ID
             }
         )
 
@@ -1708,7 +1707,7 @@ page 240 (
                 fireOnInit: false
             }
             comments {
-                comments: Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P330_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.
+                comments: Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P240_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.
             }
         )
 
@@ -1731,12 +1730,19 @@ page 240 (
             settings {
                 jsCode:
                     ```javascript-browser
-                    var node = apex.region( "list-selection" ).call( "getSelectedNodes" )[0];
-                    var itemId = node?.id;
+                    var node   = apex.region( "list-selection" ).call( "getSelectedNodes" )[0];
+                    var nodeId = node?.id;
                     
-                    // Item nodes use NODE_VALUE = ITEM_ID while status groups use NULL
-                    if ( itemId && Number( itemId ) > 0)  {
-                        apex.item( "P240_SELECTED_ITEM_ID" ).setValue( itemId );
+                    /*
+                     * Leaf nodes expose their item ID as NODE_VALUE; status-group nodes
+                     * have no node value. A valid leaf selection establishes the selected
+                     * item context, displays the detail area, and hides the empty state.
+                     */
+                    if ( nodeId && Number( nodeId ) > 0)  {
+                        apex.item( "P240_SELECTED_ITEM_ID" ).setValue( nodeId );
+                    
+                        apex.jQuery(".js-selected-item-empty").addClass("u-hidden");
+                        apex.jQuery(".js-selected-item-content").removeClass("u-hidden");
                     }
                     ```
             }

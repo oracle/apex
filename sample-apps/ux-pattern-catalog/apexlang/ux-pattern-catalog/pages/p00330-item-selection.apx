@@ -1,7 +1,7 @@
 page 330 (
-    name: Item Selection with Details
-    alias: ITEM-SELECTION-WITH-DETAILS
-    title: Item Selection with Details
+    name: Item Selection
+    alias: ITEM-SELECTION
+    title: Item Selection
     appearance {
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#

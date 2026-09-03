@@ -94,7 +94,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle APEX UX Pattern Catalog'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.3'
+,p_flow_version=>'26.1.4'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -106,7 +106,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461280214208
-,p_version_scn=>'279313868'
+,p_version_scn=>'283846540'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -17790,6 +17790,13 @@ wwv_flow_imp_page.create_page(
 '    --a-treeview-node-padding-y: 0.75rem;',
 '}',
 '',
+'/* Add seperator between search and tree widgets */',
+'.t-Body-side .app-SideSearchConainer {',
+'    border-width: 0 0 var(--a-fs-search-container-border-width, 1px) 0;',
+'    border-style: solid;',
+'    border-color: var(--a-fs-search-container-border-color, rgba(0, 0, 0, 0.1));',
+'}',
+'',
 '/* Keep contextual information compact and make its status badges easy to scan. */',
 '.app-ContextualInfo {',
 '  --ut-contextualinfo-item-label-stacked-margin-y: 0;',
@@ -18036,7 +18043,7 @@ wwv_flow_imp_page.create_page_plug(
 ||'seful supporting context such as a previous value, author, or note. Keep some rows title-only and retain a mix of featured, standard, and compact rows to demonstrate different event shapes. Use featured rows for especially important events and compac'
 ||'t rows for lower-detail history.',
 '',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
 );
 wwv_flow_imp_page.create_region_column(
  p_id=>wwv_flow_imp.id(24906861760962921983)
@@ -18206,7 +18213,7 @@ wwv_flow_imp_page.create_report_region(
 'AI guidance: Use this group for classification-style properties such as type, category, source, and tags. Keep labels concise and values consistently formatted for scanning. Do not mix in ownership, timing, progress, or operational status; place thos'
 ||'e in separate groups.',
 '',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
 );
 wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(4301654715119122)
@@ -18299,7 +18306,7 @@ wwv_flow_imp_page.create_report_region(
 '',
 'AI guidance: Use this group for additional descriptive properties that do not fit into the primary classification set. Maintain consistency in formatting and avoid introducing operational, ownership, or timing-related fields.',
 '',
-'Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P330_SELECTED_ITEM_ID when refreshed.'))
+'Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P240_SELECTED_ITEM_ID when refreshed.'))
 );
 wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(4303737816119123)
@@ -18463,7 +18470,7 @@ wwv_flow_imp_page.create_report_region(
 'AI guidance: Keep this region limited to ownership, classification, status, impact, recency, and timing information that users need for quick decisions. Keep visible values and their semantic state columns aligned. Use supported state values such as '
 ||unistr('success, warning, danger, or info. Expose target timing when it materially affects the user\2019s decision; otherwise remove the unused supporting column.'),
 '',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
 );
 wwv_flow_imp_page.create_report_columns(
  p_id=>wwv_flow_imp.id(4291437205119115)
@@ -18717,15 +18724,15 @@ unistr('        category || '' \2014 updated '' ||'),
   'tree_hierarchy', 'SQL',
   'tree_tooltip', 'DB')).to_clob
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Provides the searchable, single-selection collection that controls the item shown in the detail area.',
+'Intent: Provides hierarchical navigation for the item collection, grouping item nodes by status and displaying the selected item''s details in the adjacent detail area.',
 '',
-'Pattern role: Master list and UI selection source.',
+'Pattern role: Master Tree and selected-item context source.',
 '',
-'AI guidance: Keep each row concise and make its title, status, category, and recency easy to scan. Use a stable primary key for selection. Preserve single-selection behavior when the right side represents one current item. Do not enable multi-selecti'
-||'on controls unless the adapted workflow supports bulk actions.',
+'AI guidance: Keep status groups meaningful and item labels concise. Use unique node IDs and parent keys to maintain the hierarchy. Only leaf item nodes should expose a positive node value that represents the item primary key; status-group nodes are n'
+||'avigation containers and do not represent an item detail context.',
 '',
-'Implementation note: The Content Row writes the selected primary key to P330_SELECTED_ITEM_ID_UI through Current Selection Page Item. The primary_items_list Static ID is used by the page-load JavaScript to restore an existing selection or select the '
-||'first row.'))
+'Implementation note: The Tree Node Changed Dynamic Action reads the selected leaf node''s NODE_VALUE and sets P240_SELECTED_ITEM_ID. A change to P240_SELECTED_ITEM_ID refreshes all dependent regions marked with .js-item-refresh. The Tree''s Selected No'
+||'de Page Item is also P240_SELECTED_ITEM_ID, allowing APEX to restore the selected leaf node when the Tree renders or refreshes.'))
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(24931675058320136498)
@@ -18789,7 +18796,7 @@ wwv_flow_imp_page.create_page_plug(
 'AI guidance: Use only the most relevant measures for this item, generally two to four cards. Keep metrics comparable in importance and avoid turning the region into a dense report. Format large values with thousands separators and use consistent unit'
 ||'s. If badges or icons are added, keep their value, state, and icon semantically aligned.',
 '',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P330_SELECTED_ITEM_ID` when refreshed.'))
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
 );
 wwv_flow_imp_page.create_region_column(
  p_id=>wwv_flow_imp.id(24931675126149136499)
@@ -19006,9 +19013,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Search Container'
 ,p_static_id=>'search-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(24902963922491266613)
-,p_region_css_classes=>'margin-sm u-flex-shrink-0'
+,p_region_css_classes=>'app-SideSearchConainer u-flex-shrink-0'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>1571470918551430249
+,p_plug_template=>3372714138756020509
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'PLUGIN_BODY'
 ,p_plug_item_display_point=>'ABOVE'
@@ -19176,56 +19183,45 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
 ,p_field_template=>2042262243893469891
+,p_item_css_classes=>'padding-xs margin-sm'
 ,p_item_icon_css_classes=>'fa-search'
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--large'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
-  'subtype', 'TEXT',
+  'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4308274533119135)
-,p_name=>'Sync Selected Item Context'
-,p_static_id=>'refresh-item-contextual-details'
-,p_event_sequence=>10
-,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'P240_SELECTED_ITEM_ID_UI'
+ p_id=>wwv_flow_imp.id(4626585349683241)
+,p_name=>'Initialize Empty Node State'
+,p_static_id=>'initialize-empty-node-state'
+,p_event_sequence=>70
 ,p_bind_type=>'bind'
 ,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'change'
-,p_required_patch=>wwv_flow_imp.id(24910758457553178721)
-,p_da_event_comment=>'Runs when the Content Row updates its UI selection item. This separates the selection state maintained by the component from the canonical item context used by the detail regions.'
+,p_bind_event_type=>'ready'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4308670102119135)
-,p_event_id=>wwv_flow_imp.id(4308274533119135)
+ p_id=>wwv_flow_imp.id(4626665031683242)
+,p_event_id=>wwv_flow_imp.id(4626585349683241)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_name=>'Set Item Context from UI Selection'
-,p_static_id=>'set-p330-selected-item-id'
+,p_static_id=>'native-javascript-code'
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
     '/*',
-    ' * Copy the component-managed UI selection into the canonical item',
-    ' * context only when the value has actually changed.',
+    ' * The selected-item value may persist in session state. Show details only',
+    ' * when APEX restored a matching leaf node in the Tree; a null, stale, or',
+    ' * filtered-out value leaves the Tree without a valid selected item.',
     ' */',
-    'var uiId =',
-    '    apex.item("P240_SELECTED_ITEM_ID_UI").getValue();',
+    'var selectedNode = apex.region("list-selection").call("getSelectedNodes")[0];',
+    'var hasSelectedItem = Number(selectedNode?.id) > 0;',
     '',
-    'var contextId =',
-    '    apex.item("P240_SELECTED_ITEM_ID").getValue();',
-    '',
-    '/*',
-    ' * Do not suppress this change event. Updating the canonical item is',
-    ' * what triggers the dependent detail-region refresh Dynamic Action.',
-    ' */',
-    'if (uiId && uiId !== contextId) {',
-    '    apex.item("P240_SELECTED_ITEM_ID").setValue(uiId);',
-    '}')))).to_clob
-,p_da_action_comment=>'Copies the current UI selection into P330_SELECTED_ITEM_ID only when the value has changed. This item is the canonical context used by the detail-region queries.'
+    'apex.jQuery(".js-selected-item-empty").toggleClass("u-hidden", hasSelectedItem);',
+    'apex.jQuery(".js-selected-item-content").toggleClass("u-hidden", !hasSelectedItem);')))).to_clob
+,p_client_condition_type=>'NULL'
+,p_client_condition_element=>'P240_SELECTED_ITEM_ID'
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(4625078101683226)
@@ -19280,7 +19276,7 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_affected_elements=>'.js-item-refresh'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'maintain_pagination', 'N')).to_clob
-,p_da_action_comment=>'Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P330_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.'
+,p_da_action_comment=>'Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P240_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.'
 );
 wwv_flow_imp_page.create_page_da_event(
  p_id=>wwv_flow_imp.id(4624367824683219)
@@ -19304,12 +19300,19 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'var node = apex.region( "list-selection" ).call( "getSelectedNodes" )[0];',
-    'var itemId = node?.id;',
+    'var node   = apex.region( "list-selection" ).call( "getSelectedNodes" )[0];',
+    'var nodeId = node?.id;',
     '',
-    '// Item nodes use NODE_VALUE = ITEM_ID while status groups use NULL',
-    'if ( itemId && Number( itemId ) > 0)  {',
-    '    apex.item( "P240_SELECTED_ITEM_ID" ).setValue( itemId );',
+    '/*',
+    ' * Leaf nodes expose their item ID as NODE_VALUE; status-group nodes',
+    ' * have no node value. A valid leaf selection establishes the selected',
+    ' * item context, displays the detail area, and hides the empty state.',
+    ' */',
+    'if ( nodeId && Number( nodeId ) > 0)  {',
+    '    apex.item( "P240_SELECTED_ITEM_ID" ).setValue( nodeId );',
+    '',
+    '    apex.jQuery(".js-selected-item-empty").addClass("u-hidden");',
+    '    apex.jQuery(".js-selected-item-content").removeClass("u-hidden");',
     '}')))).to_clob
 );
 end;
@@ -19406,7 +19409,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-layout-2col'' as icon_class,',
 '    ''Item Selection'' as title,',
 '    ''A selection-first layout with a list of items alongside details for the currently selected record.'' as description,',
-'    ''item-selection-with-details'' as page_alias',
+'    ''item-selection'' as page_alias',
 'from sys.dual',
 'union all',
 'select',
@@ -22592,9 +22595,9 @@ prompt --application/pages/page_00330
 begin
 wwv_flow_imp_page.create_page(
  p_id=>330
-,p_name=>'Item Selection with Details'
-,p_alias=>'ITEM-SELECTION-WITH-DETAILS'
-,p_step_title=>'Item Selection with Details'
+,p_name=>'Item Selection'
+,p_alias=>'ITEM-SELECTION'
+,p_step_title=>'Item Selection'
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_file_urls=>'#APP_FILES#js/split-view-selection#MIN#.js'
 ,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -28068,20 +28071,23 @@ wwv_flow_imp_page.create_page(
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'The Dashboards index is a catalog context page that introduces dashboard patterns and helps users choose an appropriate overview pattern. It is not itself a dashboard pattern to copy.',
+'The Cards pattern page demonstrates reusable card-based patterns for presenting related information as distinct, visually grouped items. Examples show how cards can support navigation, people, item details, approvals and actions, product catalogs, me'
+||'dia-rich content, and files or documents.',
 '',
 '## When to Use',
 '',
-'Use dashboard patterns when users need to understand status, monitor progress, identify exceptions, or decide where to focus next.',
+'Use cards when users need to scan, compare, select, or act on a collection of items that benefit from a clear identity, supporting context, optional media, status, links, or actions.',
 '',
 '## When to Avoid',
 '',
-'Avoid dashboard patterns when users primarily need to browse individual records, complete data entry, or inspect the full details of a single item.',
+'Avoid cards when information is better represented as a compact list, comparison table, data-entry form, or unstructured text. Do not use cards merely to decorate simple navigation or dense result sets, and do not overload each card with excessive at'
+||'tributes, badges, images, or competing actions.',
 '',
 '## AI Guidance',
 '',
-'Treat this page as catalog navigation, not as a dashboard pattern example. Use the linked dashboard pages as implementation references. Preserve the distinction between summary, exception, trend, and follow-up content when adapting dashboard patterns'
-||'.'))
+'Use the examples on this page as references for adapting Cards regions to different interaction roles. Choose the card layout, hierarchy, media, icon, badge, link target, and actions according to the use case. Preserve a clear emphasis on the item id'
+||'entity and its primary purpose; include only the supporting information needed to scan, compare, navigate, or act confidently. Keep cards structurally consistent within a region, use one primary interaction per card, and ensure that buttons or links '
+||'represent meaningful next steps.'))
 ,p_page_component_map=>'23'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -28357,26 +28363,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates an action list for presenting items that may require a decision, review, or no further action. Each row combines a clear task or outcome, supporting context, status, recency, and conditional actions.',
+'Demonstrates Cards for presenting files, documents, templates, and knowledge resources with enough context for users to recognize, evaluate, and act on them. Each card combines a visual preview, file-type icon, ownership, version, status, and update '
+||'information.',
 '',
 '## When to Use',
 '',
-'Use when users need to scan a small set of items and quickly identify which ones require attention. This pattern works well for approvals, reviews, exception handling, and other lightweight work queues.',
+'Use for document libraries, project workspaces, attachment areas, template galleries, and knowledge bases where users need more context than a filename alone provides and commonly perform actions such as viewing or downloading.',
 '',
 '## When to Avoid',
 '',
-'Avoid when users need to process large volumes of work, compare many attributes, perform bulk actions, or follow a complex multi-step workflow. Use a report, interactive grid, dedicated task page, or workflow interface instead.',
+'Avoid when the collection is very large, when users need to compare detailed document metadata, or when a simple filename list is sufficient. Use a report, interactive grid, search result list, or file-management view instead.',
 '',
 '## AI Guidance',
 '',
-'Write titles that clearly describe the decision, review, or outcome. Use the description only for context needed to understand or complete the task. Keep status and date values separate so they can be mapped independently and formatted appropriately '
-||'in APEX.',
-'',
-'Use icons as reinforcing status cues rather than decoration. Do not rely on icon shape or color alone; expose the status as text for accessibility and clarity. Show Approve and Reject only for rows awaiting a decision, show Review only when inspectio'
-||'n is required, and omit actions for completed or informational rows.',
-'',
-'Keep routine review actions neutral. Reserve success and danger treatments for actions that commit meaningful state changes, and use confirmation when rejection or another consequential action cannot be easily reversed.',
-''))
+'Use the document name as the title and link it to a document preview or detail page. Use the subtitle for file type, filename, or size; use the body for a concise summary; and use the secondary body for owner, version, and recency. Use a file preview'
+||' as media when it aids recognition and a file-type icon to reinforce format. Use one badge for the document''s most important state. Add actions such as View and Download only when they are common, meaningful operations.'))
 );
 wwv_flow_imp_page.create_card(
  p_id=>wwv_flow_imp.id(4698032551126731)
@@ -28401,6 +28402,7 @@ wwv_flow_imp_page.create_card(
 ,p_media_display_position=>'FIRST'
 ,p_media_appearance=>'SQUARE'
 ,p_media_sizing=>'COVER'
+,p_media_description=>'&DOCUMENT_PREVIEW_DESCRIPTION.'
 ,p_pk1_column_name=>'DOCUMENT_ID'
 );
 wwv_flow_imp_page.create_card_action(
@@ -28532,7 +28534,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-home'' as icon_class,',
 '    ''Overview'' as title,',
 '    ''Review the primary summary, current status, and key information for this area.'' as description,',
-'    ''content-rows'' as page_alias',
+'    ''cards'' as page_alias',
 'from sys.dual',
 '',
 'union all',
@@ -28541,7 +28543,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-info-circle-o'' as icon_class,',
 '    ''Details'' as title,',
 '    ''View supporting attributes, context, and additional information.'' as description,',
-'    ''content-rows'' as page_alias',
+'    ''cards'' as page_alias',
 'from sys.dual',
 '',
 'union all',
@@ -28550,7 +28552,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-link'' as icon_class,',
 '    ''Related Information'' as title,',
 '    ''Open associated records, resources, and other relevant content.'' as description,',
-'    ''related-content-rows'' as page_alias',
+'    ''cards'' as page_alias',
 'from sys.dual',
 '',
 'union all',
@@ -28559,7 +28561,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-history'' as icon_class,',
 '    ''Activity'' as title,',
 '    ''Review recent changes, updates, and other notable events.'' as description,',
-'    ''content-rows'' as page_alias',
+'    ''cards'' as page_alias',
 'from sys.dual',
 '',
 'union all',
@@ -28568,7 +28570,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-cog'' as icon_class,',
 '    ''Settings'' as title,',
 '    ''Manage configuration, preferences, and supporting options.'' as description,',
-'    ''content-rows'' as page_alias',
+'    ''cards'' as page_alias',
 'from sys.dual;'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
@@ -28577,24 +28579,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates a navigation list for moving between related destinations within the same application area. Each row combines a clear destination label, optional supporting description, and recognizable icon.',
+'Demonstrates Cards for moving between related destinations within the same application area. Each card gives a destination a clear label, supporting context, and recognizable icon so users understand where it leads before selecting it.',
 '',
 '## When to Use',
 '',
-'Use when users need to choose from a small set of peer destinations, such as overview, details, related information, activity, or settings. This pattern works best for approximately three to seven options that are distinct enough to require explanati'
-||'on.',
+'Use when users need to choose from a small set of peer destinations, such as an overview, details, related information, activity, or settings. This pattern works best when a label alone does not provide enough context.',
 '',
 '## When to Avoid',
 '',
-'Avoid when the destinations represent a sequential process, a large navigation hierarchy, or frequently used global navigation. Use tabs, breadcrumbs, a navigation menu, or a step-based pattern instead.',
+'Avoid when destinations represent a sequential process, a large navigation hierarchy, or frequently used global navigation. Use tabs, breadcrumbs, a navigation menu, or a step-based pattern instead.',
 '',
 '## AI Guidance',
 '',
-'Use task-oriented labels that describe the destination clearly. Keep descriptions brief and explain what users will find after selecting the row. Use icons only when they reinforce meaning; do not rely on icons alone. Keep all rows visually consisten'
-||'t and make the entire row selectable.',
-'',
-unistr('Set the target from a stable page alias or URL. Preserve the user\2019s current context when appropriate, and indicate the current destination when the list remains visible after navigation.'),
-''))
+'Use a concise, task-oriented title and a brief description that explains what users will find after opening the destination. Use icons only when they reinforce meaning. Make the full card selectable and link it to a stable page alias or URL. Do not a'
+||'dd buttons when opening the destination is the only meaningful action.'))
 );
 wwv_flow_imp_page.create_card(
  p_id=>wwv_flow_imp.id(12618460805375526)
@@ -28619,7 +28617,7 @@ wwv_flow_imp_page.create_card_action(
 ,p_display_sequence=>10
 ,p_static_id=>'action'
 ,p_link_target_type=>'REDIRECT_URL'
-,p_link_target=>'#'
+,p_link_target=>'f?p=&APP_ID.:&PAGE_ALIAS.:&SESSION.::&DEBUG.::::'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(49815673560020463281)
@@ -28641,19 +28639,23 @@ unistr('Hotel Stays \2014 Product/Catalog Cards Pattern Guidance'),
 'Design intent:',
 '- Use HOTEL_NAME as the card title.',
 '- Use Subtitle Advanced Formatting to combine HIGHLIGHT, RATING,',
-'  and REVIEWS.',
+'  and REVIEWS_DISPLAY.',
+'- Use the secondary body for HOTEL_GRADE and TAGS.',
 '- Use Body Advanced Formatting to display DEAL_PRICE when present;',
 '  otherwise display CURRENT_PRICE.',
-'- Use the secondary body for HOTEL_GRADE and TAGS.',
 '- Use the property photograph as the card media.',
 '- Use one badge for the deal state.',
 '- Use a dummy # target for Full Card and Button actions.',
 '- Use Grid layout with the default Cards column behavior.',
+'- Use REVIEWS for sorting and filtering.',
+'- Use REVIEWS_DISPLAY for visible card text only.',
+'- Store TAGS as comma-separated values and format them in the',
+'  Secondary Body expression using Template Directives.',
 '',
 'Recommended Card column mappings:',
 '- Primary Key Column 1: HOTEL_ID',
 '- Title: HOTEL_NAME',
-'- Subtitle: Advanced Formatting using HIGHLIGHT, RATING, REVIEWS',
+'- Subtitle: Advanced Formatting using HIGHLIGHT, RATING, REVIEWS_DISPLAY',
 '- Body: Advanced Formatting using CURRENT_PRICE and DEAL_PRICE',
 '- Secondary Body: Advanced Formatting using HOTEL_GRADE and TAGS',
 '- Badge Column: DEAL_LABEL',
@@ -28669,9 +28671,10 @@ unistr('Hotel Stays \2014 Product/Catalog Cards Pattern Guidance'),
 '    ''$310'' as current_price,',
 '    ''$265'' as deal_price,',
 '    4.8 as rating,',
-'    to_char(1257, ''FM999G999G999'') as reviews,',
+'    1257 as reviews,',
+'    to_char(1257, ''FM999G999G999'') as reviews_display,',
 '    ''5-Star Hotel'' as hotel_grade,',
-unistr('    ''Free WiFi \00B7 Pool \00B7 Parking \00B7 Food'' as tags,'),
+'    ''Free WiFi,Pool,Parking,Food'' as tags,',
 '    ''#APP_FILES#media-cards/luxury-hotel.png'' as image_url,',
 '    ''Elegant luxury hotel exterior with landscaped entrance'' as image_description,',
 '    ''Deal'' as deal_label,',
@@ -28685,15 +28688,16 @@ unistr('    ''Free WiFi \00B7 Pool \00B7 Parking \00B7 Food'' as tags,'),
 '    ''Business Travel Hotel'' as hotel_name,',
 '    ''Connected to downtown'' as highlight,',
 '    ''$220'' as current_price,',
-'    null as deal_price,',
+'    cast(null as varchar2(50)) as deal_price,',
 '    4.6 as rating,',
-'    to_char(842, ''FM999G999G999'') as reviews,',
+'    842 as reviews,',
+'    to_char(842, ''FM999G999G999'') as reviews_display,',
 '    ''4-Star Hotel'' as hotel_grade,',
-unistr('    ''Free WiFi \00B7 Parking \00B7 Business Center \00B7 Bar'' as tags,'),
+'    ''Free WiFi,Parking,Business Center,Bar'' as tags,',
 '    ''#APP_FILES#media-cards/business-travel-hotel.png'' as image_url,',
 '    ''Modern business hotel lobby with workspaces and natural light'' as image_description,',
-'    null as deal_label,',
-'    null as deal_css_class',
+'    cast(null as varchar2(50)) as deal_label,',
+'    cast(null as varchar2(50)) as deal_css_class',
 'from sys.dual',
 '',
 'union all',
@@ -28705,9 +28709,10 @@ unistr('    ''Free WiFi \00B7 Parking \00B7 Business Center \00B7 Bar'' as tags,
 '    ''$285'' as current_price,',
 '    ''$249'' as deal_price,',
 '    4.7 as rating,',
-'    to_char(2103, ''FM999G999G999'') as reviews,',
+'    2103 as reviews,',
+'    to_char(2103, ''FM999G999G999'') as reviews_display,',
 '    ''4-Star Hotel'' as hotel_grade,',
-unistr('    ''Free WiFi \00B7 Pool \00B7 Breakfast \00B7 Parking'' as tags,'),
+'    ''Free WiFi,Pool,Breakfast,Parking'' as tags,',
 '    ''#APP_FILES#media-cards/family-stay-hotel.png'' as image_url,',
 '    ''Family-friendly hotel with a bright outdoor pool area'' as image_description,',
 '    ''Deal'' as deal_label,',
@@ -28723,9 +28728,10 @@ unistr('    ''Free WiFi \00B7 Pool \00B7 Breakfast \00B7 Parking'' as tags,'),
 '    ''$72'' as current_price,',
 '    ''$59'' as deal_price,',
 '    4.4 as rating,',
-'    to_char(693, ''FM999G999G999'') as reviews,',
+'    693 as reviews,',
+'    to_char(693, ''FM999G999G999'') as reviews_display,',
 '    ''Hostel'' as hotel_grade,',
-unistr('    ''Free WiFi \00B7 Shared Kitchen \00B7 Lockers \00B7 Transit'' as tags,'),
+'    ''Free WiFi,Shared Kitchen,Lockers,Transit'' as tags,',
 '    ''#APP_FILES#media-cards/city-hostel.png'' as image_url,',
 '    ''Bright shared hostel lounge in a central city location'' as image_description,',
 '    ''Deal'' as deal_label,',
@@ -28738,28 +28744,20 @@ unistr('    ''Free WiFi \00B7 Shared Kitchen \00B7 Lockers \00B7 Transit'' as ta
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates a related-information list for exposing the main collections and supporting content associated with one current record. Each row identifies a related content type, briefly explains what it contains, and shows the number of available item'
-||'s.',
+'Demonstrates Cards for browsing and comparing visually identifiable offerings. Each card combines imagery with concise descriptions, key attributes, availability or deal status, and optional actions that help users evaluate and select an item.',
 '',
 '## When to Use',
 '',
-'Use on detail pages when a record has several related collections that users may need to inspect, such as people, files, comments, child records, or connected records. This pattern works well when the related content is important but does not need to'
-||' be displayed directly on the current page.',
+'Use for product catalogs and media-rich lists where images help users recognize content, view high-level details, and take actions on items.',
 '',
 '## When to Avoid',
 '',
-'Avoid when there is only one related collection, when the related content is already visible nearby, or when users need to compare individual related records immediately. Use an inline report, tabs, cards, or a dedicated related-records region instea'
-||'d.',
+'Avoid when items do not benefit from visual recognition, when users need to compare many structured attributes, or when the collection is too dense for image-led browsing. Use a report, comparison table, or compact list instead.',
 '',
 '## AI Guidance',
 '',
-'Keep all rows scoped to the current record. Use clear plural labels for related content types, concise descriptions that explain what users will find, and counts that reflect the actual number of available items.',
-'',
-'Make the entire row selectable and navigate to a focused view of that related collection. Keep icons meaningful and visually consistent. Do not show counts when they are unavailable, misleading, or expensive to calculate. Order rows by relevance or e'
-||'xpected frequency of use rather than alphabetically by default.',
-'',
-'This differs from **Section Overview** in one important way: Section Overview summarizes areas of the current page or record, while Related Information points to distinct collections of associated content.',
-''))
+'Use meaningful media with an accurate image description. Use the title for the offering name, the subtitle for concise comparison context, and the body and secondary body for the attributes that influence selection. Use one badge for the most importa'
+||'nt availability, deal, or lifecycle state. Link the full card, title, or media to item details. Add a focused secondary action, such as Favorite or Save, only when it does not compete with the primary navigation action.'))
 );
 wwv_flow_imp_page.create_card(
  p_id=>wwv_flow_imp.id(4697079741126721)
@@ -28769,7 +28767,7 @@ wwv_flow_imp_page.create_card(
 ,p_title_adv_formatting=>false
 ,p_title_column_name=>'HOTEL_NAME'
 ,p_sub_title_adv_formatting=>true
-,p_sub_title_html_expr=>'<span class="u-color-17-text">&#9733;</span> &RATING. (&REVIEWS. reviews) &middot; &HIGHLIGHT.'
+,p_sub_title_html_expr=>'<span class="u-color-17-text">&#9733;</span> &RATING. (&REVIEWS_DISPLAY. reviews) &middot; &HIGHLIGHT.'
 ,p_body_adv_formatting=>true
 ,p_body_html_expr=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '{if DEAL_PRICE/}',
@@ -28780,7 +28778,11 @@ wwv_flow_imp_page.create_card(
 '<span class="u-text-body-sm">per night</span>',
 '{endif/}'))
 ,p_second_body_adv_formatting=>true
-,p_second_body_html_expr=>'<strong>&HOTEL_GRADE.</strong> &middot; &TAGS.'
+,p_second_body_html_expr=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<strong>&HOTEL_GRADE.</strong>',
+'{loop "," TAGS/}',
+'&middot; &APEX$ITEM.',
+'{endloop/}'))
 ,p_badge_column_name=>'DEAL_LABEL'
 ,p_badge_css_classes=>'&DEAL_CSS_CLASS.'
 ,p_media_adv_formatting=>false
@@ -28789,6 +28791,7 @@ wwv_flow_imp_page.create_card(
 ,p_media_display_position=>'FIRST'
 ,p_media_appearance=>'WIDESCREEN'
 ,p_media_sizing=>'COVER'
+,p_media_description=>'&IMAGE_DESCRIPTION.'
 ,p_pk1_column_name=>'HOTEL_ID'
 );
 wwv_flow_imp_page.create_card_action(
@@ -29001,24 +29004,22 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates a section overview for summarizing the major content areas associated with one item. Each row identifies a section, briefly explains its contents, and provides supporting metadata such as a count or recent update.',
+'Demonstrates Cards for presenting actionable work items that require a decision, review, or follow-up. Each card combines the work item identity, supporting context, workflow state, priority, timing, and actions that are appropriate for the item''s cu'
+||'rrent state.',
 '',
 '## When to Use',
 '',
-'Use on detail pages with several distinct information areas when users benefit from understanding what each section contains before opening or navigating to it. This pattern works well for sections such as overview, people, files, comments, and activ'
-||'ity.',
+'Use for small to medium queues of approvals, requests, tasks, issues, or cases where users need to review information and take a direct action.',
 '',
 '## When to Avoid',
 '',
-'Avoid when the page has only a few visible sections, when section labels are already clear, or when users need primary application navigation. Use headings, tabs, a navigation list, or a table of contents instead.',
+'Avoid when users need to process large volumes of work, compare many attributes, perform bulk actions, or complete a complex multi-step workflow. Use a report, interactive grid, dedicated task page, or workflow interface instead.',
 '',
 '## AI Guidance',
 '',
-'Keep all rows scoped to one record or page context. Use concise section names, descriptions that explain the content available, and metadata that adds useful context, such as item counts or recency. Do not use decorative metrics that do not help user'
-||'s decide where to go.',
-'',
-'Make rows selectable when they navigate to the corresponding section. Keep icons consistent and meaningful, preserve a stable section order, and avoid using status colors unless the metadata represents an actual state.',
-''))
+'Use the title as a link to the review or detail page. Include only the information needed to understand and prioritize the decision, such as requester, amount, due date, priority, and submission age. Use one badge for the visible workflow state and u'
+||'se status data separately to control when actions are available. Show buttons only when the current state permits an action. Do not make the full card a link when it contains decision buttons, as this creates competing interaction targets. Use confir'
+||'mation for consequential or difficult-to-reverse actions.'))
 );
 wwv_flow_imp_page.create_card(
  p_id=>wwv_flow_imp.id(4697454856126725)
@@ -29139,10 +29140,9 @@ wwv_flow_imp_page.create_page_plug(
 '- Use the body for a concise description of the item''s purpose or context.',
 '- Use the secondary body for a small number of key attributes, such as',
 '  owner, date, location, or related information.',
-'- Use one badge for the item''s most important current status.',
 '- Use an icon to distinguish item types when imagery is unnecessary.',
-'- Make the full card a link to the item detail page.',
-'- Do not add buttons; opening the item is the primary action.',
+'- Make the full card the primary action that links to the item''s detail page.',
+'- Make the Edit button a secondary action that opens the edit page or dialog.',
 '*/',
 'select',
 '    101 as item_id,',
@@ -29151,9 +29151,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Request to confirm reporting access for the quarterly close process.'' as item_summary,',
 '    ''Maya Chen'' as assigned_to,',
 '    apex_util.get_since( sysdate - 2.5 ) as last_updated,',
-'    ''fa fa-key'' as item_icon_class,',
-'    ''Active'' as status_label,',
-'    ''u-success'' as status_css_class',
+'    ''fa fa-key'' as item_icon_class',
 'from sys.dual',
 '',
 'union all',
@@ -29165,9 +29163,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Replacement laptops and docking stations are being reviewed for approval.'' as item_summary,',
 '    ''Jordan Lee'' as assigned_to,',
 '    apex_util.get_since( sysdate - 1 ) as last_updated,',
-'    ''fa fa-laptop'' as item_icon_class,',
-'    ''In Review'' as status_label,',
-'    ''u-warning'' as status_css_class',
+'    ''fa fa-laptop'' as item_icon_class',
 'from sys.dual',
 '',
 'union all',
@@ -29179,9 +29175,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Required setup activities and supporting materials are awaiting confirmation.'' as item_summary,',
 '    ''Avery Smith'' as assigned_to,',
 '    apex_util.get_since( sysdate - 1 ) as last_updated,',
-'    ''fa fa-rocket'' as item_icon_class,',
-'    ''Needs Attention'' as status_label,',
-'    ''u-danger'' as status_css_class',
+'    ''fa fa-rocket'' as item_icon_class',
 'from sys.dual',
 '',
 'union all',
@@ -29193,9 +29187,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Renewal terms and supporting documentation are ready for stakeholder review.'' as item_summary,',
 '    ''Priya Patel'' as assigned_to,',
 '    apex_util.get_since( sysdate - 1 ) as last_updated,',
-'    ''fa fa-file-text-o'' as item_icon_class,',
-'    ''Pending'' as status_label,',
-'    ''u-info'' as status_css_class',
+'    ''fa fa-file-text-o'' as item_icon_class',
 'from sys.dual',
 '',
 'union all',
@@ -29207,9 +29199,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''The requested exception has been reviewed and recorded for reference.'' as item_summary,',
 '    ''Daniel Kim'' as assigned_to,',
 '    apex_util.get_since( sysdate - 1 ) as last_updated,',
-'    ''fa fa-check-circle-o'' as item_icon_class,',
-'    ''Complete'' as status_label,',
-'    ''u-success'' as status_css_class',
+'    ''fa fa-check-circle-o'' as item_icon_class',
 'from sys.dual;'))
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'NATIVE_CARDS'
@@ -29218,23 +29208,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates a status list for summarizing the condition of several related parts of a record, process, or application area. Each row combines a clear label, brief explanation, supporting icon, and semantic status badge.',
+'Demonstrates Cards for presenting identifiable business records with enough supporting context for users to recognize, compare, and open an item. Each card emphasizes the item identity, key attributes, and its most important current state.',
 '',
 '## When to Use',
 '',
-'Use when users need to scan a small set of related checks, requirements, stages, or system conditions and quickly identify what is complete, in progress, available, or requires attention.',
+'Use for small to medium collections of business records, such as requests, plans, contracts, assets, or related items, where a compact summary is more useful than a table row alone.',
 '',
 '## When to Avoid',
 '',
-'Avoid when users need to compare many records, analyze status trends, or act on a complex workflow. Use a report, chart, timeline, or task-oriented view instead.',
+'Avoid when users need to compare many attributes across a large result set, perform bulk actions, or edit records directly in the collection. Use a report, interactive grid, or dedicated form instead.',
 '',
 '## AI Guidance',
 '',
-'Keep all rows within one coherent status context. Use concise titles for the item being evaluated and descriptions that explain the meaning or consequence of its current state. Apply semantic badge states consistently: success for positive completion'
-||', warning for incomplete or pending work, danger for blockers or required action, and info for neutral availability or context.',
-'',
-'Use icons to reinforce the item or status, but do not rely on color or icons alone. Order rows by importance when exceptions require attention; otherwise, follow the natural sequence of the process or information.',
-''))
+'Use the title for the item name, the subtitle for its type or category, and the body for a concise description or context. Use the secondary body for a small number of useful attributes, such as owner, date, location, or related information. Use an i'
+||'con when imagery is unnecessary. Make the full card a link to the item detail page and the Edit button open the edit page or dialog; the full card action is the primary action, and the Edit button is the secondary action.'))
 );
 wwv_flow_imp_page.create_card(
  p_id=>wwv_flow_imp.id(16191434632427702)
@@ -29259,8 +29246,8 @@ wwv_flow_imp_page.create_card_action(
  p_id=>wwv_flow_imp.id(4622940842683205)
 ,p_card_id=>wwv_flow_imp.id(16191434632427702)
 ,p_action_type=>'BUTTON'
-,p_position=>'PRIMARY'
-,p_display_sequence=>10
+,p_position=>'SECONDARY'
+,p_display_sequence=>20
 ,p_label=>'Edit'
 ,p_static_id=>'action'
 ,p_link_target_type=>'REDIRECT_URL'
@@ -29268,6 +29255,15 @@ wwv_flow_imp_page.create_card_action(
 ,p_button_display_type=>'ICON'
 ,p_icon_css_classes=>'fa-pencil'
 ,p_is_hot=>false
+);
+wwv_flow_imp_page.create_card_action(
+ p_id=>wwv_flow_imp.id(4626456232683240)
+,p_card_id=>wwv_flow_imp.id(16191434632427702)
+,p_action_type=>'FULL_CARD'
+,p_display_sequence=>10
+,p_static_id=>'action_1'
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(92549377473102995178)
@@ -29380,11 +29376,11 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates a users list for presenting people with a clear identity hierarchy, concise role or team context, and lightweight presence or account state.',
+'Demonstrates Cards for presenting people or application users with a clear identity hierarchy, concise role or team context, and lightweight presence or account state.',
 '',
 '## When to Use',
 '',
-'Use when users need to scan a small or medium set of people associated with an application area, record, team, or task. This pattern works well when identity, role, availability, and recent activity are useful at a glance.',
+'Use for small to medium user lists where names, roles, presence, and recent activity help users quickly understand who is involved, responsible, or available.',
 '',
 '## When to Avoid',
 '',
@@ -29392,12 +29388,9 @@ wwv_flow_imp_page.create_page_plug(
 '',
 '## AI Guidance',
 '',
-'Use the person''s name as the primary label and keep supporting information concise. Show one useful secondary attribute, such as role or team, rather than turning each row into a profile summary.',
-'',
-'Use initials as a fallback avatar when no profile image is available. Use badges only for meaningful presence or account states, and keep state labels and semantic colors consistent. Show recent activity as secondary metadata when it helps users unde'
-||'rstand availability or engagement.',
-'',
-'Do not add row actions by default. Add actions only when the adapted experience has a clear user-management or collaboration need.'))
+'Use the person''s name as the card title and show one useful supporting attribute, such as role or team. Use an avatar or initials to establish identity; initials are an appropriate fallback when a profile image is unavailable. Use a badge only for a '
+||'meaningful presence or account state, and show recent activity as secondary metadata only when it helps users understand availability or engagement. Keep the full card or title link focused on the user profile or related details. Do not add actions b'
+||'y default; add them only when the experience has a clear user-management or collaboration need.'))
 );
 wwv_flow_imp_page.create_card(
  p_id=>wwv_flow_imp.id(12618665040375528)

@@ -1274,7 +1274,7 @@
         {
             "internalName": "SAMPLE_UX_PATTERN_CATALOG",
             "author": "Oracle",
-            "version": "26.1.3",
+            "version": "26.1.4",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-ux-pattern-catalog.svg",
             "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/ux-pattern-catalog",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.sql",
