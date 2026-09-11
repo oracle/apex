@@ -35,19 +35,19 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     23
---       Items:                   48
+--     Pages:                     26
+--       Items:                   50
 --       Processes:                2
---       Regions:                173
---       Buttons:                 54
---       Dynamic Actions:          9
+--       Regions:                185
+--       Buttons:                 58
+--       Dynamic Actions:         12
 --     Shared Components:
 --       Logic:
 --         Build Options:          2
 --       Navigation:
 --         Lists:                  4
 --         Breadcrumbs:            1
---           Entries:              8
+--           Entries:              9
 --       Security:
 --         Authentication:         1
 --         Authorization:          1
@@ -59,7 +59,7 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 --       Globalization:
 --       Reports:
 --       E-Mail:
---     Supporting Objects:  Excluded
+--     Supporting Objects:  Included
 --   Version:         26.1.4
 --   Instance ID:     746074361377689
 --
@@ -94,7 +94,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle APEX UX Pattern Catalog'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.4'
+,p_flow_version=>'26.1.5'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -106,7 +106,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461280214208
-,p_version_scn=>'283846540'
+,p_version_scn=>'291124756'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -323,7 +323,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(24910759632250178728)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:NGjPdCI_sz4uNUZn_Z53DhYCevKq2ANZmWShMzqghVA'
+,p_version_scn=>'SH256:baQs42E9W6eBIT_3eL3r1zcg9H7gqEgLgvmUjWrg0Ps'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24893314526602533122)
@@ -335,20 +335,40 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(6069441877406103)
+,p_list_item_display_sequence=>230
+,p_list_item_link_text=>'AI Chat'
+,p_static_id=>'ai-chat'
+,p_list_item_link_target=>'f?p=&APP_ID.:250:&APP_SESSION.::&DEBUG.:::'
+,p_parent_list_item_id=>wwv_flow_imp.id(24910783800398178812)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'250'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(5873173838571647)
+,p_list_item_display_sequence=>210
+,p_list_item_link_text=>'Search - Full Page'
+,p_static_id=>'ai-search'
+,p_list_item_link_target=>'f?p=&APP_ID.:240:&SESSION.::&DEBUG.::::'
+,p_parent_list_item_id=>wwv_flow_imp.id(24910783800398178812)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'240'
+);
+wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24896043088058422659)
 ,p_list_item_display_sequence=>40
-,p_list_item_link_text=>unistr('Browse \2013\00A0Cards')
+,p_list_item_link_text=>'Browse - Cards'
 ,p_static_id=>'browse-cards'
-,p_list_item_link_target=>'f?p=&APP_ID.:210:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:210:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24910783800398178812)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24895047684562253975)
 ,p_list_item_display_sequence=>50
-,p_list_item_link_text=>unistr('Browse \2013\00A0Content Row')
+,p_list_item_link_text=>'Browse - Content Row'
 ,p_static_id=>'browse-content-row'
-,p_list_item_link_target=>'f?p=&APP_ID.:220:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:220:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24910783800398178812)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
@@ -357,10 +377,10 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_display_sequence=>200
 ,p_list_item_link_text=>'Tree Selection'
 ,p_static_id=>'browse-tree'
-,p_list_item_link_target=>'f?p=&APP_ID.:240:&SESSION.::&DEBUG.::::'
+,p_list_item_link_target=>'f?p=&APP_ID.:340:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24896254309195707236)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'240'
+,p_list_item_current_for_pages=>'340'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24893110015078206832)
@@ -423,7 +443,7 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24896401988733868678)
 ,p_list_item_display_sequence=>90
-,p_list_item_link_text=>unistr('Data Entry \2013\00A0Drawer Form')
+,p_list_item_link_text=>unistr('Data Entry -\00A0Drawer Form')
 ,p_static_id=>'data-entry-drawer-form'
 ,p_list_item_link_target=>'f?p=&APP_ID.:420:&SESSION.::&DEBUG.'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24896254725756707237)
@@ -432,11 +452,21 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24893249327960458055)
 ,p_list_item_display_sequence=>140
-,p_list_item_link_text=>unistr('Data Entry \2013 Simple Form')
+,p_list_item_link_text=>'Data Entry - Simple Form'
 ,p_static_id=>'data-entry-simple-form'
 ,p_list_item_link_target=>'f?p=&APP_ID.:410:&SESSION.::&DEBUG.'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24896254725756707237)
 ,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(5912749087018952)
+,p_list_item_display_sequence=>220
+,p_list_item_link_text=>'Executive'
+,p_static_id=>'executive'
+,p_list_item_link_target=>'f?p=&APP_ID.:130:&APP_SESSION.::&DEBUG.:::'
+,p_parent_list_item_id=>wwv_flow_imp.id(24910790791280181782)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'130'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24910770977958178794)
@@ -459,7 +489,7 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24893173165345352116)
 ,p_list_item_display_sequence=>130
-,p_list_item_link_text=>unistr('Item Detail \2013\00A0Full')
+,p_list_item_link_text=>unistr('Item Detail -\00A0Full')
 ,p_static_id=>'item-detail-full'
 ,p_list_item_link_target=>'f?p=&APP_ID.:320:&SESSION.::&DEBUG.'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24896254309195707236)
@@ -468,7 +498,7 @@ wwv_flow_imp_shared.create_list_item(
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24896678839683699262)
 ,p_list_item_display_sequence=>120
-,p_list_item_link_text=>unistr('Item Detail \2013\00A0Summary')
+,p_list_item_link_text=>'Item Detail - Summary'
 ,p_static_id=>'item-detail-summary'
 ,p_list_item_link_target=>'f?p=&APP_ID.:310:&SESSION.::&DEBUG.'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24896254309195707236)
@@ -10555,6 +10585,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>6
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(6254445849876009)
+,p_parent_id=>wwv_flow_imp.id(12647400082564890)
+,p_short_name=>'Metrics'
+,p_static_id=>'metrics'
+,p_link=>'f?p=&APP_ID.:1120:&APP_SESSION.::&DEBUG.:::'
+,p_page_id=>1120
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(24910785163670178813)
 ,p_short_name=>'Reports'
 ,p_static_id=>'reports'
@@ -12709,7 +12747,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-line-chart'' as icon_class,',
 '    ''Executive Dashboard'' as title,',
 '    ''A high-level view for leadership audiences, emphasizing outcomes, trends, risks, and concise status indicators.'' as description,',
-'    cast(null as varchar2(100)) as page_alias',
+'    ''dashboard-executive'' as page_alias',
 'from sys.dual',
 'union all',
 'select',
@@ -15845,6 +15883,1189 @@ wwv_flow_imp_page.create_page_button(
 );
 end;
 /
+prompt --application/pages/page_00130
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>130
+,p_name=>unistr('Dashboard \2013\00A0Executive')
+,p_alias=>'DASHBOARD-EXECUTIVE'
+,p_step_title=>unistr('Dashboard \2013\00A0Executive')
+,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'/* Scope metric-card layout adjustments to Metric Card regions. */',
+'.app-MetricCards .t-MetricCard { flex-wrap: wrap; }',
+'.app-MetricCards .t-MetricCard-badge { margin-left: auto; }'))
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_page_is_public_y_n=>'Y'
+,p_protection_level=>'C'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Provides an executive dashboard that brings the most important revenue, pipeline, regional, and operating-status measures into one decision-oriented view.',
+'',
+'## When to Use',
+'',
+'Use when leaders need a concise overview before drilling into operational detail. Combine a small set of comparable KPIs with charts that explain performance against targets, pipeline progression, and regional variation.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to inspect transactions, edit records, or perform detailed analysis. Provide a report or task page for those workflows instead.',
+'',
+'## AI Guidance',
+'',
+'Replace the sample SQL with governed business measures, keep periods and units consistent across regions, and connect the time-range item and detail links to real filters and drill-down pages. Preserve the hierarchy: KPI cards first, then diagnostic '
+||'charts and status context.'))
+,p_page_component_map=>'27'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(5886527581756526)
+,p_plug_name=>'Actual vs Target Series'
+,p_static_id=>'actual-vs-target-series'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with quarterly_revenue as (',
+'    select 1 as quarter_order,',
+'           ''Q1 ''''26'' as quarter_label,',
+'           214.0 as actual_revenue,',
+'           215.0 as target_revenue',
+'    from dual',
+'',
+'    union all',
+'',
+'    select 2,',
+'           ''Q2 ''''26'',',
+'           229.3,',
+'           234.0',
+'    from dual',
+'',
+'    union all',
+'',
+'    select 3,',
+'           ''Q3 ''''26'',',
+'           165.0,',
+'           165.0',
+'    from dual',
+'',
+'    union all',
+'',
+'    select 4,',
+'           ''Q4 ''''26'',',
+'           cast(null as number) as actual_revenue,',
+'           171.0',
+'    from dual',
+'),',
+'chart_data as (',
+'    select',
+'        quarter_order,',
+'        quarter_label,',
+'        ''Actual'' as series_name,',
+'        actual_revenue as value,',
+'        actual_revenue,',
+'        target_revenue,',
+'        case',
+'            when actual_revenue is null then ''In progress''',
+'            when actual_revenue >= target_revenue then ''Met target''',
+'            else ''Below target''',
+'        end as performance_status',
+'    from quarterly_revenue',
+'',
+'    union all',
+'',
+'    select',
+'        quarter_order,',
+'        quarter_label,',
+'        ''Target'' as series_name,',
+'        target_revenue as value,',
+'        actual_revenue,',
+'        target_revenue,',
+'        case',
+'            when actual_revenue is null then ''In progress''',
+'            when actual_revenue >= target_revenue then ''Met target''',
+'            else ''Below target''',
+'        end as performance_status',
+'    from quarterly_revenue',
+')',
+'select',
+'    quarter_order,',
+'    quarter_label,',
+'    series_name,',
+'    value,',
+'    actual_revenue,',
+'    target_revenue,',
+'    performance_status,',
+'    quarter_label || chr(10) ||',
+'    ''Target  $'' || to_char(target_revenue, ''FM999G990D0'') || ''M'' || chr(10) ||',
+'    case',
+'        when actual_revenue is null then ''Actual  In progress''',
+'        else ''Actual  $'' || to_char(actual_revenue, ''FM999G990D0'') || ''M''',
+'    end as tooltip_text',
+'from chart_data',
+'order by',
+'    quarter_order,',
+'    case series_name',
+'        when ''Actual'' then 1',
+'        when ''Target'' then 2',
+'    end;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'QUARTER_ORDER'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Compares actual and target revenue by quarter so executives can identify the size and direction of performance gaps.',
+'Pattern role: Revenue performance comparison.',
+'AI guidance: Use a common currency and period grain for both series. Keep the actual and target series visually distinct, and provide a drill-down when a gap requires investigation.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(5886637819756527)
+,p_region_id=>wwv_flow_imp.id(5886527581756526)
+,p_chart_type=>'bar'
+,p_height=>'250'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'N'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'bottom'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'disabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6307984047348634)
+,p_chart_id=>wwv_flow_imp.id(5886637819756527)
+,p_static_id=>'revenue'
+,p_seq=>40
+,p_name=>'Revenue'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'bar'
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'QUARTER_LABEL'
+,p_items_short_desc_column_name=>'TOOLTIP_TEXT'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+,p_required_patch=>wwv_flow_imp.id(24910758457553178721)
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(5886798315756528)
+,p_chart_id=>wwv_flow_imp.id(5886637819756527)
+,p_static_id=>'series-1_1'
+,p_seq=>20
+,p_name=>'Actual'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH quarterly_revenue AS (',
+'    SELECT 1 AS quarter_order,',
+'           ''Q1 ''''26'' AS quarter_label,',
+'           214.0 AS actual_revenue,',
+'           215.0 AS target_revenue',
+'    FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 2, ''Q2 ''''26'', 229.3, 234.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 3, ''Q3 ''''26'', 165.0, 165.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 4, ''Q4 ''''26'', CAST(NULL AS NUMBER), 171.0 FROM dual',
+')',
+'SELECT',
+'    quarter_order,',
+'    quarter_label,',
+'    actual_revenue AS value,',
+'',
+'    quarter_label || CHR(10) ||',
+'    ''Revenue  $'' || TO_CHAR(target_revenue, ''FM999G990D0'') || ''M'' ||',
+'    CHR(10) ||',
+'    CASE',
+'        WHEN actual_revenue IS NULL THEN ''Actual  In progress''',
+'        ELSE ''Actual  $'' || TO_CHAR(actual_revenue, ''FM999G990D0'') || ''M''',
+'    END AS tooltip_text',
+'',
+'FROM quarterly_revenue',
+'WHERE actual_revenue IS NOT NULL',
+'ORDER BY quarter_order;'))
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'QUARTER_LABEL'
+,p_color=>'#3f8efc'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6307743042348632)
+,p_chart_id=>wwv_flow_imp.id(5886637819756527)
+,p_static_id=>'target'
+,p_seq=>10
+,p_name=>'Target'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH quarterly_revenue AS (',
+'    SELECT 1 AS quarter_order,',
+'           ''Q1 ''''26'' AS quarter_label,',
+'           214.0 AS actual_revenue,',
+'           215.0 AS target_revenue',
+'    FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 2, ''Q2 ''''26'', 229.3, 234.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 3, ''Q3 ''''26'', 165.0, 165.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 4, ''Q4 ''''26'', CAST(NULL AS NUMBER), 171.0 FROM dual',
+')',
+'SELECT',
+'    quarter_order,',
+'    quarter_label,',
+'    target_revenue AS value,',
+'',
+'    quarter_label || CHR(10) ||',
+'    ''Revenue  $'' || TO_CHAR(target_revenue, ''FM999G990D0'') || ''M'' ||',
+'    CHR(10) ||',
+'    CASE',
+'        WHEN actual_revenue IS NULL THEN ''Actual  In progress''',
+'        ELSE ''Actual  $'' || TO_CHAR(actual_revenue, ''FM999G990D0'') || ''M''',
+'    END AS tooltip_text',
+'',
+'FROM quarterly_revenue',
+'ORDER BY quarter_order;'))
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'QUARTER_LABEL'
+,p_color=>'#8f99a8'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(5886939212756530)
+,p_chart_id=>wwv_flow_imp.id(5886637819756527)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(5887072016756531)
+,p_chart_id=>wwv_flow_imp.id(5886637819756527)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24904482465466374288)
+,p_plug_name=>'Pipeline Funnel'
+,p_static_id=>'chart-4_1'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>80
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    1 seq,',
+'    ''Awareness'' label,',
+'    48200 as value',
+'from sys.dual',
+'union all',
+'select 2, ''Leads'', 12400 from sys.dual',
+'union all',
+'select 3, ''Qualified'', 4800 from sys.dual',
+'union all',
+'select 4, ''Proposals'', 1920 from sys.dual',
+'union all',
+'select 5, ''Closed Won'', 480 from sys.dual'))
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Shows how opportunities narrow from awareness through closed-won so executives can see conversion and stage drop-off.',
+'Pattern role: Sales pipeline funnel.',
+'AI guidance: Order stages from broadest to narrowest, use mutually exclusive stage counts, and keep the funnel focused on a single pipeline definition. Pair it with a detail link when users need to investigate a stage.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(5925080047018970)
+,p_region_id=>wwv_flow_imp.id(24904482465466374288)
+,p_chart_type=>'funnel'
+,p_title=>'Opportunities Conversion'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_value_format_scaling=>'auto'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function( options ) {',
+'',
+'    options.styleDefaults = $.extend( true, {}, options.styleDefaults, {',
+'        colors: [',
+'            ''rgba(66, 81, 191, 0.5)'',',
+'            ''rgba(95, 185, 181, 0.5)''',
+'        ]',
+'    });',
+'',
+'    return options;',
+'}'))
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(5926733841018970)
+,p_chart_id=>wwv_flow_imp.id(5925080047018970)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Opportunities Conversion'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'funnel'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_items_label_rendered=>true
+,p_items_label_position=>'auto'
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24922312659672286434)
+,p_plug_name=>'Executive Dashboard'
+,p_static_id=>'dashboard-title'
+,p_region_template_options=>'#DEFAULT#:t-HeroRegion--hideIcon'
+,p_plug_template=>2675494171183407654
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'One line dashboard description.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Establishes the Executive Dashboard context and holds its time-range control and page-level actions.',
+'Pattern role: Executive dashboard header and action container.',
+'AI guidance: Keep the visible description concise and business-focused. Place only actions that apply to the dashboard as a whole here; keep implementation guidance in component comments rather than in the visible region.'))
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24922311808752286425)
+,p_plug_name=>'Metric Cards'
+,p_static_id=>'metric-cards'
+,p_region_css_classes=>'app-MetricCards'
+,p_region_template_options=>'#DEFAULT#:margin-bottom-md'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''fa-line-chart''    icon,',
+'    ''Primary KPI''      label,',
+'    84200              metric_value,',
+'    ''Trend''            badge,',
+'    ''+12%''             badge_value,',
+'    ''success''          badge_state,',
+'    ''fa-trend-up''      badge_icon',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-bar-chart''     icon,',
+'    ''Secondary KPI''    label,',
+'    12800              metric_value,',
+'    ''Trend''            badge,',
+'    ''+320 units''       badge_value,',
+'    ''success''          badge_state,',
+'    ''fa-trend-up''      badge_icon',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-area-chart''    icon,',
+'    ''Trend KPI''        label,',
+'    64                 metric_value,',
+'    ''Trend''            badge,',
+'    ''20m faster''       badge_value,',
+'    ''success''          badge_state,',
+'    ''fa-trend-up''      badge_icon',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-dashboard''     icon,',
+'    ''Status KPI''       label,',
+'    348                metric_value,',
+'    ''Trend''            badge,',
+'    ''-14 items''        badge_value,',
+'    ''danger''           badge_state,',
+'    ''fa-trend-down''    badge_icon',
+'from sys.dual'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'BADGE_VALUE'
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$METRIC_CARD'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_landmark_type=>'region'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'AVATAR_ALIGNMENT', 't-MetricCard-body--avatarAlignmentStart',
+  'AVATAR_ICON', '&ICON.',
+  'AVATAR_POSITION', 't-MetricCard-body--avatarPositionInline',
+  'AVATAR_SHAPE', 't-Avatar--rounded',
+  'AVATAR_STYLE', 't-MetricCard-avatar--subtle',
+  'AVATAR_TYPE', 'icon',
+  'BADGE_ICON', '&BADGE_ICON.',
+  'BADGE_LABEL', 'Trend',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_SHAPE', 't-Badge--rounded',
+  'BADGE_STATE', 'BADGE_STATE',
+  'BADGE_STYLE', 't-Badge--subtle',
+  'BADGE_VALUE', 'BADGE_VALUE',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'Y',
+  'LAYOUT', '4cols',
+  'META', '&LABEL.',
+  'METRIC', '&METRIC_VALUE.',
+  'METRIC_CSS_CLASSES', 'u-text-subheading-md')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents the executive KPIs that should be scanned before reviewing the revenue, pipeline, and regional charts.',
+'Pattern role: Primary KPI summary.',
+'AI guidance: Keep metrics comparable in importance. Badge value, badge state, and badge icon should be semantically aligned. Format key values for quick scanning and avoid turning this region into a dense report.',
+'Implementation note: The app-MetricCards CSS class scopes page-level CSS to this region.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922312218764286430)
+,p_name=>'BADGE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922312523379286433)
+,p_name=>'BADGE_ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>80
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922312420190286432)
+,p_name=>'BADGE_STATE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_STATE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922312346380286431)
+,p_name=>'BADGE_VALUE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_VALUE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922311876581286426)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922312050913286428)
+,p_name=>'LABEL'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'LABEL'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24922312192806286429)
+,p_name=>'METRIC_VALUE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'METRIC_VALUE'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>40
+,p_format_mask=>'999G999G999G999G999G999G990'
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(49804907395986646097)
+,p_plug_name=>'Status List'
+,p_static_id=>'pattern-status-list'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG:t-Region--removeHeader js-removeLandmark'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>90
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Revenue Report''      as title,',
+'    ''-4% vs target''       as description,',
+'    ''fa-tasks-alt''        as icon,',
+'    ''Off Track''           as badge,',
+'    ''danger''              as badge_state',
+'from sys.dual',
+'union all',
+'select',
+'    ''Q4 Pipeline''         as title,',
+'    ''Below 2x floor''      as description,',
+'    ''fa-search''           as icon,',
+'    ''Off Track''           as badge,',
+'    ''danger''              as badge_state',
+'from sys.dual',
+'union all',
+'select',
+'    ''Pipeline Ratio''      as title,',
+'    ''Needs acceleration''  as description,',
+'    ''fa-cogs''             as icon,',
+'    ''At Risk''             as badge,',
+'    ''warning''             as badge_state',
+'from sys.dual',
+'union all',
+'select',
+'    ''Gross Margin''        as title,',
+'    ''Improved 1.2 points'' as description,',
+'    ''fa-file-text-o''      as icon,',
+'    ''On Track''            as badge,',
+'    ''success''             as badge_state',
+'from sys.dual',
+'union all',
+'select',
+'    ''Customers''           as title,',
+'    ''Trending up''         as description,',
+'    ''fa-user-check''       as icon,',
+'    ''On track''            as badge,',
+'    ''success''             as badge_state',
+'from sys.dual;'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_plug_query_num_rows=>5
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'N',
+  'AVATAR_ICON', '&ICON. fa-lg',
+  'AVATAR_SHAPE', 't-Avatar--noShape',
+  'AVATAR_TYPE', 'icon',
+  'BADGE_ALIGNMENT', 't-ContentRow-badge--alignCenter',
+  'BADGE_COL_WIDTH', 't-ContentRow-badge--auto',
+  'BADGE_LABEL', 'Badge',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_POS', 't-ContentRow-badge--posEnd',
+  'BADGE_STATE', 'BADGE_STATE',
+  'BADGE_STYLE', 't-Badge--subtle',
+  'BADGE_VALUE', 'BADGE',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'Y',
+  'HIDE_BORDERS', 'N',
+  'REMOVE_PADDING', 'N',
+  'STACK_MOBILE', 'N',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a status list for summarizing the condition of several related parts of a record, process, or application area. Each row combines a clear label, brief explanation, supporting icon, and semantic status badge.',
+'',
+'## When to Use',
+'',
+'Use when users need to scan a small set of related checks, requirements, stages, or system conditions and quickly identify what is complete, in progress, available, or requires attention.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to compare many records, analyze status trends, or act on a complex workflow. Use a report, chart, timeline, or task-oriented view instead.',
+'',
+'## AI Guidance',
+'',
+'Keep all rows within one coherent status context. Use concise titles for the item being evaluated and descriptions that explain the meaning or consequence of its current state. Apply semantic badge states consistently: success for positive completion'
+||', warning for incomplete or pending work, danger for blockers or required action, and info for neutral availability or context.',
+'',
+'Use icons to reinforce the item or status, but do not rely on color or icons alone. Order rows by importance when exceptions require attention; otherwise, follow the natural sequence of the process or information.',
+''))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(49804908292713646106)
+,p_name=>'BADGE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(49804908419424646107)
+,p_name=>'BADGE_STATE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_STATE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(49804908106850646104)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(49804908216001646105)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(49804907957071646103)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_component_action(
+ p_id=>wwv_flow_imp.id(49786697771323922846)
+,p_region_id=>wwv_flow_imp.id(49804907395986646097)
+,p_position_id=>350199314123390058
+,p_display_sequence=>10
+,p_static_id=>'action'
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24904483014448374293)
+,p_plug_name=>'Regional Revenue Ranking'
+,p_static_id=>'stock-chart'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>70
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select 1 sort_order,',
+'       ''North America'' label,',
+'       38.4 actual_value,',
+'       40.0 target_value',
+'from sys.dual',
+'union all',
+'select 2, ''EMEA'', 22.1, 23.5',
+'from sys.dual',
+'union all',
+'select 3, ''APAC'', 14.8, 16.0',
+'from sys.dual',
+'union all',
+'select 4, ''Latin America'', 6.2, 5.5',
+'from sys.dual',
+'union all',
+'select 5, ''MENA'', 2.7, 3.1',
+'from sys.dual',
+'order by sort_order'))
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Compares actual and target revenue by sales region to expose where geographic performance is above or below plan.',
+'Pattern role: Regional revenue ranking and target comparison.',
+'AI guidance: Rank regions consistently, use one currency and period, and retain both actual and target values so the comparison remains actionable. Do not use financial OHLC guidance for this combo chart.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(5945907702018981)
+,p_region_id=>wwv_flow_imp.id(24904483014448374293)
+,p_chart_type=>'combo'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'horizontal'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_fill_multi_series_gaps=>false
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'off'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function (options) {',
+'    options.styleDefaults = $.extend(true, {}, options.styleDefaults, {',
+'        colors: [',
+'            ''rgba(66, 81, 191, 0.5)'' // Actual revenue color',
+'        ],',
+'        maxBarWidth: 15',
+'    });',
+'',
+'    return options;',
+'}'))
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(5947669885018982)
+,p_chart_id=>wwv_flow_imp.id(5945907702018981)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Actual Revenue'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'bar'
+,p_items_value_column_name=>'ACTUAL_VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_line_style=>'solid'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>true
+,p_items_label_position=>'insideBarEdge'
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6055957791169718)
+,p_chart_id=>wwv_flow_imp.id(5945907702018981)
+,p_static_id=>'target-revenue-series'
+,p_seq=>20
+,p_name=>'Target Revenue'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'line'
+,p_items_value_column_name=>'TARGET_VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#8f99a8'
+,p_line_style=>'solid'
+,p_line_type=>'none'
+,p_marker_rendered=>'on'
+,p_marker_shape=>'diamond'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(5946423876018981)
+,p_chart_id=>wwv_flow_imp.id(5945907702018981)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(5947030766018982)
+,p_chart_id=>wwv_flow_imp.id(5945907702018981)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'off'
+,p_format_type=>'currency'
+,p_decimal_places=>1
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24922437862076930333)
+,p_plug_name=>'Revenue Trend Series'
+,p_static_id=>'time-series'
+,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>40
+,p_plug_grid_column_span=>8
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Shows actual and target revenue over time as a second executive trend view.',
+'Pattern role: Revenue trend comparison.',
+'AI guidance: Use the same period definition and value formatting as the primary revenue chart. Include this region only when the additional trend perspective supports a distinct executive question.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(5948761999018982)
+,p_region_id=>wwv_flow_imp.id(24922437862076930333)
+,p_chart_type=>'line'
+,p_height=>'250'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_fill_multi_series_gaps=>false
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'enabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(5950402647018983)
+,p_chart_id=>wwv_flow_imp.id(5948761999018982)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Actual'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 68.2 AS actual_value FROM dual',
+'    UNION ALL SELECT DATE ''2026-02-01'', 71.4 FROM dual',
+'    UNION ALL SELECT DATE ''2026-03-01'', 74.8 FROM dual',
+'    UNION ALL SELECT DATE ''2026-04-01'', 73.1 FROM dual',
+'    UNION ALL SELECT DATE ''2026-05-01'', 76.9 FROM dual',
+'    UNION ALL SELECT DATE ''2026-06-01'', 79.3 FROM dual',
+'    UNION ALL SELECT DATE ''2026-07-01'', 81.6 FROM dual',
+'    UNION ALL SELECT DATE ''2026-08-01'', 84.2 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    actual_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'line'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_color=>'#3f8efc'
+,p_line_style=>'solid'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(5951077854018983)
+,p_chart_id=>wwv_flow_imp.id(5948761999018982)
+,p_static_id=>'series-2'
+,p_seq=>20
+,p_name=>'Target'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 70 AS target_value FROM dual',
+'    UNION ALL SELECT DATE ''2026-02-01'', 72 FROM dual',
+'    UNION ALL SELECT DATE ''2026-03-01'', 74 FROM dual',
+'    UNION ALL SELECT DATE ''2026-04-01'', 76 FROM dual',
+'    UNION ALL SELECT DATE ''2026-05-01'', 78 FROM dual',
+'    UNION ALL SELECT DATE ''2026-06-01'', 80 FROM dual',
+'    UNION ALL SELECT DATE ''2026-07-01'', 82 FROM dual',
+'    UNION ALL SELECT DATE ''2026-08-01'', 84 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    target_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_series_type=>'line'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_color=>'#8f99a8'
+,p_line_style=>'dashed'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(5949254970018983)
+,p_chart_id=>wwv_flow_imp.id(5948761999018982)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(5949824043018983)
+,p_chart_id=>wwv_flow_imp.id(5948761999018982)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_min=>65
+,p_max=>85
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5936517203018976)
+,p_button_sequence=>40
+,p_button_plug_id=>wwv_flow_imp.id(24922312659672286434)
+,p_button_name=>'ACTIONS_MENU'
+,p_static_id=>'actions-menu'
+,p_show_as_disabled=>false
+,p_button_type=>'MENU'
+,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>'Actions Menu'
+,p_button_position=>'NEXT'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-ellipsis-v'
+,p_grid_new_row=>'Y'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Groups lower-frequency or optional page actions.',
+'Pattern role: Overflow actions.',
+'AI guidance: Use for actions that should remain available without competing with primary and secondary actions.'))
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(24922379946730286493)
+,p_button_id=>wwv_flow_imp.id(5936517203018976)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 1'
+,p_static_id=>'menu-action-a'
+,p_display_sequence=>10
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(24922380022121286494)
+,p_button_id=>wwv_flow_imp.id(5936517203018976)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 2'
+,p_static_id=>'menu-action-b'
+,p_display_sequence=>20
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(24922380134292286495)
+,p_button_id=>wwv_flow_imp.id(5936517203018976)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 3'
+,p_static_id=>'menu-action-c'
+,p_display_sequence=>30
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5938122117018977)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(24922312659672286434)
+,p_button_name=>'PRIMARY_ACTION'
+,p_static_id=>'primary-action'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Primary Action'
+,p_button_position=>'NEXT'
+,p_grid_new_row=>'Y'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Represents the main follow-up action from the Executive Dashboard overview.',
+'Pattern role: Primary page action.',
+'AI guidance: Keep prominent. Use a domain-specific label only when adapting this pattern to a real application.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5938532260018977)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(24922312659672286434)
+,p_button_name=>'SECONDARY_ACTION'
+,p_static_id=>'secondary-action'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Secondary Action'
+,p_button_position=>'NEXT'
+,p_grid_new_row=>'Y'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Represents a useful but lower-priority follow-up action.',
+'Pattern role: Secondary page action.',
+'AI guidance: Keep visually subordinate to the primary action.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5927461165018970)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(24904482465466374288)
+,p_button_name=>'VIEW_DETAILS_LINK'
+,p_static_id=>'view-details-link-3'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_URL'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconRight'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>'View Report'
+,p_button_position=>'EDIT'
+,p_button_redirect_url=>'#'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-arrow-right'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides a direct path from the comparison chart to supporting detail.',
+'Pattern role: Region-level detail action.',
+'AI guidance: Use text-link detail actions when the drill-down is a common analytical follow-up.'))
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(6055851833169717)
+,p_name=>'P130_TIME_RANGE'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(24922312659672286434)
+,p_item_display_point=>'NEXT'
+,p_prompt=>'Time Range'
+,p_source=>'YEAR'
+,p_source_type=>'STATIC'
+,p_display_as=>'NATIVE_RADIOGROUP'
+,p_lov=>'STATIC2:MTD;MONTH,QTD;QUARTER,YTD;YEAR'
+,p_field_template=>2042262243893469891
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
+,p_lov_display_extra=>'NO'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'number_of_columns', '3',
+  'page_action_on_selection', 'NONE')).to_clob
+,p_item_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Lets an executive choose the reporting period used by the dashboard.',
+'Pattern role: Dashboard-wide time filter.',
+'Implementation guidance: Bind this item to every affected region query and refresh those regions on change. The sample regions currently use static data, so changing this item does not alter them until the queries are made period-aware.'))
+);
+end;
+/
 prompt --application/pages/page_00200
 begin
 wwv_flow_imp_page.create_page(
@@ -15936,6 +17157,20 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Browse - Interactive Report'' as title,',
 '    ''A data-dense browsing pattern for users who need sorting, filtering, saved views, column control, and precise comparison across many records.'' as description,',
 '    ''browse-interactive-report'' as page_alias',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-window-search'' as icon_class,',
+'    ''Full Page Search'' as title,',
+'    ''A focused search pattern that combines search, quick actions, and results in a dedicated full-page experience.'' as description,',
+'    ''full-page-search'' as page_alias',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-ai-prompt'' as icon_class,',
+'    ''AI Chat'' as title,',
+'    ''A full-page conversational pattern for interacting with an AI assistant through messages, prompts, and contextual actions.'' as description,',
+'    ''ai-chat'' as page_alias',
 'from sys.dual'))
 ,p_template_component_type=>'REPORT'
 ,p_lazy_loading=>false
@@ -17778,278 +19013,163 @@ prompt --application/pages/page_00240
 begin
 wwv_flow_imp_page.create_page(
  p_id=>240
-,p_name=>'Tree Selection'
-,p_alias=>'TREE-SELECTION'
-,p_step_title=>'Tree Selection'
+,p_name=>'Full Page Search'
+,p_alias=>'FULL-PAGE-SEARCH'
+,p_step_title=>'Search - Full Page'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'/* Tree style overrides */',
-'.t-Body-side {',
-'    --a-treeview-node-selected-text-color: #FFF;',
-'    --a-treeview-node-padding-y: 0.75rem;',
-'}',
-'',
-'/* Add seperator between search and tree widgets */',
-'.t-Body-side .app-SideSearchConainer {',
-'    border-width: 0 0 var(--a-fs-search-container-border-width, 1px) 0;',
-'    border-style: solid;',
-'    border-color: var(--a-fs-search-container-border-color, rgba(0, 0, 0, 0.1));',
-'}',
-'',
-'/* Keep contextual information compact and make its status badges easy to scan. */',
-'.app-ContextualInfo {',
-'  --ut-contextualinfo-item-label-stacked-margin-y: 0;',
-'  --ut-badge-font-weight: 600;',
-'}',
-'',
-'/* Establish visual hierarchy between featured, standard, and compact activity rows. */',
-'.app-ActivityTimeline .is-standard {',
-'  --ut-cr-title-font-weight: 600;',
-'}',
-'',
-'.app-ActivityTimeline .is-compact {',
-'  --ut-cr-title-font-size: 0.875rem;',
-'  --ut-cr-title-font-weight: 400;',
-'}',
-'',
-'/* Temporarily loading utility class for full height */',
-'.u-block-size-full {',
-'  block-size: 100%;',
+'.t-ContentRow-title {',
+'    font-weight: 400;',
 '}'))
-,p_step_template=>2528119710305719084
+,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
-,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+,p_page_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '## Purpose',
 '',
-'Demonstrates a split-view item detail pattern with a searchable, selectable list on the left and contextual details for the selected item on the right.',
+'Provides a focused, full-page search experience that starts with a single search field and replaces the prompt with matching content rows after the user enters a term.',
 '',
 '## When to Use',
 '',
-'Use when users need to inspect several items one at a time while keeping the surrounding list visible. This works well for inbox, review, triage, queue, and administrative experiences.',
+'Use when search is the primary task and users benefit from a distraction-free entry state followed by a compact results list. This page is suited to keyword lookup across a modest record set.',
 '',
-'## When to Avoid',
+'## Implementation Guidance',
 '',
-'Avoid when users need bulk actions, detailed comparison, extensive editing, or a long multi-step workflow. Use a report, browse, sectioned, or tabbed pattern instead.',
-'',
-'## AI Guidance',
-'',
-'Preserve the split-view hierarchy: search and filtering, single-selection list, then selected-item identity, actions, summary, supporting details, related information, and activity.',
-'',
-'Use `P240_SELECTED_ITEM_ID` for the Tree selection.',
-'',
-'Mark data-dependent regions with `.js-item-refresh` and submit `P240_SELECTED_ITEM_ID` when they refresh. Mark selected-item content with `.js-selected-item-content` and the empty-state region with `.js-selected-item-empty`.',
-'',
-'Keep terminology generic, summaries concise, semantic states consistent, and the action hierarchy clear. Use component comments to explain intent, data mappings, refresh dependencies, and custom behavior.'))
-,p_page_component_map=>'27'
+'Submit the search item with the results region, normalize the search term in SQL, and search only fields users expect. Keep the input debounce short enough to feel responsive, protect expensive queries with appropriate indexes or a minimum-term rule,'
+||' and make result rows open the matching record when real data is used.'))
+,p_page_component_map=>'23'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24906861326690921979)
-,p_plug_name=>'Recent Activity'
-,p_static_id=>'activity'
-,p_region_css_classes=>'js-item-refresh js-selected-item-content'
-,p_region_sub_css_classes=>'app-ActivityTimeline'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG'
+ p_id=>wwv_flow_imp.id(49790625862217151575)
+,p_plug_name=>'Search Results'
+,p_static_id=>'pattern-search-results'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG:t-Region--removeHeader js-removeLandmark'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>60
+,p_plug_grid_column_span=>8
+,p_plug_display_column=>3
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'/*',
-'Activity timeline pattern sample',
-'',
-'Purpose:',
-'',
-'* Demonstrates how to build a representative activity timeline for an item detail pattern.',
-'* Shows a balanced mix of event types, row densities, and content shapes so AI-generated pages can learn the intended UX structure.',
-'',
-'Implementation notes:',
-'',
-'* The timeline is intentionally data-driven but not business-dependent.',
-'* The selected item ID is used as a seed so the example changes when the current record changes, while remaining stable for the same record.',
-'* Hash-based variation is used to produce realistic-looking labels, titles, and metrics without hardcoding business data.',
-'* Some rows are rich and descriptive; others are compact or title-only to show that not every activity needs equal detail.',
-'* Attribute changes should communicate the new state directly in the title.',
-'* Comment and file events should surface the meaningful payload as early as possible.',
-'* Description text should add only supporting context such as prior value, author, or follow-up note.',
-'',
-'Pattern guidance:',
-'',
-'* Use this region as a reusable reference for AI-generated item detail pages.',
-'* Keep labels generic and interaction-focused so the pattern can be adapted to any business domain.',
-'* Prefer representative structure over realistic transactional completeness.',
-'* Avoid encoding domain-specific meaning into the sample unless the pattern is explicitly tied to that domain.',
-'  */',
-'',
-'',
-'with seed as (',
-'    select nvl(:P240_SELECTED_ITEM_ID, ''0'') as item_id',
-'    from dual',
-')',
-'select ''Today'' as activity_group,',
-'       10 as display_sequence,',
-'       sysdate - interval ''1'' hour as activity_time,',
-'       ''Maya Chen'' as actioned_by,',
-'       ''Updated'' as action_type,',
-'       null as badge_label,',
-'       ''Status changed to '' ||',
-'           case mod(ora_hash(seed.item_id || '':status''), 4)',
-'               when 0 then ''On Track''',
-'               when 1 then ''Needs Review''',
-'               when 2 then ''At Risk''',
-'               else ''Blocked''',
-'           end as title,',
-'       ''Previous status: '' ||',
-'           case mod(ora_hash(seed.item_id || '':prev_status''), 4)',
-'               when 0 then ''On Track''',
-'               when 1 then ''Needs Review''',
-'               when 2 then ''At Risk''',
-'               else ''Blocked''',
-'           end as description,',
-'       ''fa-check-circle-o u-success-text'' as icon_class,',
-'       ''is-featured'' as row_class,',
-'       1 as id',
-'  from seed',
-'union all',
-'select ''Today'',',
-'       20,',
-'       sysdate - interval ''4'' hour,',
-'       ''Jordan Lee'',',
-'       ''Reviewed'',',
-'       null,',
-'       ''Review completed for item '' || seed.item_id,',
-'       ''Next step confirmed for the current owner'',',
-'       ''fa-check-circle-o u-success-text'',',
-'       ''is-standard'',',
-'       2',
-'  from seed',
-'union all',
-'select ''This Week'',',
-'       30,',
-'       trunc(sysdate) - 2 + (9/24),',
-'       ''Maya Chen'',',
-'       ''Commented'',',
-'       null,',
-'       ''We should confirm the owner before moving item '' || seed.item_id || '' forward.'',',
-'       ''Comment added to the current record'',',
-'       ''fa-comments-o u-info-text'',',
-'       ''is-standard'',',
-'       3',
-'  from seed',
-'union all',
-'select ''This Week'',',
-'       40,',
-'       trunc(sysdate) - 3 + (14/24),',
-'       ''Jordan Lee'',',
-'       ''Adjusted'',',
-'       null,',
-'       ''Target Date set to October 1'',',
-'       ''Previous target date: September 18'',',
-'       ''fa-calendar-o u-info-text'',',
-'       ''is-standard'',',
-'       4',
-'  from seed',
-'union all',
-'select ''Earlier'',',
-'       50,',
-'       trunc(sysdate) - 7 + (11/24),',
-'       null,',
-'       null,',
-'       null,',
-'       ''Ownership assigned to Avery Smith for ongoing follow-up'',',
-'       null,',
-'       ''fa-user u-info-text'',',
-'       ''is-compact'',',
-'       5',
-'  from seed',
-'union all',
-'select ''Earlier'',',
-'       60,',
-'       trunc(sysdate) - 9 + (10/24),',
-'       null,',
-'       null,',
-'       null,',
-'       ''Standard Intake linked to support the current record'',',
-'       null,',
-'       ''fa-link u-info-text'',',
-'       ''is-compact'',',
-'       6',
-'  from seed',
-'union all',
-'select ''Earlier'',',
-'       70,',
-'       trunc(sysdate) - 10 + (12/24),',
-'       null,',
-'       null,',
-'       null,',
-'       ''Reference removed after duplicate values were identified'',',
-'       null,',
-'       ''fa-minus-circle-o u-danger-text'',',
-'       ''is-compact'',',
-'       7',
-'  from seed',
-'union all',
-'select ''Earlier'',',
-'       80,',
-'       trunc(sysdate) - 11 + (16/24),',
-'       null,',
-'       null,',
-'       null,',
-'       ''Initial record created and prepared for first review'',',
-'       null,',
-'       ''fa-plus-circle-o u-info-text'',',
-'       ''is-compact'',',
-'       8',
-'  from seed;'))
+'with results as (',
+'    select',
+'        1 as id,',
+'        ''Record 001'' as title,',
+'        ''Summary information and current context for this record.'' as description,',
+'        ''Standard Record'' as category,',
+'        ''assigned, customer-facing, current'' as tags,',
+'        sysdate - interval ''30'' minute as updated_on,',
+'        ''fa-file-text-o'' as icon,',
+'        ''Standard Record'' as overline',
+'    from sys.dual',
+'    union all',
+'    select',
+'        2,',
+'        ''Record 002'',',
+'        ''Supporting details are currently being prepared and reviewed.'',',
+'        ''Review Record'',',
+'        ''internal, draft, supporting-docs'',',
+'        sysdate - interval ''3'' hour,',
+'        ''fa-clipboard-check'',',
+'        ''Review Record''',
+'    from sys.dual',
+'    union all',
+'    select',
+'        3,',
+'        ''Record 003'',',
+'        ''Recent changes require confirmation before work can continue.'',',
+'        ''Tracked Record'',',
+'        ''assigned, follow-up'',',
+'        sysdate - interval ''1'' day,',
+'        ''fa-list-alt'',',
+'        ''Tracked Record''',
+'    from sys.dual',
+'    union all',
+'    select',
+'        4,',
+'        ''Record 004'',',
+'        ''Reference information and supporting material are available.'',',
+'        ''Reference Record'',',
+'        ''published, shared, documentation'',',
+'        sysdate - interval ''4'' day,',
+'        ''fa-book'',',
+'        ''Reference Record''',
+'    from sys.dual',
+'    union all',
+'    select',
+'        5,',
+'        ''Record 005'',',
+'        ''All required work has been completed and validated.'',',
+'        ''Standard Record'',',
+'        ''validated, complete'',',
+'        sysdate - interval ''7'' day,',
+'        ''fa-check-square-o'',',
+'        ''Standard Record''',
+'    from sys.dual',
+') ',
+'select * ',
+'  from results',
+' where upper(title) like ''%'' || upper(trim(:P240_SEARCH_FIELD)) || ''%''',
+'    or upper(description) like ''%'' || upper(trim(:P240_SEARCH_FIELD)) || ''%'''))
 ,p_query_order_by_type=>'STATIC'
-,p_query_order_by=>'display_sequence, activity_group'
+,p_query_order_by=>'updated_on desc'
 ,p_template_component_type=>'REPORT'
 ,p_lazy_loading=>false
 ,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
-,p_ajax_items_to_submit=>'P240_SELECTED_ITEM_ID'
-,p_plug_query_num_rows=>15
+,p_ajax_items_to_submit=>'P240_SEARCH_FIELD'
+,p_plug_query_num_rows=>5
 ,p_plug_query_num_rows_type=>'SET'
+,p_plug_query_no_data_found=>'No Results. Try searching for "Record."'
 ,p_show_total_row_count=>false
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'APPLY_THEME_COLORS', 'N',
-  'AVATAR_ICON', '&ICON_CLASS.',
+  'AVATAR_ICON', '&ICON. fa-lg',
   'AVATAR_SHAPE', 't-Avatar--noShape',
-  'AVATAR_SIZE', 't-Avatar--sm',
   'AVATAR_TYPE', 'icon',
-  'DESCRIPTION', '&DESCRIPTION.',
+  'DESCRIPTION', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '&DESCRIPTION.',
+    '<div>',
+    '{loop "," TAGS/}',
+    '    <span class="t-Badge t-Badge--subtle t-Badge--sm"><span class="t-Badge-value">&APEX$ITEM.</span></span>',
+    '{endloop/}',
+    '</div>')),
   'DISPLAY_AVATAR', 'Y',
   'DISPLAY_BADGE', 'N',
-  'GROUP_TITLE', '<div class="u-text-uppercase u-text-muted-color u-text-body-xs u-text-bold">&ACTIVITY_GROUP.</div>',
   'HIDE_BORDERS', 'N',
-  'ITEM_CSS_CLASSES', '&ROW_CLASS.',
-  'MISC', '&ACTIVITY_TIME.',
-  'OVERLINE', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{if ACTIONED_BY/}',
-    '    &ACTIONED_BY.{if ACTION_TYPE/} &middot; &ACTION_TYPE.{endif/}',
-    '{elseif ACTION_TYPE/}',
-    '    &ACTION_TYPE.',
-    '{endif/}')),
+  'MISC', 'Updated &UPDATED_ON.',
   'REMOVE_PADDING', 'N',
   'STACK_MOBILE', 'N',
   'TITLE', '&TITLE.')).to_clob
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Shows meaningful changes, decisions, comments, and events associated with the current item.',
+'## Purpose',
 '',
-'Pattern role: Activity timeline.',
+'Displays the matching records for the Full Page Search after the user enters a term. The sample query matches title and description, and the region submits P240_SEARCH_FIELD during its AJAX refresh.',
 '',
-'AI guidance: Make the event title carry the meaningful payload at a glance. Attribute changes should describe the new value or state. File events should identify the file. Comment events should surface the comment text. Use the description only for u'
-||'seful supporting context such as a previous value, author, or note. Keep some rows title-only and retain a mix of featured, standard, and compact rows to demonstrate different event shapes. Use featured rows for especially important events and compac'
-||'t rows for lower-detail history.',
+'## When to Use',
 '',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
+'Use when users need to review and open records returned by a search, filter, or browse action. This pattern works well when titles alone are not enough to distinguish results and users benefit from supporting descriptions, categories, status, or rece'
+||'ncy.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to compare many attributes across records, edit values directly, or analyze large result sets. Use a report, interactive grid, cards, or faceted search pattern instead.',
+'',
+'## AI Guidance',
+'',
+'Lead with the record title and include only the supporting details needed to distinguish one result from another. Use the overline for a stable category or record type, the badge for a meaningful status, and the metadata area for concise secondary in'
+||'formation such as the last update date.',
+'',
+'Keep the entire row selectable when it opens the record. Reserve the row menu for less common secondary actions. Apply semantic badge states consistently, avoid decorative status colors, and keep row structure and metadata placement consistent across'
+||' all results.',
+''))
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906861760962921983)
-,p_name=>'ACTIONED_BY'
+ p_id=>wwv_flow_imp.id(49790670304821585191)
+,p_name=>'CATEGORY'
 ,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ACTIONED_BY'
+,p_source_expression=>'CATEGORY'
 ,p_data_type=>'VARCHAR2'
 ,p_display_sequence=>40
 ,p_is_group=>false
@@ -18058,35 +19178,11 @@ wwv_flow_imp_page.create_region_column(
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906861855187921984)
-,p_name=>'ACTION_TYPE'
+ p_id=>wwv_flow_imp.id(49790670264137585190)
+,p_name=>'DESCRIPTION'
 ,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ACTION_TYPE'
+,p_source_expression=>'DESCRIPTION'
 ,p_data_type=>'VARCHAR2'
-,p_display_sequence=>50
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906861461975921980)
-,p_name=>'ACTIVITY_GROUP'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ACTIVITY_GROUP'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>10
-,p_is_group=>true
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906861655300921982)
-,p_name=>'ACTIVITY_TIME'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ACTIVITY_TIME'
-,p_data_type=>'DATE'
 ,p_display_sequence=>30
 ,p_is_group=>false
 ,p_use_as_row_header=>false
@@ -18094,22 +19190,10 @@ wwv_flow_imp_page.create_region_column(
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906861940152921985)
-,p_name=>'BADGE_LABEL'
+ p_id=>wwv_flow_imp.id(49790670714681585195)
+,p_name=>'ICON'
 ,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'BADGE_LABEL'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>60
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906862148225921987)
-,p_name=>'DESCRIPTION'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'DESCRIPTION'
+,p_source_expression=>'ICON'
 ,p_data_type=>'VARCHAR2'
 ,p_display_sequence=>80
 ,p_is_group=>false
@@ -18118,692 +19202,11 @@ wwv_flow_imp_page.create_region_column(
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906861577038921981)
-,p_name=>'DISPLAY_SEQUENCE'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'DISPLAY_SEQUENCE'
-,p_data_type=>'NUMBER'
-,p_display_sequence=>20
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906862301008921988)
-,p_name=>'ICON_CLASS'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ICON_CLASS'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>90
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906862517926921990)
+ p_id=>wwv_flow_imp.id(49790670084229585188)
 ,p_name=>'ID'
 ,p_source_type=>'DB_COLUMN'
 ,p_source_expression=>'ID'
 ,p_data_type=>'NUMBER'
-,p_display_sequence=>110
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906862336671921989)
-,p_name=>'ROW_CLASS'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ROW_CLASS'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>100
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906862058476921986)
-,p_name=>'TITLE'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'TITLE'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>70
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_report_region(
- p_id=>wwv_flow_imp.id(24906718050839335978)
-,p_name=>'Details 1'
-,p_static_id=>'details'
-,p_parent_plug_id=>wwv_flow_imp.id(24906781204056793769)
-,p_template=>3372714138756020509
-,p_display_sequence=>40
-,p_region_css_classes=>'js-item-refresh'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-AVPList--leftAligned'
-,p_new_grid_row=>false
-,p_source_type=>'NATIVE_SQL_REPORT'
-,p_query_type=>'SQL'
-,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select ''Item Reference '' || nvl(:P240_SELECTED_ITEM_ID, 0) as reference,',
-'       ''Standard Intake'' as source,',
-'       ''Summary Record'' as type,',
-'       ''Tracked, Reviewable'' as tags',
-'  from dual;'))
-,p_ajax_enabled=>'Y'
-,p_ajax_items_to_submit=>'P240_SELECTED_ITEM_ID'
-,p_lazy_loading=>false
-,p_query_row_template=>2101991776017792140
-,p_query_num_rows=>15
-,p_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_csv_output=>'N'
-,p_prn_output=>'N'
-,p_sort_null=>'L'
-,p_plug_query_strip_html=>'N'
-,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Presents stable, descriptive attributes that characterize the selected item.',
-'',
-'Pattern role: Attribute-pair detail layout.',
-'',
-'AI guidance: Use this group for classification-style properties such as type, category, source, and tags. Keep labels concise and values consistently formatted for scanning. Do not mix in ownership, timing, progress, or operational status; place thos'
-||'e in separate groups.',
-'',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4301654715119122)
-,p_query_column_id=>1
-,p_column_alias=>'REFERENCE'
-,p_column_display_sequence=>10
-,p_column_heading=>'Reference'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4302025803119122)
-,p_query_column_id=>2
-,p_column_alias=>'SOURCE'
-,p_column_display_sequence=>20
-,p_column_heading=>'Source'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4302488941119122)
-,p_query_column_id=>4
-,p_column_alias=>'TAGS'
-,p_column_display_sequence=>60
-,p_column_heading=>'Tags'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4302845483119122)
-,p_query_column_id=>3
-,p_column_alias=>'TYPE'
-,p_column_display_sequence=>30
-,p_column_heading=>'Type'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_region(
- p_id=>wwv_flow_imp.id(24906781265216793770)
-,p_name=>'Details 2'
-,p_static_id=>'details-2'
-,p_parent_plug_id=>wwv_flow_imp.id(24906781204056793769)
-,p_template=>3372714138756020509
-,p_display_sequence=>50
-,p_region_css_classes=>'js-item-refresh'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-AVPList--leftAligned'
-,p_new_grid_row=>false
-,p_source_type=>'NATIVE_SQL_REPORT'
-,p_query_type=>'SQL'
-,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select',
-'    to_char(mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'')), 101)) || ''%'' as progress,',
-'    case mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':priority''), 4)',
-'        when 0 then ''Low''',
-'        when 1 then ''Medium''',
-'        when 2 then ''High''',
-'        else ''Critical''',
-'    end as priority,',
-'    case mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':owner''), 4)',
-'        when 0 then ''Maya Chen''',
-'        when 1 then ''Alex Rivera''',
-'        when 2 then ''Jordan Patel''',
-'        else ''Sam Taylor''',
-'    end as owner,',
-'    trunc(sysdate) + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':due''), 21) as due',
-'from dual;'))
-,p_ajax_enabled=>'Y'
-,p_ajax_items_to_submit=>'P240_SELECTED_ITEM_ID'
-,p_lazy_loading=>false
-,p_query_row_template=>2101991776017792140
-,p_query_num_rows=>15
-,p_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_csv_output=>'N'
-,p_prn_output=>'N'
-,p_sort_null=>'L'
-,p_plug_query_strip_html=>'N'
-,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Presents supporting item attributes in compact value-and-attribute groups.',
-'',
-'Pattern role: Attribute-pair detail layout.',
-'',
-'AI guidance: Use this group for additional descriptive properties that do not fit into the primary classification set. Maintain consistency in formatting and avoid introducing operational, ownership, or timing-related fields.',
-'',
-'Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P240_SELECTED_ITEM_ID when refreshed.'))
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4303737816119123)
-,p_query_column_id=>4
-,p_column_alias=>'DUE'
-,p_column_display_sequence=>40
-,p_column_heading=>'Due'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4304154836119123)
-,p_query_column_id=>3
-,p_column_alias=>'OWNER'
-,p_column_display_sequence=>30
-,p_column_heading=>'Owner'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4304589317119123)
-,p_query_column_id=>2
-,p_column_alias=>'PRIORITY'
-,p_column_display_sequence=>20
-,p_column_heading=>'Priority'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4304932763119123)
-,p_query_column_id=>1
-,p_column_alias=>'PROGRESS'
-,p_column_display_sequence=>10
-,p_column_heading=>'Progress'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24902963922491266613)
-,p_plug_name=>'Flex Container'
-,p_static_id=>'flex-container'
-,p_region_sub_css_classes=>'u-block-size-full'
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_02'
-,p_location=>null
-,p_template_component_type=>'REGION_ONLY'
-,p_plug_source_type=>'TMPL_THEME_42$FLEXBOX_CONTAINER'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'DIRECTION', 'u-flex-direction-column',
-  'OVERFLOW', 'u-overflow-hidden')).to_clob
-,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Organizes the search controls and selectable item list as one continuous left-side selection panel.',
-'',
-'Pattern role: Structural container for the master-list area.',
-'',
-'AI guidance: Keep search and filtering above the results they control. Allow the list region to grow into the remaining available space. Do not place unrelated detail content inside this container.'))
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24908976570279287452)
-,p_plug_name=>'Item Details'
-,p_static_id=>'item-header'
-,p_region_css_classes=>'js-selected-item-content'
-,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noBorder'
-,p_plug_template=>2127905476394690047
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_08'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Establishes the identity and current state of the item before users inspect details or take action.',
-'',
-'Pattern role: Item detail header with contextual information.',
-'',
-'AI guidance: Keep the most important identity, ownership, status, impact, and timing information near the item title. Use contextual information for quick scanning rather than a full attribute report. Map status values to supported semantic states su'
-||'ch as success, warning, danger, or info. Keep badge value, state, label, and styling semantically aligned. Use relative time only when it is useful for recency; use an explicit date when the exact date matters.'))
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24906717939965335977)
-,p_plug_name=>'Summary'
-,p_static_id=>'item-summary-details'
-,p_parent_plug_id=>wwv_flow_imp.id(24906781204056793769)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>20
-,p_plug_grid_column_span=>4
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>'This record represents a standard item that is being reviewed, tracked, or acted on. The summary explains the current state, expected outcome, and any context needed before taking action.'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Gives users concise narrative context about what the item represents and why it matters.',
-'',
-'Pattern role: Item summary narrative.',
-'',
-'AI guidance: Keep the summary short, generic, and decision-relevant. Explain the item''s current purpose, state, or expected outcome without adding instructional or tutorial text. Move detailed attributes, history, and related records into their dedic'
-||'ated regions.'))
-);
-wwv_flow_imp_page.create_report_region(
- p_id=>wwv_flow_imp.id(24908976619889287453)
-,p_name=>'Item Contextual Info'
-,p_static_id=>'key-facts'
-,p_parent_plug_id=>wwv_flow_imp.id(24908976570279287452)
-,p_template=>3372714138756020509
-,p_display_sequence=>10
-,p_region_css_classes=>'app-ContextualInfo js-item-refresh'
-,p_region_template_options=>'#DEFAULT#'
-,p_component_template_options=>'#DEFAULT#:t-ContextualInfo--hideNulls:t-ContextualInfo-label--stacked:t-Report--hideNoPagination'
-,p_display_point=>'SUB_REGIONS'
-,p_source_type=>'NATIVE_SQL_REPORT'
-,p_query_type=>'SQL'
-,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select',
-'    ''Item '' || nvl(:P240_SELECTED_ITEM_ID, 0) as item_title,',
-'    ''Record Owner'' as owner,',
-'    ''Standard Category'' as category,',
-'    case mod(nvl(:P240_SELECTED_ITEM_ID, 0), 4)',
-'        when 1 then ''On Track''',
-'        when 2 then ''Paused''',
-'        when 3 then ''Blocked''',
-'        else ''Pending Review''',
-'    end as status,',
-'    case mod(nvl(:P240_SELECTED_ITEM_ID, 0), 4)',
-'        when 1 then ''success''',
-'        when 2 then ''warning''',
-'        when 3 then ''danger''',
-'        else ''info''',
-'    end as status_state,',
-'    sysdate - 1 / 24 as last_updated,',
-'    ''High'' as impact,',
-'    ''danger'' as impact_state,',
-'    sysdate + 14 as target_date',
-'from dual;'))
-,p_ajax_enabled=>'Y'
-,p_ajax_items_to_submit=>'P240_SELECTED_ITEM_ID'
-,p_lazy_loading=>false
-,p_query_row_template=>2117249020861433971
-,p_query_num_rows=>15
-,p_query_options=>'DERIVED_REPORT_COLUMNS'
-,p_csv_output=>'N'
-,p_prn_output=>'N'
-,p_sort_null=>'L'
-,p_plug_query_strip_html=>'N'
-,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Presents the highest-value item facts for quick assessment before users take action.',
-'',
-'Pattern role: Contextual information summary.',
-'',
-'AI guidance: Keep this region limited to ownership, classification, status, impact, recency, and timing information that users need for quick decisions. Keep visible values and their semantic state columns aligned. Use supported state values such as '
-||unistr('success, warning, danger, or info. Expose target timing when it materially affects the user\2019s decision; otherwise remove the unused supporting column.'),
-'',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4291437205119115)
-,p_query_column_id=>3
-,p_column_alias=>'CATEGORY'
-,p_column_display_sequence=>40
-,p_column_heading=>'Category'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4291876334119116)
-,p_query_column_id=>7
-,p_column_alias=>'IMPACT'
-,p_column_display_sequence=>80
-,p_column_heading=>'Impact'
-,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'{with/}',
-'  LABEL:=Impact',
-'  VALUE:=#IMPACT#',
-'  STATE:=#IMPACT_STATE#',
-'  LABEL_DISPLAY:=N',
-'  STYLE:=t-Badge--subtle',
-'  SIZE:=t-Badge--sm',
-'{apply THEME$BADGE/}'))
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_display_when_cond_type=>'NEVER'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4292257687119116)
-,p_query_column_id=>8
-,p_column_alias=>'IMPACT_STATE'
-,p_column_display_sequence=>90
-,p_hidden_column=>'Y'
-,p_derived_column=>'N'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4292661906119116)
-,p_query_column_id=>1
-,p_column_alias=>'ITEM_TITLE'
-,p_column_display_sequence=>10
-,p_column_html_expression=>'<div class="u-text-subheading-sm">#ITEM_TITLE#</div>'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4293062671119116)
-,p_query_column_id=>6
-,p_column_alias=>'LAST_UPDATED'
-,p_column_display_sequence=>50
-,p_column_heading=>'Last Updated'
-,p_column_format=>'SINCE'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4293448923119116)
-,p_query_column_id=>2
-,p_column_alias=>'OWNER'
-,p_column_display_sequence=>30
-,p_column_heading=>'Owner'
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4293871973119116)
-,p_query_column_id=>4
-,p_column_alias=>'STATUS'
-,p_column_display_sequence=>20
-,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'{with/}',
-'  LABEL:=Status',
-'  VALUE:=#STATUS#',
-'  STATE:=#STATUS_STATE#',
-'  LABEL_DISPLAY:=Y',
-'  STYLE:=t-Badge--subtle margin-top-xs',
-'  SHAPE:=t-Badge--circle',
-'  SIZE:=t-Badge--md',
-'{apply THEME$BADGE/}'))
-,p_heading_alignment=>'LEFT'
-,p_disable_sort_column=>'N'
-,p_derived_column=>'N'
-,p_include_in_export=>'Y'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4294269045119117)
-,p_query_column_id=>5
-,p_column_alias=>'STATUS_STATE'
-,p_column_display_sequence=>70
-,p_hidden_column=>'Y'
-,p_derived_column=>'N'
-);
-wwv_flow_imp_page.create_report_columns(
- p_id=>wwv_flow_imp.id(4294659465119117)
-,p_query_column_id=>9
-,p_column_alias=>'TARGET_DATE'
-,p_column_display_sequence=>60
-,p_hidden_column=>'Y'
-,p_derived_column=>'N'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24902248745367333656)
-,p_plug_name=>'List Selection'
-,p_static_id=>'list-selection'
-,p_region_name=>'list-selection'
-,p_parent_plug_id=>wwv_flow_imp.id(24902963922491266613)
-,p_region_css_classes=>'u-flex-grow-1 u-overflow-auto'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>50
-,p_plug_display_point=>'PLUGIN_BODY'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with params as (',
-'    select 50 as row_count',
-'    from dual',
-'),',
-'search_params as (',
-'    select upper(trim(:P240_TREE_SEARCH)) as search_term',
-'    from dual',
-'),',
-'all_items as (',
-'    select',
-'        level as item_id,',
-'        ''Item '' || level as title,',
-'        case mod(level - 1, 4)',
-'            when 0 then ''Planning''',
-'            when 1 then ''Operations''',
-'            when 2 then ''Review''',
-'            else ''Reporting''',
-'        end as category,',
-'        sysdate - mod(level - 1, 14) as last_updated,',
-'        case mod(level, 4)',
-'            when 1 then ''On Track''',
-'            when 2 then ''Paused''',
-'            when 3 then ''Blocked''',
-'            else ''Pending Review''',
-'        end as status',
-'    from dual',
-'    connect by level <= (select row_count from params)',
-'),',
-'items as (',
-'    select i.*',
-'    from all_items i',
-'    cross join search_params s',
-'    where s.search_term is null',
-'       or instr(upper(i.title),    s.search_term) > 0',
-'       or instr(upper(i.category), s.search_term) > 0',
-'       or instr(upper(i.status),   s.search_term) > 0',
-'),',
-'status_nodes as (',
-'    /*',
-'     * Build parents from the filtered item set.',
-'     * A status with no matching items is therefore omitted.',
-'     */',
-'    select',
-'        case status',
-'            when ''On Track''       then -1',
-'            when ''Paused''         then -2',
-'            when ''Blocked''        then -3',
-'            when ''Pending Review'' then -4',
-'        end as node_id,',
-'        cast(null as number) as parent_key,',
-'        status as node_label,',
-'        cast(null as number) as node_value,',
-'        case status',
-'            when ''On Track''       then ''fa fa-check-circle-o''',
-'            when ''Paused''         then ''fa fa-pause-circle-o''',
-'            when ''Blocked''        then ''fa fa-times-circle-o''',
-'            when ''Pending Review'' then ''fa fa-clock-o''',
-'        end as icon_css_class,',
-'        case status',
-'            when ''On Track''       then ''Items currently on track''',
-'            when ''Paused''         then ''Items currently paused''',
-'            when ''Blocked''        then ''Items currently blocked''',
-'            when ''Pending Review'' then ''Items awaiting review''',
-'        end as tooltip,',
-'        case status',
-'            when ''On Track''       then 1',
-'            when ''Paused''         then 2',
-'            when ''Blocked''        then 3',
-'            when ''Pending Review'' then 4',
-'        end as sort_order',
-'    from items',
-'    group by status',
-'),',
-'item_nodes as (',
-'    select',
-'        item_id as node_id,',
-'        case status',
-'            when ''On Track''       then -1',
-'            when ''Paused''         then -2',
-'            when ''Blocked''        then -3',
-'            when ''Pending Review'' then -4',
-'        end as parent_key,',
-'        title as node_label,',
-'        item_id as node_value,',
-'        cast(null as varchar2(100)) as icon_css_class,',
-unistr('        category || '' \2014 updated '' ||'),
-'            to_char(last_updated, ''Mon FMDD, YYYY'') as tooltip,',
-'        case status',
-'            when ''On Track''       then 1',
-'            when ''Paused''         then 2',
-'            when ''Blocked''        then 3',
-'            when ''Pending Review'' then 4',
-'        end * 1000 + item_id as sort_order',
-'    from items',
-'),',
-'tree_nodes as (',
-'    select * from status_nodes',
-'    union all',
-'    select * from item_nodes',
-')',
-'select',
-'    node_id,',
-'    parent_key,',
-'    node_label,',
-'    node_value,',
-'    icon_css_class,',
-'    tooltip,',
-'    sort_order',
-'from tree_nodes'))
-,p_lazy_loading=>false
-,p_plug_source_type=>'NATIVE_JSTREE'
-,p_ajax_items_to_submit=>'P240_TREE_SEARCH'
-,p_landmark_type=>'region'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'activate_node_link_with', 'S',
-  'icon_css_class_column', 'ICON_CSS_CLASS',
-  'icon_type_css_class', 'a-Icon',
-  'node_id_column', 'NODE_ID',
-  'node_label_column', 'NODE_LABEL',
-  'node_value_column', 'NODE_VALUE',
-  'order_siblings_by', 'SORT_ORDER',
-  'parent_key_column', 'PARENT_KEY',
-  'selected_node_page_item', 'P240_SELECTED_ITEM_ID',
-  'start_tree_with', 'NULL',
-  'tooltip_column', 'TOOLTIP',
-  'tree_hierarchy', 'SQL',
-  'tree_tooltip', 'DB')).to_clob
-,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Provides hierarchical navigation for the item collection, grouping item nodes by status and displaying the selected item''s details in the adjacent detail area.',
-'',
-'Pattern role: Master Tree and selected-item context source.',
-'',
-'AI guidance: Keep status groups meaningful and item labels concise. Use unique node IDs and parent keys to maintain the hierarchy. Only leaf item nodes should expose a positive node value that represents the item primary key; status-group nodes are n'
-||'avigation containers and do not represent an item detail context.',
-'',
-'Implementation note: The Tree Node Changed Dynamic Action reads the selected leaf node''s NODE_VALUE and sets P240_SELECTED_ITEM_ID. A change to P240_SELECTED_ITEM_ID refreshes all dependent regions marked with .js-item-refresh. The Tree''s Selected No'
-||'de Page Item is also P240_SELECTED_ITEM_ID, allowing APEX to restore the selected leaf node when the Tree renders or refreshes.'))
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24931675058320136498)
-,p_plug_name=>'Key Metrics'
-,p_static_id=>'metric-cards'
-,p_region_css_classes=>'app-MetricCards js-item-refresh js-selected-item-content'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>40
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select',
-'    ''fa-line-chart'' as icon,',
-'    ''Primary KPI''   as label,',
-'    50000 + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':primary''), 50000) as metric_value',
-'from dual',
-'union all',
-'select',
-'    ''fa-bar-chart''  as icon,',
-'    ''Secondary KPI'' as label,',
-'    5000 + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':secondary''), 20000) as metric_value',
-'from dual',
-'union all',
-'select',
-'    ''fa-area-chart'' as icon,',
-'    ''Trend KPI''     as label,',
-'    mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':trend''), 100) as metric_value',
-'from dual',
-'union all',
-'select',
-'    ''fa-dashboard''  as icon,',
-'    ''Status KPI''    as label,',
-'    100 + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, ''0'') || '':status''), 900) as metric_value',
-'from dual'))
-,p_template_component_type=>'REPORT'
-,p_lazy_loading=>false
-,p_plug_source_type=>'TMPL_THEME_42$METRIC_CARD'
-,p_ajax_items_to_submit=>'P240_SELECTED_ITEM_ID'
-,p_plug_query_num_rows=>15
-,p_plug_query_num_rows_type=>'SET'
-,p_show_total_row_count=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'AVATAR_ALIGNMENT', 't-MetricCard-body--avatarAlignmentStart',
-  'AVATAR_ICON', '&ICON.',
-  'AVATAR_POSITION', 't-MetricCard-body--avatarPositionInline',
-  'AVATAR_SHAPE', 't-Avatar--rounded',
-  'AVATAR_STYLE', 't-MetricCard-avatar--subtle',
-  'AVATAR_TYPE', 'icon',
-  'DISPLAY_AVATAR', 'Y',
-  'DISPLAY_BADGE', 'N',
-  'LAYOUT', '4cols',
-  'META', '&LABEL.',
-  'METRIC', '&METRIC_VALUE.',
-  'METRIC_CSS_CLASSES', 'u-text-subheading-md')).to_clob
-,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Highlights a small number of measures that help users assess the current item quickly.',
-'',
-'Pattern role: Item-level KPI summary.',
-'',
-'AI guidance: Use only the most relevant measures for this item, generally two to four cards. Keep metrics comparable in importance and avoid turning the region into a dense report. Format large values with thousands separators and use consistent unit'
-||'s. If badges or icons are added, keep their value, state, and icon semantically aligned.',
-'',
-'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24931675126149136499)
-,p_name=>'ICON'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ICON'
-,p_data_type=>'VARCHAR2'
 ,p_display_sequence=>10
 ,p_is_group=>false
 ,p_use_as_row_header=>false
@@ -18811,509 +19214,478 @@ wwv_flow_imp_page.create_region_column(
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24931675300481136501)
-,p_name=>'LABEL'
+ p_id=>wwv_flow_imp.id(49790671421640585202)
+,p_name=>'OVERLINE'
 ,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'LABEL'
+,p_source_expression=>'OVERLINE'
 ,p_data_type=>'VARCHAR2'
-,p_display_sequence=>30
+,p_display_sequence=>150
 ,p_is_group=>false
 ,p_use_as_row_header=>false
 ,p_is_primary_key=>false
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24931675442374136502)
-,p_name=>'METRIC_VALUE'
+ p_id=>wwv_flow_imp.id(25432046360510023915)
+,p_name=>'TAGS'
 ,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'METRIC_VALUE'
-,p_data_type=>'NUMBER'
-,p_display_sequence=>40
-,p_format_mask=>'999G999G999G999G999G999G990'
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24898201192854219141)
-,p_plug_name=>'No Item Selected'
-,p_static_id=>'no-item-selected'
-,p_region_css_classes=>'js-selected-item-empty u-hidden u-tC'
-,p_icon_css_classes=>'fa-search'
-,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--customIcons:t-Alert--info:t-Alert--removeHeading js-removeLandmark'
-,p_plug_template=>2042159785845301134
-,p_plug_display_sequence=>70
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>'Select an item to view its details.'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24931620364609295793)
-,p_plug_name=>'Related Information'
-,p_static_id=>'related-information'
-,p_region_css_classes=>'js-item-refresh js-selected-item-content'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>60
-,p_plug_new_grid_row=>false
-,p_plug_grid_column_span=>4
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'with seed as (',
-'    select nvl(:P240_SELECTED_ITEM_ID, ''0'') as item_id',
-'    from dual',
-')',
-'select ''fa-users'' as icon,',
-'       ''People'' as title,',
-'       ''Associated people and owners'' as description,',
-'       1 + mod(ora_hash(seed.item_id || '':people''), 10) as item_count,',
-'       ''PEOPLE'' as page_alias',
-'  from seed',
-'union all',
-'select ''fa-file-o'' as icon,',
-'       ''Files'' as title,',
-'       ''Documents and attachments'' as description,',
-'       1 + mod(ora_hash(seed.item_id || '':files''), 20) as item_count,',
-'       ''FILES'' as page_alias',
-'  from seed',
-'union all',
-'select ''fa-comments-o'' as icon,',
-'       ''Comments'' as title,',
-'       ''Discussion and feedback'' as description,',
-'       1 + mod(ora_hash(seed.item_id || '':comments''), 30) as item_count,',
-'       ''COMMENTS'' as page_alias',
-'  from seed',
-'union all',
-'select ''fa-sitemap'' as icon,',
-'       ''Child Records'' as title,',
-'       ''Associated child records'' as description,',
-'       1 + mod(ora_hash(seed.item_id || '':child_records''), 15) as item_count,',
-'       ''CHILD_RECORDS'' as page_alias',
-'  from seed',
-'union all',
-'select ''fa-link'' as icon,',
-'       ''Related Records'' as title,',
-'       ''Connected business entities'' as description,',
-'       1 + mod(ora_hash(seed.item_id || '':related_records''), 8) as item_count,',
-'       ''RELATED_RECORDS'' as page_alias',
-'  from seed;'))
-,p_template_component_type=>'REPORT'
-,p_lazy_loading=>false
-,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
-,p_ajax_items_to_submit=>'P240_SELECTED_ITEM_ID'
-,p_plug_query_num_rows=>15
-,p_plug_query_num_rows_type=>'SET'
-,p_show_total_row_count=>false
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'APPLY_THEME_COLORS', 'N',
-  'AVATAR_ICON', '&ICON. fa-lg',
-  'AVATAR_SHAPE', 't-Avatar--noShape',
-  'AVATAR_TYPE', 'icon',
-  'BADGE_ALIGNMENT', 't-ContentRow-badge--alignCenter',
-  'BADGE_COL_WIDTH', 't-ContentRow-badge--auto',
-  'BADGE_LABEL', 'Related Item Count',
-  'BADGE_LABEL_DISPLAY', 'N',
-  'BADGE_POS', 't-ContentRow-badge--posEnd',
-  'BADGE_STYLE', 't-Badge--subtle',
-  'BADGE_VALUE', 'ITEM_COUNT',
-  'DESCRIPTION', '&DESCRIPTION.',
-  'DISPLAY_AVATAR', 'Y',
-  'DISPLAY_BADGE', 'Y',
-  'HIDE_BORDERS', 'N',
-  'REMOVE_PADDING', 'N',
-  'STACK_MOBILE', 'N',
-  'TITLE', '&TITLE.')).to_clob
-,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Provides compact entry points to related information without overwhelming the item summary.',
-'',
-'Pattern role: Related-content navigation list.',
-'',
-'AI guidance: Keep rows concise and use the description to clarify what the related area contains. Use the badge to show the number of related items when that count is meaningful. Row titles should navigate to the corresponding related area or item-le'
-||'vel detail. Keep this region focused on navigation and summary; use a full report or dedicated page for extensive related data.',
-'',
-'Implementation note: Each row represents a navigation entry to a related-information area. Replace the placeholder action target with the destination represented by PAGE_ALIAS, passing the current item context and selected related-information categor'
-||'y.'))
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24931621075473295800)
-,p_name=>'DESCRIPTION'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'DESCRIPTION'
+,p_source_expression=>'TAGS'
 ,p_data_type=>'VARCHAR2'
-,p_display_sequence=>30
+,p_display_sequence=>160
 ,p_is_group=>false
 ,p_use_as_row_header=>false
 ,p_is_primary_key=>false
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24931621184624295801)
-,p_name=>'ICON'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ICON'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>40
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906782280285793780)
-,p_name=>'ITEM_COUNT'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'ITEM_COUNT'
-,p_data_type=>'NUMBER'
-,p_display_sequence=>70
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24906782180669793779)
-,p_name=>'PAGE_ALIAS'
-,p_source_type=>'DB_COLUMN'
-,p_source_expression=>'PAGE_ALIAS'
-,p_data_type=>'VARCHAR2'
-,p_display_sequence=>60
-,p_is_group=>false
-,p_use_as_row_header=>false
-,p_is_primary_key=>false
-,p_available_clientside=>false
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(24931620925694295799)
+ p_id=>wwv_flow_imp.id(49790670167207585189)
 ,p_name=>'TITLE'
 ,p_source_type=>'DB_COLUMN'
 ,p_source_expression=>'TITLE'
 ,p_data_type=>'VARCHAR2'
 ,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(49790670639379585194)
+,p_name=>'UPDATED_ON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'UPDATED_ON'
+,p_data_type=>'DATE'
+,p_display_sequence=>70
+,p_format_mask=>'SINCE'
 ,p_is_group=>false
 ,p_use_as_row_header=>false
 ,p_is_primary_key=>false
 ,p_available_clientside=>false
 );
 wwv_flow_imp_page.create_component_action(
- p_id=>wwv_flow_imp.id(24913410739946572542)
-,p_region_id=>wwv_flow_imp.id(24931620364609295793)
+ p_id=>wwv_flow_imp.id(49790671916136585207)
+,p_region_id=>wwv_flow_imp.id(49790625862217151575)
 ,p_position_id=>350199314123390058
 ,p_display_sequence=>10
 ,p_static_id=>'action'
 ,p_link_target_type=>'REDIRECT_URL'
 ,p_link_target=>'#'
 );
+wwv_flow_imp_page.create_component_action(
+ p_id=>wwv_flow_imp.id(49790672052781585208)
+,p_region_id=>wwv_flow_imp.id(49790625862217151575)
+,p_position_id=>363792341120765662
+,p_display_sequence=>20
+,p_template_id=>363794202317800939
+,p_label=>'Row Actions'
+,p_static_id=>'row-actions'
+,p_button_display_type=>'ICON'
+,p_icon_css_classes=>'fa-ellipsis-v'
+,p_action_css_classes=>'t-Button--noUI'
+,p_is_hot=>false
+,p_show_as_disabled=>false
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(49790672113897585209)
+,p_component_action_id=>wwv_flow_imp.id(49790672052781585208)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Row Action 1'
+,p_static_id=>'row-action-1'
+,p_display_sequence=>10
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(49790672224250585210)
+,p_component_action_id=>wwv_flow_imp.id(49790672052781585208)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Row Action 2'
+,p_static_id=>'row-action-2'
+,p_display_sequence=>20
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(49790672364432585211)
+,p_component_action_id=>wwv_flow_imp.id(49790672052781585208)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Row Action 3'
+,p_static_id=>'row-action-3'
+,p_display_sequence=>30
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4625217820683228)
-,p_plug_name=>'Search Container'
+ p_id=>wwv_flow_imp.id(5887398301756534)
+,p_plug_name=>'Search Actions'
+,p_static_id=>'search-actions'
+,p_region_template_options=>'#DEFAULT#:t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc'
+,p_plug_template=>2074200852440250129
+,p_plug_display_sequence=>30
+,p_plug_grid_column_span=>8
+,p_plug_display_column=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    1 as id,',
+'    ''Advanced search'' as title,',
+'    ''fa fa-search'' as icon',
+'from sys.dual',
+'union all',
+'select',
+'    2 as id,',
+'    ''Find a project'' as title,',
+'    ''fa fa-apex'' as icon',
+'from sys.dual',
+'union all',
+'select',
+'    3 as id,',
+'    ''Start a task'' as title,',
+'    ''fa fa-tasks'' as icon',
+'from sys.dual'))
+,p_lazy_loading=>false
+,p_plug_source_type=>'NATIVE_CARDS'
+,p_plug_query_num_rows_type=>'SCROLL'
+,p_show_total_row_count=>false
+);
+wwv_flow_imp_page.create_card(
+ p_id=>wwv_flow_imp.id(6304870954348603)
+,p_region_id=>wwv_flow_imp.id(5887398301756534)
+,p_layout_type=>'GRID'
+,p_grid_column_count=>3
+,p_title_adv_formatting=>false
+,p_title_column_name=>'TITLE'
+,p_sub_title_adv_formatting=>false
+,p_body_adv_formatting=>false
+,p_second_body_adv_formatting=>false
+,p_icon_source_type=>'DYNAMIC_CLASS'
+,p_icon_class_column_name=>'ICON'
+,p_icon_position=>'TOP'
+,p_media_adv_formatting=>false
+,p_pk1_column_name=>'ID'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(5884113621756502)
+,p_plug_name=>'Search Item Container'
 ,p_static_id=>'search-container'
-,p_parent_plug_id=>wwv_flow_imp.id(24902963922491266613)
-,p_region_css_classes=>'app-SideSearchConainer u-flex-shrink-0'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'PLUGIN_BODY'
+,p_plug_template=>1571470918551430249
+,p_plug_display_sequence=>20
+,p_plug_grid_column_span=>8
+,p_plug_display_column=>3
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
+,p_plug_comment=>'Intent: Positions the full-width search field between the landing prompt and the results. Pattern role: Search input container.'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(24906781204056793769)
-,p_plug_name=>'Overview'
-,p_static_id=>'summary-container'
-,p_region_css_classes=>'js-selected-item-content'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--lightBG'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>20
+ p_id=>wwv_flow_imp.id(4627369511683249)
+,p_plug_name=>'What do you want to search for?'
+,p_static_id=>'start-search'
+,p_icon_css_classes=>'fa-ai-prompt'
+,p_region_template_options=>'#DEFAULT#:t-HeroRegion--featured t-HeroRegion--centered'
+,p_plug_template=>2675494171183407654
+,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 ,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Provides the primary scan-first container for the item detail summary.',
-'',
-'Pattern role: Item detail overview.',
-'',
-'AI guidance: Keep this region visually dominant and place the most decision-relevant summary content here. Use a concise narrative summary alongside logically grouped attribute pairs. Preserve the overview-first structure and avoid turning this regio'
-||'n into a dense report or long-form documentation area.'))
-);
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4288670615119111)
-,p_button_sequence=>40
-,p_button_plug_id=>wwv_flow_imp.id(24908976570279287452)
-,p_button_name=>'ACTIONS_MENU'
-,p_static_id=>'actions-menu'
-,p_show_as_disabled=>false
-,p_button_type=>'MENU'
-,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
-,p_button_image_alt=>'Actions Menu'
-,p_button_position=>'NEXT'
-,p_warn_on_unsaved_changes=>null
-,p_icon_css_classes=>'fa-ellipsis-v'
-,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Groups optional or lower-frequency actions so they remain available without competing with the primary action hierarchy.',
-'',
-'Pattern role: Overflow actions.',
-'',
-'AI guidance: Place destructive, administrative, export, duplicate, or infrequently used actions here when they do not need persistent prominence. Do not hide the primary task in the overflow menu. Use clear action labels and preserve a logical menu o'
-||'rder.'))
-);
-wwv_flow_imp_page.create_comp_menu_entry(
- p_id=>wwv_flow_imp.id(24933977640851751476)
-,p_button_id=>wwv_flow_imp.id(4288670615119111)
-,p_menu_entry_type=>'ENTRY'
-,p_label=>'Action 1'
-,p_static_id=>'menu-action-a'
-,p_display_sequence=>10
-,p_link_target_type=>'REDIRECT_URL'
-,p_link_target=>'#'
-);
-wwv_flow_imp_page.create_comp_menu_entry(
- p_id=>wwv_flow_imp.id(24933977716242751477)
-,p_button_id=>wwv_flow_imp.id(4288670615119111)
-,p_menu_entry_type=>'ENTRY'
-,p_label=>'Action 2'
-,p_static_id=>'menu-action-b'
-,p_display_sequence=>20
-,p_link_target_type=>'REDIRECT_URL'
-,p_link_target=>'#'
-);
-wwv_flow_imp_page.create_comp_menu_entry(
- p_id=>wwv_flow_imp.id(24933977828413751478)
-,p_button_id=>wwv_flow_imp.id(4288670615119111)
-,p_menu_entry_type=>'ENTRY'
-,p_label=>'Action 3'
-,p_static_id=>'menu-action-c'
-,p_display_sequence=>30
-,p_link_target_type=>'REDIRECT_URL'
-,p_link_target=>'#'
-);
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4290237916119113)
-,p_button_sequence=>30
-,p_button_plug_id=>wwv_flow_imp.id(24908976570279287452)
-,p_button_name=>'PRIMARY_ACTION'
-,p_static_id=>'primary-action'
-,p_show_as_disabled=>false
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
-,p_button_is_hot=>'Y'
-,p_button_image_alt=>'Primary Action'
-,p_button_position=>'NEXT'
-,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Represents the most important next step available from the item detail page.',
-'',
-'Pattern role: Primary page action.',
-'',
-'AI guidance: Keep this action prominent and use a clear, domain-specific verb when adapting the pattern. There should normally be one primary action. The action should be directly related to the item''s current state and intended workflow.'))
-);
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4290647005119113)
-,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_imp.id(24908976570279287452)
-,p_button_name=>'SECONDARY_ACTION'
-,p_static_id=>'secondary-action'
-,p_show_as_disabled=>false
-,p_button_action=>'SUBMIT'
-,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>4073839297780169708
-,p_button_image_alt=>'Secondary Action'
-,p_button_position=>'NEXT'
-,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Provides a useful follow-up action that is less important than the primary action.',
-'',
-'Pattern role: Secondary page action.',
-'',
-'AI guidance: Keep this action visually subordinate to the primary action. Use it for a common but non-primary path, and avoid presenting several actions with equal visual emphasis.'))
-);
-wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4282386277119099)
-,p_button_sequence=>30
-,p_button_plug_id=>wwv_flow_imp.id(24906861326690921979)
-,p_button_name=>'VIEW_ALL_ACTIVITY'
-,p_static_id=>'view-details-link-3'
-,p_show_as_disabled=>false
-,p_button_action=>'REDIRECT_URL'
-,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconRight:t-Button--padTop'
-,p_button_template_id=>2084305881903810008
-,p_button_image_alt=>'View All Activity'
-,p_button_position=>'NEXT'
-,p_button_redirect_url=>'#'
-,p_warn_on_unsaved_changes=>null
-,p_icon_css_classes=>'fa-arrow-right'
-,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Intent: Provides a contextual path from the activity summary to the complete activity history.',
-'',
-'Pattern role: Region-level detail action.',
-'',
-'AI guidance: Use this action when the summary is intentionally truncated or when users may need to inspect the full history. Keep it visually attached to the Recent Activity region and lower in emphasis than the page''s primary action. Omit it when th'
-||'e region already contains the complete activity history.',
-'',
-'Implementation note: This action should navigate to the complete activity history for the current item. Replace the placeholder target URL when the activity-history destination is available.'))
+'Intent: Creates the initial full-page search landing state and prompts the user to start a search.',
+'Pattern role: Search hero.',
+'AI guidance: Use a direct task-oriented prompt. Keep this region visible only while no term has been entered so it does not compete with results.'))
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(24902985033011266660)
-,p_name=>'P240_SELECTED_ITEM_ID'
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(24902248745367333656)
-,p_source_type=>'ALWAYS_NULL'
-,p_display_as=>'NATIVE_HIDDEN'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'value_protected', 'N')).to_clob
-,p_item_comment=>'Stores the canonical selected-item context used by the detail-region queries. Changes to this item refresh all dependent regions marked with .js-item-refresh.'
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(4624941513683225)
-,p_name=>'P240_TREE_SEARCH'
-,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(4625217820683228)
-,p_prompt=>'Tree Search'
-,p_placeholder=>'Search...'
+ p_id=>wwv_flow_imp.id(5885526548756516)
+,p_name=>'P240_SEARCH_FIELD'
+,p_item_sequence=>40
+,p_item_plug_id=>wwv_flow_imp.id(5884113621756502)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Search'
+,p_placeholder=>'Enter search...'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
 ,p_field_template=>2042262243893469891
-,p_item_css_classes=>'padding-xs margin-sm'
 ,p_item_icon_css_classes=>'fa-search'
-,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--large'
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--xlarge'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
   'submit_when_enter_pressed', 'N',
   'subtype', 'SEARCH',
   'trim_spaces', 'BOTH')).to_clob
+,p_item_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Captures the keyword used to retrieve full-page search results.',
+'Pattern role: Primary search input.',
+'Implementation guidance: This value is trimmed in the results SQL and submitted during refresh. For production data, define the searchable fields, validate any minimum length needed for performance, and use a placeholder that reflects the searchable '
+||'content.'))
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4626585349683241)
-,p_name=>'Initialize Empty Node State'
-,p_static_id=>'initialize-empty-node-state'
-,p_event_sequence=>70
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'ready'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4626665031683242)
-,p_event_id=>wwv_flow_imp.id(4626585349683241)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '/*',
-    ' * The selected-item value may persist in session state. Show details only',
-    ' * when APEX restored a matching leaf node in the Tree; a null, stale, or',
-    ' * filtered-out value leaves the Tree without a valid selected item.',
-    ' */',
-    'var selectedNode = apex.region("list-selection").call("getSelectedNodes")[0];',
-    'var hasSelectedItem = Number(selectedNode?.id) > 0;',
-    '',
-    'apex.jQuery(".js-selected-item-empty").toggleClass("u-hidden", hasSelectedItem);',
-    'apex.jQuery(".js-selected-item-content").toggleClass("u-hidden", !hasSelectedItem);')))).to_clob
-,p_client_condition_type=>'NULL'
-,p_client_condition_element=>'P240_SELECTED_ITEM_ID'
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4625078101683226)
-,p_name=>'Refresh Tree region'
-,p_static_id=>'refresh-tree-search'
-,p_event_sequence=>60
+ p_id=>wwv_flow_imp.id(5885164119756512)
+,p_name=>'Show Search Results'
+,p_static_id=>'enable-button-show-search'
+,p_event_sequence=>30
 ,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'P240_TREE_SEARCH'
+,p_triggering_element=>'P240_SEARCH_FIELD'
+,p_triggering_condition_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_expression=>'apex.item( "P240_SEARCH_FIELD" ).getValue().length > 0'
 ,p_bind_type=>'bind'
 ,p_execution_type=>'DEBOUNCE'
 ,p_execution_time=>200
 ,p_execution_immediate=>false
-,p_bind_event_type=>'keyup'
+,p_bind_event_type=>'input'
+,p_da_event_comment=>'Runs after a short debounce whenever the search field changes. A nonempty term reveals and refreshes results while hiding the landing prompt; an empty term restores the initial state.'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4625134459683227)
-,p_event_id=>wwv_flow_imp.id(4625078101683226)
+ p_id=>wwv_flow_imp.id(5888107448756542)
+,p_event_id=>wwv_flow_imp.id(5885164119756512)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>10
+,p_action_sequence=>40
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-hide'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(5887398301756534)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5888288800756543)
+,p_event_id=>wwv_flow_imp.id(5885164119756512)
+,p_event_result=>'FALSE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-hide_1'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(49790625862217151575)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5888905863756550)
+,p_event_id=>wwv_flow_imp.id(5885164119756512)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
 ,p_execute_on_page_init=>'N'
 ,p_static_id=>'native-refresh'
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(24902248745367333656)
+,p_affected_region_id=>wwv_flow_imp.id(49790625862217151575)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'maintain_pagination', 'N')).to_clob
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4309160599119136)
-,p_name=>'Refresh Selected Item Details'
-,p_static_id=>'selection-item-changes'
-,p_event_sequence=>30
-,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'P240_SELECTED_ITEM_ID'
-,p_condition_element=>'P240_SELECTED_ITEM_ID'
-,p_triggering_condition_type=>'NOT_NULL'
-,p_bind_type=>'live'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'change'
-,p_da_event_comment=>'Runs when the canonical selected-item context changes. It refreshes all dependent regions marked with .js-item-refresh so the detail area reflects the selected row.'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4309515246119136)
-,p_event_id=>wwv_flow_imp.id(4309160599119136)
+ p_id=>wwv_flow_imp.id(5888041905756541)
+,p_event_id=>wwv_flow_imp.id(5885164119756512)
 ,p_event_result=>'TRUE'
+,p_action_sequence=>30
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-show'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(49790625862217151575)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5888387435756544)
+,p_event_id=>wwv_flow_imp.id(5885164119756512)
+,p_event_result=>'FALSE'
 ,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_name=>'Refresh Item Detail Regions'
-,p_static_id=>'native-refresh'
-,p_action=>'NATIVE_REFRESH'
-,p_affected_elements_type=>'JQUERY_SELECTOR'
-,p_affected_elements=>'.js-item-refresh'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'maintain_pagination', 'N')).to_clob
-,p_da_action_comment=>'Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P240_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.'
+,p_execute_on_page_init=>'Y'
+,p_static_id=>'native-show_1'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(5887398301756534)
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4624367824683219)
-,p_name=>'Tree Node Changed'
-,p_static_id=>'tree-node-changed'
-,p_event_sequence=>50
-,p_triggering_element_type=>'REGION'
-,p_triggering_region_id=>wwv_flow_imp.id(24902248745367333656)
+ p_id=>wwv_flow_imp.id(5887581343756536)
+,p_name=>'Show/Hide Actions and Results'
+,p_static_id=>'show-hide-actions-and-results'
+,p_event_sequence=>40
+,p_triggering_condition_type=>'JAVASCRIPT_EXPRESSION'
+,p_triggering_expression=>'apex.item( "P240_SEARCH_FIELD" ).getValue().length > 0'
 ,p_bind_type=>'bind'
 ,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'NATIVE_JSTREE|REGION TYPE|treeviewselectionchange'
+,p_bind_event_type=>'ready'
+,p_da_event_comment=>'Sets the correct landing or results state when the page first loads, including when P240_SEARCH_FIELD is restored from session state or supplied by a link.'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4624472284683220)
-,p_event_id=>wwv_flow_imp.id(4624367824683219)
+ p_id=>wwv_flow_imp.id(5887700559756538)
+,p_event_id=>wwv_flow_imp.id(5887581343756536)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_name=>'Save selected node value'
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_static_id=>'native-hide'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(5887398301756534)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5887887933756539)
+,p_event_id=>wwv_flow_imp.id(5887581343756536)
+,p_event_result=>'FALSE'
+,p_action_sequence=>40
+,p_static_id=>'native-hide_1'
+,p_action=>'NATIVE_HIDE'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(49790625862217151575)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5887662578756537)
+,p_event_id=>wwv_flow_imp.id(5887581343756536)
+,p_event_result=>'FALSE'
+,p_action_sequence=>30
+,p_static_id=>'native-show'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(5887398301756534)
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5887953450756540)
+,p_event_id=>wwv_flow_imp.id(5887581343756536)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_static_id=>'native-show_1'
+,p_action=>'NATIVE_SHOW'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(49790625862217151575)
+);
+end;
+/
+prompt --application/pages/page_00250
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>250
+,p_name=>'AI Chat'
+,p_alias=>'AI-CHAT'
+,p_step_title=>'AI Chat'
+,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'body:has(#ai_assistant) {',
+'    overflow: hidden;',
+'}',
+'',
+'.t-Body-mainContent:has(#ai_assistant) {',
+'    max-block-size: calc(100dvh - 135px);',
+'}',
+'',
+'.t-Body-contentInner:has(#ai_assistant),',
+'.t-Body-contentInner:has(#ai_assistant) > .container,',
+'.t-Body-contentInner:has(#ai_assistant) > .container > .row,',
+'#ai_assistant {',
+'    block-size: 100%;',
+'}',
+'',
+'.t-Body-contentInner:has(#ai_assistant) {',
+'    padding: 0;',
+'}',
+'',
+'.a-ChatTranscript {',
+'    max-block-size: calc(100dvh - 192px);',
+'}',
+'',
+'/* Styling for the AI chat intro section */',
+'#ai_assistant .ai-chat-intro {',
+'    inline-size: min(100%, 60rem);',
+'    margin-inline: auto;',
+'    padding: 1rem 1.5rem;',
+'    text-align: center;',
+'}'))
+,p_step_template=>4073832297226169690
+,p_page_css_classes=>'ai-chat-page'
+,p_page_template_options=>'#DEFAULT#'
+,p_page_is_public_y_n=>'Y'
+,p_protection_level=>'C'
+,p_page_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Provides a dedicated inline AI chat page that opens the APEX AI Assistant in a full-height conversation area with a short introductory message.',
+'',
+'## When to Use',
+'',
+'Use when a conversational interface is the primary task and the assistant should answer questions without leaving the current application experience.',
+'',
+'## Implementation Guidance',
+'',
+'Configure the assistant system prompt, welcome message, authorization, and available AI providers for the application''s approved use case. Keep the prompt explicit about permitted data and actions, provide a useful empty-state introduction, and test '
+||'the layout at desktop and mobile heights.'))
+,p_page_component_map=>'11'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6055439027169713)
+,p_plug_name=>'AI Assistant'
+,p_static_id=>'ai-assistant'
+,p_region_name=>'ai_assistant'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>4502917002193490937
+,p_plug_display_sequence=>10
+,p_plug_grid_column_css_classes=>'u-flex u-flex-direction-column'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'var node   = apex.region( "list-selection" ).call( "getSelectedNodes" )[0];',
-    'var nodeId = node?.id;',
-    '',
-    '/*',
-    ' * Leaf nodes expose their item ID as NODE_VALUE; status-group nodes',
-    ' * have no node value. A valid leaf selection establishes the selected',
-    ' * item context, displays the detail area, and hides the empty state.',
-    ' */',
-    'if ( nodeId && Number( nodeId ) > 0)  {',
-    '    apex.item( "P240_SELECTED_ITEM_ID" ).setValue( nodeId );',
-    '',
-    '    apex.jQuery(".js-selected-item-empty").addClass("u-hidden");',
-    '    apex.jQuery(".js-selected-item-content").removeClass("u-hidden");',
-    '}')))).to_clob
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Supplies the inline container into which the APEX AI Assistant renders its transcript and composer.',
+'Pattern role: Full-page AI chat host.',
+'Implementation guidance: Keep the static ID and region name synchronized with the Open AI Assistant action. The page CSS relies on this container to size the conversation area to the viewport.'))
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(6055298848169711)
+,p_name=>'Initialize AI Assistant'
+,p_static_id=>'initialize-ai-assistant'
+,p_event_sequence=>10
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'ready'
+,p_da_event_comment=>'Initializes the inline AI Assistant after the page DOM is ready, ensuring that the designated chat container exists before the assistant is opened.'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(6055399266169712)
+,p_event_id=>wwv_flow_imp.id(6055298848169711)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_static_id=>'native-open-ai-assistant'
+,p_action=>'NATIVE_OPEN_AI_ASSISTANT'
+,p_plugin_init_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'function ( options ) {',
+'    options.useChatContext = function () {',
+'        const root = document.querySelector( "#ai_assistant" );',
+'',
+'        if ( !root ) {',
+'            return;',
+'        }',
+'',
+'        const transcript = root.querySelector( ".a-ChatTranscript" );',
+'',
+'        if ( !transcript || transcript.querySelector( ".ai-chat-intro" ) ) {',
+'            return;',
+'        }',
+'',
+'        transcript.insertAdjacentHTML(',
+'            "afterbegin",',
+'            `',
+'            <section class="ai-chat-intro" aria-label="About this assistant">',
+'                <h2>AI Assistant</h2>',
+'                <p>',
+'                    Enter a question or request below to begin a conversation.',
+'                </p>',
+'            </section>',
+'            `',
+'        );',
+'    };',
+'',
+'    return options;',
+'}'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'container_selector', '#ai_assistant',
+  'display_as', 'INLINE')).to_clob
+,p_ai_system_prompt=>unistr('You are a basic AI assistant. Answer the user\2019s questions using only the information available to you. Do not perform actions, modify data, run code, or make changes. If you do not know the answer, say so clearly. Keep your responses concise and fact')
+||'ual.'
+,p_ai_welcome_message=>'Welcome! How can I help you today?'
+,p_da_action_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Opens the APEX AI Assistant inline in the AI Assistant region and adds a concise accessible introduction to the transcript.',
+'Pattern role: AI chat initialization.',
+'Implementation guidance: The system prompt constrains the assistant to factual answers and no actions. Adapt it to the approved data scope and safety requirements; preserve the selector checks so the introduction is inserted once only.'))
 );
 end;
 /
@@ -24240,6 +24612,1549 @@ wwv_flow_imp_page.create_page_da_action(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'maintain_pagination', 'N')).to_clob
 ,p_da_action_comment=>'Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P330_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.'
+);
+end;
+/
+prompt --application/pages/page_00340
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>340
+,p_name=>'Tree Selection'
+,p_alias=>'TREE-SELECTION'
+,p_step_title=>'Tree Selection'
+,p_warn_on_unsaved_changes=>'N'
+,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'/* Tree style overrides */',
+'.t-Body-side {',
+'    --a-treeview-node-selected-text-color: #FFF;',
+'    --a-treeview-node-padding-y: 0.75rem;',
+'}',
+'',
+'/* Add seperator between search and tree widgets */',
+'.t-Body-side .app-SideSearchConainer {',
+'    border-width: 0 0 var(--a-fs-search-container-border-width, 1px) 0;',
+'    border-style: solid;',
+'    border-color: var(--a-fs-search-container-border-color, rgba(0, 0, 0, 0.1));',
+'}',
+'',
+'/* Keep contextual information compact and make its status badges easy to scan. */',
+'.app-ContextualInfo {',
+'  --ut-contextualinfo-item-label-stacked-margin-y: 0;',
+'  --ut-badge-font-weight: 600;',
+'}',
+'',
+'/* Establish visual hierarchy between featured, standard, and compact activity rows. */',
+'.app-ActivityTimeline .is-standard {',
+'  --ut-cr-title-font-weight: 600;',
+'}',
+'',
+'.app-ActivityTimeline .is-compact {',
+'  --ut-cr-title-font-size: 0.875rem;',
+'  --ut-cr-title-font-weight: 400;',
+'}',
+'',
+'/* Temporarily loading utility class for full height */',
+'.u-block-size-full {',
+'  block-size: 100%;',
+'}'))
+,p_step_template=>2528119710305719084
+,p_page_template_options=>'#DEFAULT#'
+,p_page_is_public_y_n=>'Y'
+,p_protection_level=>'C'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a split-view item detail pattern with a searchable, selectable list on the left and contextual details for the selected item on the right.',
+'',
+'## When to Use',
+'',
+'Use when users need to inspect several items one at a time while keeping the surrounding list visible. This works well for inbox, review, triage, queue, and administrative experiences.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need bulk actions, detailed comparison, extensive editing, or a long multi-step workflow. Use a report, browse, sectioned, or tabbed pattern instead.',
+'',
+'## AI Guidance',
+'',
+'Preserve the split-view hierarchy: search and filtering, single-selection list, then selected-item identity, actions, summary, supporting details, related information, and activity.',
+'',
+'Use `P240_SELECTED_ITEM_ID` for the Tree selection.',
+'',
+'Mark data-dependent regions with `.js-item-refresh` and submit `P240_SELECTED_ITEM_ID` when they refresh. Mark selected-item content with `.js-selected-item-content` and the empty-state region with `.js-selected-item-empty`.',
+'',
+'Keep terminology generic, summaries concise, semantic states consistent, and the action hierarchy clear. Use component comments to explain intent, data mappings, refresh dependencies, and custom behavior.'))
+,p_page_component_map=>'27'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24912699400779475626)
+,p_plug_name=>'Recent Activity'
+,p_static_id=>'activity'
+,p_region_css_classes=>'js-item-refresh js-selected-item-content'
+,p_region_sub_css_classes=>'app-ActivityTimeline'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>50
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'/*',
+'Activity timeline pattern sample',
+'',
+'Purpose:',
+'',
+'* Demonstrates how to build a representative activity timeline for an item detail pattern.',
+'* Shows a balanced mix of event types, row densities, and content shapes so AI-generated pages can learn the intended UX structure.',
+'',
+'Implementation notes:',
+'',
+'* The timeline is intentionally data-driven but not business-dependent.',
+'* The selected item ID is used as a seed so the example changes when the current record changes, while remaining stable for the same record.',
+'* Hash-based variation is used to produce realistic-looking labels, titles, and metrics without hardcoding business data.',
+'* Some rows are rich and descriptive; others are compact or title-only to show that not every activity needs equal detail.',
+'* Attribute changes should communicate the new state directly in the title.',
+'* Comment and file events should surface the meaningful payload as early as possible.',
+'* Description text should add only supporting context such as prior value, author, or follow-up note.',
+'',
+'Pattern guidance:',
+'',
+'* Use this region as a reusable reference for AI-generated item detail pages.',
+'* Keep labels generic and interaction-focused so the pattern can be adapted to any business domain.',
+'* Prefer representative structure over realistic transactional completeness.',
+'* Avoid encoding domain-specific meaning into the sample unless the pattern is explicitly tied to that domain.',
+'  */',
+'',
+'',
+'with seed as (',
+'    select nvl(:P340_SELECTED_ITEM_ID, ''0'') as item_id',
+'    from dual',
+')',
+'select ''Today'' as activity_group,',
+'       10 as display_sequence,',
+'       sysdate - interval ''1'' hour as activity_time,',
+'       ''Maya Chen'' as actioned_by,',
+'       ''Updated'' as action_type,',
+'       null as badge_label,',
+'       ''Status changed to '' ||',
+'           case mod(ora_hash(seed.item_id || '':status''), 4)',
+'               when 0 then ''On Track''',
+'               when 1 then ''Needs Review''',
+'               when 2 then ''At Risk''',
+'               else ''Blocked''',
+'           end as title,',
+'       ''Previous status: '' ||',
+'           case mod(ora_hash(seed.item_id || '':prev_status''), 4)',
+'               when 0 then ''On Track''',
+'               when 1 then ''Needs Review''',
+'               when 2 then ''At Risk''',
+'               else ''Blocked''',
+'           end as description,',
+'       ''fa-check-circle-o u-success-text'' as icon_class,',
+'       ''is-featured'' as row_class,',
+'       1 as id',
+'  from seed',
+'union all',
+'select ''Today'',',
+'       20,',
+'       sysdate - interval ''4'' hour,',
+'       ''Jordan Lee'',',
+'       ''Reviewed'',',
+'       null,',
+'       ''Review completed for item '' || seed.item_id,',
+'       ''Next step confirmed for the current owner'',',
+'       ''fa-check-circle-o u-success-text'',',
+'       ''is-standard'',',
+'       2',
+'  from seed',
+'union all',
+'select ''This Week'',',
+'       30,',
+'       trunc(sysdate) - 2 + (9/24),',
+'       ''Maya Chen'',',
+'       ''Commented'',',
+'       null,',
+'       ''We should confirm the owner before moving item '' || seed.item_id || '' forward.'',',
+'       ''Comment added to the current record'',',
+'       ''fa-comments-o u-info-text'',',
+'       ''is-standard'',',
+'       3',
+'  from seed',
+'union all',
+'select ''This Week'',',
+'       40,',
+'       trunc(sysdate) - 3 + (14/24),',
+'       ''Jordan Lee'',',
+'       ''Adjusted'',',
+'       null,',
+'       ''Target Date set to October 1'',',
+'       ''Previous target date: September 18'',',
+'       ''fa-calendar-o u-info-text'',',
+'       ''is-standard'',',
+'       4',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       50,',
+'       trunc(sysdate) - 7 + (11/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Ownership assigned to Avery Smith for ongoing follow-up'',',
+'       null,',
+'       ''fa-user u-info-text'',',
+'       ''is-compact'',',
+'       5',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       60,',
+'       trunc(sysdate) - 9 + (10/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Standard Intake linked to support the current record'',',
+'       null,',
+'       ''fa-link u-info-text'',',
+'       ''is-compact'',',
+'       6',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       70,',
+'       trunc(sysdate) - 10 + (12/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Reference removed after duplicate values were identified'',',
+'       null,',
+'       ''fa-minus-circle-o u-danger-text'',',
+'       ''is-compact'',',
+'       7',
+'  from seed',
+'union all',
+'select ''Earlier'',',
+'       80,',
+'       trunc(sysdate) - 11 + (16/24),',
+'       null,',
+'       null,',
+'       null,',
+'       ''Initial record created and prepared for first review'',',
+'       null,',
+'       ''fa-plus-circle-o u-info-text'',',
+'       ''is-compact'',',
+'       8',
+'  from seed;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'display_sequence, activity_group'
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P340_SELECTED_ITEM_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'N',
+  'AVATAR_ICON', '&ICON_CLASS.',
+  'AVATAR_SHAPE', 't-Avatar--noShape',
+  'AVATAR_SIZE', 't-Avatar--sm',
+  'AVATAR_TYPE', 'icon',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'N',
+  'GROUP_TITLE', '<div class="u-text-uppercase u-text-muted-color u-text-body-xs u-text-bold">&ACTIVITY_GROUP.</div>',
+  'HIDE_BORDERS', 'N',
+  'ITEM_CSS_CLASSES', '&ROW_CLASS.',
+  'MISC', '&ACTIVITY_TIME.',
+  'OVERLINE', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{if ACTIONED_BY/}',
+    '    &ACTIONED_BY.{if ACTION_TYPE/} &middot; &ACTION_TYPE.{endif/}',
+    '{elseif ACTION_TYPE/}',
+    '    &ACTION_TYPE.',
+    '{endif/}')),
+  'REMOVE_PADDING', 'N',
+  'STACK_MOBILE', 'N',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Shows meaningful changes, decisions, comments, and events associated with the current item.',
+'',
+'Pattern role: Activity timeline.',
+'',
+'AI guidance: Make the event title carry the meaningful payload at a glance. Attribute changes should describe the new value or state. File events should identify the file. Comment events should surface the comment text. Use the description only for u'
+||'seful supporting context such as a previous value, author, or note. Keep some rows title-only and retain a mix of featured, standard, and compact rows to demonstrate different event shapes. Use featured rows for especially important events and compac'
+||'t rows for lower-detail history.',
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912699835051475630)
+,p_name=>'ACTIONED_BY'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTIONED_BY'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912699929276475631)
+,p_name=>'ACTION_TYPE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTION_TYPE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912699536064475627)
+,p_name=>'ACTIVITY_GROUP'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTIVITY_GROUP'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>true
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912699729389475629)
+,p_name=>'ACTIVITY_TIME'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ACTIVITY_TIME'
+,p_data_type=>'DATE'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912700014241475632)
+,p_name=>'BADGE_LABEL'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_LABEL'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912700222314475634)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>80
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912699651127475628)
+,p_name=>'DISPLAY_SEQUENCE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DISPLAY_SEQUENCE'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912700375097475635)
+,p_name=>'ICON_CLASS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON_CLASS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>90
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912700592015475637)
+,p_name=>'ID'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ID'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>110
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>true
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912700410760475636)
+,p_name=>'ROW_CLASS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ROW_CLASS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>100
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912700132565475633)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(24912556124927889625)
+,p_name=>'Details 1'
+,p_static_id=>'details'
+,p_parent_plug_id=>wwv_flow_imp.id(24912619278145347416)
+,p_template=>3372714138756020509
+,p_display_sequence=>40
+,p_region_css_classes=>'js-item-refresh'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-AVPList--leftAligned'
+,p_new_grid_row=>false
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ''Item Reference '' || nvl(:P340_SELECTED_ITEM_ID, 0) as reference,',
+'       ''Standard Intake'' as source,',
+'       ''Summary Record'' as type,',
+'       ''Tracked, Reviewable'' as tags',
+'  from dual;'))
+,p_ajax_enabled=>'Y'
+,p_ajax_items_to_submit=>'P340_SELECTED_ITEM_ID'
+,p_lazy_loading=>false
+,p_query_row_template=>2101991776017792140
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents stable, descriptive attributes that characterize the selected item.',
+'',
+'Pattern role: Attribute-pair detail layout.',
+'',
+'AI guidance: Use this group for classification-style properties such as type, category, source, and tags. Keep labels concise and values consistently formatted for scanning. Do not mix in ownership, timing, progress, or operational status; place thos'
+||'e in separate groups.',
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5858628205553684)
+,p_query_column_id=>1
+,p_column_alias=>'REFERENCE'
+,p_column_display_sequence=>10
+,p_column_heading=>'Reference'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5859083565553685)
+,p_query_column_id=>2
+,p_column_alias=>'SOURCE'
+,p_column_display_sequence=>20
+,p_column_heading=>'Source'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5859448896553685)
+,p_query_column_id=>4
+,p_column_alias=>'TAGS'
+,p_column_display_sequence=>60
+,p_column_heading=>'Tags'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5859831116553685)
+,p_query_column_id=>3
+,p_column_alias=>'TYPE'
+,p_column_display_sequence=>30
+,p_column_heading=>'Type'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(24912619339305347417)
+,p_name=>'Details 2'
+,p_static_id=>'details-2'
+,p_parent_plug_id=>wwv_flow_imp.id(24912619278145347416)
+,p_template=>3372714138756020509
+,p_display_sequence=>50
+,p_region_css_classes=>'js-item-refresh'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-AVPList--leftAligned'
+,p_new_grid_row=>false
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    to_char(mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'')), 101)) || ''%'' as progress,',
+'    case mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':priority''), 4)',
+'        when 0 then ''Low''',
+'        when 1 then ''Medium''',
+'        when 2 then ''High''',
+'        else ''Critical''',
+'    end as priority,',
+'    case mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':owner''), 4)',
+'        when 0 then ''Maya Chen''',
+'        when 1 then ''Alex Rivera''',
+'        when 2 then ''Jordan Patel''',
+'        else ''Sam Taylor''',
+'    end as owner,',
+'    trunc(sysdate) + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':due''), 21) as due',
+'from dual;'))
+,p_ajax_enabled=>'Y'
+,p_ajax_items_to_submit=>'P340_SELECTED_ITEM_ID'
+,p_lazy_loading=>false
+,p_query_row_template=>2101991776017792140
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents supporting item attributes in compact value-and-attribute groups.',
+'',
+'Pattern role: Attribute-pair detail layout.',
+'',
+'AI guidance: Use this group for additional descriptive properties that do not fit into the primary classification set. Maintain consistency in formatting and avoid introducing operational, ownership, or timing-related fields.',
+'',
+'Implementation note: This region participates in selected-item refreshes through .js-item-refresh and submits P240_SELECTED_ITEM_ID when refreshed.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5860749670553686)
+,p_query_column_id=>4
+,p_column_alias=>'DUE'
+,p_column_display_sequence=>40
+,p_column_heading=>'Due'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5861104866553686)
+,p_query_column_id=>3
+,p_column_alias=>'OWNER'
+,p_column_display_sequence=>30
+,p_column_heading=>'Owner'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5861586106553686)
+,p_query_column_id=>2
+,p_column_alias=>'PRIORITY'
+,p_column_display_sequence=>20
+,p_column_heading=>'Priority'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5861928722553686)
+,p_query_column_id=>1
+,p_column_alias=>'PROGRESS'
+,p_column_display_sequence=>10
+,p_column_heading=>'Progress'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24908801996579820260)
+,p_plug_name=>'Flex Container'
+,p_static_id=>'flex-container'
+,p_region_sub_css_classes=>'u-block-size-full'
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_02'
+,p_location=>null
+,p_template_component_type=>'REGION_ONLY'
+,p_plug_source_type=>'TMPL_THEME_42$FLEXBOX_CONTAINER'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'DIRECTION', 'u-flex-direction-column',
+  'OVERFLOW', 'u-overflow-hidden')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Organizes the search controls and selectable item list as one continuous left-side selection panel.',
+'',
+'Pattern role: Structural container for the master-list area.',
+'',
+'AI guidance: Keep search and filtering above the results they control. Allow the list region to grow into the remaining available space. Do not place unrelated detail content inside this container.'))
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24914814644367841099)
+,p_plug_name=>'Item Details'
+,p_static_id=>'item-header'
+,p_region_css_classes=>'js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noBorder'
+,p_plug_template=>2127905476394690047
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_08'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Establishes the identity and current state of the item before users inspect details or take action.',
+'',
+'Pattern role: Item detail header with contextual information.',
+'',
+'AI guidance: Keep the most important identity, ownership, status, impact, and timing information near the item title. Use contextual information for quick scanning rather than a full attribute report. Map status values to supported semantic states su'
+||'ch as success, warning, danger, or info. Keep badge value, state, label, and styling semantically aligned. Use relative time only when it is useful for recency; use an explicit date when the exact date matters.'))
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24912556014053889624)
+,p_plug_name=>'Summary'
+,p_static_id=>'item-summary-details'
+,p_parent_plug_id=>wwv_flow_imp.id(24912619278145347416)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_grid_column_span=>4
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'This record represents a standard item that is being reviewed, tracked, or acted on. The summary explains the current state, expected outcome, and any context needed before taking action.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Gives users concise narrative context about what the item represents and why it matters.',
+'',
+'Pattern role: Item summary narrative.',
+'',
+'AI guidance: Keep the summary short, generic, and decision-relevant. Explain the item''s current purpose, state, or expected outcome without adding instructional or tutorial text. Move detailed attributes, history, and related records into their dedic'
+||'ated regions.'))
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(24914814693977841100)
+,p_name=>'Item Contextual Info'
+,p_static_id=>'key-facts'
+,p_parent_plug_id=>wwv_flow_imp.id(24914814644367841099)
+,p_template=>3372714138756020509
+,p_display_sequence=>10
+,p_region_css_classes=>'app-ContextualInfo js-item-refresh'
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-ContextualInfo--hideNulls:t-ContextualInfo-label--stacked:t-Report--hideNoPagination'
+,p_display_point=>'SUB_REGIONS'
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Item '' || nvl(:P340_SELECTED_ITEM_ID, 0) as item_title,',
+'    ''Record Owner'' as owner,',
+'    ''Standard Category'' as category,',
+'    case mod(nvl(:P340_SELECTED_ITEM_ID, 0), 4)',
+'        when 1 then ''On Track''',
+'        when 2 then ''Paused''',
+'        when 3 then ''Blocked''',
+'        else ''Pending Review''',
+'    end as status,',
+'    case mod(nvl(:P340_SELECTED_ITEM_ID, 0), 4)',
+'        when 1 then ''success''',
+'        when 2 then ''warning''',
+'        when 3 then ''danger''',
+'        else ''info''',
+'    end as status_state,',
+'    sysdate - 1 / 24 as last_updated,',
+'    ''High'' as impact,',
+'    ''danger'' as impact_state,',
+'    sysdate + 14 as target_date',
+'from dual;'))
+,p_ajax_enabled=>'Y'
+,p_ajax_items_to_submit=>'P340_SELECTED_ITEM_ID'
+,p_lazy_loading=>false
+,p_query_row_template=>2117249020861433971
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Presents the highest-value item facts for quick assessment before users take action.',
+'',
+'Pattern role: Contextual information summary.',
+'',
+'AI guidance: Keep this region limited to ownership, classification, status, impact, recency, and timing information that users need for quick decisions. Keep visible values and their semantic state columns aligned. Use supported state values such as '
+||unistr('success, warning, danger, or info. Expose target timing when it materially affects the user\2019s decision; otherwise remove the unused supporting column.'),
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5848944794553679)
+,p_query_column_id=>3
+,p_column_alias=>'CATEGORY'
+,p_column_display_sequence=>40
+,p_column_heading=>'Category'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5849375088553679)
+,p_query_column_id=>7
+,p_column_alias=>'IMPACT'
+,p_column_display_sequence=>80
+,p_column_heading=>'Impact'
+,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'{with/}',
+'  LABEL:=Impact',
+'  VALUE:=#IMPACT#',
+'  STATE:=#IMPACT_STATE#',
+'  LABEL_DISPLAY:=N',
+'  STYLE:=t-Badge--subtle',
+'  SIZE:=t-Badge--sm',
+'{apply THEME$BADGE/}'))
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_display_when_cond_type=>'NEVER'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5849742452553680)
+,p_query_column_id=>8
+,p_column_alias=>'IMPACT_STATE'
+,p_column_display_sequence=>90
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5850158106553680)
+,p_query_column_id=>1
+,p_column_alias=>'ITEM_TITLE'
+,p_column_display_sequence=>10
+,p_column_html_expression=>'<div class="u-text-subheading-sm">#ITEM_TITLE#</div>'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5850534625553680)
+,p_query_column_id=>6
+,p_column_alias=>'LAST_UPDATED'
+,p_column_display_sequence=>50
+,p_column_heading=>'Last Updated'
+,p_column_format=>'SINCE'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5850962411553680)
+,p_query_column_id=>2
+,p_column_alias=>'OWNER'
+,p_column_display_sequence=>30
+,p_column_heading=>'Owner'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5851392313553680)
+,p_query_column_id=>4
+,p_column_alias=>'STATUS'
+,p_column_display_sequence=>20
+,p_column_html_expression=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'{with/}',
+'  LABEL:=Status',
+'  VALUE:=#STATUS#',
+'  STATE:=#STATUS_STATE#',
+'  LABEL_DISPLAY:=Y',
+'  STYLE:=t-Badge--subtle margin-top-xs',
+'  SHAPE:=t-Badge--circle',
+'  SIZE:=t-Badge--md',
+'{apply THEME$BADGE/}'))
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5851736340553680)
+,p_query_column_id=>5
+,p_column_alias=>'STATUS_STATE'
+,p_column_display_sequence=>70
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(5852186655553680)
+,p_query_column_id=>9
+,p_column_alias=>'TARGET_DATE'
+,p_column_display_sequence=>60
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24908086819455887303)
+,p_plug_name=>'List Selection'
+,p_static_id=>'list-selection'
+,p_region_name=>'list-selection'
+,p_parent_plug_id=>wwv_flow_imp.id(24908801996579820260)
+,p_region_css_classes=>'u-flex-grow-1 u-overflow-auto'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>50
+,p_plug_display_point=>'PLUGIN_BODY'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with params as (',
+'    select 50 as row_count',
+'    from dual',
+'),',
+'search_params as (',
+'    select upper(trim(:P340_TREE_SEARCH)) as search_term',
+'    from dual',
+'),',
+'all_items as (',
+'    select',
+'        level as item_id,',
+'        ''Item '' || level as title,',
+'        case mod(level - 1, 4)',
+'            when 0 then ''Planning''',
+'            when 1 then ''Operations''',
+'            when 2 then ''Review''',
+'            else ''Reporting''',
+'        end as category,',
+'        sysdate - mod(level - 1, 14) as last_updated,',
+'        case mod(level, 4)',
+'            when 1 then ''On Track''',
+'            when 2 then ''Paused''',
+'            when 3 then ''Blocked''',
+'            else ''Pending Review''',
+'        end as status',
+'    from dual',
+'    connect by level <= (select row_count from params)',
+'),',
+'items as (',
+'    select i.*',
+'    from all_items i',
+'    cross join search_params s',
+'    where s.search_term is null',
+'       or instr(upper(i.title),    s.search_term) > 0',
+'       or instr(upper(i.category), s.search_term) > 0',
+'       or instr(upper(i.status),   s.search_term) > 0',
+'),',
+'status_nodes as (',
+'    /*',
+'     * Build parents from the filtered item set.',
+'     * A status with no matching items is therefore omitted.',
+'     */',
+'    select',
+'        case status',
+'            when ''On Track''       then -1',
+'            when ''Paused''         then -2',
+'            when ''Blocked''        then -3',
+'            when ''Pending Review'' then -4',
+'        end as node_id,',
+'        cast(null as number) as parent_key,',
+'        status as node_label,',
+'        cast(null as number) as node_value,',
+'        case status',
+'            when ''On Track''       then ''fa fa-check-circle-o''',
+'            when ''Paused''         then ''fa fa-pause-circle-o''',
+'            when ''Blocked''        then ''fa fa-times-circle-o''',
+'            when ''Pending Review'' then ''fa fa-clock-o''',
+'        end as icon_css_class,',
+'        case status',
+'            when ''On Track''       then ''Items currently on track''',
+'            when ''Paused''         then ''Items currently paused''',
+'            when ''Blocked''        then ''Items currently blocked''',
+'            when ''Pending Review'' then ''Items awaiting review''',
+'        end as tooltip,',
+'        case status',
+'            when ''On Track''       then 1',
+'            when ''Paused''         then 2',
+'            when ''Blocked''        then 3',
+'            when ''Pending Review'' then 4',
+'        end as sort_order',
+'    from items',
+'    group by status',
+'),',
+'item_nodes as (',
+'    select',
+'        item_id as node_id,',
+'        case status',
+'            when ''On Track''       then -1',
+'            when ''Paused''         then -2',
+'            when ''Blocked''        then -3',
+'            when ''Pending Review'' then -4',
+'        end as parent_key,',
+'        title as node_label,',
+'        item_id as node_value,',
+'        cast(null as varchar2(100)) as icon_css_class,',
+unistr('        category || '' \2014 updated '' ||'),
+'            to_char(last_updated, ''Mon FMDD, YYYY'') as tooltip,',
+'        case status',
+'            when ''On Track''       then 1',
+'            when ''Paused''         then 2',
+'            when ''Blocked''        then 3',
+'            when ''Pending Review'' then 4',
+'        end * 1000 + item_id as sort_order',
+'    from items',
+'),',
+'tree_nodes as (',
+'    select * from status_nodes',
+'    union all',
+'    select * from item_nodes',
+')',
+'select',
+'    node_id,',
+'    parent_key,',
+'    node_label,',
+'    node_value,',
+'    icon_css_class,',
+'    tooltip,',
+'    sort_order',
+'from tree_nodes'))
+,p_lazy_loading=>false
+,p_plug_source_type=>'NATIVE_JSTREE'
+,p_ajax_items_to_submit=>'P340_TREE_SEARCH'
+,p_landmark_type=>'region'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'activate_node_link_with', 'S',
+  'icon_css_class_column', 'ICON_CSS_CLASS',
+  'icon_type_css_class', 'a-Icon',
+  'node_id_column', 'NODE_ID',
+  'node_label_column', 'NODE_LABEL',
+  'node_value_column', 'NODE_VALUE',
+  'order_siblings_by', 'SORT_ORDER',
+  'parent_key_column', 'PARENT_KEY',
+  'selected_node_page_item', 'P340_SELECTED_ITEM_ID',
+  'start_tree_with', 'NULL',
+  'tooltip_column', 'TOOLTIP',
+  'tree_hierarchy', 'SQL',
+  'tree_tooltip', 'DB')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides hierarchical navigation for the item collection, grouping item nodes by status and displaying the selected item''s details in the adjacent detail area.',
+'',
+'Pattern role: Master Tree and selected-item context source.',
+'',
+'AI guidance: Keep status groups meaningful and item labels concise. Use unique node IDs and parent keys to maintain the hierarchy. Only leaf item nodes should expose a positive node value that represents the item primary key; status-group nodes are n'
+||'avigation containers and do not represent an item detail context.',
+'',
+'Implementation note: The Tree Node Changed Dynamic Action reads the selected leaf node''s NODE_VALUE and sets P240_SELECTED_ITEM_ID. A change to P240_SELECTED_ITEM_ID refreshes all dependent regions marked with .js-item-refresh. The Tree''s Selected No'
+||'de Page Item is also P240_SELECTED_ITEM_ID, allowing APEX to restore the selected leaf node when the Tree renders or refreshes.'))
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24937513132408690145)
+,p_plug_name=>'Key Metrics'
+,p_static_id=>'metric-cards'
+,p_region_css_classes=>'app-MetricCards js-item-refresh js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>40
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''fa-line-chart'' as icon,',
+'    ''Primary KPI''   as label,',
+'    50000 + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':primary''), 50000) as metric_value',
+'from dual',
+'union all',
+'select',
+'    ''fa-bar-chart''  as icon,',
+'    ''Secondary KPI'' as label,',
+'    5000 + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':secondary''), 20000) as metric_value',
+'from dual',
+'union all',
+'select',
+'    ''fa-area-chart'' as icon,',
+'    ''Trend KPI''     as label,',
+'    mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':trend''), 100) as metric_value',
+'from dual',
+'union all',
+'select',
+'    ''fa-dashboard''  as icon,',
+'    ''Status KPI''    as label,',
+'    100 + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, ''0'') || '':status''), 900) as metric_value',
+'from dual'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$METRIC_CARD'
+,p_ajax_items_to_submit=>'P340_SELECTED_ITEM_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'AVATAR_ALIGNMENT', 't-MetricCard-body--avatarAlignmentStart',
+  'AVATAR_ICON', '&ICON.',
+  'AVATAR_POSITION', 't-MetricCard-body--avatarPositionInline',
+  'AVATAR_SHAPE', 't-Avatar--rounded',
+  'AVATAR_STYLE', 't-MetricCard-avatar--subtle',
+  'AVATAR_TYPE', 'icon',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'N',
+  'LAYOUT', '4cols',
+  'META', '&LABEL.',
+  'METRIC', '&METRIC_VALUE.',
+  'METRIC_CSS_CLASSES', 'u-text-subheading-md')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Highlights a small number of measures that help users assess the current item quickly.',
+'',
+'Pattern role: Item-level KPI summary.',
+'',
+'AI guidance: Use only the most relevant measures for this item, generally two to four cards. Keep metrics comparable in importance and avoid turning the region into a dense report. Format large values with thousands separators and use consistent unit'
+||'s. If badges or icons are added, keep their value, state, and icon semantically aligned.',
+'',
+'Implementation note: This region participates in selected-item refreshes through `.js-item-refresh` and submits `P240_SELECTED_ITEM_ID` when refreshed.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24937513200237690146)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>10
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24937513374569690148)
+,p_name=>'LABEL'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'LABEL'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24937513516462690149)
+,p_name=>'METRIC_VALUE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'METRIC_VALUE'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>40
+,p_format_mask=>'999G999G999G999G999G999G990'
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24904039266942772788)
+,p_plug_name=>'No Item Selected'
+,p_static_id=>'no-item-selected'
+,p_region_css_classes=>'js-selected-item-empty u-hidden u-tC'
+,p_icon_css_classes=>'fa-search'
+,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--customIcons:t-Alert--info:t-Alert--removeHeading js-removeLandmark'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>70
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'Select an item to view its details.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24937458438697849440)
+,p_plug_name=>'Related Information'
+,p_static_id=>'related-information'
+,p_region_css_classes=>'js-item-refresh js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--lightBG'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>60
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>4
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with seed as (',
+'    select nvl(:P340_SELECTED_ITEM_ID, ''0'') as item_id',
+'    from dual',
+')',
+'select ''fa-users'' as icon,',
+'       ''People'' as title,',
+'       ''Associated people and owners'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':people''), 10) as item_count,',
+'       ''PEOPLE'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-file-o'' as icon,',
+'       ''Files'' as title,',
+'       ''Documents and attachments'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':files''), 20) as item_count,',
+'       ''FILES'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-comments-o'' as icon,',
+'       ''Comments'' as title,',
+'       ''Discussion and feedback'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':comments''), 30) as item_count,',
+'       ''COMMENTS'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-sitemap'' as icon,',
+'       ''Child Records'' as title,',
+'       ''Associated child records'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':child_records''), 15) as item_count,',
+'       ''CHILD_RECORDS'' as page_alias',
+'  from seed',
+'union all',
+'select ''fa-link'' as icon,',
+'       ''Related Records'' as title,',
+'       ''Connected business entities'' as description,',
+'       1 + mod(ora_hash(seed.item_id || '':related_records''), 8) as item_count,',
+'       ''RELATED_RECORDS'' as page_alias',
+'  from seed;'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_ajax_items_to_submit=>'P340_SELECTED_ITEM_ID'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'APPLY_THEME_COLORS', 'N',
+  'AVATAR_ICON', '&ICON. fa-lg',
+  'AVATAR_SHAPE', 't-Avatar--noShape',
+  'AVATAR_TYPE', 'icon',
+  'BADGE_ALIGNMENT', 't-ContentRow-badge--alignCenter',
+  'BADGE_COL_WIDTH', 't-ContentRow-badge--auto',
+  'BADGE_LABEL', 'Related Item Count',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_POS', 't-ContentRow-badge--posEnd',
+  'BADGE_STYLE', 't-Badge--subtle',
+  'BADGE_VALUE', 'ITEM_COUNT',
+  'DESCRIPTION', '&DESCRIPTION.',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'Y',
+  'HIDE_BORDERS', 'N',
+  'REMOVE_PADDING', 'N',
+  'STACK_MOBILE', 'N',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides compact entry points to related information without overwhelming the item summary.',
+'',
+'Pattern role: Related-content navigation list.',
+'',
+'AI guidance: Keep rows concise and use the description to clarify what the related area contains. Use the badge to show the number of related items when that count is meaningful. Row titles should navigate to the corresponding related area or item-le'
+||'vel detail. Keep this region focused on navigation and summary; use a full report or dedicated page for extensive related data.',
+'',
+'Implementation note: Each row represents a navigation entry to a related-information area. Replace the placeholder action target with the destination represented by PAGE_ALIAS, passing the current item context and selected related-information categor'
+||'y.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24937459149561849447)
+,p_name=>'DESCRIPTION'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'DESCRIPTION'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24937459258712849448)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912620354374347427)
+,p_name=>'ITEM_COUNT'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ITEM_COUNT'
+,p_data_type=>'NUMBER'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24912620254758347426)
+,p_name=>'PAGE_ALIAS'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'PAGE_ALIAS'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(24937458999782849446)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_component_action(
+ p_id=>wwv_flow_imp.id(24919248814035126189)
+,p_region_id=>wwv_flow_imp.id(24937458438697849440)
+,p_position_id=>350199314123390058
+,p_display_sequence=>10
+,p_static_id=>'action'
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(10463291909236875)
+,p_plug_name=>'Search Container'
+,p_static_id=>'search-container'
+,p_parent_plug_id=>wwv_flow_imp.id(24908801996579820260)
+,p_region_css_classes=>'app-SideSearchConainer u-flex-shrink-0'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'PLUGIN_BODY'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24912619278145347416)
+,p_plug_name=>'Overview'
+,p_static_id=>'summary-container'
+,p_region_css_classes=>'js-selected-item-content'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--lightBG'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides the primary scan-first container for the item detail summary.',
+'',
+'Pattern role: Item detail overview.',
+'',
+'AI guidance: Keep this region visually dominant and place the most decision-relevant summary content here. Use a concise narrative summary alongside logically grouped attribute pairs. Preserve the overview-first structure and avoid turning this regio'
+||'n into a dense report or long-form documentation area.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5846171148553675)
+,p_button_sequence=>40
+,p_button_plug_id=>wwv_flow_imp.id(24914814644367841099)
+,p_button_name=>'ACTIONS_MENU'
+,p_static_id=>'actions-menu'
+,p_show_as_disabled=>false
+,p_button_type=>'MENU'
+,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
+,p_button_template_id=>2350584059425431644
+,p_button_image_alt=>'Actions Menu'
+,p_button_position=>'NEXT'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-ellipsis-v'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Groups optional or lower-frequency actions so they remain available without competing with the primary action hierarchy.',
+'',
+'Pattern role: Overflow actions.',
+'',
+'AI guidance: Place destructive, administrative, export, duplicate, or infrequently used actions here when they do not need persistent prominence. Do not hide the primary task in the overflow menu. Use clear action labels and preserve a logical menu o'
+||'rder.'))
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(24939823697406305151)
+,p_button_id=>wwv_flow_imp.id(5846171148553675)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 1'
+,p_static_id=>'menu-action-a'
+,p_display_sequence=>10
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(24939823772797305152)
+,p_button_id=>wwv_flow_imp.id(5846171148553675)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 2'
+,p_static_id=>'menu-action-b'
+,p_display_sequence=>20
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_comp_menu_entry(
+ p_id=>wwv_flow_imp.id(24939823884968305153)
+,p_button_id=>wwv_flow_imp.id(5846171148553675)
+,p_menu_entry_type=>'ENTRY'
+,p_label=>'Action 3'
+,p_static_id=>'menu-action-c'
+,p_display_sequence=>30
+,p_link_target_type=>'REDIRECT_URL'
+,p_link_target=>'#'
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5847735488553677)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(24914814644367841099)
+,p_button_name=>'PRIMARY_ACTION'
+,p_static_id=>'primary-action'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#'
+,p_button_template_id=>4073839297780169708
+,p_button_is_hot=>'Y'
+,p_button_image_alt=>'Primary Action'
+,p_button_position=>'NEXT'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Represents the most important next step available from the item detail page.',
+'',
+'Pattern role: Primary page action.',
+'',
+'AI guidance: Keep this action prominent and use a clear, domain-specific verb when adapting the pattern. There should normally be one primary action. The action should be directly related to the item''s current state and intended workflow.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5848184952553677)
+,p_button_sequence=>20
+,p_button_plug_id=>wwv_flow_imp.id(24914814644367841099)
+,p_button_name=>'SECONDARY_ACTION'
+,p_static_id=>'secondary-action'
+,p_show_as_disabled=>false
+,p_button_action=>'SUBMIT'
+,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
+,p_button_template_id=>4073839297780169708
+,p_button_image_alt=>'Secondary Action'
+,p_button_position=>'NEXT'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides a useful follow-up action that is less important than the primary action.',
+'',
+'Pattern role: Secondary page action.',
+'',
+'AI guidance: Keep this action visually subordinate to the primary action. Use it for a common but non-primary path, and avoid presenting several actions with equal visual emphasis.'))
+);
+wwv_flow_imp_page.create_page_button(
+ p_id=>wwv_flow_imp.id(5843209424553665)
+,p_button_sequence=>30
+,p_button_plug_id=>wwv_flow_imp.id(24912699400779475626)
+,p_button_name=>'VIEW_ALL_ACTIVITY'
+,p_static_id=>'view-details-link-3'
+,p_show_as_disabled=>false
+,p_button_action=>'REDIRECT_URL'
+,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconRight:t-Button--padTop'
+,p_button_template_id=>2084305881903810008
+,p_button_image_alt=>'View All Activity'
+,p_button_position=>'NEXT'
+,p_button_redirect_url=>'#'
+,p_warn_on_unsaved_changes=>null
+,p_icon_css_classes=>'fa-arrow-right'
+,p_button_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Intent: Provides a contextual path from the activity summary to the complete activity history.',
+'',
+'Pattern role: Region-level detail action.',
+'',
+'AI guidance: Use this action when the summary is intentionally truncated or when users may need to inspect the full history. Keep it visually attached to the Recent Activity region and lower in emphasis than the page''s primary action. Omit it when th'
+||'e region already contains the complete activity history.',
+'',
+'Implementation note: This action should navigate to the complete activity history for the current item. Replace the placeholder target URL when the activity-history destination is available.'))
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(24908829550521820332)
+,p_name=>'P340_SELECTED_ITEM_ID'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(24908086819455887303)
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_HIDDEN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'value_protected', 'N')).to_clob
+,p_item_comment=>'Stores the canonical selected-item context used by the detail-region queries. Changes to this item refresh all dependent regions marked with .js-item-refresh.'
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(10470304039236898)
+,p_name=>'P340_TREE_SEARCH'
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(10463291909236875)
+,p_prompt=>'Tree Search'
+,p_placeholder=>'Search...'
+,p_source_type=>'ALWAYS_NULL'
+,p_display_as=>'NATIVE_TEXT_FIELD'
+,p_cSize=>30
+,p_field_template=>2042262243893469891
+,p_item_css_classes=>'padding-xs margin-sm'
+,p_item_icon_css_classes=>'fa-search'
+,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--large'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'disabled', 'N',
+  'submit_when_enter_pressed', 'N',
+  'subtype', 'SEARCH',
+  'trim_spaces', 'BOTH')).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(5863102076553692)
+,p_name=>'Initialize Empty Node State'
+,p_static_id=>'initialize-empty-node-state'
+,p_event_sequence=>70
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'ready'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5863518157553694)
+,p_event_id=>wwv_flow_imp.id(5863102076553692)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '/*',
+    ' * The selected-item value may persist in session state. Show details only',
+    ' * when APEX restored a matching leaf node in the Tree; a null, stale, or',
+    ' * filtered-out value leaves the Tree without a valid selected item.',
+    ' */',
+    'var selectedNode = apex.region("list-selection").call("getSelectedNodes")[0];',
+    'var hasSelectedItem = Number(selectedNode?.id) > 0;',
+    '',
+    'apex.jQuery(".js-selected-item-empty").toggleClass("u-hidden", hasSelectedItem);',
+    'apex.jQuery(".js-selected-item-content").toggleClass("u-hidden", !hasSelectedItem);')))).to_clob
+,p_client_condition_type=>'NULL'
+,p_client_condition_element=>'P340_SELECTED_ITEM_ID'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(5864045365553695)
+,p_name=>'Refresh Tree region'
+,p_static_id=>'refresh-tree-search'
+,p_event_sequence=>60
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P340_TREE_SEARCH'
+,p_bind_type=>'bind'
+,p_execution_type=>'DEBOUNCE'
+,p_execution_time=>200
+,p_execution_immediate=>false
+,p_bind_event_type=>'keyup'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5864416419553696)
+,p_event_id=>wwv_flow_imp.id(5864045365553695)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_static_id=>'native-refresh'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'REGION'
+,p_affected_region_id=>wwv_flow_imp.id(24908086819455887303)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(5864976975553696)
+,p_name=>'Refresh Selected Item Details'
+,p_static_id=>'selection-item-changes'
+,p_event_sequence=>30
+,p_triggering_element_type=>'ITEM'
+,p_triggering_element=>'P340_SELECTED_ITEM_ID'
+,p_condition_element=>'P340_SELECTED_ITEM_ID'
+,p_triggering_condition_type=>'NOT_NULL'
+,p_bind_type=>'live'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'change'
+,p_da_event_comment=>'Runs when the canonical selected-item context changes. It refreshes all dependent regions marked with .js-item-refresh so the detail area reflects the selected row.'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5865386872553697)
+,p_event_id=>wwv_flow_imp.id(5864976975553696)
+,p_event_result=>'TRUE'
+,p_action_sequence=>10
+,p_execute_on_page_init=>'N'
+,p_name=>'Refresh Item Detail Regions'
+,p_static_id=>'native-refresh'
+,p_action=>'NATIVE_REFRESH'
+,p_affected_elements_type=>'JQUERY_SELECTOR'
+,p_affected_elements=>'.js-item-refresh'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'maintain_pagination', 'N')).to_clob
+,p_da_action_comment=>'Refreshes every region marked with .js-item-refresh. Add this class only to regions whose content depends on P240_SELECTED_ITEM_ID, and include that item in Page Items to Submit for each dependent region.'
+);
+wwv_flow_imp_page.create_page_da_event(
+ p_id=>wwv_flow_imp.id(5865834729553697)
+,p_name=>'Tree Node Changed'
+,p_static_id=>'tree-node-changed'
+,p_event_sequence=>50
+,p_triggering_element_type=>'REGION'
+,p_triggering_region_id=>wwv_flow_imp.id(24908086819455887303)
+,p_bind_type=>'bind'
+,p_execution_type=>'IMMEDIATE'
+,p_bind_event_type=>'NATIVE_JSTREE|REGION TYPE|treeviewselectionchange'
+);
+wwv_flow_imp_page.create_page_da_action(
+ p_id=>wwv_flow_imp.id(5866226887553697)
+,p_event_id=>wwv_flow_imp.id(5865834729553697)
+,p_event_result=>'TRUE'
+,p_action_sequence=>20
+,p_execute_on_page_init=>'N'
+,p_name=>'Save selected node value'
+,p_static_id=>'native-javascript-code'
+,p_action=>'NATIVE_JAVASCRIPT_CODE'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'var node   = apex.region( "list-selection" ).call( "getSelectedNodes" )[0];',
+    'var nodeId = node?.id;',
+    '',
+    '/*',
+    ' * Leaf nodes expose their item ID as NODE_VALUE; status-group nodes',
+    ' * have no node value. A valid leaf selection establishes the selected',
+    ' * item context, displays the detail area, and hides the empty state.',
+    ' */',
+    'if ( nodeId && Number( nodeId ) > 0)  {',
+    '    apex.item( "P340_SELECTED_ITEM_ID" ).setValue( nodeId );',
+    '',
+    '    apex.jQuery(".js-selected-item-empty").addClass("u-hidden");',
+    '    apex.jQuery(".js-selected-item-content").removeClass("u-hidden");',
+    '}')))).to_clob
 );
 end;
 /
@@ -29433,6 +31348,25 @@ wwv_flow_imp_page.create_page_plug(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
+end;
+/
+prompt --application/deployment/definition
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp_shared.create_install(
+ p_id=>wwv_flow_imp.id(6362389120711641)
+,p_deinstall_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/checks
+begin
+null;
+end;
+/
+prompt --application/deployment/buildoptions
+begin
+null;
 end;
 /
 prompt --application/end_environment

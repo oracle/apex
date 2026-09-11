@@ -1,0 +1,1288 @@
+page 130 (
+    name: Dashboard – Executive
+    alias: DASHBOARD-EXECUTIVE
+    title: Dashboard – Executive
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            /* Scope metric-card layout adjustments to Metric Card regions. */
+            .app-MetricCards .t-MetricCard { flex-wrap: wrap; }
+            .app-MetricCards .t-MetricCard-badge { margin-left: auto; }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            Provides an executive dashboard that brings the most important revenue, pipeline, regional, and operating-status measures into one decision-oriented view.
+            
+            ## When to Use
+            
+            Use when leaders need a concise overview before drilling into operational detail. Combine a small set of comparable KPIs with charts that explain performance against targets, pipeline progression, and regional variation.
+            
+            ## When to Avoid
+            
+            Avoid when users need to inspect transactions, edit records, or perform detailed analysis. Provide a report or task page for those workflows instead.
+            
+            ## AI Guidance
+            
+            Replace the sample SQL with governed business measures, keep periods and units consistent across regions, and connect the time-range item and detail links to real filters and drill-down pages. Preserve the hierarchy: KPI cards first, then diagnostic charts and status context.
+            ```
+    }
+
+    region actual-vs-target-series (
+        name: Actual vs Target Series
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with quarterly_revenue as (
+                    select 1 as quarter_order,
+                           'Q1 ''26' as quarter_label,
+                           214.0 as actual_revenue,
+                           215.0 as target_revenue
+                    from dual
+                
+                    union all
+                
+                    select 2,
+                           'Q2 ''26',
+                           229.3,
+                           234.0
+                    from dual
+                
+                    union all
+                
+                    select 3,
+                           'Q3 ''26',
+                           165.0,
+                           165.0
+                    from dual
+                
+                    union all
+                
+                    select 4,
+                           'Q4 ''26',
+                           cast(null as number) as actual_revenue,
+                           171.0
+                    from dual
+                ),
+                chart_data as (
+                    select
+                        quarter_order,
+                        quarter_label,
+                        'Actual' as series_name,
+                        actual_revenue as value,
+                        actual_revenue,
+                        target_revenue,
+                        case
+                            when actual_revenue is null then 'In progress'
+                            when actual_revenue >= target_revenue then 'Met target'
+                            else 'Below target'
+                        end as performance_status
+                    from quarterly_revenue
+                
+                    union all
+                
+                    select
+                        quarter_order,
+                        quarter_label,
+                        'Target' as series_name,
+                        target_revenue as value,
+                        actual_revenue,
+                        target_revenue,
+                        case
+                            when actual_revenue is null then 'In progress'
+                            when actual_revenue >= target_revenue then 'Met target'
+                            else 'Below target'
+                        end as performance_status
+                    from quarterly_revenue
+                )
+                select
+                    quarter_order,
+                    quarter_label,
+                    series_name,
+                    value,
+                    actual_revenue,
+                    target_revenue,
+                    performance_status,
+                    quarter_label || chr(10) ||
+                    'Target  $' || to_char(target_revenue, 'FM999G990D0') || 'M' || chr(10) ||
+                    case
+                        when actual_revenue is null then 'Actual  In progress'
+                        else 'Actual  $' || to_char(actual_revenue, 'FM999G990D0') || 'M'
+                    end as tooltip_text
+                from chart_data
+                order by
+                    quarter_order,
+                    case series_name
+                        when 'Actual' then 1
+                        when 'Target' then 2
+                    end;
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: QUARTER_ORDER
+        }
+        layout {
+            sequence: 50
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Compares actual and target revenue by quarter so executives can identify the size and direction of performance gaps.
+                Pattern role: Revenue performance comparison.
+                AI guidance: Use a common currency and period grain for both series. Keep the actual and target series visually distinct, and provide a drill-down when a gap requires investigation.
+                ```
+        }
+        chartLayout {
+            height: 250
+        }
+        multiSeriesChartData {
+            renderGapAsZero: false
+        }
+        settings {
+            timeAxisType: disabled
+        }
+        legend {
+            position: bottom
+        }
+
+        series revenue (
+            name: Revenue
+            execution {
+                sequence: 40
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                seriesName: SERIES_NAME
+                label: QUARTER_LABEL
+                value: VALUE
+                customTooltip: TOOLTIP_TEXT
+            }
+            config {
+                buildOption: @commented-out
+            }
+        )
+
+        series series-1_1 (
+            name: Actual
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH quarterly_revenue AS (
+                        SELECT 1 AS quarter_order,
+                               'Q1 ''26' AS quarter_label,
+                               214.0 AS actual_revenue,
+                               215.0 AS target_revenue
+                        FROM dual
+                    
+                        UNION ALL
+                        SELECT 2, 'Q2 ''26', 229.3, 234.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 3, 'Q3 ''26', 165.0, 165.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 4, 'Q4 ''26', CAST(NULL AS NUMBER), 171.0 FROM dual
+                    )
+                    SELECT
+                        quarter_order,
+                        quarter_label,
+                        actual_revenue AS value,
+                    
+                        quarter_label || CHR(10) ||
+                        'Revenue  $' || TO_CHAR(target_revenue, 'FM999G990D0') || 'M' ||
+                        CHR(10) ||
+                        CASE
+                            WHEN actual_revenue IS NULL THEN 'Actual  In progress'
+                            ELSE 'Actual  $' || TO_CHAR(actual_revenue, 'FM999G990D0') || 'M'
+                        END AS tooltip_text
+                    
+                    FROM quarterly_revenue
+                    WHERE actual_revenue IS NOT NULL
+                    ORDER BY quarter_order;
+                    ```
+            }
+            columnMapping {
+                label: QUARTER_LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+        )
+
+        series target (
+            name: Target
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH quarterly_revenue AS (
+                        SELECT 1 AS quarter_order,
+                               'Q1 ''26' AS quarter_label,
+                               214.0 AS actual_revenue,
+                               215.0 AS target_revenue
+                        FROM dual
+                    
+                        UNION ALL
+                        SELECT 2, 'Q2 ''26', 229.3, 234.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 3, 'Q3 ''26', 165.0, 165.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 4, 'Q4 ''26', CAST(NULL AS NUMBER), 171.0 FROM dual
+                    )
+                    SELECT
+                        quarter_order,
+                        quarter_label,
+                        target_revenue AS value,
+                    
+                        quarter_label || CHR(10) ||
+                        'Revenue  $' || TO_CHAR(target_revenue, 'FM999G990D0') || 'M' ||
+                        CHR(10) ||
+                        CASE
+                            WHEN actual_revenue IS NULL THEN 'Actual  In progress'
+                            ELSE 'Actual  $' || TO_CHAR(actual_revenue, 'FM999G990D0') || 'M'
+                        END AS tooltip_text
+                    
+                    FROM quarterly_revenue
+                    ORDER BY quarter_order;
+                    ```
+            }
+            columnMapping {
+                label: QUARTER_LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #8f99a8
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region chart-4_1 (
+        name: Pipeline Funnel
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    1 seq,
+                    'Awareness' label,
+                    48200 as value
+                from sys.dual
+                union all
+                select 2, 'Leads', 12400 from sys.dual
+                union all
+                select 3, 'Qualified', 4800 from sys.dual
+                union all
+                select 4, 'Proposals', 1920 from sys.dual
+                union all
+                select 5, 'Closed Won', 480 from sys.dual
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows how opportunities narrow from awareness through closed-won so executives can see conversion and stage drop-off.
+                Pattern role: Sales pipeline funnel.
+                AI guidance: Order stages from broadest to narrowest, use mutually exclusive stage counts, and keep the funnel focused on a single pipeline definition. Pair it with a detail link when users need to investigate a stage.
+                ```
+        }
+        chart {
+            type: funnel
+        }
+        title {
+            title: Opportunities Conversion
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function( options ) {
+                
+                    options.styleDefaults = $.extend( true, {}, options.styleDefaults, {
+                        colors: [
+                            'rgba(66, 81, 191, 0.5)',
+                            'rgba(95, 185, 181, 0.5)'
+                        ]
+                    });
+                
+                    return options;
+                }
+                ```
+        }
+
+        series series-1 (
+            name: Opportunities Conversion
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    region dashboard-title (
+        name: Executive Dashboard
+        type: staticContent
+        source {
+            htmlCode: One line dashboard description.
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--hideIcon
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Establishes the Executive Dashboard context and holds its time-range control and page-level actions.
+                Pattern role: Executive dashboard header and action container.
+                AI guidance: Keep the visible description concise and business-focused. Place only actions that apply to the dashboard as a whole here; keep implementation guidance in component comments rather than in the visible region.
+                ```
+        }
+    )
+
+    region metric-cards (
+        name: Metric Cards
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'fa-line-chart'    icon,
+                    'Primary KPI'      label,
+                    84200              metric_value,
+                    'Trend'            badge,
+                    '+12%'             badge_value,
+                    'success'          badge_state,
+                    'fa-trend-up'      badge_icon
+                from sys.dual
+                union all
+                select
+                    'fa-bar-chart'     icon,
+                    'Secondary KPI'    label,
+                    12800              metric_value,
+                    'Trend'            badge,
+                    '+320 units'       badge_value,
+                    'success'          badge_state,
+                    'fa-trend-up'      badge_icon
+                from sys.dual
+                union all
+                select
+                    'fa-area-chart'    icon,
+                    'Trend KPI'        label,
+                    64                 metric_value,
+                    'Trend'            badge,
+                    '20m faster'       badge_value,
+                    'success'          badge_state,
+                    'fa-trend-up'      badge_icon
+                from sys.dual
+                union all
+                select
+                    'fa-dashboard'     icon,
+                    'Status KPI'       label,
+                    348                metric_value,
+                    'Trend'            badge,
+                    '-14 items'        badge_value,
+                    'danger'           badge_state,
+                    'fa-trend-down'    badge_icon
+                from sys.dual
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: BADGE_VALUE
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+            cssClasses: app-MetricCards
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                Intent: Presents the executive KPIs that should be scanned before reviewing the revenue, pipeline, and regional charts.
+                Pattern role: Primary KPI summary.
+                AI guidance: Keep metrics comparable in importance. Badge value, badge state, and badge icon should be semantically aligned. Format key values for quick scanning and avoid turning this region into a dense report.
+                Implementation note: The app-MetricCards CSS class scopes page-level CSS to this region.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            metric: &METRIC_VALUE.
+            metricCssClasses: u-text-subheading-md
+            meta: &LABEL.
+            layout: 4Columns
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: &ICON.
+            style: subtle
+            position: inline
+        }
+        plugin-badge {
+            displayBadge: true
+            label: Trend
+            value: BADGE_VALUE
+            state: BADGE_STATE
+            icon: &BADGE_ICON.
+            style: subtle
+            shape: rounded
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_VALUE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_VALUE
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column LABEL (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+        )
+
+        column METRIC_VALUE (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: METRIC_VALUE
+                dataType: number
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+    )
+
+    region pattern-status-list (
+        name: Status List
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Revenue Report'      as title,
+                    '-4% vs target'       as description,
+                    'fa-tasks-alt'        as icon,
+                    'Off Track'           as badge,
+                    'danger'              as badge_state
+                from sys.dual
+                union all
+                select
+                    'Q4 Pipeline'         as title,
+                    'Below 2x floor'      as description,
+                    'fa-search'           as icon,
+                    'Off Track'           as badge,
+                    'danger'              as badge_state
+                from sys.dual
+                union all
+                select
+                    'Pipeline Ratio'      as title,
+                    'Needs acceleration'  as description,
+                    'fa-cogs'             as icon,
+                    'At Risk'             as badge,
+                    'warning'             as badge_state
+                from sys.dual
+                union all
+                select
+                    'Gross Margin'        as title,
+                    'Improved 1.2 points' as description,
+                    'fa-file-text-o'      as icon,
+                    'On Track'            as badge,
+                    'success'             as badge_state
+                from sys.dual
+                union all
+                select
+                    'Customers'           as title,
+                    'Trending up'         as description,
+                    'fa-user-check'       as icon,
+                    'On track'            as badge,
+                    'success'             as badge_state
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 90
+            slot: body
+            startNewRow: false
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a status list for summarizing the condition of several related parts of a record, process, or application area. Each row combines a clear label, brief explanation, supporting icon, and semantic status badge.
+                
+                ## When to Use
+                
+                Use when users need to scan a small set of related checks, requirements, stages, or system conditions and quickly identify what is complete, in progress, available, or requires attention.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare many records, analyze status trends, or act on a complex workflow. Use a report, chart, timeline, or task-oriented view instead.
+                
+                ## AI Guidance
+                
+                Keep all rows within one coherent status context. Use concise titles for the item being evaluated and descriptions that explain the meaning or consequence of its current state. Apply semantic badge states consistently: success for positive completion, warning for incomplete or pending work, danger for blockers or required action, and info for neutral availability or context.
+                
+                Use icons to reinforce the item or status, but do not rely on color or icons alone. Order rows by importance when exceptions require attention; otherwise, follow the natural sequence of the process or information.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description: &DESCRIPTION.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-badge {
+            label: Badge
+            value: BADGE
+            state: BADGE_STATE
+            style: subtle
+            columnWidth: auto
+            position: end
+            alignment: center
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+
+        column BADGE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: BADGE
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    region stock-chart (
+        name: Regional Revenue Ranking
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 1 sort_order,
+                       'North America' label,
+                       38.4 actual_value,
+                       40.0 target_value
+                from sys.dual
+                union all
+                select 2, 'EMEA', 22.1, 23.5
+                from sys.dual
+                union all
+                select 3, 'APAC', 14.8, 16.0
+                from sys.dual
+                union all
+                select 4, 'Latin America', 6.2, 5.5
+                from sys.dual
+                union all
+                select 5, 'MENA', 2.7, 3.1
+                from sys.dual
+                order by sort_order
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Compares actual and target revenue by sales region to expose where geographic performance is above or below plan.
+                Pattern role: Regional revenue ranking and target comparison.
+                AI guidance: Rank regions consistently, use one currency and period, and retain both actual and target values so the comparison remains actionable. Do not use financial OHLC guidance for this combo chart.
+                ```
+        }
+        chart {
+            type: combination
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        legend {
+            show: false
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (options) {
+                    options.styleDefaults = $.extend(true, {}, options.styleDefaults, {
+                        colors: [
+                            'rgba(66, 81, 191, 0.5)' // Actual revenue color
+                        ],
+                        maxBarWidth: 15
+                    });
+                
+                    return options;
+                }
+                ```
+        }
+
+        series series-1 (
+            name: Actual Revenue
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: LABEL
+                value: ACTUAL_VALUE
+            }
+            label {
+                show: true
+                position: insideBarEdge
+            }
+        )
+
+        series target-revenue-series (
+            name: Target Revenue
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: LABEL
+                value: TARGET_VALUE
+            }
+            appearance {
+                color: #8f99a8
+            }
+            line {
+                type: none
+            }
+            marker {
+                show: true
+                shape: diamond
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+        axis y (
+            name: y
+            showAxis: false
+            value {
+                format: currency
+                decimalPlaces: 1
+                baselineScaling: min
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region time-series (
+        name: Revenue Trend Series
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                Intent: Shows actual and target revenue over time as a second executive trend view.
+                Pattern role: Revenue trend comparison.
+                AI guidance: Use the same period definition and value formatting as the primary revenue chart. Include this region only when the additional trend perspective supports a distinct executive question.
+                ```
+        }
+        chart {
+            type: line
+        }
+        chartLayout {
+            height: 250
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        settings {
+            timeAxisType: enabled
+        }
+
+        series series-1 (
+            name: Actual
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 68.2 AS actual_value FROM dual
+                        UNION ALL SELECT DATE '2026-02-01', 71.4 FROM dual
+                        UNION ALL SELECT DATE '2026-03-01', 74.8 FROM dual
+                        UNION ALL SELECT DATE '2026-04-01', 73.1 FROM dual
+                        UNION ALL SELECT DATE '2026-05-01', 76.9 FROM dual
+                        UNION ALL SELECT DATE '2026-06-01', 79.3 FROM dual
+                        UNION ALL SELECT DATE '2026-07-01', 81.6 FROM dual
+                        UNION ALL SELECT DATE '2026-08-01', 84.2 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        actual_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+            line {
+                width: 2
+                type: curved
+            }
+        )
+
+        series series-2 (
+            name: Target
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 70 AS target_value FROM dual
+                        UNION ALL SELECT DATE '2026-02-01', 72 FROM dual
+                        UNION ALL SELECT DATE '2026-03-01', 74 FROM dual
+                        UNION ALL SELECT DATE '2026-04-01', 76 FROM dual
+                        UNION ALL SELECT DATE '2026-05-01', 78 FROM dual
+                        UNION ALL SELECT DATE '2026-06-01', 80 FROM dual
+                        UNION ALL SELECT DATE '2026-07-01', 82 FROM dual
+                        UNION ALL SELECT DATE '2026-08-01', 84 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        target_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            appearance {
+                color: #8f99a8
+            }
+            line {
+                style: dashed
+                width: 2
+                type: curved
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                min: 65
+                max: 85
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+                baselineScaling: min
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    pageItem P130_TIME_RANGE (
+        type: radioGroup
+        label {
+            label: Time Range
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:MTD;MONTH,QTD;QUARTER,YTD;YEAR
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @dashboard-title
+            slot: next
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--radioButtonGroup
+            ]
+        }
+        source {
+            type: staticValue
+            staticValue: YEAR
+        }
+        comments {
+            comments:
+                ```
+                Intent: Lets an executive choose the reporting period used by the dashboard.
+                Pattern role: Dashboard-wide time filter.
+                Implementation guidance: Bind this item to every affected region query and refresh those regions on change. The sample regions currently use static data, so changing this item does not alter them until the queries are made period-aware.
+                ```
+        }
+    )
+
+    button actions-menu (
+        buttonName: ACTIONS_MENU
+        label: Actions Menu
+        layout {
+            sequence: 40
+            region: @dashboard-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+        comments {
+            comments:
+                ```
+                Intent: Groups lower-frequency or optional page actions.
+                Pattern role: Overflow actions.
+                AI guidance: Use for actions that should remain available without competing with primary and secondary actions.
+                ```
+        }
+
+        menu menu-action-a (
+            label: Action 1
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-b (
+            label: Action 2
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        menu menu-action-c (
+            label: Action 3
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+    )
+
+    button primary-action (
+        buttonName: PRIMARY_ACTION
+        label: Primary Action
+        layout {
+            sequence: 30
+            region: @dashboard-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Represents the main follow-up action from the Executive Dashboard overview.
+                Pattern role: Primary page action.
+                AI guidance: Keep prominent. Use a domain-specific label only when adapting this pattern to a real application.
+                ```
+        }
+    )
+
+    button secondary-action (
+        buttonName: SECONDARY_ACTION
+        label: Secondary Action
+        layout {
+            sequence: 20
+            region: @dashboard-title
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        comments {
+            comments:
+                ```
+                Intent: Represents a useful but lower-priority follow-up action.
+                Pattern role: Secondary page action.
+                AI guidance: Keep visually subordinate to the primary action.
+                ```
+        }
+    )
+
+    button view-details-link-3 (
+        buttonName: VIEW_DETAILS_LINK
+        label: View Report
+        layout {
+            sequence: 30
+            region: @chart-4_1
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--link
+                t-Button--iconRight
+            ]
+            icon: fa-arrow-right
+        }
+        behavior {
+            action: redirectUrl
+            targetUrl: #
+        }
+        comments {
+            comments:
+                ```
+                Intent: Provides a direct path from the comparison chart to supporting detail.
+                Pattern role: Region-level detail action.
+                AI guidance: Use text-link detail actions when the drill-down is a common analytical follow-up.
+                ```
+        }
+    )
+
+)
+

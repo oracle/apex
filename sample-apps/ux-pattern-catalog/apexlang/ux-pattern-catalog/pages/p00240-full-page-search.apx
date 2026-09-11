@@ -1,0 +1,614 @@
+page 240 (
+    name: Full Page Search
+    alias: FULL-PAGE-SEARCH
+    title: Search - Full Page
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .t-ContentRow-title {
+                font-weight: 400;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments:
+            ```
+            ## Purpose
+            
+            Provides a focused, full-page search experience that starts with a single search field and replaces the prompt with matching content rows after the user enters a term.
+            
+            ## When to Use
+            
+            Use when search is the primary task and users benefit from a distraction-free entry state followed by a compact results list. This page is suited to keyword lookup across a modest record set.
+            
+            ## Implementation Guidance
+            
+            Submit the search item with the results region, normalize the search term in SQL, and search only fields users expect. Keep the input debounce short enough to feel responsive, protect expensive queries with appropriate indexes or a minimum-term rule, and make result rows open the matching record when real data is used.
+            ```
+    }
+
+    region pattern-search-results (
+        name: Search Results
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with results as (
+                    select
+                        1 as id,
+                        'Record 001' as title,
+                        'Summary information and current context for this record.' as description,
+                        'Standard Record' as category,
+                        'assigned, customer-facing, current' as tags,
+                        sysdate - interval '30' minute as updated_on,
+                        'fa-file-text-o' as icon,
+                        'Standard Record' as overline
+                    from sys.dual
+                    union all
+                    select
+                        2,
+                        'Record 002',
+                        'Supporting details are currently being prepared and reviewed.',
+                        'Review Record',
+                        'internal, draft, supporting-docs',
+                        sysdate - interval '3' hour,
+                        'fa-clipboard-check',
+                        'Review Record'
+                    from sys.dual
+                    union all
+                    select
+                        3,
+                        'Record 003',
+                        'Recent changes require confirmation before work can continue.',
+                        'Tracked Record',
+                        'assigned, follow-up',
+                        sysdate - interval '1' day,
+                        'fa-list-alt',
+                        'Tracked Record'
+                    from sys.dual
+                    union all
+                    select
+                        4,
+                        'Record 004',
+                        'Reference information and supporting material are available.',
+                        'Reference Record',
+                        'published, shared, documentation',
+                        sysdate - interval '4' day,
+                        'fa-book',
+                        'Reference Record'
+                    from sys.dual
+                    union all
+                    select
+                        5,
+                        'Record 005',
+                        'All required work has been completed and validated.',
+                        'Standard Record',
+                        'validated, complete',
+                        sysdate - interval '7' day,
+                        'fa-check-square-o',
+                        'Standard Record'
+                    from sys.dual
+                ) 
+                select * 
+                  from results
+                 where upper(title) like '%' || upper(trim(:P240_SEARCH_FIELD)) || '%'
+                    or upper(description) like '%' || upper(trim(:P240_SEARCH_FIELD)) || '%'
+                ```
+            pageItemsToSubmit: P240_SEARCH_FIELD
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: updated_on desc
+        }
+        layout {
+            sequence: 60
+            slot: body
+            column: 3
+            columnSpan: 8
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Displays the matching records for the Full Page Search after the user enters a term. The sample query matches title and description, and the region submits P240_SEARCH_FIELD during its AJAX refresh.
+                
+                ## When to Use
+                
+                Use when users need to review and open records returned by a search, filter, or browse action. This pattern works well when titles alone are not enough to distinguish results and users benefit from supporting descriptions, categories, status, or recency.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare many attributes across records, edit values directly, or analyze large result sets. Use a report, interactive grid, cards, or faceted search pattern instead.
+                
+                ## AI Guidance
+                
+                Lead with the record title and include only the supporting details needed to distinguish one result from another. Use the overline for a stable category or record type, the badge for a meaningful status, and the metadata area for concise secondary information such as the last update date.
+                
+                Keep the entire row selectable when it opens the record. Reserve the row menu for less common secondary actions. Apply semantic badge states consistently, avoid decorative status colors, and keep row structure and metadata placement consistent across all results.
+                
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            description:
+                ```html
+                &DESCRIPTION.
+                <div>
+                {loop "," TAGS/}
+                    <span class="t-Badge t-Badge--subtle t-Badge--sm"><span class="t-Badge-value">&APEX$ITEM.</span></span>
+                {endloop/}
+                </div>
+                ```
+            miscellaneous: Updated &UPDATED_ON.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: &ICON. fa-lg
+            shape: noShape
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+        messages {
+            whenNoDataFound: No Results. Try searching for "Record."
+        }
+
+        column CATEGORY (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: CATEGORY
+                dataType: varchar2
+            }
+        )
+
+        column DESCRIPTION (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column OVERLINE (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: OVERLINE
+                dataType: varchar2
+            }
+        )
+
+        column TAGS (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED_ON (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: UPDATED_ON
+                dataType: date
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+        )
+
+        action row-actions (
+            position: primaryActions
+            template: menu
+            label: Row Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu row-action-1 (
+                label: Row Action 1
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+            menu row-action-2 (
+                label: Row Action 2
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+            menu row-action-3 (
+                label: Row Action 3
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+            )
+
+        )
+
+    )
+
+    region search-actions (
+        name: Search Actions
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    1 as id,
+                    'Advanced search' as title,
+                    'fa fa-search' as icon
+                from sys.dual
+                union all
+                select
+                    2 as id,
+                    'Find a project' as title,
+                    'fa fa-apex' as icon
+                from sys.dual
+                union all
+                select
+                    3 as id,
+                    'Start a task' as title,
+                    'fa fa-tasks' as icon
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+            column: 3
+            columnSpan: 8
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                #DEFAULT#
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            gridColumns: 3
+        }
+        card {
+            primaryKeyColumn1: ID
+        }
+        title {
+            column: TITLE
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: ICON
+            iconPosition: top
+        }
+    )
+
+    region search-container (
+        name: Search Item Container
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+            column: 3
+            columnSpan: 8
+        }
+        appearance {
+            template: @/item-container
+            templateOptions: #DEFAULT#
+        }
+        comments {
+            comments: Intent: Positions the full-width search field between the landing prompt and the results. Pattern role: Search input container.
+        }
+    )
+
+    region start-search (
+        name: What do you want to search for?
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/hero
+            templateOptions: [
+                #DEFAULT#
+                t-HeroRegion--featured t-HeroRegion--centered
+            ]
+            icon: fa-ai-prompt
+        }
+        comments {
+            comments:
+                ```
+                Intent: Creates the initial full-page search landing state and prompts the user to start a search.
+                Pattern role: Search hero.
+                AI guidance: Use a direct task-oriented prompt. Keep this region visible only while no term has been entered so it does not compete with results.
+                ```
+        }
+    )
+
+    pageItem P240_SEARCH_FIELD (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 40
+            region: @search-container
+            slot: item
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+            ]
+            icon: fa-search
+            width: 30
+            valuePlaceholder: Enter search...
+        }
+        source {
+            used: always
+        }
+        comments {
+            comments:
+                ```
+                Intent: Captures the keyword used to retrieve full-page search results.
+                Pattern role: Primary search input.
+                Implementation guidance: This value is trimmed in the results SQL and submitted during refresh. For production data, define the searchable fields, validate any minimum length needed for performance, and use a placeholder that reflects the searchable content.
+                ```
+        }
+    )
+
+    dynamicAction enable-button-show-search (
+        name: Show Search Results
+        execution {
+            sequence: 30
+            type: debounce
+            time: 200
+        }
+        when {
+            event: input
+            selectionType: items
+            items: P240_SEARCH_FIELD
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: apex.item( "P240_SEARCH_FIELD" ).getValue().length > 0
+        }
+        comments {
+            comments: Runs after a short debounce whenever the search field changes. A nonempty term reveals and refreshes results while hiding the landing prompt; an empty term restores the initial state.
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @search-actions
+            }
+            execution {
+                sequence: 40
+            }
+        )
+
+        action native-hide_1 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @pattern-search-results
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @pattern-search-results
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @pattern-search-results
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-show_1 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @search-actions
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction show-hide-actions-and-results (
+        name: Show/Hide Actions and Results
+        execution {
+            sequence: 40
+        }
+        when {
+            event: ready
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression: apex.item( "P240_SEARCH_FIELD" ).getValue().length > 0
+        }
+        comments {
+            comments: Sets the correct landing or results state when the page first loads, including when P240_SEARCH_FIELD is restored from session state or supplied by a link.
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @search-actions
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-hide_1 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @pattern-search-results
+            }
+            execution {
+                sequence: 40
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @search-actions
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show_1 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @pattern-search-results
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+
