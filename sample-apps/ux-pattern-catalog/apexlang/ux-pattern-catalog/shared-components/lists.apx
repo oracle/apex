@@ -140,8 +140,42 @@ list navigation-menu (
         }
     )
 
+    entry ai-chat (
+        label: AI Chat
+        layout {
+            sequence: 230
+            parentEntry: @reports
+        }
+        isCurrent {
+            type: pages
+            pages: 250
+        }
+        link {
+            target: {
+                page: 250
+            }
+        }
+    )
+
+    entry ai-search (
+        label: Search - Full Page
+        layout {
+            sequence: 210
+            parentEntry: @reports
+        }
+        isCurrent {
+            type: pages
+            pages: 240
+        }
+        link {
+            target: {
+                page: 240
+            }
+        }
+    )
+
     entry browse-cards (
-        label: Browse – Cards
+        label: Browse - Cards
         layout {
             sequence: 40
             parentEntry: @reports
@@ -154,7 +188,7 @@ list navigation-menu (
     )
 
     entry browse-content-row (
-        label: Browse – Content Row
+        label: Browse - Content Row
         layout {
             sequence: 50
             parentEntry: @reports
@@ -174,11 +208,11 @@ list navigation-menu (
         }
         isCurrent {
             type: pages
-            pages: 240
+            pages: 340
         }
         link {
             target: {
-                page: 240
+                page: 340
             }
         }
     )
@@ -276,7 +310,7 @@ list navigation-menu (
     )
 
     entry data-entry-drawer-form (
-        label: Data Entry – Drawer Form
+        label: Data Entry - Drawer Form
         layout {
             sequence: 90
             parentEntry: @data-entry
@@ -289,7 +323,7 @@ list navigation-menu (
     )
 
     entry data-entry-simple-form (
-        label: Data Entry – Simple Form
+        label: Data Entry - Simple Form
         layout {
             sequence: 140
             parentEntry: @data-entry
@@ -297,6 +331,23 @@ list navigation-menu (
         link {
             target: {
                 page: 410
+            }
+        }
+    )
+
+    entry executive (
+        label: Executive
+        layout {
+            sequence: 220
+            parentEntry: @dashboards
+        }
+        isCurrent {
+            type: pages
+            pages: 130
+        }
+        link {
+            target: {
+                page: 130
             }
         }
     )
@@ -330,7 +381,7 @@ list navigation-menu (
     )
 
     entry item-detail-full (
-        label: Item Detail – Full
+        label: Item Detail - Full
         layout {
             sequence: 130
             parentEntry: @item-details
@@ -343,7 +394,7 @@ list navigation-menu (
     )
 
     entry item-detail-summary (
-        label: Item Detail – Summary
+        label: Item Detail - Summary
         layout {
             sequence: 120
             parentEntry: @item-details

@@ -1,4 +1,4 @@
-page 240 (
+page 340 (
     name: Tree Selection
     alias: TREE-SELECTION
     title: Tree Selection
@@ -116,7 +116,7 @@ page 240 (
                 
                 
                 with seed as (
-                    select nvl(:P240_SELECTED_ITEM_ID, '0') as item_id
+                    select nvl(:P340_SELECTED_ITEM_ID, '0') as item_id
                     from dual
                 )
                 select 'Today' as activity_group,
@@ -235,7 +235,7 @@ page 240 (
                        8
                   from seed;
                 ```
-            pageItemsToSubmit: P240_SELECTED_ITEM_ID
+            pageItemsToSubmit: P340_SELECTED_ITEM_ID
         }
         orderBy {
             type: staticValue
@@ -424,13 +424,13 @@ page 240 (
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select 'Item Reference ' || nvl(:P240_SELECTED_ITEM_ID, 0) as reference,
+                select 'Item Reference ' || nvl(:P340_SELECTED_ITEM_ID, 0) as reference,
                        'Standard Intake' as source,
                        'Summary Record' as type,
                        'Tracked, Reviewable' as tags
                   from dual;
                 ```
-            pageItemsToSubmit: P240_SELECTED_ITEM_ID
+            pageItemsToSubmit: P340_SELECTED_ITEM_ID
         }
         layout {
             sequence: 40
@@ -518,23 +518,23 @@ page 240 (
             sqlQuery:
                 ```sql
                 select
-                    to_char(mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0')), 101)) || '%' as progress,
-                    case mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':priority'), 4)
+                    to_char(mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0')), 101)) || '%' as progress,
+                    case mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':priority'), 4)
                         when 0 then 'Low'
                         when 1 then 'Medium'
                         when 2 then 'High'
                         else 'Critical'
                     end as priority,
-                    case mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':owner'), 4)
+                    case mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':owner'), 4)
                         when 0 then 'Maya Chen'
                         when 1 then 'Alex Rivera'
                         when 2 then 'Jordan Patel'
                         else 'Sam Taylor'
                     end as owner,
-                    trunc(sysdate) + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':due'), 21) as due
+                    trunc(sysdate) + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':due'), 21) as due
                 from dual;
                 ```
-            pageItemsToSubmit: P240_SELECTED_ITEM_ID
+            pageItemsToSubmit: P340_SELECTED_ITEM_ID
         }
         layout {
             sequence: 50
@@ -704,16 +704,16 @@ page 240 (
             sqlQuery:
                 ```sql
                 select
-                    'Item ' || nvl(:P240_SELECTED_ITEM_ID, 0) as item_title,
+                    'Item ' || nvl(:P340_SELECTED_ITEM_ID, 0) as item_title,
                     'Record Owner' as owner,
                     'Standard Category' as category,
-                    case mod(nvl(:P240_SELECTED_ITEM_ID, 0), 4)
+                    case mod(nvl(:P340_SELECTED_ITEM_ID, 0), 4)
                         when 1 then 'On Track'
                         when 2 then 'Paused'
                         when 3 then 'Blocked'
                         else 'Pending Review'
                     end as status,
-                    case mod(nvl(:P240_SELECTED_ITEM_ID, 0), 4)
+                    case mod(nvl(:P340_SELECTED_ITEM_ID, 0), 4)
                         when 1 then 'success'
                         when 2 then 'warning'
                         when 3 then 'danger'
@@ -725,7 +725,7 @@ page 240 (
                     sysdate + 14 as target_date
                 from dual;
                 ```
-            pageItemsToSubmit: P240_SELECTED_ITEM_ID
+            pageItemsToSubmit: P340_SELECTED_ITEM_ID
         }
         layout {
             sequence: 10
@@ -900,7 +900,7 @@ page 240 (
                     from dual
                 ),
                 search_params as (
-                    select upper(trim(:P240_TREE_SEARCH)) as search_term
+                    select upper(trim(:P340_TREE_SEARCH)) as search_term
                     from dual
                 ),
                 all_items as (
@@ -1005,7 +1005,7 @@ page 240 (
                     sort_order
                 from tree_nodes
                 ```
-            pageItemsToSubmit: P240_TREE_SEARCH
+            pageItemsToSubmit: P340_TREE_SEARCH
         }
         layout {
             sequence: 50
@@ -1048,7 +1048,7 @@ page 240 (
             tooltipColumn: TOOLTIP
             iconCssClassColumn: ICON_CSS_CLASS
             iconTypeCssClass: a-Icon
-            selectedNodePageItem: P240_SELECTED_ITEM_ID
+            selectedNodePageItem: P340_SELECTED_ITEM_ID
         }
     )
 
@@ -1063,28 +1063,28 @@ page 240 (
                 select
                     'fa-line-chart' as icon,
                     'Primary KPI'   as label,
-                    50000 + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':primary'), 50000) as metric_value
+                    50000 + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':primary'), 50000) as metric_value
                 from dual
                 union all
                 select
                     'fa-bar-chart'  as icon,
                     'Secondary KPI' as label,
-                    5000 + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':secondary'), 20000) as metric_value
+                    5000 + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':secondary'), 20000) as metric_value
                 from dual
                 union all
                 select
                     'fa-area-chart' as icon,
                     'Trend KPI'     as label,
-                    mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':trend'), 100) as metric_value
+                    mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':trend'), 100) as metric_value
                 from dual
                 union all
                 select
                     'fa-dashboard'  as icon,
                     'Status KPI'    as label,
-                    100 + mod(ora_hash(nvl(:P240_SELECTED_ITEM_ID, '0') || ':status'), 900) as metric_value
+                    100 + mod(ora_hash(nvl(:P340_SELECTED_ITEM_ID, '0') || ':status'), 900) as metric_value
                 from dual
                 ```
-            pageItemsToSubmit: P240_SELECTED_ITEM_ID
+            pageItemsToSubmit: P340_SELECTED_ITEM_ID
         }
         layout {
             sequence: 40
@@ -1202,7 +1202,7 @@ page 240 (
             sqlQuery:
                 ```sql
                 with seed as (
-                    select nvl(:P240_SELECTED_ITEM_ID, '0') as item_id
+                    select nvl(:P340_SELECTED_ITEM_ID, '0') as item_id
                     from dual
                 )
                 select 'fa-users' as icon,
@@ -1240,7 +1240,7 @@ page 240 (
                        'RELATED_RECORDS' as page_alias
                   from seed;
                 ```
-            pageItemsToSubmit: P240_SELECTED_ITEM_ID
+            pageItemsToSubmit: P340_SELECTED_ITEM_ID
         }
         layout {
             sequence: 60
@@ -1407,7 +1407,7 @@ page 240 (
         }
     )
 
-    pageItem P240_SELECTED_ITEM_ID (
+    pageItem P340_SELECTED_ITEM_ID (
         type: hidden
         settings {
             valueProtected: false
@@ -1422,7 +1422,7 @@ page 240 (
         }
     )
 
-    pageItem P240_TREE_SEARCH (
+    pageItem P340_TREE_SEARCH (
         type: textField
         label {
             label: Tree Search
@@ -1644,7 +1644,7 @@ page 240 (
             }
             clientSideCondition {
                 type: itemIsNull
-                item: P240_SELECTED_ITEM_ID
+                item: P340_SELECTED_ITEM_ID
             }
         )
 
@@ -1660,7 +1660,7 @@ page 240 (
         when {
             event: keyup
             selectionType: items
-            items: P240_TREE_SEARCH
+            items: P340_TREE_SEARCH
         }
 
         action native-refresh (
@@ -1685,11 +1685,11 @@ page 240 (
         }
         when {
             selectionType: items
-            items: P240_SELECTED_ITEM_ID
+            items: P340_SELECTED_ITEM_ID
         }
         clientSideCondition {
             type: itemIsNotNull
-            item: P240_SELECTED_ITEM_ID
+            item: P340_SELECTED_ITEM_ID
         }
         comments {
             comments: Runs when the canonical selected-item context changes. It refreshes all dependent regions marked with .js-item-refresh so the detail area reflects the selected row.
@@ -1739,7 +1739,7 @@ page 240 (
                      * item context, displays the detail area, and hides the empty state.
                      */
                     if ( nodeId && Number( nodeId ) > 0)  {
-                        apex.item( "P240_SELECTED_ITEM_ID" ).setValue( nodeId );
+                        apex.item( "P340_SELECTED_ITEM_ID" ).setValue( nodeId );
                     
                         apex.jQuery(".js-selected-item-empty").addClass("u-hidden");
                         apex.jQuery(".js-selected-item-content").removeClass("u-hidden");
