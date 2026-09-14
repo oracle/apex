@@ -95,7 +95,7 @@ page 100 (
                     'fa-line-chart' as icon_class,
                     'Executive Dashboard' as title,
                     'A high-level view for leadership audiences, emphasizing outcomes, trends, risks, and concise status indicators.' as description,
-                    cast(null as varchar2(100)) as page_alias
+                    'dashboard-executive' as page_alias
                 from sys.dual
                 union all
                 select

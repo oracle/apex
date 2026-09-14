@@ -98,6 +98,19 @@ page 200 (
                     'A data-dense browsing pattern for users who need sorting, filtering, saved views, column control, and precise comparison across many records.' as description,
                     'browse-interactive-report' as page_alias
                 from sys.dual
+                union all
+                select
+                    'fa-window-search' as icon_class,
+                    'Full Page Search' as title,
+                    'A focused search pattern that combines search, quick actions, and results in a dedicated full-page experience.' as description,
+                    'full-page-search' as page_alias
+                union all
+                select
+                    'fa-ai-prompt' as icon_class,
+                    'AI Chat' as title,
+                    'A full-page conversational pattern for interacting with an AI assistant through messages, prompts, and contextual actions.' as description,
+                    'ai-chat' as page_alias
+                from sys.dual
                 ```
         }
         layout {

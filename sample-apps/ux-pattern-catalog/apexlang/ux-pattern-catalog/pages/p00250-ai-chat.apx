@@ -1,0 +1,170 @@
+page 250 (
+    name: AI Chat
+    alias: AI-CHAT
+    title: AI Chat
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: ai-chat-page
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            body:has(#ai_assistant) {
+                overflow: hidden;
+            }
+            
+            .t-Body-mainContent:has(#ai_assistant) {
+                max-block-size: calc(100dvh - 135px);
+            }
+            
+            .t-Body-contentInner:has(#ai_assistant),
+            .t-Body-contentInner:has(#ai_assistant) > .container,
+            .t-Body-contentInner:has(#ai_assistant) > .container > .row,
+            #ai_assistant {
+                block-size: 100%;
+            }
+            
+            .t-Body-contentInner:has(#ai_assistant) {
+                padding: 0;
+            }
+            
+            .a-ChatTranscript {
+                max-block-size: calc(100dvh - 192px);
+            }
+            
+            /* Styling for the AI chat intro section */
+            #ai_assistant .ai-chat-intro {
+                inline-size: min(100%, 60rem);
+                margin-inline: auto;
+                padding: 1rem 1.5rem;
+                text-align: center;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    comments {
+        comments:
+            ```
+            ## Purpose
+            
+            Provides a dedicated inline AI chat page that opens the APEX AI Assistant in a full-height conversation area with a short introductory message.
+            
+            ## When to Use
+            
+            Use when a conversational interface is the primary task and the assistant should answer questions without leaving the current application experience.
+            
+            ## Implementation Guidance
+            
+            Configure the assistant system prompt, welcome message, authorization, and available AI providers for the application's approved use case. Keep the prompt explicit about permitted data and actions, provide a useful empty-state introduction, and test the layout at desktop and mobile heights.
+            ```
+    }
+
+    region ai-assistant (
+        name: AI Assistant
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+            columnCssClasses: [
+                u-flex
+                u-flex-direction-column
+            ]
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: ai_assistant
+        }
+        comments {
+            comments:
+                ```
+                Intent: Supplies the inline container into which the APEX AI Assistant renders its transcript and composer.
+                Pattern role: Full-page AI chat host.
+                Implementation guidance: Keep the static ID and region name synchronized with the Open AI Assistant action. The page CSS relies on this container to size the conversation area to the viewport.
+                ```
+        }
+    )
+
+    dynamicAction initialize-ai-assistant (
+        name: Initialize AI Assistant
+        execution {
+            sequence: 10
+        }
+        when {
+            event: ready
+        }
+        comments {
+            comments: Initializes the inline AI Assistant after the page DOM is ready, ensuring that the designated chat container exists before the assistant is opened.
+        }
+
+        action native-open-ai-assistant (
+            action: showAiAssistant
+            genAI {
+                systemPrompt: You are a basic AI assistant. Answer the user’s questions using only the information available to you. Do not perform actions, modify data, run code, or make changes. If you do not know the answer, say so clearly. Keep your responses concise and factual.
+                welcomeMessage: Welcome! How can I help you today?
+            }
+            appearance {
+                displayAs: inline
+                containerSelector: #ai_assistant
+            }
+            execution {
+                sequence: 10
+            }
+            advanced {
+                initJavaScriptFunction:
+                    ```javascript-browser
+                    function ( options ) {
+                        options.useChatContext = function () {
+                            const root = document.querySelector( "#ai_assistant" );
+                    
+                            if ( !root ) {
+                                return;
+                            }
+                    
+                            const transcript = root.querySelector( ".a-ChatTranscript" );
+                    
+                            if ( !transcript || transcript.querySelector( ".ai-chat-intro" ) ) {
+                                return;
+                            }
+                    
+                            transcript.insertAdjacentHTML(
+                                "afterbegin",
+                                `
+                                <section class="ai-chat-intro" aria-label="About this assistant">
+                                    <h2>AI Assistant</h2>
+                                    <p>
+                                        Enter a question or request below to begin a conversation.
+                                    </p>
+                                </section>
+                                `
+                            );
+                        };
+                    
+                        return options;
+                    }
+                    ```
+            }
+            comments {
+                comments:
+                    ```
+                    Intent: Opens the APEX AI Assistant inline in the AI Assistant region and adds a concise accessible introduction to the transcript.
+                    Pattern role: AI chat initialization.
+                    Implementation guidance: The system prompt constrains the assistant to factual answers and no actions. Adapt it to the approved data scope and safety requirements; preserve the selector checks so the introduction is inserted once only.
+                    ```
+            }
+        )
+
+    )
+
+)
+
