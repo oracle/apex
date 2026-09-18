@@ -233,6 +233,26 @@ list navigation-menu (
         }
     )
 
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 250
+            parentEntry: @component-primitives
+        }
+        isCurrent {
+            type: pages
+            pages: 1130
+        }
+        link {
+            target: {
+                page: 1130
+            }
+        }
+    )
+
     entry complex-dashboard (
         label: Advanced
         layout {
@@ -451,6 +471,22 @@ list navigation-menu (
         }
         serverSideCondition {
             type: never
+        }
+    )
+
+    entry metrics (
+        label: Metrics
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 240
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1120
+            }
         }
     )
 

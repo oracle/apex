@@ -91,7 +91,7 @@ page 4 (
                     'fa-tachometer' as icon_class,
                     'Metrics' as title,
                     'Highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays.' as description,
-                    null as page_alias
+                    'metrics' as page_alias
                 from sys.dual
                 
                 union all
@@ -100,7 +100,7 @@ page 4 (
                     'fa-bar-chart' as icon_class,
                     'Charts' as title,
                     'Visualize comparisons, distributions, composition, and change over time using charts suited to the data and task.' as description,
-                    null as page_alias
+                    'charts' as page_alias
                 from sys.dual
                 
                 union all
