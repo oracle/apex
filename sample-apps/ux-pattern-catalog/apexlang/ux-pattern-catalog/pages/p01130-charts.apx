@@ -1,0 +1,1990 @@
+page 1130 (
+    name: Charts
+    alias: CHARTS
+    title: Charts
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+    }
+    css {
+        inline:
+            ```css
+            .ux-about-text {
+                padding: 1rem;
+                border-bottom: 1px solid var(--ut-component-border-color);
+                background: var(--ut-component-toolbar-background-color);
+            }
+            
+            .app-PatternGuidance > p:first-child {
+                font-weight: 600;
+            }
+            
+            .app-PatternGuidance h4 {
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                color: var(--ut-component-text-muted-color);
+                margin-bottom: 0.25rem;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            The Charts pattern page demonstrates use-case-driven Oracle APEX chart configurations for analyzing trends, comparing values, ranking items, tracking progress, and showing composition. Examples include line, line with area, grouped bar, stacked bar, combination, pie, and donut charts.
+            
+            ## When to Use
+            
+            Use charts when users need to identify change over time, compare categories or series, understand relative position, monitor performance against a target, or see how a total is distributed across meaningful parts. Choose the chart structure based on the question users need to answer, not only on the type of data available.
+            
+            ## When to Avoid
+            
+            Avoid charts when users need to read exact values across many rows, compare numerous attributes, enter or edit data, or inspect detailed records. Use a report, interactive grid, table, or dedicated detail page when precise lookup or dense comparison is more important than visual pattern recognition. Avoid adding series, categories, labels, or decorative effects that make the chart difficult to read.
+            
+            ## AI Guidance
+            
+            Use the examples on this page as references for selecting and configuring charts around a specific analytical question. Identify the measure, category, time grain, comparison baseline, and intended decision before choosing a chart. Use line-based charts for trends, bars for category comparisons and rankings, combination charts for actual-versus-target views, and pie or donut charts for manageable part-to-whole relationships. Keep series counts low, use consistent units and scales, format labels and tooltips clearly, and use color to reinforce meaning rather than decoration.
+            ```
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Charts visualize comparisons, distributions, composition, and change over time using charts suited to the data and task. They work well when users need to understand trends, compare values, rank items, track progress, or see how a total is distributed across meaningful categories. These patterns demonstrate common ways to use the APEX Charts component for time series, comparing values, ranking items, tracking progress, and showing composition.
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            cssClasses: margin-md
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region about-composition (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Shows how a total is distributed across meaningful categories, using status slices and project-task groupings to communicate each category’s share of the whole.</p>
+                
+                <h4>Best For</h4>
+                <p>Part-to-whole relationships where the total is important and the number of categories is manageable enough for users to distinguish the slices.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @composition
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-item-ranking (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Orders items by a measure so users can identify the strongest and weakest performers, including positive and negative variance from a baseline.</p>
+                
+                <h4>Best For</h4>
+                <p>Top and bottom performers, customer rankings, department variance, leaders and laggards, and other situations where relative position matters.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @item-ranking
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-progress-tracking (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Compares actual performance with a target across periods, using grouped bars for discrete period snapshots and a combination chart for actual values with a target reference line.</p>
+                
+                <h4>Best For</h4>
+                <p>Monitoring progress against targets, budgets, milestones, or plans where the size and direction of the performance gap need to be visible.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @progress-tracking
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-time-series (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Shows how one or more measures change across ordered time periods, using line and line with area variations to reveal direction, volatility, and contribution over time.</p>
+                
+                <h4>Best For</h4>
+                <p>Trends, seasonality, volatility, and relationships between measures where timing and direction are more important than individual category comparison.</p>
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @time-series
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-value-comparison (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Compares revenue across product lines, regions, or categories using grouped and stacked bars to show either direct magnitudes or contribution to a total.</p>
+                
+                <h4>Best For</h4>
+                <p>Comparing revenue, volume, counts, or contribution across a common set of products, regions, departments, or other discrete categories.</p>
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @value-comparison
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 70
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region combination-chart (
+        name: Pattern: Combination Chart
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @progress-tracking
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates monthly actual sales as bars and target sales as a line, combining magnitude and benchmark information in one chart.
+                
+                ## When to Use
+                
+                Use when one measure should be emphasized as discrete values while another measure serves as a continuous reference, target, or threshold.
+                
+                ## When to Avoid
+                
+                Avoid when both measures should be read as equal trend lines or when the measures use unrelated units without a clearly justified secondary axis.
+                
+                ## AI Guidance
+                
+                Use the same month grain and unit for both series. Make actual values visually prominent, use a contrasting or dashed target line, and include the actual value, target value, gap, and performance status in the tooltip.
+                ```
+        }
+        chart {
+            type: combination
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        legend {
+            position: bottom
+        }
+
+        series sales-revenue (
+            name: Sales Revenue
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 68.2 AS sales_value FROM dual
+                        UNION ALL SELECT DATE '2026-02-01', 71.4 FROM dual
+                        UNION ALL SELECT DATE '2026-03-01', 74.8 FROM dual
+                        UNION ALL SELECT DATE '2026-04-01', 73.1 FROM dual
+                        UNION ALL SELECT DATE '2026-05-01', 76.9 FROM dual
+                        UNION ALL SELECT DATE '2026-06-01', 79.3 FROM dual
+                        UNION ALL SELECT DATE '2026-07-01', 81.6 FROM dual
+                        UNION ALL SELECT DATE '2026-08-01', 84.2 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        sales_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+            line {
+                width: 2
+            }
+        )
+
+        series target-revenue (
+            name: Target Revenue
+            type: line
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 70 AS target_value FROM dual
+                        UNION ALL SELECT DATE '2026-02-01', 72 FROM dual
+                        UNION ALL SELECT DATE '2026-03-01', 74 FROM dual
+                        UNION ALL SELECT DATE '2026-04-01', 76 FROM dual
+                        UNION ALL SELECT DATE '2026-05-01', 78 FROM dual
+                        UNION ALL SELECT DATE '2026-06-01', 80 FROM dual
+                        UNION ALL SELECT DATE '2026-07-01', 82 FROM dual
+                        UNION ALL SELECT DATE '2026-08-01', 84 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        target_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            appearance {
+                color: #8f99a8
+            }
+            line {
+                style: dashed
+                width: 2
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+                baselineScaling: min
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region composition (
+        name: Composition
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region donut-chart (
+        name: Pattern: Donut Chart
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @composition
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a Donut chart that shows how 245 project tasks are distributed across ten projects. Each slice represents a project, and its size represents the number of tasks assigned to that project. The center of the donut remains intentionally unused.
+                
+                ## When to Use
+                
+                Use when users need to understand part-to-whole composition across a manageable number of project categories, with exact task counts available through labels, the legend, or tooltips.
+                
+                ## When to Avoid
+                
+                Avoid when there are many very small slices, when users need precise comparisons, or when the categories do not form a meaningful whole. Use a bar chart when ranking or comparing exact project totals is more important.
+                
+                ## AI Guidance
+                
+                Use clear project labels, stable colors, and tooltips that include task counts and percentages. Keep the number of slices manageable and group minor projects into an Other category when necessary. Do not rely on the center of the donut to communicate a metric; place important totals in the region title, supporting text, or a separate KPI region.
+                ```
+        }
+        chart {
+            type: donut
+        }
+        value {
+            formatScaling: none
+        }
+        legend {
+            position: bottom
+        }
+
+        series series-1 (
+            name: Project Tasks
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'Customer Portal' label, 58 value from sys.dual
+                    union all
+                    select 'Mobile App' label, 44 value from sys.dual
+                    union all
+                    select 'Data Migration' label, 37 value from sys.dual
+                    union all
+                    select 'Reporting & Analytics' label, 29 value from sys.dual
+                    union all
+                    select 'Security Upgrade' label, 25 value from sys.dual
+                    union all
+                    select 'API Integration' label, 20 value from sys.dual
+                    union all
+                    select 'Workflow Automation' label, 15 value from sys.dual
+                    union all
+                    select 'User Training' label, 10 value from sys.dual
+                    union all
+                    select 'Documentation' label, 5 value from sys.dual
+                    union all
+                    select 'Infrastructure Improvements' label, 2 value from sys.dual
+                    order by value desc
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+                displayAs: percentageValue
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+    )
+
+    region grouped-bar-chart (
+        name: Pattern: Grouped Bar Chart
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with product_lines as (
+                    select 'Hardware' as product_line, 1 as product_line_no from sys.dual
+                    union all
+                    select 'Software', 2 from sys.dual
+                    union all
+                    select 'Services', 3 from sys.dual
+                    union all
+                    select 'Support', 4 from sys.dual
+                ),
+                regions as (
+                    select 'North' as region, 1 as region_no from sys.dual
+                    union all
+                    select 'South', 2 from sys.dual
+                    union all
+                    select 'West', 3 from sys.dual
+                )
+                select p.product_line as label,
+                       r.region as series_name,
+                       round(
+                           case p.product_line_no
+                               when 1 then 120000
+                               when 2 then 95000
+                               when 3 then 75000
+                               when 4 then 55000
+                           end
+                           + (r.region_no * 12000)
+                       ) as value
+                from product_lines p
+                cross join regions r
+                order by p.product_line_no,
+                         r.region_no
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @value-comparison
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates revenue by product line and region, using separate bar series for North, South, and West across the same product categories.
+                
+                ## When to Use
+                
+                Use grouped bars when users need to compare multiple series directly within each category and absolute magnitude is more important than total composition.
+                
+                ## When to Avoid
+                
+                Avoid when the main question concerns contribution to a total, when there are too many series, or when a time trend is more important than category comparison.
+                
+                ## AI Guidance
+                
+                Use the same category order for every series, keep the number of series manageable, use a common scale, and provide a clear legend. Use grouped rather than stacked bars when comparing the same region or product line across groups.
+                ```
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                seriesName: SERIES_NAME
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #8a89d1
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region grouped-bar-chart-actual-target (
+        name: Pattern: Grouped Bar Chart - Quarterly Actual vs Target
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with quarterly_revenue as (
+                    select 1 as quarter_order,
+                           'Q1 ''26' as quarter_label,
+                           214.0 as actual_revenue,
+                           215.0 as target_revenue
+                    from dual
+                
+                    union all
+                
+                    select 2,
+                           'Q2 ''26',
+                           229.3,
+                           234.0
+                    from dual
+                
+                    union all
+                
+                    select 3,
+                           'Q3 ''26',
+                           165.0,
+                           165.0
+                    from dual
+                
+                    union all
+                
+                    select 4,
+                           'Q4 ''26',
+                           cast(null as number) as actual_revenue,
+                           171.0
+                    from dual
+                ),
+                chart_data as (
+                    select
+                        quarter_order,
+                        quarter_label,
+                        'Actual' as series_name,
+                        actual_revenue as value,
+                        actual_revenue,
+                        target_revenue,
+                        case
+                            when actual_revenue is null then 'In progress'
+                            when actual_revenue >= target_revenue then 'Met target'
+                            else 'Below target'
+                        end as performance_status
+                    from quarterly_revenue
+                
+                    union all
+                
+                    select
+                        quarter_order,
+                        quarter_label,
+                        'Target' as series_name,
+                        target_revenue as value,
+                        actual_revenue,
+                        target_revenue,
+                        case
+                            when actual_revenue is null then 'In progress'
+                            when actual_revenue >= target_revenue then 'Met target'
+                            else 'Below target'
+                        end as performance_status
+                    from quarterly_revenue
+                )
+                select
+                    quarter_order,
+                    quarter_label,
+                    series_name,
+                    value,
+                    actual_revenue,
+                    target_revenue,
+                    performance_status,
+                    quarter_label || chr(10) ||
+                    'Target  $' || to_char(target_revenue, 'FM999G990D0') || 'M' || chr(10) ||
+                    case
+                        when actual_revenue is null then 'Actual  In progress'
+                        else 'Actual  $' || to_char(actual_revenue, 'FM999G990D0') || 'M'
+                    end as tooltip_text
+                from chart_data
+                order by
+                    quarter_order,
+                    case series_name
+                        when 'Actual' then 1
+                        when 'Target' then 2
+                    end;
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: QUARTER_ORDER
+        }
+        layout {
+            sequence: 20
+            parentRegion: @progress-tracking
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a quarterly grouped bar chart that places actual revenue beside target revenue so users can see performance for each quarter. A missing actual value represents a period that is still in progress rather than zero performance.
+                
+                ## When to Use
+                
+                Use for discrete period snapshots where users need to compare actual and target values directly for each quarter or reporting period.
+                
+                ## When to Avoid
+                
+                Avoid when month-by-month movement or a continuous target trend is the primary question. Use a combination chart or multi-series line chart instead.
+                
+                ## AI Guidance
+                
+                Use the same currency, scale, and period definition for both series. Keep Actual and Target visually distinct, represent unavailable actuals as missing or in progress, and include actual, target, and performance status in the tooltip.
+                ```
+        }
+        multiSeriesChartData {
+            renderGapAsZero: false
+        }
+        settings {
+            timeAxisType: disabled
+        }
+        legend {
+            position: bottom
+        }
+
+        series actual (
+            name: Actual
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH quarterly_revenue AS (
+                        SELECT 1 AS quarter_order,
+                               'Q1 ''26' AS quarter_label,
+                               214.0 AS actual_revenue,
+                               215.0 AS target_revenue
+                        FROM dual
+                    
+                        UNION ALL
+                        SELECT 2, 'Q2 ''26', 229.3, 234.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 3, 'Q3 ''26', 165.0, 165.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 4, 'Q4 ''26', CAST(NULL AS NUMBER), 171.0 FROM dual
+                    )
+                    SELECT
+                        quarter_order,
+                        quarter_label,
+                        actual_revenue AS value,
+                    
+                        quarter_label || CHR(10) ||
+                        'Revenue  $' || TO_CHAR(target_revenue, 'FM999G990D0') || 'M' ||
+                        CHR(10) ||
+                        CASE
+                            WHEN actual_revenue IS NULL THEN 'Actual  In progress'
+                            ELSE 'Actual  $' || TO_CHAR(actual_revenue, 'FM999G990D0') || 'M'
+                        END AS tooltip_text
+                    
+                    FROM quarterly_revenue
+                    WHERE actual_revenue IS NOT NULL
+                    ORDER BY quarter_order;
+                    ```
+            }
+            columnMapping {
+                label: QUARTER_LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+        )
+
+        series target (
+            name: Target
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH quarterly_revenue AS (
+                        SELECT 1 AS quarter_order,
+                               'Q1 ''26' AS quarter_label,
+                               214.0 AS actual_revenue,
+                               215.0 AS target_revenue
+                        FROM dual
+                    
+                        UNION ALL
+                        SELECT 2, 'Q2 ''26', 229.3, 234.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 3, 'Q3 ''26', 165.0, 165.0 FROM dual
+                    
+                        UNION ALL
+                        SELECT 4, 'Q4 ''26', CAST(NULL AS NUMBER), 171.0 FROM dual
+                    )
+                    SELECT
+                        quarter_order,
+                        quarter_label,
+                        target_revenue AS value,
+                    
+                        quarter_label || CHR(10) ||
+                        'Revenue  $' || TO_CHAR(target_revenue, 'FM999G990D0') || 'M' ||
+                        CHR(10) ||
+                        CASE
+                            WHEN actual_revenue IS NULL THEN 'Actual  In progress'
+                            ELSE 'Actual  $' || TO_CHAR(actual_revenue, 'FM999G990D0') || 'M'
+                        END AS tooltip_text
+                    
+                    FROM quarterly_revenue
+                    ORDER BY quarter_order;
+                    ```
+            }
+            columnMapping {
+                label: QUARTER_LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #8f99a8
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region horizontal-bar-chart (
+        name: Pattern: Horizontal Bar Chart
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @item-ranking
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Ranks customers by revenue using a horizontal bar chart so the highest and lowest values can be identified quickly.
+                
+                ## When to Use
+                
+                Use horizontal bars when ranking items, especially when category labels are long or users need to scan an ordered list.
+                
+                ## When to Avoid
+                
+                Avoid when users need to understand movement over time, compare several dimensions simultaneously, or inspect a large number of records.
+                
+                ## AI Guidance
+                
+                Sort values in descending order, limit the display to a useful top-N set, keep labels readable, and show the value directly or through a concise tooltip. Use a single series when ranking one measure.
+                ```
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        multiSeriesChartData {
+            sortOrder: valueDesc
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Top Customers
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'Customer A' label, 12 value from sys.dual
+                    union all
+                    select 'Customer B' label, 26 value from sys.dual
+                    union all
+                    select 'Customer C' label, 18 value from sys.dual
+                    union all
+                    select 'Customer D' label, 64 value from sys.dual
+                    union all
+                    select 'Customer E' label, 29 value from sys.dual
+                    union all
+                    select 'Customer F' label, 51 value from sys.dual
+                    union all
+                    select 'Customer G' label, 46 value from sys.dual
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: VALUE DESC
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region horizontal-bar-chart-variance (
+        name: Pattern: Horizontal Bar Chart - Variance
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @item-ranking
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Shows positive and negative budget variance by department so users can identify favorable and unfavorable deviations from the budget baseline.
+                
+                ## When to Use
+                
+                Use a diverging horizontal bar chart when the direction of a metric matters and values need to be compared against zero or another reference point.
+                
+                ## When to Avoid
+                
+                Avoid when the values represent parts of a whole, when the primary question is a time trend, or when positive and negative values do not have a meaningful shared baseline.
+                
+                ## AI Guidance
+                
+                Keep the zero baseline visible, format positive and negative values consistently, use semantic colors carefully, and order departments to make the largest favorable and unfavorable variances easy to find.
+                ```
+        }
+        chartAppearance {
+            orientation: horizontal
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Budget Variance by Department
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with budget_variance (sort_order, label, metric_value) as (
+                        select 1, 'Marketing', 12 from sys.dual
+                        union all
+                        select 2, 'Sales', 7 from sys.dual
+                        union all
+                        select 3, 'Operations', -4 from sys.dual
+                        union all
+                        select 4, 'Support', -11 from sys.dual
+                    )
+                    select label,
+                           metric_value as value
+                      from budget_variance
+                     order by metric_value
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+                formatScaling: million
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region item-ranking (
+        name: Item Ranking
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region multi-series-line-chart (
+        name: Pattern: Multi Series Line Chart
+        type: chart
+        layout {
+            sequence: 30
+            parentRegion: @time-series
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Compares actual and target revenue as two continuous lines across monthly periods, emphasizing how the measures move and diverge over time.
+                
+                ## When to Use
+                
+                Use a multi-series line chart when users need to compare the direction, timing, and gap between related measures across the same time axis.
+                
+                ## When to Avoid
+                
+                Avoid when actual values need to stand out as discrete columns or when the target should function primarily as a reference line. Use the combination chart for that presentation.
+                
+                ## AI Guidance
+                
+                Use the same date grain, unit, and scale for both series. Use a solid line for actual revenue and a contrasting dashed line for target revenue, and include the monthly gap in the tooltip.
+                ```
+        }
+        chart {
+            type: line
+        }
+        chartLayout {
+            height: 180
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        legend {
+            position: bottom
+        }
+
+        series series-1 (
+            name: Actual Revenue
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 68.2 AS actual_value FROM dual
+                        UNION ALL SELECT DATE '2026-02-01', 71.4 FROM dual
+                        UNION ALL SELECT DATE '2026-03-01', 74.8 FROM dual
+                        UNION ALL SELECT DATE '2026-04-01', 73.1 FROM dual
+                        UNION ALL SELECT DATE '2026-05-01', 76.9 FROM dual
+                        UNION ALL SELECT DATE '2026-06-01', 79.3 FROM dual
+                        UNION ALL SELECT DATE '2026-07-01', 81.6 FROM dual
+                        UNION ALL SELECT DATE '2026-08-01', 84.2 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        actual_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+            line {
+                width: 2
+                type: curved
+            }
+        )
+
+        series series-2 (
+            name: Target Revenue
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 70 AS target_value FROM dual
+                        UNION ALL SELECT DATE '2026-02-01', 72 FROM dual
+                        UNION ALL SELECT DATE '2026-03-01', 74 FROM dual
+                        UNION ALL SELECT DATE '2026-04-01', 76 FROM dual
+                        UNION ALL SELECT DATE '2026-05-01', 78 FROM dual
+                        UNION ALL SELECT DATE '2026-06-01', 80 FROM dual
+                        UNION ALL SELECT DATE '2026-07-01', 82 FROM dual
+                        UNION ALL SELECT DATE '2026-08-01', 84 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        target_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            appearance {
+                color: #8f99a8
+            }
+            line {
+                style: dashed
+                width: 2
+                type: curved
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                min: 65
+                max: 85
+                format: currency
+                decimalPlaces: 0
+                pattern: $#M
+                baselineScaling: min
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region pie-chart (
+        name: Pattern: Pie Chart
+        type: chart
+        layout {
+            sequence: 10
+            parentRegion: @composition
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Shows the distribution of work items across Open, In Progress, Completed, and On Hold statuses.
+                
+                ## When to Use
+                
+                Use a pie chart when a small number of meaningful categories form a complete whole and approximate proportions are more important than precise comparison.
+                
+                ## When to Avoid
+                
+                Avoid when there are many categories, similar-sized slices, negative values, or a need to compare exact values across categories. Use a bar chart instead.
+                
+                ## AI Guidance
+                
+                Use semantic status colors consistently: blue for Open, amber for In Progress, green for Completed, and gray for On Hold. Keep labels and tooltips clear, and ensure the values represent the same population and time period.
+                ```
+        }
+        chart {
+            type: pie
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+        legend {
+            position: top
+        }
+
+        series series-1 (
+            name: Item Status
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with status_data (status_order, label, value, slice_color) as (
+                        select 1, 'Open', 18, '#2563EB' from sys.dual
+                        union all
+                        select 2, 'In Progress', 34, '#F59E0B' from sys.dual
+                        union all
+                        select 3, 'Completed', 21, '#16A34A' from sys.dual
+                        union all
+                        select 4, 'On Hold', 27, '#64748B' from sys.dual
+                    )
+                    select label,
+                           value,
+                           slice_color
+                    from status_data
+                    order by status_order
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: &SLICE_COLOR.
+            }
+            label {
+                show: true
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+    )
+
+    region progress-tracking (
+        name: Progress Tracking
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region single-series-line-chart (
+        name: Pattern: Single Series Line Chart
+        type: chart
+        layout {
+            sequence: 20
+            parentRegion: @time-series
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Shows the month-by-month trend of a single revenue measure across an ordered time period.
+                
+                ## When to Use
+                
+                Use a single-series line chart when the primary question is whether one measure is increasing, decreasing, stable, or volatile over time.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare unrelated categories, rank items, or understand part-to-whole composition.
+                
+                ## AI Guidance
+                
+                Use a true date column for the time axis, preserve chronological ordering, use a consistent unit and scale, and keep markers or tooltips available when users need to inspect individual periods.
+                ```
+        }
+        chart {
+            type: line
+        }
+        chartLayout {
+            height: 180
+        }
+        multiSeriesChartData {
+            fillGapsInChartData: false
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        legend {
+            show: false
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    WITH revenue_data AS (
+                        SELECT DATE '2026-01-01' AS month_date, 63.2 AS actual_value FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-02-01', 70.4 FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-03-01', 68.8 FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-04-01', 73.1 FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-05-01', 76.9 FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-06-01', 75.3 FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-07-01', 81.6 FROM dual
+                        UNION ALL
+                        SELECT DATE '2026-08-01', 84.2 FROM dual
+                    )
+                    SELECT
+                        month_date,
+                        TO_CHAR(
+                            month_date,
+                            'FMMon',
+                            'NLS_DATE_LANGUAGE=English'
+                        ) AS month_label,
+                        actual_value AS value
+                    FROM revenue_data
+                    ORDER BY month_date;
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: MONTH_DATE
+                value: VALUE
+            }
+            line {
+                width: 2
+                type: curved
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: currency
+                decimalPlaces: 1
+                pattern: $#M
+                formatScaling: million
+                baselineScaling: min
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region stacked-bar-chart (
+        name: Pattern: Stacked Bar Chart
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @value-comparison
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Shows revenue by product category with each bar divided into North, South, and West regional contributions. The total bar height represents overall revenue while each segment represents a region’s contribution.
+                
+                ## When to Use
+                
+                Use stacked bars when users need to compare category totals and understand how each total is composed.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare one segment precisely across many categories, when there are too many series, or when the segments do not form a meaningful total.
+                
+                ## AI Guidance
+                
+                Use the same category order in every series, keep the number of segments low, maintain consistent series colors, and use a common unit. Choose stacked bars when total size and composition are both important.
+                ```
+        }
+        chartAppearance {
+            stack: true
+        }
+        legend {
+            show: false
+        }
+
+        series north (
+            name: North
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with north_revenue (label, category_order, value) as (
+                        select 'Hardware', 1, 122000 from sys.dual
+                        union all
+                        select 'Software', 2, 105000 from sys.dual
+                        union all
+                        select 'Services', 3, 73000 from sys.dual
+                        union all
+                        select 'Support', 4, 57000 from sys.dual
+                    )
+                    select label,
+                           value
+                    from north_revenue
+                    order by category_order
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #5856d6
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        series south (
+            name: South
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with south_revenue (label, category_order, value) as (
+                        select 'Hardware', 1, 142000 from sys.dual
+                        union all
+                        select 'Software', 2, 105000 from sys.dual
+                        union all
+                        select 'Services', 3, 89000 from sys.dual
+                        union all
+                        select 'Support', 4, 77000 from sys.dual
+                    )
+                    select label,
+                           value
+                    from south_revenue
+                    order by category_order
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #ff2d55
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        series west (
+            name: West
+            execution {
+                sequence: 30
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    with west_revenue (label, category_order, value) as (
+                        select 'Hardware', 1, 142000 from sys.dual
+                        union all
+                        select 'Software', 2, 121000 from sys.dual
+                        union all
+                        select 'Services', 3, 109000 from sys.dual
+                        union all
+                        select 'Support', 4, 77000 from sys.dual
+                    )
+                    select label,
+                           value
+                    from west_revenue
+                    order by category_order
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #34aadc
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+        axis x (
+            name: x
+            majorTicks {
+                show: auto
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region stacked-line-with-area-chart (
+        name: Pattern: Stacked Line with Area Chart
+        type: chart
+        layout {
+            sequence: 50
+            parentRegion: @time-series
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Shows two related measures across a recent time period, using stacked areas to emphasize the combined total and each measure’s contribution to that total.
+                
+                ## When to Use
+                
+                Use stacked line with area charts when additive components change over time and users need to understand both the total trend and the relative contribution of each component.
+                
+                ## When to Avoid
+                
+                Avoid when precise comparison between individual series is more important than total composition. Use separate lines instead when series frequently cross or have very different scales.
+                
+                ## AI Guidance
+                
+                Use only additive measures, keep the number of series low, provide meaningful series names, preserve a consistent time grain, and use tooltips to expose exact values because area boundaries can be difficult to compare precisely.
+                ```
+        }
+        chart {
+            type: lineWithArea
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            height: 180
+        }
+        settings {
+            timeAxisType: enabled
+        }
+        legend {
+            position: bottom
+        }
+
+        series series-1 (
+            name: Series 1
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select trunc(sysdate) - 23 + (level - 1) as label,
+                           round(
+                               65
+                               + (level * 0.7)
+                               + (sin(level / 0.9) * 22)
+                               + (cos(level / 1.7) * 15)
+                               + case
+                                   when level between 3 and 4 then 28
+                                   when level between 6 and 8 then -24
+                                   when level between 10 and 11 then 34
+                                   when level between 13 and 15 then -30
+                                   when level between 17 and 19 then 26
+                                   when level between 21 and 22 then -22
+                                   when level = 24 then 18
+                                   else 0
+                                 end,
+                               1
+                           ) as value
+                    from sys.dual
+                    connect by level <= 48
+                    order by label
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            appearance {
+                color: #3f8efc
+            }
+            line {
+                width: 2
+                type: curved
+            }
+        )
+
+        series series-2 (
+            name: Series 2
+            execution {
+                sequence: 20
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select trunc(sysdate) - 23 + (level - 1) as label,
+                           round(
+                               65
+                               + (level * 0.7)
+                               + (sin(level / 0.9) * 22)
+                               + (cos(level / 1.7) * 15)
+                               + (sin(level * 2.8) * 7)    -- pseudo-random noise
+                               + (cos(level * 3.9) * 4)    -- more noise
+                               + case
+                                   when level between 3 and 4 then 18
+                                   when level between 6 and 8 then -14
+                                   when level between 10 and 11 then 24
+                                   when level between 13 and 15 then -18
+                                   when level between 17 and 19 then 16
+                                   when level between 21 and 22 then -12
+                                   when level = 24 then 10
+                                   else 0
+                                 end,
+                               1
+                           ) as value
+                    from sys.dual
+                    connect by level <= 48
+                    order by label;
+                    ```
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            line {
+                style: dashed
+                width: 2
+                type: curved
+            }
+        )
+
+        axis x (
+            name: x
+            value {
+                format: dateShort
+            }
+            majorTicks {
+                show: auto
+            }
+            tickLabel {
+                position: inside
+            }
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+            }
+            majorTicks {
+                show: false
+            }
+            minorTicks {
+                show: false
+            }
+        )
+
+    )
+
+    region tabs (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region time-series (
+        name: Time Series
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region value-comparison (
+        name: Value Comparison
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+)
+

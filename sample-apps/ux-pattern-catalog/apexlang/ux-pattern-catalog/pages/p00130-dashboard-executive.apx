@@ -173,25 +173,6 @@ page 130 (
             position: bottom
         }
 
-        series revenue (
-            name: Revenue
-            execution {
-                sequence: 40
-            }
-            source {
-                location: regionSource
-            }
-            columnMapping {
-                seriesName: SERIES_NAME
-                label: QUARTER_LABEL
-                value: VALUE
-                customTooltip: TOOLTIP_TEXT
-            }
-            config {
-                buildOption: @commented-out
-            }
-        )
-
         series series-1_1 (
             name: Actual
             execution {

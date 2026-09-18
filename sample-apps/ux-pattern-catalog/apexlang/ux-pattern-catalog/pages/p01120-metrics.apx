@@ -1,0 +1,1284 @@
+page 1120 (
+    name: Metrics
+    alias: METRICS
+    title: Metrics
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .ux-about-text {
+                padding: 1rem;
+                border-bottom: 1px solid var(--ut-component-border-color);
+                background: var(--ut-component-toolbar-background-color);
+            }
+            
+            .app-PatternGuidance > p:first-child {
+                font-weight: 600;
+            }
+            
+            .app-PatternGuidance h4 {
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                color: var(--ut-component-text-muted-color);
+                margin-bottom: 0.25rem;
+            }
+            
+            /* Stretch the percent graph item to full width */
+            .apex-item-pct-graph {
+                width: 100%;
+            }
+            ```
+    }
+    security {
+        authentication: public
+        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: false
+    }
+    help {
+        helpText:
+            ```html
+            ## Purpose
+            
+            The Metrics pattern page demonstrates reusable metric-style components for highlighting key values, targets, progress, capacity, utilization, and status. Examples show how metrics can support KPI scorecards, status metric cards, gauges, project progress, and record-detail summaries.
+            
+            ## When to Use
+            
+            Use metric components when users need to understand a value quickly, interpret it against a target, maximum, or status, or see supporting context without opening a full report or dashboard.
+            
+            ## When to Avoid
+            
+            Avoid metrics when users need to inspect many records, compare many attributes in detail, perform bulk actions, enter data, or understand trends over time. Use a report, interactive grid, chart, or dedicated detail page instead. Do not combine too many metrics without clear grouping or context.
+            
+            ## AI Guidance
+            
+            Use the examples on this page to choose a metric component based on the information and interpretation needed. Use Metric Cards for multiple headline values, badges when state adds meaning, Status Meter Gauges for a value relative to a maximum or target, Percent Graphs for progress across repeated records or a single page-level completion value, and Value Attribute Pairs for structured record detail. Keep labels explicit, values prominent, supporting context concise, and formatting consistent. Avoid presenting a metric without a unit, time frame, target, or status when that context is needed for interpretation.
+            ```
+    }
+
+    region about (
+        name: About
+        type: staticContent
+        source {
+            htmlCode: Metrics highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays. They work well for quickly communicating performance, progress, capacity, utilization, and current status without requiring a full report or dashboard. These patterns demonstrate common ways to use APEX metric components for KPI scorecards, status metric cards, status gauges, project progress, and project-detail summaries.
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            cssClasses: margin-md
+            icon: fa-mouse-pointer
+        }
+    )
+
+    region about-kpi-scorecards (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Presents a focused set of headline business measures with current values and concise context for quick comparison.</p>
+                
+                <h4>Best For</h4>
+                <p>Executive or operational users who need to understand current performance immediately without reviewing detail.</p>
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @kpi-scorecards
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-project-detail-summary (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Summarizes the key attributes and values associated with a single record in a compact, easy-to-scan layout.</p>
+                
+                <h4>Best For</h4>
+                <p>Detail pages, modal dialogs, side panels, or master-detail pages where users need context before reviewing or editing the main record.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @project-detail-summary
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-project-progress (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Shows how far each project has progressed toward completion using a percent graph, with task counts and current progress context.</p>
+                
+                <h4>Best For</h4>
+                
+                <p>Comparing progress across several projects while retaining project-level context.</p>
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @project-progress
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-status-meter-gauge (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Illustrates how much of a defined resource capacity is being used and how the current value relates to the available limit.</p>
+                
+                <h4>Best For</h4>
+                <p>Situations where the user must interpret a value against a maximum or target - not just read an isolated number.</p>
+                ```
+        }
+        layout {
+            sequence: 80
+            parentRegion: @status-meter-gauge
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region about-status-metric-cards (
+        name: About
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>Displays current operational metrics with badges that communicate whether each condition is healthy, at risk, or requires attention.</p>
+                
+                <h4>Best For</h4>
+                <p>Operational monitoring, service management, compliance, risk, approvals, and any situation where users need both a value and an interpretation of that value.</p>
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @status-metric-cards
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 3
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            cssClasses: app-PatternGuidance
+            icon: fa-info-circle-o
+        }
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 30
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region kpi-scorecards (
+        name: KPI Scorecards
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region pattern-budget-capacity (
+        name: Pattern: Budget Capacity
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Q3 Marketing Budget' as label,
+                    58450                 as value,
+                    100000                as max_value,
+                    '$58,450 of $100,000 budget used' as tooltip
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @status-meter-gauge
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: u-align-content-center
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a circular Status Meter Gauge for showing a currency amount consumed against a fixed budget, with thresholds that communicate budget risk.
+                
+                ## When to Use
+                
+                Use for spending, funding, or forecast measures where users need to interpret a current amount against a financial limit.
+                
+                ## When to Avoid
+                
+                Avoid when users need to compare multiple budget categories, analyze spending over time, or review detailed financial transactions. Use a chart, report, or financial detail page instead.
+                
+                ## AI Guidance
+                
+                Use raw numeric values in the source and apply currency formatting in the gauge configuration. Label the budget clearly, provide an exact tooltip such as $58,450 of $100,000 budget used, and set thresholds to reflect meaningful financial risk.
+                ```
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        gauge {
+            innerRadius: 0.7
+        }
+        value {
+            format: currency
+            decimalPlaces: 0
+            pattern: $XK
+        }
+
+        series utilization (
+            name: Utilization
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+                customTooltip: TOOLTIP
+            }
+            thresholds {
+                values: 60000,85000,100000
+                colors: green,yellow,red
+                display: currentThresholdOnly
+            }
+        )
+
+    )
+
+    region pattern-kpi-scorecards (
+        name: Pattern: KPI Scorecards
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Total Revenue' as title,
+                    '$2.4M'         as metric,
+                    'This month'    as meta,
+                    'fa fa-dollar'  as icon
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Open Orders',
+                    '1,248',
+                    'Currently open',
+                    'fa fa-shopping-cart'
+                from sys.dual
+                
+                union all
+                
+                select
+                    'On-Time Delivery',
+                    '94.6%',
+                    'This month',
+                    'fa fa-truck'
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Avg. Resolution',
+                    '3.2 days',
+                    'Last 30 days',
+                    'fa fa-clock-o'
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @kpi-scorecards
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates Metric Cards for presenting a focused set of headline business KPIs with prominent values, concise time or context metadata, and category icons.
+                
+                ## When to Use
+                
+                Use for executive or operational overviews where users need to understand current performance quickly without reviewing detailed records.
+                
+                ## When to Avoid
+                
+                Avoid when users need detailed comparisons, historical trends, record-level context, bulk actions, or data entry. Use a chart, report, interactive grid, or dedicated detail page instead.
+                
+                ## AI Guidance
+                
+                Use the title for a specific KPI, the metric for the primary value with its unit or format, and the meta text for a time frame or concise qualifier. Use an icon to reinforce meaning without making it the only cue. Keep the cards structurally consistent and limit the collection to measures that users need to compare at a glance; add badges only when status is part of the KPI's meaning, as demonstrated in Status Metric Cards.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            metric: &METRIC.
+            meta: &META.
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: &ICON.
+            position: inline
+        }
+
+        column ICON (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column META (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: META
+                dataType: varchar2
+            }
+        )
+
+        column METRIC (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: METRIC
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region pattern-percent-capacity (
+        name: Pattern: Percent Capacity
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Support Team Utilization' as label,
+                    round(41 / 50 * 100, 1)    as value,
+                    100                        as max_value,
+                    'Percent capacity used'    as tooltip
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 40
+            parentRegion: @status-meter-gauge
+            slot: regionBody
+            columnCssClasses: u-align-content-center
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a circular Status Meter Gauge for showing percentage capacity used against a defined maximum, with thresholds that indicate when utilization requires attention.
+                
+                ## When to Use
+                
+                Use for team utilization, service capacity, quota consumption, or other percentage-based measures where the current value needs to be interpreted against a limit or target.
+                
+                ## When to Avoid
+                
+                Avoid when there is no meaningful maximum or target, when users need to understand change over time, or when several categories must be compared precisely. Use a chart, report, or table instead.
+                
+                ## AI Guidance
+                
+                Use a clear label for the resource and provide a tooltip that states the current value and limit. Set the maximum to a meaningful capacity, use thresholds to communicate consistent attention levels, and keep the threshold colors semantically consistent with the rest of the application.
+                ```
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        gauge {
+            innerRadius: 0.7
+        }
+        value {
+            valueType: percent
+        }
+
+        series utilization (
+            name: Utilization
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+                customTooltip: TOOLTIP
+            }
+            thresholds {
+                values: 70,85,100
+                colors: #8be89a,#fee47f,#ff3b30
+                display: currentThresholdOnly
+            }
+            referenceLines {
+                values: 85
+            }
+        )
+
+    )
+
+    region pattern-project-detail-summary (
+        name: Pattern: Project Detail Summary
+        title: Customer Portal Refresh
+        type: themeTemplateComponent/contentRow
+        layout {
+            sequence: 10
+            parentRegion: @project-detail-summary
+            slot: regionBody
+        }
+        appearance {
+            renderComponents: belowContent
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a record-detail summary that combines a prominent record header, value-attribute pairs, and a percent graph to present a single project's identity, supporting attributes, and completion status.
+                
+                ## When to Use
+                
+                Use on detail pages, modal dialogs, side panels, and master-detail views where users need context about one record before reviewing or editing it.
+                
+                ## When to Avoid
+                
+                Avoid when users need to browse or compare many records, inspect a large set of attributes, perform bulk actions, or enter extensive data. Use a report, interactive grid, or form instead.
+                
+                ## AI Guidance
+                
+                Use a Content Row or equivalent record header for the primary identity and concise metadata. Use Value Attribute Pairs for a small, scannable set of supporting attributes, excluding values already represented in the header. Use a Percent Graph page item for a single completion value and keep its label visible. Keep the layout focused on one record rather than turning it into a dashboard.
+                ```
+        }
+        componentAppearance {
+            display: partial
+        }
+        settings {
+            title: Customer Portal Refresh
+            description: PRJ-1042
+            displayAvatar: true
+        }
+        plugin-avatar {
+            icon: fa-window-user
+            size: extraSmall
+        }
+    )
+
+    region pattern-project-progress (
+        name: Pattern: Project Progress
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'ERP Upgrade' as project_name,
+                    round(18 / 25 * 100, 1) as progress_pct,
+                    '18 of 25 tasks' as progress_detail,
+                    'At Risk' as status
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Mobile Redesign',
+                    round(9 / 20 * 100, 1),
+                    '9 of 20 tasks',
+                    'On Track'
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Data Migration',
+                    round(41 / 45 * 100, 1),
+                    '41 of 45 tasks',
+                    'Almost Complete'
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Customer Portal',
+                    round(12 / 30 * 100, 1),
+                    '12 of 30 tasks',
+                    'On Track'
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Security Review',
+                    round(6 / 18 * 100, 1),
+                    '6 of 18 tasks',
+                    'Blocked'
+                from sys.dual
+                
+                order by progress_pct desc;
+                ```
+        }
+        layout {
+            sequence: 60
+            parentRegion: @project-progress
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a Classic Report with a Percent Graph column for comparing completion across multiple projects while retaining the project name and progress detail for each row.
+                
+                ## When to Use
+                
+                Use for projects, initiatives, workstreams, or task groups where users need to scan progress across several records and retain concise row-level context.
+                
+                ## When to Avoid
+                
+                Avoid for a single-record completion value, detailed project analysis, historical progress trends, or collections that require filtering, editing, or bulk actions. Use a Percent Graph page item, chart, interactive report, or interactive grid instead.
+                
+                ## AI Guidance
+                
+                Use a numeric value from 0 to 100 for the Percent Graph column, keep the project name visible as the row identifier, and use an adjacent text column for exact progress context such as task counts. Do not rely on the graph alone to communicate important status; include meaningful text when the state affects interpretation.
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--noBorders
+            ]
+        }
+
+        column PROGRESS_DETAIL (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Progress Detail
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROGRESS_PCT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: percentGraph
+            heading {
+                heading: Progress Percentage
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PROJECT_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Project Name
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+    )
+
+    region pattern-seat-capacity (
+        name: Pattern: Seat Capacity
+        type: chart
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Seats Assigned'          as label,
+                    41                        as value,
+                    50                        as max_value,
+                    '41 of 50 seats assigned' as tooltip
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 70
+            parentRegion: @status-meter-gauge
+            slot: regionBody
+            startNewRow: false
+            columnCssClasses: u-align-content-center
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates a horizontal Status Meter Gauge for showing an absolute count against an available capacity, such as assigned seats out of total seats.
+                
+                ## When to Use
+                
+                Use for seats, licenses, inventory, staffing, reservations, or other count-based resources where users need to see both the current amount and the remaining capacity.
+                
+                ## When to Avoid
+                
+                Avoid when the limit is not meaningful, when the measure is primarily a percentage, or when users need a historical view or detailed breakdown. Use a chart, report, or table instead.
+                
+                ## AI Guidance
+                
+                Use raw numeric values for the current amount and maximum capacity, and provide a tooltip that expresses the relationship in user terms, such as 41 of 50 seats assigned. Prefer a horizontal gauge when the count relationship is more important than a percentage view.
+                ```
+        }
+        chart {
+            type: statusMeterGauge
+        }
+        chartLayout {
+            maxWidth: 250
+        }
+        gauge {
+            orientation: horizontal
+        }
+
+        series utilization (
+            name: Utilization
+            execution {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+                maxValue: MAX_VALUE
+                customTooltip: TOOLTIP
+            }
+            appearance {
+                color: #4251bf
+            }
+            thresholds {
+                display: currentThresholdOnly
+            }
+        )
+
+    )
+
+    region pattern-status-metric-cards (
+        name: Pattern: Status Metric Cards
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'Service Availability' as title,
+                    '99.95%'             as metric,
+                    'Last 30 days'       as meta,
+                    'fa-server'          as icon,
+                    'Healthy'            as badge_label,
+                    'success'            as badge_state
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Open Incidents'     as title,
+                    '3'                  as metric,
+                    '2 critical'         as meta,
+                    'fa-exclamation-triangle' as icon,
+                    'Attention'          as badge_label,
+                    'warning'            as badge_state
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Pending Reviews'    as title,
+                    '12'                 as metric,
+                    'Due this week'      as meta,
+                    'fa-file-text-o'     as icon,
+                    'Review'             as badge_label,
+                    'info'               as badge_state
+                from sys.dual
+                
+                union all
+                
+                select
+                    'Failed Jobs'        as title,
+                    '1'                  as metric,
+                    'Last run 15 minutes ago' as meta,
+                    'fa-cogs'            as icon,
+                    'Error'              as badge_label,
+                    'danger'             as badge_state
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @status-metric-cards
+            slot: regionBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            landmarkType: region
+        }
+        comments {
+            comments:
+                ```
+                ## Purpose
+                
+                Demonstrates Metric Cards for presenting current operational values with a category icon, prominent metric, supporting context, and status badge.
+                
+                ## When to Use
+                
+                Use for operational monitoring, service management, compliance, risk, approvals, and other situations where users need both a value and an interpretation of its current condition.
+                
+                ## When to Avoid
+                
+                Avoid when users need detailed records, exact comparison across many attributes, historical trends, bulk actions, or data entry. Use a report, chart, interactive grid, or dedicated detail page instead.
+                
+                ## AI Guidance
+                
+                Use the title for the metric name, the metric for the primary value, and the meta text for a unit, time frame, or concise qualifier. Use the icon to reinforce the metric category and use one badge to communicate its current state; the badge state should add meaning rather than repeat the metric. Keep the hierarchy and formatting consistent across the cards, and do not rely on color alone to communicate status.
+                ```
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: &TITLE.
+            metric: &METRIC.
+            meta: &META.
+            layout: 2Columns
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: &ICON.
+            style: subtle
+            size: small
+            position: inline
+            alignment: center
+        }
+        plugin-badge {
+            displayBadge: true
+            label: &BADGE_LABEL.
+            value: BADGE_LABEL
+            state: BADGE_STATE
+            style: subtle
+        }
+
+        column BADGE_LABEL (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: BADGE_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column META (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: META
+                dataType: varchar2
+            }
+        )
+
+        column METRIC (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: METRIC
+                dataType: varchar2
+            }
+        )
+
+        column TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: TITLE
+                dataType: varchar2
+            }
+        )
+
+    )
+
+    region project-detail-summary (
+        name: Project Detail Summary
+        type: staticContent
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region project-details (
+        name: Project Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    'PRJ-1042'                as project_id,
+                    'Customer Portal Refresh' as project_name,
+                    'Maya Chen'               as owner,
+                    'In Progress'             as status,
+                    'High'                    as priority,
+                    date '2026-12-15'         as target_date,
+                    78450                     as budget,
+                    68                        as completion,
+                    date '2026-09-15'         as last_updated
+                from sys.dual;
+                ```
+        }
+        layout {
+            sequence: 20
+            parentRegion: @pattern-project-detail-summary
+            slot: regionBody
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--variableLabelLarge
+                t-AVPList--leftAligned
+            ]
+        }
+
+        column BUDGET (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Budget
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: FML999G999G999G999G990D00
+            }
+        )
+
+        column COMPLETION (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column LAST_UPDATED (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 100
+            }
+            appearance {
+                formatMask: Mon DD, YYYY
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column PROJECT_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column TARGET_DATE (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Target Date
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: Mon DD, YYYY
+            }
+        )
+
+    )
+
+    region project-progress (
+        name: Project Progress
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region status-meter-gauge (
+        name: Status Meter Gauge
+        type: staticContent
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region status-metric-cards (
+        name: Status Metric Cards
+        type: staticContent
+        layout {
+            sequence: 40
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+            renderComponents: belowContent
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region tabs (
+        name: Region Display Selector
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P1120_COMPLETION (
+        type: percentGraph
+        label {
+            label: Completion
+            alignment: left
+        }
+        settings {
+            foregroundColor: #4251bf
+        }
+        layout {
+            sequence: 10
+            region: @pattern-project-detail-summary
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select
+                    68 as completion
+                from sys.dual;
+                ```
+            used: always
+        }
+    )
+
+)
+
