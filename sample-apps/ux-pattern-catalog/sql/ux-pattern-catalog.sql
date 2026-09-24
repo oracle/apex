@@ -35,10 +35,10 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 --   Exported By:     ORACLE
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     26
---       Items:                   50
+--     Pages:                     28
+--       Items:                   51
 --       Processes:                2
---       Regions:                185
+--       Regions:                230
 --       Buttons:                 58
 --       Dynamic Actions:         12
 --     Shared Components:
@@ -47,7 +47,7 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 --       Navigation:
 --         Lists:                  4
 --         Breadcrumbs:            1
---           Entries:              9
+--           Entries:             10
 --       Security:
 --         Authentication:         1
 --         Authorization:          1
@@ -94,7 +94,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle APEX UX Pattern Catalog'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.5'
+,p_flow_version=>'26.1.6'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -106,7 +106,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461280214208
-,p_version_scn=>'291124756'
+,p_version_scn=>'297324852'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -323,7 +323,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(24910759632250178728)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:baQs42E9W6eBIT_3eL3r1zcg9H7gqEgLgvmUjWrg0Ps'
+,p_version_scn=>'SH256:L3_J4V5unq0hYzZQxmeJvVg6cr6idA8Ksl1FkV2-tU0'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24893314526602533122)
@@ -391,6 +391,17 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-cards'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24892181762206866583)
 ,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(6874181842057995)
+,p_list_item_display_sequence=>250
+,p_list_item_link_text=>'Charts'
+,p_static_id=>'charts'
+,p_list_item_link_target=>'f?p=&APP_ID.:1130:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-bar-chart'
+,p_parent_list_item_id=>wwv_flow_imp.id(24892181762206866583)
+,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
+,p_list_item_current_for_pages=>'1130'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(24895259358740983271)
@@ -532,6 +543,16 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_icon=>'fa-files-o'
 ,p_list_item_disp_cond_type=>'NEVER'
 ,p_parent_list_item_id=>wwv_flow_imp.id(24893313173126473415)
+,p_list_item_current_type=>'TARGET_PAGE'
+);
+wwv_flow_imp_shared.create_list_item(
+ p_id=>wwv_flow_imp.id(6255246761053217)
+,p_list_item_display_sequence=>240
+,p_list_item_link_text=>'Metrics'
+,p_static_id=>'metrics'
+,p_list_item_link_target=>'f?p=&APP_ID.:1120:&SESSION.::&DEBUG.::::'
+,p_list_item_icon=>'fa-dial-gauge-chart'
+,p_parent_list_item_id=>wwv_flow_imp.id(24892181762206866583)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
@@ -10548,6 +10569,14 @@ wwv_flow_imp_shared.create_menu_option(
 ,p_page_id=>1110
 );
 wwv_flow_imp_shared.create_menu_option(
+ p_id=>wwv_flow_imp.id(7097115557863610)
+,p_parent_id=>wwv_flow_imp.id(12647400082564890)
+,p_short_name=>'Charts'
+,p_static_id=>'charts'
+,p_link=>'f?p=&APP_ID.:1130:&SESSION.::&DEBUG.:::'
+,p_page_id=>1130
+);
+wwv_flow_imp_shared.create_menu_option(
  p_id=>wwv_flow_imp.id(12647400082564890)
 ,p_short_name=>'Component Primitives'
 ,p_static_id=>'component-primitives'
@@ -12273,6 +12302,29 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Track notable changes to the catalog, including new patterns, guidance updates, and structural refinements.</p>',
 '',
+'<h3 class="u-text-subheading-sm">Version 26.1.6</h3>',
+'<p><strong>Component Pattern Updates</strong></p>',
+'<ul>',
+'  <li>Added example use case patterns for Charts in the Component Primitives section.</li>',
+'  <li>Added example use case patterns for Metrics in the Component Primitives section.</li>',
+'</ul>',
+'',
+'<h3 class="u-text-subheading-sm">Version 26.1.5</h3>',
+'<p><strong>Dashboard, Search, and Item Detail Pattern Updates</strong></p>',
+'<ul>',
+'  <li>Added the Executive Dashboard pattern to Dashboards.</li>',
+'  <li>Added the Full Page Search pattern to Browse and Search.</li>',
+'  <li>Added the AI Chat pattern to Browse and Search.</li>',
+'  <li>Moved the Tree Selection pattern to new page ID.</li>',
+'</ul>',
+'',
+'<h3 class="u-text-subheading-sm">Version 26.1.4</h3>',
+'<p><strong>Component and Item Detail Pattern Updates</strong></p>',
+'<ul>',
+'  <li>Fixed issues in the Cards pattern in the Component Primitives section.</li>',
+'  <li>Fixed issues and did minor styling cleanup for the Tree Selection pattern in the Item Details section.</li>',
+'</ul>',
+'',
 '<h3 class="u-text-subheading-sm">Version 26.1.3</h3>',
 '<p><strong>Component and Item Detail Pattern Updates</strong></p>',
 '<ul>',
@@ -12506,7 +12558,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-tachometer'' as icon_class,',
 '    ''Metrics'' as title,',
 '    ''Highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays.'' as description,',
-'    null as page_alias',
+'    ''metrics'' as page_alias',
 'from sys.dual',
 '',
 'union all',
@@ -12515,7 +12567,7 @@ wwv_flow_imp_page.create_page_plug(
 '    ''fa-bar-chart'' as icon_class,',
 '    ''Charts'' as title,',
 '    ''Visualize comparisons, distributions, composition, and change over time using charts suited to the data and task.'' as description,',
-'    null as page_alias',
+'    ''charts'' as page_alias',
 'from sys.dual',
 '',
 'union all',
@@ -16047,24 +16099,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_legend_position=>'bottom'
 ,p_overview_rendered=>'off'
 ,p_time_axis_type=>'disabled'
-);
-wwv_flow_imp_page.create_jet_chart_series(
- p_id=>wwv_flow_imp.id(6307984047348634)
-,p_chart_id=>wwv_flow_imp.id(5886637819756527)
-,p_static_id=>'revenue'
-,p_seq=>40
-,p_name=>'Revenue'
-,p_location=>'REGION_SOURCE'
-,p_series_type=>'bar'
-,p_series_name_column_name=>'SERIES_NAME'
-,p_items_value_column_name=>'VALUE'
-,p_items_label_column_name=>'QUARTER_LABEL'
-,p_items_short_desc_column_name=>'TOOLTIP_TEXT'
-,p_assigned_to_y2=>'off'
-,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
-,p_threshold_display=>'onIndicator'
-,p_required_patch=>wwv_flow_imp.id(24910758457553178721)
 );
 wwv_flow_imp_page.create_jet_chart_series(
  p_id=>wwv_flow_imp.id(5886798315756528)
@@ -31341,6 +31375,3122 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
 ,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+end;
+/
+prompt --application/pages/page_01120
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>1120
+,p_name=>'Metrics'
+,p_alias=>'METRICS'
+,p_step_title=>'Metrics'
+,p_warn_on_unsaved_changes=>'N'
+,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'.ux-about-text {',
+'    padding: 1rem;',
+'    border-bottom: 1px solid var(--ut-component-border-color);',
+'    background: var(--ut-component-toolbar-background-color);',
+'}',
+'',
+'.app-PatternGuidance > p:first-child {',
+'    font-weight: 600;',
+'}',
+'',
+'.app-PatternGuidance h4 {',
+'    text-transform: uppercase;',
+'    font-size: 0.75rem;',
+'    color: var(--ut-component-text-muted-color);',
+'    margin-bottom: 0.25rem;',
+'}',
+'',
+'/* Stretch the percent graph item to full width */',
+'.apex-item-pct-graph {',
+'    width: 100%;',
+'}'))
+,p_step_template=>2528119710305719084
+,p_page_template_options=>'#DEFAULT#'
+,p_page_is_public_y_n=>'Y'
+,p_protection_level=>'C'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'The Metrics pattern page demonstrates reusable metric-style components for highlighting key values, targets, progress, capacity, utilization, and status. Examples show how metrics can support KPI scorecards, status metric cards, gauges, project progr'
+||'ess, and record-detail summaries.',
+'',
+'## When to Use',
+'',
+'Use metric components when users need to understand a value quickly, interpret it against a target, maximum, or status, or see supporting context without opening a full report or dashboard.',
+'',
+'## When to Avoid',
+'',
+'Avoid metrics when users need to inspect many records, compare many attributes in detail, perform bulk actions, enter data, or understand trends over time. Use a report, interactive grid, chart, or dedicated detail page instead. Do not combine too ma'
+||'ny metrics without clear grouping or context.',
+'',
+'## AI Guidance',
+'',
+'Use the examples on this page to choose a metric component based on the information and interpretation needed. Use Metric Cards for multiple headline values, badges when state adds meaning, Status Meter Gauges for a value relative to a maximum or tar'
+||'get, Percent Graphs for progress across repeated records or a single page-level completion value, and Value Attribute Pairs for structured record detail. Keep labels explicit, values prominent, supporting context concise, and formatting consistent. A'
+||'void presenting a metric without a unit, time frame, target, or status when that context is needed for interpretation.'))
+,p_page_component_map=>'27'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(49797279473304980517)
+,p_plug_name=>'About'
+,p_static_id=>'about'
+,p_region_css_classes=>'margin-md'
+,p_icon_css_classes=>'fa-mouse-pointer'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_02'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'Metrics highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays. They work well for quickly communicating performance, progress, capacity, utilization, and current status without requirin'
+||'g a full report or dashboard. These patterns demonstrate common ways to use APEX metric components for KPI scorecards, status metric cards, status gauges, project progress, and project-detail summaries.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(31507347260218950)
+,p_plug_name=>'About'
+,p_static_id=>'about-kpi-scorecards'
+,p_parent_plug_id=>wwv_flow_imp.id(31507298676218949)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>40
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Presents a focused set of headline business measures with current values and concise context for quick comparison.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Executive or operational users who need to understand current performance immediately without reviewing detail.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(31508238544218959)
+,p_plug_name=>'About'
+,p_static_id=>'about-project-detail-summary'
+,p_parent_plug_id=>wwv_flow_imp.id(31507844051218955)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Summarizes the key attributes and values associated with a single record in a compact, easy-to-scan layout.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Detail pages, modal dialogs, side panels, or master-detail pages where users need context before reviewing or editing the main record.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25444617691583456155)
+,p_plug_name=>'About'
+,p_static_id=>'about-project-progress'
+,p_parent_plug_id=>wwv_flow_imp.id(25444617045126456148)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>70
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Shows how far each project has progressed toward completion using a percent graph, with task counts and current progress context.</p>',
+'',
+'<h4>Best For</h4>',
+'',
+'<p>Comparing progress across several projects while retaining project-level context.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25444617912061456157)
+,p_plug_name=>'About'
+,p_static_id=>'about-status-meter-gauge'
+,p_parent_plug_id=>wwv_flow_imp.id(25444617844927456156)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>80
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Illustrates how much of a defined resource capacity is being used and how the current value relates to the available limit.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Situations where the user must interpret a value against a maximum or target - not just read an isolated number.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6263809982191228)
+,p_plug_name=>'About'
+,p_static_id=>'about-status-metric-cards'
+,p_parent_plug_id=>wwv_flow_imp.id(6263065650191220)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Displays current operational metrics with badges that communicate whether each condition is healthy, at risk, or requires attention.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Operational monitoring, service management, compliance, risk, approvals, and any situation where users need both a value and an interpretation of that value.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(49797280191380980524)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(24910759108528178725)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(31507298676218949)
+,p_plug_name=>'KPI Scorecards'
+,p_static_id=>'kpi-scorecards'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6307456640348629)
+,p_plug_name=>'Pattern: Budget Capacity'
+,p_static_id=>'pattern-budget-capacity'
+,p_parent_plug_id=>wwv_flow_imp.id(25444617844927456156)
+,p_region_template_options=>'#DEFAULT#'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>60
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_css_classes=>'u-align-content-center'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Q3 Marketing Budget'' as label,',
+'    58450                 as value,',
+'    100000                as max_value,',
+'    ''$58,450 of $100,000 budget used'' as tooltip',
+'from sys.dual;'))
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_landmark_type=>'region'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a circular Status Meter Gauge for showing a currency amount consumed against a fixed budget, with thresholds that communicate budget risk.',
+'',
+'## When to Use',
+'',
+'Use for spending, funding, or forecast measures where users need to interpret a current amount against a financial limit.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to compare multiple budget categories, analyze spending over time, or review detailed financial transactions. Use a chart, report, or financial detail page instead.',
+'',
+'## AI Guidance',
+'',
+'Use raw numeric values in the source and apply currency formatting in the gauge configuration. Label the budget clearly, provide an exact tooltip such as $58,450 of $100,000 budget used, and set thresholds to reflect meaningful financial risk.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6307522437348630)
+,p_region_id=>wwv_flow_imp.id(6307456640348629)
+,p_chart_type=>'dial'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_value_text_type=>'number'
+,p_value_format_type=>'currency'
+,p_value_decimal_places=>0
+,p_value_numeric_pattern=>'$XK'
+,p_value_format_scaling=>'auto'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_gauge_orientation=>'circular'
+,p_gauge_indicator_size=>1
+,p_gauge_inner_radius=>.7
+,p_gauge_plot_area=>'on'
+,p_gauge_start_angle=>90
+,p_gauge_angle_extent=>360
+,p_show_gauge_value=>true
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6307674967348631)
+,p_chart_id=>wwv_flow_imp.id(6307522437348630)
+,p_static_id=>'utilization'
+,p_seq=>10
+,p_name=>'Utilization'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'dial'
+,p_items_value_column_name=>'VALUE'
+,p_items_max_value=>'MAX_VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_items_short_desc_column_name=>'TOOLTIP'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_values=>'60000,85000,100000'
+,p_threshold_colors=>'green,yellow,red'
+,p_threshold_display=>'currentOnly'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(31506097578218937)
+,p_plug_name=>'Pattern: KPI Scorecards'
+,p_static_id=>'pattern-kpi-scorecards'
+,p_parent_plug_id=>wwv_flow_imp.id(31507298676218949)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Total Revenue'' as title,',
+'    ''$2.4M''         as metric,',
+'    ''This month''    as meta,',
+'    ''fa fa-dollar''  as icon',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Open Orders'',',
+'    ''1,248'',',
+'    ''Currently open'',',
+'    ''fa fa-shopping-cart''',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''On-Time Delivery'',',
+'    ''94.6%'',',
+'    ''This month'',',
+'    ''fa fa-truck''',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Avg. Resolution'',',
+'    ''3.2 days'',',
+'    ''Last 30 days'',',
+'    ''fa fa-clock-o''',
+'from sys.dual;'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$METRIC_CARD'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_landmark_type=>'region'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'AVATAR_ALIGNMENT', 't-MetricCard-body--avatarAlignmentStart',
+  'AVATAR_ICON', '&ICON.',
+  'AVATAR_POSITION', 't-MetricCard-body--avatarPositionInline',
+  'AVATAR_SHAPE', 't-Avatar--rounded',
+  'AVATAR_TYPE', 'icon',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'N',
+  'META', '&META.',
+  'METRIC', '&METRIC.',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates Metric Cards for presenting a focused set of headline business KPIs with prominent values, concise time or context metadata, and category icons.',
+'',
+'## When to Use',
+'',
+'Use for executive or operational overviews where users need to understand current performance quickly without reviewing detailed records.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need detailed comparisons, historical trends, record-level context, bulk actions, or data entry. Use a chart, report, interactive grid, or dedicated detail page instead.',
+'',
+'## AI Guidance',
+'',
+'Use the title for a specific KPI, the metric for the primary value with its unit or format, and the meta text for a time frame or concise qualifier. Use an icon to reinforce meaning without making it the only cue. Keep the cards structurally consiste'
+||'nt and limit the collection to measures that users need to compare at a glance; add badges only when status is part of the KPI''s meaning, as demonstrated in Status Metric Cards.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6304910670348604)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6058468921169743)
+,p_name=>'META'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'META'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6058378856169742)
+,p_name=>'METRIC'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'METRIC'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6058236944169741)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(49817780688320706010)
+,p_plug_name=>'Pattern: Percent Capacity'
+,p_static_id=>'pattern-percent-capacity'
+,p_parent_plug_id=>wwv_flow_imp.id(25444617844927456156)
+,p_region_template_options=>'#DEFAULT#'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>40
+,p_plug_grid_column_css_classes=>'u-align-content-center'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Support Team Utilization'' as label,',
+'    round(41 / 50 * 100, 1)    as value,',
+'    100                        as max_value,',
+'    ''Percent capacity used''    as tooltip',
+'from sys.dual;'))
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_landmark_type=>'region'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a circular Status Meter Gauge for showing percentage capacity used against a defined maximum, with thresholds that indicate when utilization requires attention.',
+'',
+'## When to Use',
+'',
+'Use for team utilization, service capacity, quota consumption, or other percentage-based measures where the current value needs to be interpreted against a limit or target.',
+'',
+'## When to Avoid',
+'',
+'Avoid when there is no meaningful maximum or target, when users need to understand change over time, or when several categories must be compared precisely. Use a chart, report, or table instead.',
+'',
+'## AI Guidance',
+'',
+'Use a clear label for the resource and provide a tooltip that states the current value and limit. Set the maximum to a meaningful capacity, use thresholds to communicate consistent attention levels, and keep the threshold colors semantically consiste'
+||'nt with the rest of the application.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6306738215348622)
+,p_region_id=>wwv_flow_imp.id(49817780688320706010)
+,p_chart_type=>'dial'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_value_text_type=>'percent'
+,p_value_format_scaling=>'auto'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_gauge_orientation=>'circular'
+,p_gauge_indicator_size=>1
+,p_gauge_inner_radius=>.7
+,p_gauge_plot_area=>'on'
+,p_gauge_start_angle=>90
+,p_gauge_angle_extent=>360
+,p_show_gauge_value=>true
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6306803148348623)
+,p_chart_id=>wwv_flow_imp.id(6306738215348622)
+,p_static_id=>'utilization'
+,p_seq=>10
+,p_name=>'Utilization'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'dial'
+,p_items_value_column_name=>'VALUE'
+,p_items_max_value=>'MAX_VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_items_short_desc_column_name=>'TOOLTIP'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_values=>'70,85,100'
+,p_threshold_colors=>'#8be89a,#fee47f,#ff3b30'
+,p_threshold_display=>'currentOnly'
+,p_reference_line_values=>'85'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6959331568595806)
+,p_plug_name=>'Pattern: Project Detail Summary'
+,p_static_id=>'pattern-project-detail-summary'
+,p_title=>'Customer Portal Refresh'
+,p_parent_plug_id=>wwv_flow_imp.id(31507844051218955)
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_template_component_type=>'PARTIAL'
+,p_plug_source_type=>'TMPL_THEME_42$CONTENT_ROW'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'AVATAR_ICON', 'fa-window-user',
+  'AVATAR_SHAPE', 't-Avatar--rounded',
+  'AVATAR_SIZE', 't-Avatar--xs',
+  'AVATAR_TYPE', 'icon',
+  'DESCRIPTION', 'PRJ-1042',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'N',
+  'TITLE', 'Customer Portal Refresh')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a record-detail summary that combines a prominent record header, value-attribute pairs, and a percent graph to present a single project''s identity, supporting attributes, and completion status.',
+'',
+'## When to Use',
+'',
+'Use on detail pages, modal dialogs, side panels, and master-detail views where users need context about one record before reviewing or editing it.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to browse or compare many records, inspect a large set of attributes, perform bulk actions, or enter extensive data. Use a report, interactive grid, or form instead.',
+'',
+'## AI Guidance',
+'',
+'Use a Content Row or equivalent record header for the primary identity and concise metadata. Use Value Attribute Pairs for a small, scannable set of supporting attributes, excluding values already represented in the header. Use a Percent Graph page i'
+||'tem for a single completion value and keep its label visible. Keep the layout focused on one record rather than turning it into a dashboard.'))
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(49817637591151060941)
+,p_name=>'Pattern: Project Progress'
+,p_static_id=>'pattern-project-progress'
+,p_parent_plug_id=>wwv_flow_imp.id(25444617045126456148)
+,p_template=>3372714138756020509
+,p_display_sequence=>60
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlightOff:t-Report--noBorders'
+,p_new_grid_row=>false
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''ERP Upgrade'' as project_name,',
+'    round(18 / 25 * 100, 1) as progress_pct,',
+'    ''18 of 25 tasks'' as progress_detail,',
+'    ''At Risk'' as status',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Mobile Redesign'',',
+'    round(9 / 20 * 100, 1),',
+'    ''9 of 20 tasks'',',
+'    ''On Track''',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Data Migration'',',
+'    round(41 / 45 * 100, 1),',
+'    ''41 of 45 tasks'',',
+'    ''Almost Complete''',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Customer Portal'',',
+'    round(12 / 30 * 100, 1),',
+'    ''12 of 30 tasks'',',
+'    ''On Track''',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Security Review'',',
+'    round(6 / 18 * 100, 1),',
+'    ''6 of 18 tasks'',',
+'    ''Blocked''',
+'from sys.dual',
+'',
+'order by progress_pct desc;'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>2540130677583398057
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+,p_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a Classic Report with a Percent Graph column for comparing completion across multiple projects while retaining the project name and progress detail for each row.',
+'',
+'## When to Use',
+'',
+'Use for projects, initiatives, workstreams, or task groups where users need to scan progress across several records and retain concise row-level context.',
+'',
+'## When to Avoid',
+'',
+'Avoid for a single-record completion value, detailed project analysis, historical progress trends, or collections that require filtering, editing, or bulk actions. Use a Percent Graph page item, chart, interactive report, or interactive grid instead.',
+'',
+'## AI Guidance',
+'',
+'Use a numeric value from 0 to 100 for the Percent Graph column, keep the project name visible as the row identifier, and use an adjacent text column for exact progress context such as task counts. Do not rely on the graph alone to communicate importa'
+||'nt status; include meaningful text when the state affects interpretation.'))
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6306561744348620)
+,p_query_column_id=>3
+,p_column_alias=>'PROGRESS_DETAIL'
+,p_column_display_sequence=>30
+,p_column_heading=>'Progress Detail'
+,p_heading_alignment=>'LEFT'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6306428891348619)
+,p_query_column_id=>2
+,p_column_alias=>'PROGRESS_PCT'
+,p_column_display_sequence=>20
+,p_column_heading=>'Progress Percentage'
+,p_column_format=>'PCT_GRAPH:::'
+,p_heading_alignment=>'LEFT'
+,p_display_as=>'WITHOUT_MODIFICATION'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6306308775348618)
+,p_query_column_id=>1
+,p_column_alias=>'PROJECT_NAME'
+,p_column_display_sequence=>10
+,p_column_heading=>'Project Name'
+,p_heading_alignment=>'LEFT'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6306634867348621)
+,p_query_column_id=>4
+,p_column_alias=>'STATUS'
+,p_column_display_sequence=>40
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6307146638348626)
+,p_plug_name=>'Pattern: Seat Capacity'
+,p_static_id=>'pattern-seat-capacity'
+,p_parent_plug_id=>wwv_flow_imp.id(25444617844927456156)
+,p_region_template_options=>'#DEFAULT#'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>70
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_css_classes=>'u-align-content-center'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Seats Assigned''          as label,',
+'    41                        as value,',
+'    50                        as max_value,',
+'    ''41 of 50 seats assigned'' as tooltip',
+'from sys.dual;'))
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_landmark_type=>'region'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a horizontal Status Meter Gauge for showing an absolute count against an available capacity, such as assigned seats out of total seats.',
+'',
+'## When to Use',
+'',
+'Use for seats, licenses, inventory, staffing, reservations, or other count-based resources where users need to see both the current amount and the remaining capacity.',
+'',
+'## When to Avoid',
+'',
+'Avoid when the limit is not meaningful, when the measure is primarily a percentage, or when users need a historical view or detailed breakdown. Use a chart, report, or table instead.',
+'',
+'## AI Guidance',
+'',
+'Use raw numeric values for the current amount and maximum capacity, and provide a tooltip that expresses the relationship in user terms, such as 41 of 50 seats assigned. Prefer a horizontal gauge when the count relationship is more important than a p'
+||'ercentage view.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6307202803348627)
+,p_region_id=>wwv_flow_imp.id(6307146638348626)
+,p_chart_type=>'dial'
+,p_width=>'250'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_value_text_type=>'number'
+,p_value_position=>'auto'
+,p_value_format_scaling=>'auto'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_gauge_orientation=>'horizontal'
+,p_gauge_indicator_size=>1
+,p_gauge_plot_area=>'on'
+,p_show_gauge_value=>true
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6307387284348628)
+,p_chart_id=>wwv_flow_imp.id(6307202803348627)
+,p_static_id=>'utilization'
+,p_seq=>10
+,p_name=>'Utilization'
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'dial'
+,p_items_value_column_name=>'VALUE'
+,p_items_max_value=>'MAX_VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_items_short_desc_column_name=>'TOOLTIP'
+,p_color=>'#4251bf'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'currentOnly'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6263112863191221)
+,p_plug_name=>'Pattern: Status Metric Cards'
+,p_static_id=>'pattern-status-metric-cards'
+,p_parent_plug_id=>wwv_flow_imp.id(6263065650191220)
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''Service Availability'' as title,',
+'    ''99.95%''             as metric,',
+'    ''Last 30 days''       as meta,',
+'    ''fa-server''          as icon,',
+'    ''Healthy''            as badge_label,',
+'    ''success''            as badge_state',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Open Incidents''     as title,',
+'    ''3''                  as metric,',
+'    ''2 critical''         as meta,',
+'    ''fa-exclamation-triangle'' as icon,',
+'    ''Attention''          as badge_label,',
+'    ''warning''            as badge_state',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Pending Reviews''    as title,',
+'    ''12''                 as metric,',
+'    ''Due this week''      as meta,',
+'    ''fa-file-text-o''     as icon,',
+'    ''Review''             as badge_label,',
+'    ''info''               as badge_state',
+'from sys.dual',
+'',
+'union all',
+'',
+'select',
+'    ''Failed Jobs''        as title,',
+'    ''1''                  as metric,',
+'    ''Last run 15 minutes ago'' as meta,',
+'    ''fa-cogs''            as icon,',
+'    ''Error''              as badge_label,',
+'    ''danger''             as badge_state',
+'from sys.dual'))
+,p_template_component_type=>'REPORT'
+,p_lazy_loading=>false
+,p_plug_source_type=>'TMPL_THEME_42$METRIC_CARD'
+,p_plug_query_num_rows=>15
+,p_plug_query_num_rows_type=>'SET'
+,p_show_total_row_count=>false
+,p_landmark_type=>'region'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'AVATAR_ALIGNMENT', 't-MetricCard-body--avatarAlignmentCenter',
+  'AVATAR_ICON', '&ICON.',
+  'AVATAR_POSITION', 't-MetricCard-body--avatarPositionInline',
+  'AVATAR_SHAPE', 't-Avatar--rounded',
+  'AVATAR_SIZE', 't-Avatar--sm',
+  'AVATAR_STYLE', 't-MetricCard-avatar--subtle',
+  'AVATAR_TYPE', 'icon',
+  'BADGE_LABEL', '&BADGE_LABEL.',
+  'BADGE_LABEL_DISPLAY', 'N',
+  'BADGE_STATE', 'BADGE_STATE',
+  'BADGE_STYLE', 't-Badge--subtle',
+  'BADGE_VALUE', 'BADGE_LABEL',
+  'DISPLAY_AVATAR', 'Y',
+  'DISPLAY_BADGE', 'Y',
+  'LAYOUT', '2cols',
+  'META', '&META.',
+  'METRIC', '&METRIC.',
+  'TITLE', '&TITLE.')).to_clob
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates Metric Cards for presenting current operational values with a category icon, prominent metric, supporting context, and status badge.',
+'',
+'## When to Use',
+'',
+'Use for operational monitoring, service management, compliance, risk, approvals, and other situations where users need both a value and an interpretation of its current condition.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need detailed records, exact comparison across many attributes, historical trends, bulk actions, or data entry. Use a report, chart, interactive grid, or dedicated detail page instead.',
+'',
+'## AI Guidance',
+'',
+'Use the title for the metric name, the metric for the primary value, and the meta text for a unit, time frame, or concise qualifier. Use the icon to reinforce the metric category and use one badge to communicate its current state; the badge state sho'
+||'uld add meaning rather than repeat the metric. Keep the hierarchy and formatting consistent across the cards, and do not rely on color alone to communicate status.'))
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6959796064595810)
+,p_name=>'BADGE_LABEL'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_LABEL'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>60
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6959823866595811)
+,p_name=>'BADGE_STATE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'BADGE_STATE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>70
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6959633393595809)
+,p_name=>'ICON'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'ICON'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>50
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6263596579191225)
+,p_name=>'META'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'META'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>40
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6263429691191224)
+,p_name=>'METRIC'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'METRIC'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>30
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(6263363196191223)
+,p_name=>'TITLE'
+,p_source_type=>'DB_COLUMN'
+,p_source_expression=>'TITLE'
+,p_data_type=>'VARCHAR2'
+,p_display_sequence=>20
+,p_is_group=>false
+,p_use_as_row_header=>false
+,p_is_primary_key=>false
+,p_available_clientside=>false
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(31507844051218955)
+,p_plug_name=>'Project Detail Summary'
+,p_static_id=>'project-detail-summary'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>80
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_report_region(
+ p_id=>wwv_flow_imp.id(92555609556662871173)
+,p_name=>'Project Details'
+,p_static_id=>'project-details'
+,p_parent_plug_id=>wwv_flow_imp.id(6959331568595806)
+,p_template=>4502917002193490937
+,p_display_sequence=>20
+,p_region_template_options=>'#DEFAULT#'
+,p_component_template_options=>'#DEFAULT#:t-AVPList--variableLabelLarge:t-AVPList--leftAligned'
+,p_new_grid_row=>false
+,p_new_grid_column=>false
+,p_source_type=>'NATIVE_SQL_REPORT'
+,p_query_type=>'SQL'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    ''PRJ-1042''                as project_id,',
+'    ''Customer Portal Refresh'' as project_name,',
+'    ''Maya Chen''               as owner,',
+'    ''In Progress''             as status,',
+'    ''High''                    as priority,',
+'    date ''2026-12-15''         as target_date,',
+'    78450                     as budget,',
+'    68                        as completion,',
+'    date ''2026-09-15''         as last_updated',
+'from sys.dual;'))
+,p_ajax_enabled=>'Y'
+,p_lazy_loading=>false
+,p_query_row_template=>2101991776017792140
+,p_query_num_rows=>15
+,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_csv_output=>'N'
+,p_prn_output=>'N'
+,p_sort_null=>'L'
+,p_plug_query_strip_html=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6309385517348648)
+,p_query_column_id=>7
+,p_column_alias=>'BUDGET'
+,p_column_display_sequence=>80
+,p_column_heading=>'Budget'
+,p_column_format=>'FML999G999G999G999G990D00'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6309496474348649)
+,p_query_column_id=>8
+,p_column_alias=>'COMPLETION'
+,p_column_display_sequence=>110
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6309578546348650)
+,p_query_column_id=>9
+,p_column_alias=>'LAST_UPDATED'
+,p_column_display_sequence=>100
+,p_column_heading=>'Last Updated'
+,p_column_format=>'Mon DD, YYYY'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6308975374348644)
+,p_query_column_id=>3
+,p_column_alias=>'OWNER'
+,p_column_display_sequence=>40
+,p_column_heading=>'Owner'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6309192919348646)
+,p_query_column_id=>5
+,p_column_alias=>'PRIORITY'
+,p_column_display_sequence=>60
+,p_column_heading=>'Priority'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6308783791348642)
+,p_query_column_id=>1
+,p_column_alias=>'PROJECT_ID'
+,p_column_display_sequence=>20
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6308842345348643)
+,p_query_column_id=>2
+,p_column_alias=>'PROJECT_NAME'
+,p_column_display_sequence=>10
+,p_hidden_column=>'Y'
+,p_derived_column=>'N'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6309049122348645)
+,p_query_column_id=>4
+,p_column_alias=>'STATUS'
+,p_column_display_sequence=>50
+,p_column_heading=>'Status'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_report_columns(
+ p_id=>wwv_flow_imp.id(6309238870348647)
+,p_query_column_id=>6
+,p_column_alias=>'TARGET_DATE'
+,p_column_display_sequence=>90
+,p_column_heading=>'Target Date'
+,p_column_format=>'Mon DD, YYYY'
+,p_heading_alignment=>'LEFT'
+,p_disable_sort_column=>'N'
+,p_derived_column=>'N'
+,p_include_in_export=>'Y'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25444617045126456148)
+,p_plug_name=>'Project Progress'
+,p_static_id=>'project-progress'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>60
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25444617844927456156)
+,p_plug_name=>'Status Meter Gauge'
+,p_static_id=>'status-meter-gauge'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6263065650191220)
+,p_plug_name=>'Status Metric Cards'
+,p_static_id=>'status-metric-cards'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>40
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(92555608643967871164)
+,p_plug_name=>'Region Display Selector'
+,p_static_id=>'tabs'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'REGION_POSITION_02'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_region_icons', 'N',
+  'include_show_all', 'Y',
+  'rds_mode', 'STANDARD',
+  'remember_selection', 'USER')).to_clob
+);
+wwv_flow_imp_page.create_page_item(
+ p_id=>wwv_flow_imp.id(6959419742595807)
+,p_name=>'P1120_COMPLETION'
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(6959331568595806)
+,p_use_cache_before_default=>'NO'
+,p_prompt=>'Completion'
+,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select',
+'    68 as completion',
+'from sys.dual;'))
+,p_source_type=>'QUERY'
+,p_display_as=>'NATIVE_PCT_GRAPH'
+,p_field_template=>3033038003750078790
+,p_item_template_options=>'#DEFAULT#'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'foreground_color', '#4251bf',
+  'show_value', 'Y')).to_clob
+);
+end;
+/
+prompt --application/pages/page_01130
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>1130
+,p_name=>'Charts'
+,p_alias=>'CHARTS'
+,p_step_title=>'Charts'
+,p_autocomplete_on_off=>'OFF'
+,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'.ux-about-text {',
+'    padding: 1rem;',
+'    border-bottom: 1px solid var(--ut-component-border-color);',
+'    background: var(--ut-component-toolbar-background-color);',
+'}',
+'',
+'.app-PatternGuidance > p:first-child {',
+'    font-weight: 600;',
+'}',
+'',
+'.app-PatternGuidance h4 {',
+'    text-transform: uppercase;',
+'    font-size: 0.75rem;',
+'    color: var(--ut-component-text-muted-color);',
+'    margin-bottom: 0.25rem;',
+'}'))
+,p_step_template=>2528119710305719084
+,p_page_template_options=>'#DEFAULT#'
+,p_page_is_public_y_n=>'Y'
+,p_protection_level=>'C'
+,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'The Charts pattern page demonstrates use-case-driven Oracle APEX chart configurations for analyzing trends, comparing values, ranking items, tracking progress, and showing composition. Examples include line, line with area, grouped bar, stacked bar, '
+||'combination, pie, and donut charts.',
+'',
+'## When to Use',
+'',
+'Use charts when users need to identify change over time, compare categories or series, understand relative position, monitor performance against a target, or see how a total is distributed across meaningful parts. Choose the chart structure based on '
+||'the question users need to answer, not only on the type of data available.',
+'',
+'## When to Avoid',
+'',
+'Avoid charts when users need to read exact values across many rows, compare numerous attributes, enter or edit data, or inspect detailed records. Use a report, interactive grid, table, or dedicated detail page when precise lookup or dense comparison '
+||'is more important than visual pattern recognition. Avoid adding series, categories, labels, or decorative effects that make the chart difficult to read.',
+'',
+'## AI Guidance',
+'',
+'Use the examples on this page as references for selecting and configuring charts around a specific analytical question. Identify the measure, category, time grain, comparison baseline, and intended decision before choosing a chart. Use line-based cha'
+||'rts for trends, bars for category comparisons and rankings, combination charts for actual-versus-target views, and pie or donut charts for manageable part-to-whole relationships. Keep series counts low, use consistent units and scales, format labels '
+||'and tooltips clearly, and use color to reinforce meaning rather than decoration.'))
+,p_page_component_map=>'04'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(49804153328094038483)
+,p_plug_name=>'About'
+,p_static_id=>'about'
+,p_region_css_classes=>'margin-md'
+,p_icon_css_classes=>'fa-mouse-pointer'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_02'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'Charts visualize comparisons, distributions, composition, and change over time using charts suited to the data and task. They work well when users need to understand trends, compare values, rank items, track progress, or see how a total is distribute'
+||'d across meaningful categories. These patterns demonstrate common ways to use the APEX Charts component for time series, comparing values, ranking items, tracking progress, and showing composition.'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25451491766850514123)
+,p_plug_name=>'About'
+,p_static_id=>'about-composition'
+,p_parent_plug_id=>wwv_flow_imp.id(25451491699716514122)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>40
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+unistr('<p>Shows how a total is distributed across meaningful categories, using status slices and project-task groupings to communicate each category\2019s share of the whole.</p>'),
+'',
+'<h4>Best For</h4>',
+'<p>Part-to-whole relationships where the total is important and the number of categories is manageable enough for users to distinguish the slices.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25451491546372514121)
+,p_plug_name=>'About'
+,p_static_id=>'about-item-ranking'
+,p_parent_plug_id=>wwv_flow_imp.id(25451490899915514114)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>40
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Orders items by a measure so users can identify the strongest and weakest performers, including positive and negative variance from a baseline.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Top and bottom performers, customer rankings, department variance, leaders and laggards, and other situations where relative position matters.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6960412808595817)
+,p_plug_name=>'About'
+,p_static_id=>'about-progress-tracking'
+,p_parent_plug_id=>wwv_flow_imp.id(6960305256595816)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>40
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Compares actual performance with a target across periods, using grouped bars for discrete period snapshots and a combination chart for actual values with a target reference line.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Monitoring progress against targets, budgets, milestones, or plans where the size and direction of the performance gap need to be visible.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38382093333276925)
+,p_plug_name=>'About'
+,p_static_id=>'about-time-series'
+,p_parent_plug_id=>wwv_flow_imp.id(38381698840276921)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>60
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Shows how one or more measures change across ordered time periods, using line and line with area variations to reveal direction, volatility, and contribution over time.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Trends, seasonality, volatility, and relationships between measures where timing and direction are more important than individual category comparison.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38381202049276916)
+,p_plug_name=>'About'
+,p_static_id=>'about-value-comparison'
+,p_parent_plug_id=>wwv_flow_imp.id(38381153465276915)
+,p_region_css_classes=>'app-PatternGuidance'
+,p_icon_css_classes=>'fa-info-circle-o'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>60
+,p_plug_new_grid_row=>false
+,p_plug_grid_column_span=>3
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>Compares revenue across product lines, regions, or categories using grouped and stacked bars to show either direct magnitudes or contribution to a total.</p>',
+'',
+'<h4>Best For</h4>',
+'<p>Comparing revenue, volume, counts, or contribution across a common set of products, regions, departments, or other discrete categories.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(49804377438852846228)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>70
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(24910759108528178725)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(7053753730468001)
+,p_plug_name=>'Pattern: Combination Chart'
+,p_static_id=>'combination-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(6960305256595816)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates monthly actual sales as bars and target sales as a line, combining magnitude and benchmark information in one chart.',
+'',
+'## When to Use',
+'',
+'Use when one measure should be emphasized as discrete values while another measure serves as a continuous reference, target, or threshold.',
+'',
+'## When to Avoid',
+'',
+'Avoid when both measures should be read as equal trend lines or when the measures use unrelated units without a clearly justified secondary axis.',
+'',
+'## AI Guidance',
+'',
+'Use the same month grain and unit for both series. Make actual values visually prominent, use a contrasting or dashed target line, and include the actual value, target value, gap, and performance status in the tooltip.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(7053804353468002)
+,p_region_id=>wwv_flow_imp.id(7053753730468001)
+,p_chart_type=>'combo'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_fill_multi_series_gaps=>false
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'bottom'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'enabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(7053973709468003)
+,p_chart_id=>wwv_flow_imp.id(7053804353468002)
+,p_static_id=>'sales-revenue'
+,p_seq=>10
+,p_name=>'Sales Revenue'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 68.2 AS sales_value FROM dual',
+'    UNION ALL SELECT DATE ''2026-02-01'', 71.4 FROM dual',
+'    UNION ALL SELECT DATE ''2026-03-01'', 74.8 FROM dual',
+'    UNION ALL SELECT DATE ''2026-04-01'', 73.1 FROM dual',
+'    UNION ALL SELECT DATE ''2026-05-01'', 76.9 FROM dual',
+'    UNION ALL SELECT DATE ''2026-06-01'', 79.3 FROM dual',
+'    UNION ALL SELECT DATE ''2026-07-01'', 81.6 FROM dual',
+'    UNION ALL SELECT DATE ''2026-08-01'', 84.2 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    sales_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_color=>'#3f8efc'
+,p_line_style=>'solid'
+,p_line_width=>2
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(7054090058468004)
+,p_chart_id=>wwv_flow_imp.id(7053804353468002)
+,p_static_id=>'target-revenue'
+,p_seq=>20
+,p_name=>'Target Revenue'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 70 AS target_value FROM dual',
+'    UNION ALL SELECT DATE ''2026-02-01'', 72 FROM dual',
+'    UNION ALL SELECT DATE ''2026-03-01'', 74 FROM dual',
+'    UNION ALL SELECT DATE ''2026-04-01'', 76 FROM dual',
+'    UNION ALL SELECT DATE ''2026-05-01'', 78 FROM dual',
+'    UNION ALL SELECT DATE ''2026-06-01'', 80 FROM dual',
+'    UNION ALL SELECT DATE ''2026-07-01'', 82 FROM dual',
+'    UNION ALL SELECT DATE ''2026-08-01'', 84 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    target_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_series_type=>'line'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_color=>'#8f99a8'
+,p_line_style=>'dashed'
+,p_line_width=>2
+,p_line_type=>'auto'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(7054193310468005)
+,p_chart_id=>wwv_flow_imp.id(7053804353468002)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(7054208946468006)
+,p_chart_id=>wwv_flow_imp.id(7053804353468002)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25451491699716514122)
+,p_plug_name=>'Composition'
+,p_static_id=>'composition'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6962357811595836)
+,p_plug_name=>'Pattern: Donut Chart'
+,p_static_id=>'donut-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(25451491699716514122)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a Donut chart that shows how 245 project tasks are distributed across ten projects. Each slice represents a project, and its size represents the number of tasks assigned to that project. The center of the donut remains intentionally unus'
+||'ed.',
+'',
+'## When to Use',
+'',
+'Use when users need to understand part-to-whole composition across a manageable number of project categories, with exact task counts available through labels, the legend, or tooltips.',
+'',
+'## When to Avoid',
+'',
+'Avoid when there are many very small slices, when users need precise comparisons, or when the categories do not form a meaningful whole. Use a bar chart when ranking or comparing exact project totals is more important.',
+'',
+'## AI Guidance',
+'',
+'Use clear project labels, stable colors, and tooltips that include task counts and percentages. Keep the number of slices manageable and group minor projects into an Other category when necessary. Do not rely on the center of the donut to communicate'
+||' a metric; place important totals in the region title, supporting text, or a separate KPI region.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6962423009595837)
+,p_region_id=>wwv_flow_imp.id(6962357811595836)
+,p_chart_type=>'donut'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_value_format_scaling=>'none'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'bottom'
+,p_overview_rendered=>'off'
+,p_pie_other_threshold=>0
+,p_pie_selection_effect=>'highlight'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6962595733595838)
+,p_chart_id=>wwv_flow_imp.id(6962423009595837)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Project Tasks'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ''Customer Portal'' label, 58 value from sys.dual',
+'union all',
+'select ''Mobile App'' label, 44 value from sys.dual',
+'union all',
+'select ''Data Migration'' label, 37 value from sys.dual',
+'union all',
+'select ''Reporting & Analytics'' label, 29 value from sys.dual',
+'union all',
+'select ''Security Upgrade'' label, 25 value from sys.dual',
+'union all',
+'select ''API Integration'' label, 20 value from sys.dual',
+'union all',
+'select ''Workflow Automation'' label, 15 value from sys.dual',
+'union all',
+'select ''User Training'' label, 10 value from sys.dual',
+'union all',
+'select ''Documentation'' label, 5 value from sys.dual',
+'union all',
+'select ''Infrastructure Improvements'' label, 2 value from sys.dual',
+'order by value desc'))
+,p_max_row_count=>20
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'donut'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_items_label_rendered=>true
+,p_items_label_position=>'auto'
+,p_items_label_display_as=>'COMBO'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24921009004548929470)
+,p_plug_name=>'Pattern: Grouped Bar Chart'
+,p_static_id=>'grouped-bar-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(38381153465276915)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>30
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with product_lines as (',
+'    select ''Hardware'' as product_line, 1 as product_line_no from sys.dual',
+'    union all',
+'    select ''Software'', 2 from sys.dual',
+'    union all',
+'    select ''Services'', 3 from sys.dual',
+'    union all',
+'    select ''Support'', 4 from sys.dual',
+'),',
+'regions as (',
+'    select ''North'' as region, 1 as region_no from sys.dual',
+'    union all',
+'    select ''South'', 2 from sys.dual',
+'    union all',
+'    select ''West'', 3 from sys.dual',
+')',
+'select p.product_line as label,',
+'       r.region as series_name,',
+'       round(',
+'           case p.product_line_no',
+'               when 1 then 120000',
+'               when 2 then 95000',
+'               when 3 then 75000',
+'               when 4 then 55000',
+'           end',
+'           + (r.region_no * 12000)',
+'       ) as value',
+'from product_lines p',
+'cross join regions r',
+'order by p.product_line_no,',
+'         r.region_no'))
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates revenue by product line and region, using separate bar series for North, South, and West across the same product categories.',
+'',
+'## When to Use',
+'',
+'Use grouped bars when users need to compare multiple series directly within each category and absolute magnitude is more important than total composition.',
+'',
+'## When to Avoid',
+'',
+'Avoid when the main question concerns contribution to a total, when there are too many series, or when a time trend is more important than category comparison.',
+'',
+'## AI Guidance',
+'',
+'Use the same category order for every series, keep the number of series manageable, use a common scale, and provide a clear legend. Use grouped rather than stacked bars when comparing the same region or product line across groups.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6917102678241268)
+,p_region_id=>wwv_flow_imp.id(24921009004548929470)
+,p_chart_type=>'bar'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'off'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6918802040241269)
+,p_chart_id=>wwv_flow_imp.id(6917102678241268)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Series 1'
+,p_max_row_count=>20
+,p_location=>'REGION_SOURCE'
+,p_series_type=>'bar'
+,p_series_name_column_name=>'SERIES_NAME'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#8a89d1'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6917656848241269)
+,p_chart_id=>wwv_flow_imp.id(6917102678241268)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6918291597241269)
+,p_chart_id=>wwv_flow_imp.id(6917102678241268)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>0
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(12950035733301470)
+,p_plug_name=>'Pattern: Grouped Bar Chart - Quarterly Actual vs Target'
+,p_static_id=>'grouped-bar-chart-actual-target'
+,p_parent_plug_id=>wwv_flow_imp.id(6960305256595816)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with quarterly_revenue as (',
+'    select 1 as quarter_order,',
+'           ''Q1 ''''26'' as quarter_label,',
+'           214.0 as actual_revenue,',
+'           215.0 as target_revenue',
+'    from dual',
+'',
+'    union all',
+'',
+'    select 2,',
+'           ''Q2 ''''26'',',
+'           229.3,',
+'           234.0',
+'    from dual',
+'',
+'    union all',
+'',
+'    select 3,',
+'           ''Q3 ''''26'',',
+'           165.0,',
+'           165.0',
+'    from dual',
+'',
+'    union all',
+'',
+'    select 4,',
+'           ''Q4 ''''26'',',
+'           cast(null as number) as actual_revenue,',
+'           171.0',
+'    from dual',
+'),',
+'chart_data as (',
+'    select',
+'        quarter_order,',
+'        quarter_label,',
+'        ''Actual'' as series_name,',
+'        actual_revenue as value,',
+'        actual_revenue,',
+'        target_revenue,',
+'        case',
+'            when actual_revenue is null then ''In progress''',
+'            when actual_revenue >= target_revenue then ''Met target''',
+'            else ''Below target''',
+'        end as performance_status',
+'    from quarterly_revenue',
+'',
+'    union all',
+'',
+'    select',
+'        quarter_order,',
+'        quarter_label,',
+'        ''Target'' as series_name,',
+'        target_revenue as value,',
+'        actual_revenue,',
+'        target_revenue,',
+'        case',
+'            when actual_revenue is null then ''In progress''',
+'            when actual_revenue >= target_revenue then ''Met target''',
+'            else ''Below target''',
+'        end as performance_status',
+'    from quarterly_revenue',
+')',
+'select',
+'    quarter_order,',
+'    quarter_label,',
+'    series_name,',
+'    value,',
+'    actual_revenue,',
+'    target_revenue,',
+'    performance_status,',
+'    quarter_label || chr(10) ||',
+'    ''Target  $'' || to_char(target_revenue, ''FM999G990D0'') || ''M'' || chr(10) ||',
+'    case',
+'        when actual_revenue is null then ''Actual  In progress''',
+'        else ''Actual  $'' || to_char(actual_revenue, ''FM999G990D0'') || ''M''',
+'    end as tooltip_text',
+'from chart_data',
+'order by',
+'    quarter_order,',
+'    case series_name',
+'        when ''Actual'' then 1',
+'        when ''Target'' then 2',
+'    end;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'QUARTER_ORDER'
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Demonstrates a quarterly grouped bar chart that places actual revenue beside target revenue so users can see performance for each quarter. A missing actual value represents a period that is still in progress rather than zero performance.',
+'',
+'## When to Use',
+'',
+'Use for discrete period snapshots where users need to compare actual and target values directly for each quarter or reporting period.',
+'',
+'## When to Avoid',
+'',
+'Avoid when month-by-month movement or a continuous target trend is the primary question. Use a combination chart or multi-series line chart instead.',
+'',
+'## AI Guidance',
+'',
+'Use the same currency, scale, and period definition for both series. Keep Actual and Target visually distinct, represent unavailable actuals as missing or in progress, and include actual, target, and performance status in the tooltip.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(7063803741544945)
+,p_region_id=>wwv_flow_imp.id(12950035733301470)
+,p_chart_type=>'bar'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'N'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'bottom'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'disabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(7066179830544946)
+,p_chart_id=>wwv_flow_imp.id(7063803741544945)
+,p_static_id=>'actual'
+,p_seq=>20
+,p_name=>'Actual'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH quarterly_revenue AS (',
+'    SELECT 1 AS quarter_order,',
+'           ''Q1 ''''26'' AS quarter_label,',
+'           214.0 AS actual_revenue,',
+'           215.0 AS target_revenue',
+'    FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 2, ''Q2 ''''26'', 229.3, 234.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 3, ''Q3 ''''26'', 165.0, 165.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 4, ''Q4 ''''26'', CAST(NULL AS NUMBER), 171.0 FROM dual',
+')',
+'SELECT',
+'    quarter_order,',
+'    quarter_label,',
+'    actual_revenue AS value,',
+'',
+'    quarter_label || CHR(10) ||',
+'    ''Revenue  $'' || TO_CHAR(target_revenue, ''FM999G990D0'') || ''M'' ||',
+'    CHR(10) ||',
+'    CASE',
+'        WHEN actual_revenue IS NULL THEN ''Actual  In progress''',
+'        ELSE ''Actual  $'' || TO_CHAR(actual_revenue, ''FM999G990D0'') || ''M''',
+'    END AS tooltip_text',
+'',
+'FROM quarterly_revenue',
+'WHERE actual_revenue IS NOT NULL',
+'ORDER BY quarter_order;'))
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'QUARTER_LABEL'
+,p_color=>'#3f8efc'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(7066710883544946)
+,p_chart_id=>wwv_flow_imp.id(7063803741544945)
+,p_static_id=>'target'
+,p_seq=>10
+,p_name=>'Target'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH quarterly_revenue AS (',
+'    SELECT 1 AS quarter_order,',
+'           ''Q1 ''''26'' AS quarter_label,',
+'           214.0 AS actual_revenue,',
+'           215.0 AS target_revenue',
+'    FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 2, ''Q2 ''''26'', 229.3, 234.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 3, ''Q3 ''''26'', 165.0, 165.0 FROM dual',
+'',
+'    UNION ALL',
+'    SELECT 4, ''Q4 ''''26'', CAST(NULL AS NUMBER), 171.0 FROM dual',
+')',
+'SELECT',
+'    quarter_order,',
+'    quarter_label,',
+'    target_revenue AS value,',
+'',
+'    quarter_label || CHR(10) ||',
+'    ''Revenue  $'' || TO_CHAR(target_revenue, ''FM999G990D0'') || ''M'' ||',
+'    CHR(10) ||',
+'    CASE',
+'        WHEN actual_revenue IS NULL THEN ''Actual  In progress''',
+'        ELSE ''Actual  $'' || TO_CHAR(actual_revenue, ''FM999G990D0'') || ''M''',
+'    END AS tooltip_text',
+'',
+'FROM quarterly_revenue',
+'ORDER BY quarter_order;'))
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'QUARTER_LABEL'
+,p_color=>'#8f99a8'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(7064365433544945)
+,p_chart_id=>wwv_flow_imp.id(7063803741544945)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(7064906755544946)
+,p_chart_id=>wwv_flow_imp.id(7063803741544945)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6963137925595844)
+,p_plug_name=>'Pattern: Horizontal Bar Chart'
+,p_static_id=>'horizontal-bar-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(25451490899915514114)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Ranks customers by revenue using a horizontal bar chart so the highest and lowest values can be identified quickly.',
+'',
+'## When to Use',
+'',
+'Use horizontal bars when ranking items, especially when category labels are long or users need to scan an ordered list.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to understand movement over time, compare several dimensions simultaneously, or inspect a large number of records.',
+'',
+'## AI Guidance',
+'',
+'Sort values in descending order, limit the display to a useful top-N set, keep labels readable, and show the value directly or through a concise tooltip. Use a single series when ranking one measure.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6963208184595845)
+,p_region_id=>wwv_flow_imp.id(6963137925595844)
+,p_chart_type=>'bar'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'horizontal'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'value-desc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'off'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6963317181595846)
+,p_chart_id=>wwv_flow_imp.id(6963208184595845)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Top Customers'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ''Customer A'' label, 12 value from sys.dual',
+'union all',
+'select ''Customer B'' label, 26 value from sys.dual',
+'union all',
+'select ''Customer C'' label, 18 value from sys.dual',
+'union all',
+'select ''Customer D'' label, 64 value from sys.dual',
+'union all',
+'select ''Customer E'' label, 29 value from sys.dual',
+'union all',
+'select ''Customer F'' label, 51 value from sys.dual',
+'union all',
+'select ''Customer G'' label, 46 value from sys.dual'))
+,p_max_row_count=>20
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'VALUE DESC'
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#3f8efc'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6963440424595847)
+,p_chart_id=>wwv_flow_imp.id(6963208184595845)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6963548690595848)
+,p_chart_id=>wwv_flow_imp.id(6963208184595845)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24929357292255176815)
+,p_plug_name=>'Pattern: Horizontal Bar Chart - Variance'
+,p_static_id=>'horizontal-bar-chart-variance'
+,p_parent_plug_id=>wwv_flow_imp.id(25451490899915514114)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Shows positive and negative budget variance by department so users can identify favorable and unfavorable deviations from the budget baseline.',
+'',
+'## When to Use',
+'',
+'Use a diverging horizontal bar chart when the direction of a metric matters and values need to be compared against zero or another reference point.',
+'',
+'## When to Avoid',
+'',
+'Avoid when the values represent parts of a whole, when the primary question is a time trend, or when positive and negative values do not have a meaningful shared baseline.',
+'',
+'## AI Guidance',
+'',
+'Keep the zero baseline visible, format positive and negative values consistently, use semantic colors carefully, and order departments to make the largest favorable and unfavorable variances easy to find.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6919700951246483)
+,p_region_id=>wwv_flow_imp.id(24929357292255176815)
+,p_chart_type=>'bar'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'horizontal'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_fill_multi_series_gaps=>false
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'off'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6921417169246484)
+,p_chart_id=>wwv_flow_imp.id(6919700951246483)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Budget Variance by Department'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with budget_variance (sort_order, label, metric_value) as (',
+'    select 1, ''Marketing'', 12 from sys.dual',
+'    union all',
+'    select 2, ''Sales'', 7 from sys.dual',
+'    union all',
+'    select 3, ''Operations'', -4 from sys.dual',
+'    union all',
+'    select 4, ''Support'', -11 from sys.dual',
+')',
+'select label,',
+'       metric_value as value',
+'  from budget_variance',
+' order by metric_value'))
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6920275597246483)
+,p_chart_id=>wwv_flow_imp.id(6919700951246483)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6920884604246483)
+,p_chart_id=>wwv_flow_imp.id(6919700951246483)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'million'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(25451490899915514114)
+,p_plug_name=>'Item Ranking'
+,p_static_id=>'item-ranking'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24929451668820125307)
+,p_plug_name=>'Pattern: Multi Series Line Chart'
+,p_static_id=>'multi-series-line-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(38381698840276921)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>30
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Compares actual and target revenue as two continuous lines across monthly periods, emphasizing how the measures move and diverge over time.',
+'',
+'## When to Use',
+'',
+'Use a multi-series line chart when users need to compare the direction, timing, and gap between related measures across the same time axis.',
+'',
+'## When to Avoid',
+'',
+'Avoid when actual values need to stand out as discrete columns or when the target should function primarily as a reference line. Use the combination chart for that presentation.',
+'',
+'## AI Guidance',
+'',
+'Use the same date grain, unit, and scale for both series. Use a solid line for actual revenue and a contrasting dashed line for target revenue, and include the monthly gap in the tooltip.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(7014152689194975)
+,p_region_id=>wwv_flow_imp.id(24929451668820125307)
+,p_chart_type=>'line'
+,p_height=>'180'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_fill_multi_series_gaps=>false
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'bottom'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'enabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(7015857635194976)
+,p_chart_id=>wwv_flow_imp.id(7014152689194975)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Actual Revenue'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 68.2 AS actual_value FROM dual',
+'    UNION ALL SELECT DATE ''2026-02-01'', 71.4 FROM dual',
+'    UNION ALL SELECT DATE ''2026-03-01'', 74.8 FROM dual',
+'    UNION ALL SELECT DATE ''2026-04-01'', 73.1 FROM dual',
+'    UNION ALL SELECT DATE ''2026-05-01'', 76.9 FROM dual',
+'    UNION ALL SELECT DATE ''2026-06-01'', 79.3 FROM dual',
+'    UNION ALL SELECT DATE ''2026-07-01'', 81.6 FROM dual',
+'    UNION ALL SELECT DATE ''2026-08-01'', 84.2 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    actual_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'line'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_color=>'#3f8efc'
+,p_line_style=>'solid'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(7016483475194976)
+,p_chart_id=>wwv_flow_imp.id(7014152689194975)
+,p_static_id=>'series-2'
+,p_seq=>20
+,p_name=>'Target Revenue'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 70 AS target_value FROM dual',
+'    UNION ALL SELECT DATE ''2026-02-01'', 72 FROM dual',
+'    UNION ALL SELECT DATE ''2026-03-01'', 74 FROM dual',
+'    UNION ALL SELECT DATE ''2026-04-01'', 76 FROM dual',
+'    UNION ALL SELECT DATE ''2026-05-01'', 78 FROM dual',
+'    UNION ALL SELECT DATE ''2026-06-01'', 80 FROM dual',
+'    UNION ALL SELECT DATE ''2026-07-01'', 82 FROM dual',
+'    UNION ALL SELECT DATE ''2026-08-01'', 84 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    target_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_series_type=>'line'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_color=>'#8f99a8'
+,p_line_style=>'dashed'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(7014636722194975)
+,p_chart_id=>wwv_flow_imp.id(7014152689194975)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(7015290744194975)
+,p_chart_id=>wwv_flow_imp.id(7014152689194975)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_min=>65
+,p_max=>85
+,p_format_type=>'currency'
+,p_decimal_places=>0
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24920955931932658348)
+,p_plug_name=>'Pattern: Pie Chart'
+,p_static_id=>'pie-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(25451491699716514122)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Shows the distribution of work items across Open, In Progress, Completed, and On Hold statuses.',
+'',
+'## When to Use',
+'',
+'Use a pie chart when a small number of meaningful categories form a complete whole and approximate proportions are more important than precise comparison.',
+'',
+'## When to Avoid',
+'',
+'Avoid when there are many categories, similar-sized slices, negative values, or a need to compare exact values across categories. Use a bar chart instead.',
+'',
+'## AI Guidance',
+'',
+'Use semantic status colors consistently: blue for Open, amber for In Progress, green for Completed, and gray for On Hold. Keep labels and tooltips clear, and ensure the values represent the same population and time period.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6898370020082783)
+,p_region_id=>wwv_flow_imp.id(24920955931932658348)
+,p_chart_type=>'pie'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_value_format_type=>'decimal'
+,p_value_decimal_places=>0
+,p_value_format_scaling=>'none'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'top'
+,p_overview_rendered=>'off'
+,p_pie_other_threshold=>0
+,p_pie_selection_effect=>'highlight'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6898800463082783)
+,p_chart_id=>wwv_flow_imp.id(6898370020082783)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Item Status'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with status_data (status_order, label, value, slice_color) as (',
+'    select 1, ''Open'', 18, ''#2563EB'' from sys.dual',
+'    union all',
+'    select 2, ''In Progress'', 34, ''#F59E0B'' from sys.dual',
+'    union all',
+'    select 3, ''Completed'', 21, ''#16A34A'' from sys.dual',
+'    union all',
+'    select 4, ''On Hold'', 27, ''#64748B'' from sys.dual',
+')',
+'select label,',
+'       value,',
+'       slice_color',
+'from status_data',
+'order by status_order'))
+,p_max_row_count=>20
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'pie'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'&SLICE_COLOR.'
+,p_items_label_rendered=>true
+,p_items_label_position=>'auto'
+,p_items_label_display_as=>'LABEL'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6960305256595816)
+,p_plug_name=>'Progress Tracking'
+,p_static_id=>'progress-tracking'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>40
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24923427427841131138)
+,p_plug_name=>'Pattern: Single Series Line Chart'
+,p_static_id=>'single-series-line-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(38381698840276921)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+'Shows the month-by-month trend of a single revenue measure across an ordered time period.',
+'',
+'## When to Use',
+'',
+'Use a single-series line chart when the primary question is whether one measure is increasing, decreasing, stable, or volatile over time.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to compare unrelated categories, rank items, or understand part-to-whole composition.',
+'',
+'## AI Guidance',
+'',
+'Use a true date column for the time axis, preserve chronological ordering, use a consistent unit and scale, and keep markers or tooltips available when users need to inspect individual periods.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6902332927219758)
+,p_region_id=>wwv_flow_imp.id(24923427427841131138)
+,p_chart_type=>'line'
+,p_height=>'180'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hover_behavior=>'dim'
+,p_stack=>'off'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_fill_multi_series_gaps=>false
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'off'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'enabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6904070312219759)
+,p_chart_id=>wwv_flow_imp.id(6902332927219758)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Series 1'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'WITH revenue_data AS (',
+'    SELECT DATE ''2026-01-01'' AS month_date, 63.2 AS actual_value FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-02-01'', 70.4 FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-03-01'', 68.8 FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-04-01'', 73.1 FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-05-01'', 76.9 FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-06-01'', 75.3 FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-07-01'', 81.6 FROM dual',
+'    UNION ALL',
+'    SELECT DATE ''2026-08-01'', 84.2 FROM dual',
+')',
+'SELECT',
+'    month_date,',
+'    TO_CHAR(',
+'        month_date,',
+'        ''FMMon'',',
+'        ''NLS_DATE_LANGUAGE=English''',
+'    ) AS month_label,',
+'    actual_value AS value',
+'FROM revenue_data',
+'ORDER BY month_date;'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'line'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'MONTH_DATE'
+,p_line_style=>'solid'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6902819875219758)
+,p_chart_id=>wwv_flow_imp.id(6902332927219758)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6903489110219759)
+,p_chart_id=>wwv_flow_imp.id(6902332927219758)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'currency'
+,p_decimal_places=>1
+,p_numeric_pattern=>'$#M'
+,p_format_scaling=>'million'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'min'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6962646784595839)
+,p_plug_name=>'Pattern: Stacked Bar Chart'
+,p_static_id=>'stacked-bar-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(38381153465276915)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>40
+,p_plug_new_grid_row=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+unistr('Shows revenue by product category with each bar divided into North, South, and West regional contributions. The total bar height represents overall revenue while each segment represents a region\2019s contribution.'),
+'',
+'## When to Use',
+'',
+'Use stacked bars when users need to compare category totals and understand how each total is composed.',
+'',
+'## When to Avoid',
+'',
+'Avoid when users need to compare one segment precisely across many categories, when there are too many series, or when the segments do not form a meaningful total.',
+'',
+'## AI Guidance',
+'',
+'Use the same category order in every series, keep the number of segments low, maintain consistent series colors, and use a common unit. Choose stacked bars when total size and composition are both important.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6962779543595840)
+,p_region_id=>wwv_flow_imp.id(6962646784595839)
+,p_chart_type=>'bar'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hover_behavior=>'dim'
+,p_stack=>'on'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'off'
+,p_legend_position=>'auto'
+,p_overview_rendered=>'off'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6962807792595841)
+,p_chart_id=>wwv_flow_imp.id(6962779543595840)
+,p_static_id=>'north'
+,p_seq=>10
+,p_name=>'North'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with north_revenue (label, category_order, value) as (',
+'    select ''Hardware'', 1, 122000 from sys.dual',
+'    union all',
+'    select ''Software'', 2, 105000 from sys.dual',
+'    union all',
+'    select ''Services'', 3, 73000 from sys.dual',
+'    union all',
+'    select ''Support'', 4, 57000 from sys.dual',
+')',
+'select label,',
+'       value',
+'from north_revenue',
+'order by category_order'))
+,p_max_row_count=>20
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#5856d6'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6963604513595849)
+,p_chart_id=>wwv_flow_imp.id(6962779543595840)
+,p_static_id=>'south'
+,p_seq=>20
+,p_name=>'South'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with south_revenue (label, category_order, value) as (',
+'    select ''Hardware'', 1, 142000 from sys.dual',
+'    union all',
+'    select ''Software'', 2, 105000 from sys.dual',
+'    union all',
+'    select ''Services'', 3, 89000 from sys.dual',
+'    union all',
+'    select ''Support'', 4, 77000 from sys.dual',
+')',
+'select label,',
+'       value',
+'from south_revenue',
+'order by category_order'))
+,p_max_row_count=>20
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#ff2d55'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6963790590595850)
+,p_chart_id=>wwv_flow_imp.id(6962779543595840)
+,p_static_id=>'west'
+,p_seq=>30
+,p_name=>'West'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'with west_revenue (label, category_order, value) as (',
+'    select ''Hardware'', 1, 142000 from sys.dual',
+'    union all',
+'    select ''Software'', 2, 121000 from sys.dual',
+'    union all',
+'    select ''Services'', 3, 109000 from sys.dual',
+'    union all',
+'    select ''Support'', 4, 77000 from sys.dual',
+')',
+'select label,',
+'       value',
+'from west_revenue',
+'order by category_order'))
+,p_max_row_count=>20
+,p_series_type=>'bar'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#34aadc'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6962982906595842)
+,p_chart_id=>wwv_flow_imp.id(6962779543595840)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'outside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6963004316595843)
+,p_chart_id=>wwv_flow_imp.id(6962779543595840)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>0
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(6961712297595830)
+,p_plug_name=>'Pattern: Stacked Line with Area Chart'
+,p_static_id=>'stacked-line-with-area-chart'
+,p_parent_plug_id=>wwv_flow_imp.id(38381698840276921)
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_escape_on_http_output=>'Y'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_plug_new_grid_row=>false
+,p_plug_new_grid_column=>false
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_JET_CHART'
+,p_plug_comment=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'## Purpose',
+'',
+unistr('Shows two related measures across a recent time period, using stacked areas to emphasize the combined total and each measure\2019s contribution to that total.'),
+'',
+'## When to Use',
+'',
+'Use stacked line with area charts when additive components change over time and users need to understand both the total trend and the relative contribution of each component.',
+'',
+'## When to Avoid',
+'',
+'Avoid when precise comparison between individual series is more important than total composition. Use separate lines instead when series frequently cross or have very different scales.',
+'',
+'## AI Guidance',
+'',
+'Use only additive measures, keep the number of series low, provide meaningful series names, preserve a consistent time grain, and use tooltips to expose exact values because area boundaries can be difficult to compare precisely.'))
+);
+wwv_flow_imp_page.create_jet_chart(
+ p_id=>wwv_flow_imp.id(6961890149595831)
+,p_region_id=>wwv_flow_imp.id(6961712297595830)
+,p_chart_type=>'lineWithArea'
+,p_height=>'180'
+,p_animation_on_display=>'auto'
+,p_animation_on_data_change=>'auto'
+,p_orientation=>'vertical'
+,p_data_cursor=>'auto'
+,p_data_cursor_behavior=>'auto'
+,p_hide_and_show_behavior=>'withRescale'
+,p_hover_behavior=>'dim'
+,p_stack=>'on'
+,p_stack_label=>'off'
+,p_connect_nulls=>'Y'
+,p_sorting=>'label-asc'
+,p_fill_multi_series_gaps=>true
+,p_zoom_and_scroll=>'off'
+,p_tooltip_rendered=>'Y'
+,p_show_series_name=>true
+,p_show_group_name=>true
+,p_show_value=>true
+,p_legend_rendered=>'on'
+,p_legend_position=>'bottom'
+,p_overview_rendered=>'off'
+,p_time_axis_type=>'enabled'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6961963703595832)
+,p_chart_id=>wwv_flow_imp.id(6961890149595831)
+,p_static_id=>'series-1'
+,p_seq=>10
+,p_name=>'Series 1'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select trunc(sysdate) - 23 + (level - 1) as label,',
+'       round(',
+'           65',
+'           + (level * 0.7)',
+'           + (sin(level / 0.9) * 22)',
+'           + (cos(level / 1.7) * 15)',
+'           + case',
+'               when level between 3 and 4 then 28',
+'               when level between 6 and 8 then -24',
+'               when level between 10 and 11 then 34',
+'               when level between 13 and 15 then -30',
+'               when level between 17 and 19 then 26',
+'               when level between 21 and 22 then -22',
+'               when level = 24 then 18',
+'               else 0',
+'             end,',
+'           1',
+'       ) as value',
+'from sys.dual',
+'connect by level <= 48',
+'order by label'))
+,p_query_order_by_type=>'STATIC'
+,p_query_order_by=>'1'
+,p_series_type=>'lineWithArea'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_color=>'#3f8efc'
+,p_line_style=>'solid'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_series(
+ p_id=>wwv_flow_imp.id(6962061125595833)
+,p_chart_id=>wwv_flow_imp.id(6961890149595831)
+,p_static_id=>'series-2'
+,p_seq=>20
+,p_name=>'Series 2'
+,p_data_source_type=>'SQL'
+,p_data_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select trunc(sysdate) - 23 + (level - 1) as label,',
+'       round(',
+'           65',
+'           + (level * 0.7)',
+'           + (sin(level / 0.9) * 22)',
+'           + (cos(level / 1.7) * 15)',
+'           + (sin(level * 2.8) * 7)    -- pseudo-random noise',
+'           + (cos(level * 3.9) * 4)    -- more noise',
+'           + case',
+'               when level between 3 and 4 then 18',
+'               when level between 6 and 8 then -14',
+'               when level between 10 and 11 then 24',
+'               when level between 13 and 15 then -18',
+'               when level between 17 and 19 then 16',
+'               when level between 21 and 22 then -12',
+'               when level = 24 then 10',
+'               else 0',
+'             end,',
+'           1',
+'       ) as value',
+'from sys.dual',
+'connect by level <= 48',
+'order by label;'))
+,p_series_type=>'lineWithArea'
+,p_items_value_column_name=>'VALUE'
+,p_items_label_column_name=>'LABEL'
+,p_line_style=>'dashed'
+,p_line_width=>2
+,p_line_type=>'curved'
+,p_marker_rendered=>'auto'
+,p_marker_shape=>'auto'
+,p_assigned_to_y2=>'off'
+,p_items_label_rendered=>false
+,p_items_label_display_as=>'PERCENT'
+,p_threshold_display=>'onIndicator'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6962108321595834)
+,p_chart_id=>wwv_flow_imp.id(6961890149595831)
+,p_static_id=>'x'
+,p_axis=>'x'
+,p_is_rendered=>'on'
+,p_format_type=>'date-short'
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_major_tick_rendered=>'auto'
+,p_minor_tick_rendered=>'auto'
+,p_tick_label_rendered=>'on'
+,p_tick_label_rotation=>'auto'
+,p_tick_label_position=>'inside'
+);
+wwv_flow_imp_page.create_jet_chart_axis(
+ p_id=>wwv_flow_imp.id(6962252742595835)
+,p_chart_id=>wwv_flow_imp.id(6961890149595831)
+,p_static_id=>'y'
+,p_axis=>'y'
+,p_is_rendered=>'on'
+,p_format_type=>'decimal'
+,p_decimal_places=>0
+,p_format_scaling=>'auto'
+,p_scaling=>'linear'
+,p_baseline_scaling=>'zero'
+,p_position=>'auto'
+,p_major_tick_rendered=>'off'
+,p_minor_tick_rendered=>'off'
+,p_tick_label_rendered=>'on'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(92562482498756929130)
+,p_plug_name=>'Region Display Selector'
+,p_static_id=>'tabs'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'REGION_POSITION_02'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_region_icons', 'N',
+  'include_show_all', 'Y',
+  'rds_mode', 'STANDARD',
+  'remember_selection', 'USER')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38381698840276921)
+,p_plug_name=>'Time Series'
+,p_static_id=>'time-series'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>10
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'BELOW'
+,p_location=>null
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(38381153465276915)
+,p_plug_name=>'Value Comparison'
+,p_static_id=>'value-comparison'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null

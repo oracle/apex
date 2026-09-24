@@ -17,6 +17,22 @@ breadcrumb breadcrumb (
         }
     )
 
+    entry charts (
+        name: Charts
+        pageNumber: 1130
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1130
+            }
+        }
+    )
+
     entry component-primitives (
         name: Component Primitives
         pageNumber: 4
@@ -84,6 +100,22 @@ breadcrumb breadcrumb (
         link {
             target: {
                 page: 6
+            }
+        }
+    )
+
+    entry metrics (
+        name: Metrics
+        pageNumber: 1120
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1120
             }
         }
     )
