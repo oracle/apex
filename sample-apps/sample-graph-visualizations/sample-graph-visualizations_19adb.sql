@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Name: Sample Graph Visualizations - 26ai - 26.4.0
+-- Name: Sample Graph Visualizations - 19adb - DO NOT EDIT
 -- Copyright (c) 2012, 2026 Oracle and/or its affiliates.
 -- Licensed under the Universal Permissive License v 1.0 as shown
 -- at https://oss.oracle.com/licenses/upl/
@@ -30,36 +30,36 @@ begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
 ,p_release=>'26.1.4'
-,p_default_workspace_id=>7814253142834653
-,p_default_application_id=>108
-,p_default_id_offset=>0
-,p_default_owner=>'WKSP_TEST'
+,p_default_workspace_id=>8139735824630701
+,p_default_application_id=>104
+,p_default_id_offset=>15247803676349387
+,p_default_owner=>'RUIJIANG'
 );
 end;
 /
  
-prompt APPLICATION 108 - Sample Graph Visualizations - 26ai - 26.4.0
+prompt APPLICATION 104 - Sample Graph Visualizations - 19adb
 --
 -- Application Export:
---   Application:     108
---   Name:            Sample Graph Visualizations - 26ai - 26.4.0
---   Date and Time:   18:21 Wednesday September 23, 2026
---   Exported By:     TEST_RJ
+--   Application:     104
+--   Name:            Sample Graph Visualizations - 19adb - DO NOT EDIT
+--   Date and Time:   16:39 Wednesday September 23, 2026
+--   Exported By:     TEST1
 --   Flashback:       0
 --   Export Type:     Application Export
---     Pages:                     14
---       Items:                   10
+--     Pages:                     13
+--       Items:                    9
 --       Processes:               11
---       Regions:                104
+--       Regions:                 96
 --       Buttons:                  6
---       Dynamic Actions:          5
+--       Dynamic Actions:          4
 --     Shared Components:
 --       Logic:
 --         Build Options:          1
 --       Navigation:
 --         Lists:                  3
 --         Breadcrumbs:            1
---           Entries:             12
+--           Entries:             11
 --       Security:
 --         Authentication:         1
 --         Authorization:          3
@@ -73,9 +73,9 @@ prompt APPLICATION 108 - Sample Graph Visualizations - 26ai - 26.4.0
 --       Reports:
 --       E-Mail:
 --     Supporting Objects:  Included
---       Install scripts:          5
+--       Install scripts:          4
 --   Version:         26.1.4
---   Instance ID:     7614243263570353
+--   Instance ID:     9752870177456480
 --
 
 prompt --application/delete_application
@@ -87,10 +87,10 @@ prompt --application/create_application
 begin
 wwv_imp_workspace.create_flow(
  p_id=>wwv_flow.g_flow_id
-,p_owner=>nvl(wwv_flow_application_install.get_schema,'WKSP_TEST')
-,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Graph Visualizations - 26ai')
-,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-GRAPH-VISUALIZATIONS-26AI')
-,p_application_group=>wwv_flow_imp.id(17179702084305725062)
+,p_owner=>nvl(wwv_flow_application_install.get_schema,'RUIJIANG')
+,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Graph Visualizations - 19adb')
+,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-GRAPH-VISUALIZATIONS-19ADB')
+,p_application_group=>wwv_flow_imp.id(18016130920271662140)
 ,p_application_group_name=>'Graphviz samples'
 ,p_application_group_static_id=>'graphviz-samples'
 ,p_application_group_comment=>'Group for the graph visualization plugin sample applications'
@@ -100,7 +100,7 @@ wwv_imp_workspace.create_flow(
 ,p_bookmark_checksum_function=>'SH512'
 ,p_max_session_length_sec=>0
 ,p_max_session_idle_sec=>600
-,p_compatibility_mode=>'26.1'
+,p_compatibility_mode=>'21.2'
 ,p_accessible_read_only=>'N'
 ,p_session_state_commits=>'IMMEDIATE'
 ,p_flow_language=>'en'
@@ -111,7 +111,7 @@ wwv_imp_workspace.create_flow(
 ,p_timestamp_tz_format=>'DS'
 ,p_direction_right_to_left=>'N'
 ,p_flow_image_prefix=>nvl(wwv_flow_application_install.get_image_prefix,'')
-,p_authentication_id=>wwv_flow_imp.id(16340545345743909469)
+,p_authentication_id=>wwv_flow_imp.id(12822202193257719972)
 ,p_application_tab_set=>0
 ,p_logo_type=>'T'
 ,p_logo_text=>'Sample Graph Visualizations'
@@ -129,14 +129,16 @@ wwv_imp_workspace.create_flow(
 ,p_tokenize_row_search=>'N'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Graph Visualizations'
-,p_last_updated_on=>wwv_flow_imp.dz('20260923182112Z')
-,p_last_updated_by=>'TEST_RJ'
+,p_last_updated_on=>wwv_flow_imp.dz('20260923163600Z')
+,p_last_updated_by=>'TEST1'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
-,p_files_version=>2461307181726
-,p_version_scn=>'50666665344102'
+,p_files_version=>61
+,p_version_scn=>'50666051622113'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
-,p_is_pwa=>'N'
+,p_is_pwa=>'Y'
+,p_pwa_is_installable=>'N'
+,p_pwa_is_push_enabled=>'N'
 ,p_copyright_banner=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Name: #APP_NAME#',
 'Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.',
@@ -147,18 +149,18 @@ wwv_imp_workspace.create_flow(
 'THIRD_PARTY_LICENSES.txt in the top directory of this project',
 'or at https://github.com/oracle/apex for license information.'))
 ,p_theme_id=>42
-,p_home_url=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.'
-,p_login_url=>'f?p=&APP_ID.:LOGIN:&SESSION.::&DEBUG.'
+,p_home_url=>'f?p=&APP_ID.:1:&SESSION.'
+,p_login_url=>'f?p=&APP_ID.:LOGIN:&APP_SESSION.::&DEBUG.:::'
 ,p_theme_style_by_user_pref=>false
 ,p_built_with_love=>false
 ,p_global_page_id=>0
-,p_navigation_list_id=>wwv_flow_imp.id(16340546208572909490)
+,p_navigation_list_id=>wwv_flow_imp.id(12822203056086719993)
 ,p_navigation_list_position=>'SIDE'
 ,p_navigation_list_template_id=>2469215554099805162
 ,p_nav_list_template_options=>'#DEFAULT#:js-defaultCollapsed:js-navCollapsed--hidden:t-TreeNav--styleA'
 ,p_css_file_urls=>'#APP_FILES#app-icon.css?version=#APP_VERSION#'
 ,p_nav_bar_type=>'LIST'
-,p_nav_bar_list_id=>wwv_flow_imp.id(16340734385490909782)
+,p_nav_bar_list_id=>wwv_flow_imp.id(12822391233004720285)
 ,p_nav_bar_list_template_id=>2849019392706229583
 ,p_nav_bar_template_options=>'#DEFAULT#'
 );
@@ -167,7 +169,7 @@ end;
 prompt --application/shared_components/plugins/region_type/graphviz
 begin
 wwv_flow_imp_shared.create_plugin(
- p_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_plugin_type=>'REGION TYPE'
 ,p_name=>'GRAPHVIZ'
 ,p_display_name=>'Graph Visualization'
@@ -676,84 +678,85 @@ wwv_flow_imp_shared.create_plugin(
 ,p_render_function=>'render'
 ,p_ajax_function=>'ajax'
 ,p_standard_attributes=>'SOURCE_LOCATION:AJAX_ITEMS_TO_SUBMIT:COLUMNS:VALUE_ESCAPE_OUTPUT'
+,p_version_scn=>'44325693928651'
 ,p_version_identifier=>'26.1.6'
-,p_files_version=>2461307181726
+,p_files_version=>1773
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(2429851110720358074)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(2422286627805497879)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Advanced'
 ,p_apexlang_name=>'advanced'
 ,p_static_id=>'advanced'
 ,p_display_sequence=>30
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(13777719299842024468)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(13770154816927164273)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Appearance'
 ,p_apexlang_name=>'appearance'
 ,p_static_id=>'appearance'
 ,p_display_sequence=>10
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(13777719721424024471)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(13770155238509164276)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Callbacks'
 ,p_apexlang_name=>'callbacks'
 ,p_static_id=>'callbacks'
 ,p_display_sequence=>40
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(959858619445927096)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952294136531066901)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Caption'
 ,p_apexlang_name=>'caption'
 ,p_static_id=>'caption'
 ,p_display_sequence=>21
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(959968628117233307)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952404145202373112)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Evolution'
 ,p_apexlang_name=>'evolution'
 ,p_static_id=>'evolution'
 ,p_display_sequence=>22
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(140869593767784569)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(133305110852924374)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Expand'
 ,p_apexlang_name=>'expand'
 ,p_static_id=>'expand'
 ,p_display_sequence=>24
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(959689682820810615)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952125199905950420)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Layout'
 ,p_apexlang_name=>'layout'
 ,p_static_id=>'layout'
 ,p_display_sequence=>20
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(316973968153265994)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(309409485238405799)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Legend'
 ,p_apexlang_name=>'legend'
 ,p_static_id=>'legend'
 ,p_display_sequence=>15
 );
 wwv_flow_imp_shared.create_plugin_attr_group(
- p_id=>wwv_flow_imp.id(39426778313935973)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(31862295399075778)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_title=>'Schema'
 ,p_apexlang_name=>'schema'
 ,p_static_id=>'schema'
 ,p_display_sequence=>23
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(84426169687310463669)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(84418605204395603474)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'APPLICATION'
 ,p_attribute_sequence=>1
 ,p_display_sequence=>10
@@ -766,8 +769,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Settings from template are configured here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(84426169687310463670)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(84418605204395603475)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'APPLICATION'
 ,p_attribute_sequence=>2
 ,p_display_sequence=>20
@@ -780,8 +783,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Settings.BaseStyles from template are configured here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(98785980966038947682)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(98778416483124087487)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>2
 ,p_display_sequence=>120
@@ -791,7 +794,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(2429851110720358074)
+,p_attribute_group_id=>wwv_flow_imp.id(2422286627805497879)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '{',
 '  "legendWidth": 300',
@@ -805,8 +808,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Settings of the graph component like pageSize, legendWidth etc can be provided here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(83953535088300988596)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83945970605386128401)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>4
 ,p_display_sequence=>40
@@ -817,36 +820,36 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'This determines how nodes are positioned in the visual structure of the graph.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83953451724676702204)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(83945887241761842009)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>10
 ,p_display_value=>'Circle'
 ,p_return_value=>'circle'
 ,p_apexlang_name=>'circle'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83953453244393704536)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(83945888761478844341)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>20
 ,p_display_value=>'Concentric'
 ,p_return_value=>'concentric'
 ,p_apexlang_name=>'concentric'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83953538277119996874)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(83945973794205136679)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>30
 ,p_display_value=>'Force'
 ,p_return_value=>'force'
 ,p_apexlang_name=>'force'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(7534911532210476356)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(7527347049295616161)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>70
 ,p_display_value=>'Geographical'
 ,p_return_value=>'geographical'
@@ -854,32 +857,32 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Applies geographical layout to graph elements'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83953456303830708015)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(83945891820915847820)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>40
 ,p_display_value=>'Grid'
 ,p_return_value=>'grid'
 ,p_apexlang_name=>'grid'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83953543173794002214)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(83945978690879142019)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>50
 ,p_display_value=>'Hierarchical'
 ,p_return_value=>'hierarchical'
 ,p_apexlang_name=>'hierarchical'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83953543931243004013)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+ p_id=>wwv_flow_imp.id(83945979448328143818)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_display_sequence=>60
 ,p_display_value=>'Radial'
 ,p_return_value=>'radial'
 ,p_apexlang_name=>'radial'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(38714948308555262)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(31150465393695067)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>5
 ,p_display_sequence=>150
@@ -890,12 +893,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'When enabled, multiple edges between the same source and target vertex will be grouped together in the graph. The grouped edges will be shown as a single edge with a number on it, indicating how many edges have been grouped.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(83957507301594553826)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83949942818679693631)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>6
 ,p_display_sequence=>60
@@ -909,8 +912,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Determines how many elements are shown in the graph.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(83957537153371563723)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83949972670456703528)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>7
 ,p_display_sequence=>151
@@ -920,15 +923,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(959858619445927096)
+,p_attribute_group_id=>wwv_flow_imp.id(952294136531066901)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'If this attribute is assigned with the value <b>FirstName</b>, and if the graph data has a vertex with {''FirstName'': ''Mark'', ''LastName'', ''Taylor''}, the corresponding vertex''s caption will read ''Mark'' in the graph.<br>',
 'Note: There''s no need to include additional quotes when specifying the attribute name or values.'))
 ,p_help_text=>'The property from the graph data that will be shown as a caption beside each vertex in the graph.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(83957567073656572568)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83950002590741712373)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>8
 ,p_display_sequence=>152
@@ -938,15 +941,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(959858619445927096)
+,p_attribute_group_id=>wwv_flow_imp.id(952294136531066901)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'If this attribute is assigned with the value <b>Id</b>, and if the graph data has an edge with {''Id'': 100}, the corresponding edge''s caption will read ''100'' in the graph.<br>',
 'Note: There''s no need to include additional quotes when specifying the attribute name or values.'))
 ,p_help_text=>'The property from the graph data that will be shown as a caption beside each edge of the graph.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(83957612447444296825)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83950047964529436630)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>9
 ,p_display_sequence=>153
@@ -956,12 +959,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'INTEGER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(959858619445927096)
+,p_attribute_group_id=>wwv_flow_imp.id(952294136531066901)
 ,p_help_text=>'Number of characters up to which Vertex and Edge captions will be shown in the graph.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(83957716611029592196)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83950152128114732001)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>10
 ,p_display_sequence=>850
@@ -973,31 +976,31 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_default_value=>'modes:exploration'
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'This attribute contains check boxes - ''Modes'' and ''Exploration''.',
 '''Modes'' checkbox when checked, shows the modes toolbar in the graph, that allows functions like ''Move/Zoom'', ''Fit to Screen'' etc. ',
 '''Exploration'' checkbox when checked, shows the exploration toolbar in the graph, that allows functions like ''Group'', ''Ungroup'' etc.'))
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83957617813357308759)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83957716611029592196)
+ p_id=>wwv_flow_imp.id(83950053330442448564)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83950152128114732001)
 ,p_display_sequence=>20
 ,p_display_value=>'Exploration'
 ,p_return_value=>'exploration'
 ,p_apexlang_name=>'exploration'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(83957722037962597111)
-,p_plugin_attribute_id=>wwv_flow_imp.id(83957716611029592196)
+ p_id=>wwv_flow_imp.id(83950157555047736916)
+,p_plugin_attribute_id=>wwv_flow_imp.id(83950152128114732001)
 ,p_display_sequence=>10
 ,p_display_value=>'Modes'
 ,p_return_value=>'modes'
 ,p_apexlang_name=>'modes'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(22830306127012595475)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(22822741644097735280)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>11
 ,p_display_sequence=>110
@@ -1007,12 +1010,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'JAVASCRIPT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_help_text=>'Javascript to expand a node and fetch it''s neighbors can be specified here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(51307429895458602883)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(51299865412543742688)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>12
 ,p_display_sequence=>120
@@ -1022,7 +1025,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'JAVASCRIPT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Javascript:',
 'const actions = await apex.server.process(''Fetch'',null, {dataType: ''text''});',
@@ -1043,8 +1046,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'FetchActions callback function: Javascript that retrieves the saved state of the graph can be provided here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(51931002307922919826)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(51923437825008059631)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>13
 ,p_display_sequence=>130
@@ -1054,7 +1057,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'JAVASCRIPT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Javascript:',
 '',
@@ -1069,8 +1072,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Javascript that persists the saved state of the graph can be provided here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(38352876525026826459)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(38345312042111966264)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>14
 ,p_display_sequence=>50
@@ -1081,12 +1084,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'Y'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'Show Display Size Control.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(6502202893866316352)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(6494638410951456157)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>15
 ,p_display_sequence=>150
@@ -1096,12 +1099,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'JAVASCRIPT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_help_text=>'UpdateGraphData callback function: Javascript to update the graph data (vertices/edges) of the original graph.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960847922730405699)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(953283439815545504)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>16
 ,p_display_sequence=>9
@@ -1113,12 +1116,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_default_value=>'400'
 ,p_unit=>'px'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'Height of plugin window. Default is 400.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(130688724831216013)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(123124241916355818)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>93
 ,p_display_sequence=>930
@@ -1128,12 +1131,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'JAVASCRIPT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_help_text=>'Provide the Javascript to update the rule based style, passed via the style parameter here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(928965970082542996)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(921401487167682801)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>83
 ,p_display_sequence=>830
@@ -1143,15 +1146,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'COLOR'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(928554568356988989)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(920990085442128794)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(873823869361334031)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(866259386446473836)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>87
 ,p_display_sequence=>870
@@ -1161,7 +1164,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(2429851110720358074)
+,p_attribute_group_id=>wwv_flow_imp.id(2422286627805497879)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '{',
 '  "vertex": {',
@@ -1173,8 +1176,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Styles are applied to all vertices and/or edges unless otherwise indicated in Rule Based Styles.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(43295644811701275)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(35731161896841080)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>98
 ,p_display_sequence=>980
@@ -1193,8 +1196,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 'page_size'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(928554568356988989)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(920990085442128794)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>82
 ,p_display_sequence=>820
@@ -1205,12 +1208,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'Customize background and text color.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(928548080294982239)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(920983597380122044)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>81
 ,p_display_sequence=>810
@@ -1221,11 +1224,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(282574342888657295)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(275009859973797100)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>106
 ,p_display_sequence=>10
@@ -1236,12 +1239,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'Y'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(316973968153265994)
+,p_attribute_group_id=>wwv_flow_imp.id(309409485238405799)
 ,p_help_text=>'Enables autogenerated legend entries based on graph data. Defaults to true. Set to false to rely solely on ruleBasedStyles for legend entries.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(1450904978702573409)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(1443340495787713214)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>94
 ,p_display_sequence=>849
@@ -1253,12 +1256,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_default_value=>'interactionActive:fitToScreenActive:stickyActive:evolutionActive'
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'Specifies the default state of mode options(Select - Move/Zoom, Fit to Screen, Sticky mode, Evolution).'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(1451043391314547713)
-,p_plugin_attribute_id=>wwv_flow_imp.id(1450904978702573409)
+ p_id=>wwv_flow_imp.id(1443478908399687518)
+,p_plugin_attribute_id=>wwv_flow_imp.id(1443340495787713214)
 ,p_display_sequence=>40
 ,p_display_value=>'Enable Evolution Setting'
 ,p_return_value=>'evolutionActive'
@@ -1266,8 +1269,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Specifies the default state of the ''Evolution'' toggle button in the toolbar. True activates the button and false deactivates it.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(1450908690358560285)
-,p_plugin_attribute_id=>wwv_flow_imp.id(1450904978702573409)
+ p_id=>wwv_flow_imp.id(1443344207443700090)
+,p_plugin_attribute_id=>wwv_flow_imp.id(1443340495787713214)
 ,p_display_sequence=>20
 ,p_display_value=>'Enable Fit to Screen'
 ,p_return_value=>'fitToScreenActive'
@@ -1275,8 +1278,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Specifies the default state of the ''Fit to Screen'' toggle button in the toolbar. True activates the button and false deactivates it.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(1450906703155563436)
-,p_plugin_attribute_id=>wwv_flow_imp.id(1450904978702573409)
+ p_id=>wwv_flow_imp.id(1443342220240703241)
+,p_plugin_attribute_id=>wwv_flow_imp.id(1443340495787713214)
 ,p_display_sequence=>10
 ,p_display_value=>'Enable Interaction'
 ,p_return_value=>'interactionActive'
@@ -1284,8 +1287,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Specifies the default state of the ''Select - Move/Zoom'' toggle button in the toolbar. True activates ''Select'' mode and false switches to ''Move/Zoom'' mode.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(1450915218060550781)
-,p_plugin_attribute_id=>wwv_flow_imp.id(1450904978702573409)
+ p_id=>wwv_flow_imp.id(1443350735145690586)
+,p_plugin_attribute_id=>wwv_flow_imp.id(1443340495787713214)
 ,p_display_sequence=>30
 ,p_display_value=>'Enable Sticky Mode'
 ,p_return_value=>'stickyActive'
@@ -1293,8 +1296,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Specifies the default state of the ''Sticky mode'' toggle button in the toolbar. True activates the button and false deactivates it.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(961038413520790561)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(953473930605930366)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>76
 ,p_display_sequence=>760
@@ -1305,27 +1308,27 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(961044906594791725)
-,p_plugin_attribute_id=>wwv_flow_imp.id(961038413520790561)
+ p_id=>wwv_flow_imp.id(953480423679931530)
+,p_plugin_attribute_id=>wwv_flow_imp.id(953473930605930366)
 ,p_display_sequence=>10
 ,p_display_value=>'Arrow'
 ,p_return_value=>'arrow'
 ,p_apexlang_name=>'arrow'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(961045302037792505)
-,p_plugin_attribute_id=>wwv_flow_imp.id(961038413520790561)
+ p_id=>wwv_flow_imp.id(953480819122932310)
+,p_plugin_attribute_id=>wwv_flow_imp.id(953473930605930366)
 ,p_display_sequence=>20
 ,p_display_value=>'None'
 ,p_return_value=>'none'
 ,p_apexlang_name=>'none'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(961238409343849354)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(953673926428989159)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>77
 ,p_display_sequence=>609
@@ -1336,11 +1339,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(140933125522748366)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(133368642607888171)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>101
 ,p_display_sequence=>999
@@ -1351,11 +1354,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(140869593767784569)
+,p_attribute_group_id=>wwv_flow_imp.id(133305110852924374)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(961837588784361774)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(954273105869501579)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>79
 ,p_display_sequence=>790
@@ -1366,12 +1369,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'Escapes HTML content used on vertex/edge tooltip'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(873837249015577079)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(866272766100716884)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>90
 ,p_display_sequence=>900
@@ -1381,7 +1384,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(2429851110720358074)
+,p_attribute_group_id=>wwv_flow_imp.id(2422286627805497879)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '{',
 '  "unit": "day",',
@@ -1393,8 +1396,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Network Evolution configuration'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960076284554556664)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952511801639696469)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>74
 ,p_display_sequence=>740
@@ -1404,40 +1407,40 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'SELECT LIST'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960083485479559280)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960076284554556664)
+ p_id=>wwv_flow_imp.id(952519002564699085)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952511801639696469)
 ,p_display_sequence=>30
 ,p_display_value=>'Both'
 ,p_return_value=>'both'
 ,p_apexlang_name=>'both'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960083052948558438)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960076284554556664)
+ p_id=>wwv_flow_imp.id(952518570033698243)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952511801639696469)
 ,p_display_sequence=>20
 ,p_display_value=>'Edges'
 ,p_return_value=>'edges'
 ,p_apexlang_name=>'edges'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960082665733557779)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960076284554556664)
+ p_id=>wwv_flow_imp.id(952518182818697584)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952511801639696469)
 ,p_display_sequence=>10
 ,p_display_value=>'Vertices'
 ,p_return_value=>'vertices'
 ,p_apexlang_name=>'vertices'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(959975815154437299)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952411332239577104)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>62
 ,p_display_sequence=>620
@@ -1447,33 +1450,33 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'SELECT LIST'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Type of the chart (default ''bar'')'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(959988825702441988)
-,p_plugin_attribute_id=>wwv_flow_imp.id(959975815154437299)
+ p_id=>wwv_flow_imp.id(952424342787581793)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952411332239577104)
 ,p_display_sequence=>10
 ,p_display_value=>'bar'
 ,p_return_value=>'bar'
 ,p_apexlang_name=>'bar'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(959989160911442857)
-,p_plugin_attribute_id=>wwv_flow_imp.id(959975815154437299)
+ p_id=>wwv_flow_imp.id(952424677996582662)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952411332239577104)
 ,p_display_sequence=>20
 ,p_display_value=>'line'
 ,p_return_value=>'line'
 ,p_apexlang_name=>'line'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960037526396500652)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952473043481640457)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>68
 ,p_display_sequence=>680
@@ -1483,15 +1486,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960030992846498606)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952466509931638411)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>67
 ,p_display_sequence=>670
@@ -1501,16 +1504,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Edge Evolution properties (or just string specifying Start property)'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960050413249527739)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952485930334667544)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>70
 ,p_display_sequence=>700
@@ -1521,16 +1524,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Whether to always show or hide excluded values (default false)'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960043863567520351)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952479380652660156)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>69
 ,p_display_sequence=>690
@@ -1540,17 +1543,17 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_examples=>'Array of excluded values: (string | number)[]'
 ,p_help_text=>'Defines exclusion of values'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(959995737335449250)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952431254420589055)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>63
 ,p_display_sequence=>630
@@ -1560,16 +1563,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Aggregation granularity in given unit (default 1)'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(959969253916434722)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952404771001574527)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>61
 ,p_display_sequence=>610
@@ -1579,16 +1582,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Height of the UI component (default 100)'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960089950053567996)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952525467138707801)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>75
 ,p_display_sequence=>750
@@ -1598,11 +1601,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'A string that represents the format in which the date must be displayed,',
 '  the format must include either YYYY, MM, or DD to work, otherwise, it will be ignored.',
@@ -1616,8 +1619,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 '   it would try using a month label, if a month label would be too big, a year label would be used'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960056885637533673)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952492402722673478)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>71
 ,p_display_sequence=>710
@@ -1627,16 +1630,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Number of vertex / edge changes per step'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960063329266537642)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952498846351677447)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>72
 ,p_display_sequence=>720
@@ -1646,16 +1649,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Number of milliseconds between steps'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960069776205546951)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952505293290686756)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>73
 ,p_display_sequence=>730
@@ -1666,18 +1669,18 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'When turned on, network evolution will keep the original vertex positions of the graph <br>',
 'when vertices and edges unfold during playback'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960002507271456192)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952438024356595997)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>64
 ,p_display_sequence=>640
@@ -1687,73 +1690,73 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'SELECT LIST'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Time unit or undefined for numbers (default undefined)'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960010160312458636)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952445677397598441)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>40
 ,p_display_value=>'day'
 ,p_return_value=>'day'
 ,p_apexlang_name=>'day'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960009825237458161)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952445342322597966)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>30
 ,p_display_value=>'hour'
 ,p_return_value=>'hour'
 ,p_apexlang_name=>'hour'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960009415950457663)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952444933035597468)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>20
 ,p_display_value=>'minute'
 ,p_return_value=>'minute'
 ,p_apexlang_name=>'minute'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960010982427459781)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952446499512599586)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>60
 ,p_display_value=>'month'
 ,p_return_value=>'month'
 ,p_apexlang_name=>'month'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960008937074456919)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952444454159596724)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>10
 ,p_display_value=>'second'
 ,p_return_value=>'second'
 ,p_apexlang_name=>'second'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960010593844459223)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952446110929599028)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>50
 ,p_display_value=>'week'
 ,p_return_value=>'week'
 ,p_apexlang_name=>'week'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(960011340347461081)
-,p_plugin_attribute_id=>wwv_flow_imp.id(960002507271456192)
+ p_id=>wwv_flow_imp.id(952446857432600886)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952438024356595997)
 ,p_display_sequence=>70
 ,p_display_value=>'year'
 ,p_return_value=>'year'
 ,p_apexlang_name=>'year'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960024514767494639)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952460031852634444)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>66
 ,p_display_sequence=>660
@@ -1763,15 +1766,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(960018056401488262)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952453573486628067)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>65
 ,p_display_sequence=>650
@@ -1781,16 +1784,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(961238409343849354)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(953673926428989159)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959968628117233307)
+,p_attribute_group_id=>wwv_flow_imp.id(952404145202373112)
 ,p_help_text=>'Vertex Evolution properties (or just string specifying Start property)'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(140872554755801841)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(133308071840941646)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>103
 ,p_display_sequence=>1010
@@ -1801,17 +1804,17 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>true
 ,p_default_value=>'outbound'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(140933125522748366)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(133368642607888171)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(140869593767784569)
+,p_attribute_group_id=>wwv_flow_imp.id(133305110852924374)
 ,p_help_text=>'Specify the direction of the edges to be traversed when expanding to neighboring vertices.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(140875189402805330)
-,p_plugin_attribute_id=>wwv_flow_imp.id(140872554755801841)
+ p_id=>wwv_flow_imp.id(133310706487945135)
+,p_plugin_attribute_id=>wwv_flow_imp.id(133308071840941646)
 ,p_display_sequence=>20
 ,p_display_value=>'Inbound'
 ,p_return_value=>'inbound'
@@ -1819,8 +1822,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Traverse edges pointing towards the specified vertex.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(140874817010804353)
-,p_plugin_attribute_id=>wwv_flow_imp.id(140872554755801841)
+ p_id=>wwv_flow_imp.id(133310334095944158)
+,p_plugin_attribute_id=>wwv_flow_imp.id(133308071840941646)
 ,p_display_sequence=>10
 ,p_display_value=>'Outbound'
 ,p_return_value=>'outbound'
@@ -1828,8 +1831,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Traverse edges pointing away from the specified vertex.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(907066815991020830)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(899502333076160635)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>86
 ,p_display_sequence=>870
@@ -1840,80 +1843,80 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'expand:focus:group:ungroup:drop:undo:redo:reset'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83957716611029592196)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83950152128114732001)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'IN_LIST'
 ,p_depending_on_expression=>'exploration'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907074557629025808)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899510074714165613)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>50
 ,p_display_value=>'Drop'
 ,p_return_value=>'drop'
 ,p_apexlang_name=>'drop'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907072986312022300)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899508503397162105)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>10
 ,p_display_value=>'Expand'
 ,p_return_value=>'expand'
 ,p_apexlang_name=>'expand'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907073429994023220)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899508947079163025)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>20
 ,p_display_value=>'Focus'
 ,p_return_value=>'focus'
 ,p_apexlang_name=>'focus'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907073788427023994)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899509305512163799)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>30
 ,p_display_value=>'Group'
 ,p_return_value=>'group'
 ,p_apexlang_name=>'group'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907075354242027516)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899510871327167321)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>70
 ,p_display_value=>'Redo'
 ,p_return_value=>'redo'
 ,p_apexlang_name=>'redo'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907075780883028672)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899511297968168477)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>80
 ,p_display_value=>'Reset'
 ,p_return_value=>'reset'
 ,p_apexlang_name=>'reset'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907074959683026779)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899510476768166584)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>60
 ,p_display_value=>'Undo'
 ,p_return_value=>'undo'
 ,p_apexlang_name=>'undo'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(907074151143024981)
-,p_plugin_attribute_id=>wwv_flow_imp.id(907066815991020830)
+ p_id=>wwv_flow_imp.id(899509668228164786)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899502333076160635)
 ,p_display_sequence=>40
 ,p_display_value=>'Ungroup'
 ,p_return_value=>'ungroup'
 ,p_apexlang_name=>'ungroup'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(130688724831216019)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(123124241916355824)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>109
 ,p_display_sequence=>933
@@ -1923,11 +1926,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83957716611029592196)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83950152128114732001)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'IN_LIST'
 ,p_depending_on_expression=>'exploration'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '[',
 '  {',
@@ -1939,8 +1942,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'JSON array of saved exploration states to preload into the visualization. Set settings.selectedExplorationSave to the save id to have it selected on load.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957365735385912609)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949801252471052414)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>20
 ,p_display_sequence=>42
@@ -1950,16 +1953,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'force'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'alphaDecay controls the rate at which the simulation''s internal alpha value, which influences node movement, decreases over time, gradually stabilizing the force layout. Default is 0.01.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957424671711986943)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949860188797126748)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>25
 ,p_display_sequence=>47
@@ -1969,16 +1972,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(957411738287971548)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(949847255373111353)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'By default, the cluster layout uses the first element in `vertex.labels` to form the cluster. `clusterBy` can be set to the property name of a vertex, and the clusters will be formed based on the property value.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957411738287971548)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949847255373111353)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>24
 ,p_display_sequence=>46
@@ -1989,16 +1992,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'force'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'clusterEnabled: Decides if cluster based layout is enabled.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957391847741948438)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949827364827088243)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>22
 ,p_display_sequence=>44
@@ -2008,16 +2011,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'force'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'edgeDistance: The simulation tries to set every edge to the specified length. This can affect the padding between vertices. Default is 100.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957431205958992036)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949866723044131841)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>26
 ,p_display_sequence=>48
@@ -2028,16 +2031,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(957411738287971548)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(949847255373111353)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Decides whether to display vertices that do not belong to any cluster. Default is false.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957385382256943338)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949820899342083143)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>21
 ,p_display_sequence=>43
@@ -2047,16 +2050,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'force'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'velocityDecay: Decides how fast a simulation ends. Default is 0.1.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957398521704956881)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949834038790096686)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>23
 ,p_display_sequence=>45
@@ -2066,16 +2069,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'force'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'vertexCharge: Influences the underlying forces (e.g. to remain within the viewport, to push vertices away from each other). If `clusterEnabled` is true, it influences the forces among clusters. Default is -60.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958065887489453100)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950501404574592905)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>49
 ,p_display_sequence=>44
@@ -2085,18 +2088,18 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Accepts app id used to fetch maps from http://maps.oracle.com/elocation. When value isn''t provided, a generic',
 '  appId will be used.'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958059368836447221)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950494885921587026)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>48
 ,p_display_sequence=>43
@@ -2106,16 +2109,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'The vertex property to use for determining the latitude of a vertex.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958178258056011993)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950613775141151798)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>54
 ,p_display_sequence=>50
@@ -2125,11 +2128,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(958481170567021199)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'custom_type'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<pre>',
 '[{',
@@ -2141,8 +2144,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Provide layers in array of JSON elements format which you want to display on map.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958052899148441082)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950488416233580887)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>47
 ,p_display_sequence=>42
@@ -2152,16 +2155,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'The vertex property to use for determining the longitude of a vertex'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958481170567021199)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950916687652161004)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>56
 ,p_display_sequence=>41
@@ -2171,59 +2174,59 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'SELECT LIST'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'You can select map type in map visualization or graph visualization settings or provide your own sources',
 '  and layers.'))
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(958488102513024882)
-,p_plugin_attribute_id=>wwv_flow_imp.id(958481170567021199)
+ p_id=>wwv_flow_imp.id(950923619598164687)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_display_sequence=>20
 ,p_display_value=>'Bright Streets Map'
 ,p_return_value=>'osm_bright'
 ,p_apexlang_name=>'brightStreetsMap'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(958489265209027779)
-,p_plugin_attribute_id=>wwv_flow_imp.id(958481170567021199)
+ p_id=>wwv_flow_imp.id(950924782294167584)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_display_sequence=>50
 ,p_display_value=>'Custom Type'
 ,p_return_value=>'custom_type'
 ,p_apexlang_name=>'customType'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(958488526840025822)
-,p_plugin_attribute_id=>wwv_flow_imp.id(958481170567021199)
+ p_id=>wwv_flow_imp.id(950924043925165627)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_display_sequence=>30
 ,p_display_value=>'Dark  Map'
 ,p_return_value=>'osm_darkmatter'
 ,p_apexlang_name=>'darkMap'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(958487669610023757)
-,p_plugin_attribute_id=>wwv_flow_imp.id(958481170567021199)
+ p_id=>wwv_flow_imp.id(950923186695163562)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_display_sequence=>10
 ,p_display_value=>'Positron Map'
 ,p_return_value=>'osm_positron'
 ,p_apexlang_name=>'positronMap'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(958488896719026796)
-,p_plugin_attribute_id=>wwv_flow_imp.id(958481170567021199)
+ p_id=>wwv_flow_imp.id(950924413804166601)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_display_sequence=>40
 ,p_display_value=>'World Map'
 ,p_return_value=>'world_map_mb'
 ,p_apexlang_name=>'worldMap'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(959663089883311496)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952098606968451301)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>57
 ,p_display_sequence=>51
@@ -2233,15 +2236,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958086747265655786)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950522264350795591)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>51
 ,p_display_sequence=>47
@@ -2252,18 +2255,18 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'Y'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Displays an info box in the visualizer that shows the ''Latitude'' and ''Longitude'' of the',
 '  mouse position and the ''Zoom Level'' of the map.'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958093273045669260)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950528790130809065)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>52
 ,p_display_sequence=>48
@@ -2274,16 +2277,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'Y'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'geographical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Shows the navigation controls towards the top right region of the map.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(958139182055741429)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950574699140881234)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>53
 ,p_display_sequence=>49
@@ -2293,11 +2296,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(958481170567021199)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(950916687652161004)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'custom_type'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<pre>',
 '{ "oracle-elocation":',
@@ -2315,8 +2318,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 '        only added only as separate part from visualization because of security issues.'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957859367281982636)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950294884367122441)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>28
 ,p_display_sequence=>49
@@ -2326,15 +2329,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'INTEGER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'grid'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957852834385979583)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950288351471119388)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>27
 ,p_display_sequence=>48
@@ -2344,15 +2347,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'INTEGER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'grid'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957965852014186369)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950401369099326174)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>45
 ,p_display_sequence=>45
@@ -2362,16 +2365,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'hierarchical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Sets the horizontal separation between the edges.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957866704359077328)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950302221444217133)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>29
 ,p_display_sequence=>42
@@ -2381,81 +2384,81 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'SELECT LIST'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'hierarchical'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Alignment of the ranked vertices.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957931240450117758)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950366757535257563)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>6
 ,p_display_value=>'Bottom to Top'
 ,p_return_value=>'BT'
 ,p_apexlang_name=>'bottomToTop'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957892404461095107)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950327921546234912)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>3
 ,p_display_value=>'Down to Left'
 ,p_return_value=>'DL'
 ,p_apexlang_name=>'downToLeft'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957892802981096302)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950328320066236107)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>4
 ,p_display_value=>'Down to Right'
 ,p_return_value=>'DR'
 ,p_apexlang_name=>'downToRight'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957931645376120376)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950367162461260181)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>7
 ,p_display_value=>'Left to Right'
 ,p_return_value=>'LR'
 ,p_apexlang_name=>'leftToRight'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957932064134121580)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950367581219261385)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>8
 ,p_display_value=>'Right to Left'
 ,p_return_value=>'RL'
 ,p_apexlang_name=>'rightToLeft'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957899283915107240)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950334801000247045)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>5
 ,p_display_value=>'Top to Bottom'
 ,p_return_value=>'TB'
 ,p_apexlang_name=>'topToBottom'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957879407991087662)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950314925076227467)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>1
 ,p_display_value=>'Up to Left'
 ,p_return_value=>'UL'
 ,p_apexlang_name=>'upToLeft'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957891977937093562)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957866704359077328)
+ p_id=>wwv_flow_imp.id(950327495022233367)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950302221444217133)
 ,p_display_sequence=>2
 ,p_display_value=>'Up to Right'
 ,p_return_value=>'UR'
 ,p_apexlang_name=>'upToRight'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957938638149128239)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950374155234268044)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>30
 ,p_display_sequence=>43
@@ -2465,17 +2468,17 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'SELECT LIST'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'hierarchical'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Specifies the type of algorithm used to rank the vertices.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957945862022138012)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957938638149128239)
+ p_id=>wwv_flow_imp.id(950381379107277817)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950374155234268044)
 ,p_display_sequence=>30
 ,p_display_value=>'Longest Path'
 ,p_return_value=>'longest-path'
@@ -2485,8 +2488,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 '    longer than necessary.'))
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957945118646132075)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957938638149128239)
+ p_id=>wwv_flow_imp.id(950380635731271880)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950374155234268044)
 ,p_display_sequence=>10
 ,p_display_value=>'Network Simplex'
 ,p_return_value=>'network-simplex'
@@ -2494,8 +2497,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'The network simplex algorithm assigns ranks to each vertex in the input graph and iteratively'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(957945475293135445)
-,p_plugin_attribute_id=>wwv_flow_imp.id(957938638149128239)
+ p_id=>wwv_flow_imp.id(950380992378275250)
+,p_plugin_attribute_id=>wwv_flow_imp.id(950374155234268044)
 ,p_display_sequence=>20
 ,p_display_value=>'Tight Tree'
 ,p_return_value=>'tight-tree'
@@ -2505,8 +2508,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 '    this. A tight edge is one that is has a length that matches its `minlen` attribute.'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957972317302191058)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950407834387330863)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>46
 ,p_display_sequence=>46
@@ -2516,16 +2519,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'hierarchical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Sets the separation between two ranks(levels) in the graph.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957959283108155216)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(950394800193295021)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>31
 ,p_display_sequence=>44
@@ -2535,16 +2538,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'hierarchical'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>'Sets the horizontal separation between the vertices.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(959946169426126769)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952381686511266574)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>105
 ,p_display_sequence=>20
@@ -2556,12 +2559,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_default_value=>'expanded'
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(316973968153265994)
+,p_attribute_group_id=>wwv_flow_imp.id(309409485238405799)
 ,p_help_text=>'Specifies whether the graph views'' legend region is in expanded or collapsed state.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(269982150806922898)
-,p_plugin_attribute_id=>wwv_flow_imp.id(959946169426126769)
+ p_id=>wwv_flow_imp.id(262417667892062703)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952381686511266574)
 ,p_display_sequence=>20
 ,p_display_value=>'Collapsed'
 ,p_return_value=>'collapsed'
@@ -2569,8 +2572,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Specifies that the legend region is in collapsed state on load'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(269973879926929468)
-,p_plugin_attribute_id=>wwv_flow_imp.id(959946169426126769)
+ p_id=>wwv_flow_imp.id(262409397012069273)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952381686511266574)
 ,p_display_sequence=>10
 ,p_display_value=>'Expanded'
 ,p_return_value=>'expanded'
@@ -2578,8 +2581,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Specifies that the legend region is in expanded state on load'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957252739208416050)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949688256293555855)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>18
 ,p_display_sequence=>40
@@ -2589,11 +2592,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'INTEGER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(316973968153265994)
+,p_attribute_group_id=>wwv_flow_imp.id(309409485238405799)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957239451119394688)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949674968204534493)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>17
 ,p_display_sequence=>150
@@ -2607,8 +2610,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Enable search box'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(240973916330762458)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(233409433415902263)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>104
 ,p_display_sequence=>1001
@@ -2619,16 +2622,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>true
 ,p_default_value=>'5'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(140933125522748366)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(133368642607888171)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(140869593767784569)
+,p_attribute_group_id=>wwv_flow_imp.id(133305110852924374)
 ,p_help_text=>'Maximum number of hops possible while performing expand and focus actions. Default is 5.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(906967925345510655)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(899403442430650460)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>85
 ,p_display_sequence=>860
@@ -2639,48 +2642,48 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'interaction:fitToScreen:sticky:evolution'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83957716611029592196)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83950152128114732001)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'IN_LIST'
 ,p_depending_on_expression=>'modes'
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(906992914736559919)
-,p_plugin_attribute_id=>wwv_flow_imp.id(906967925345510655)
+ p_id=>wwv_flow_imp.id(899428431821699724)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899403442430650460)
 ,p_display_sequence=>40
 ,p_display_value=>'Evolution'
 ,p_return_value=>'evolution'
 ,p_apexlang_name=>'evolution'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(906992074837556924)
-,p_plugin_attribute_id=>wwv_flow_imp.id(906967925345510655)
+ p_id=>wwv_flow_imp.id(899427591922696729)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899403442430650460)
 ,p_display_sequence=>20
 ,p_display_value=>'Fit to Screen'
 ,p_return_value=>'fitToScreen'
 ,p_apexlang_name=>'fitToScreen'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(906973940786512756)
-,p_plugin_attribute_id=>wwv_flow_imp.id(906967925345510655)
+ p_id=>wwv_flow_imp.id(899409457871652561)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899403442430650460)
 ,p_display_sequence=>10
 ,p_display_value=>'Interaction'
 ,p_return_value=>'interaction'
 ,p_apexlang_name=>'interaction'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(906992488273558995)
-,p_plugin_attribute_id=>wwv_flow_imp.id(906967925345510655)
+ p_id=>wwv_flow_imp.id(899428005358698800)
+,p_plugin_attribute_id=>wwv_flow_imp.id(899403442430650460)
 ,p_display_sequence=>30
 ,p_display_value=>'Sticky'
 ,p_return_value=>'sticky'
 ,p_apexlang_name=>'sticky'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(140847045103267296)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(133282562188407101)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>102
 ,p_display_sequence=>1000
@@ -2693,16 +2696,16 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_show_in_wizard=>false
 ,p_default_value=>'1'
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(140933125522748366)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(133368642607888171)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(140869593767784569)
+,p_attribute_group_id=>wwv_flow_imp.id(133305110852924374)
 ,p_help_text=>'Retrieve n-hops neighbors of specified vertices. The expand hop value should be equal to or greater than 1.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(873850304166667056)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(866285821251806861)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>89
 ,p_display_sequence=>890
@@ -2712,7 +2715,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(2429851110720358074)
+,p_attribute_group_id=>wwv_flow_imp.id(2422286627805497879)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '[',
 '  {',
@@ -2739,8 +2742,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Groups are created based on defined conditions.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(873817457686320895)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(866252974771460700)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>88
 ,p_display_sequence=>880
@@ -2750,7 +2753,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(2429851110720358074)
+,p_attribute_group_id=>wwv_flow_imp.id(2422286627805497879)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '[',
 '    {',
@@ -2809,8 +2812,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'Styles are applied to vertices and/or edges based on defined conditions.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(130688724831216022)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(123124241916355827)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>110
 ,p_display_sequence=>934
@@ -2820,7 +2823,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '[',
 '  {',
@@ -2833,8 +2836,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_help_text=>'JSON array of saved conditional-search configurations to display in the search menu. Select Saved Search Upsert and/or Saved Search Delete under Update Supported Actions to persist changes through the centralized Update callback.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(39444921388921573)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(31880438474061378)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>97
 ,p_display_sequence=>970
@@ -2844,15 +2847,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(39427544664927716)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(31863061750067521)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(39426778313935973)
+,p_attribute_group_id=>wwv_flow_imp.id(31862295399075778)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(39438957826923346)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(31874474912063151)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>96
 ,p_display_sequence=>960
@@ -2862,15 +2865,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(39427544664927716)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(31863061750067521)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(39426778313935973)
+,p_attribute_group_id=>wwv_flow_imp.id(31862295399075778)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(130688724831216012)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(123124241916355817)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>92
 ,p_display_sequence=>920
@@ -2880,12 +2883,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'TEXTAREA'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(2429851110720358074)
+,p_attribute_group_id=>wwv_flow_imp.id(2422286627805497879)
 ,p_help_text=>'Settings of the schema view are configured here.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(39427544664927716)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(31863061750067521)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>95
 ,p_display_sequence=>950
@@ -2896,12 +2899,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'N'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(39426778313935973)
+,p_attribute_group_id=>wwv_flow_imp.id(31862295399075778)
 ,p_help_text=>'Enables schema visualization when the user provides the graph name and the graph owner, this requires Oracle AI Database 26ai.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(104619296977764665)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(97054814062904470)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>100
 ,p_display_sequence=>1000
@@ -2913,7 +2916,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_common=>false
 ,p_show_in_wizard=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<pre>',
 '  const vertices = searchGraph.vertices.filter(v => v.label.includes(keyword));',
@@ -2939,8 +2942,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 '</pre>'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(961646280487176072)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(954081797572315877)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>78
 ,p_display_sequence=>154
@@ -2951,11 +2954,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_default_value=>'Y'
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(959858619445927096)
+,p_attribute_group_id=>wwv_flow_imp.id(952294136531066901)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(959953023142152965)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(952388540227292770)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>60
 ,p_display_sequence=>600
@@ -2966,27 +2969,27 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(959959823325154520)
-,p_plugin_attribute_id=>wwv_flow_imp.id(959953023142152965)
+ p_id=>wwv_flow_imp.id(952395340410294325)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952388540227292770)
 ,p_display_sequence=>20
 ,p_display_value=>'Compact'
 ,p_return_value=>'compact'
 ,p_apexlang_name=>'compact'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(959959399143153767)
-,p_plugin_attribute_id=>wwv_flow_imp.id(959953023142152965)
+ p_id=>wwv_flow_imp.id(952394916228293572)
+,p_plugin_attribute_id=>wwv_flow_imp.id(952388540227292770)
 ,p_display_sequence=>10
 ,p_display_value=>'Normal'
 ,p_return_value=>'normal'
 ,p_apexlang_name=>'normal'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(957280509306584018)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(949716026391723823)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>19
 ,p_display_sequence=>41
@@ -2996,11 +2999,11 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'NUMBER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(83953535088300988596)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(83945970605386128401)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'IN_LIST'
 ,p_depending_on_expression=>'circle,concentric,force,grid,radial'
-,p_attribute_group_id=>wwv_flow_imp.id(959689682820810615)
+,p_attribute_group_id=>wwv_flow_imp.id(952125199905950420)
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Circle Layout: spacing sets the radius of the circle. Default is 2. <br />',
 '',
@@ -3013,8 +3016,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 'Radial Layout: spacing sets separation gap between neighboring vertices if they share the same parent vertex. If set to 0, no spacing will be applied. Default is 2. <br />'))
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(928972237491545749)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(921407754576685554)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>84
 ,p_display_sequence=>840
@@ -3024,15 +3027,15 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'COLOR'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_depending_on_attribute_id=>wwv_flow_imp.id(928554568356988989)
+,p_depending_on_attribute_id=>wwv_flow_imp.id(920990085442128794)
 ,p_depending_on_has_to_exist=>true
 ,p_depending_on_condition_type=>'EQUALS'
 ,p_depending_on_expression=>'Y'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(962044093532432655)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(954479610617572460)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>80
 ,p_display_sequence=>800
@@ -3042,12 +3045,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'INTEGER'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719299842024468)
+,p_attribute_group_id=>wwv_flow_imp.id(13770154816927164273)
 ,p_help_text=>'Limit of characters shown on the vertex/edge tooltip. default is 100'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(130688724831216014)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(123124241916355819)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>107
 ,p_display_sequence=>931
@@ -3057,7 +3060,7 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_attribute_type=>'JAVASCRIPT'
 ,p_is_required=>false
 ,p_is_translatable=>false
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_examples=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Javascript:',
 'await apex.server.process(''Update'', {',
@@ -3067,8 +3070,8 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ||'''error'', message: ''...'' }.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(130688724831216015)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(123124241916355820)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>108
 ,p_display_sequence=>932
@@ -3079,12 +3082,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_is_required=>false
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(13777719721424024471)
+,p_attribute_group_id=>wwv_flow_imp.id(13770155238509164276)
 ,p_help_text=>'Select which exploration-save and saved-search actions the host application handles through the Update callback.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216017)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355822)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>20
 ,p_display_value=>'Exploration Delete'
 ,p_return_value=>'exploration/delete'
@@ -3092,8 +3095,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Delete an existing exploration save when the visualization requests removal of a saved exploration state.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216018)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355823)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>30
 ,p_display_value=>'Exploration Select Save'
 ,p_return_value=>'exploration/select'
@@ -3101,8 +3104,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Track save-row selection changes so the host application can react when the user selects a different exploration save.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216016)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355821)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>10
 ,p_display_value=>'Exploration Upsert'
 ,p_return_value=>'exploration/upsert'
@@ -3110,8 +3113,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Create or update an exploration save when the visualization requests that the current exploration state be stored.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216021)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355826)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>50
 ,p_display_value=>'Saved Search Delete'
 ,p_return_value=>'savedSearch/delete'
@@ -3119,8 +3122,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Delete a saved conditional search. The callback receives { type: ''savedSearch/delete'', id }.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216020)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355825)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>40
 ,p_display_value=>'Saved Search Upsert'
 ,p_return_value=>'savedSearch/upsert'
@@ -3128,8 +3131,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Create or update a saved conditional search. The callback receives { type: ''savedSearch/upsert'', savedSearch, insertAfterId? }.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216024)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355829)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>70
 ,p_display_value=>'Vertex Position Delete'
 ,p_return_value=>'vertexPosition/delete'
@@ -3137,8 +3140,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Delete persisted vertex positions when pinned vertices are reset.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(130688724831216023)
-,p_plugin_attribute_id=>wwv_flow_imp.id(130688724831216015)
+ p_id=>wwv_flow_imp.id(123124241916355828)
+,p_plugin_attribute_id=>wwv_flow_imp.id(123124241916355820)
 ,p_display_sequence=>60
 ,p_display_value=>'Vertex Position Upsert'
 ,p_return_value=>'vertexPosition/upsert'
@@ -3146,8 +3149,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Create or update persisted vertex positions when the visualization requests that pinned positions be stored.'
 );
 wwv_flow_imp_shared.create_plugin_attribute(
- p_id=>wwv_flow_imp.id(97497817645489594)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(89933334730629399)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_attribute_scope=>'COMPONENT'
 ,p_attribute_sequence=>99
 ,p_display_sequence=>30
@@ -3159,12 +3162,12 @@ wwv_flow_imp_shared.create_plugin_attribute(
 ,p_default_value=>'hideWhenAnyUnchecked'
 ,p_is_translatable=>false
 ,p_lov_type=>'STATIC'
-,p_attribute_group_id=>wwv_flow_imp.id(316973968153265994)
+,p_attribute_group_id=>wwv_flow_imp.id(309409485238405799)
 ,p_help_text=>'Specifies how the visibility of graph vertices and edges are determined when the visibility checkbox of a legend is toggled.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(97511771161528570)
-,p_plugin_attribute_id=>wwv_flow_imp.id(97497817645489594)
+ p_id=>wwv_flow_imp.id(89947288246668375)
+,p_plugin_attribute_id=>wwv_flow_imp.id(89933334730629399)
 ,p_display_sequence=>20
 ,p_display_value=>'Hide when all unchecked'
 ,p_return_value=>'hideWhenAllUnchecked'
@@ -3172,8 +3175,8 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Hide vertices or edges when all the legend items influencing it have the visibility checkboxes unchecked.'
 );
 wwv_flow_imp_shared.create_plugin_attr_value(
- p_id=>wwv_flow_imp.id(97504747701521345)
-,p_plugin_attribute_id=>wwv_flow_imp.id(97497817645489594)
+ p_id=>wwv_flow_imp.id(89940264786661150)
+,p_plugin_attribute_id=>wwv_flow_imp.id(89933334730629399)
 ,p_display_sequence=>10
 ,p_display_value=>'Hide when any unchecked '
 ,p_return_value=>'hideWhenAnyUnchecked'
@@ -3181,19 +3184,19 @@ wwv_flow_imp_shared.create_plugin_attr_value(
 ,p_help_text=>'Hide vertices or edges when any of the legend items influencing it has the visibility checkbox unchecked.'
 );
 wwv_flow_imp_shared.create_plugin_std_attribute(
- p_id=>wwv_flow_imp.id(83939453359703803317)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(83931888876788943122)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_name=>'SOURCE_LOCATION'
 );
 wwv_flow_imp_shared.create_plugin_event(
- p_id=>wwv_flow_imp.id(84503535556249764603)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(84495971073334904408)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_name=>'graph'
 ,p_display_name=>'Graph Change'
 );
 wwv_flow_imp_shared.create_plugin_event(
- p_id=>wwv_flow_imp.id(84499853885137959927)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(84492289402223099732)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_name=>'selection'
 ,p_display_name=>'Selection Change'
 );
@@ -3279,14 +3282,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(113826921865635357245)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(113819357382720497050)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'alta.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181727Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181727Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -3364,14 +3369,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(87816077490541760747)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(87808513007626900552)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'alta.min.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181727Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181727Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -7877,14 +7884,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(7533600824062998599)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(7526036341148138404)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'bundle.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181728Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181728Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162951Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162951Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -29396,14 +29405,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(19845099518781948340)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(19837535035867088145)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'index.js'
 ,p_mime_type=>'text/javascript'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181735Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181735Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -30145,14 +30156,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(2479953598015617813)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(2472389115100757618)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'lodash.min.js'
 ,p_mime_type=>'text/javascript'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181736Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181736Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162949Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162949Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -34441,14 +34454,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(3553269909428721295)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(3545705426513861100)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'ojuxIconFont_Rg.woff'
 ,p_mime_type=>'font/woff'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181737Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181737Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162950Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162950Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -37715,14 +37730,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(3553270335540721296)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(3545705852625861101)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'ojuxIconFont_Rg.woff2'
 ,p_mime_type=>'font/woff2'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181738Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181738Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162950Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162950Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -37734,14 +37751,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(87769368282388765485)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(87761803799473905290)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'wrapper.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181738Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181738Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -37872,14 +37891,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(113829196180037323806)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(113821631697122463611)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'wrapper.js'
 ,p_mime_type=>'text/javascript'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181738Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181738Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -37891,14 +37912,16 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(87769371323745770139)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(87761806840830909944)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'wrapper.min.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181738Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181738Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -37928,34 +37951,38 @@ end;
 /
 begin
 wwv_flow_imp_shared.create_plugin_file(
- p_id=>wwv_flow_imp.id(804440731651957237)
-,p_plugin_id=>wwv_flow_imp.id(113811757665619406468)
+ p_id=>wwv_flow_imp.id(796876248737097042)
+,p_plugin_id=>wwv_flow_imp.id(113804193182704546273)
 ,p_file_name=>'wrapper.min.js'
 ,p_mime_type=>'text/javascript'
 ,p_file_charset=>'utf-8'
 ,p_file_content=>wwv_flow_imp.varchar2_to_blob(wwv_flow_imp.g_varchar2_table)
-,p_created_on=>wwv_flow_imp.dz('20260923181738Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181738Z')
+,p_created_on=>wwv_flow_imp.dz('20260923162949Z')
+,p_updated_on=>wwv_flow_imp.dz('20260923162949Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
 prompt --application/plugin_settings
 begin
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(4370742094415206267)
+ p_id=>wwv_flow_imp.id(952425680881740374)
 ,p_plugin_type=>'DYNAMIC ACTION'
 ,p_plugin=>'NATIVE_OPEN_AI_ASSISTANT'
+,p_version_scn=>'41738808130153'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340542142961909463)
+ p_id=>wwv_flow_imp.id(12822198990475719966)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_COLOR_PICKER'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_as', 'POPUP',
   'mode', 'FULL')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(8525703077925331352)
+ p_id=>wwv_flow_imp.id(5007359925439141855)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_DATE_PICKER_APEX'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -37963,9 +37990,10 @@ wwv_flow_imp_shared.create_plugin_setting(
   'days_outside_month', 'VISIBLE',
   'show_on', 'FOCUS',
   'time_increment', '15')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340542801668909464)
+ p_id=>wwv_flow_imp.id(12822199649182719967)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_GEOCODED_ADDRESS'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -37973,205 +38001,209 @@ wwv_flow_imp_shared.create_plugin_setting(
   'display_as', 'LIST',
   'map_preview', 'POPUP:ITEM',
   'match_mode', 'RELAX_HOUSE_NUMBER')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(4370741301731206263)
+ p_id=>wwv_flow_imp.id(952423721715740374)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_SELECT_MANY'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_values_as', 'separated')).to_clob
+,p_version_scn=>'41738808130074'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340543393758909465)
+ p_id=>wwv_flow_imp.id(12822200241272719968)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_SINGLE_CHECKBOX'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'checked_value', 'Y',
   'unchecked_value', 'N')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340543633682909465)
+ p_id=>wwv_flow_imp.id(12822200481196719968)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_STAR_RATING'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'default_icon', 'fa-star',
   'tooltip', '#VALUE#')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340544007054909466)
+ p_id=>wwv_flow_imp.id(12822200854568719969)
 ,p_plugin_type=>'ITEM TYPE'
 ,p_plugin=>'NATIVE_YES_NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_style', 'SWITCH_CB',
   'off_value', 'N',
   'on_value', 'Y')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(4370742323555206268)
+ p_id=>wwv_flow_imp.id(952424674076740374)
 ,p_plugin_type=>'PROCESS TYPE'
 ,p_plugin=>'NATIVE_GEOCODING'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'match_mode', 'RELAX_HOUSE_NUMBER')).to_clob
+,p_version_scn=>'41738808130118'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340544500000909466)
+ p_id=>wwv_flow_imp.id(12822201347514719969)
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_DISPLAY_SELECTOR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'include_slider', 'Y')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(16340544723927909467)
+ p_id=>wwv_flow_imp.id(12822201571441719970)
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_IR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'actions_menu_structure', 'IG')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(8521331401589196899)
+ p_id=>wwv_flow_imp.id(5002988249103007402)
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_MAP_REGION'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'use_vector_tile_layers', 'Y')).to_clob
+,p_version_scn=>'1718444394'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(17097428404651440075)
+ p_id=>wwv_flow_imp.id(13579085252165250578)
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'PLUGIN_GRAPHVIZ'
+,p_version_scn=>'SH256:uKf33H5GniIyJwF6mziFQP4ZuxDxHo7e_Hk7CvlXrCU'
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(4545020608762471510)
+ p_id=>wwv_flow_imp.id(1026677456276282013)
 ,p_plugin_type=>'WEB SOURCE TYPE'
 ,p_plugin=>'NATIVE_ADFBC'
+,p_version_scn=>'1718444373'
 );
 wwv_flow_imp_shared.create_plugin_setting(
- p_id=>wwv_flow_imp.id(4300835206145945544)
+ p_id=>wwv_flow_imp.id(934135734475815237)
 ,p_plugin_type=>'WEB SOURCE TYPE'
 ,p_plugin=>'NATIVE_BOSS'
+,p_version_scn=>'41464598557905'
 );
 end;
 /
 prompt --application/shared_components/navigation/lists/home_page_items
 begin
 wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(8907408030474865345)
+ p_id=>wwv_flow_imp.id(5389064877988675848)
 ,p_name=>'Home Page Items'
 ,p_static_id=>'home-page-items'
+,p_version_scn=>'44992212497936'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4560962769155214469)
-,p_list_item_display_sequence=>280
+ p_id=>wwv_flow_imp.id(5389065616812675854)
+,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'Basic Graph'
 ,p_static_id=>'basic-graph'
-,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-radar-chart'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'11'
+,p_list_item_current_for_pages=>'2'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4379172764934931758)
-,p_list_item_display_sequence=>350
+ p_id=>wwv_flow_imp.id(993348679188123109)
+,p_list_item_display_sequence=>91
 ,p_list_item_link_text=>'Geographical Layout'
 ,p_static_id=>'geographical-layout'
-,p_list_item_link_target=>'f?p=&APP_ID.:18:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:9:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-map'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4562963184931569210)
-,p_list_item_display_sequence=>290
+ p_id=>wwv_flow_imp.id(5389066417258675855)
+,p_list_item_display_sequence=>40
 ,p_list_item_link_text=>'Interaction'
 ,p_static_id=>'interaction'
-,p_list_item_link_target=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:4:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-hand-pointer-o'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'12'
+,p_list_item_current_for_pages=>'4'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4499932395178465616)
-,p_list_item_display_sequence=>340
+ p_id=>wwv_flow_imp.id(12024914812955797195)
+,p_list_item_display_sequence=>90
 ,p_list_item_link_text=>'Keyboard Navigation Shortcuts'
 ,p_static_id=>'keyboard-navigation-shortcuts'
-,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-hand-pointer-o'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4262424577176142317)
-,p_list_item_display_sequence=>370
+ p_id=>wwv_flow_imp.id(910980152433304373)
+,p_list_item_display_sequence=>101
 ,p_list_item_link_text=>'Legend Features'
 ,p_static_id=>'legend-features'
-,p_list_item_link_target=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-media-list'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4564966557461019526)
-,p_list_item_display_sequence=>310
+ p_id=>wwv_flow_imp.id(5389067216875675856)
+,p_list_item_display_sequence=>70
 ,p_list_item_link_text=>'Network Evolution'
 ,p_static_id=>'network-evolution'
-,p_list_item_link_target=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-play'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'14'
+,p_list_item_current_for_pages=>'6'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4568163095678375996)
-,p_list_item_display_sequence=>330
+ p_id=>wwv_flow_imp.id(5389067589712675857)
+,p_list_item_display_sequence=>80
 ,p_list_item_link_text=>'Saving Graph State'
 ,p_static_id=>'saving-graph-state'
-,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-save'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'16'
+,p_list_item_current_for_pages=>'8'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4275587800720061947)
-,p_list_item_display_sequence=>360
-,p_list_item_link_text=>'Schema Visualization'
-,p_static_id=>'schema-visualization'
-,p_list_item_link_target=>'f?p=&APP_ID.:19:&SESSION.::&DEBUG.'
-,p_list_item_icon=>'fa-dataset'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
-,p_list_item_current_type=>'TARGET_PAGE'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4563964916846944306)
-,p_list_item_display_sequence=>300
+ p_id=>wwv_flow_imp.id(5389066802552675856)
+,p_list_item_display_sequence=>50
 ,p_list_item_link_text=>'Selection'
 ,p_static_id=>'selection'
-,p_list_item_link_target=>'f?p=&APP_ID.:13:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-square-selected-o'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'13'
+,p_list_item_current_for_pages=>'5'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4565363163895096371)
-,p_list_item_display_sequence=>320
+ p_id=>wwv_flow_imp.id(5389066029896675855)
+,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Styling'
 ,p_static_id=>'styling'
-,p_list_item_link_target=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-paint-brush'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'15'
+,p_list_item_current_for_pages=>'7'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(27008101195809348)
-,p_list_item_display_sequence=>380
+ p_id=>wwv_flow_imp.id(1201795850696499)
+,p_list_item_display_sequence=>110
 ,p_list_item_link_text=>'Vertex Position Persistence'
 ,p_static_id=>'vertex-position-persistence'
 ,p_list_item_link_target=>'f?p=&APP_ID.:21:&SESSION.::&DEBUG.'
 ,p_list_item_icon=>'fa-arrows'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'21'
 );
@@ -38180,12 +38212,13 @@ end;
 prompt --application/shared_components/navigation/lists/navigation_bar
 begin
 wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(16340734385490909782)
+ p_id=>wwv_flow_imp.id(12822391233004720285)
 ,p_name=>'Navigation Bar'
 ,p_static_id=>'navigation-bar'
+,p_version_scn=>'1'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(16340745913958909911)
+ p_id=>wwv_flow_imp.id(12822402761472720414)
 ,p_list_item_display_sequence=>10
 ,p_list_item_link_text=>'&APP_USER.'
 ,p_static_id=>'app-user'
@@ -38195,22 +38228,22 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(16340746345516909913)
+ p_id=>wwv_flow_imp.id(12822403193030720416)
 ,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'---'
 ,p_static_id=>'list_item'
 ,p_list_item_link_target=>'separator'
-,p_parent_list_item_id=>wwv_flow_imp.id(16340745913958909911)
+,p_parent_list_item_id=>wwv_flow_imp.id(12822402761472720414)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(16340746820079909913)
+ p_id=>wwv_flow_imp.id(12822403667593720416)
 ,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Sign Out'
 ,p_static_id=>'sign-out'
 ,p_list_item_link_target=>'&LOGOUT_URL.'
 ,p_list_item_icon=>'fa-sign-out'
-,p_parent_list_item_id=>wwv_flow_imp.id(16340745913958909911)
+,p_parent_list_item_id=>wwv_flow_imp.id(12822402761472720414)
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -38218,137 +38251,125 @@ end;
 prompt --application/shared_components/navigation/lists/navigation_menu
 begin
 wwv_flow_imp_shared.create_list(
- p_id=>wwv_flow_imp.id(16340546208572909490)
+ p_id=>wwv_flow_imp.id(12822203056086719993)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
+,p_version_scn=>'44992211848246'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4491127763349881573)
-,p_list_item_display_sequence=>110
+ p_id=>wwv_flow_imp.id(9758696164467424153)
+,p_list_item_display_sequence=>20
 ,p_list_item_link_text=>'Basic Graph'
 ,p_static_id=>'basic-graph'
-,p_list_item_link_target=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-radar-chart'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'11'
+,p_list_item_current_for_pages=>'2'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4379158444231867605)
-,p_list_item_display_sequence=>180
+ p_id=>wwv_flow_imp.id(993334750019041777)
+,p_list_item_display_sequence=>110
 ,p_list_item_link_text=>'Geographical Layout'
 ,p_static_id=>'geographical-layout'
-,p_list_item_link_target=>'f?p=&APP_ID.:18:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:9:&APP_SESSION.::&DEBUG.:::'
 ,p_list_item_icon=>'fa-map'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'18'
+,p_list_item_current_for_pages=>'9'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(27679732367436490763)
+ p_id=>wwv_flow_imp.id(24161389214950301266)
 ,p_list_item_display_sequence=>10
 ,p_list_item_link_text=>'Home'
 ,p_static_id=>'home'
-,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-home'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4493128179126236314)
-,p_list_item_display_sequence=>120
+ p_id=>wwv_flow_imp.id(9759084658154514870)
+,p_list_item_display_sequence=>40
 ,p_list_item_link_text=>'Interaction'
 ,p_static_id=>'interaction'
-,p_list_item_link_target=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:4:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-hand-pointer-o'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'12'
+,p_list_item_current_for_pages=>'4'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4499128147639555274)
-,p_list_item_display_sequence=>170
+ p_id=>wwv_flow_imp.id(12013787338745212759)
+,p_list_item_display_sequence=>100
 ,p_list_item_link_text=>'Keyboard Navigation Shortcuts'
 ,p_static_id=>'keyboard-navigation-shortcuts'
-,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:10:&APP_SESSION.::&DEBUG.:::'
 ,p_list_item_icon=>'fa-plug'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'17'
+,p_list_item_current_for_pages=>'10'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4262324678083155078)
-,p_list_item_display_sequence=>200
+ p_id=>wwv_flow_imp.id(910979779062298061)
+,p_list_item_display_sequence=>120
 ,p_list_item_link_text=>'Legend Features'
 ,p_static_id=>'legend-features'
-,p_list_item_link_target=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-media-list'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'20'
+,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4495131551655686630)
-,p_list_item_display_sequence=>140
+ p_id=>wwv_flow_imp.id(9767466743008826822)
+,p_list_item_display_sequence=>70
 ,p_list_item_link_text=>'Network Evolution'
 ,p_static_id=>'network-evolution'
-,p_list_item_link_target=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-play'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'14'
+,p_list_item_current_for_pages=>'6'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4498328089873043100)
-,p_list_item_display_sequence=>160
+ p_id=>wwv_flow_imp.id(9265247192079961069)
+,p_list_item_display_sequence=>80
 ,p_list_item_link_text=>'Saving Graph State'
 ,p_static_id=>'saving-graph-state'
-,p_list_item_link_target=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-save'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'16'
+,p_list_item_current_for_pages=>'8'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4275554911312095837)
-,p_list_item_display_sequence=>190
-,p_list_item_link_text=>'Schema Visualization'
-,p_static_id=>'schema-visualization'
-,p_list_item_link_target=>'f?p=&APP_ID.:19:&SESSION.::&DEBUG.'
-,p_list_item_icon=>'fa-dataset'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
-,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'19,19'
-);
-wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4494129911041611410)
-,p_list_item_display_sequence=>130
+ p_id=>wwv_flow_imp.id(9759777755855231611)
+,p_list_item_display_sequence=>50
 ,p_list_item_link_text=>'Selection'
 ,p_static_id=>'selection'
-,p_list_item_link_target=>'f?p=&APP_ID.:13:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-square-selected-o'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'13'
+,p_list_item_current_for_pages=>'5'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(4495528158089763475)
-,p_list_item_display_sequence=>150
+ p_id=>wwv_flow_imp.id(9758790421843044141)
+,p_list_item_display_sequence=>30
 ,p_list_item_link_text=>'Styling'
 ,p_static_id=>'styling'
-,p_list_item_link_target=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.'
+,p_list_item_link_target=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-paint-brush'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
-,p_list_item_current_for_pages=>'15'
+,p_list_item_current_for_pages=>'7'
 );
 wwv_flow_imp_shared.create_list_item(
- p_id=>wwv_flow_imp.id(27008264432809353)
-,p_list_item_display_sequence=>210
+ p_id=>wwv_flow_imp.id(1201864721696500)
+,p_list_item_display_sequence=>130
 ,p_list_item_link_text=>'Vertex Position Persistence'
 ,p_static_id=>'vertex-position-persistence'
 ,p_list_item_link_target=>'f?p=&APP_ID.:21:&SESSION.::&DEBUG.'
 ,p_list_item_icon=>'fa-arrows'
-,p_security_scheme=>wwv_flow_imp.id(10657048269307754306)
+,p_security_scheme=>wwv_flow_imp.id(2170929919907992497)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'21'
 );
@@ -38362,7 +38383,7 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_airports_98022_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE58A037624268050000D51600001A0000004542415F475241504856495A5F414952504F5254532E6A736F6EE5585D531A49147DF757503C2793FEFEF00D8982F2211112D475CB1A75A29D851916662A85A9FDEF7B7BD4D0';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF58A037624268050000D51600001A0000004542415F475241504856495A5F414952504F5254532E6A736F6EE5585D531A49147DF757503C2793FEFEF00D8982F2211112D475CB1A75A29D851916662A85A9FDEF7B7BD4D0';
 wwv_flow_imp.g_varchar2_table(2) := 'DD9065928ABC6C5922C38C439F73CF3DF7F47CDBAB9B3C992EEAFB7FEC7D83F777F57DCA85D87B534FE36952DFAF8FCD6462E2696D506B673737CB5AC3CC67D93CAFC31526CE63B8A27DFAB13CBA8D3338EA3C1F4EE2DCE4C51DDC82E848304EB546DA7E';
 wwv_flow_imp.g_varchar2_table(3) := '9EA5F7CF27DE6A1E11A9344298C39978F2F21FCC7E7F6EA6C96396DAEBECE1DD2287BB37EACE99BB1BFBCE7E3A4DE6F0F557EF9A0FF0E73EB317C54FEBBCCE97337B49BC5AF6ADC997D716A8C488EFFDB3F7E60537557C85FBA8787CC88A5AF3214EEF27';
 wwv_flow_imp.g_varchar2_table(4) := '49ED38CD93790A98B2349E6C20E1E8B4E99070393CBA0C48E091A61C23C43967586B427C2E30069604458820CCB04058FC1723EA3B211F3713B230C0C6D0AEFD213615E9A00A13970E25D58A8ED3F9244EEFB2AD3CF49AA7AE189E0F1D1E54C488063130';
@@ -38376,16 +38397,16 @@ wwv_flow_imp.g_varchar2_table(11) := 'A39380031D61C218E85E13ABEE75DD4B3BF5810821
 wwv_flow_imp.g_varchar2_table(12) := 'FD4BAF19C6E12E5F427227642DD1432340F8D2DA4F3CBBA8BDF27B5E3AB53F375705424402EE733BE6ABE49DF3E30B2FF69E5FAC4D7C30768C4227402A929600DF06302F2DE3B53960AE1130AC952B80E431D980B37FE60AFFF07DF7938F93E34820021D';
 wwv_flow_imp.g_varchar2_table(13) := '2F290D9A5DC0FC275840E42334808BFCF986BFA33DDC88F6B09867B3E4EADD413287585A19AD76E71BE6DC89734D134F6726CD6AADA87610D506F1025C7FFBC3ADE6B13BE5BAC767E1DCC7B0475F333D028127F07D563ED8F87906CE3238AC38DF89576D';
 wwv_flow_imp.g_varchar2_table(14) := 'B7DBA1CBEF3288F7450EAF1BD2ECC8AB79AB355EABB902B703B3A34ABF3CA2731F5DC1B4138A528A20E00A2E30441D0F3D277EFD5145F44FEBAE881FE6ADDBF21871E761EE284993B9F99CD48659913F6C32FCA3A1C341AB390A9ED1101521C638C4581E';
-wwv_flow_imp.g_varchar2_table(15) := '78DC5B9B6A2481538428BFEA04E99FC2DDC827719A9BDBAB77CD388DE7CBAA5157DB7DCC9FF0FB2F504B0304140000080800B3A9AE5860F94E9F870100005A080000220000004542415F475241504856495A5F414952504F5254535F70726F66696C652E';
+wwv_flow_imp.g_varchar2_table(15) := '78DC5B9B6A2481538428BFEA04E99FC2DDC827719A9BDBAB77CD388DE7CBAA5157DB7DCC9FF0FB2F504B03041400000808003093AF5860F94E9F870100005A080000220000004542415F475241504856495A5F414952504F5254535F70726F66696C652E';
 wwv_flow_imp.g_varchar2_table(16) := '6A736F6EBD95DF4FC23010C7DFFD2B963D33130189F16D32344B0623581EF04796DA7550D3B54B5B2448F8DF6D8B428C4CE358F6B0A6BDBBEFE573D72EB739731C3723147B6A5D60D7B976BA2D639284CDB551F095B165904ADCDA87628678AA038CCBF5';
 wwv_flow_imp.g_varchar2_table(17) := 'A34E7B0A6EAF5CEBD7024F628A91E2C2BA89C2B9DCF916181A95F408F33222A4FA991EC937939D7289532B7F7277DA8C0BA41905C9BDD542E7940544165789E5A794D365CEA4B6E9D3A3FE1C676357ED6330B7C16E18D874D6984205F755B70F668C480E';
 wwv_flow_imp.g_varchar2_table(18) := 'A987167057C1F911894731B3B283EE7BD5E94144A4F72A39DB176AEDDB5609E1C81F0E4A182F7EE1B8EC1D07B1792BA2843EF0FF8FD2EB96B444075626E9FB718D2408F2AA24910F42300DCAAEA8E66744A1226A9956BEC1281EDD3589CBD9FC245E3F6A';
 wwv_flow_imp.g_varchar2_table(19) := 'B2BB909ED65D100E070FF1A8215A4572FCCE5965DAE01ED4F70BA5529DDAB5E0C6ECEA43FAEA4FFA6276955F603819C7139080D9B846364844C1854A6C8A8A64FD10CC92A6E617226A9DFC3DC4F4FA6C876F01859ED8669E4B9BB673B6FD00504B010214';
-wwv_flow_imp.g_varchar2_table(20) := '00140000080800B3A9AE58A037624268050000D51600001A0000000000000000002000B681000000004542415F475241504856495A5F414952504F5254532E6A736F6E504B01021400140000080800B3A9AE5860F94E9F870100005A0800002200000000';
+wwv_flow_imp.g_varchar2_table(20) := '001400000808003093AF58A037624268050000D51600001A0000000000000000002000B681000000004542415F475241504856495A5F414952504F5254532E6A736F6E504B010214001400000808003093AF5860F94E9F870100005A0800002200000000';
 wwv_flow_imp.g_varchar2_table(21) := '00000000002000B681A00500004542415F475241504856495A5F414952504F5254535F70726F66696C652E6A736F6E504B0506000000000200020098000000670700002000496D706C656D656E746174696F6E20627920416E746F6E2053636865666665';
 wwv_flow_imp.g_varchar2_table(22) := '72';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(4490044632987773591)
+ p_id=>wwv_flow_imp.id(989753664393796667)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_AIRPORTS$98022.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38396,18 +38417,18 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_countries_655846_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE581FCAA08866010000660600001B0000004542415F475241504856495A5F434F554E54524945532E6A736F6E8D944D4F83401086EFFC8A86732F7E9C7A6BE917C51223120DC69829AC74233B34CB92DA36FE77A9261EE8';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF581FCAA08866010000660600001B0000004542415F475241504856495A5F434F554E54524945532E6A736F6E8D944D4F83401086EFFC8A86732F7E9C7A6BE917C51223120DC69829AC74233B34CB92DA36FE77A9261EE8';
 wwv_flow_imp.g_varchar2_table(2) := '6B3287BD2C3CEFCCBC333B27CFD74E99C61FBD7827CFCFEB969D3DBCE9C21FF9E307DF1BFE5D311975BEB4A562A799CEDFAC2A75CD3F7F5F7B5FDEF04221450A6DE32C55BAAF7083142633A0305155A95BD3E3AF208F6A98583AEA4A5240300678404C85';
 wwv_flow_imp.g_varchar2_table(3) := 'A8FE6009F064AFDD51D98AB8905410C42885ED6507A07F53E4DF4259437C90449F46809F2A36643F24FC6C01F85979D8B91E7D8BE839EADEDC12E74A127C89925FD65C46DD91B817DE0181B0B1A4FAD303D30F51EB422E64A31F3E22DA51256ADCEA1ED0';
 wwv_flow_imp.g_varchar2_table(4) := '2BDA114B62474F808EDA3D6951DFD6CF005FAB4F9DD7926713A3A18975A9EC8573307C8CDA162BB7FD7D758DC4BF04E590682E6957DBFEF4410F53347D2977EBB618449D50518B36589AFC2F933872AA19D4EF83B1E9CCC9454B295B03C18CCC46666E86';
-wwv_flow_imp.g_varchar2_table(5) := '4623D366439B7DDF97B3C06B77BE01504B0304140000080800B3A9AE58673E81E01B010000D2020000230000004542415F475241504856495A5F434F554E54524945535F70726F66696C652E6A736F6E9D524D4B033110BDF757849C37A2B582782B5AA5';
+wwv_flow_imp.g_varchar2_table(5) := '4623D366439B7DDF97B3C06B77BE01504B03041400000808003093AF58673E81E01B010000D2020000230000004542415F475241504856495A5F434F554E54524945535F70726F66696C652E6A736F6E9D524D4B033110BDF757849C37A2B582782B5AA5';
 wwv_flow_imp.g_varchar2_table(6) := 'A05B28ED41544AC8CE7623D964C9642DA5F4BF9B4C658BD4FA754820EFCD7B7933C9A6C7182FB50111D60D7076C506598250DB6504BD5B25AC940621EB4AC12A57C48244F1E1FD797F3EBBBDE4C447814030A082F344EB0035EEB80A6452A1D05694DA63';
 wwv_flow_imp.g_varchar2_table(7) := '38B457F896DC8D432848FECC77DAD27915337A5D8B55153DB1918AE206DF7E489D696B8B118BA7A7B818DBD01E392B6B2AE6D793793E9B3E2EC637644B642183ECBA3F3B8485019BA87E477D6A50B9D606BF5EE8626FA951BCA2B35D6F846FB31F42E5C3';
-wwv_flow_imp.g_varchar2_table(8) := '87D1DF630D4EBFCF45D7FC33D97474379EE4C7A7B51F49014AD7D20855C9DDF5275F48BA491E19A587A576F617938CFB0B3D7A237DFC29E91F21195FF4B6EF504B01021400140000080800B3A9AE581FCAA08866010000660600001B0000000000000000';
-wwv_flow_imp.g_varchar2_table(9) := '002000B681000000004542415F475241504856495A5F434F554E54524945532E6A736F6E504B01021400140000080800B3A9AE58673E81E01B010000D2020000230000000000000000002000B6819F0100004542415F475241504856495A5F434F554E54';
+wwv_flow_imp.g_varchar2_table(8) := '87D1DF630D4EBFCF45D7FC33D97474379EE4C7A7B51F49014AD7D20855C9DDF5275F48BA491E19A587A576F617938CFB0B3D7A237DFC29E91F21195FF4B6EF504B010214001400000808003093AF581FCAA08866010000660600001B0000000000000000';
+wwv_flow_imp.g_varchar2_table(9) := '002000B681000000004542415F475241504856495A5F434F554E54524945532E6A736F6E504B010214001400000808003093AF58673E81E01B010000D2020000230000000000000000002000B6819F0100004542415F475241504856495A5F434F554E54';
 wwv_flow_imp.g_varchar2_table(10) := '524945535F70726F66696C652E6A736F6E504B050600000000020002009A000000FB0200002000496D706C656D656E746174696F6E20627920416E746F6E205363686566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516543716424955282)
+ p_id=>wwv_flow_imp.id(26998200563938765785)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_COUNTRIES$655846.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38418,19 +38439,19 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_departments_300836_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE58C186B67AC20100002C0A00001D0000004542415F475241504856495A5F4445504152544D454E54532E6A736F6EAD95414FC2301886EFFB15CBCE1EDC04416E48543828067633C6D4EE531ABB76F9D61208F1BF5BE6C5';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF58C186B67AC20100002C0A00001D0000004542415F475241504856495A5F4445504152544D454E54532E6A736F6EAD95414FC2301886EFFB15CBCE1EDC04416E48543828067633C6D4EE531ABB76F9D61208F1BF5BE6C5';
 wwv_flow_imp.g_varchar2_table(2) := 'D07EC6661EB894ED79DB777DDA43920903759B4D9E92439255D030343528F322AA6C929F27673FC714AB219B64D3AA164AB40699115A65EE999A29F60ED8BD549C1FDF929A77FF7E73466EEC3339F3138A70C23DC30F3042BDFBF0DC838F29F84518FE68';
 wwv_flow_imp.g_varchar2_table(3) := '916F581BA0E7F9E0EF531F84E973EB88E90A5AED62A0F51770711A510CA888613862BD114D139A7EE19733A4D89761F6A2F4A8FE8C7372C623AAF25729B86B457690402B5EF10559FC98688549BFEE7C30F4C064255761F0CD0EB835620B7E33113BFDFB';
 wwv_flow_imp.g_varchar2_table(4) := '619F7E2B14533CC01E47B0295139D756853DF27AF9054F585A22B0D6E2FE14AEAC94117442D399C646BB2306D292ED7A4610AECEB432A8653A55553A43A884E999430ACB10365A5680E91A702B0207436412A1EF35287813A62F9DD0F89E29FBC6B8B118';
 wwv_flow_imp.g_varchar2_table(5) := 'D852911184C5EE93B88BC5F2D0CD129940E8DC7D74B788DE4B2808A3970D60F8988BE413562FCA746D1BE746CFDD5A105A3F2C673DC184D16EE273904D05ED47CF00C2E73BBD0554C79134781B44A61036AFC03021FF2581B078051CADF8871D4A5DC76C';
-wwv_flow_imp.g_varchar2_table(6) := 'EF8E3D19017F76BF2F504B0304140000080800B3A9AE5824F44DE02E010000B1030000250000004542415F475241504856495A5F4445504152544D454E54535F70726F66696C652E6A736F6EBD535D4BC330147DDFAF287D6E443741F1ADB82A83AD9351';
+wwv_flow_imp.g_varchar2_table(6) := 'EF8E3D19017F76BF2F504B03041400000808003093AF5824F44DE02E010000B1030000250000004542415F475241504856495A5F4445504152544D454E54535F70726F66696C652E6A736F6EBD535D4BC330147DDFAF287D6E443741F1ADB82A83AD9351';
 wwv_flow_imp.g_varchar2_table(7) := '9F5446486FD7483E466EE690B1FF6E7A2B2DA263A2B0870472CE3D272737C96E104571251530FFBE8638BA892E9306426956017476DB6015570849570A46D8321434549C4E47C3C7E2EE3A263E08188202E1AD235A7AD0D87235F046854C1A564987FEBB';
 wwv_flow_imp.g_varchar2_table(8) := 'BDC0B7C65D598492E4CF71ABADAC1321A3939A6DEBE0896B2E28AE779B4FA9551B6D306061F5144614ED680E9CE19A8AE371F6902E8A599617CBC9989C892FB9E75D03863D0C426AAE98A8797B98B31F244C812159AFFBD28012D6DC790DC62F65D9EB25';
-wwv_flow_imp.g_varchar2_table(9) := 'B257B4A63B3EE1FBE478EE3C9D6507925F1C4E373A3F9A8E36FB63BE599AA7F7D9E2644DD5DCF015B87F74743ABF4D8BC93C3F59646505F7D29A5F640EF30BBDE97037E12334DF04C9FA6AB0FF00504B01021400140000080800B3A9AE58C186B67AC201';
-wwv_flow_imp.g_varchar2_table(10) := '00002C0A00001D0000000000000000002000B681000000004542415F475241504856495A5F4445504152544D454E54532E6A736F6E504B01021400140000080800B3A9AE5824F44DE02E010000B1030000250000000000000000002000B681FD01000045';
+wwv_flow_imp.g_varchar2_table(9) := 'B257B4A63B3EE1FBE478EE3C9D6507925F1C4E373A3F9A8E36FB63BE599AA7F7D9E2644DD5DCF015B87F74743ABF4D8BC93C3F59646505F7D29A5F640EF30BBDE97037E12334DF04C9FA6AB0FF00504B010214001400000808003093AF58C186B67AC201';
+wwv_flow_imp.g_varchar2_table(10) := '00002C0A00001D0000000000000000002000B681000000004542415F475241504856495A5F4445504152544D454E54532E6A736F6E504B010214001400000808003093AF5824F44DE02E010000B1030000250000000000000000002000B681FD01000045';
 wwv_flow_imp.g_varchar2_table(11) := '42415F475241504856495A5F4445504152544D454E54535F70726F66696C652E6A736F6E504B050600000000020002009E0000006E0300002000496D706C656D656E746174696F6E20627920416E746F6E205363686566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516544007849955286)
+ p_id=>wwv_flow_imp.id(26998200855363765789)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_DEPARTMENTS$300836.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38441,7 +38462,7 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_employees_828178_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE58859DEA7B04100000D76800001B0000004542415F475241504856495A5F454D504C4F594545532E6A736F6EC59D6D73DA4812C7DFE7536CF9F54249E241907703C80810889204BECDD5956B6C6B8DD6424A09E1ACB375';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF58859DEA7B04100000D76800001B0000004542415F475241504856495A5F454D504C4F594545532E6A736F6EC59D6D73DA4812C7DFE7536CF9F54249E241907703C80810889204BECDD5956B6C6B8DD6424A09E1ACB375';
 wwv_flow_imp.g_varchar2_table(2) := 'DFFD4660278CBA5B688EE3366557AA7082FDD3CC74FFFB69FCD7A79B280FB7BB9BCFFFFCF4D7A79B70FB354EDFC2F03E7ABAF9AC6BDAA75F6F7E8FB25D7E9FF06D78F3F9C6CFC3D730B9112FC7FCE7ABB328792E5E0BB73C8A8B7F359B2CC6C50B5F3769';
 wwv_flow_imp.g_varchar2_table(3) := '12DE27FBED439889D73B7AA7A91BAD66BBD3358B2F6FA22CBC7FE279F11E86A6F51ABAD6D0F540D33E1F3E8A7FF247FA70F8596ED8E87EE9597EF1DA8EC73C7BBBF96CB4B5C34FF8986EB7D16E17A5C9FDD7C7FCE673B28F63F1F29627FC39CC0EFFFDFD';
 wwv_flow_imp.g_varchar2_table(4) := 'A5A7F02BCFF26D98E48757FBDAA77F7FFA1562EB65EC4518261C50A78F9B0DCF4EC117337768DBCCAB66EF41765D6F687A43EF92ECEBE529B96ED6263F2E624D70A30CEE847F96B147E12F36E7C929B633B26CC616D5D47D84BADDD03A62D1FF66EA5699';
@@ -38482,17 +38503,17 @@ wwv_flow_imp.g_varchar2_table(38) := '0CCE1F875CEE2AF5E7C32123277F0BF22A6F4E76D7
 wwv_flow_imp.g_varchar2_table(39) := '90FCF8ECB668AAA01D79016E60770CF62BB351172A370570A0DC4669828C4DB8C334494A767DE40EDDC5829C8A3CC2B7F0549C6A687E9561B13EBC3D38DD3FC71C4469201339A232913FC1DBC4B4774749B85E05DC80BFF98112AE771B1E97EE0FBEB399';
 wwv_flow_imp.g_varchar2_table(40) := '53718370ABD96E63ECDAE10ADD8ADFFFC07C5FBA47B55D3F4AC3AF8CC6D18180236E74B0C59B815989B9CDBC009F95F8A0EF883FB89AA1AF2F99CFE09CD865B7EE19043D50704B0E3A4A6EB9DC297CCB50FBA61D2E186C76BB44ADA9E28270C15B4E35D7';
 wwv_flow_imp.g_varchar2_table(41) := 'C635B0C5A67091F2EA0EE910E6AF59244FF6CFD9DA9BD03789B69AA689665C3B87C894C0B63D80AD70E71C82DD26B0816AB3C3E22268D845C24BD7580C18DA42F301DD137F54A197009AEA1EA94B6D12D440B11DAECB8542DD8E9E9F4BA1996F4FC6633C';
-wwv_flow_imp.g_varchar2_table(42) := '34FBC1AEF534557636FC9F5F844F9935A0DB8826927114CABFFFE06E3CB1F0DF7EF001AEF730E5760E1CBB10BEF61D3DC7C544D9FF253EFF03504B0304140000080800B3A9AE58F3335E32DA0100001A080000230000004542415F475241504856495A5F';
+wwv_flow_imp.g_varchar2_table(42) := '34FBC1AEF534557636FC9F5F844F9935A0DB8826927114CABFFFE06E3CB1F0DF7EF001AEF730E5760E1CBB10BEF61D3DC7C544D9FF253EFF03504B03041400000808003093AF58F3335E32DA0100001A080000230000004542415F475241504856495A5F';
 wwv_flow_imp.g_varchar2_table(43) := '454D504C4F594545535F70726F66696C652E6A736F6EBD95DF6F9B3010C7DFFB57209EE3694D3B75CA1B2DEEC2844904F4215A26E4C2A5B8F30F64935551D5FF7DC69992550DD544AA2061C977F73D3E6773F6F399E7F92BC601B59B067C6FE25D8E3A93';
 wwv_flow_imp.g_varchar2_table(44) := '61F2C11AB57AEA6C2BCA0D8C76A1204B55D980CEE507F1C5F82EBFFDEA3BBF1520031CCA5669E7662D08B3F5D5403B95414CA215D3A67D9BBE34BFBBEC5C19A89C7CE96FB52BA54BCBA899404FB5CD691A5A3ADC56AFFF4A155F0B69ACCDCE7ED8D7F39E';
 wwv_flow_imp.g_varchar2_table(45) := 'DD687D920A17EC63328F670B8C8B2874799DB7A22DDD953FDE9BA164827254D6745BCAA70312C4413AD95EF7AA7C100D571B8082557B3533E8D128B92BDDD95F463DCCB7519AE5451210DC837CFE0ED6E7C3586EF90BF789815471301CEACB61284E8F64';
 wwv_flow_imp.g_varchar2_table(46) := 'C22488E28FE30141191FCA329FCE125C2477E41AA71FB76F4DAD2414722DEE410F259B46292EC220EFDBB98B7EACABC35435D350D8E07F36CEF6ABA02D12D4FC72210BFB204250182EFD7CE94FA7E3CB0989265936B48AEFB3EBFE267E6765CF7B56F651';
 wwv_flow_imp.g_varchar2_table(47) := 'DD1FD1A3591007E9E234478AA19CEACD50D29B1921519645B3A498DFE4A7212E9510CC18A664D194ED50721224C1379C9EECE81654D207D047FC15219E07694E70929F0CBA8286EA56806CFF83DB8E3FDDDD6935F6C2EDAE63B3ED91ABB3973F504B0102';
-wwv_flow_imp.g_varchar2_table(48) := '1400140000080800B3A9AE58859DEA7B04100000D76800001B0000000000000000002000B681000000004542415F475241504856495A5F454D504C4F594545532E6A736F6E504B01021400140000080800B3A9AE58F3335E32DA0100001A080000230000';
+wwv_flow_imp.g_varchar2_table(48) := '14001400000808003093AF58859DEA7B04100000D76800001B0000000000000000002000B681000000004542415F475241504856495A5F454D504C4F594545532E6A736F6E504B010214001400000808003093AF58F3335E32DA0100001A080000230000';
 wwv_flow_imp.g_varchar2_table(49) := '000000000000002000B6813D1000004542415F475241504856495A5F454D504C4F594545535F70726F66696C652E6A736F6E504B050600000000020002009A000000581200002000496D706C656D656E746174696F6E20627920416E746F6E2053636865';
 wwv_flow_imp.g_varchar2_table(50) := '66666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516544380463955293)
+ p_id=>wwv_flow_imp.id(26998201227977765796)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_EMPLOYEES$828178.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38503,19 +38524,19 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_jobs_113840_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE5871121C6D9E01000036070000160000004542415F475241504856495A5F4A4F42532E6A736F6EA5945D6F82301885EFF915866B2F04C5A87784F9158712506F9685546CB4138A6961D962F6DFF7FA912DA16FD144122E';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF5871121C6D9E01000036070000160000004542415F475241504856495A5F4A4F42532E6A736F6EA5945D6F82301885EFF915866B2F04C5A87784F9158712506F9685546CB4138A6961D962F6DFF7FA912DA16FD144122E';
 wwv_flow_imp.g_varchar2_table(2) := '78499E737A7ADA9361B28266D21CBC1927C3FCC83731DB9A03D37D898370189946F3322B5891521807824AB6A5BC38FFC8188F254989F83607760B9EF38C7CFDCD3A97D98FD1AC80D74115EB6E81C5642148C172DE58B38436B45296A34AB535526E142D';
 wwv_flow_imp.g_varchar2_table(3) := 'EF88B952C2075175DAAA4C1751194D637F1C5645468C130EABF009273B2AAAEC9EADB02D0DDCF5BCC56AAEAE2249F29263BE3B2ABB8FA5E361BE6F58C677CF5A07BEC67A506E5296349E5E41E4C6BE3BAFD2239252A9336F2135B5B1EE003B1C2A3DBDB2';
 wwv_flow_imp.g_varchar2_table(4) := '437A846E4233A1409FB42AD155152C1B51085698FBA014C99EC8BAFC11BE83F3BDD76138AB51F0522A0ECA497614BEE320012DD1F08B3C39E89C3B2AB9879351E35736EE59CD048B249A68C87B763C3E1BC8740937E662ACDE98F94E902C53E3E8201B89';
-wwv_flow_imp.g_varchar2_table(5) := '55D19F6149FB441C68DD39ED3FD813C0234DFFC7D7B71D59047654272126322933C24140E6D0C9BB07EB41A90095BADD39214D2FB7FE5D2D75CFADD675D3DFE1FD05504B0304140000080800B3A9AE587BB798A929010000790300001E0000004542415F';
+wwv_flow_imp.g_varchar2_table(5) := '55D19F6149FB441C68DD39ED3FD813C0234DFFC7D7B71D59047654272126322933C24140E6D0C9BB07EB41A90095BADD39214D2FB7FE5D2D75CFADD675D3DFE1FD05504B03041400000808003093AF587BB798A929010000790300001E0000004542415F';
 wwv_flow_imp.g_varchar2_table(6) := '475241504856495A5F4A4F42535F70726F66696C652E6A736F6EBD925F4BC33014C5DFF729429E1BD14E417DABA850A90A3A415129314D6D46FE94DCCC39C6BEBB49AA1DB24D740F3E34D073EEB9F95D72E70384702D24276ED6728C8ED17E122410FAD5';
 wwv_flow_imp.g_varchar2_table(7) := '8BD64C835653093CE94BB966A6F205C1C259314CEF46E78738FA3E40804BCE9CB1D1168E2BE8BC86D390022234A98505B7DA9EC15BE82E0DF02AC69F7097AD8D659ED10A45A68DEF092D6511D7D9C967D4C889D2E035FFF7E83F84E6F1F49EA62A16E38B';
 wwv_flow_imp.g_varchar2_table(8) := 'EB93323F8D2DA3515147FBC9F7566522B98ED66EEF7D9B6E6C5E4A512DFB09206330BA1F2AEA8BE4079A513E2ACEFE0E343CD80CE484937C5BA6CBFCAABCCD8AECE6610354BA9439138A4AC21ADA5DBEB326F2059CA6EB8195D0255049ED6C6BE2ECFE7F';
-wwv_flow_imp.g_varchar2_table(9) := '89E9FB2F89FDF91C77B3A5D62F74587788EF7A34587C00504B01021400140000080800B3A9AE5871121C6D9E01000036070000160000000000000000002000B681000000004542415F475241504856495A5F4A4F42532E6A736F6E504B01021400140000';
-wwv_flow_imp.g_varchar2_table(10) := '080800B3A9AE587BB798A929010000790300001E0000000000000000002000B681D20100004542415F475241504856495A5F4A4F42535F70726F66696C652E6A736F6E504B0506000000000200020090000000370300002000496D706C656D656E746174';
+wwv_flow_imp.g_varchar2_table(9) := '89E9FB2F89FDF91C77B3A5D62F74587788EF7A34587C00504B010214001400000808003093AF5871121C6D9E01000036070000160000000000000000002000B681000000004542415F475241504856495A5F4A4F42532E6A736F6E504B01021400140000';
+wwv_flow_imp.g_varchar2_table(10) := '0808003093AF587BB798A929010000790300001E0000000000000000002000B681D20100004542415F475241504856495A5F4A4F42535F70726F66696C652E6A736F6E504B0506000000000200020090000000370300002000496D706C656D656E746174';
 wwv_flow_imp.g_varchar2_table(11) := '696F6E20627920416E746F6E205363686566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516544835334955296)
+ p_id=>wwv_flow_imp.id(26998201682848765799)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_JOBS$113840.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38526,18 +38547,18 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_job_history_762237_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE58EA0816772E010000470500001D0000004542415F475241504856495A5F4A4F425F484953544F52592E6A736F6EBDD43D6BC3301006E05D3F43730477577F6FC20DA1A44E82ED4EA588146B48A993D07829A1FFBD8ABA';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF58EA0816772E010000470500001D0000004542415F475241504856495A5F4A4F425F484953544F52592E6A736F6EBDD43D6BC3301006E05D3F43730477577F6FC20DA1A44E82ED4EA588146B48A993D07829A1FFBD8ABA';
 wwv_flow_imp.g_varchar2_table(2) := 'A4C9C5755A28D88B2D748FDE3BB41772D5D97627B347B117D2B6DBD7CDBBB566D5C80C81C448EEBAE55B679A65676526093050102A841A20F38F746BECBA395A912A4485C9B7152F9B67BFA7BCABCDA29C4F0EDF1ABB755BB776DDF95F11880F313A4720';
 wwv_flow_imp.g_varchar2_table(3) := '834005AE44D48308159022E4113A373ACFE70FB39A71205E01F92A433D9044417C9AD731A49894C311C422620591C29BCB087279050A031E514C4D395E3008E283C08031A4FE98E94F068A7843559BFC7E5C4E1945C82B88194E025F23FE3705019C2B20';
-wwv_flow_imp.g_varchar2_table(4) := 'F5D3893D43E19A010AE9C250DC1A5D55DC68A67C1471F4AB86406F14FAC25024C30D7F6E8736859E0D36B0CDC0C365755AE18A1C7AAF0ADF8F27F77E02504B0304140000080800B3A9AE584830FE3A6001000079040000250000004542415F4752415048';
+wwv_flow_imp.g_varchar2_table(4) := 'F5D3893D43E19A010AE9C250DC1A5D55DC68A67C1471F4AB86406F14FAC25024C30D7F6E8736859E0D36B0CDC0C365755AE18A1C7AAF0ADF8F27F77E02504B03041400000808003093AF584830FE3A6001000079040000250000004542415F4752415048';
 wwv_flow_imp.g_varchar2_table(5) := '56495A5F4A4F425F484953544F52595F70726F66696C652E6A736F6EBD535D4BC340107CF757847BEE89FD00A56F95445A69DA62E343B112CE6463AFDE47C85D2DA5F4BFBBB94883D880A83490839BD959668EDDFD85E7918C0BA0769703F1FA5EAF5542';
 wwv_flow_imp.g_varchar2_table(6) := '86AB57040BBD2DB18C0903AD6329A844A75850526430EE761EA3BB1BE2781450030212AB0B47730BD254DC0A58A932942B9AF1C2D8EFED13F35E7617DA40EAE44B5269335D24E8B1E0926E57D8D3E42C71766DB1F9946AB191CA2086B727FC3D6FEF4EE4';
 wwv_flow_imp.g_varchar2_table(7) := '1493AE9804E16C3C5D04413CF25D5FC7A6CCB263FC4E0D43C225133459B12ACAE5090915A09CACD67D890F32177A0710F3B4567343D746AB6374871F5A0D9EE7D1E0218AFD41143458EE36DBBA3EEDCA5856D818ABA16E892F2C99A592993757B3C08F86';
-wwv_flow_imp.g_varchar2_table(8) := '21F5FD2589966438ECF4FAE1A83F9FFF364730F1FF3705A8F4DC19EEA7B7CDA3D36E4ED0BE3A1D61AD5FFE30197E30C3D108834974B6794E21C7D191A0EC0F7CE3F9EC761335B8D0E5BA9BEA352E0E1F504B01021400140000080800B3A9AE58EA081677';
-wwv_flow_imp.g_varchar2_table(9) := '2E010000470500001D0000000000000000002000B681000000004542415F475241504856495A5F4A4F425F484953544F52592E6A736F6E504B01021400140000080800B3A9AE584830FE3A6001000079040000250000000000000000002000B681690100';
+wwv_flow_imp.g_varchar2_table(8) := '21F5FD2589966438ECF4FAE1A83F9FFF364730F1FF3705A8F4DC19EEA7B7CDA3D36E4ED0BE3A1D61AD5FFE30197E30C3D108834974B6794E21C7D191A0EC0F7CE3F9EC761335B8D0E5BA9BEA352E0E1F504B010214001400000808003093AF58EA081677';
+wwv_flow_imp.g_varchar2_table(9) := '2E010000470500001D0000000000000000002000B681000000004542415F475241504856495A5F4A4F425F484953544F52592E6A736F6E504B010214001400000808003093AF584830FE3A6001000079040000250000000000000000002000B681690100';
 wwv_flow_imp.g_varchar2_table(10) := '004542415F475241504856495A5F4A4F425F484953544F52595F70726F66696C652E6A736F6E504B050600000000020002009E0000000C0300002000496D706C656D656E746174696F6E20627920416E746F6E205363686566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516545198146955301)
+ p_id=>wwv_flow_imp.id(26998202045660765804)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_JOB_HISTORY$762237.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38548,7 +38569,7 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_locations_916165_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE583504EC60F1030000E40D00001B0000004542415F475241504856495A5F4C4F434154494F4E532E6A736F6EA5964D6FDB381086EFFE15844EBB405C50F2277B8BDDB44D1A2781E5246D178B60224D2DD60A69505412A3';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF583504EC60F1030000E40D00001B0000004542415F475241504856495A5F4C4F434154494F4E532E6A736F6EA5964D6FDB381086EFFE15844EBB405C50F2277B8BDDB44D1A2781E5246D178B60224D2DD60A69505412A3';
 wwv_flow_imp.g_varchar2_table(2) := 'D8FFBEA318BB905743C0C01E7C9087161FCFC7FBCEAF5EA43D3E55D1FB3F7ABF7A516933F0DA9A079D47EF632965EF24AABC43F40F90E70E2B3A18C5899A883B0D626E4B10B9164B8D111DDCDACA43F990D91CE994946AAA9AAF33ED77F4BCB44F10BDBD';
 wwv_flow_imp.g_varchar2_table(3) := '0E3C3E6C9D7DD626A383A62ECBE694AD8D77BBB78BA3F355D4FBAB77D2018A792035902A1673284B14399604B542BAA6CB144B3518B698EED0E80CFF2F55C25325329E88B4D0E667BDA9FB9B9AC1191F646865373BCBC1EC23E2C6E10FCC7CEDDE880FD0';
 wwv_flow_imp.g_varchar2_table(4) := '2E6E78B4412061C391145FE049EFA09F15B64B369E268316D967ED6C55E8E30B18E2190653351417F0F888EEC5669B9D58E65DA6641CABA40595DADA17256CD8FA452B7C85AA93A7DB94E71A05B962716E3C3A6D5D2566E533C3A5543218FF974BA460C4';
@@ -38558,16 +38579,16 @@ wwv_flow_imp.g_varchar2_table(7) := '920D95B80547C2FFDBD9EF5DA4A192C9206E23D9A74
 wwv_flow_imp.g_varchar2_table(8) := 'EB8EF6CBF4130F15308169423A714A2CB5E33AFF9F1BF63097D6E4FBB63E86E4F60B4F1290FD05AC734AB311734A90C313B12A505CBF9258D34C661AE91E71036ED34DDAF55725D4F7592B6BFB9FF192F16FE828D880F8AB894C485E69E1412796161881';
 wwv_flow_imp.g_varchar2_table(9) := '956A4CB33292896A9B7AD3953E08B720EBDABFF468C080FEA759F102C617945147C1776222F72379083925E51BB5F01635ED6605CB368367D2DAEE947E38E3C1020EB0AC812C1A356D8E063310F1602C99E4D11235E94B79B07A006D635097BC151C440F';
 wwv_flow_imp.g_varchar2_table(10) := '00674B1E3060068914CBBA59692B5AB5DDB6EAA7A08DAF18E59D0CDAFEFE090D3EB3BBDA3ED4DD1FE79F59B041C00E16B5F368E86BA82A142A61CA492B79BB9A3374ECB446B3B3A361023E70A3B169FD99C37A5D60D9508117D3C184834A54FAA585754B';
-wwv_flow_imp.g_varchar2_table(11) := '2FCB0ACF92B562077857973C5EC00B164DAB1A2BCE680F7CC4DC0AA51493AF385683768B2DF0556756CC9B278EEE83A69BB4B7E223E6E8A0EC602EBE36987FD2E76F504B0304140000080800B3A9AE58128FBC5F6E0100009A040000230000004542415F';
+wwv_flow_imp.g_varchar2_table(11) := '2FCB0ACF92B562077857973C5EC00B164DAB1A2BCE680F7CC4DC0AA51493AF385683768B2DF0556756CC9B278EEE83A69BB4B7E223E6E8A0EC602EBE36987FD2E76F504B03041400000808003093AF58128FBC5F6E0100009A040000230000004542415F';
 wwv_flow_imp.g_varchar2_table(12) := '475241504856495A5F4C4F434154494F4E535F70726F66696C652E6A736F6E9D545D6BC230147DF757943EDB313F06636FA5EDA02056DA3A906D8490A633234D4A6E5444FCEF4BE350C6CC987D4820E7DC7339F726378781E7F935E334D0FB96FADE9337';
 wwv_flow_imp.g_varchar2_table(13) := '1D761030F1614025771D56630E74780EA582C8CA0474941FCE26E365F9FCE85BDE0802A09C122D95A599A60D9CB835C59D0A0226829A29D0BFD313D876D9B9045A59F99B7FD2D65211E351B126D8AD4D4E6831B176B5DA7C4B25DF34020C664EAF6679DE';
 wwv_flow_imp.g_varchar2_table(14) := 'C1EE8613B8B1C1FE2C8BC232CDE6288D6D5ECB5658E373F9E30B4C096B300FC81A9F4AB9BB220938155676D1FD289F4B82359302B1EAA266107C8214E7D22D7E1C3A3C17659E24250AE3384F8AC2617BE4B636BDBF6E0DB4A254235C558A02F475B7C88A';
 wwv_flow_imp.g_varchar2_table(15) := '329CA1288B93DBAD8D1C5D6B2568CC917965B4AFAF282D57B71B9A387A4598DEF7BFBFB04CD022CF5ED279D4A349E307D7FD614D51ABE49609D2BF4FD9725EE62BF740FCE5CCD12CB9115AEDFFF1E4CDFE6E87B7C5CA4C7CF71F804D3C191CBF00504B01';
-wwv_flow_imp.g_varchar2_table(16) := '021400140000080800B3A9AE583504EC60F1030000E40D00001B0000000000000000002000B681000000004542415F475241504856495A5F4C4F434154494F4E532E6A736F6E504B01021400140000080800B3A9AE58128FBC5F6E0100009A0400002300';
+wwv_flow_imp.g_varchar2_table(16) := '0214001400000808003093AF583504EC60F1030000E40D00001B0000000000000000002000B681000000004542415F475241504856495A5F4C4F434154494F4E532E6A736F6E504B010214001400000808003093AF58128FBC5F6E0100009A0400002300';
 wwv_flow_imp.g_varchar2_table(17) := '00000000000000002000B6812A0400004542415F475241504856495A5F4C4F434154494F4E535F70726F66696C652E6A736F6E504B050600000000020002009A000000D90500002000496D706C656D656E746174696F6E20627920416E746F6E20536368';
 wwv_flow_imp.g_varchar2_table(18) := '6566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516545428633955304)
+ p_id=>wwv_flow_imp.id(26998202276147765807)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_LOCATIONS$916165.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38578,15 +38599,15 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_regions_917117_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE583597D00A66000000CB000000190000004542415F475241504856495A5F524547494F4E532E6A736F6EABE652CA2C49CD2D56B28AE6AAE6522A4A4DCFCCCF8BCF4C51B232E4D28171F312735395AC945C4B8BF20B5295';
-wwv_flow_imp.g_varchar2_table(2) := 'B86AB97450951A612875CC4D2DCA4C4E2CC6A2D8185371716622168526180A7D3353527252155C138B4B1412F352141CD3409680B4C6023100504B0304140000080800B3A9AE5868ECD081010100003A020000210000004542415F475241504856495A5F';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF583597D00A66000000CB000000190000004542415F475241504856495A5F524547494F4E532E6A736F6EABE652CA2C49CD2D56B28AE6AAE6522A4A4DCFCCCF8BCF4C51B232E4D28171F312735395AC945C4B8BF20B5295';
+wwv_flow_imp.g_varchar2_table(2) := 'B86AB97450951A612875CC4D2DCA4C4E2CC6A2D8185371716622168526180A7D3353527252155C138B4B1412F352141CD3409680B4C6023100504B03041400000808003093AF5868ECD081010100003A020000210000004542415F475241504856495A5F';
 wwv_flow_imp.g_varchar2_table(3) := '524547494F4E535F70726F66696C652E6A736F6E8592D14BC33010C6DFF757843C37829B82F83670CA604E107D521921BDAE913429B9CC2163FFBB97ABB488AE3E34D0EFBBDFE5BB24878910B2B20E54FA6C418A6B71516409ADDF9218C33E6B95760845';
 wwv_flow_imp.g_varchar2_table(4) := '5F0ADE84920AB225E7ABD9F4F9E9F64AB24F8042706052886CDB040D765E0D3A53A8AC57958D987EB737F891BBBB805032FE2A3BB60AD150C6681BB5AFA927B6DA70DC1477DF6870BBC62369F4F7429F10075EC9F3BAE162F9B8B85B3EAC37CB1BEECA5E';
-wwv_flow_imp.g_varchar2_table(5) := 'A993EE879F0E3218DB68A74CADBB41CEFE409403CFD8C0FD183EC2D606BFB1E5C05A54EF187C3F36EBC7623CEF7A7EBF3891F87C24D5E5682ADEE49F5CB4BEF1E9B63AD295E40B437E2493E317504B01021400140000080800B3A9AE583597D00A660000';
-wwv_flow_imp.g_varchar2_table(6) := '00CB000000190000000000000000002000B681000000004542415F475241504856495A5F524547494F4E532E6A736F6E504B01021400140000080800B3A9AE5868ECD081010100003A020000210000000000000000002000B6819D0000004542415F4752';
+wwv_flow_imp.g_varchar2_table(5) := 'A993EE879F0E3218DB68A74CADBB41CEFE409403CFD8C0FD183EC2D606BFB1E5C05A54EF187C3F36EBC7623CEF7A7EBF3891F87C24D5E5682ADEE49F5CB4BEF1E9B63AD295E40B437E2493E317504B010214001400000808003093AF583597D00A660000';
+wwv_flow_imp.g_varchar2_table(6) := '00CB000000190000000000000000002000B681000000004542415F475241504856495A5F524547494F4E532E6A736F6E504B010214001400000808003093AF5868ECD081010100003A020000210000000000000000002000B6819D0000004542415F4752';
 wwv_flow_imp.g_varchar2_table(7) := '41504856495A5F524547494F4E535F70726F66696C652E6A736F6E504B0506000000000200020096000000DD0100002000496D706C656D656E746174696F6E20627920416E746F6E205363686566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(30516545791133955309)
+ p_id=>wwv_flow_imp.id(26998202638647765812)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_REGIONS$917117.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38597,18 +38618,18 @@ end;
 prompt --application/shared_components/files/apex_data_pkg_eba_graphviz_routes_492746_zip
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '504B0304140000080800B3A9AE588A83EFD63101000026080000180000004542415F475241504856495A5F524F555445532E6A736F6EADD5CD6AC3300C00E07B1E23E71E2C4B96ECBCCA18A52C6104B274A4D9A9ECDDE774874E6A0F81E9104884C9876D';
+wwv_flow_imp.g_varchar2_table(1) := '504B03041400000808003093AF588A83EFD63101000026080000180000004542415F475241504856495A5F524F555445532E6A736F6EADD5CD6AC3300C00E07B1E23E71E2C4B96ECBCCA18A52C6104B274A4D9A9ECDDE774874E6A0F81E9104884C9876D';
 wwv_flow_imp.g_varchar2_table(2) := 'FD5C9B765C878F4BDBBD34D7FADEB75D8C39E6E6D09EC6651AE7E1B8C50081EFA1B69BBFA6A97E9F97F1FD58839FE765BDADC3C4DBBA7EB8AC3A9E65FB653F5ED6D3FC567F90A934DFCDE14E6230247128BB482CF094C49C1489C2868CCE6444B3CB84D9';
 wwv_flow_imp.g_varchar2_table(3) := '90E4BDCB20A2486132A438935C881449C192C5FF2EA322018A6893C0DD146DE6100D89DE278B191519050D99BC77091174FED4AAD1A477FE20B2CE1F665325C9BB1710067D976C533679F7821A0FBAFD244BBAF70264D37EEA3A4DB23F59F4C18A25ED28';
-wwv_flow_imp.g_varchar2_table(4) := 'F97F91147D9715D124FB8F12D1BB14564582240FE913CBAE810929E1D38C85A2EF52080DF9D00A7692F47B7E568470CB8E3F3D36D336305FEBF303504B0304140000080800B3A9AE58C1C21C613B010000FD040000200000004542415F47524150485649';
+wwv_flow_imp.g_varchar2_table(4) := 'F97F91147D9715D124FB8F12D1BB14564582240FE913CBAE810929E1D38C85A2EF52080DF9D00A7692F47B7E568470CB8E3F3D36D336305FEBF303504B03041400000808003093AF58C1C21C613B010000FD040000200000004542415F47524150485649';
 wwv_flow_imp.g_varchar2_table(5) := '5A5F524F555445535F70726F66696C652E6A736F6EBD94514BC33010C7DFF7294A9F1BC13964F856DC94C2D864AB4F2A25A4D72D922625973964ECBB7BC96443B40A6EF42181FCEFFEC7EFC271DB5E14C59554C0DC7B037174130D122FA1D44B12ADD978';
 wwv_flow_imp.g_varchar2_table(6) := 'ADE20A2139A48216A6A4041F8AD3C955FF31BF1BC6214E0686A040386343583AA8711F5B01F72E6452B34A5A74DFCB0B7CF3D595412883FD39DE7B2B6305315A59B3CD8A6A62C345C07576FD69356A5D6B248D5E4F74A2681B6E8A695E87E4381B857241';
 wwv_flow_imp.g_varchar2_table(7) := '2CB9E387AEFB471984ACB96262C5F71D5CFC60610A74B01D7D5FBB2E8F2689EC158D3E341AF45DD2429866F349361D175D91726995D4509C4CDC827BD98E743DF815E9BF3CB379765F10D4C36C9E77F68DC6CA6541E08DB1EE84BF1C8D1779E7EC25A03B';
-wwv_flow_imp.g_varchar2_table(8) := '077BB6C8D3E96DDB209C1B5AA2E35AFC392574BF84FDD0704B4BC5AF1C0C7339ECED3E00504B01021400140000080800B3A9AE588A83EFD63101000026080000180000000000000000002000B681000000004542415F475241504856495A5F524F555445';
-wwv_flow_imp.g_varchar2_table(9) := '532E6A736F6E504B01021400140000080800B3A9AE58C1C21C613B010000FD040000200000000000000000002000B681670100004542415F475241504856495A5F524F555445535F70726F66696C652E6A736F6E504B0506000000000200020094000000';
+wwv_flow_imp.g_varchar2_table(8) := '077BB6C8D3E96DDB209C1B5AA2E35AFC392574BF84FDD0704B4BC5AF1C0C7339ECED3E00504B010214001400000808003093AF588A83EFD63101000026080000180000000000000000002000B681000000004542415F475241504856495A5F524F555445';
+wwv_flow_imp.g_varchar2_table(9) := '532E6A736F6E504B010214001400000808003093AF58C1C21C613B010000FD040000200000000000000000002000B681670100004542415F475241504856495A5F524F555445535F70726F66696C652E6A736F6E504B0506000000000200020094000000';
 wwv_flow_imp.g_varchar2_table(10) := 'E00200002000496D706C656D656E746174696F6E20627920416E746F6E205363686566666572';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(4490046280377773630)
+ p_id=>wwv_flow_imp.id(989755246475796705)
 ,p_file_name=>'APEX$DATA$PKG/EBA_GRAPHVIZ_ROUTES$492746.zip'
 ,p_mime_type=>'application/x-zip'
 ,p_file_charset=>'utf-8'
@@ -38622,7 +38643,7 @@ wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
 wwv_flow_imp.g_varchar2_table(1) := '2E6170702D69636F6E207B0A202020206261636B67726F756E642D696D6167653A2075726C286170702D73616D706C652D67726170682D76697375616C697A6174696F6E2E737667293B0A202020206261636B67726F756E642D7265706561743A206E6F';
 wwv_flow_imp.g_varchar2_table(2) := '2D7265706561743B0A202020206261636B67726F756E642D73697A653A20636F7665723B0A202020206261636B67726F756E642D706F736974696F6E3A203530253B0A202020206261636B67726F756E642D636F6C6F723A20233831424235463B0A7D';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(16340735934047909818)
+ p_id=>wwv_flow_imp.id(12822392781561720321)
 ,p_file_name=>'app-icon.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
@@ -38636,7 +38657,7 @@ wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
 wwv_flow_imp.g_varchar2_table(1) := '2E6170702D69636F6E7B6261636B67726F756E642D696D6167653A75726C286170702D73616D706C652D67726170682D76697375616C697A6174696F6E2E737667293B6261636B67726F756E642D7265706561743A6E6F2D7265706561743B6261636B67';
 wwv_flow_imp.g_varchar2_table(2) := '726F756E642D73697A653A636F7665723B6261636B67726F756E642D706F736974696F6E3A3530253B6261636B67726F756E642D636F6C6F723A233831626235667D';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(11798316474908948345)
+ p_id=>wwv_flow_imp.id(8279973322422758848)
 ,p_file_name=>'app-icon.min.css'
 ,p_mime_type=>'text/css'
 ,p_file_charset=>'utf-8'
@@ -38769,7 +38790,7 @@ wwv_flow_imp.g_varchar2_table(119) := '3838373434203132362E303431383835203132302
 wwv_flow_imp.g_varchar2_table(120) := '3833383038392043203134312E363638313938203132352E363538393831203134312E323339383638203133322E343534313332203133352E303634303837203133382E333334313637207A22207374726F6B652D6C696E656361703D22726F756E6422';
 wwv_flow_imp.g_varchar2_table(121) := '2F3E0A3C2F673E0A3C2F7376673E';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(9425151024884261857)
+ p_id=>wwv_flow_imp.id(5906807872398072360)
 ,p_file_name=>'app-icon.svg'
 ,p_mime_type=>'image/svg+xml'
 ,p_file_charset=>'utf-8'
@@ -38786,7 +38807,7 @@ wwv_flow_imp.g_varchar2_table(3) := '346334653530222F3E0A20203C7061746820643D226
 wwv_flow_imp.g_varchar2_table(4) := '5A222066696C6C3D2223626463336337222F3E0A20203C636972636C652063783D223231222063793D2231392220723D2237222066696C6C3D2223323761366566222F3E0A20203C636972636C652063783D223231222063793D2234352220723D223722';
 wwv_flow_imp.g_varchar2_table(5) := '2066696C6C3D2223666462643365222F3E0A20203C636972636C652063783D223435222063793D2233322220723D2237222066696C6C3D2223323463623766222F3E0A3C2F7376673E';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(11798172069457562461)
+ p_id=>wwv_flow_imp.id(8279828916971372964)
 ,p_file_name=>'app-sample-graph-visualization.svg'
 ,p_mime_type=>'image/svg+xml'
 ,p_file_charset=>'utf-8'
@@ -38848,7 +38869,7 @@ wwv_flow_imp.g_varchar2_table(48) := 'F080520B7935C44B903642A0789B12E1B5F414DD3B
 wwv_flow_imp.g_varchar2_table(49) := 'F92104F30921F994923C0224C5618614B842081DA6940EE9A01FA2940C0583C2D0AE5D4DF27FB259E22F23210192D8275E5D450538402A8AADC5A638405A1C5515FBC40152516C2D36C501D2E2A8AAD8270E908A626BB1290E90164755C53E718054145B';
 wwv_flow_imp.g_varchar2_table(50) := '8B4D7180B438AA2AF68903A4A2D85A6C8A03A4C55155B14F1C2015C5D662531C202D8EAA8A7DE200A928B6169BFA7F6B61B709AC948A160000000049454E44AE426082';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(9422855122755467304)
+ p_id=>wwv_flow_imp.id(5904511970269277807)
 ,p_file_name=>'icons/app-icon-144-rounded.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
@@ -38906,7 +38927,7 @@ wwv_flow_imp.g_varchar2_table(44) := 'D5336417170508002E325323A22A400088EA19B28B
 wwv_flow_imp.g_varchar2_table(45) := '4054CF905D5C142000B8C84C8D88AA000120AA67C82E2E0A10005C64A6464455800010D5336417170508002E325323A22A400088EA19B28B8B0204001799A9115115200044F50CD9C5450102808BCCD488A80A1000A27A86ECE2A20001C045666A445405';
 wwv_flow_imp.g_varchar2_table(46) := '0800513D437671518000E022333522AA020480A89E21BBB82840007091991A115501024054CF905D5C142000B8C84C8D88AA000120AA67C82E2E0AFC1F33D70EEACF08E6240000000049454E44AE426082';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(9422345142178097813)
+ p_id=>wwv_flow_imp.id(5904001989691908316)
 ,p_file_name=>'icons/app-icon-192.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
@@ -39012,7 +39033,7 @@ wwv_flow_imp.g_varchar2_table(92) := '868D8C2602DA102001D08623E542044C498004C094
 wwv_flow_imp.g_varchar2_table(93) := '8004C0946123A3898036044800B4E148B91001531220013065D8C86822A00D0112006D38522E44C0940448004C1936329A0868438004401B8E940B11302501120053868D8C2602DA102001D08623E542044C498004C0946123A3898036044800B4E148B9';
 wwv_flow_imp.g_varchar2_table(94) := '1001531220013065D8C86822A00D81FF0F73C0F2B58BC2C58B0000000049454E44AE426082';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(9422855592238467365)
+ p_id=>wwv_flow_imp.id(5904512439752277868)
 ,p_file_name=>'icons/app-icon-256-rounded.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
@@ -39030,7 +39051,7 @@ wwv_flow_imp.g_varchar2_table(4) := '16F15D79CF20B51E1142C80AA8E60090A1B72A7419F
 wwv_flow_imp.g_varchar2_table(5) := 'BB6C08B23CDBF92B86CB4F7C726478C566C970FCE851866B57B0272E624B27BCB9604AEC47B0CFD1C1EB6FDC0C29B3D989B583FC826863FE3B9C9AFD270AD1DE01B8420094167216F3D3DE01B8D2C0D4BDDCE084480D40B024C4950BA86139C80C820EA0';
 wwv_flow_imp.g_varchar2_table(6) := '9645B8CC1975C068080C78080000BD400050D0CEC18E0000000049454E44AE426082';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(9422344603567097655)
+ p_id=>wwv_flow_imp.id(5904001451080908158)
 ,p_file_name=>'icons/app-icon-32.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
@@ -39219,7 +39240,7 @@ wwv_flow_imp.g_varchar2_table(175) := '041040000104EC112000D8332B2A450001041040C
 wwv_flow_imp.g_varchar2_table(176) := '00020820808031010280314A16420001041040C01E0102803DB3A2520410400001048C0910008C51B210020820800002F6081000EC991595228000020820604C8000608C9285104000010410B047E0FF03CA488F3CF32F0ECA0000000049454E44AE4260';
 wwv_flow_imp.g_varchar2_table(177) := '82';
 wwv_flow_imp_shared.create_app_static_file(
- p_id=>wwv_flow_imp.id(9422855822010467400)
+ p_id=>wwv_flow_imp.id(5904512669524277903)
 ,p_file_name=>'icons/app-icon-512.png'
 ,p_mime_type=>'image/png'
 ,p_file_charset=>'utf-8'
@@ -39230,12 +39251,13 @@ end;
 prompt --application/shared_components/security/authorizations/adb_19
 begin
 wwv_flow_imp_shared.create_security_scheme(
- p_id=>wwv_flow_imp.id(5689273072394181994)
+ p_id=>wwv_flow_imp.id(2170929919907992497)
 ,p_name=>'ADB 19 '
 ,p_static_id=>'adb'
 ,p_scheme_type=>'NATIVE_FUNCTION_BODY'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'plsql_function_body', 'return SYS_CONTEXT(''USERENV'',''CLOUD_SERVICE'') IS NOT NULL AND sys.dbms_db_version.version = 19;')).to_clob
+,p_version_scn=>'1'
 ,p_caching=>'BY_USER_BY_SESSION'
 );
 end;
@@ -39243,13 +39265,14 @@ end;
 prompt --application/shared_components/security/authorizations/administration_rights
 begin
 wwv_flow_imp_shared.create_security_scheme(
- p_id=>wwv_flow_imp.id(16340737240555909820)
+ p_id=>wwv_flow_imp.id(12822394088069720323)
 ,p_name=>'Administration Rights'
 ,p_static_id=>'administration-rights'
 ,p_scheme_type=>'NATIVE_FUNCTION_BODY'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'plsql_function_body', 'return true;')).to_clob
 ,p_error_message=>'Insufficient privileges, user is not an Administrator'
+,p_version_scn=>'1'
 ,p_caching=>'BY_USER_BY_PAGE_VIEW'
 );
 end;
@@ -39257,12 +39280,13 @@ end;
 prompt --application/shared_components/security/authorizations/has_23_db
 begin
 wwv_flow_imp_shared.create_security_scheme(
- p_id=>wwv_flow_imp.id(10657048269307754306)
+ p_id=>wwv_flow_imp.id(7138705116821564809)
 ,p_name=>'Has 23+ DB'
 ,p_static_id=>'has-23-db'
 ,p_scheme_type=>'NATIVE_FUNCTION_BODY'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'plsql_function_body', 'return sys.dbms_db_version.version >= 23;')).to_clob
+,p_version_scn=>'1'
 ,p_caching=>'BY_USER_BY_SESSION'
 );
 end;
@@ -39290,25 +39314,26 @@ end;
 prompt --application/shared_components/user_interface/lovs/login_remember_username
 begin
 wwv_flow_imp_shared.create_list_of_values(
- p_id=>wwv_flow_imp.id(16340740846732909861)
+ p_id=>wwv_flow_imp.id(12822397694246720364)
 ,p_lov_name=>'LOGIN_REMEMBER_USERNAME'
 ,p_static_id=>'login-remember-username'
-,p_lov_query=>'.'||wwv_flow_imp.id(16340740846732909861)||'.'
+,p_lov_query=>'.'||wwv_flow_imp.id(12822397694246720364)||'.'
 ,p_location=>'STATIC'
+,p_version_scn=>'1'
 );
 wwv_flow_imp_shared.create_static_lov_data(
- p_id=>wwv_flow_imp.id(16340741256230909862)
+ p_id=>wwv_flow_imp.id(12822398103744720365)
 ,p_lov_disp_sequence=>10
 ,p_lov_disp_value=>'Remember username'
 ,p_lov_return_value=>'Y'
-,p_static_id=>'y'
+,p_static_id=>'remember-username'
 );
 end;
 /
 prompt --application/pages/page_groups
 begin
 wwv_flow_imp_page.create_page_group(
- p_id=>wwv_flow_imp.id(16340737622558909827)
+ p_id=>wwv_flow_imp.id(12822394470072720330)
 ,p_group_name=>'Administration'
 ,p_static_id=>'administration'
 );
@@ -39317,100 +39342,92 @@ end;
 prompt --application/shared_components/navigation/breadcrumbs/breadcrumb
 begin
 wwv_flow_imp_shared.create_menu(
- p_id=>wwv_flow_imp.id(16340545630332909474)
+ p_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4491130880632881627)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(9758697141057424155)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Basic Graph'
 ,p_static_id=>'basic-graph'
-,p_link=>'f?p=&APP_ID.:11:&SESSION.::&DEBUG.'
-,p_page_id=>11
+,p_link=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:::'
+,p_page_id=>2
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4379171698502867692)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(993344111771041832)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Geographical Layout'
 ,p_static_id=>'geographical-layout'
-,p_link=>'f?p=&APP_ID.:18:&SESSION.::&DEBUG.'
-,p_page_id=>18
+,p_link=>'f?p=&APP_ID.:9:&SESSION.::&DEBUG.:::'
+,p_page_id=>9
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Home'
 ,p_static_id=>'home'
-,p_link=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.'
+,p_link=>'f?p=&APP_ID.:1:&APP_SESSION.::&DEBUG.'
 ,p_page_id=>1
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4493136431497236611)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(9759085593831514873)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Interaction'
 ,p_static_id=>'interaction'
-,p_link=>'f?p=&APP_ID.:12:&SESSION.::&DEBUG.'
-,p_page_id=>12
+,p_link=>'f?p=&APP_ID.:4:&SESSION.::&DEBUG.:::'
+,p_page_id=>4
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4499130602327555320)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(12013788172660212773)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Keyboard Navigation Shortcuts'
 ,p_static_id=>'keyboard-navigation-shortcuts'
-,p_link=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.'
-,p_page_id=>17
+,p_link=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.:::'
+,p_page_id=>10
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4263924527235577610)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(913754368257723246)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Legend Features'
 ,p_static_id=>'legend-features'
-,p_link=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.'
+,p_link=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.:::'
 ,p_page_id=>20
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4495136351677686809)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(9767467628296826824)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Network Evolution'
 ,p_static_id=>'network-evolution'
-,p_link=>'f?p=&APP_ID.:14:&SESSION.::&DEBUG.'
-,p_page_id=>14
+,p_link=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.:::'
+,p_page_id=>6
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4498330517417043153)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(9265248824297961120)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Saving Graph State'
 ,p_static_id=>'saving-graph-state'
-,p_link=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.'
-,p_page_id=>16
+,p_link=>'f?p=&APP_ID.:8:&SESSION.::&DEBUG.:::'
+,p_page_id=>8
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4275572808248079386)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
-,p_short_name=>'Schema Visualization'
-,p_static_id=>'schema-visualization'
-,p_link=>'f?p=&APP_ID.:19:&SESSION.::&DEBUG.'
-,p_page_id=>19
-);
-wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4494132687500611488)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(9759778646597231613)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Selection'
 ,p_static_id=>'selection'
-,p_link=>'f?p=&APP_ID.:13:&SESSION.::&DEBUG.'
-,p_page_id=>13
+,p_link=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.:::'
+,p_page_id=>5
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(4495535317387763555)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(9779427862441963606)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Styling'
 ,p_static_id=>'styling'
-,p_link=>'f?p=&APP_ID.:15:&SESSION.::&DEBUG.'
-,p_page_id=>15
+,p_link=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.:::'
+,p_page_id=>7
 );
 wwv_flow_imp_shared.create_menu_option(
- p_id=>wwv_flow_imp.id(27008007783809343)
-,p_parent_id=>wwv_flow_imp.id(16340545823949909474)
+ p_id=>wwv_flow_imp.id(1201713476696497)
+,p_parent_id=>wwv_flow_imp.id(12822202671463719977)
 ,p_short_name=>'Vertex Position Persistence'
 ,p_static_id=>'vertex-position-persistence'
 ,p_link=>'f?p=&APP_ID.:21:&SESSION.::&DEBUG.'
@@ -39426,7 +39443,7 @@ end;
 prompt --application/shared_components/user_interface/themes
 begin
 wwv_flow_imp_shared.create_theme(
- p_id=>wwv_flow_imp.id(16340712839012909757)
+ p_id=>wwv_flow_imp.id(12822369686526720260)
 ,p_theme_id=>42
 ,p_static_id=>'universal-theme'
 ,p_theme_name=>'Universal Theme'
@@ -39463,14 +39480,17 @@ wwv_flow_imp_shared.create_theme(
 ,p_default_required_label=>1610598484065263269
 ,p_default_navbar_list_template=>2849019392706229583
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
-,p_files_version=>2461307181726
+,p_files_version=>64
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
 ,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
+,p_version_scn=>'SH256:0tTRVxBgSx9rvyH6RWoEQCTUwThKDlVIJ36xwiY4LKs'
 ,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
+,p_updated_on=>wwv_flow_imp.dz('20260824211135Z')
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -39487,7 +39507,7 @@ end;
 prompt --application/shared_components/user_interface/template_opt_groups
 begin
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490285231959805782)
+ p_id=>wwv_flow_imp.id(5904691747307280856)
 ,p_theme_id=>42
 ,p_name=>'PRESERVE_LABEL_SPACING'
 ,p_static_id=>'preserve-label-spacing'
@@ -39499,7 +39519,7 @@ wwv_flow_imp_shared.create_template_opt_group(
 ,p_is_advanced=>'N'
 );
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490281278140805775)
+ p_id=>wwv_flow_imp.id(5904695715988280859)
 ,p_theme_id=>42
 ,p_name=>'COLOR_ACCENTS'
 ,p_static_id=>'color-accents'
@@ -39510,7 +39530,7 @@ wwv_flow_imp_shared.create_template_opt_group(
 ,p_is_advanced=>'N'
 );
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490260098409805730)
+ p_id=>wwv_flow_imp.id(5904697694731280860)
 ,p_theme_id=>42
 ,p_name=>'ICON_STYLE'
 ,p_static_id=>'icon-style'
@@ -39520,7 +39540,7 @@ wwv_flow_imp_shared.create_template_opt_group(
 ,p_is_advanced=>'N'
 );
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490303997674805819)
+ p_id=>wwv_flow_imp.id(5904700950139280862)
 ,p_theme_id=>42
 ,p_name=>'DISPLAY_MODE'
 ,p_static_id=>'display-mode'
@@ -39532,7 +39552,7 @@ wwv_flow_imp_shared.create_template_opt_group(
 ,p_is_advanced=>'N'
 );
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490304354341805820)
+ p_id=>wwv_flow_imp.id(5904709281575280869)
 ,p_theme_id=>42
 ,p_name=>'DISPLAY_MODE'
 ,p_static_id=>'display-mode'
@@ -39544,7 +39564,7 @@ wwv_flow_imp_shared.create_template_opt_group(
 ,p_is_advanced=>'N'
 );
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490288413300805788)
+ p_id=>wwv_flow_imp.id(5904719258522280878)
 ,p_theme_id=>42
 ,p_name=>'RESULT_SEPARATOR'
 ,p_static_id=>'result-separator'
@@ -39555,7 +39575,7 @@ wwv_flow_imp_shared.create_template_opt_group(
 ,p_is_advanced=>'N'
 );
 wwv_flow_imp_shared.create_template_opt_group(
- p_id=>wwv_flow_imp.id(4490284106486805780)
+ p_id=>wwv_flow_imp.id(5904723388157280881)
 ,p_theme_id=>42
 ,p_name=>'COLOR_ACCENTS'
 ,p_static_id=>'color-accents'
@@ -39585,10 +39605,11 @@ end;
 prompt --application/shared_components/logic/build_options
 begin
 wwv_flow_imp_shared.create_build_option(
- p_id=>wwv_flow_imp.id(16340545067304909467)
+ p_id=>wwv_flow_imp.id(12822201914818719970)
 ,p_build_option_name=>'Commented Out'
 ,p_static_id=>'commented-out'
 ,p_build_option_status=>'EXCLUDE'
+,p_version_scn=>'1718444513'
 );
 end;
 /
@@ -39605,17 +39626,18 @@ end;
 prompt --application/shared_components/security/authentications/application_express_accounts
 begin
 wwv_flow_imp_shared.create_authentication(
- p_id=>wwv_flow_imp.id(16340545345743909469)
+ p_id=>wwv_flow_imp.id(12822202193257719972)
 ,p_name=>'Application Express Accounts'
 ,p_static_id=>'application-express-accounts'
 ,p_scheme_type=>'NATIVE_APEX_ACCOUNTS'
 ,p_invalid_session_type=>'LOGIN'
 ,p_use_secure_cookie_yn=>'Y'
 ,p_ras_mode=>0
-,p_created_on=>wwv_flow_imp.dz('20260923181739Z')
-,p_updated_on=>wwv_flow_imp.dz('20260923181739Z')
-,p_created_by=>'ADMIN'
-,p_updated_by=>'ADMIN'
+,p_version_scn=>'1'
+,p_created_on=>wwv_flow_imp.dz('20260824210934Z')
+,p_updated_on=>wwv_flow_imp.dz('20260824210934Z')
+,p_created_by=>'TEST1'
+,p_updated_by=>'TEST1'
 );
 end;
 /
@@ -39652,7 +39674,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'13'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(11935319488613884182)
+ p_id=>wwv_flow_imp.id(8416976336127694685)
 ,p_plug_name=>'About this app'
 ,p_static_id=>'about-this-app'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -39669,7 +39691,7 @@ wwv_flow_imp_page.create_page_plug(
 ||' for ''Graph Visualization Toolkit'', is used across this application.'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(16340745252666909885)
+ p_id=>wwv_flow_imp.id(12822402100180720388)
 ,p_plug_name=>'Sample Graph Visualizations'
 ,p_static_id=>'sample-graph-visualizations'
 ,p_icon_css_classes=>'app-icon'
@@ -39684,7 +39706,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(11935317443253884162)
+ p_id=>wwv_flow_imp.id(8416974290767694665)
 ,p_plug_name=>'Visualizations'
 ,p_static_id=>'visualizations'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody:margin-top-md'
@@ -39693,29 +39715,31 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_list_id=>wwv_flow_imp.id(8907408030474865345)
+,p_list_id=>wwv_flow_imp.id(5389064877988675848)
 ,p_plug_source_type=>'NATIVE_LIST'
 ,p_list_template_id=>2888245825625742894
 ,p_landmark_type=>'navigation'
 );
 end;
 /
-prompt --application/pages/page_00011
+prompt --application/pages/page_00002
 begin
 wwv_flow_imp_page.create_page(
- p_id=>11
-,p_name=>'Basic Graph - 26ai'
-,p_alias=>'BASIC-GRAPH'
-,p_step_title=>'Basic Graph'
+ p_id=>2
+,p_name=>'Basic Graph - 19 ADB'
+,p_alias=>'BASICGRAPH'
+,p_step_title=>'Basic Graph - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(11939835662191584869)
+ p_id=>wwv_flow_imp.id(8416976365689694686)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -39730,7 +39754,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13281556026469314337)
+ p_id=>wwv_flow_imp.id(9758696729967424154)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -39740,127 +39764,40 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27844004955205011373)
+ p_id=>wwv_flow_imp.id(24321145658703121190)
 ,p_plug_name=>'Graph from Property Graph'
 ,p_static_id=>'graph-from-property-graph'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>20
-,p_plug_new_grid_row=>false
-,p_plug_new_grid_column=>false
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>'In the below example, data is selected from Property Graph with JSON format that the Graph Visualization Toolkit (GVT) plugin accepts, i.e., as vertices, edges, etc.<br>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21105696797894090698)
-,p_plug_name=>'Graph from tables'
-,p_static_id=>'graph-from-tables'
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>40
-,p_plug_item_display_point=>'BELOW'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m) -[e]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager)',
-')'))
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'Y',
-  'attribute_16', '640',
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'fitToScreenActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'legendwidth', '300',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502327980552236359)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502327963896236358)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328150434236360)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4559646463727233759)
-,p_plug_name=>'Query from Property Graph'
-,p_static_id=>'query-from-property-graph'
-,p_region_template_options=>'#DEFAULT#:is-expanded:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>60
+,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<ul>',
-'    <li>Select Property Graph as source type.</li>',
-'    <li>Select Graph Name.</li>',
-'    <li>Take below query as example. Fill in MATCH clause and COLUMNS clause.</li>',
-'    <li>Fill in WHERE clause(optional).</li>',
-'</ul>'))
+,p_plug_source=>'In the below example, data is selected from Property Graph with JSON format that the Graph Visualization Toolkit (GVT) plugin accepts, i.e., as vertices, edges, etc.<br><br>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4559646513373233760)
-,p_plug_name=>'Query from Property Graph'
-,p_static_id=>'query-from-property-graph-2'
+ p_id=>wwv_flow_imp.id(17582837501392200515)
+,p_plug_name=>'Graph from tables'
+,p_static_id=>'graph-from-tables'
+,p_parent_plug_id=>wwv_flow_imp.id(24321145658703121190)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>70
-,p_plug_new_grid_row=>false
-,p_plug_new_grid_column=>false
-,p_plug_item_display_point=>'BELOW'
-,p_query_type=>'GRAPH'
-,p_query_table=>'EBA_SAMPLE_GRAPH'
-,p_query_match=>'(m ) -[e ]-> (n)'
-,p_query_columns=>'vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager'
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -39868,7 +39805,7 @@ wwv_flow_imp_page.create_page_plug(
   'attribute_10', 'modes:exploration',
   'attribute_14', 'Y',
   'attribute_16', '640',
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -39884,36 +39821,20 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4559646718661233762)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4559646594760233761)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(982594570217791147)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4559646835290233763)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34136316710786218373)
+ p_id=>wwv_flow_imp.id(30461650190552520310)
 ,p_plug_name=>'RDS'
 ,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
@@ -39930,18 +39851,21 @@ wwv_flow_imp_page.create_page_plug(
   'remember_selection', 'USER')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27844004430726011367)
-,p_plug_name=>'SQL Query'
-,p_static_id=>'sql-query'
+ p_id=>wwv_flow_imp.id(24321145134224121184)
+,p_plug_name=>'Table Query Details'
+,p_static_id=>'table-query-details'
 ,p_region_name=>'dbt-details'
-,p_region_template_options=>'#DEFAULT#:is-expanded:t-Region--scrollBody'
+,p_parent_plug_id=>wwv_flow_imp.id(24321145658703121190)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>30
-,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<strong>SQL/PGQ query</strong>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
+'<strong>PGQL Query with ORA_PGQL_TO_JSON:</strong>',
 '<br>',
 '<code>/*  In the below query, data is selected from Property Graph and ',
 '    made into JSON format that GVT accepts.',
@@ -39949,11 +39873,9 @@ wwv_flow_imp_page.create_page_plug(
 '    The query retrieves vertices and edges of the graph that visualizes ',
 '    the reporting structure of employees to their managers.*/',
 '    ',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;',
 '</code>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -39961,22 +39883,24 @@ wwv_flow_imp_page.create_page_plug(
 );
 end;
 /
-prompt --application/pages/page_00012
+prompt --application/pages/page_00004
 begin
 wwv_flow_imp_page.create_page(
- p_id=>12
-,p_name=>'Interaction - 26ai'
+ p_id=>4
+,p_name=>'Interaction - 19 ADB'
 ,p_alias=>'INTERACTION'
-,p_step_title=>'Interaction'
+,p_step_title=>'Interaction - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'17'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18664697845265962214)
+ p_id=>wwv_flow_imp.id(15139638472138717377)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -39990,10 +39914,49 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4476593689865035439)
+ p_id=>wwv_flow_imp.id(990136519069047618)
 ,p_plug_name=>'Automatic Rule Based Group'
 ,p_static_id=>'automatic-rule-based-group'
-,p_parent_plug_id=>wwv_flow_imp.id(4491255100746125834)
+,p_parent_plug_id=>wwv_flow_imp.id(990136046515047614)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>50
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'The user can activate an automatic Rule Based Group option using <code>applyOnLoad = true</code>.',
+'In the example below, the plugin is passed a Rule Based Group setting with <code>applyOnLoad = true</code> and <code>groupBy = "DEPARTMENT_ID"</code>, so vertices with the same <code>DEPARTMENT_ID</code> are grouped automatically right after the grap'
+||'h loads.',
+'<br></br>',
+'<strong>Attributes &gt; Settings</strong>',
+'<pre><code>{',
+'  "ruleBasedGroups": [',
+'    {',
+'      "_id": 582378657398,',
+'      "name": "Automatic Group by DEPARTMENT_ID",',
+'      "type": "group",',
+'      "applyOnLoad": true,',
+'      "component": "vertex",',
+'      "enabled": true,',
+'      "groupBy": "DEPARTMENT_ID",',
+'      "conditions": {',
+'        "conditions": [],',
+'        "operator": "and"',
+'      }',
+'    }',
+'  ]',
+'}</code></pre>',
+''))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(990136548985047619)
+,p_plug_name=>'Automatic Rule Based Group'
+,p_static_id=>'automatic-rule-based-group-2'
+,p_parent_plug_id=>wwv_flow_imp.id(990136046515047614)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>60
@@ -40001,11 +39964,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH''',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -40016,7 +39977,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}",  "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -40183,79 +40144,135 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4476593886242035441)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4476593754045035440)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(990136650972047620)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4476593993577035442)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4491255688182125840)
-,p_plug_name=>'Automatic Rule Based Group'
-,p_static_id=>'automatic-rule-based-group-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4491255100746125834)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>50
-,p_plug_display_point=>'SUB_REGIONS'
+ p_id=>wwv_flow_imp.id(24321147178857121205)
+,p_plug_name=>'Basic Interaction'
+,p_static_id=>'basic-interaction'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>30
+,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'The user can activate an automatic Rule Based Group option using <code>applyOnLoad = true</code>.',
-'In the example below, the plugin is passed a Rule Based Group setting with <code>applyOnLoad = true</code> and <code>groupBy = "DEPARTMENT_ID"</code>, so vertices with the same <code>DEPARTMENT_ID</code> are grouped automatically right after the grap'
-||'h loads.',
-'<br></br>',
-'<strong>Attributes &gt; Settings</strong>',
-'<pre><code>{',
-'  "ruleBasedGroups": [',
-'    {',
-'      "_id": 582378657398,',
-'      "name": "Automatic Group by DEPARTMENT_ID",',
-'      "type": "group",',
-'      "applyOnLoad": true,',
-'      "component": "vertex",',
-'      "enabled": true,',
-'      "groupBy": "DEPARTMENT_ID",',
-'      "conditions": {',
-'        "conditions": [],',
-'        "operator": "and"',
-'      }',
-'    }',
-'  ]',
-'}</code></pre>',
+'The below example shows how you can interact with the graph by switching layouts etc.',
+'<br/><br/>',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21420013108439732289)
-,p_plug_name=>'Basic Interaction'
-,p_static_id=>'basic-interaction'
-,p_region_name=>'graph'
-,p_parent_plug_id=>wwv_flow_imp.id(27846206551984366042)
+ p_id=>wwv_flow_imp.id(9759085216201514872)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24321144095326121174)
+,p_plug_name=>'Details'
+,p_static_id=>'details'
+,p_parent_plug_id=>wwv_flow_imp.id(24321147178857121205)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Interaction depicted in this example, is achieved by changing the ''Settings'' property of the component / plugin at runtime. The buttons in the page ''Force'', ''Radial'' etc has Dynamic actions that updates the Settings value of the component and the gra'
+||'ph reflects the change.',
+'<br><br><strong>',
+'Example:',
+'</strong><br>',
+'''Force'' button''s dynamic action triggers this:',
+'<br>',
+'<code>',
+'const { self } = apex.region(''graph'');',
+'self.settings = { ...self.settings, layout: ''force'' };',
+'</code>',
+'<br/>',
+'Please note that :page_start and :page_size bind parameters when added to the query, needs the GVT plugin instance''s Attributes > ''SQL Query supports Pagination'' property to be turned on in APEX.<br><br>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
+'<strong>Query:</strong>',
+'<br>',
+'<code>',
+'/*  ',
+'    Interaction depicted by this example, is achieved via ''Settings'' parameter',
+'    controlled via buttons in the page, and isn''t affected by the query.',
+'',
+'    In the below query, data is selected from Property Graph and ',
+'    made into JSON format that GVT accepts.',
+'',
+'    The query retrieves vertices and edges of the graph that visualizes ',
+'    the reporting structure of employees to their managers.*/',
+'    ',
+'    select ora_pgql_to_json(''',
+'    SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON ',
+'    EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+'    ) as query from SYS.DUAL;',
+'</code>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24321146607389121199)
+,p_plug_name=>'Expand'
+,p_static_id=>'expand'
+,p_parent_plug_id=>wwv_flow_imp.id(24321147321323121206)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>The following example demonstrates the process of expanding nodes:</p>',
+'<p>To expand nodes, navigate to <b>Attributes -> Expand</b>.</p>',
+'<ul>',
+'    <li>Enable the ''Expand'' feature</li>',
+'    <li>Specify the number of hops to expand by filling in ''Expand Hops''</li>',
+'    <li>Choose the direction of expansion:',
+'        <ul>',
+'            <li>Outbound (default)</li>',
+'            <li>Inbound</li>',
+'            <li>Any direction (note that selecting ''any direction'' may result in slow performance)</li>',
+'        </ul>',
+'    </li>',
+'</ul>',
+'<p>Below example shows 1 hop outbound expand.</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24321146770804121201)
+,p_plug_name=>'Expand'
+,p_static_id=>'expand-2'
+,p_parent_plug_id=>wwv_flow_imp.id(24321147321323121206)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
@@ -40263,11 +40280,296 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]- (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_05', 'N',
+  'attribute_06', '100',
+  'attribute_10', 'modes:exploration',
+  'attribute_14', 'Y',
+  'attribute_16', '640',
+  'bind_variable_pgql', 'Y',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'Y',
+  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'Y',
+  'escapehtml', 'N',
+  'expand_direction', 'outbound',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'legend_state', 'expanded',
+  'legendwidth', '300',
+  'livesearch', 'N',
+  'max_number_of_hops', '5',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'number_of_hops', '1',
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(982594765290791149)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24321147151778121204)
+,p_plug_name=>'Expand by PL/SQL Fetching Data'
+,p_static_id=>'expand-by-pl-sql-fetching-data'
+,p_parent_plug_id=>wwv_flow_imp.id(24321147321323121206)
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>50
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_05', 'N',
+  'attribute_06', '100',
+  'attribute_10', 'modes:exploration',
+  'attribute_11', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'const data = await apex.server.process(''Expand'', {',
+    '    f01: ids,',
+    '    x01: hops',
+    '}, { dataType: ''text'' });',
+    'try {',
+    '    console.log(data);',
+    '    return JSON.parse(data);',
+    '} catch (error) {',
+    '    return [];',
+    '}',
+    '',
+    '')),
+  'attribute_14', 'Y',
+  'attribute_16', '640',
+  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{',
+    '    "vertex": {',
+    '      "icon": "fa-user",',
+    '      "children": {',
+    '        "salary": {',
+    '          "size": 15,',
+    '          "icon": {',
+    '            "class": "fa-money",',
+    '            "color": "black"',
+    '          },',
+    '          "border": {',
+    '            "width": 1,',
+    '            "color": "#FB8500"',
+    '          }',
+    '        }',
+    '      }',
+    '    }',
+    '  }')),
+  'bind_variable_pgql', 'Y',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'Y',
+  'defaults_for_modes', 'fitToScreenActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'N',
+  'escapehtml', 'N',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'legend_state', 'expanded',
+  'legendwidth', '300',
+  'livesearch', 'N',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '[',
+    '  {',
+    '    "_id": 1,',
+    '    "component": "vertex",',
+    '    "target": "vertex",',
+    '    "conditions": {',
+    '      "operator": "or",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "COUNTRY_ID",',
+    '          "operator": "=",',
+    '          "value": "US"',
+    '        },',
+    '        {',
+    '          "property": "COUNTRY_ID",',
+    '          "operator": "=",',
+    '          "value": "UK"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Children Style By Country",',
+    '    "style": {',
+    '      "children": {',
+    '        "flag": {',
+    '          "size": 15,',
+    '          "image": {',
+    '            "url": "https://flagcdn.com/40x30/${(properties.COUNTRY_ID === ''UK'' ? ''GB'' : properties.COUNTRY_ID).toLowerCase()}.png",',
+    '            "scale": 0.8',
+    '          }',
+    '        }',
+    '      }',
+    '    }',
+    '  },',
+    '  {',
+    '    "_id": 2,',
+    '    "component": "vertex",',
+    '    "target": "vertex",',
+    '    "conditions": {',
+    '      "operator": "or",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "AD_PRES"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "AD_VP"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "FI_MGR"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "AD_MGR"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "SA_MAN"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "PU_MAN"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "ST_MAN"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Style By Job",',
+    '    "style": {',
+    '      "icon": {',
+    '        "class": "fa-user-secret"',
+    '      }',
+    '    }',
+    '  },',
+    '  {',
+    '    "_id": 3,',
+    '    "component": "edge",',
+    '    "stylingEnabled": true,',
+    '    "target": "edge",',
+    '    "visibilityEnabled": true,',
+    '    "conditions": {',
+    '      "operator": "and",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "labels",',
+    '          "operator": "CONTAINS",',
+    '          "value": "WORKS_FOR"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Edge Style",',
+    '    "style": {',
+    '      "color": "gray",',
+    '      "width": 2,',
+    '      "caption": {',
+    '        "color": "gray",',
+    '        "font": {',
+    '          "size": 12',
+    '        }',
+    '      }',
+    '    }',
+    '  },',
+    '    {',
+    '    "_id": 4,',
+    '    "component": "vertex",',
+    '    "stylingEnabled": true,',
+    '    "target": "vertex",',
+    '    "visibilityEnabled": true,',
+    '    "conditions": {',
+    '      "operator": "and",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "labels",',
+    '          "operator": "CONTAINS",',
+    '          "value": "EMPLOYEE"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Employee Names",',
+    '    "style": {',
+    '        "caption" : {"text" : "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true}',
+    '      }',
+    '    }',
+    '  ',
+    ']')),
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(982594830276791150)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24321147321323121206)
+,p_plug_name=>'Expanding Nodes'
+,p_static_id=>'expanding-nodes'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>50
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'<p>The ''Expand'' function can be utilized to retrieve adjacent elements of one or more selected nodes. To trigger ''Expand'', simply select the desired node(s) and choose ''Expand'' from either the toolbar or the context-menu.</p>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(17894953735312487452)
+,p_plug_name=>'Interaction'
+,p_static_id=>'interaction'
+,p_region_name=>'graph'
+,p_parent_plug_id=>wwv_flow_imp.id(24321147178857121205)
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -40278,7 +40580,600 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
+    '      "icon": "fa-user",',
+    '      "children": {',
+    '        "salary": {',
+    '          "size": 15,',
+    '          "icon": {',
+    '            "class": "fa-money",',
+    '            "color": "black"',
+    '          },',
+    '          "border": {',
+    '            "width": 1,',
+    '            "color": "#FB8500"',
+    '          }',
+    '        }',
+    '      }',
+    '    }',
+    '  }')),
+  'bind_variable_pgql', 'Y',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'Y',
+  'defaults_for_modes', 'fitToScreenActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'N',
+  'escapehtml', 'N',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'legend_state', 'expanded',
+  'legendwidth', '300',
+  'livesearch', 'N',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '[',
+    '  {',
+    '    "_id": 1,',
+    '    "component": "vertex",',
+    '    "stylingEnabled": true,',
+    '    "target": "vertex",',
+    '    "visibilityEnabled": true,',
+    '    "conditions": {',
+    '      "operator": "or",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "COUNTRY_ID",',
+    '          "operator": "=",',
+    '          "value": "US"',
+    '        },',
+    '        {',
+    '          "property": "COUNTRY_ID",',
+    '          "operator": "=",',
+    '          "value": "UK"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Children Style By Country",',
+    '    "style": {',
+    '      "children": {',
+    '        "flag": {',
+    '          "size": 15,',
+    '          "image": {',
+    '            "url": "https://flagcdn.com/40x30/${(properties.COUNTRY_ID === ''UK'' ? ''GB'' : properties.COUNTRY_ID).toLowerCase()}.png",',
+    '            "scale": 0.8',
+    '          }',
+    '        }',
+    '      }',
+    '    }',
+    '  },',
+    '  {',
+    '    "_id": 2,',
+    '    "component": "vertex",',
+    '    "stylingEnabled": true,',
+    '    "target": "vertex",',
+    '    "visibilityEnabled": true,',
+    '    "conditions": {',
+    '      "operator": "or",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "AD_PRES"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "AD_VP"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "FI_MGR"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "AD_MGR"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "SA_MAN"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "PU_MAN"',
+    '        },',
+    '        {',
+    '          "property": "JOB_ID",',
+    '          "operator": "=",',
+    '          "value": "ST_MAN"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Style By Job",',
+    '    "style": {',
+    '      "icon": {',
+    '        "class": "fa-user-secret"',
+    '      }',
+    '    }',
+    '  },',
+    '  {',
+    '    "_id": 3,',
+    '    "component": "edge",',
+    '    "stylingEnabled": true,',
+    '    "target": "edge",',
+    '    "visibilityEnabled": true,',
+    '    "conditions": {',
+    '      "operator": "and",',
+    '      "conditions": [',
+    '        {',
+    '          "property": "labels",',
+    '          "operator": "CONTAINS",',
+    '          "value": "WORKS_FOR"',
+    '        }',
+    '      ]',
+    '    },',
+    '    "legendTitle": "Edge Style",',
+    '    "style": {',
+    '      "color": "gray",',
+    '      "width": 2,',
+    '      "caption": {',
+    '        "color": "gray",',
+    '        "font": {',
+    '          "size": 12',
+    '        }',
+    '      }',
+    '    }',
+    '  }',
+    ']')),
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(982594624849791148)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(917572687051613658)
+,p_plug_name=>'Interactive Graph'
+,p_static_id=>'interactive-graph'
+,p_region_name=>'interactive_graph'
+,p_parent_plug_id=>wwv_flow_imp.id(917572463826613656)
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_SAMPLE_GRAPH where n.department_id <= '' ',
+' || :DEPARTMENT_ID_MAX ',
+' || '' AND n.department_id >= '' || :DEPARTMENT_ID_MIN, ',
+' :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_ajax_items_to_submit=>'DEPARTMENT_ID_MAX,DEPARTMENT_ID_MIN'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_05', 'N',
+  'attribute_06', '200',
+  'attribute_07', 'DEPARTMENT_NAME',
+  'attribute_10', 'modes:exploration',
+  'attribute_14', 'Y',
+  'attribute_16', '640',
+  'bind_variable_pgql', 'Y',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'Y',
+  'defaults_for_modes', 'fitToScreenActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'N',
+  'escapehtml', 'N',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'legend_state', 'expanded',
+  'legendwidth', '300',
+  'livesearch', 'N',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(917572828931613659)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(917572463826613656)
+,p_plug_name=>'Interactive Graph with Query'
+,p_static_id=>'interactive-graph-with-query'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>80
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>',
+'The GraphViz Plugin can be used to create interactive graphs that bind with other built-in APEX items.<br>',
+'To achieve this, you can define a query with bind variables that reference other APEX items.<br>',
+'When the value of these items changes, GraphViz Plugin can be refreshed to update the graph accordingly.<br>',
+'</p>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(917572552564613657)
+,p_plug_name=>'Interactive Graph with Query'
+,p_static_id=>'interactive-graph-with-query-2'
+,p_parent_plug_id=>wwv_flow_imp.id(917572463826613656)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<h3>Step 1: Create Two Select-List Items</h3>',
+'<ol>',
+'    <li>Create two new items: "DEPARTMENT_ID_MIN" and "DEPARTMENT_ID_MAX_S".</li>',
+'    <li>Set the List of Values for both items to a SQL query:</li>',
+'    <pre><code>SELECT department_id AS d1, department_id AS d2 FROM eba_graphviz_departments</code></pre>',
+'</ol>',
+'<h3>Step 2: Create a Graph Plugin Region</h3>',
+'<ol>',
+'    <li>Create a new region with a graph plugin.</li>',
+'    <li>Set the Static ID to "interactive_graph".</li>',
+'    <li>Use the following query:</li>',
+'    <pre><code>select ora_pgql_to_json(''',
+'                SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_SAMPLE_GRAPH where n.department_id <= '' ',
+'                || :DEPARTMENT_ID_MAX ',
+'                || '' AND n.department_id >= '' || :DEPARTMENT_ID_MIN, ',
+'                :PAGE_START, :PAGE_SIZE',
+'                ) as query from SYS.DUAL;</code></pre>',
+'    <ul>',
+'        <li><b style="color: red;">Note:</b> Set "Page Items to Submit" to "DEPARTMENT_ID_MIN, DEPARTMENT_ID_MAX", which',
+'            are the same names as the select-list items and are used in the query.</li>',
+'        <li><b>Also, ensure that:</b> GraphViz Plugin Region -> Attributes -> Settings -> Enable "Page Items to Submit"',
+'            is checked.</li>',
+'    </ul>',
+'</ol>',
+'<h3>Step 3: Create a Dynamic Action to Refresh the Graph Plugin</h3>',
+'<ol>',
+'    <li>Right-click on one of the select-list items (e.g., "DEPARTMENT_ID_MIN") and create a new dynamic action.</li>',
+'    <li>Set the Event to "Change", Selection Type to "Item(s)", and Item(s) to "DEPARTMENT_ID_MIN, DEPARTMENT_ID_MAX".',
+'    </li>',
+'    <li>Set the Action to "Refresh" and Region to "Interactive Graph".</li>',
+'</ol>',
+'<h3>Step 4 (Optional): Dynamic Change Layout</h3>',
+'<ol>',
+'    <li>Create a new select-list item for layout values and add values to the list.</li>',
+'    <li>Create a dynamic action with Event = "Change", Selection Type to "Item(s)", and Item(s) = the layout select-list',
+'        item.</li>',
+'    <li>Set the Action to "Execute JavaScript code" with the following code:</li>',
+'    <pre><code>const { self } = apex.region(''interactive_graph''); self.settings = { ...self.settings, layout: $v(''LAYOUT_LIST'') };</code></pre>',
+'    <p><b style="color: red;">Note:</b> The region ID ''interactive_graph'' is the static ID we set for the graph plugin',
+'        in',
+'        Step 2.</p>',
+'</ol>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(990135669047047610)
+,p_plug_name=>'Search'
+,p_static_id=>'live-search'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>60
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'The Search feature allows users to type in a search keyword and find the matching vertices ',
+'and edges among the graph nodes. The vertices and edges that match the user input gets highlighted, ',
+'making it easier for the user to locate them in the graph region. The plugin offers a search field to capture ',
+'keyword and initiate search, a built-in search logic that can identify and highlight matching vertices ',
+'or edges from the graph data, and the option to let the consuming application externalize the search logic.',
+'<br/><br/>',
+''))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(990135742623047611)
+,p_plug_name=>'Search'
+,p_static_id=>'live-search-2'
+,p_parent_plug_id=>wwv_flow_imp.id(990135669047047610)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'                <p>',
+'                  The Search feature allows users to enter a keyword and find matching',
+'                  vertices and edges in the graph. Matching elements are highlighted,',
+'                  making them easier to locate.',
+'                </p>',
+'',
+'                <p>',
+'                  The plugin provides a search field, built-in search logic, and the option',
+'                  for the consuming application to externalize the search logic.',
+'                </p>',
+'',
+'                <strong>Enable Search</strong><br>',
+'                Turn on search through the plugin''s',
+'                <code>Attributes &gt; Live Search</code>',
+'',
+'                <style>',
+'                  .p4-saved-search-table {',
+'                    width: 100%;',
+'                    margin: 0.75rem 0 1rem;',
+'                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
+'                    border-collapse: collapse;',
+'                  }',
+'',
+'                  .p4-saved-search-table th,',
+'                  .p4-saved-search-table td {',
+'                    padding: 0.6rem 0.75rem;',
+'                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
+'                    text-align: left;',
+'                    vertical-align: top;',
+'                  }',
+'',
+'                  .p4-saved-search-table th {',
+'                    background-color: var(--ut-component-background-color, #f4f6f8);',
+'                    font-weight: 600;',
+'                  }',
+'',
+'                  .p4-saved-search-table th:first-child,',
+'                  .p4-saved-search-table td:first-child {',
+'                    width: 25%;',
+'                    white-space: nowrap;',
+'                  }',
+'',
+'                  .p4-search-details {',
+'                    margin: 0.6rem 0;',
+'                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
+'                    border-radius: 0.25rem;',
+'                  }',
+'',
+'                  .p4-search-details summary {',
+'                    display: flex;',
+'                    align-items: center;',
+'                    padding: 0.7rem 0.85rem;',
+'                    background-color: var(--ut-component-background-color, #f4f6f8);',
+'                    cursor: pointer;',
+'                    list-style: none;',
+'                  }',
+'',
+'                  .p4-search-details summary::-webkit-details-marker {',
+'                    display: none;',
+'                  }',
+'',
+'                  .p4-search-details summary::before {',
+'                    margin-right: 0.55rem;',
+'                    content: ''\25B6'';',
+'                    font-size: 0.75em;',
+'                  }',
+'',
+'                  .p4-search-details[open] summary {',
+'                    border-bottom: 1px solid var(--ut-component-border-color, #d9dfe5);',
+'                  }',
+'',
+'                  .p4-search-details[open] summary::before {',
+'                    content: ''\25BC'';',
+'                  }',
+'',
+'                  .p4-search-details > p,',
+'                  .p4-search-details > pre,',
+'                  .p4-search-details > table {',
+'                    margin-right: 0.85rem;',
+'                    margin-left: 0.85rem;',
+'                  }',
+'',
+'                  .p4-search-details .p4-search-subtitle {',
+'                    display: block;',
+'                    margin: 1rem 0.85rem 0.35rem;',
+'                    font-weight: 600;',
+'                  }',
+'                </style>',
+'',
+'                <details class="p4-search-details">',
+'                  <summary><strong>How Search Works</strong></summary>',
+'                  <p>',
+'                    When the user enters a keyword, the plugin performs a',
+'                    <code>starts with</code> comparison against the attributes of all',
+'                    vertices and edges in the graph. Matching vertices and edges are',
+'                    highlighted in the graph region.',
+'                  </p>',
+'',
+'                  <strong class="p4-search-subtitle">Conditional Search</strong>',
+'                  <p>',
+'                    In addition to keyword search, the Search menu supports conditional search.',
+'                    Users can select one or more vertex or edge labels to limit the search scope,',
+'                    then define conditions against labels or properties.',
+'                  </p>',
+'',
+'                  <p>',
+'                    Multiple conditions can be combined using <code>AND</code> or',
+'                    <code>OR</code> logic. The selected labels and conditions are applied to',
+'                    narrow the graph search results.',
+'                  </p>',
+'',
+'                </details>',
+'',
+'                <details class="p4-search-details">',
+'                  <summary><strong>Graph Query Example</strong></summary>',
+'                  <p>',
+'                    The SQL query calls <code>ORA_PGQL_TO_JSON</code> to execute the PGQL',
+'                    graph pattern and supplies the vertices and edges searched by the plugin.',
+'                  </p>',
+'',
+'                  <pre><code>SELECT ORA_PGQL_TO_JSON(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-&gt; (m) ON EBA_SAMPLE_GRAPH''',
+') AS QUERY',
+'FROM SYS.DUAL;</code></pre>',
+'                </details>',
+'',
+'                <p>',
+'                  <strong>Optional:</strong> The following sections describe a saved-search implementation for',
+'                  persisting and managing user-defined search conditions.',
+'                </p>',
+'',
+'                <details class="p4-search-details">',
+'                  <summary><strong>Saved Search Storage</strong></summary>',
+'                  <p>',
+'                    Users can save the current search conditions as a named saved search.',
+'                    Saved searches are stored independently in the',
+'                    <code>EBA_GRAPHVIZ_SAVED_SEARCH</code> table.',
+'                  </p>',
+'',
+'                  <table class="p4-saved-search-table">',
+'                    <thead>',
+'                      <tr>',
+'                        <th scope="col">Column</th>',
+'                        <th scope="col">Purpose</th>',
+'                      </tr>',
+'                    </thead>',
+'                    <tbody>',
+'                      <tr>',
+'                        <td><code>ID</code></td>',
+'                        <td>Technical database row identifier generated by the sequence and trigger.</td>',
+'                      </tr>',
+'                      <tr>',
+'                        <td><code>ACTION</code></td>',
+'                        <td>CLOB containing the saved-search JSON document.</td>',
+'                      </tr>',
+'                      <tr>',
+'                        <td><code>USER_ID</code></td>',
+'                        <td>APEX user who owns the saved search.</td>',
+'                      </tr>',
+'                    </tbody>',
+'                  </table>',
+'',
+'                  <p>',
+'                    The installation script creates the table empty. The first saved search',
+'                    creates the row.',
+'                  </p>',
+'',
+'                  <strong class="p4-search-subtitle">Saved-Search JSON</strong>',
+'                  <p>',
+'                    Each saved search is stored as one JSON document. The',
+'                    <code>filterRoot</code> property identifies the document as a saved search.',
+'                  </p>',
+'',
+'                  <pre><code>{',
+'  "id": "search-1",',
+'  "name": "Managers",',
+'  "filterRoot": {',
+'    "operator": "and",',
+'    "conditions": []',
+'  }',
+'}</code></pre>',
+'                </details>',
+'',
+'                <details class="p4-search-details">',
+'                  <summary><strong>Load and Save Lifecycle</strong></summary>',
+'                  <strong class="p4-search-subtitle">Loading Saved Searches</strong>',
+'                  <p>',
+'                    When the page loads, the application retrieves saved searches belonging to',
+'                    the current APEX user and stores the resulting JSON array in',
+'                    <code>P4_SAVED_SEARCHES</code>.',
+'                  </p>',
+'',
+'                  <pre><code>SELECT COALESCE(',
+'           JSON_ARRAYAGG(action FORMAT JSON ORDER BY id ASC RETURNING CLOB),',
+'           TO_CLOB(''[]'')',
+'       )',
+'  INTO :P4_SAVED_SEARCHES',
+'  FROM EBA_GRAPHVIZ_SAVED_SEARCH',
+' WHERE USER_ID = v(''APP_USER'')',
+'   AND JSON_EXISTS(action, ''$.filterRoot'');</code></pre>',
+'',
+'                  <p>',
+'                    The graph plugin receives this value through its',
+'                    <code>savedSearches</code> attribute.',
+'                  </p>',
+'                  <br><br>',
+'',
+'                  <strong class="p4-search-subtitle">Saving or Updating a Saved Search</strong>',
+'                  <p>',
+'                    The plugin calls the APEX process',
+'                    <code>Update Saved Search</code>:',
+'                  </p>',
+'',
+'                  <pre><code>await apex.server.process(''Update Saved Search'', {',
+'    p_clob_01: JSON.stringify(action)',
+'}, {dataType: ''json''});</code></pre>',
+'',
+'                  <p>',
+'                    For <code>savedSearch/upsert</code>, the server process extracts the',
+'                    <code>savedSearch</code> JSON object. It updates an existing row for the',
+'                    current user when the saved-search JSON <code>id</code> or',
+'                    <code>name</code> matches. If no row matches, a new row is inserted.',
+'                  </p>',
+'                  <br><br>',
+'',
+'                  <strong class="p4-search-subtitle">Deleting a Saved Search</strong>',
+'                  <p>',
+'                    For <code>savedSearch/delete</code>, the server process deletes the saved',
+'                    search belonging to the current user and the requested saved-search',
+'                    <code>id</code>.',
+'                  </p>',
+'                </details>',
+''))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(990135915148047612)
+,p_plug_name=>'Search'
+,p_static_id=>'live-search-3'
+,p_parent_plug_id=>wwv_flow_imp.id(990135669047047610)
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH''',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_05', 'N',
+  'attribute_06', '100',
+  'attribute_10', 'modes:exploration',
+  'attribute_14', 'Y',
+  'attribute_16', '640',
+  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{',
+    '    "vertex": {',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -40426,636 +41321,40 @@ wwv_flow_imp_page.create_page_plug(
     '    }',
     '  }',
     ']')),
+  'saved_searches', '&P4_SAVED_SEARCHES.',
   'schema_visualization', 'N',
   'showtitle', 'Y',
+  'update', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '    try {',
+    '        return await apex.server.process(''Update Saved Search'', {',
+    '            p_clob_01: JSON.stringify(action)',
+    '        }, {dataType: ''json''});',
+    '    } catch (error) {',
+    '        return {',
+    '            success: false,',
+    '            severity: ''error'',',
+    '            message: error?.responseText || error?.message || String(error)',
+    '        };',
+    '    }')),
+  'update_supported_actions', 'savedSearch/delete:savedSearch/upsert',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328281588236362)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328278622236361)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(990136035053047613)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328421936236363)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846206551984366042)
-,p_plug_name=>'Basic Interaction'
-,p_static_id=>'basic-interaction-2'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>30
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'The below example shows how you can interact with the graph by switching layouts etc.',
-'<br/><br/>',
-''))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13284144589328759709)
-,p_plug_name=>'Breadcrumb'
-,p_static_id=>'breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846203468453366011)
-,p_plug_name=>'Details'
-,p_static_id=>'details'
-,p_parent_plug_id=>wwv_flow_imp.id(27846206551984366042)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>',
-'  The interaction depicted in this example is achieved by changing the',
-'  <code>Settings</code> property of the component/plugin at runtime. The buttons',
-'  on the page, such as <code>Force</code> and <code>Radial</code>, have dynamic',
-unistr('  actions that update the component\2019s <code>Settings</code> value, and the graph'),
-'  reflects the change immediately. The <code>First</code>, <code>Last</code>,',
-'  and <code>Full</code> buttons control how captions are displayed in the graph:',
-'  <code>First</code> shows the first name, <code>Last</code> shows the last',
-'  name, and <code>Full</code> shows the full name.',
-'</p>',
-'<strong>',
-'Example:',
-'</strong><br>',
-'''Force'' button''s dynamic action triggers this:',
-'<br>',
-'<code>',
-'const { self } = apex.region(''graph'');',
-'self.settings = { ...self.settings, layout: ''force'' };',
-'</code>',
-'<br/>',
-'Please note that pagination needs the GVT plugin instance''s Attributes > ''SQL Query supports Pagination'' property to be turned on in APEX. Page size is configured in Attributes > Page Size.<br></br>',
-'<strong>Query:</strong>',
-'<br>',
-'<code>',
-'/*  ',
-'    Interaction depicted by this example, is achieved via ''Settings'' parameter',
-'    controlled via buttons in the page, and isn''t affected by the query.',
-'',
-'    In the below query, data is selected from Property Graph and ',
-'    made into JSON format that GVT accepts.',
-'',
-'    The query retrieves vertices and edges of the graph that visualizes ',
-'    the reporting structure of employees to their managers.*/',
-'    ',
-'    SELECT employee,e, manager',
-'    FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'    MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'    COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-'    )',
-'</code>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846205980516366036)
-,p_plug_name=>'Expand'
-,p_static_id=>'expand'
-,p_parent_plug_id=>wwv_flow_imp.id(27846206694450366043)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>The following example demonstrates the process of expanding nodes:</p>',
-'<p>To expand nodes, navigate to <b>Attributes -> Expand</b>.</p>',
-'<ul>',
-'    <li>Enable the ''Expand'' feature</li>',
-'    <li>Specify the number of hops to expand by filling in ''Expand Hops''</li>',
-'    <li>Choose the direction of expansion:',
-'        <ul>',
-'            <li>Outbound (default)</li>',
-'            <li>Inbound</li>',
-'            <li>Any direction (note that selecting ''any direction'' may result in slow performance)</li>',
-'        </ul>',
-'    </li>',
-'</ul>',
-'<p>Below example shows 2 hops outbound expand.</p>',
-''))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846206143931366038)
-,p_plug_name=>'Expand'
-,p_static_id=>'expand-2'
-,p_parent_plug_id=>wwv_flow_imp.id(27846206694450366043)
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE) -[e]- (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'Y',
-  'attribute_16', '640',
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'Y',
-  'escapehtml', 'N',
-  'expand_direction', 'outbound',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'legendwidth', '300',
-  'livesearch', 'Y',
-  'max_number_of_hops', '5',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'number_of_hops', '1',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328631038236365)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328487803236364)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328747301236366)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846206524905366041)
-,p_plug_name=>'Expand Using PL/SQL Fetching Data'
-,p_static_id=>'expand-using-pl-sql-fetching-data'
-,p_parent_plug_id=>wwv_flow_imp.id(27846206694450366043)
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>60
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m  IS EMPLOYEE) -[e  IS WORKS_FOR]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_11', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'const data = await apex.server.process(''Expand'', {',
-    '    f01: ids,',
-    '    x01: hops',
-    '}, { dataType: ''text'' });',
-    'try {',
-    '    return JSON.parse(data);',
-    '} catch (error) {',
-    '    return [];',
-    '}',
-    '',
-    '')),
-  'attribute_14', 'Y',
-  'attribute_16', '640',
-  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "vertex": {',
-    '      "icon": "fa-user",',
-    '      "children": {',
-    '        "salary": {',
-    '          "size": 15,',
-    '          "icon": {',
-    '            "class": "fa-money",',
-    '            "color": "black"',
-    '          },',
-    '          "border": {',
-    '            "width": 1,',
-    '            "color": "#FB8500"',
-    '          }',
-    '        }',
-    '      }',
-    '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'fitToScreenActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'legendwidth', '300',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '[',
-    '  {',
-    '    "_id": 1,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "or",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "COUNTRY_ID",',
-    '          "operator": "=",',
-    '          "value": "US"',
-    '        },',
-    '        {',
-    '          "property": "COUNTRY_ID",',
-    '          "operator": "=",',
-    '          "value": "UK"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Children Style By Country",',
-    '    "style": {',
-    '      "children": {',
-    '        "flag": {',
-    '          "size": 15,',
-    '          "image": {',
-    '            "url": "https://flagcdn.com/40x30/${(properties.COUNTRY_ID === ''UK'' ? ''GB'' : properties.COUNTRY_ID).toLowerCase()}.png",',
-    '            "scale": 0.8',
-    '          }',
-    '        }',
-    '      }',
-    '    }',
-    '  },',
-    '  {',
-    '    "_id": 2,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "or",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_PRES"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_VP"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "FI_MGR"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_MGR"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "SA_MAN"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "PU_MAN"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "ST_MAN"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Style By Job",',
-    '    "style": {',
-    '      "icon": {',
-    '        "class": "fa-user-secret"',
-    '      }',
-    '    }',
-    '  },',
-    '  {',
-    '    "_id": 3,',
-    '    "component": "edge",',
-    '    "stylingEnabled": true,',
-    '    "target": "edge",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "and",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "labels",',
-    '          "operator": "CONTAINS",',
-    '          "value": "WORKS_FOR"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Edge Style",',
-    '    "style": {',
-    '      "color": "gray",',
-    '      "width": 2,',
-    '      "caption": {',
-    '        "color": "gray",',
-    '        "font": {',
-    '          "size": 12',
-    '        }',
-    '      }',
-    '    }',
-    '  },',
-    '    {',
-    '    "_id": 4,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "and",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "labels",',
-    '          "operator": "CONTAINS",',
-    '          "value": "EMPLOYEE"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Employee Names",',
-    '    "style": {',
-    '        "caption" : {"text" : "${properties.FIRST_NAME} ${properties.LAST_NAME}"}',
-    '      }',
-    '    }',
-    '  ',
-    ']')),
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328904572236368)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328802882236367)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502328998162236369)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846206694450366043)
-,p_plug_name=>'Expanding Nodes'
-,p_static_id=>'expanding-nodes'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>50
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>The ''Expand'' function can be utilized to retrieve adjacent elements of one or more selected nodes. To trigger ''Expand'', simply select the desired node(s) and choose ''Expand'' from either the toolbar or the context-menu.</p>',
-'',
-''))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4265962919476985698)
-,p_plug_name=>'Interactive Graph'
-,p_static_id=>'interactive-graph'
-,p_region_name=>'interactive_graph'
-,p_parent_plug_id=>wwv_flow_imp.id(4265960829202985677)
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>40
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'GRAPH'
-,p_query_table=>'EBA_SAMPLE_GRAPH'
-,p_query_match=>'(m)-[e]-(n)'
-,p_query_columns=>'vertex_id(m) as m_id, edge_id(e) as e_id, vertex_id(n) as n_id'
-,p_query_where=>'m.department_id BETWEEN :DEPARTMENT_ID_MIN AND :DEPARTMENT_ID_MAX'
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_ajax_items_to_submit=>'DEPARTMENT_ID_MIN,DEPARTMENT_ID_MAX'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '200',
-  'attribute_07', 'DEPARTMENT_NAME',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'Y',
-  'attribute_16', '640',
-  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "vertex": {',
-    '      "caption": { "size": 20 }',
-    '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'legendwidth', '300',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4265963464064985704)
-,p_name=>'E_ID'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4265963418913985703)
-,p_name=>'M_ID'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4265963614592985705)
-,p_name=>'N_ID'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4265960829202985677)
-,p_plug_name=>'Interactive Graph with Query'
-,p_static_id=>'interactive-graph-with-query'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>80
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>',
-'The GraphViz Plugin can be used to create interactive graphs that bind with other built-in APEX items.<br>',
-'To achieve this, you can define a query with bind variables that reference other APEX items.<br>',
-'When the value of these items changes, GraphViz Plugin can be refreshed to update the graph accordingly.<br>',
-'</p>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4265960947559985678)
-,p_plug_name=>'Interactive Graph with Query'
-,p_static_id=>'interactive-graph-with-query-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4265960829202985677)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<h3>Step 1: Create Two Select-List Items</h3>',
-'<ol>',
-'  <li>Create two new items: "DEPARTMENT_ID_MIN" and "DEPARTMENT_ID_MAX_S".</li>',
-'  <li>Set the List of Values for both items to a SQL query:</li>',
-'  <pre><code>SELECT department_id AS d1, department_id AS d2 FROM eba_graphviz_departments</code></pre>',
-'</ol>',
-'<h3>Step 2: Create a Graph Plugin Region</h3>',
-'<ol>',
-'  <li>Create a new region with a graph plugin.</li>',
-'  <li>Set the Static ID to "interactive_graph".</li>',
-'  <li>Use the following query:</li>',
-'  <pre><code>SELECT * FROM graph_table(',
-'             MATCH (m)-[e]-(n) ',
-'             COLUMNS vertex_id(m) AS m_id, edge_id(e) AS e_id, vertex_id(n) AS n_id ',
-'             WHERE m.department_id BETWEEN :DEPARTMENT_ID_MIN AND :DEPARTMENT_ID_MAX )</code></pre>',
-'  <p><b style="color: red;">Note:</b> Set "Page Items to Submit" to "DEPARTMENT_ID_MIN, DEPARTMENT_ID_MAX", which are',
-'    the same names as the select-list items and are used in the query.</p>',
-'</ol>',
-'<h3>Step 3: Create a Dynamic Action to Refresh the Graph Plugin</h3>',
-'<ol>',
-'  <li>Right-click on one of the select-list items (e.g., "DEPARTMENT_ID_MIN") and create a new dynamic action.</li>',
-'  <li>Set the Event to "Change", Selection Type to "Item(s)", and Item(s) to "DEPARTMENT_ID_MIN, DEPARTMENT_ID_MAX".',
-'  </li>',
-'  <li>Set the Action to "Refresh" and Region to "Interactive Graph".</li>',
-'</ol>',
-'<h3>Step 4 (Optional): Dynamic Change Layout</h3>',
-'<ol>',
-'  <li>Create a new select-list item for layout values and add values to the list.</li>',
-'  <li>Create a dynamic action with Event = "Change", Selection Type to "Item(s)", and Item(s) = the layout select-list',
-'    item.</li>',
-'  <li>Set the Action to "Execute JavaScript code" with the following code:</li>',
-'  <pre><code>const { self } = apex.region(''interactive_graph''); self.settings = { ...self.settings, layout: $v(''LAYOUT_LIST'') };</code></pre>',
-'  <p><b style="color: red;">Note:</b> The region ID ''interactive_graph'' is the static ID we set for the graph plugin in',
-'    Step 2.</p>',
-'</ol>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4491255162499125835)
+ p_id=>wwv_flow_imp.id(990136168667047615)
 ,p_plug_name=>'Manual Rule Based Group'
 ,p_static_id=>'manual-rule-based-group'
-,p_parent_plug_id=>wwv_flow_imp.id(4491255100746125834)
+,p_parent_plug_id=>wwv_flow_imp.id(990136046515047614)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>10
@@ -41107,10 +41406,10 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4491255283002125836)
+ p_id=>wwv_flow_imp.id(990136327903047616)
 ,p_plug_name=>'Manual Rule Based Group'
 ,p_static_id=>'manual-rule-based-group-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4491255100746125834)
+,p_parent_plug_id=>wwv_flow_imp.id(990136046515047614)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>30
@@ -41118,11 +41417,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH''',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -41133,7 +41430,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -41154,7 +41451,7 @@ wwv_flow_imp_page.create_page_plug(
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive',
+  'defaults_for_modes', 'fitToScreenActive',
   'enable_evolution', 'N',
   'enable_expand', 'N',
   'escapehtml', 'N',
@@ -41174,7 +41471,6 @@ wwv_flow_imp_page.create_page_plug(
     '    "enabled": true,',
     '    "groupBy": "DEPARTMENT_ID",',
     '    "conditions": { "conditions": [], "operator": "and" }',
-    '',
     '  },',
     '  {',
     '    "_id": 45245237398,',
@@ -41309,42 +41605,26 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4491255525219125838)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4491255352735125837)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(990136394844047617)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4491255621037125839)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27846206274756366039)
+ p_id=>wwv_flow_imp.id(24321146901629121202)
 ,p_plug_name=>'PL/SQL fetching data'
 ,p_static_id=>'pl-sql-fetching-data'
-,p_parent_plug_id=>wwv_flow_imp.id(27846206694450366043)
+,p_parent_plug_id=>wwv_flow_imp.id(24321147321323121206)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -41379,35 +41659,25 @@ wwv_flow_imp_page.create_page_plug(
 '<br/>',
 '<code>',
 '// fetch logic randomized. Replace with actual fetched data',
-'DECLARE ',
-'    data clob;',
+'DECLARE data clob;',
 '    ids sys.dbms_sql.varchar2a :=  APEX_APPLICATION.G_F01;',
 '    graph VARCHAR2(100) := ''EBA_SAMPLE_GRAPH'';',
-'    hops NUMBER := 2;',
+'    hops NUMBER := 1;',
 '    n NUMBER := hops - 1;',
 '    id_strings VARCHAR2(32767) := '' ('';',
-'    query VARCHAR2(32767);',
-'    incur    sys_refcursor;',
-'    l_cur    number;',
+'    query VARCHAR2(1000);',
 '',
 'BEGIN',
 '    for i in ids.FIRST..ids.LAST LOOP',
-'        IF i = ids.LAST THEN',
+'        IF i = ids.COUNT THEN',
 '            id_strings := id_strings || apex_exec.enquote_literal(ids(i)) || '') '';    ',
 '        ELSE     ',
 '            id_strings := id_strings || apex_exec.enquote_literal(ids(i)) || '', '';',
 '        END IF;',
 '    END LOOP;',
-'',
-'    query  := ''SELECT id_x, id_e, id_z ',
-'    FROM GRAPH_TABLE ('' || graph || '' MATCH (x) ->{,'' || n || ''} (y) -[e]-> (z) WHERE JSON_value(vertex_id(x), ''''$.ELEM_TABLE'''') || json_query(vertex_id(x), ''''$.KEY_VALUE'''' returning varchar2) IN',
-'    '' || id_strings ||''',
-'    COLUMNS (vertex_id(x) as id_x, edge_id(e) as id_e, vertex_id(z) as id_z))'';',
-'',
-'    open incur for query;',
-'    l_cur := dbms_sql.to_cursor_number(incur);',
-'    data := ora_sqlgraph_to_json(l_cur);',
-'    dbms_sql.close_cursor(l_cur);',
+'    query := ''SELECT E1 FROM MATCH ANY (x) ->{,'' || n || ''} (y) ON '' || graph || '', MATCH (y) - [e1] -> () ON '' || graph || '' WHERE id(x) IN ''|| id_strings ||'''';',
+'    ',
+'    SELECT ORA_PGQL_TO_JSON(query) INTO data  FROM sys.dual ;',
 '    apex_util.prn(data, false);',
 'END;',
 '</code>'))
@@ -41416,7 +41686,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34063547736711599215)
+ p_id=>wwv_flow_imp.id(7686377177829919963)
 ,p_plug_name=>'RDS'
 ,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
@@ -41433,7 +41703,7 @@ wwv_flow_imp_page.create_page_plug(
   'remember_selection', 'USER')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4491255100746125834)
+ p_id=>wwv_flow_imp.id(990136046515047614)
 ,p_plug_name=>'Rule Based Group'
 ,p_static_id=>'rule-based-group'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
@@ -41446,524 +41716,27 @@ wwv_flow_imp_page.create_page_plug(
 'The Rule Based Group feature allows users to group vertices that satisfy specified conditions on graph properties. The conditions can include:<br>',
 '1. vertices that match certain vertex conditions.<br>',
 '2. vertices that are connected to each other with an edge that fulfills certain edge conditions.',
-'<br><br/>',
-''))
+'<br><br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4191192740133003091)
-,p_plug_name=>'Search'
-,p_static_id=>'search'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>60
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'The Search feature allows users to type in a search keyword and find the matching vertices ',
-'and edges among the graph nodes. The vertices and edges that match the user input gets highlighted, ',
-'making it easier for the user to locate them in the graph region. The plugin offers a search field to capture ',
-'keyword and initiate search, a built-in search logic that can identify and highlight matching vertices ',
-'or edges from the graph data, and the option to let the consuming application externalize the search logic.',
-'<br/><br/>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4491254496640125828)
-,p_plug_name=>'Search'
-,p_static_id=>'search-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4191192740133003091)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'                <p>',
-'                  The Search feature allows users to enter a keyword and find matching',
-'                  vertices and edges in the graph. Matching elements are highlighted,',
-'                  making them easier to locate.',
-'                </p>',
-'',
-'                <p>',
-'                  The plugin provides a search field, built-in search logic, and the option',
-'                  for the consuming application to externalize the search logic.',
-'                </p>',
-'',
-'                <strong>Enable Search</strong><br>',
-'                Turn on search through the plugin''s',
-'                <code>Attributes &gt; Live Search</code>',
-'',
-'                <style>',
-'                  .p12-saved-search-table {',
-'                    width: 100%;',
-'                    margin: 0.75rem 0 1rem;',
-'                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
-'                    border-collapse: collapse;',
-'                  }',
-'',
-'                  .p12-saved-search-table th,',
-'                  .p12-saved-search-table td {',
-'                    padding: 0.6rem 0.75rem;',
-'                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
-'                    text-align: left;',
-'                    vertical-align: top;',
-'                  }',
-'',
-'                  .p12-saved-search-table th {',
-'                    background-color: var(--ut-component-background-color, #f4f6f8);',
-'                    font-weight: 600;',
-'                  }',
-'',
-'                  .p12-saved-search-table th:first-child,',
-'                  .p12-saved-search-table td:first-child {',
-'                    width: 25%;',
-'                    white-space: nowrap;',
-'                  }',
-'',
-'                  .p12-search-details {',
-'                    margin: 0.6rem 0;',
-'                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
-'                    border-radius: 0.25rem;',
-'                  }',
-'',
-'                  .p12-search-details summary {',
-'                    display: flex;',
-'                    align-items: center;',
-'                    padding: 0.7rem 0.85rem;',
-'                    background-color: var(--ut-component-background-color, #f4f6f8);',
-'                    cursor: pointer;',
-'                    list-style: none;',
-'                  }',
-'',
-'                  .p12-search-details summary::-webkit-details-marker {',
-'                    display: none;',
-'                  }',
-'',
-'                  .p12-search-details summary::before {',
-'                    margin-right: 0.55rem;',
-'                    content: ''\25B6'';',
-'                    font-size: 0.75em;',
-'                  }',
-'',
-'                  .p12-search-details[open] summary {',
-'                    border-bottom: 1px solid var(--ut-component-border-color, #d9dfe5);',
-'                  }',
-'',
-'                  .p12-search-details[open] summary::before {',
-'                    content: ''\25BC'';',
-'                  }',
-'',
-'                  .p12-search-details > p,',
-'                  .p12-search-details > pre,',
-'                  .p12-search-details > table {',
-'                    margin-right: 0.85rem;',
-'                    margin-left: 0.85rem;',
-'                  }',
-'',
-'                  .p12-search-details .p12-search-subtitle {',
-'                    display: block;',
-'                    margin: 1rem 0.85rem 0.35rem;',
-'                    font-weight: 600;',
-'                  }',
-'                </style>',
-'',
-'                <details class="p12-search-details">',
-'                  <summary><strong>How Search Works</strong></summary>',
-'                  <p>',
-'                    When the user enters a keyword, the plugin performs a',
-'                    <code>starts with</code> comparison against the attributes of all',
-'                    vertices and edges in the graph. Matching vertices and edges are',
-'                    highlighted in the graph region.',
-'                  </p>',
-'',
-'                  <strong class="p12-search-subtitle">Conditional Search</strong>',
-'                  <p>',
-'                    In addition to keyword search, the Search menu supports conditional search.',
-'                    Users can select one or more vertex or edge labels to limit the search scope,',
-'                    then define conditions against labels or properties.',
-'                  </p>',
-'',
-'                  <p>',
-'                    Multiple conditions can be combined using <code>AND</code> or',
-'                    <code>OR</code> logic. The selected labels and conditions are applied to',
-'                    narrow the graph search results.',
-'                  </p>',
-'',
-'                </details>',
-'',
-'                <details class="p12-search-details">',
-'                  <summary><strong>Graph Query Example</strong></summary>',
-'                  <p>',
-'                    The graph query supplies the vertices and edges searched by the plugin.',
-'                  </p>',
-'',
-'                  <pre><code>SELECT employee, e, manager',
-'FROM GRAPH_TABLE (',
-'    EBA_SAMPLE_GRAPH',
-'    MATCH (m IS EMPLOYEE)-[e IS WORKS_FOR]-&gt;(n)',
-'    COLUMNS (',
-'        vertex_id(m) AS employee,',
-'        edge_id(e) AS e,',
-'        vertex_id(n) AS manager',
-'    )',
-')</code></pre>',
-'                </details>',
-'',
-'                <p>',
-'                  <strong>Optional:</strong> The following sections describe a saved-search implementation for',
-'                  persisting and managing user-defined search conditions.',
-'                </p>',
-'',
-'                <details class="p12-search-details">',
-'                  <summary><strong>Saved Search Storage</strong></summary>',
-'                  <p>',
-'                    Users can save the current search conditions as a named saved search.',
-'                    Saved searches are stored independently in the',
-'                    <code>EBA_GRAPHVIZ_SAVED_SEARCH</code> table.',
-'                  </p>',
-'',
-'                  <table class="p12-saved-search-table">',
-'                    <thead>',
-'                      <tr>',
-'                        <th scope="col">Column</th>',
-'                        <th scope="col">Purpose</th>',
-'                      </tr>',
-'                    </thead>',
-'                    <tbody>',
-'                      <tr>',
-'                        <td><code>ID</code></td>',
-'                        <td>Technical database row identifier generated by the sequence and trigger.</td>',
-'                      </tr>',
-'                      <tr>',
-'                        <td><code>ACTION</code></td>',
-'                        <td>CLOB containing the saved-search JSON document.</td>',
-'                      </tr>',
-'                      <tr>',
-'                        <td><code>USER_ID</code></td>',
-'                        <td>APEX user who owns the saved search.</td>',
-'                      </tr>',
-'                    </tbody>',
-'                  </table>',
-'',
-'                  <p>',
-'                    The installation script creates the table empty. The first saved search',
-'                    creates the row.',
-'                  </p>',
-'',
-'                  <strong class="p12-search-subtitle">Saved-Search JSON</strong>',
-'                  <p>',
-'                    Each saved search is stored as one JSON document. The',
-'                    <code>filterRoot</code> property identifies the document as a saved search.',
-'                  </p>',
-'',
-'                  <pre><code>{',
-'  "id": "search-1",',
-'  "name": "Managers",',
-'  "filterRoot": {',
-'    "operator": "and",',
-'    "conditions": []',
-'  }',
-'}</code></pre>',
-'                </details>',
-'',
-'                <details class="p12-search-details">',
-'                  <summary><strong>Load and Save Lifecycle</strong></summary>',
-'                  <strong class="p12-search-subtitle">Loading Saved Searches</strong>',
-'                  <p>',
-'                    When the page loads, the application retrieves saved searches belonging to',
-'                    the current APEX user and stores the resulting JSON array in',
-'                    <code>P12_SAVED_SEARCHES</code>.',
-'                  </p>',
-'',
-'                  <pre><code>SELECT COALESCE(',
-'           JSON_ARRAYAGG(action FORMAT JSON ORDER BY id ASC RETURNING CLOB),',
-'           TO_CLOB(''[]'')',
-'       )',
-'  INTO :P12_SAVED_SEARCHES',
-'  FROM EBA_GRAPHVIZ_SAVED_SEARCH',
-' WHERE USER_ID = v(''APP_USER'')',
-'   AND JSON_EXISTS(action, ''$.filterRoot'');</code></pre>',
-'',
-'                  <p>',
-'                    The graph plugin receives this value through its',
-'                    <code>savedSearches</code> attribute.',
-'                  </p>',
-'                  <br><br>',
-'',
-'                  <strong class="p12-search-subtitle">Saving or Updating a Saved Search</strong>',
-'                  <p>',
-'                    The plugin calls the APEX process',
-'                    <code>Update Saved Search</code>:',
-'                  </p>',
-'',
-'                  <pre><code>await apex.server.process(''Update Saved Search'', {',
-'    p_clob_01: JSON.stringify(action)',
-'}, {dataType: ''json''});</code></pre>',
-'',
-'                  <p>',
-'                    For <code>savedSearch/upsert</code>, the server process extracts the',
-'                    <code>savedSearch</code> JSON object. It updates an existing row for the',
-'                    current user when the saved-search JSON <code>id</code> or',
-'                    <code>name</code> matches. If no row matches, a new row is inserted.',
-'                  </p>',
-'                  <br><br>',
-'',
-'                  <strong class="p12-search-subtitle">Deleting a Saved Search</strong>',
-'                  <p>',
-'                    For <code>savedSearch/delete</code>, the server process deletes the saved',
-'                    search belonging to the current user and the requested saved-search',
-'                    <code>id</code>.',
-'                  </p>',
-'                </details>',
-''))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4491254721891125830)
-,p_plug_name=>'Search'
-,p_static_id=>'search-3'
-,p_parent_plug_id=>wwv_flow_imp.id(4191192740133003091)
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'N',
-  'attribute_16', '640',
-  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
-    '      "icon": "fa-user",',
-    '      "children": {',
-    '        "salary": {',
-    '          "size": 15,',
-    '          "icon": {',
-    '            "class": "fa-money",',
-    '            "color": "black"',
-    '          },',
-    '          "border": {',
-    '            "width": 1,',
-    '            "color": "#FB8500"',
-    '          }',
-    '        }',
-    '      }',
-    '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'fitToScreenActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'legendwidth', '300',
-  'livesearch', 'Y',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '[',
-    '  {',
-    '    "_id": 1,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "or",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "COUNTRY_ID",',
-    '          "operator": "=",',
-    '          "value": "US"',
-    '        },',
-    '        {',
-    '          "property": "COUNTRY_ID",',
-    '          "operator": "=",',
-    '          "value": "UK"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Children Style By Country",',
-    '    "style": {',
-    '      "children": {',
-    '        "flag": {',
-    '          "size": 15,',
-    '          "image": {',
-    '            "url": "https://flagcdn.com/40x30/${(properties.COUNTRY_ID === ''UK'' ? ''GB'' : properties.COUNTRY_ID).toLowerCase()}.png",',
-    '            "scale": 0.8',
-    '          }',
-    '        }',
-    '      }',
-    '    }',
-    '  },',
-    '  {',
-    '    "_id": 2,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "or",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_PRES"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_VP"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "FI_MGR"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_MGR"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "SA_MAN"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "PU_MAN"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "ST_MAN"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Style By Job",',
-    '    "style": {',
-    '      "icon": {',
-    '        "class": "fa-user-secret"',
-    '      }',
-    '    }',
-    '  },',
-    '  {',
-    '    "_id": 3,',
-    '    "component": "edge",',
-    '    "stylingEnabled": true,',
-    '    "target": "edge",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "and",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "labels",',
-    '          "operator": "CONTAINS",',
-    '          "value": "WORKS_FOR"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Edge Style",',
-    '    "style": {',
-    '      "color": "gray",',
-    '      "width": 2,',
-    '      "caption": {',
-    '        "color": "gray",',
-    '        "font": {',
-    '          "size": 12',
-    '        }',
-    '      }',
-    '    }',
-    '  }',
-    ']')),
-  'saved_searches', '&P12_SAVED_SEARCHES.',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'update', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '    try {',
-    '        return await apex.server.process(''Update Saved Search'', {',
-    '            p_clob_01: JSON.stringify(action)',
-    '        }, {dataType: ''json''});',
-    '    } catch (error) {',
-    '        return {',
-    '            success: false,',
-    '            severity: ''error'',',
-    '            message: error?.responseText || error?.message || String(error)',
-    '        };',
-    '    }')),
-  'update_supported_actions', 'savedSearch/delete:savedSearch/upsert',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4491254860669125832)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4491254768319125831)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4491254961216125833)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4266412303531784090)
+ p_id=>wwv_flow_imp.id(917573900664613670)
 ,p_plug_name=>'Warning: Invalid Department ID Range'
 ,p_static_id=>'warning-invalid-department-id-range'
-,p_parent_plug_id=>wwv_flow_imp.id(4265962919476985698)
+,p_parent_plug_id=>wwv_flow_imp.id(917572687051613658)
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--warning'
 ,p_plug_template=>2042159785845301134
-,p_plug_display_sequence=>90
+,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_HELP_TEXT'
-,p_landmark_type=>'contentinfo'
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4493134606573236592)
+ p_id=>wwv_flow_imp.id(9759560551950184213)
 ,p_button_sequence=>50
-,p_button_plug_id=>wwv_flow_imp.id(21420013108439732289)
+,p_button_plug_id=>wwv_flow_imp.id(17894953735312487452)
 ,p_button_name=>'First'
 ,p_static_id=>'first'
 ,p_show_as_disabled=>false
@@ -41978,13 +41751,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_component_da_action(
- p_id=>wwv_flow_imp.id(4493141271891236723)
-,p_button_id=>wwv_flow_imp.id(4493134606573236592)
+ p_id=>wwv_flow_imp.id(9759801919742635739)
+,p_button_id=>wwv_flow_imp.id(9759560551950184213)
 ,p_action_sequence=>10
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_static_id=>'native-javascript-code'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(27846206551984366042)
+,p_affected_region_id=>wwv_flow_imp.id(24321147178857121205)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
     'const { self } = apex.region(''graph'');',
@@ -41993,9 +41766,9 @@ wwv_flow_imp_page.create_component_da_action(
 ,p_stop_execution_on_error=>true
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4493133040088236569)
+ p_id=>wwv_flow_imp.id(9759558897874184211)
 ,p_button_sequence=>10
-,p_button_plug_id=>wwv_flow_imp.id(21420013108439732289)
+,p_button_plug_id=>wwv_flow_imp.id(17894953735312487452)
 ,p_button_name=>'Force'
 ,p_static_id=>'force'
 ,p_show_as_disabled=>false
@@ -42010,8 +41783,8 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_component_da_action(
- p_id=>wwv_flow_imp.id(4493137677454236685)
-,p_button_id=>wwv_flow_imp.id(4493133040088236569)
+ p_id=>wwv_flow_imp.id(9759567141412196267)
+,p_button_id=>wwv_flow_imp.id(9759558897874184211)
 ,p_action_sequence=>10
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_static_id=>'native-javascript-code'
@@ -42022,9 +41795,9 @@ wwv_flow_imp_page.create_component_da_action(
 ,p_stop_execution_on_error=>true
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4493135401629236593)
+ p_id=>wwv_flow_imp.id(9759561347822184213)
 ,p_button_sequence=>70
-,p_button_plug_id=>wwv_flow_imp.id(21420013108439732289)
+,p_button_plug_id=>wwv_flow_imp.id(17894953735312487452)
 ,p_button_name=>'Full'
 ,p_static_id=>'full'
 ,p_show_as_disabled=>false
@@ -42039,13 +41812,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_component_da_action(
- p_id=>wwv_flow_imp.id(4493142940124236729)
-,p_button_id=>wwv_flow_imp.id(4493135401629236593)
+ p_id=>wwv_flow_imp.id(9759747789807217397)
+,p_button_id=>wwv_flow_imp.id(9759561347822184213)
 ,p_action_sequence=>10
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_static_id=>'native-javascript-code'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(27846206551984366042)
+,p_affected_region_id=>wwv_flow_imp.id(24321147178857121205)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
     'const { self } = apex.region(''graph'');',
@@ -42054,9 +41827,9 @@ wwv_flow_imp_page.create_component_da_action(
 ,p_stop_execution_on_error=>true
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4493135014129236592)
+ p_id=>wwv_flow_imp.id(9759560867903184213)
 ,p_button_sequence=>60
-,p_button_plug_id=>wwv_flow_imp.id(21420013108439732289)
+,p_button_plug_id=>wwv_flow_imp.id(17894953735312487452)
 ,p_button_name=>'Last'
 ,p_static_id=>'last'
 ,p_show_as_disabled=>false
@@ -42071,13 +41844,13 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_component_da_action(
- p_id=>wwv_flow_imp.id(4493141986496236726)
-,p_button_id=>wwv_flow_imp.id(4493135014129236592)
+ p_id=>wwv_flow_imp.id(9759745540726214668)
+,p_button_id=>wwv_flow_imp.id(9759560867903184213)
 ,p_action_sequence=>10
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_static_id=>'native-javascript-code'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(27846206551984366042)
+,p_affected_region_id=>wwv_flow_imp.id(24321147178857121205)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
     'const { self } = apex.region(''graph'');',
@@ -42086,9 +41859,9 @@ wwv_flow_imp_page.create_component_da_action(
 ,p_stop_execution_on_error=>true
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(4493133459903236591)
+ p_id=>wwv_flow_imp.id(9759559335991184212)
 ,p_button_sequence=>20
-,p_button_plug_id=>wwv_flow_imp.id(21420013108439732289)
+,p_button_plug_id=>wwv_flow_imp.id(17894953735312487452)
 ,p_button_name=>'Radial'
 ,p_static_id=>'radial'
 ,p_show_as_disabled=>false
@@ -42103,8 +41876,8 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_component_da_action(
- p_id=>wwv_flow_imp.id(4493138493360236692)
-,p_button_id=>wwv_flow_imp.id(4493133459903236591)
+ p_id=>wwv_flow_imp.id(9759582967585202820)
+,p_button_id=>wwv_flow_imp.id(9759559335991184212)
 ,p_action_sequence=>10
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_static_id=>'native-javascript-code'
@@ -42115,11 +41888,11 @@ wwv_flow_imp_page.create_component_da_action(
 ,p_stop_execution_on_error=>true
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(4266411101959784078)
+ p_id=>wwv_flow_imp.id(917572987271613661)
 ,p_name=>'DEPARTMENT_ID_MAX'
 ,p_is_required=>true
-,p_item_sequence=>70
-,p_item_plug_id=>wwv_flow_imp.id(4265962919476985698)
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(917572687051613658)
 ,p_prompt=>'Max DEPARTMENT_ID'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_LIST'
@@ -42127,18 +41900,17 @@ wwv_flow_imp_page.create_page_item(
 ,p_cHeight=>1
 ,p_begin_on_new_line=>'N'
 ,p_field_template=>1610598484065263269
-,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
-,p_warn_on_unsaved_changes=>'I'
+,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(4266411026397784077)
+ p_id=>wwv_flow_imp.id(917572911208613660)
 ,p_name=>'DEPARTMENT_ID_MIN'
 ,p_is_required=>true
-,p_item_sequence=>50
-,p_item_plug_id=>wwv_flow_imp.id(4265962919476985698)
+,p_item_sequence=>10
+,p_item_plug_id=>wwv_flow_imp.id(917572687051613658)
 ,p_prompt=>'Min DEPARTMENT_ID'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_LIST'
@@ -42146,35 +41918,33 @@ wwv_flow_imp_page.create_page_item(
 ,p_cHeight=>1
 ,p_field_template=>1610598484065263269
 ,p_item_template_options=>'#DEFAULT#'
-,p_warn_on_unsaved_changes=>'I'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(4265962792191985697)
+ p_id=>wwv_flow_imp.id(917573079165613662)
 ,p_name=>'LAYOUT_LIST'
 ,p_is_required=>true
-,p_item_sequence=>80
-,p_item_plug_id=>wwv_flow_imp.id(4265962919476985698)
-,p_prompt=>'Layout'
+,p_item_sequence=>30
+,p_item_plug_id=>wwv_flow_imp.id(917572687051613658)
+,p_prompt=>'Max DEPARTMENT_ID'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>'STATIC2:force;force,circle;circle,concentric;concentric,grid;grid,hierarchical;hierarchical,radial;radial,random;random'
 ,p_cHeight=>1
 ,p_begin_on_new_line=>'N'
 ,p_field_template=>1610598484065263269
-,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
-,p_warn_on_unsaved_changes=>'I'
+,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'page_action_on_selection', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(26608699558680947)
-,p_name=>'P12_SAVED_SEARCHES'
+ p_id=>wwv_flow_imp.id(6050921830279)
+,p_name=>'P4_SAVED_SEARCHES'
 ,p_item_sequence=>60
-,p_item_plug_id=>wwv_flow_imp.id(4491254721891125830)
+,p_item_plug_id=>wwv_flow_imp.id(990135915148047612)
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_is_persistent=>'N'
@@ -42182,10 +41952,10 @@ wwv_flow_imp_page.create_page_item(
   'value_protected', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4266411777771784085)
+ p_id=>wwv_flow_imp.id(917573211010613663)
 ,p_name=>'CHANGE LAYOUT'
 ,p_static_id=>'change-layout'
-,p_event_sequence=>121
+,p_event_sequence=>80
 ,p_triggering_element_type=>'ITEM'
 ,p_triggering_element=>'LAYOUT_LIST'
 ,p_bind_type=>'bind'
@@ -42193,11 +41963,11 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'change'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4266411868806784086)
-,p_event_id=>wwv_flow_imp.id(4266411777771784085)
+ p_id=>wwv_flow_imp.id(917573332216613664)
+,p_event_id=>wwv_flow_imp.id(917573211010613663)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>10
-,p_execute_on_page_init=>'Y'
+,p_execute_on_page_init=>'N'
 ,p_static_id=>'native-javascript-code'
 ,p_action=>'NATIVE_JAVASCRIPT_CODE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -42206,12 +41976,12 @@ wwv_flow_imp_page.create_page_da_action(
     'self.settings = { ...self.settings, layout: $v(''LAYOUT_LIST'') };')))).to_clob
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4266413310193784100)
+ p_id=>wwv_flow_imp.id(917573558875613667)
 ,p_name=>'Check Department min-max'
 ,p_static_id=>'check-department-min-max'
-,p_event_sequence=>101
+,p_event_sequence=>100
 ,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'DEPARTMENT_ID_MAX,DEPARTMENT_ID_MIN'
+,p_triggering_element=>'DEPARTMENT_ID_MIN,DEPARTMENT_ID_MAX'
 ,p_triggering_condition_type=>'JAVASCRIPT_EXPRESSION'
 ,p_triggering_expression=>'+$v(DEPARTMENT_ID_MIN) <= +$v(DEPARTMENT_ID_MAX)'
 ,p_bind_type=>'bind'
@@ -42219,70 +41989,32 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'change'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4266413702541784104)
-,p_event_id=>wwv_flow_imp.id(4266413310193784100)
+ p_id=>wwv_flow_imp.id(917573695053613668)
+,p_event_id=>wwv_flow_imp.id(917573558875613667)
 ,p_event_result=>'TRUE'
-,p_action_sequence=>40
+,p_action_sequence=>10
 ,p_execute_on_page_init=>'Y'
 ,p_static_id=>'native-hide'
 ,p_action=>'NATIVE_HIDE'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(4266412303531784090)
+,p_affected_region_id=>wwv_flow_imp.id(917573900664613670)
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4266413911350784106)
-,p_event_id=>wwv_flow_imp.id(4266413310193784100)
+ p_id=>wwv_flow_imp.id(917573962425613671)
+,p_event_id=>wwv_flow_imp.id(917573558875613667)
 ,p_event_result=>'FALSE'
-,p_action_sequence=>50
+,p_action_sequence=>20
 ,p_execute_on_page_init=>'Y'
 ,p_static_id=>'native-show'
 ,p_action=>'NATIVE_SHOW'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(4266412303531784090)
+,p_affected_region_id=>wwv_flow_imp.id(917573900664613670)
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4265963661371985706)
-,p_name=>'Refresh Graph'
-,p_static_id=>'refresh-graph'
-,p_event_sequence=>71
-,p_triggering_element_type=>'ITEM'
-,p_triggering_element=>'DEPARTMENT_ID'
-,p_bind_type=>'bind'
-,p_execution_type=>'IMMEDIATE'
-,p_bind_event_type=>'change'
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4266409059570784058)
-,p_event_id=>wwv_flow_imp.id(4265963661371985706)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'const { self } = apex.region(''interactive_graph'');',
-    'console.log(self.settings);')))).to_clob
-,p_build_option_id=>wwv_flow_imp.id(16340545067304909467)
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4265963766501985707)
-,p_event_id=>wwv_flow_imp.id(4265963661371985706)
-,p_event_result=>'TRUE'
-,p_action_sequence=>10
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-refresh'
-,p_action=>'NATIVE_REFRESH'
-,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(4265962919476985698)
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'maintain_pagination', 'N')).to_clob
-);
-wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4266411200832784079)
+ p_id=>wwv_flow_imp.id(917573425780613665)
 ,p_name=>'Refresh Graph DEPARTMENT_ID'
 ,p_static_id=>'refresh-graph-department-id'
-,p_event_sequence=>81
+,p_event_sequence=>90
 ,p_triggering_element_type=>'ITEM'
 ,p_triggering_element=>'DEPARTMENT_ID_MIN,DEPARTMENT_ID_MAX'
 ,p_bind_type=>'bind'
@@ -42290,85 +42022,69 @@ wwv_flow_imp_page.create_page_da_event(
 ,p_bind_event_type=>'change'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4266411391370784081)
-,p_event_id=>wwv_flow_imp.id(4266411200832784079)
-,p_event_result=>'TRUE'
-,p_action_sequence=>20
-,p_execute_on_page_init=>'N'
-,p_static_id=>'native-javascript-code'
-,p_action=>'NATIVE_JAVASCRIPT_CODE'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'js_code', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'const { self } = apex.region(''interactive_graph'');',
-    'self.settings = { ...self.settings, layout: $v(''LAYOUT_LIST'') };')))).to_clob
-);
-wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4266411279331784080)
-,p_event_id=>wwv_flow_imp.id(4266411200832784079)
+ p_id=>wwv_flow_imp.id(917573525288613666)
+,p_event_id=>wwv_flow_imp.id(917573425780613665)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>10
 ,p_execute_on_page_init=>'N'
 ,p_static_id=>'native-refresh'
 ,p_action=>'NATIVE_REFRESH'
 ,p_affected_elements_type=>'REGION'
-,p_affected_region_id=>wwv_flow_imp.id(4265962919476985698)
+,p_affected_region_id=>wwv_flow_imp.id(917572687051613658)
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'maintain_pagination', 'N')).to_clob
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(4493136635316236658)
+ p_id=>wwv_flow_imp.id(24321147001903121203)
 ,p_process_sequence=>10
 ,p_process_point=>'ON_DEMAND'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Expand'
 ,p_static_id=>'expand'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'DECLARE ',
-'    data clob;',
+'DECLARE data clob;',
 '    ids sys.dbms_sql.varchar2a :=  APEX_APPLICATION.G_F01;',
 '    graph VARCHAR2(100) := ''EBA_SAMPLE_GRAPH'';',
-'    hops NUMBER := TO_NUMBER(APEX_APPLICATION.G_x01);',
+'    hops NUMBER := APEX_APPLICATION.G_x01;',
 '    n NUMBER := hops - 1;',
 '    id_strings VARCHAR2(32767) := '' ('';',
-'    query VARCHAR2(32767);',
-'    incur    sys_refcursor;',
-'    l_cur    number;',
+'    query VARCHAR2(1000);',
 '',
 'BEGIN',
 '    for i in ids.FIRST..ids.LAST LOOP',
-'        IF i = ids.LAST THEN',
+'        IF i = ids.COUNT THEN',
 '            id_strings := id_strings || apex_exec.enquote_literal(ids(i)) || '') '';    ',
 '        ELSE     ',
 '            id_strings := id_strings || apex_exec.enquote_literal(ids(i)) || '', '';',
 '        END IF;',
 '    END LOOP;',
-'',
-'    if hops > 1 then',
-'        query  := ''SELECT id_x, id_e, id_z ',
-'        FROM GRAPH_TABLE ('' || graph || '' MATCH (x) ->{,'' || n || ''} (y) -[e]-> (z) WHERE JSON_value(vertex_id(x), ''''$.ELEM_TABLE'''') || json_query(vertex_id(x), ''''$.KEY_VALUE'''' returning varchar2) IN',
-'        '' || id_strings ||''',
-'        COLUMNS (vertex_id(x) as id_x, edge_id(e) as id_e, vertex_id(z) as id_z))'';',
-'    else',
-'        query  := ''SELECT id_x, id_e, id_z ',
-'        FROM GRAPH_TABLE ('' || graph || '' MATCH (x) -[e]-> (z) WHERE JSON_value(vertex_id(x), ''''$.ELEM_TABLE'''') || json_query(vertex_id(x), ''''$.KEY_VALUE'''' returning varchar2) IN',
-'        '' || id_strings ||''',
-'        COLUMNS (vertex_id(x) as id_x, edge_id(e) as id_e, vertex_id(z) as id_z))'';',
-'',
-'    end if;',
+'    IF hops > 1 THEN',
+'        query :=',
+'            ''SELECT E1 FROM MATCH ANY (x) ->{,''',
+'            || n',
+'            || ''} (y) ON ''',
+'            || graph',
+'            || '', MATCH (y) -[e1]-> () ON ''',
+'            || graph',
+'            || '' WHERE id(x) IN ''',
+'            || id_strings;',
+'    ELSE',
+'        query :=',
+'            ''SELECT E1 FROM MATCH (x) -[e1]-> () ON ''',
+'            || graph',
+'            || '' WHERE id(x) IN ''',
+'            || id_strings;',
+'    END IF;',
 '    ',
-'    open incur for query;',
-'    l_cur := dbms_sql.to_cursor_number(incur);',
-'    data := ora_sqlgraph_to_json(l_cur);',
-'',
-'    ',
-'    dbms_sql.close_cursor(l_cur);',
+'    SELECT ORA_PGQL_TO_JSON(query) INTO data  FROM sys.dual ;',
 '    apex_util.prn(data, false);',
-'END;'))
+'END;',
+''))
 ,p_process_clob_language=>'PLSQL'
-,p_internal_uid=>6724956336055901
+,p_internal_uid=>19321857745465329041
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(26608792380680955)
+ p_id=>wwv_flow_imp.id(6221466830275)
 ,p_process_sequence=>20
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -42380,7 +42096,7 @@ wwv_flow_imp_page.create_page_process(
 '               JSON_ARRAYAGG(action FORMAT JSON ORDER BY id ASC RETURNING CLOB),',
 '               TO_CLOB(''[]'')',
 '           )',
-'      INTO :P12_SAVED_SEARCHES',
+'      INTO :P4_SAVED_SEARCHES',
 '      FROM EBA_GRAPHVIZ_SAVED_SEARCH',
 '     WHERE USER_ID = v(''APP_USER'')',
 '       AND JSON_EXISTS(action, ''$.filterRoot'');',
@@ -42389,7 +42105,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>2068254545585307746
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(26608877332680993)
+ p_id=>wwv_flow_imp.id(6329624830274)
 ,p_process_sequence=>30
 ,p_process_point=>'ON_DEMAND'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -42439,22 +42155,24 @@ wwv_flow_imp_page.create_page_process(
 );
 end;
 /
-prompt --application/pages/page_00013
+prompt --application/pages/page_00005
 begin
 wwv_flow_imp_page.create_page(
- p_id=>13
-,p_name=>'Selection - 26ai'
-,p_alias=>'SELECTION-26AI'
-,p_step_title=>'Selection'
+ p_id=>5
+,p_name=>'Selection - 19 ADB'
+,p_alias=>'SELECTION'
+,p_step_title=>'Selection - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18665748211091338897)
+ p_id=>wwv_flow_imp.id(15139687101895718866)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -42470,7 +42188,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13285839326783851644)
+ p_id=>wwv_flow_imp.id(9759778217588231613)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -42480,12 +42198,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27847205293326741206)
+ p_id=>wwv_flow_imp.id(24321144184131121175)
 ,p_plug_name=>'Details'
 ,p_static_id=>'details'
 ,p_region_template_options=>'#DEFAULT#:is-expanded:t-Region--scrollBody'
@@ -42507,7 +42225,9 @@ wwv_flow_imp_page.create_page_plug(
 'data with the selection made in the first graph.',
 '',
 '<br><br>',
-'Please note that pagination needs the GVT plugin instance''s Attributes > ''SQL Query supports Pagination'' property to be turned on in APEX. Page size is configured in Attributes > Page Size.<br></br>',
+'Please note that :page_start and :page_size bind parameters when added to the query, needs the GVT plugin instance''s Attributes > ''SQL Query supports Pagination'' property to be turned on in APEX.<br><br>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '',
 '<strong>First graph Query:</strong><br><br>',
 '<code>/*  This example uses Dynamic action to set the contents of the second graph ',
@@ -42517,11 +42237,9 @@ wwv_flow_imp_page.create_page_plug(
 '    The query retrieves vertices and edges of the graph that visualizes ',
 '    the reporting structure of employees to their managers.*/',
 '    ',
-'    SELECT employee,e, manager',
-'    FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'    MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'    COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-'    )',
+'    select ora_pgql_to_json(''',
+'    SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+'    ) as query from SYS.DUAL;',
 '',
 '</code>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -42529,7 +42247,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21421462204616612648)
+ p_id=>wwv_flow_imp.id(17895401095420992617)
 ,p_plug_name=>'Selection Source'
 ,p_static_id=>'selection-source'
 ,p_region_name=>'graph'
@@ -42540,12 +42258,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -42556,7 +42271,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -42572,8 +42287,9 @@ wwv_flow_imp_page.create_page_plug(
     '        }',
     '      }',
     '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
+    '  }',
+    '')),
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -42707,36 +42423,20 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502329652623236375)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502329561451236374)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(982594934830791151)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502329690474236376)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21421243022022167339)
+ p_id=>wwv_flow_imp.id(17895181912826547308)
 ,p_plug_name=>'Selection Target'
 ,p_static_id=>'selection-target'
 ,p_region_name=>'graph2'
@@ -42751,13 +42451,14 @@ wwv_flow_imp_page.create_page_plug(
 '/*  This query retrieves empty data to show an empty graph initially,',
 '    that gets overridden by Dynamic actions, when the user makes selection ',
 '    in the first graph.*/',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  WHERE m.employee_id is NULL',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
-''))
+'SELECT',
+'    JSON_OBJECT(',
+'        ''vertices'' VALUE JSON_ARRAY(),',
+'        ''edges'' VALUE JSON_ARRAY(),',
+'        ''numResults'' VALUE 0',
+'    ) json',
+'FROM',
+'    SYS.DUAL'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -42769,7 +42470,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -42785,12 +42486,13 @@ wwv_flow_imp_page.create_page_plug(
     '        }',
     '      }',
     '    }',
-    '  }')),
+    '  }',
+    '')),
   'bind_variable_pgql', 'N',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive:evolutionActive',
+  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive',
   'enable_evolution', 'N',
   'enable_expand', 'N',
   'escapehtml', 'N',
@@ -42919,48 +42621,23 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502329976495236378)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502329809415236377)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330051706236379)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_da_event(
- p_id=>wwv_flow_imp.id(4494133035944611490)
+ p_id=>wwv_flow_imp.id(9763603672116574698)
 ,p_name=>'Selection'
 ,p_static_id=>'selection'
 ,p_event_sequence=>10
 ,p_triggering_element_type=>'REGION'
-,p_triggering_region_id=>wwv_flow_imp.id(21421462204616612648)
+,p_triggering_region_id=>wwv_flow_imp.id(17895401095420992617)
 ,p_bind_type=>'bind'
 ,p_execution_type=>'IMMEDIATE'
 ,p_bind_event_type=>'PLUGIN_GRAPHVIZ|REGION TYPE|selection'
 );
 wwv_flow_imp_page.create_page_da_action(
- p_id=>wwv_flow_imp.id(4494133520321611492)
-,p_event_id=>wwv_flow_imp.id(4494133035944611490)
+ p_id=>wwv_flow_imp.id(9763604079419574702)
+,p_event_id=>wwv_flow_imp.id(9763603672116574698)
 ,p_event_result=>'TRUE'
 ,p_action_sequence=>10
 ,p_execute_on_page_init=>'N'
@@ -42971,22 +42648,24 @@ wwv_flow_imp_page.create_page_da_action(
 );
 end;
 /
-prompt --application/pages/page_00014
+prompt --application/pages/page_00006
 begin
 wwv_flow_imp_page.create_page(
- p_id=>14
-,p_name=>'Network Evolution - 26ai'
-,p_alias=>'NETWORK-EVOLUTION-26AI'
-,p_step_title=>'Network Evolution'
+ p_id=>6
+,p_name=>'Network Evolution - 19 ADB'
+,p_alias=>'NETWORK-EVOLUTION'
+,p_step_title=>'Network Evolution - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18666379623885994363)
+ p_id=>wwv_flow_imp.id(15139316961655299076)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -43002,7 +42681,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13294529878499522110)
+ p_id=>wwv_flow_imp.id(9767467216268826823)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -43012,15 +42691,15 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21958489326656526276)
+ p_id=>wwv_flow_imp.id(18431426664425830989)
 ,p_plug_name=>'Evolution By Hire Date'
 ,p_static_id=>'evolution-by-hire-date'
-,p_parent_plug_id=>wwv_flow_imp.id(27848208588080816479)
+,p_parent_plug_id=>wwv_flow_imp.id(24321145925850121192)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
@@ -43028,12 +42707,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_04', 'force',
@@ -43045,7 +42721,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}",  "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -43061,8 +42737,9 @@ wwv_flow_imp_page.create_page_plug(
     '        }',
     '      }',
     '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
+    '  }',
+    '')),
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -43202,39 +42879,23 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330200942236381)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330109549236380)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(982595062345791152)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330286779236382)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21958673556562141932)
+ p_id=>wwv_flow_imp.id(18431610894331446645)
 ,p_plug_name=>'Evolution By Salary'
 ,p_static_id=>'evolution-by-salary'
-,p_parent_plug_id=>wwv_flow_imp.id(27848208631688816480)
+,p_parent_plug_id=>wwv_flow_imp.id(24321145969458121193)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
@@ -43242,12 +42903,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -43258,7 +42916,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}",  "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -43274,8 +42932,9 @@ wwv_flow_imp_page.create_page_plug(
     '        }',
     '      }',
     '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
+    '  }',
+    '')),
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -43413,36 +43072,20 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330528734236384)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330381548236383)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(982595084442791153)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502330660763236385)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848208588080816479)
+ p_id=>wwv_flow_imp.id(24321145925850121192)
 ,p_plug_name=>'Hire Date'
 ,p_static_id=>'hire-date'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
@@ -43460,10 +43103,10 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848207037223816464)
+ p_id=>wwv_flow_imp.id(24321144374993121177)
 ,p_plug_name=>'Hire Date Details'
 ,p_static_id=>'hire-date-details'
-,p_parent_plug_id=>wwv_flow_imp.id(27848208588080816479)
+,p_parent_plug_id=>wwv_flow_imp.id(24321145925850121192)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>10
@@ -43471,9 +43114,11 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'The evolution configuration in Settings (Attributes > Settings in APEX) makes evolution happen based on the HireDate property.',
 '<p>The evolution configuration can be set in two possible locations:</p> <ul> <li>Settings &gt; Attributes &gt; Evolution, where evolution is based on the HireDate property.</li> <li>Alternatively, settings can be added in Attributes &gt; Advanced Se'
 ||'ttings &gt; General Settings.</li> </ul>',
-'<br><br><strong>Settings:</strong><br>',
+'',
+'<strong>General Settings:</strong><br>',
 '<code>',
 '{',
 '    "evolution": {',
@@ -43485,7 +43130,8 @@ wwv_flow_imp_page.create_page_plug(
 '</code>',
 '',
 '<br>',
-'Please note that pagination needs the GVT plugin instance''s Attributes > ''SQL Query supports Pagination'' property to be turned on in APEX. Page size is configured in Attributes > Page Size.<br></br>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '',
 '<strong>Query:</strong><br>',
 '<code>/*  In the below query, data is selected from Property Graph and ',
@@ -43494,18 +43140,16 @@ wwv_flow_imp_page.create_page_plug(
 '    The query retrieves vertices and edges of the graph that visualizes ',
 '    the reporting structure of employees to their managers.*/',
 '    ',
-'    SELECT employee,e, manager',
-'    FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'    MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'    COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-'    )',
+'    select ora_pgql_to_json(''',
+'    SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+'    ) as query from SYS.DUAL;',
 '</code>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(33988712931443215598)
+ p_id=>wwv_flow_imp.id(30461650269212520311)
 ,p_plug_name=>'RDS'
 ,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
@@ -43522,7 +43166,7 @@ wwv_flow_imp_page.create_page_plug(
   'remember_selection', 'USER')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848208631688816480)
+ p_id=>wwv_flow_imp.id(24321145969458121193)
 ,p_plug_name=>'Salary'
 ,p_static_id=>'salary'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
@@ -43539,10 +43183,10 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848207205919816465)
+ p_id=>wwv_flow_imp.id(24321144543689121178)
 ,p_plug_name=>'Salary Details'
 ,p_static_id=>'salary-details'
-,p_parent_plug_id=>wwv_flow_imp.id(27848208631688816480)
+,p_parent_plug_id=>wwv_flow_imp.id(24321145969458121193)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>10
@@ -43551,9 +43195,11 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'The evolution configuration in Settings (Attributes > Settings in APEX) makes evolution happen based on the Salary property.',
 '<p>The evolution configuration can be set in two possible locations:</p> <ul> <li>Settings &gt; Attributes &gt; Evolution, where evolution is based on the HireDate property.</li> <li>Alternatively, settings can be added in Attributes &gt; Advanced Se'
 ||'ttings &gt; General Settings.</li> </ul>',
-'<br><br><strong>Settings:</strong><br>',
+'',
+'<strong>General Settings:</strong><br>',
 '<code>',
 '{',
 '    "evolution": {',
@@ -43562,18 +43208,19 @@ wwv_flow_imp_page.create_page_plug(
 '    }',
 '}',
 '</code>',
-'<br><br><strong>Query:</strong><br>',
+'<br>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
+'<strong>Query:</strong><br>',
 '<code>/*  In the below query, data is selected from Property Graph and ',
 '    made into JSON format that GVT accepts.',
 '',
 '    The query retrieves vertices and edges of the graph that visualizes ',
 '    the reporting structure of employees to their managers.*/',
 '    ',
-'    SELECT employee,e, manager',
-'    FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'    MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'    COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-'    )',
+'    select ora_pgql_to_json(''',
+'    SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+'    ) as query from SYS.DUAL;',
 '</code>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -43581,22 +43228,24 @@ wwv_flow_imp_page.create_page_plug(
 );
 end;
 /
-prompt --application/pages/page_00015
+prompt --application/pages/page_00007
 begin
 wwv_flow_imp_page.create_page(
- p_id=>15
-,p_name=>'Styling - 26ai'
-,p_alias=>'STYLING-26AI'
-,p_step_title=>'Styling'
+ p_id=>7
+,p_name=>'Styling - 19 ADB'
+,p_alias=>'STYLING'
+,p_step_title=>'Styling - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18667287642375495765)
+ p_id=>wwv_flow_imp.id(15139828306057723776)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -43610,99 +43259,10 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848602658732893155)
-,p_plug_name=>'Base Styles'
-,p_static_id=>'base-styles'
-,p_parent_plug_id=>wwv_flow_imp.id(27848604692693893175)
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE) -[e IS WORKS_FOR]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
-''))
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'Y',
-  'attribute_16', '640',
-  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "vertex": {',
-    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
-    '      "icon": "fa-user",',
-    '      "children": {',
-    '        "salary": {',
-    '          "size": 15,',
-    '          "icon": {',
-    '            "class": "fa-money",',
-    '            "color": "black"',
-    '          },',
-    '          "border": {',
-    '            "width": 1,',
-    '            "color": "#FB8500"',
-    '          }',
-    '        }',
-    '      }',
-    '    }',
-    '  }')),
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'fitToScreenActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'legendwidth', '300',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4493334017720339083)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4493333958422339082)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4493334135639339084)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848603016377893159)
+ p_id=>wwv_flow_imp.id(24321143680060121170)
 ,p_plug_name=>'Base Styles Attribute Details'
 ,p_static_id=>'base-styles-attribute-details'
-,p_parent_plug_id=>wwv_flow_imp.id(27848604692693893175)
+,p_parent_plug_id=>wwv_flow_imp.id(24321145356376121186)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>10
@@ -43734,26 +43294,22 @@ wwv_flow_imp_page.create_page_plug(
 '    }',
 '  }',
 '</code>',
-'',
 '<br>',
-'',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '<strong>Query:</strong>',
 '<br>',
-'',
-'',
 '<code>',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
+'    select ora_pgql_to_json(''',
+'    SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+'    ) as query from SYS.DUAL;',
 '</code>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13306886883795735593)
+ p_id=>wwv_flow_imp.id(9779427547477963604)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -43763,12 +43319,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(11195896435434028158)
+ p_id=>wwv_flow_imp.id(7668437099116256169)
 ,p_plug_name=>'RDS'
 ,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
@@ -43785,23 +43341,20 @@ wwv_flow_imp_page.create_page_plug(
   'remember_selection', 'USER')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4493336221260339105)
-,p_plug_name=>'Rule Based Styles'
-,p_static_id=>'rule-based-styles'
-,p_region_name=>'rulebasedstyles'
-,p_parent_plug_id=>wwv_flow_imp.id(4493335973469339102)
-,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+ p_id=>wwv_flow_imp.id(974065607867860936)
+,p_plug_name=>'Styling Toggle Settings'
+,p_static_id=>'styling-toggle-settings'
+,p_parent_plug_id=>wwv_flow_imp.id(974065785797860938)
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -43809,7 +43362,7 @@ wwv_flow_imp_page.create_page_plug(
   'attribute_10', 'modes:exploration',
   'attribute_14', 'Y',
   'attribute_16', '640',
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -43943,42 +43496,26 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4493336455832339107)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4493336339501339106)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(974065716475860937)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4559646377001233758)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4493336017580339103)
-,p_plug_name=>'Rule Based Styles Attribute Details'
-,p_static_id=>'rule-based-styles-attribute-details'
-,p_parent_plug_id=>wwv_flow_imp.id(4493335973469339102)
+ p_id=>wwv_flow_imp.id(974065875185860939)
+,p_plug_name=>'Styling Toggle Settings Details'
+,p_static_id=>'styling-toggle-settings-details'
+,p_parent_plug_id=>wwv_flow_imp.id(974065785797860938)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -44116,27 +43653,23 @@ wwv_flow_imp_page.create_page_plug(
 '<br>',
 'For detailed information on our JavaScript API, please refer to the <a href="https://docs.oracle.com/en/database/oracle/property-graph/25.1/pgjsd/index.html" target="_blank">documentation</a>.',
 '<br><br>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '<strong>Query</strong>',
 '<br>',
 '<code>/*  ',
-'    In the below query, data is selected from Property Graph and made into',
-'    JSON format that GVT accepts.',
-'',
-'    The query retrieves vertices and edges of the graph that visualizes ',
-'    the reporting structure of employees to their managers.',
+'    The graph shows employee manager reporting structure.',
 '*/',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-');',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;',
 '</code>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27848604692693893175)
+ p_id=>wwv_flow_imp.id(24321145356376121186)
 ,p_plug_name=>'Using the Base Styles Attribute'
 ,p_static_id=>'using-the-base-styles-attribute'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
@@ -44157,19 +43690,18 @@ wwv_flow_imp_page.create_page_plug(
 '</p>',
 'For detailed information on our JavaScript API, please refer to the <a href="https://docs.oracle.com/en/database/oracle/property-graph/25.3/pgvtr/graph-visualization-library-reference.html" target="_blank">documentation</a>.',
 '<br>',
-'',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4493335973469339102)
+ p_id=>wwv_flow_imp.id(974065785797860938)
 ,p_plug_name=>'Using the Rule Based Styles Attribute'
 ,p_static_id=>'using-the-rule-based-styles-attribute'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -44187,24 +43719,97 @@ wwv_flow_imp_page.create_page_plug(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(24321143322415121166)
+,p_plug_name=>'Vertex Styles'
+,p_static_id=>'vertex-styles'
+,p_parent_plug_id=>wwv_flow_imp.id(24321145356376121186)
+,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_05', 'N',
+  'attribute_06', '100',
+  'attribute_10', 'modes:exploration',
+  'attribute_14', 'Y',
+  'attribute_16', '640',
+  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{',
+    '    "vertex": {',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
+    '      "icon": "fa-user",',
+    '      "color" : "red",',
+    '      "children": {',
+    '        "salary": {',
+    '          "size": 15,',
+    '          "icon": {',
+    '            "class": "fa-money",',
+    '            "color": "black"',
+    '          },',
+    '          "border": {',
+    '            "width": 1,',
+    '            "color": "#FB8500"',
+    '          }',
+    '        }',
+    '      }',
+    '    }',
+    '  }')),
+  'bind_variable_pgql', 'Y',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'Y',
+  'defaults_for_modes', 'fitToScreenActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'N',
+  'escapehtml', 'N',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'legend_state', 'expanded',
+  'legendwidth', '300',
+  'livesearch', 'N',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(982595193803791154)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
 end;
 /
-prompt --application/pages/page_00016
+prompt --application/pages/page_00008
 begin
 wwv_flow_imp_page.create_page(
- p_id=>16
-,p_name=>'Saving Graph State'
+ p_id=>8
+,p_name=>'Saving Graph State - 19 ADB'
 ,p_alias=>'SAVING-GRAPH-STATE'
-,p_step_title=>'Saving Graph State'
+,p_step_title=>'Saving graph state - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'17'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(22935846589104936724)
+ p_id=>wwv_flow_imp.id(19405587276132884937)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -44220,7 +43825,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(17555007880941264810)
+ p_id=>wwv_flow_imp.id(14024748567969213023)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -44230,12 +43835,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27851405448594172981)
+ p_id=>wwv_flow_imp.id(24321146135622121194)
 ,p_plug_name=>'Details'
 ,p_static_id=>'details'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
@@ -44253,39 +43858,39 @@ wwv_flow_imp_page.create_page_plug(
 '                </p>',
 '',
 '                <style>',
-'                  .p16-graph-action-table {',
+'                  .p8-graph-action-table {',
 '                    width: 100%;',
 '                    margin: 0.75rem 0 1rem;',
 '                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
 '                    border-collapse: collapse;',
 '                  }',
 '',
-'                  .p16-graph-action-table th,',
-'                  .p16-graph-action-table td {',
+'                  .p8-graph-action-table th,',
+'                  .p8-graph-action-table td {',
 '                    padding: 0.6rem 0.75rem;',
 '                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
 '                    text-align: left;',
 '                    vertical-align: top;',
 '                  }',
 '',
-'                  .p16-graph-action-table th {',
+'                  .p8-graph-action-table th {',
 '                    background-color: var(--ut-component-background-color, #f4f6f8);',
 '                    font-weight: 600;',
 '                  }',
 '',
-'                  .p16-graph-action-table th:first-child,',
-'                  .p16-graph-action-table td:first-child {',
+'                  .p8-graph-action-table th:first-child,',
+'                  .p8-graph-action-table td:first-child {',
 '                    width: 25%;',
 '                    white-space: nowrap;',
 '                  }',
 '',
-'                  .p16-details {',
+'                  .p8-details {',
 '                    margin: 0.6rem 0;',
 '                    border: 1px solid var(--ut-component-border-color, #d9dfe5);',
 '                    border-radius: 0.25rem;',
 '                  }',
 '',
-'                  .p16-details summary {',
+'                  .p8-details summary {',
 '                    display: flex;',
 '                    align-items: center;',
 '                    padding: 0.7rem 0.85rem;',
@@ -44294,46 +43899,46 @@ wwv_flow_imp_page.create_page_plug(
 '                    list-style: none;',
 '                  }',
 '',
-'                  .p16-details summary::-webkit-details-marker {',
+'                  .p8-details summary::-webkit-details-marker {',
 '                    display: none;',
 '                  }',
 '',
-'                  .p16-details summary::before {',
+'                  .p8-details summary::before {',
 '                    margin-right: 0.55rem;',
 '                    content: ''\25B6'';',
 '                    font-size: 0.75em;',
 '                  }',
 '',
-'                  .p16-details[open] summary {',
+'                  .p8-details[open] summary {',
 '                    border-bottom: 1px solid var(--ut-component-border-color, #d9dfe5);',
 '                  }',
 '',
-'                  .p16-details[open] summary::before {',
+'                  .p8-details[open] summary::before {',
 '                    content: ''\25BC'';',
 '                  }',
 '',
-'                  .p16-details > p,',
-'                  .p16-details > pre,',
-'                  .p16-details > table {',
+'                  .p8-details > p,',
+'                  .p8-details > pre,',
+'                  .p8-details > table {',
 '                    margin-right: 0.85rem;',
 '                    margin-left: 0.85rem;',
 '                  }',
 '',
-'                  .p16-details .p16-details-subtitle {',
+'                  .p8-details .p8-details-subtitle {',
 '                    display: block;',
 '                    margin: 1rem 0.85rem 0.35rem;',
 '                    font-weight: 600;',
 '                  }',
 '                </style>',
 '',
-'                <details class="p16-details">',
+'                <details class="p8-details">',
 '                  <summary><strong>Database Storage</strong></summary>',
 '                  <p>',
 '                    Each saved exploration is stored as one row in the',
 '                    <code>EBA_GRAPHVIZ_GRAPH_ACTION</code> table.',
 '                  </p>',
 '',
-'                  <table class="p16-graph-action-table">',
+'                  <table class="p8-graph-action-table">',
 '                    <thead>',
 '                      <tr>',
 '                        <th scope="col">Column</th>',
@@ -44363,9 +43968,9 @@ wwv_flow_imp_page.create_page_plug(
 '                  </p>',
 '                </details>',
 '',
-'                <details class="p16-details">',
+'                <details class="p8-details">',
 '                  <summary><strong>Exploration JSON</strong></summary>',
-'                  <strong class="p16-details-subtitle">Example Exploration JSON</strong>',
+'                  <strong class="p8-details-subtitle">Example Exploration JSON</strong>',
 '                  <pre><code>{',
 '  "id": "exploration-1",',
 '  "name": "My graph exploration",',
@@ -44383,12 +43988,12 @@ wwv_flow_imp_page.create_page_plug(
 '                  </p>',
 '                </details>',
 '',
-'                <details class="p16-details">',
+'                <details class="p8-details">',
 '                  <summary><strong>Load and Save Lifecycle</strong></summary>',
-'                  <strong class="p16-details-subtitle">Loading Saved Explorations</strong>',
+'                  <strong class="p8-details-subtitle">Loading Saved Explorations</strong>',
 '                  <p>',
 '                    Before the page is rendered, the application loads only the current',
-'                    user''s graph-state rows into <code>P16_EXPLORATION_SAVES</code>. Rows',
+'                    user''s graph-state rows into <code>P8_EXPLORATION_SAVES</code>. Rows',
 '                    must contain an <code>id</code>, a <code>name</code>, and an',
 '                    <code>actions</code> array.',
 '                  </p>',
@@ -44397,7 +44002,7 @@ wwv_flow_imp_page.create_page_plug(
 '           JSON_ARRAYAGG(action FORMAT JSON ORDER BY id ASC RETURNING CLOB),',
 '           TO_CLOB(''[]'')',
 '       )',
-'  INTO :P16_EXPLORATION_SAVES',
+'  INTO :P8_EXPLORATION_SAVES',
 '  FROM EBA_GRAPHVIZ_GRAPH_ACTION',
 ' WHERE USER_ID = v(''APP_USER'')',
 '   AND JSON_VALUE(action, ''$.id'') IS NOT NULL',
@@ -44409,7 +44014,7 @@ wwv_flow_imp_page.create_page_plug(
 '                    <code>explorationSaves</code> attribute.',
 '                  </p>',
 '',
-'                  <strong class="p16-details-subtitle">Saving or Updating an Exploration</strong>',
+'                  <strong class="p8-details-subtitle">Saving or Updating an Exploration</strong>',
 '                  <p>',
 '                    When the user saves an exploration, the plugin calls the APEX',
 '                    <code>Update</code> process:',
@@ -44427,13 +44032,13 @@ wwv_flow_imp_page.create_page_plug(
 '                    <code>ID</code>.',
 '                  </p>',
 '',
-'                  <strong class="p16-details-subtitle">Deleting an Exploration</strong>',
+'                  <strong class="p8-details-subtitle">Deleting an Exploration</strong>',
 '                  <p>',
 '                    The <code>exploration/delete</code> action removes the row belonging to',
 '                    the current user and the requested exploration JSON <code>id</code>.',
 '                  </p>',
 '',
-'                  <strong class="p16-details-subtitle">Supported Actions</strong>',
+'                  <strong class="p8-details-subtitle">Supported Actions</strong>',
 '                  <p>',
 '                    The plugin supports <code>exploration/upsert</code>,',
 '                    <code>exploration/delete</code>, and',
@@ -44443,32 +44048,28 @@ wwv_flow_imp_page.create_page_plug(
 '                  </p>',
 '                </details>',
 '',
-'                <details class="p16-details">',
+'                <details class="p8-details">',
 '                  <summary><strong>Graph Query Example</strong></summary>',
 '                  <p>',
-'                    The graph query supplies the vertices and edges displayed by the plugin.',
-'                    Pagination requires the GVT plugin instance''s Attributes &gt;',
-'                    <code>SQL Query supports Pagination</code> property to be turned on in',
-'                    APEX. Page size is configured in Attributes &gt; <code>Page Size</code>.',
+'                    The SQL query calls <code>ORA_PGQL_TO_JSON</code> to execute the PGQL',
+'                    graph pattern and supplies the vertices and edges displayed by the plugin.',
+'                    Pagination uses the <code>:PAGE_START</code> and <code>:PAGE_SIZE</code>',
+'                    bind variables when the PGQL-only pagination setting is enabled.',
 '                  </p>',
 '',
-'                  <pre><code>SELECT employee, e, manager',
-'FROM GRAPH_TABLE (',
-'    EBA_SAMPLE_GRAPH',
-'    MATCH (m IS EMPLOYEE)-[e IS WORKS_FOR]-&gt;(n)',
-'    COLUMNS (',
-'        vertex_id(m) AS employee,',
-'        edge_id(e) AS e,',
-'        vertex_id(n) AS manager',
-'    )',
-')</code></pre>',
+'                  <pre><code>SELECT ORA_PGQL_TO_JSON(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-&gt; (m) ON EBA_SAMPLE_GRAPH'',',
+' :PAGE_START,',
+' :PAGE_SIZE',
+') AS QUERY',
+'FROM SYS.DUAL;</code></pre>',
 '                </details>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(25690494002689591866)
+ p_id=>wwv_flow_imp.id(22160234689717540079)
 ,p_plug_name=>'Saving Graph State'
 ,p_static_id=>'saving-graph-state'
 ,p_region_name=>'graph'
@@ -44481,18 +44082,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'/*  In the below query, data is selected from Property Graph and ',
-'    made into JSON format that GVT accepts.',
-'',
-'    The query retrieves vertices and edges of the graph that visualizes ',
-'    the reporting structure of employees to their managers.',
-'*/',
-'',
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -44503,7 +44095,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '  "vertex": {',
-    '    "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}","angle": 270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '    "icon": "fa-user",',
     '    "children": {',
     '      "salary": {',
@@ -44520,7 +44112,7 @@ wwv_flow_imp_page.create_page_plug(
     '    }',
     '  }',
     '}')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -44529,7 +44121,7 @@ wwv_flow_imp_page.create_page_plug(
   'enable_expand', 'N',
   'escapehtml', 'N',
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'exploration_saves', '&P16_EXPLORATION_SAVES.',
+  'exploration_saves', '&P8_EXPLORATION_SAVES.',
   'legend_state', 'expanded',
   'legendwidth', '300',
   'livesearch', 'N',
@@ -44660,39 +44252,23 @@ wwv_flow_imp_page.create_page_plug(
     '    }, {dataType: ''json''});')),
   'update_supported_actions', 'exploration/delete:exploration/select:exploration/upsert',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502331108743236390)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502331071946236389)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(982595421480791156)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502331255294236391)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(27009349264809633)
-,p_name=>'P16_EXPLORATION_SAVES'
+ p_id=>wwv_flow_imp.id(9724316779028)
+,p_name=>'P8_EXPLORATION_SAVES'
 ,p_item_sequence=>50
-,p_item_plug_id=>wwv_flow_imp.id(25690494002689591866)
+,p_item_plug_id=>wwv_flow_imp.id(22160234689717540079)
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_is_persistent=>'N'
@@ -44700,8 +44276,8 @@ wwv_flow_imp_page.create_page_item(
   'value_protected', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(27009412920809633)
-,p_process_sequence=>10
+ p_id=>wwv_flow_imp.id(9776217779028)
+,p_process_sequence=>20
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
 ,p_process_name=>'Load Exploration Saves'
@@ -44712,7 +44288,7 @@ wwv_flow_imp_page.create_page_process(
 '               JSON_ARRAYAGG(action FORMAT JSON ORDER BY id ASC RETURNING CLOB),',
 '               TO_CLOB(''[]'')',
 '           )',
-'      INTO :P16_EXPLORATION_SAVES',
+'      INTO :P8_EXPLORATION_SAVES',
 '      FROM EBA_GRAPHVIZ_GRAPH_ACTION',
 '     WHERE USER_ID = v(''APP_USER'')',
 '       AND JSON_VALUE(action, ''$.id'') IS NOT NULL',
@@ -44723,7 +44299,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>2058242453332740886
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(27009502917809634)
+ p_id=>wwv_flow_imp.id(9843056779028)
 ,p_process_sequence=>10
 ,p_process_point=>'ON_DEMAND'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -44763,12 +44339,281 @@ wwv_flow_imp_page.create_page_process(
 );
 end;
 /
-prompt --application/pages/page_00017
+prompt --application/pages/page_00009
 begin
 wwv_flow_imp_page.create_page(
- p_id=>17
-,p_name=>'Keyboard Navigation Shortcuts - 26ai'
-,p_alias=>'KEYBOARD-NAVIGATION-SHORTCUTS-26AI'
+ p_id=>9
+,p_name=>'Geographical Layout'
+,p_alias=>'GEOGRAPHICAL-LAYOUT'
+,p_step_title=>'Geographical Layout'
+,p_autocomplete_on_off=>'OFF'
+,p_step_template=>4073832297226169690
+,p_page_template_options=>'#DEFAULT#'
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
+,p_protection_level=>'C'
+,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_last_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(15182155331289634705)
+,p_plug_name=>'About this page'
+,p_static_id=>'about-this-page'
+,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
+,p_plug_template=>2042159785845301134
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'This example uses the EBA_GRAPH_FLIGHTS Property Graph which contains location-based information (spatial data) as',
+unistr('\201Clatitude\201D and \201Clongitude\201D vertex properties.')))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(9821754572709874533)
+,p_plug_name=>'Breadcrumb'
+,p_static_id=>'breadcrumb'
+,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
+,p_component_template_options=>'#DEFAULT#'
+,p_plug_template=>2532939663579242476
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
+,p_plug_source_type=>'NATIVE_BREADCRUMB'
+,p_menu_template_id=>4073839682315169711
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1027461591755608239)
+,p_plug_name=>'Geographical Layout'
+,p_static_id=>'geographical-layout'
+,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
+,p_plug_template=>2323592004483952560
+,p_plug_display_sequence=>60
+,p_include_in_reg_disp_sel_yn=>'Y'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'The geographical layout allows the user to overlay the graph on a map, given that latitude and longitude coordinates exist as graph properties on the graph''s vertices.<br><br>'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1027461698953608240)
+,p_plug_name=>'Geographical Layout by Appearance'
+,p_static_id=>'geographical-layout-by-appearance'
+,p_parent_plug_id=>wwv_flow_imp.id(1027461591755608239)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Geographical layout can be configured in Attributes -> Appearance -> Layout -> Geographcial.<br></br>',
+'<strong>PGQL Query with ORA_PGQL_TO_JSON:</strong>',
+'<br>',
+'<code>/*  In the below query, data is selected from Property Graph and ',
+'    made into JSON format that GVT accepts.',
+'',
+'    The query retrieves vertices and edges of the graph that visualizes ',
+'    the routes between the airports.*/',
+'    ',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_GRAPH_FLIGHTS''',
+') as query from SYS.DUAL;',
+'</code>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1027461778545608241)
+,p_plug_name=>'Geographical Layout by Appearance'
+,p_static_id=>'geographical-layout-by-appearance-2'
+,p_parent_plug_id=>wwv_flow_imp.id(1027461591755608239)
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>20
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_GRAPH_FLIGHTS''',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_04', 'geographical',
+  'attribute_05', 'N',
+  'attribute_06', '100',
+  'attribute_10', 'modes:exploration',
+  'attribute_14', 'N',
+  'attribute_16', '640',
+  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{',
+    '    "vertex": {',
+    '        "size":10',
+    '    }',
+    '}')),
+  'bind_variable_pgql', 'N',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'Y',
+  'defaults_for_modes', 'fitToScreenActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'N',
+  'escapehtml', 'N',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'geo_latitude', 'latitude',
+  'geo_longitude', 'longitude',
+  'geo_showinfo', 'Y',
+  'geo_shownavigation', 'Y',
+  'legend_state', 'collapsed',
+  'livesearch', 'N',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(1027461927232608242)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1032462412260958536)
+,p_plug_name=>'Geographical Layout by Setting'
+,p_static_id=>'geographical-layout-by-setting'
+,p_parent_plug_id=>wwv_flow_imp.id(1027461591755608239)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'Geographical layout can also be configured in Attributes -> Settings. Users have more options to customize the map. Below example shows using ''osm_darkmatter'' as mapType. <br>',
+'For more details about geographical layout settings, please check <a href="https://docs.oracle.com/en/database/oracle/property-graph/24.1/pgjsd/pages/features/layouts.html" target="_blank">Graph JavaScript API Reference for Property Graph Visualizati'
+||'on</a> Layouts section.<br>',
+'</br>',
+'<strong>Settings > Settings </strong>',
+'<code>',
+'{"layout" : ',
+'  { "type":"geographical",',
+'    "mapType": "world_map_mb"',
+'  }',
+'}',
+'</code>',
+'<strong>PGQL Query with ORA_PGQL_TO_JSON:</strong>',
+'<br>',
+'<code>/*  In the below query, data is selected from Property Graph and ',
+'    made into JSON format that GVT accepts.',
+'',
+'    The query retrieves vertices and edges of the graph that visualizes ',
+'    the routes between the airports.*/',
+'    ',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_GRAPH_FLIGHTS''',
+') as query from SYS.DUAL;',
+'</code>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1032462468742958537)
+,p_plug_name=>'Geographical Layout by Setting'
+,p_static_id=>'geographical-layout-by-setting-2'
+,p_parent_plug_id=>wwv_flow_imp.id(1027461591755608239)
+,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--scrollBody'
+,p_plug_template=>4073835273271169698
+,p_plug_display_sequence=>40
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_query_type=>'SQL'
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_GRAPH_FLIGHTS''',
+') as query from SYS.DUAL;'))
+,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'attribute_04', 'geographical',
+  'attribute_05', 'N',
+  'attribute_06', '100',
+  'attribute_10', 'modes:exploration',
+  'attribute_14', 'N',
+  'attribute_16', '640',
+  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
+    '{',
+    '    "vertex": {',
+    '        "size":10',
+    '    }',
+    '}')),
+  'bind_variable_pgql', 'N',
+  'custom_theme', 'N',
+  'darktheme', 'N',
+  'default_legend_enabled', 'N',
+  'defaults_for_modes', 'fitToScreenActive',
+  'enable_evolution', 'N',
+  'enable_expand', 'N',
+  'escapehtml', 'N',
+  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
+  'geo_maptype', 'osm_darkmatter',
+  'geo_showinfo', 'Y',
+  'geo_shownavigation', 'Y',
+  'legend_state', 'expanded',
+  'livesearch', 'N',
+  'modes_options', 'interaction:fitToScreen:sticky:evolution',
+  'schema_visualization', 'N',
+  'showtitle', 'Y',
+  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260923162953Z')
+,p_updated_by=>'TEST1'
+);
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(1032462577423958538)
+,p_name=>'QUERY'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(7710764124348167098)
+,p_plug_name=>'RDS'
+,p_static_id=>'rds'
+,p_region_template_options=>'#DEFAULT#'
+,p_plug_template=>3372714138756020509
+,p_plug_display_sequence=>30
+,p_plug_display_point=>'REGION_POSITION_01'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'display_region_icons', 'N',
+  'include_show_all', 'Y',
+  'rds_mode', 'STANDARD',
+  'remember_selection', 'USER')).to_clob
+);
+end;
+/
+prompt --application/pages/page_00010
+begin
+wwv_flow_imp_page.create_page(
+ p_id=>10
+,p_name=>'Keyboard Navigation Shortcuts - 19 ADB'
+,p_alias=>'KEYBOARD-NAVIGATION-SHORTCUTS'
 ,p_step_title=>'Keyboard Navigation Shortcuts'
 ,p_autocomplete_on_off=>'OFF'
 ,p_inline_css=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -44783,12 +44628,14 @@ wwv_flow_imp_page.create_page(
 '}'))
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34867585504314185419)
+ p_id=>wwv_flow_imp.id(31336526158382621449)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
@@ -44798,14 +44645,13 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'The example below shows how you can interact with the graph using keyboard shortcuts.',
-'<br/><br/>',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(15544847195911776740)
+ p_id=>wwv_flow_imp.id(12013787849980212770)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -44815,17 +44661,17 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34867582420783185388)
+ p_id=>wwv_flow_imp.id(31336523074851621418)
 ,p_plug_name=>'Details'
 ,p_static_id=>'details'
 ,p_region_template_options=>'#DEFAULT#:is-expanded:i-h640:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>40
 ,p_plug_grid_row_css_classes=>'equal-height'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -44856,22 +44702,20 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(28441392060769551666)
+ p_id=>wwv_flow_imp.id(24910332714837987696)
 ,p_plug_name=>'Interaction'
 ,p_static_id=>'interaction'
 ,p_region_name=>'graph'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -44882,7 +44726,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '  "vertex": {',
-    '    "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '    "icon": "fa-user",',
     '    "children": {',
     '      "salary": {',
@@ -44899,7 +44743,7 @@ wwv_flow_imp_page.create_page_plug(
     '    }',
     '  }',
     '}')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -45033,666 +44877,17 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502331463754236393)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502331286240236392)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(982595531101791157)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4502331489643236394)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-end;
-/
-prompt --application/pages/page_00018
-begin
-wwv_flow_imp_page.create_page(
- p_id=>18
-,p_name=>'Geographical Layout'
-,p_alias=>'GEOGRAPHICAL-LAYOUT'
-,p_step_title=>'Geographical Layout'
-,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
-,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
-,p_protection_level=>'C'
-,p_page_component_map=>'11'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18675704679693157303)
-,p_plug_name=>'About this page'
-,p_static_id=>'about-this-page'
-,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
-,p_plug_template=>2042159785845301134
-,p_plug_display_sequence=>10
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'This example uses the EBA_GRAPH_FLIGHTS Property Graph which contains location-based information (spatial data) as',
-unistr('\201Clatitude\201D and \201Clongitude\201D vertex properties.')))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13315303921113397131)
-,p_plug_name=>'Breadcrumb'
-,p_static_id=>'breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4499669790734787349)
-,p_plug_name=>'Geographical Layout'
-,p_static_id=>'geographical-layout'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>60
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>'The geographical layout allows the user to overlay the graph on a map, given that latitude and longitude coordinates exist as graph properties on the graph''s vertices.<br><br>'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4499670081356787352)
-,p_plug_name=>'Geographical Layout by Appearance'
-,p_static_id=>'geographical-layout-by-appearance'
-,p_parent_plug_id=>wwv_flow_imp.id(4499669790734787349)
-,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'GRAPH'
-,p_query_table=>'EBA_GRAPH_FLIGHTS'
-,p_query_match=>'(m)-[e]->(n)'
-,p_query_columns=>'vertex_id(m) as airport_depart, edge_id(e) as routes, vertex_id(n) as airport_arrival'
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_04', 'geographical',
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'N',
-  'attribute_16', '640',
-  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "vertex": {',
-    '        "size": 10',
-    '    }',
-    '}')),
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive:evolutionActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'geo_latitude', 'latitude',
-  'geo_longitude', 'longitude',
-  'geo_showinfo', 'Y',
-  'geo_shownavigation', 'Y',
-  'legend_state', 'collapsed',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4192020101058109515)
-,p_name=>'AIRPORT_ARRIVAL'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4192019903320109513)
-,p_name=>'AIRPORT_DEPART'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4192019964815109514)
-,p_name=>'ROUTES'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4499670950293787360)
-,p_plug_name=>'Geographical Layout by Appearance'
-,p_static_id=>'geographical-layout-by-appearance-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4499669790734787349)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Geographical layout can be configured in Attributes -> Appearance -> Layout -> Geographcial.<br></br>',
-'<strong>SQL/PGQ query</strong>',
-'<br></br>',
-'<code>/*  In the below query, data is selected from Property Graph and ',
-'    made into JSON format that GVT accepts.',
-'',
-'    The query retrieves vertices and edges of the graph that visualizes ',
-'    the routes between the airports.*/',
-'    ',
-'SELECT *',
-'FROM GRAPH_TABLE ( EBA_GRAPH_FLIGHTS',
-'  MATCH (m) -[e ]-> (n)',
-'  COLUMNS (vertex_id(m) as airport_depart, edge_id(e) as routes, vertex_id(n) as airport_arrival )',
-')',
-'</code>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4499671063982787361)
-,p_plug_name=>'Geographical Layout by Setting'
-,p_static_id=>'geographical-layout-by-setting'
-,p_parent_plug_id=>wwv_flow_imp.id(4499669790734787349)
-,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'GRAPH'
-,p_query_table=>'EBA_GRAPH_FLIGHTS'
-,p_query_match=>'(m)-[e]-(n)'
-,p_query_columns=>'vertex_id(m) as airport_depart, edge_id(e) as routes, vertex_id(n) as airport_arrival'
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_04', 'geographical',
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'N',
-  'attribute_16', '640',
-  'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "vertex": {',
-    '        "size": 10',
-    '    }',
-    '}')),
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'N',
-  'defaults_for_modes', 'interactionActive:fitToScreenActive:stickyActive:evolutionActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'geo_maptype', 'osm_darkmatter',
-  'geo_showinfo', 'Y',
-  'geo_shownavigation', 'Y',
-  'legend_state', 'expanded',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'schema_visualization', 'N',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4379180375221062840)
-,p_name=>'AIRPORT_ARRIVAL'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4379180159216062838)
-,p_name=>'AIRPORT_DEPART'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4379180251064062839)
-,p_name=>'ROUTES'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4499671438872787365)
-,p_plug_name=>'Geographical Layout by Setting'
-,p_static_id=>'geographical-layout-by-setting-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4499669790734787349)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Geographical layout can also be configured in Attributes -> Advanced -> General Settings. Users have more options to customize the map. Below example shows using ''osm_darkmatter'' as mapType. <br>',
-'For more details about geographical layout settings, please check <a href="https://docs.oracle.com/en/database/oracle/property-graph/24.1/pgjsd/pages/features/layouts.html" target="_blank">Graph JavaScript API Reference for Property Graph Visualizati'
-||'on</a> Layouts section.<br>',
-'</br>',
-'<strong>Attributes -> Advanced -> General Settings </strong>',
-'<code>',
-'{"layout" : ',
-'  { "type":"geographical",',
-'    "mapType": "world_map_mb"',
-'  }',
-'}',
-'</code>',
-'<strong>SQL/PGQ query</strong>',
-'<br></br>',
-'<code>/*  In the below query, data is selected from Property Graph and ',
-'    made into JSON format that GVT accepts.',
-'',
-'    The query retrieves vertices and edges of the graph that visualizes ',
-'    the routes between the airports.*/',
-'    ',
-'SELECT *',
-'FROM GRAPH_TABLE ( EBA_GRAPH_FLIGHTS',
-'  MATCH (m) -[e ]-> (n)',
-'  COLUMNS (vertex_id(m) as airport_depart, edge_id(e) as routes, vertex_id(n) as airport_arrival )',
-')',
-'</code>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(11204313472751689696)
-,p_plug_name=>'RDS'
-,p_static_id=>'rds'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'display_region_icons', 'N',
-  'include_show_all', 'Y',
-  'rds_mode', 'STANDARD',
-  'remember_selection', 'USER')).to_clob
-);
-end;
-/
-prompt --application/pages/page_00019
-begin
-wwv_flow_imp_page.create_page(
- p_id=>19
-,p_name=>'Schema Visualization - 26ai'
-,p_alias=>'SCHEMA-VISUALIZATION-26AI'
-,p_step_title=>'Schema Visualization'
-,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
-,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
-,p_protection_level=>'C'
-,p_page_component_map=>'17'
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18677954985532934089)
-,p_plug_name=>'About this page'
-,p_static_id=>'about-this-page'
-,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
-,p_plug_template=>2042159785845301134
-,p_plug_display_sequence=>10
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>'This page shows an example of how the Schema Visualization looks like when Schema Visualization is enabled and the user provides both graph owner and graph name.'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(13297401729595731584)
-,p_plug_name=>'Breadcrumb'
-,p_static_id=>'breadcrumb'
-,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
-,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
-,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27859460608720337886)
-,p_plug_name=>'Details'
-,p_static_id=>'details'
-,p_parent_plug_id=>wwv_flow_imp.id(27859463692251337917)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Graph Visualization Toolkit provides a schema view mode where the user is able to visualize the schema from where the graph was built',
-'<br/>',
-'To do that, the user needs to provide the graph name and graph owner on the Schema section inside of the attributes',
-'<br/>',
-'To visualize the schema visualization when the component is initialize, the user needs to provide viewMode attribute as part of the schema settings text area',
-'<code>',
-'self.schemaSettings = { viewMode: "expanded" };',
-'</code>',
-'<p>To enable schema visualization:</p> <ol> <li>Navigate to Attributes -> Schema.</li> <li>Enable Schema Visualization.</li> <li>Fill in the Graph Owner and Graph Name fields based on the query.</li> </ol>',
-'<br/>',
-'<strong>Description of the example:</strong>',
-'<br>',
-'<code>',
-'    /*',
-'    In this example, the result from the query gets all the possible connections from the graph.',
-'    The graph has many different labels like employee, job, locations, department, etc.',
-'    */',
-'',
-'    SELECT *',
-'    FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'        MATCH (m) -[e]-> (n)',
-'        COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-'    )',
-'',
-'    /*',
-'    On the left side, you can visualize the schema of the graph, if you do right click over a vertex/edge,',
-'    you''ll see the available properties and their types',
-'    */',
-'</code>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34076804876978571090)
-,p_plug_name=>'RDS'
-,p_static_id=>'rds'
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>60
-,p_plug_display_point=>'REGION_POSITION_01'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source_type=>'NATIVE_DISPLAY_SELECTOR'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'display_region_icons', 'N',
-  'include_show_all', 'Y',
-  'rds_mode', 'STANDARD',
-  'remember_selection', 'USER')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21433270248706704164)
-,p_plug_name=>'Schema View'
-,p_static_id=>'schema-view'
-,p_region_name=>'graph'
-,p_parent_plug_id=>wwv_flow_imp.id(27859463692251337917)
-,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_query_type=>'SQL'
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT *',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m) -[e]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
-,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_05', 'N',
-  'attribute_06', '100',
-  'attribute_10', 'modes:exploration',
-  'attribute_14', 'Y',
-  'attribute_16', '640',
-  'bind_variable_pgql', 'N',
-  'custom_theme', 'N',
-  'darktheme', 'N',
-  'default_legend_enabled', 'Y',
-  'defaults_for_modes', 'fitToScreenActive',
-  'enable_evolution', 'N',
-  'enable_expand', 'N',
-  'escapehtml', 'N',
-  'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
-  'legend_state', 'expanded',
-  'livesearch', 'N',
-  'modes_options', 'interaction:fitToScreen:sticky:evolution',
-  'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '[',
-    '  {',
-    '    "_id": 1,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "and",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "labels",',
-    '          "operator": "CONTAINS",',
-    '          "value": "COUNTRY"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Children Style By Country",',
-    '    "style": {',
-    '      "children": {',
-    '        "flag": {',
-    '          "size": 15,',
-    '          "image": {',
-    '            "url": "https://flagcdn.com/40x30/${(properties.COUNTRY_ID === ''UK'' ? ''GB'' : properties.COUNTRY_ID).toLowerCase()}.png",',
-    '            "scale": 0.8',
-    '          }',
-    '        }',
-    '      }',
-    '    }',
-    '  },',
-    '  {',
-    '    "_id": 2,',
-    '    "component": "vertex",',
-    '    "stylingEnabled": true,',
-    '    "target": "vertex",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "or",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_PRES"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_VP"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "FI_MGR"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "AD_MGR"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "SA_MAN"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "PU_MAN"',
-    '        },',
-    '        {',
-    '          "property": "JOB_ID",',
-    '          "operator": "=",',
-    '          "value": "ST_MAN"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Style By Job",',
-    '    "style": {',
-    '      "icon": {',
-    '        "class": "fa-user-secret"',
-    '      }',
-    '    }',
-    '  },',
-    '  {',
-    '    "_id": 3,',
-    '    "component": "edge",',
-    '    "stylingEnabled": true,',
-    '    "target": "edge",',
-    '    "visibilityEnabled": true,',
-    '    "conditions": {',
-    '      "operator": "or",',
-    '      "conditions": [',
-    '        {',
-    '          "property": "labels",',
-    '          "operator": "CONTAINS",',
-    '          "value": "COUNTRY_LOCATED_IN"',
-    '        },',
-    '         {',
-    '          "property": "labels",',
-    '          "operator": "CONTAINS",',
-    '          "value": "DEPARTMENT_LOCATED_IN"',
-    '        }',
-    '      ]',
-    '    },',
-    '    "legendTitle": "Edge Style",',
-    '    "style": {',
-    '      "color": "gray",',
-    '      "width": 2,',
-    '      "caption": {',
-    '        "color": "gray",',
-    '        "font": {',
-    '          "size": 12',
-    '        }',
-    '      }',
-    '    }',
-    '  }',
-    ']')),
-  'schema_graph_name', 'EBA_SAMPLE_GRAPH',
-  'schema_graph_owner', '&P19_NEW.',
-  'schema_settings', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '  "viewMode": "expanded",',
-    '  "layout": "hierarchical",',
-    '  "searchEnabled" : false',
-    '',
-    '}')),
-  'schema_visualization', 'Y',
-  'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4515585421855208237)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4515585418889208236)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4515585562203208238)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27859463692251337917)
-,p_plug_name=>'Schema Visualization'
-,p_static_id=>'schema-visualization'
-,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
-,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>30
-,p_include_in_reg_disp_sel_yn=>'Y'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'The below example gives you an example of how the Schema Visualization looks like',
-'<br/><br/>',
-''))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(4216460415582839383)
-,p_name=>'P19_NEW'
-,p_item_sequence=>40
-,p_item_plug_id=>wwv_flow_imp.id(21433270248706704164)
-,p_source=>'SELECT SYS_CONTEXT(''USERENV'', ''CURRENT_SCHEMA'') FROM sys.DUAL;'
-,p_source_type=>'QUERY'
-,p_display_as=>'NATIVE_HIDDEN'
-,p_protection_level=>'S'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'value_protected', 'Y')).to_clob
 );
 end;
 /
@@ -45700,18 +44895,20 @@ prompt --application/pages/page_00020
 begin
 wwv_flow_imp_page.create_page(
  p_id=>20
-,p_name=>'Legend Features - 26ai'
+,p_name=>'Legend Features - 19 ADB'
 ,p_alias=>'LEGEND-FEATURES'
 ,p_step_title=>'Legend Features'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(18735869094369190017)
+ p_id=>wwv_flow_imp.id(15455279753792938735)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -45725,7 +44922,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34134718985814827018)
+ p_id=>wwv_flow_imp.id(908347934373886891)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -45735,15 +44932,39 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257077563195427704)
+ p_id=>wwv_flow_imp.id(913554521783943560)
 ,p_plug_name=>'Details'
 ,p_static_id=>'details'
-,p_parent_plug_id=>wwv_flow_imp.id(4257077504172427703)
+,p_parent_plug_id=>wwv_flow_imp.id(913554064085943556)
+,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
+,p_plug_template=>2665811232373458102
+,p_plug_display_sequence=>10
+,p_plug_display_point=>'SUB_REGIONS'
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<strong>Query</strong>',
+'<br/>',
+'<code>',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;',
+'</code>',
+'<br/>'))
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(913554606833943561)
+,p_plug_name=>'Details'
+,p_static_id=>'details-2'
+,p_parent_plug_id=>wwv_flow_imp.id(913554393802943559)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>10
@@ -45778,9 +44999,9 @@ wwv_flow_imp_page.create_page_plug(
 '      "operator": "and",',
 '      "conditions": [',
 '        {',
-'          "property": "labels",',
-'          "operator": "CONTAINS",',
-'          "value": "EMPLOYEE"',
+'          "property": "EMPLOYEE_ID",',
+'          "operator": "*",',
+'          "value": "0"',
 '        }',
 '      ]',
 '    },',
@@ -45799,9 +45020,9 @@ wwv_flow_imp_page.create_page_plug(
 '      "operator": "and",',
 '      "conditions": [',
 '        {',
-'          "property": "labels",',
-'          "operator": "CONTAINS",',
-'          "value": "EMPLOYEE"',
+'          "property": "EMPLOYEE_ID",',
+'          "operator": "*",',
+'          "value": "0"',
 '        }',
 '      ]',
 '    },',
@@ -45820,9 +45041,9 @@ wwv_flow_imp_page.create_page_plug(
 '      "operator": "and",',
 '      "conditions": [',
 '        {',
-'          "property": "labels",',
-'          "operator": "CONTAINS",',
-'          "value": "WORKS_FOR"',
+'          "property": "id",',
+'          "operator": "*",',
+'          "value": ""',
 '        }',
 '      ]',
 '    },',
@@ -45849,48 +45070,25 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4263840494743396569)
-,p_plug_name=>'Details'
-,p_static_id=>'details-2'
-,p_parent_plug_id=>wwv_flow_imp.id(4263840045236396564)
-,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<code>',
-'  SELECT employee,e, manager',
-'  FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager ))',
-'</code>',
-'<br/>'))
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27917374717556593814)
+ p_id=>wwv_flow_imp.id(24636785376980342532)
 ,p_plug_name=>'Details'
 ,p_static_id=>'details-3'
-,p_parent_plug_id=>wwv_flow_imp.id(27917377801087593845)
+,p_parent_plug_id=>wwv_flow_imp.id(24636788460511342563)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>10
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '<strong>Query</strong>',
 '<br/>',
 '<code>',
-'  SELECT employee,e, manager',
-'  FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;',
 '</code>',
 '<br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -45898,12 +45096,12 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(2408021297978110537)
+ p_id=>wwv_flow_imp.id(377020154625035420)
 ,p_plug_name=>'Disable Default Legend Generation'
 ,p_static_id=>'disable-default-legend-generation'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45923,22 +45121,20 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(2408021360812110538)
+ p_id=>wwv_flow_imp.id(377020301870035421)
 ,p_plug_name=>'Disable Default Legend Generation'
 ,p_static_id=>'disable-default-legend-generation-2'
-,p_parent_plug_id=>wwv_flow_imp.id(2408021297978110537)
+,p_parent_plug_id=>wwv_flow_imp.id(377020154625035420)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m ) -[e  ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -45946,10 +45142,7 @@ wwv_flow_imp_page.create_page_plug(
   'attribute_10', 'modes:exploration',
   'attribute_14', 'Y',
   'attribute_16', '640',
-  'attribute_17', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'console.log(''style ''+JSON.stringify(style));',
-    'console.log(''action ''+action);')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'N',
@@ -45960,56 +45153,38 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'schema_visualization', 'N',
   'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+  'visibility_toggle_mode', 'hideWhenAllUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(2408021568933110540)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(2408021448002110539)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(377020387295035422)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(2408021648104110541)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(2558019854155805092)
+ p_id=>wwv_flow_imp.id(377020482887035423)
 ,p_plug_name=>'Disable Default Legend Generation + RuleBasedStyles'
 ,p_static_id=>'disable-default-legend-generation-rulebasedstyles'
-,p_parent_plug_id=>wwv_flow_imp.id(2408021297978110537)
+,p_parent_plug_id=>wwv_flow_imp.id(377020154625035420)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m ) -[e  ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -46017,13 +45192,10 @@ wwv_flow_imp_page.create_page_plug(
   'attribute_10', 'modes:exploration',
   'attribute_14', 'Y',
   'attribute_16', '640',
-  'attribute_17', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'console.log(''style ''+JSON.stringify(style));',
-    'console.log(''action ''+action);')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
-  'default_legend_enabled', 'N',
+  'default_legend_enabled', 'Y',
   'defaults_for_modes', 'fitToScreenActive',
   'enable_evolution', 'N',
   'enable_expand', 'N',
@@ -46031,7 +45203,7 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '[',
@@ -46107,69 +45279,55 @@ wwv_flow_imp_page.create_page_plug(
     '')),
   'schema_visualization', 'N',
   'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+  'visibility_toggle_mode', 'hideWhenAllUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(2558020113105805094)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(2558020007967805093)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(377020617070035424)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(2558020143655805095)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257076207628427690)
+ p_id=>wwv_flow_imp.id(976486867052176408)
 ,p_plug_name=>'hideWhenAllUnchecked'
 ,p_static_id=>'hidewhenallunchecked'
-,p_parent_plug_id=>wwv_flow_imp.id(4257075780595427686)
+,p_parent_plug_id=>wwv_flow_imp.id(976486440019176404)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'The property ''visibilityToggleMode'' when provided with the value <strong>''hideWhenAllUnchecked''</strong> causes the vertices / edges in the graph region to be hidden, when <strong>all the legend items</strong> having influence on the vertices / edges'
-||' have its visibility checkboxes unchecked.',
+'The property ''visibilityToggleMode'' when provided with the value <strong>''hideWhenAllUnchecked''</strong> causes the',
+'vertices / edges in the graph region to be hidden, when <strong>all the legend items</strong> having influence on the',
+'vertices / edges have its visibility checkboxes unchecked.',
 '<br/>',
 '<ul>',
-'    <li>''visibilityToggleMode'' property, as its name implies affects only the ''Visibility Toggle'' behaviour and has no influence on the ''Styling Toggle''.</li>',
+'    <li>''visibilityToggleMode'' property, as its name implies affects only the ''Visibility Toggle'' behaviour and has no',
+'        influence on the ''Styling Toggle''.</li>',
 '</ul>',
 '<br/>',
 '<p>To configure the visibility toggle mode:</p>',
 '<ul>',
-'  <li>Navigate to Attributes -> Settings -> Visibility Toggle Mode and select "Hide when all unchecked".</li>',
-'  <li>Or, edit the General Settings: <br/> <strong>Attributes -> General Settings</strong>',
-'    <pre><code>{ "visibilityToggleMode": "hideWhenAllUnchecked" }</code></pre>',
-'  </li>',
+'    <li>Navigate to Attributes -> Settings -> Visibility Toggle Mode and select "Hide when all unchecked".</li>',
+'    <li>Alternatively, edit the General Settings directly: <br/> <strong>Attributes -> General Settings</strong>',
+'        <pre><code>{ "visibilityToggleMode": "hideWhenAllUnchecked" }</code></pre>',
+'    </li>',
 '</ul>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '<strong>Query</strong>',
 '<br/>',
 '<code>',
-'  SELECT employee,e, manager',
-'  FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;',
 '</code>',
 '<br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -46177,22 +45335,20 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257076285551427691)
+ p_id=>wwv_flow_imp.id(910967730451247166)
 ,p_plug_name=>'hideWhenAllUnchecked graph'
 ,p_static_id=>'hidewhenallunchecked-graph'
-,p_parent_plug_id=>wwv_flow_imp.id(4257075780595427686)
+,p_parent_plug_id=>wwv_flow_imp.id(976486440019176404)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>50
+,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_02', wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -46207,7 +45363,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -46227,7 +45383,7 @@ wwv_flow_imp_page.create_page_plug(
     '      "color": "#F1EFED"',
     '     }',
     '  }')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -46238,7 +45394,7 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '[',
@@ -46254,7 +45410,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        }',
     '      ]',
     '    },',
@@ -46275,12 +45431,12 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<=",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        },',
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">=",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -46301,7 +45457,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -46314,39 +45470,23 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAllUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257076521386427693)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257076412299427692)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(910967817587247167)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257076562106427694)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257075958561427688)
+ p_id=>wwv_flow_imp.id(976486617985176406)
 ,p_plug_name=>'hideWhenAnyUnchecked'
 ,p_static_id=>'hidewhenanyunchecked'
-,p_parent_plug_id=>wwv_flow_imp.id(4257075780595427686)
+,p_parent_plug_id=>wwv_flow_imp.id(976486440019176404)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
 ,p_plug_template=>2665811232373458102
 ,p_plug_display_sequence=>10
@@ -46359,25 +45499,28 @@ wwv_flow_imp_page.create_page_plug(
 'vertices / edges has its visibility checkbox unchecked.',
 '<br/>',
 '<ul>',
-'  <li>''visibilityToggleMode'' property, when not specified, defaults to <strong>''hideWhenAnyUnchecked''</strong>.</li>',
-'  <li>''visibilityToggleMode'' property, as its name implies affects only the ''Visibility Toggle'' behaviour and has no',
-'    influence on the ''Styling Toggle''.</li>',
+'    <li>''visibilityToggleMode'' property, when not specified, defaults to <strong>''hideWhenAnyUnchecked''</strong>.</li>',
+'    <li>''visibilityToggleMode'' property, as its name implies affects only the ''Visibility Toggle'' behaviour and has no',
+'        influence on the ''Styling Toggle''.</li>',
 '</ul>',
+'<br/>',
 '<p>To configure the visibility toggle mode:</p>',
 '<ul>',
-'  <li>Navigate to Attributes -> Settings -> Visibility Toggle Mode and select "Hide when any unchecked".</li>',
-'  <li>Or, edit the General Settings: <br/> <strong>Attributes -> General Settings</strong>',
-'    <pre><code>{ "visibilityToggleMode": "hideWhenAnyUnchecked" }</code></pre>',
-'  </li>',
+'    <li>Navigate to Attributes -> Settings -> Visibility Toggle Mode and select "Hide when any unchecked".</li>',
+'    <li>Alternatively, edit the General Settings directly: <br/> <strong>Attributes -> General Settings</strong>',
+'        <pre><code>{ "visibilityToggleMode": "hideWhenAnyUnchecked" }</code></pre>',
+'    </li>',
 '</ul>',
+'</code>',
+'<br/>',
+'<p>The <code>:page_start</code> and <code>:page_size</code> bind parameters can be utilized in a query by enabling:</p>',
+'<p><strong>Attributes -> Settings -> Bind Variable for page_start, page_size (PGQL Only)</strong></p>',
 '<strong>Query</strong>',
 '<br/>',
 '<code>',
-'  SELECT employee,e, manager',
-'  FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')',
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;',
 '</code>',
 '<br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -46385,10 +45528,10 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257074686606427675)
+ p_id=>wwv_flow_imp.id(910967533149247164)
 ,p_plug_name=>'hideWhenAnyUnchecked graph'
 ,p_static_id=>'hidewhenanyunchecked-graph'
-,p_parent_plug_id=>wwv_flow_imp.id(4257075780595427686)
+,p_parent_plug_id=>wwv_flow_imp.id(976486440019176404)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
 ,p_plug_display_sequence=>20
@@ -46396,11 +45539,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_02', wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -46415,7 +45556,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -46435,7 +45576,7 @@ wwv_flow_imp_page.create_page_plug(
     '      "color": "#F1EFED"',
     '     }',
     '  }')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -46446,7 +45587,7 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '[',
@@ -46462,7 +45603,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        }',
     '      ]',
     '    },',
@@ -46483,12 +45624,12 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<=",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        },',
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">=",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -46509,7 +45650,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -46522,80 +45663,58 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257074897680427677)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257074763421427676)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(910967561812247165)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257075048634427678)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4263840045236396564)
+ p_id=>wwv_flow_imp.id(913554064085943556)
 ,p_plug_name=>'Legend Highlighting'
 ,p_static_id=>'legend-highlighting'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'Legend highlighting helps to identify the influence that the legend items have on the vertices and edges in the graph. Legend highlighting is always enabled and can be observed in the following ways: ',
+'Legend highlighting helps to identify the influence that the legend items have on the vertices and edges in the graph. Highlighting can be activated in the following ways: ',
 '<ul><li>Selecting a legend item by clicking on a legend item''s title will highlight the vertices or edges that it has influence on. Selection can be achieve using a keyboard by pressing the ''Space/Enter'' key, after bringing focus on the legend item''s'
 ||' title using the''Tab'' key.</li>',
 '<li>Conversely, selecting a vertex or edge in the graph region highlights those legend items that influences it. Mouse and keyboard interaction for vertex / edge selection follows similar pattern as above.</li>',
 '</ul>',
-'<br/>',
 'Note: A highlighted legend item or graph element will appear in normal opacity, while the remaining ones stay faded.</li>',
-'</ul>'))
+'</ul>',
+'<br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4263840097507396565)
+ p_id=>wwv_flow_imp.id(913554186070943557)
 ,p_plug_name=>'legend highlighting graph'
 ,p_static_id=>'legend-highlighting-graph'
-,p_parent_plug_id=>wwv_flow_imp.id(4263840045236396564)
+,p_parent_plug_id=>wwv_flow_imp.id(913554064085943556)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'attribute_02', wwv_flow_string.join(wwv_flow_t_varchar2(
-    '{',
-    '    "visibilityToggleMode": "hideWhenAnyUnchecked"',
-    '}')),
   'attribute_05', 'N',
   'attribute_06', '100',
   'attribute_10', 'modes:exploration',
@@ -46604,7 +45723,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -46624,7 +45743,7 @@ wwv_flow_imp_page.create_page_plug(
     '      "color": "#F1EFED"',
     '     }',
     '  }')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -46635,7 +45754,7 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '[',
@@ -46651,7 +45770,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        }',
     '      ]',
     '    },',
@@ -46672,12 +45791,12 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<=",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        },',
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">=",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -46698,7 +45817,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -46711,56 +45830,35 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4263840296840396567)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4263840169095396566)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(913554285357943558)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4263840441446396568)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257077504172427703)
+ p_id=>wwv_flow_imp.id(913554393802943559)
 ,p_plug_name=>'Legend Reordering'
 ,p_static_id=>'legend-reordering'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>40
+,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'The below example illustrates how the items in the legend region can be reordered, and how it could affect the style of graph elements.',
-'<br/><br/>',
-'The legend items can be reordered by either of these ways:',
-'<ul><li>Using ''Drag and drop'' - The user can use their mouse to drag a legend item and drop it to a different position in the list.</li>',
-'<li>Using ''Arrow keys'' - The user can press the ''Up'' / ''Down'' arrow keys to move an already selected legend item up or down in the list. Selecting a legend item can be done by clicking on its label or by repeatedly pressing ''Tab'' key on the keyboard '
-||'until the legend item receives focus.</li>',
+'Legend highlighting helps to identify the influence that the legend items have on the vertices and edges in the graph. Highlighting can be activated in the following ways: ',
+'<ul><li>Selecting a legend item by clicking on a legend item''s title will highlight the vertices or edges that it has influence on. Selection can be achieve using a keyboard by pressing the ''Space/Enter'' key, after bringing focus on the legend item''s'
+||' title using the''Tab'' key.</li>',
+'<li>Conversely, selecting a vertex or edge in the graph region highlights those legend items that influences it. Mouse and keyboard interaction for vertex / edge selection follows similar pattern as above.</li>',
 '</ul>',
-'<strong>Impact of legend reordering on graph styling</strong><br/>',
-'<ul><li>Reordering a legend items could impact the styling of the vertices or edges that it affects, since the style of legend items down in the list takes priority over the ones above it, when multiple legend items affect the same style.</li>',
-'<li>In the below example, the vertices in the graph initially appear green because <strong>''Green when moved to the end''</strong> is the last legend item in the list. If the legend item <strong>''Red when moved to the end''</strong> is dragged as the l'
-||'ast item, all vertices of the graph will turn red.</li>',
+'Note: A highlighted legend item or graph element will appear in normal opacity, while the remaining ones stay faded.</li>',
 '</ul>',
 '<br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -46768,22 +45866,20 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257077745424427705)
+ p_id=>wwv_flow_imp.id(913554677333943562)
 ,p_plug_name=>'Legend reordering graph'
 ,p_static_id=>'legend-reordering-graph'
-,p_parent_plug_id=>wwv_flow_imp.id(4257077504172427703)
+,p_parent_plug_id=>wwv_flow_imp.id(913554393802943559)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -46791,13 +45887,10 @@ wwv_flow_imp_page.create_page_plug(
   'attribute_10', 'modes:exploration',
   'attribute_14', 'Y',
   'attribute_16', '640',
-  'attribute_17', wwv_flow_string.join(wwv_flow_t_varchar2(
-    'console.log(''style ''+JSON.stringify(style));',
-    'console.log(''action ''+action);')),
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text":"${properties.FIRST_NAME} ${properties.LAST_NAME}",  "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -46817,7 +45910,7 @@ wwv_flow_imp_page.create_page_plug(
     '      "color": "#F1EFED"',
     '     }',
     '  }')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -46828,7 +45921,7 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '[',
@@ -46899,42 +45992,26 @@ wwv_flow_imp_page.create_page_plug(
     ']')),
   'schema_visualization', 'N',
   'showtitle', 'Y',
-  'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+  'visibility_toggle_mode', 'hideWhenAllUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257077892484427707)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4257077830109427706)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(913554759013943563)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4263858599295015458)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(34209086142270843624)
+ p_id=>wwv_flow_imp.id(30854129645238575736)
 ,p_plug_name=>'RDS'
 ,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_plug_template=>3372714138756020509
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>60
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -46946,23 +46023,20 @@ wwv_flow_imp_page.create_page_plug(
   'remember_selection', 'USER')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(21491184357542960092)
+ p_id=>wwv_flow_imp.id(17609529588816088992)
 ,p_plug_name=>'Visibility and Styling toggle graph'
 ,p_static_id=>'visibility-and-styling-toggle-graph'
-,p_region_name=>'graph'
-,p_parent_plug_id=>wwv_flow_imp.id(27917377801087593845)
+,p_parent_plug_id=>wwv_flow_imp.id(24636788460511342563)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee,e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m IS EMPLOYEE ) -[e IS WORKS_FOR ]-> (n)',
-'  COLUMNS (vertex_id(m) AS employee, edge_id(e) AS e, vertex_id(n) AS manager )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n:EMPLOYEE) -[e:WORKS_FOR]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -46973,7 +46047,7 @@ wwv_flow_imp_page.create_page_plug(
   'basestyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '{',
     '    "vertex": {',
-    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle":270, "disableBackdrop": true},',
+    '      "caption": {"text": "${properties.FIRST_NAME} ${properties.LAST_NAME}", "angle": 270, "disableBackdrop": true},',
     '      "icon": "fa-user",',
     '      "children": {',
     '        "salary": {',
@@ -46993,7 +46067,7 @@ wwv_flow_imp_page.create_page_plug(
     '      "color": "#F1EFED"',
     '     }',
     '  }')),
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -47004,7 +46078,7 @@ wwv_flow_imp_page.create_page_plug(
   'exploration_options', 'expand:focus:group:ungroup:drop:undo:redo:reset',
   'legend_state', 'expanded',
   'legendwidth', '300',
-  'livesearch', 'Y',
+  'livesearch', 'N',
   'modes_options', 'interaction:fitToScreen:sticky:evolution',
   'rulebasedstyles', wwv_flow_string.join(wwv_flow_t_varchar2(
     '[',
@@ -47020,7 +46094,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        }',
     '      ]',
     '    },',
@@ -47041,12 +46115,12 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<=",',
-    '          "value": "15000"',
+    '          "value": 15000',
     '        },',
     '        {',
     '          "property": "SALARY",',
     '          "operator": ">=",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -47067,7 +46141,7 @@ wwv_flow_imp_page.create_page_plug(
     '        {',
     '          "property": "SALARY",',
     '          "operator": "<",',
-    '          "value": "6000"',
+    '          "value": 6000',
     '        }',
     '      ]',
     '    },',
@@ -47080,67 +46154,58 @@ wwv_flow_imp_page.create_page_plug(
   'schema_visualization', 'N',
   'showtitle', 'Y',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4573499530691464165)
-,p_name=>'E'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>20
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4573499527725464164)
-,p_name=>'EMPLOYEE'
+ p_id=>wwv_flow_imp.id(1009286657641679624)
+,p_name=>'QUERY'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>10
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(4573499671039464166)
-,p_name=>'MANAGER'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>30
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27917377801087593845)
+ p_id=>wwv_flow_imp.id(24636788460511342563)
 ,p_plug_name=>'Visibility and Styling toggles'
 ,p_static_id=>'visibility-and-styling-toggles'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>20
+,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'The below example illustrates:',
-'<ul><li>''Visibility Toggle'' - the checkbox in the legend region, when toggled hides or shows vertices and edges in the graph region, that the toggled legend item has influence on.</li>',
-'<li>''Styling Toggle'' - the preview circle in the legend region, when clicked enables or disables the legend''s style on those vertices and edges, that the legend item has influence on.</li>',
+'<ul>',
+'    <li>''Visibility Toggle'' - the checkbox in the legend region, when toggled hides or shows vertices and edges in the',
+'        graph region, that the toggled legend item has influence on.</li>',
+'    <li>''Styling Toggle'' - the preview circle in the legend region, when clicked enables or disables the legend''s style',
+'        on those vertices and edges, that the legend item has influence on.</li>',
 '</ul>',
 'Note:',
 '<ul>',
-'    <li>In the below examples, the legend item ''EMPLOYEE'' has influence over all the vertices, while the legend items ''Highly Paid'', ''Low Paid'' etc have influence only over a subset of vertices, based on its ''Salary'' property values.</li>',
-'    <li>The legend ''Highliy Paid'' has its ''Styling toggle'' disabled indicated by its preview circle. Clicking the preview circle will toggle the style, and the vertices in the graph region influenced by the legend will reflect the style.</li>',
+'    <li>In the below examples, the legend item ''EMPLOYEE'' has influence over all the vertices, while the legend items',
+'        ''Highly Paid'', ''Low Paid'' etc have influence only over a subset of vertices, based on its ''Salary'' property',
+'        values.</li>',
+'    <li>The legend ''Highliy Paid'' has its ''Styling toggle'' disabled indicated by its preview circle. Clicking the',
+'        preview circle will toggle the style, and the vertices in the graph region influenced by the legend will reflect',
+'        the style.</li>',
 '</ul>',
-'<br/>'))
+'    <br/>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(4257075780595427686)
+ p_id=>wwv_flow_imp.id(976486440019176404)
 ,p_plug_name=>'''visibilityToggleMode'' settings property'
 ,p_static_id=>'visibilitytogglemode-settings-property'
-,p_parent_plug_id=>wwv_flow_imp.id(27917377801087593845)
+,p_parent_plug_id=>wwv_flow_imp.id(24636788460511342563)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
 ,p_plug_template=>2323592004483952560
-,p_plug_display_sequence=>30
+,p_plug_display_sequence=>50
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -47157,18 +46222,20 @@ prompt --application/pages/page_00021
 begin
 wwv_flow_imp_page.create_page(
  p_id=>21
-,p_name=>'Vertex Position Persistence'
+,p_name=>'Vertex Position Persistence - 19 ADB'
 ,p_alias=>'VERTEX-POSITION-PERSISTENCE'
-,p_step_title=>'Vertex Position Persistence'
+,p_step_title=>'Vertex Position Persistence - &APP_NAME.'
 ,p_autocomplete_on_off=>'OFF'
 ,p_step_template=>4073832297226169690
 ,p_page_template_options=>'#DEFAULT#'
-,p_required_role=>wwv_flow_imp.id(10657048269307754306)
+,p_required_role=>wwv_flow_imp.id(2170929919907992497)
 ,p_protection_level=>'C'
 ,p_page_component_map=>'17'
+,p_last_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_last_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27010180848809685)
+ p_id=>wwv_flow_imp.id(1203212973696702)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info:t-Alert--accessibleHeading'
@@ -47183,7 +46250,7 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27010253693809685)
+ p_id=>wwv_flow_imp.id(1203329944696702)
 ,p_plug_name=>'Breadcrumb'
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
@@ -47193,12 +46260,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_menu_id=>wwv_flow_imp.id(16340545630332909474)
+,p_menu_id=>wwv_flow_imp.id(12822202477846719977)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
 ,p_menu_template_id=>4073839682315169711
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27010332349809685)
+ p_id=>wwv_flow_imp.id(1203333436696702)
 ,p_plug_name=>'Vertex Position Persistence Graph'
 ,p_static_id=>'vertex-position-graph'
 ,p_region_name=>'vertex-position-graph'
@@ -47209,15 +46276,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'SELECT employee, e, manager',
-'FROM GRAPH_TABLE ( EBA_SAMPLE_GRAPH',
-'  MATCH (m) -[e]-> (n)',
-'  COLUMNS (',
-'    vertex_id(m) AS employee,',
-'    edge_id(e) AS e,',
-'    vertex_id(n) AS manager',
-'  )',
-')'))
+'select ora_pgql_to_json(''',
+' SELECT * FROM MATCH (n) -[e]-> (m) ON EBA_SAMPLE_GRAPH'', :PAGE_START, :PAGE_SIZE',
+') as query from SYS.DUAL;'))
 ,p_plug_source_type=>'PLUGIN_GRAPHVIZ'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'attribute_05', 'N',
@@ -47247,7 +46308,7 @@ wwv_flow_imp_page.create_page_plug(
     '    }',
     '});')),
   'attribute_16', '640',
-  'bind_variable_pgql', 'N',
+  'bind_variable_pgql', 'Y',
   'custom_theme', 'N',
   'darktheme', 'N',
   'default_legend_enabled', 'Y',
@@ -47309,9 +46370,11 @@ wwv_flow_imp_page.create_page_plug(
     'return response;')),
   'update_supported_actions', 'vertexPosition/delete:vertexPosition/upsert',
   'visibility_toggle_mode', 'hideWhenAnyUnchecked')).to_clob
+,p_updated_on=>wwv_flow_imp.dz('20260914174843Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(27010404558809686)
+ p_id=>wwv_flow_imp.id(1203496078696719)
 ,p_name=>'E'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
@@ -47320,25 +46383,25 @@ wwv_flow_imp_page.create_region_column(
 ,p_escape_on_http_output=>true
 );
 wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(27010564004809686)
-,p_name=>'EMPLOYEE'
-,p_data_type=>'CLOB'
-,p_is_visible=>true
-,p_display_sequence=>10
-,p_use_as_row_header=>false
-,p_escape_on_http_output=>true
-);
-wwv_flow_imp_page.create_region_column(
- p_id=>wwv_flow_imp.id(27010618752809686)
-,p_name=>'MANAGER'
+ p_id=>wwv_flow_imp.id(1203631598696719)
+,p_name=>'M'
 ,p_data_type=>'CLOB'
 ,p_is_visible=>true
 ,p_display_sequence=>30
 ,p_use_as_row_header=>false
 ,p_escape_on_http_output=>true
 );
+wwv_flow_imp_page.create_region_column(
+ p_id=>wwv_flow_imp.id(1203591823696719)
+,p_name=>'N'
+,p_data_type=>'CLOB'
+,p_is_visible=>true
+,p_display_sequence=>10
+,p_use_as_row_header=>false
+,p_escape_on_http_output=>true
+);
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(27010796074809686)
+ p_id=>wwv_flow_imp.id(1203830124696719)
 ,p_plug_name=>'Vertex Position Callback Illustration'
 ,p_static_id=>'vertex-position-illustration'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3'
@@ -47387,10 +46450,10 @@ wwv_flow_imp_page.create_page_plug(
   'output_as', 'HTML')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(27010858862809687)
+ p_id=>wwv_flow_imp.id(1203843762696719)
 ,p_name=>'P21_VERTEX_POSITIONS'
 ,p_item_sequence=>5
-,p_item_plug_id=>wwv_flow_imp.id(27010332349809685)
+,p_item_plug_id=>wwv_flow_imp.id(1203333436696702)
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_HIDDEN'
 ,p_is_persistent=>'N'
@@ -47398,7 +46461,7 @@ wwv_flow_imp_page.create_page_item(
   'value_protected', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(27010929079809687)
+ p_id=>wwv_flow_imp.id(1204005002696719)
 ,p_process_sequence=>10
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -47412,7 +46475,7 @@ wwv_flow_imp_page.create_page_process(
 '                       ''id'' VALUE vertex_id,',
 '                       ''xRatio'' VALUE x_ratio,',
 '                       ''yRatio'' VALUE y_ratio',
-'                       RETURNING JSON',
+'                       RETURNING CLOB',
 '                   )',
 '                   RETURNING CLOB',
 '               ),',
@@ -47427,7 +46490,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>2058242453332740887
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(27011096422809688)
+ p_id=>wwv_flow_imp.id(1204120880696719)
 ,p_process_sequence=>10
 ,p_process_point=>'ON_DEMAND'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -47526,7 +46589,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_component_map=>'12'
 );
 wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(16340739737737909855)
+ p_id=>wwv_flow_imp.id(12822396585251720358)
 ,p_plug_name=>'Sample Graph Visualizations'
 ,p_static_id=>'sample-graph-visualizations'
 ,p_icon_css_classes=>'app-icon'
@@ -47540,12 +46603,11 @@ wwv_flow_imp_page.create_page_plug(
   'show_line_breaks', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_button(
- p_id=>wwv_flow_imp.id(16340742612560909865)
+ p_id=>wwv_flow_imp.id(12822399460074720368)
 ,p_button_sequence=>40
-,p_button_plug_id=>wwv_flow_imp.id(16340739737737909855)
+,p_button_plug_id=>wwv_flow_imp.id(12822396585251720358)
 ,p_button_name=>'LOGIN'
 ,p_static_id=>'login'
-,p_show_as_disabled=>false
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
 ,p_button_template_id=>4073839297780169708
@@ -47555,10 +46617,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_grid_new_row=>'Y'
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(16340740525289909860)
+ p_id=>wwv_flow_imp.id(12822397372803720363)
 ,p_name=>'P9999_PASSWORD'
 ,p_item_sequence=>20
-,p_item_plug_id=>wwv_flow_imp.id(16340739737737909855)
+,p_item_plug_id=>wwv_flow_imp.id(12822396585251720358)
 ,p_prompt=>'Password'
 ,p_placeholder=>'Password'
 ,p_source_type=>'ALWAYS_NULL'
@@ -47574,10 +46636,10 @@ wwv_flow_imp_page.create_page_item(
   'submit_when_enter_pressed', 'Y')).to_clob
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(16340741703429909864)
+ p_id=>wwv_flow_imp.id(12822398550943720367)
 ,p_name=>'P9999_REMEMBER'
 ,p_item_sequence=>30
-,p_item_plug_id=>wwv_flow_imp.id(16340739737737909855)
+,p_item_plug_id=>wwv_flow_imp.id(12822396585251720358)
 ,p_prompt=>'Remember username'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_CHECKBOX'
@@ -47607,10 +46669,10 @@ wwv_flow_imp_page.create_page_item(
 ,p_multi_value_separator=>':'
 );
 wwv_flow_imp_page.create_page_item(
- p_id=>wwv_flow_imp.id(16340740203424909859)
+ p_id=>wwv_flow_imp.id(12822397050938720362)
 ,p_name=>'P9999_USERNAME'
 ,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(16340739737737909855)
+,p_item_plug_id=>wwv_flow_imp.id(12822396585251720358)
 ,p_prompt=>'Username'
 ,p_placeholder=>'Username'
 ,p_source_type=>'ALWAYS_NULL'
@@ -47629,7 +46691,7 @@ wwv_flow_imp_page.create_page_item(
   'trim_spaces', 'NONE')).to_clob
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(16340744084256909867)
+ p_id=>wwv_flow_imp.id(12822400931770720370)
 ,p_process_sequence=>30
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_SESSION_STATE'
@@ -47641,7 +46703,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>7823111675332928208
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(16340743691237909867)
+ p_id=>wwv_flow_imp.id(12822400538751720370)
 ,p_process_sequence=>10
 ,p_process_point=>'BEFORE_HEADER'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -47654,7 +46716,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>7823111282313928208
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(16340742946686909866)
+ p_id=>wwv_flow_imp.id(12822399794200720369)
 ,p_process_sequence=>20
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -47669,7 +46731,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>7823110537762928207
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(16340743308714909867)
+ p_id=>wwv_flow_imp.id(12822400156228720370)
 ,p_process_sequence=>10
 ,p_process_point=>'AFTER_SUBMIT'
 ,p_process_type=>'NATIVE_PLSQL'
@@ -47692,58 +46754,46 @@ wwv_flow_imp.g_varchar2_table(1) := 'DROP TRIGGER "EBA_GRAPHVIZ_SAVED_SEARCH_TRI
 'DROP TRIGGER "EBA_GRAPHVIZ_GRAPH_ACTION_TRIGGER";';
 wwv_flow_imp.g_varchar2_table(2) := ''||wwv_flow.LF||
 ''||wwv_flow.LF||
-'DROP TABLE "EBA_GRAPHVIZ_REGIONS";'||wwv_flow.LF||
+'Declare'||wwv_flow.LF||
+'  r clob;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    r := ORA_PGQL_TO_JSON(''DROP PROPERTY GRAPH EBA_SAMPLE_GRAPH'');';
+wwv_flow_imp.g_varchar2_table(3) := ''||wwv_flow.LF||
+'    r:= ORA_PGQL_TO_JSON(''DROP PROPERTY GRAPH EBA_GRAPH_FLIGHTS'');'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'DROP TABLE "EBA_GR';
+wwv_flow_imp.g_varchar2_table(4) := 'APHVIZ_REGIONS";'||wwv_flow.LF||
 'DROP TABLE "EBA_GRAPHVIZ_COUNTRIES";'||wwv_flow.LF||
-'DROP TABLE "EBA_GRAPHV';
-wwv_flow_imp.g_varchar2_table(3) := 'IZ_LOCATIONS";'||wwv_flow.LF||
-'DROP TABLE "EBA_GRAPHVIZ_DEPARTMENTS";'||wwv_flow.LF||
+'DROP TABLE "EBA_GRAPHVIZ_LOCATIONS";'||wwv_flow.LF||
+'DROP T';
+wwv_flow_imp.g_varchar2_table(5) := 'ABLE "EBA_GRAPHVIZ_DEPARTMENTS";'||wwv_flow.LF||
 'DROP TABLE "EBA_GRAPHVIZ_JOBS";'||wwv_flow.LF||
-'DROP TABLE ';
-wwv_flow_imp.g_varchar2_table(4) := '"EBA_GRAPHVIZ_EMPLOYEES";'||wwv_flow.LF||
+'DROP TABLE "EBA_GRAPHVIZ_EMPLOYEE';
+wwv_flow_imp.g_varchar2_table(6) := 'S";'||wwv_flow.LF||
 'DROP TABLE "EBA_GRAPHVIZ_JOB_HISTORY";'||wwv_flow.LF||
-''||wwv_flow.LF||
-'DROP TABLE "EBA_GRAPHVIZ_SAVED_';
-wwv_flow_imp.g_varchar2_table(5) := 'SEARCH";'||wwv_flow.LF||
-'DROP TABLE "EBA_GRAPHVIZ_GRAPH_ACTION";'||wwv_flow.LF||
-''||wwv_flow.LF||
+'DROP TABLE "EBA_GRAPHVIZ_SAVED_SEARCH";'||wwv_flow.LF||
+'DROP TABLE "EB';
+wwv_flow_imp.g_varchar2_table(7) := 'A_GRAPHVIZ_GRAPH_ACTION";'||wwv_flow.LF||
 'DROP TABLE "EBA_GRAPHVIZ_AIRPORTS";'||wwv_flow.LF||
-'DROP TABLE';
-wwv_flow_imp.g_varchar2_table(6) := ' "EBA_GRAPHVIZ_ROUTES";'||wwv_flow.LF||
+'DROP TABLE "EBA_GRAPHVIZ_ROUTES";'||wwv_flow.LF||
+'D';
+wwv_flow_imp.g_varchar2_table(8) := 'ROP VIEW "EBA_GRAPHVIZ_EMPLOYEES_VIEW";'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'DROP MATERIALIZED VIEW "EBA_GRAPHVIZ_EMPLOYEES_VIEW";'||wwv_flow.LF||
+'DROP SEQUENCE "EBA_GRAPHVIZ_SAVED_SEARCH_SEQ";'||wwv_flow.LF||
+'DROP SEQU';
+wwv_flow_imp.g_varchar2_table(9) := 'ENCE "EBA_GRAPHVIZ_GRAPH_ACTION_SEQ";'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'DROP SEQUENCE "E';
-wwv_flow_imp.g_varchar2_table(7) := 'BA_GRAPHVIZ_SAVED_SEARCH_SEQ";'||wwv_flow.LF||
-'DROP SEQUENCE "EBA_GRAPHVIZ_GRAPH_ACTION_SEQ";'||wwv_flow.LF||
-'DROP TABLE "EBA_GRAP';
-wwv_flow_imp.g_varchar2_table(8) := 'HVIZ_VERTEX_POSITION";'||wwv_flow.LF||
-''||wwv_flow.LF||
-'BEGIN'||wwv_flow.LF||
-'    IF sys.dbms_db_version.version >= 23 THEN'||wwv_flow.LF||
-'        EXECUTE IMME';
-wwv_flow_imp.g_varchar2_table(9) := 'DIATE ''DROP PROPERTY GRAPH EBA_SAMPLE_GRAPH'';'||wwv_flow.LF||
-'        EXECUTE IMMEDIATE ''DROP PROPERTY GRAPH EBA_GR';
-wwv_flow_imp.g_varchar2_table(10) := 'APH_FLIGHTS'';'||wwv_flow.LF||
-'        EXECUTE IMMEDIATE ''DROP FUNCTION apex_sqlgraph_json'';'||wwv_flow.LF||
-'        EXECUTE IMMEDI';
-wwv_flow_imp.g_varchar2_table(11) := 'ATE ''DROP PROCEDURE get_graph_metadata_proc'';'||wwv_flow.LF||
-'        EXECUTE IMMEDIATE ''DROP FUNCTION ORA_SQLGRAPH';
-wwv_flow_imp.g_varchar2_table(12) := '_TO_JSON'';'||wwv_flow.LF||
-'        EXECUTE IMMEDIATE ''DROP FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY'';'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(13) := '  EXECUTE IMMEDIATE ''DROP PACKAGE DBMS_GVT'';'||wwv_flow.LF||
-'        EXECUTE IMMEDIATE ''DROP FUNCTION ora_sqlgraph_';
-wwv_flow_imp.g_varchar2_table(14) := 'get_counts_query_builder'';'||wwv_flow.LF||
-'        EXECUTE IMMEDIATE ''DROP FUNCTION APEX_SQLGRAPH_GET_COUNTS'';'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(15) := ' END IF;'||wwv_flow.LF||
-'END;';
+'DROP TABLE "EBA_GRAPHVIZ_VERTEX_POSITION";'||wwv_flow.LF||
+'';
 wwv_flow_imp_shared.create_install(
- p_id=>wwv_flow_imp.id(12883465078800669451)
+ p_id=>wwv_flow_imp.id(9365121926314479954)
 ,p_deinstall_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-,p_required_free_kb=>100
-,p_required_sys_privs=>'CREATE PROCEDURE:CREATE TABLE:CREATE TRIGGER:CREATE VIEW'
-,p_last_updated_on=>wwv_flow_imp.dz('20260923181739Z')
+,p_last_updated_on=>wwv_flow_imp.dz('20260908214631Z')
+,p_last_updated_by=>'TEST1'
 );
 end;
 /
@@ -47791,8 +46841,8 @@ wwv_flow_imp.g_varchar2_table(20) := 'nstall.load_supporting_object_data(p_table
 wwv_flow_imp.g_varchar2_table(21) := 'false );'||wwv_flow.LF||
 'end;';
 wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(4490046475230773631)
-,p_install_id=>wwv_flow_imp.id(12883465078800669451)
+ p_id=>wwv_flow_imp.id(989764727324110016)
+,p_install_id=>wwv_flow_imp.id(9365121926314479954)
 ,p_name=>'EBA_GRAPHVIZ_DATA'
 ,p_sequence=>20
 ,p_script_type=>'INSTALL'
@@ -47803,2871 +46853,476 @@ end;
 prompt --application/deployment/install/install_eba_graphviz_ddl
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE "EBA_GRAPHVIZ_AIRPORTS" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "ID" NUMBER, '||wwv_flow.LF||
-'    "NAME" VARCHAR2(256), '||wwv_flow.LF||
-'    "IATA" ';
-wwv_flow_imp.g_varchar2_table(2) := 'VARCHAR2(64), '||wwv_flow.LF||
-'    "ICAO" VARCHAR2(64), '||wwv_flow.LF||
-'    "LATITUDE" NUMBER, '||wwv_flow.LF||
-'    "LONGITUDE" NUMBER, '||wwv_flow.LF||
-'    "A';
-wwv_flow_imp.g_varchar2_table(3) := 'LTITUDE" NUMBER, '||wwv_flow.LF||
-'    "TIMEZONE" NUMBER, '||wwv_flow.LF||
-'    "DST" VARCHAR2(64), '||wwv_flow.LF||
-'    "TIMEZONEDBTIME" VARCHAR2(';
-wwv_flow_imp.g_varchar2_table(4) := '64), '||wwv_flow.LF||
-'    "AIRPORT_TYPE" VARCHAR2(64), '||wwv_flow.LF||
-'    "CITY_ID" NUMBER'||wwv_flow.LF||
-');'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(1) := ' CREATE TABLE EBA_GRAPHVIZ_ROUTES'||wwv_flow.LF||
+'   ("ID" NUMBER, '||wwv_flow.LF||
+'	"AIRLINE_ID" NUMBER, '||wwv_flow.LF||
+'	"AIRLINE" VARCHAR2(64';
+wwv_flow_imp.g_varchar2_table(2) := ' BYTE), '||wwv_flow.LF||
+'	"ORIG_AIRPORT_ID" NUMBER, '||wwv_flow.LF||
+'	"DEST_AIRPORT_ID" NUMBER, '||wwv_flow.LF||
+'	"DISTANCE" NUMBER'||wwv_flow.LF||
+'   );'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE TABLE "EBA_GRAPHVIZ_ROU';
-wwv_flow_imp.g_varchar2_table(5) := 'TES" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "ID" NUMBER, '||wwv_flow.LF||
-'    "AIRLINE_ID" NUMBER, '||wwv_flow.LF||
-'    "AIRLINE" VARCHAR2(64), '||wwv_flow.LF||
-'    "ORIG_AIRP';
-wwv_flow_imp.g_varchar2_table(6) := 'ORT_ID" NUMBER, '||wwv_flow.LF||
-'    "DEST_AIRPORT_ID" NUMBER, '||wwv_flow.LF||
-'    "DISTANCE" NUMBER'||wwv_flow.LF||
-');'||wwv_flow.LF||
+'  C';
+wwv_flow_imp.g_varchar2_table(3) := 'REATE TABLE EBA_GRAPHVIZ_AIRPORTS'||wwv_flow.LF||
+'   ("ID" NUMBER, '||wwv_flow.LF||
+'	"NAME" VARCHAR2(256 BYTE), '||wwv_flow.LF||
+'	"IATA" VARCHAR2';
+wwv_flow_imp.g_varchar2_table(4) := '(64 BYTE), '||wwv_flow.LF||
+'	"ICAO" VARCHAR2(64 BYTE), '||wwv_flow.LF||
+'	"LATITUDE" NUMBER, '||wwv_flow.LF||
+'	"LONGITUDE" NUMBER, '||wwv_flow.LF||
+'	"ALTITUDE" N';
+wwv_flow_imp.g_varchar2_table(5) := 'UMBER, '||wwv_flow.LF||
+'	"TIMEZONE" NUMBER, '||wwv_flow.LF||
+'	"DST" VARCHAR2(64 BYTE), '||wwv_flow.LF||
+'	"TIMEZONEDBTIME" VARCHAR2(64 BYTE), '||wwv_flow.LF||
+'	"';
+wwv_flow_imp.g_varchar2_table(6) := 'AIRPORT_TYPE" VARCHAR2(64 BYTE), '||wwv_flow.LF||
+'	"CITY_ID" NUMBER'||wwv_flow.LF||
+'   );'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE TABLE "EBA_GRA';
-wwv_flow_imp.g_varchar2_table(7) := 'PHVIZ_REGIONS" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "REGION_ID" NUMBER'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_REGION_ID_NN" NOT NULL ';
-wwv_flow_imp.g_varchar2_table(8) := 'ENABLE,'||wwv_flow.LF||
-'    "REGION_NAME" VARCHAR2(25),'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_REG_ID_PK"'||wwv_flow.LF||
-'        PRIMARY K';
-wwv_flow_imp.g_varchar2_table(9) := 'EY ("REGION_ID")'||wwv_flow.LF||
-'        USING INDEX ENABLE'||wwv_flow.LF||
-');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'CREATE TABLE "EBA_GRAPHVIZ_REGIONS"';
+wwv_flow_imp.g_varchar2_table(7) := ' '||wwv_flow.LF||
+'   (	"REGION_ID" NUMBER CONSTRAINT "EBA_GRAPHVIZ_REGION_ID_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"REGION_NAME" ';
+wwv_flow_imp.g_varchar2_table(8) := 'VARCHAR2(25), '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVIZ_REG_ID_PK" PRIMARY KEY ("REGION_ID")'||wwv_flow.LF||
+'  USING INDEX  ENAB';
+wwv_flow_imp.g_varchar2_table(9) := 'LE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'CREATE TABLE "EBA_GRAPHVIZ_COUNTRIES" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "';
-wwv_flow_imp.g_varchar2_table(10) := 'COUNTRY_ID" CHAR(2)'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_COUNTRY_ID_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "COUNTRY_';
-wwv_flow_imp.g_varchar2_table(11) := 'NAME" VARCHAR2(40),'||wwv_flow.LF||
-'    "REGION_ID" NUMBER,'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_COUNTRY_C_ID_PK"'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(12) := ' PRIMARY KEY ("COUNTRY_ID") ENABLE'||wwv_flow.LF||
-')'||wwv_flow.LF||
-'ORGANIZATION INDEX NOCOMPRESS;'||wwv_flow.LF||
+'   (	"COUNTRY_ID" CHAR(2) CONSTRAINT "EBA_GRAP';
+wwv_flow_imp.g_varchar2_table(10) := 'HVIZ_COUNTRY_ID_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"COUNTRY_NAME" VARCHAR2(40), '||wwv_flow.LF||
+'	"REGION_ID" NUMBER, '||wwv_flow.LF||
+'	 CONS';
+wwv_flow_imp.g_varchar2_table(11) := 'TRAINT "EBA_GRAPHVIZ_COUNTRY_C_ID_PK" PRIMARY KEY ("COUNTRY_ID") ENABLE'||wwv_flow.LF||
+'   ) ORGANIZATION INDEX NOC';
+wwv_flow_imp.g_varchar2_table(12) := 'OMPRESS ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE TABLE "EBA_GRAPHVIZ_';
-wwv_flow_imp.g_varchar2_table(13) := 'LOCATIONS" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "LOCATION_ID" NUMBER(4,0),'||wwv_flow.LF||
-'    "STREET_ADDRESS" VARCHAR2(40),'||wwv_flow.LF||
-'    "POSTAL_CODE';
-wwv_flow_imp.g_varchar2_table(14) := '" VARCHAR2(12),'||wwv_flow.LF||
-'    "CITY" VARCHAR2(30)'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_LOC_CITY_NN" NOT NULL ENA';
-wwv_flow_imp.g_varchar2_table(15) := 'BLE,'||wwv_flow.LF||
-'    "STATE_PROVINCE" VARCHAR2(25),'||wwv_flow.LF||
-'    "COUNTRY_ID" CHAR(2),'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_LO';
-wwv_flow_imp.g_varchar2_table(16) := 'C_ID_PK"'||wwv_flow.LF||
-'        PRIMARY KEY ("LOCATION_ID")'||wwv_flow.LF||
-'        USING INDEX ENABLE'||wwv_flow.LF||
-');'||wwv_flow.LF||
+'CREATE TABLE "EBA_GRAPHVIZ_LOCATIONS" '||wwv_flow.LF||
+'   (	"LOCATION_ID" NUMBER(4,0), '||wwv_flow.LF||
+'	"STREET_ADDR';
+wwv_flow_imp.g_varchar2_table(13) := 'ESS" VARCHAR2(40), '||wwv_flow.LF||
+'	"POSTAL_CODE" VARCHAR2(12), '||wwv_flow.LF||
+'	"CITY" VARCHAR2(30) CONSTRAINT "EBA_GRAPHVIZ_LO';
+wwv_flow_imp.g_varchar2_table(14) := 'C_CITY_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"STATE_PROVINCE" VARCHAR2(25), '||wwv_flow.LF||
+'	"COUNTRY_ID" CHAR(2), '||wwv_flow.LF||
+'	 CONSTRAIN';
+wwv_flow_imp.g_varchar2_table(15) := 'T "EBA_GRAPHVIZ_LOC_ID_PK" PRIMARY KEY ("LOCATION_ID")'||wwv_flow.LF||
+'  USING INDEX  ENABLE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE TABLE "EBA_G';
-wwv_flow_imp.g_varchar2_table(17) := 'RAPHVIZ_DEPARTMENTS" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "DEPARTMENT_ID" NUMBER(4,0),'||wwv_flow.LF||
-'    "DEPARTMENT_NAME" VARCHAR2(30)'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(18) := '    CONSTRAINT "EBA_GRAPHVIZ_DEPT_NAME_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "MANAGER_ID" NUMBER(6,0),'||wwv_flow.LF||
-'    "LOC';
-wwv_flow_imp.g_varchar2_table(19) := 'ATION_ID" NUMBER(4,0),'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_DEPT_ID_PK"'||wwv_flow.LF||
-'        PRIMARY KEY ("DEPARTMENT_I';
-wwv_flow_imp.g_varchar2_table(20) := 'D")'||wwv_flow.LF||
-'        USING INDEX ENABLE'||wwv_flow.LF||
-');'||wwv_flow.LF||
+'CREATE TABL';
+wwv_flow_imp.g_varchar2_table(16) := 'E "EBA_GRAPHVIZ_DEPARTMENTS" '||wwv_flow.LF||
+'   (	"DEPARTMENT_ID" NUMBER(4,0), '||wwv_flow.LF||
+'	"DEPARTMENT_NAME" VARCHAR2(30) C';
+wwv_flow_imp.g_varchar2_table(17) := 'ONSTRAINT "EBA_GRAPHVIZ_DEPT_NAME_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"MANAGER_ID" NUMBER(6,0), '||wwv_flow.LF||
+'	"LOCATION_ID"';
+wwv_flow_imp.g_varchar2_table(18) := ' NUMBER(4,0), '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVIZ_DEPT_ID_PK" PRIMARY KEY ("DEPARTMENT_ID")'||wwv_flow.LF||
+'  USING INDEX ';
+wwv_flow_imp.g_varchar2_table(19) := ' ENABLE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'CREATE TABLE "EBA_GRAPHVIZ_JOBS" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "JOB_ID" VARCHAR2(1';
-wwv_flow_imp.g_varchar2_table(21) := '0),'||wwv_flow.LF||
-'    "JOB_TITLE" VARCHAR2(35)'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_JOB_TITLE_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(22) := '    "MIN_SALARY" NUMBER(6,0),'||wwv_flow.LF||
-'    "MAX_SALARY" NUMBER(6,0),'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_JOB_ID_PK';
-wwv_flow_imp.g_varchar2_table(23) := '"'||wwv_flow.LF||
-'        PRIMARY KEY ("JOB_ID")'||wwv_flow.LF||
-'        USING INDEX ENABLE'||wwv_flow.LF||
-');'||wwv_flow.LF||
+'   (	"JOB_ID" VARCHAR2(10), '||wwv_flow.LF||
+'	"JOB_TITLE" VAR';
+wwv_flow_imp.g_varchar2_table(20) := 'CHAR2(35) CONSTRAINT "EBA_GRAPHVIZ_JOB_TITLE_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"MIN_SALARY" NUMBER(6,0), '||wwv_flow.LF||
+'	"M';
+wwv_flow_imp.g_varchar2_table(21) := 'AX_SALARY" NUMBER(6,0), '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVIZ_JOB_ID_PK" PRIMARY KEY ("JOB_ID")'||wwv_flow.LF||
+'  USING INDE';
+wwv_flow_imp.g_varchar2_table(22) := 'X  ENABLE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE TABLE "EBA_GRAPHVIZ_EMPL';
-wwv_flow_imp.g_varchar2_table(24) := 'OYEES" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "EMPLOYEE_ID" NUMBER(6,0),'||wwv_flow.LF||
-'    "FIRST_NAME" VARCHAR2(20),'||wwv_flow.LF||
-'    "LAST_NAME" VARCHAR2';
-wwv_flow_imp.g_varchar2_table(25) := '(25)'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_EMP_LAST_NAME_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "EMAIL" VARCHAR2(25)';
-wwv_flow_imp.g_varchar2_table(26) := ''||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_EMP_EMAIL_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "PHONE_NUMBER" VARCHAR2(20),'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(27) := '    "HIRE_DATE" DATE'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_EMP_HIRE_DATE_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "JOB_';
-wwv_flow_imp.g_varchar2_table(28) := 'ID" VARCHAR2(10)'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_EMP_JOB_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "SALARY" NUMBER';
-wwv_flow_imp.g_varchar2_table(29) := '(8,2),'||wwv_flow.LF||
-'    "COMMISSION_PCT" NUMBER(2,2),'||wwv_flow.LF||
-'    "MANAGER_ID" NUMBER(6,0),'||wwv_flow.LF||
-'    "DEPARTMENT_ID" NUMBER';
-wwv_flow_imp.g_varchar2_table(30) := '(4,0),'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_EMP_SALARY_MIN"'||wwv_flow.LF||
-'        CHECK (salary > 0) ENABLE,'||wwv_flow.LF||
-'    CONSTR';
-wwv_flow_imp.g_varchar2_table(31) := 'AINT "EBA_GRAPHVIZ_EMP_EMP_ID_PK"'||wwv_flow.LF||
-'        PRIMARY KEY ("EMPLOYEE_ID")'||wwv_flow.LF||
-'        USING INDEX ENABLE,';
-wwv_flow_imp.g_varchar2_table(32) := ''||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_EMP_EMAIL_UK"'||wwv_flow.LF||
-'        UNIQUE ("EMAIL")'||wwv_flow.LF||
-'        USING INDEX ENABLE'||wwv_flow.LF||
-')';
-wwv_flow_imp.g_varchar2_table(33) := ';'||wwv_flow.LF||
+'CREATE TABLE "EBA_GRAPHVIZ_EMPLOYEES" '||wwv_flow.LF||
+'   (	"EMPLOYEE_ID" NUMBER(6,0), '||wwv_flow.LF||
+'	"FIR';
+wwv_flow_imp.g_varchar2_table(23) := 'ST_NAME" VARCHAR2(20), '||wwv_flow.LF||
+'	"LAST_NAME" VARCHAR2(25) CONSTRAINT "EBA_GRAPHVIZ_EMP_LAST_NAME_NN" NOT NU';
+wwv_flow_imp.g_varchar2_table(24) := 'LL ENABLE, '||wwv_flow.LF||
+'	"EMAIL" VARCHAR2(25) CONSTRAINT "EBA_GRAPHVIZ_EMP_EMAIL_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"PHONE';
+wwv_flow_imp.g_varchar2_table(25) := '_NUMBER" VARCHAR2(20), '||wwv_flow.LF||
+'	"HIRE_DATE" DATE CONSTRAINT "EBA_GRAPHVIZ_EMP_HIRE_DATE_NN" NOT NULL ENABL';
+wwv_flow_imp.g_varchar2_table(26) := 'E, '||wwv_flow.LF||
+'	"JOB_ID" VARCHAR2(10) CONSTRAINT "EBA_GRAPHVIZ_EMP_JOB_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"SALARY" NUMBER';
+wwv_flow_imp.g_varchar2_table(27) := '(8,2), '||wwv_flow.LF||
+'	"COMMISSION_PCT" NUMBER(2,2), '||wwv_flow.LF||
+'	"MANAGER_ID" NUMBER(6,0), '||wwv_flow.LF||
+'	"DEPARTMENT_ID" NUMBER(4,0),';
+wwv_flow_imp.g_varchar2_table(28) := ' '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVIZ_EMP_SALARY_MIN" CHECK (salary > 0) ENABLE, '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVI';
+wwv_flow_imp.g_varchar2_table(29) := 'Z_EMP_EMP_ID_PK" PRIMARY KEY ("EMPLOYEE_ID")'||wwv_flow.LF||
+'  USING INDEX  ENABLE, '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVIZ_EM';
+wwv_flow_imp.g_varchar2_table(30) := 'P_EMAIL_UK" UNIQUE ("EMAIL")'||wwv_flow.LF||
+'  USING INDEX  ENABLE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE TABLE "EBA_GRAPHVIZ_JOB_HISTORY" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "EMPLOYEE_ID" NUMBER(6,0)'||wwv_flow.LF||
-'        CONSTRAINT ';
-wwv_flow_imp.g_varchar2_table(34) := '"EBA_GRAPHVIZ_JHIST_EMPLOYEE_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "START_DATE" DATE'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GR';
-wwv_flow_imp.g_varchar2_table(35) := 'APHVIZ_JHIST_START_DATE_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "END_DATE" DATE'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_';
-wwv_flow_imp.g_varchar2_table(36) := 'JHIST_END_DATE_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "JOB_ID" VARCHAR2(10)'||wwv_flow.LF||
-'        CONSTRAINT "EBA_GRAPHVIZ_JHI';
-wwv_flow_imp.g_varchar2_table(37) := 'ST_JOB_NN" NOT NULL ENABLE,'||wwv_flow.LF||
-'    "DEPARTMENT_ID" NUMBER(4,0),'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_JHIST_DA';
-wwv_flow_imp.g_varchar2_table(38) := 'TE_INTERVAL"'||wwv_flow.LF||
-'        CHECK (end_date >= start_date) ENABLE'||wwv_flow.LF||
-');'||wwv_flow.LF||
+'CREATE TABLE "EBA_GRAPHVIZ_JOB_HISTOR';
+wwv_flow_imp.g_varchar2_table(31) := 'Y" '||wwv_flow.LF||
+'   (	"EMPLOYEE_ID" NUMBER(6,0) CONSTRAINT "EBA_GRAPHVIZ_JHIST_EMPLOYEE_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	';
+wwv_flow_imp.g_varchar2_table(32) := '"START_DATE" DATE CONSTRAINT "EBA_GRAPHVIZ_JHIST_START_DATE_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"END_DATE" DATE ';
+wwv_flow_imp.g_varchar2_table(33) := 'CONSTRAINT "EBA_GRAPHVIZ_JHIST_END_DATE_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"JOB_ID" VARCHAR2(10) CONSTRAINT "EB';
+wwv_flow_imp.g_varchar2_table(34) := 'A_GRAPHVIZ_JHIST_JOB_NN" NOT NULL ENABLE, '||wwv_flow.LF||
+'	"DEPARTMENT_ID" NUMBER(4,0), '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHV';
+wwv_flow_imp.g_varchar2_table(35) := 'IZ_JHIST_DATE_INTERVAL" CHECK (end_date >= start_date) ENABLE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'-- Existing table: used for saved';
-wwv_flow_imp.g_varchar2_table(39) := ' graph state'||wwv_flow.LF||
-'CREATE TABLE "EBA_GRAPHVIZ_GRAPH_ACTION" '||wwv_flow.LF||
-'('||wwv_flow.LF||
-'    "ID" NUMBER(10,0) NOT NULL ENABLE,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(40) := '    "ACTION" CLOB,'||wwv_flow.LF||
-'    "USER_ID" VARCHAR2(50) NOT NULL ENABLE,'||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPHVIZ_GRAPH_';
-wwv_flow_imp.g_varchar2_table(41) := 'ACTION_PK"'||wwv_flow.LF||
-'        PRIMARY KEY ("ID")'||wwv_flow.LF||
-'        USING INDEX ENABLE'||wwv_flow.LF||
-');'||wwv_flow.LF||
+'CREATE TABLE "EBA_GRAPHVIZ_';
+wwv_flow_imp.g_varchar2_table(36) := 'GRAPH_ACTION" '||wwv_flow.LF||
+'   (	"ID" NUMBER(10,0) NOT NULL ENABLE, '||wwv_flow.LF||
+'	"ACTION" CLOB, '||wwv_flow.LF||
+'	"USER_ID" VARCHAR2(50) ';
+wwv_flow_imp.g_varchar2_table(37) := 'NOT NULL ENABLE, '||wwv_flow.LF||
+'	 CONSTRAINT "EBA_GRAPHVIZ_GRAPH_ACTION_PK" PRIMARY KEY ("ID")'||wwv_flow.LF||
+'  USING INDEX  EN';
+wwv_flow_imp.g_varchar2_table(38) := 'ABLE'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE SEQUENCE "EBA_GRAPH';
-wwv_flow_imp.g_varchar2_table(42) := 'VIZ_GRAPH_ACTION_SEQ"'||wwv_flow.LF||
-'    MINVALUE 1'||wwv_flow.LF||
-'    MAXVALUE 9999999999999999999999999999'||wwv_flow.LF||
-'    INCREMENT BY 1';
-wwv_flow_imp.g_varchar2_table(43) := ''||wwv_flow.LF||
-'    START WITH 1261'||wwv_flow.LF||
-'    NOCACHE'||wwv_flow.LF||
-'    NOORDER'||wwv_flow.LF||
-'    NOCYCLE'||wwv_flow.LF||
-'    NOKEEP'||wwv_flow.LF||
-'    GLOBAL;'||wwv_flow.LF||
+'CREATE SEQUENCE  "EBA_GRAPHVIZ_GRAPH_ACTION_SEQ"  MINVALUE 1 MAXVALUE 99999999999999';
+wwv_flow_imp.g_varchar2_table(39) := '99999999999999 INCREMENT BY 1 START WITH 1261 NOCACHE  NOORDER  NOCYCLE  NOKEEP  GLOBAL ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE OR R';
-wwv_flow_imp.g_varchar2_table(44) := 'EPLACE EDITIONABLE TRIGGER "EBA_GRAPHVIZ_GRAPH_ACTION_TRIGGER"'||wwv_flow.LF||
-'BEFORE INSERT ON EBA_GRAPHVIZ_GRAPH_';
-wwv_flow_imp.g_varchar2_table(45) := 'ACTION'||wwv_flow.LF||
+'CREATE ';
+wwv_flow_imp.g_varchar2_table(40) := 'OR REPLACE EDITIONABLE TRIGGER "EBA_GRAPHVIZ_GRAPH_ACTION_TRIGGER" '||wwv_flow.LF||
+'BEFORE INSERT ON EBA_GRAPHVIZ_G';
+wwv_flow_imp.g_varchar2_table(41) := 'RAPH_ACTION '||wwv_flow.LF||
 'FOR EACH ROW'||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
-'    SELECT EBA_GRAPHVIZ_GRAPH_ACTION_SEQ.NEXTVAL'||wwv_flow.LF||
-'      INTO :NEW.ID'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(46) := '     FROM DUAL;'||wwv_flow.LF||
+'  SELECT EBA_GRAPHVIZ_GRAPH_ACTION_SEQ.NEXTVAL'||wwv_flow.LF||
+'  INTO   :new.id';
+wwv_flow_imp.g_varchar2_table(42) := ''||wwv_flow.LF||
+'  FROM   dual;'||wwv_flow.LF||
 'END;'||wwv_flow.LF||
+''||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'ALTER TRIGGER "EBA_GRAPHVIZ_GRAPH_ACTION_TRIGGER" ENABLE;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'-- New tabl';
-wwv_flow_imp.g_varchar2_table(47) := 'e: used only for saved searches'||wwv_flow.LF||
+'-- New ta';
+wwv_flow_imp.g_varchar2_table(43) := 'ble: used only for saved searches'||wwv_flow.LF||
 'CREATE TABLE "EBA_GRAPHVIZ_SAVED_SEARCH"'||wwv_flow.LF||
 '('||wwv_flow.LF||
-'    "ID" NUMBER(10,0) ';
-wwv_flow_imp.g_varchar2_table(48) := 'NOT NULL ENABLE,'||wwv_flow.LF||
+'    "ID" NUMBER(10,0';
+wwv_flow_imp.g_varchar2_table(44) := ') NOT NULL ENABLE,'||wwv_flow.LF||
 '    "ACTION" CLOB,'||wwv_flow.LF||
 '    "USER_ID" VARCHAR2(50) NOT NULL ENABLE,'||wwv_flow.LF||
-'    CONSTRAINT "E';
-wwv_flow_imp.g_varchar2_table(49) := 'BA_GRAPHVIZ_SAVED_SEARCH_PK"'||wwv_flow.LF||
+'    CONSTRAINT ';
+wwv_flow_imp.g_varchar2_table(45) := '"EBA_GRAPHVIZ_SAVED_SEARCH_PK"'||wwv_flow.LF||
 '        PRIMARY KEY ("ID")'||wwv_flow.LF||
 '        USING INDEX ENABLE'||wwv_flow.LF||
 ');'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'CREATE S';
-wwv_flow_imp.g_varchar2_table(50) := 'EQUENCE "EBA_GRAPHVIZ_SAVED_SEARCH_SEQ"'||wwv_flow.LF||
+'CREATE';
+wwv_flow_imp.g_varchar2_table(46) := ' SEQUENCE "EBA_GRAPHVIZ_SAVED_SEARCH_SEQ"'||wwv_flow.LF||
 '    MINVALUE 1'||wwv_flow.LF||
-'    MAXVALUE 9999999999999999999999999999'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(51) := '    INCREMENT BY 1'||wwv_flow.LF||
+'    MAXVALUE 9999999999999999999999999999';
+wwv_flow_imp.g_varchar2_table(47) := ''||wwv_flow.LF||
+'    INCREMENT BY 1'||wwv_flow.LF||
 '    START WITH 1'||wwv_flow.LF||
 '    NOCACHE'||wwv_flow.LF||
 '    NOORDER'||wwv_flow.LF||
 '    NOCYCLE'||wwv_flow.LF||
 '    NOKEEP'||wwv_flow.LF||
-'    GLOBAL;';
-wwv_flow_imp.g_varchar2_table(52) := ''||wwv_flow.LF||
+'    GLOBA';
+wwv_flow_imp.g_varchar2_table(48) := 'L;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'CREATE OR REPLACE EDITIONABLE TRIGGER "EBA_GRAPHVIZ_SAVED_SEARCH_TRIGGER"'||wwv_flow.LF||
-'BEFORE INSERT ON EBA_';
-wwv_flow_imp.g_varchar2_table(53) := 'GRAPHVIZ_SAVED_SEARCH'||wwv_flow.LF||
+'BEFORE INSERT ON EB';
+wwv_flow_imp.g_varchar2_table(49) := 'A_GRAPHVIZ_SAVED_SEARCH'||wwv_flow.LF||
 'FOR EACH ROW'||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
 '    SELECT EBA_GRAPHVIZ_SAVED_SEARCH_SEQ.NEXTVAL'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(54) := 'INTO :NEW.ID'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(50) := '  INTO :NEW.ID'||wwv_flow.LF||
 '      FROM DUAL;'||wwv_flow.LF||
 'END;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'ALTER TRIGGER "EBA_GRAPHVIZ_SAVED_SEARCH_TRIGGER" ENABLE;';
-wwv_flow_imp.g_varchar2_table(55) := ''||wwv_flow.LF||
+'ALTER TRIGGER "EBA_GRAPHVIZ_SAVED_SEARCH_TRIGGER" ENABL';
+wwv_flow_imp.g_varchar2_table(51) := 'E;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'CREATE TABLE "EBA_GRAPHVIZ_VERTEX_POSITION"'||wwv_flow.LF||
 '('||wwv_flow.LF||
 '    "USER_ID" VARCHAR2(50) NOT NULL ENABLE,'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(56) := ' "GRAPH_NAME" VARCHAR2(128) NOT NULL ENABLE,'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(52) := '   "GRAPH_NAME" VARCHAR2(128) NOT NULL ENABLE,'||wwv_flow.LF||
 '    "VERTEX_ID" VARCHAR2(1000) NOT NULL ENABLE,'||wwv_flow.LF||
-'    "';
-wwv_flow_imp.g_varchar2_table(57) := 'X_RATIO" NUMBER NOT NULL ENABLE,'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(53) := ' "X_RATIO" NUMBER NOT NULL ENABLE,'||wwv_flow.LF||
 '    "Y_RATIO" NUMBER NOT NULL ENABLE,'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'    CONSTRAINT "EBA_GRAPH';
-wwv_flow_imp.g_varchar2_table(58) := 'VIZ_VERTEX_POSITION_PK"'||wwv_flow.LF||
+'    CONSTRAINT "EBA_GRA';
+wwv_flow_imp.g_varchar2_table(54) := 'PHVIZ_VERTEX_POSITION_PK"'||wwv_flow.LF||
 '        PRIMARY KEY ("USER_ID", "GRAPH_NAME", "VERTEX_ID")'||wwv_flow.LF||
-'        USING I';
-wwv_flow_imp.g_varchar2_table(59) := 'NDEX ENABLE,'||wwv_flow.LF||
+'        USING';
+wwv_flow_imp.g_varchar2_table(55) := ' INDEX ENABLE,'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '    CONSTRAINT "EBA_GRAPHVIZ_VERTEX_POSITION_X_CK"'||wwv_flow.LF||
-'        CHECK ("X_RATIO" BETWEEN';
-wwv_flow_imp.g_varchar2_table(60) := ' 0 AND 1) ENABLE,'||wwv_flow.LF||
+'        CHECK ("X_RATIO" BETWE';
+wwv_flow_imp.g_varchar2_table(56) := 'EN 0 AND 1) ENABLE,'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '    CONSTRAINT "EBA_GRAPHVIZ_VERTEX_POSITION_Y_CK"'||wwv_flow.LF||
-'        CHECK ("Y_RATIO" BE';
-wwv_flow_imp.g_varchar2_table(61) := 'TWEEN 0 AND 1) ENABLE'||wwv_flow.LF||
+'        CHECK ("Y_RATIO" ';
+wwv_flow_imp.g_varchar2_table(57) := 'BETWEEN 0 AND 1) ENABLE'||wwv_flow.LF||
 ');'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'ALTER TABLE EBA_GRAPHVIZ_VERTEX_POSITION'||wwv_flow.LF||
-'  DROP CONSTRAINT EBA_GRAPHVI';
-wwv_flow_imp.g_varchar2_table(62) := 'Z_VERTEX_POSITION_X_CK;'||wwv_flow.LF||
+'  DROP CONSTRAINT EBA_GRAPH';
+wwv_flow_imp.g_varchar2_table(58) := 'VIZ_VERTEX_POSITION_X_CK;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'ALTER TABLE EBA_GRAPHVIZ_VERTEX_POSITION'||wwv_flow.LF||
-'  DROP CONSTRAINT EBA_GRAPHVIZ_';
-wwv_flow_imp.g_varchar2_table(63) := 'VERTEX_POSITION_Y_CK;';
+'  DROP CONSTRAINT EBA_GRAPHVI';
+wwv_flow_imp.g_varchar2_table(59) := 'Z_VERTEX_POSITION_Y_CK;'||wwv_flow.LF||
+'';
 wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(30499099429601575428)
-,p_install_id=>wwv_flow_imp.id(12883465078800669451)
+ p_id=>wwv_flow_imp.id(26980756277115385931)
+,p_install_id=>wwv_flow_imp.id(9365121926314479954)
 ,p_name=>'EBA_GRAPHVIZ_DDL'
 ,p_sequence=>10
 ,p_script_type=>'INSTALL'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+,p_updated_on=>wwv_flow_imp.dz('20260908214436Z')
+,p_updated_by=>'TEST1'
 );
 wwv_flow_imp_shared.create_install_object(
- p_id=>wwv_flow_imp.id(27008376852809376)
-,p_script_id=>wwv_flow_imp.id(30499099429601575428)
+ p_id=>wwv_flow_imp.id(26980756428507385938)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
 ,p_object_owner=>'#OWNER#'
 ,p_object_type=>'TABLE'
-,p_object_name=>'AIRPORTS'
+,p_object_name=>'OEHR_COUNTRIES'
 );
 wwv_flow_imp_shared.create_install_object(
- p_id=>wwv_flow_imp.id(27008404498809376)
-,p_script_id=>wwv_flow_imp.id(30499099429601575428)
+ p_id=>wwv_flow_imp.id(26980756644981385941)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
 ,p_object_owner=>'#OWNER#'
 ,p_object_type=>'TABLE'
-,p_object_name=>'ROUTES'
+,p_object_name=>'OEHR_DEPARTMENTS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(26980756852191385941)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'OEHR_EMPLOYEES'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(26980757031710385941)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'OEHR_JOBS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(26980757251036385941)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'OEHR_JOB_HISTORY'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(26980757374927385941)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'OEHR_LOCATIONS'
+);
+wwv_flow_imp_shared.create_install_object(
+ p_id=>wwv_flow_imp.id(26980757629130385942)
+,p_script_id=>wwv_flow_imp.id(26980756277115385931)
+,p_object_owner=>'#OWNER#'
+,p_object_type=>'TABLE'
+,p_object_name=>'OEHR_REGIONS'
 );
 end;
 /
-prompt --application/deployment/install/install_create_view_for_employe_view_23ai_or_newer
+prompt --application/deployment/install/install_create_view_for_employee_view_19adb
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE MATERIALIZED VIEW EBA_GRAPHVIZ_EMPLOYEES_VIEW'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(1) := 'CREATE VIEW EBA_GRAPHVIZ_EMPLOYEES_VIEW'||wwv_flow.LF||
 'AS'||wwv_flow.LF||
-'SELECT employees.*, jobs.job_title, location';
-wwv_flow_imp.g_varchar2_table(2) := 's.COUNTRY_ID'||wwv_flow.LF||
-'FROM'||wwv_flow.LF||
+'SELECT employees.*, jobs.job_title, locations.COUNTRY_ID'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(2) := 'FROM'||wwv_flow.LF||
 '        EBA_GRAPHVIZ_EMPLOYEES employees'||wwv_flow.LF||
-'        LEFT OUTER JOIN EBA_GRAPHVIZ_JOBS';
-wwv_flow_imp.g_varchar2_table(3) := ' jobs ON employees.JOB_ID = jobs.JOB_ID'||wwv_flow.LF||
-'        LEFT OUTER JOIN EBA_GRAPHVIZ_DEPARTMENTS departments';
-wwv_flow_imp.g_varchar2_table(4) := ' ON employees.DEPARTMENT_ID = departments.DEPARTMENT_ID'||wwv_flow.LF||
-'        LEFT OUTER JOIN EBA_GRAPHVIZ_LOCATIO';
-wwv_flow_imp.g_varchar2_table(5) := 'NS locations ON departments.LOCATION_ID = locations.LOCATION_ID';
+'        LEFT OUTER JOIN EBA_GRAPHVIZ_JOBS jobs ON empl';
+wwv_flow_imp.g_varchar2_table(3) := 'oyees.JOB_ID = jobs.JOB_ID'||wwv_flow.LF||
+'        LEFT OUTER JOIN EBA_GRAPHVIZ_DEPARTMENTS departments ON employees';
+wwv_flow_imp.g_varchar2_table(4) := '.DEPARTMENT_ID = departments.DEPARTMENT_ID'||wwv_flow.LF||
+'        LEFT OUTER JOIN EBA_GRAPHVIZ_LOCATIONS locations ';
+wwv_flow_imp.g_varchar2_table(5) := 'ON departments.LOCATION_ID = locations.LOCATION_ID';
 wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(4491727787325974597)
-,p_install_id=>wwv_flow_imp.id(12883465078800669451)
-,p_name=>'create view for employe_view 23ai or newer'
-,p_sequence=>40
+ p_id=>wwv_flow_imp.id(1026867506855243223)
+,p_install_id=>wwv_flow_imp.id(9365121926314479954)
+,p_name=>'create view for employee_view 19ADB'
+,p_sequence=>30
 ,p_script_type=>'INSTALL'
-,p_condition_type=>'EXPRESSION'
-,p_condition=>'sys.dbms_db_version.version >= 23'
+,p_condition_type=>'FUNCTION_BODY'
+,p_condition=>'return SYS_CONTEXT(''USERENV'',''CLOUD_SERVICE'') IS NOT NULL AND sys.dbms_db_version.version = 19;'
 ,p_condition2=>'PLSQL'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
-prompt --application/deployment/install/install_create_property_graph_23
+prompt --application/deployment/install/install_create_property_graph_adb
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE OR REPLACE PROPERTY GRAPH EBA_SAMPLE_GRAPH'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(1) := 'declare'||wwv_flow.LF||
+'    result clob;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+''||wwv_flow.LF||
+'result := ORA_PGQL_TO_JSON('||wwv_flow.LF||
+' ''CREATE PROPERTY GRAPH EBA_SAMPLE_GRAPH';
+wwv_flow_imp.g_varchar2_table(2) := ''||wwv_flow.LF||
 '  VERTEX TABLES ('||wwv_flow.LF||
 '    eba_graphviz_countries'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(2) := ' KEY ( country_id )'||wwv_flow.LF||
-'      LABEL country PROPERTIES ( country_id, country_name, region_id ),'||wwv_flow.LF||
-'    eba_';
-wwv_flow_imp.g_varchar2_table(3) := 'graphviz_departments'||wwv_flow.LF||
+'      KEY ( country_id )'||wwv_flow.LF||
+'      LABEL country PROPERTIE';
+wwv_flow_imp.g_varchar2_table(3) := 'S ( country_id, country_name, region_id ),'||wwv_flow.LF||
+'    eba_graphviz_departments'||wwv_flow.LF||
 '      KEY ( department_id )'||wwv_flow.LF||
-'      LABEL department PROPERTIES ( department_id, ';
-wwv_flow_imp.g_varchar2_table(4) := 'department_name, location_id, manager_id ),'||wwv_flow.LF||
-'    eba_graphviz_locations'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(4) := '      LABEL department PROPERTIES ( department_id, department_name, location_id, manager_id ),'||wwv_flow.LF||
+'    e';
+wwv_flow_imp.g_varchar2_table(5) := 'ba_graphviz_locations'||wwv_flow.LF||
 '      KEY ( location_id )'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(5) := '   LABEL location PROPERTIES ( city, country_id, location_id, postal_code, state_province, street_ad';
-wwv_flow_imp.g_varchar2_table(6) := 'dress ),'||wwv_flow.LF||
+'      LABEL location PROPERTIES ( city, country_id, ';
+wwv_flow_imp.g_varchar2_table(6) := 'location_id, postal_code, state_province, street_address ),'||wwv_flow.LF||
 '    eba_graphviz_job_history'||wwv_flow.LF||
-'      KEY ( employee_id, end_date, job_id, start_date )'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(7) := 'PROPERTIES ( department_id, employee_id, end_date, job_id, start_date ),'||wwv_flow.LF||
+'      KEY (';
+wwv_flow_imp.g_varchar2_table(7) := ' employee_id, start_date, end_date, job_id)'||wwv_flow.LF||
+'      PROPERTIES ( department_id, employee_id, end_date,';
+wwv_flow_imp.g_varchar2_table(8) := ' job_id, start_date ),'||wwv_flow.LF||
 '    eba_graphviz_jobs'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(8) := ' KEY ( job_id )'||wwv_flow.LF||
-'      LABEL job PROPERTIES ( job_id, job_title, max_salary, min_salary ),'||wwv_flow.LF||
-'    eba_gr';
-wwv_flow_imp.g_varchar2_table(9) := 'aphviz_regions'||wwv_flow.LF||
+'      KEY ( job_id )'||wwv_flow.LF||
+'      LABEL job PROPERTIES ( job_i';
+wwv_flow_imp.g_varchar2_table(9) := 'd, job_title, max_salary, min_salary ),'||wwv_flow.LF||
+'    eba_graphviz_regions'||wwv_flow.LF||
 '      KEY ( region_id )'||wwv_flow.LF||
-'      LABEL region PROPERTIES ( region_id, region_name ),'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(10) := ' EBA_GRAPHVIZ_EMPLOYEES_VIEW'||wwv_flow.LF||
-'      KEY ( employee_id )'||wwv_flow.LF||
-'      LABEL employee PROPERTIES ( commission_';
-wwv_flow_imp.g_varchar2_table(11) := 'pct, department_id, email, employee_id, first_name, hire_date, job_id, last_name, manager_id, phone_';
-wwv_flow_imp.g_varchar2_table(12) := 'number, salary, job_title, COUNTRY_ID)'||wwv_flow.LF||
+'      LABEL';
+wwv_flow_imp.g_varchar2_table(10) := ' region PROPERTIES ( region_id, region_name ),'||wwv_flow.LF||
+'    eba_graphviz_employees_view'||wwv_flow.LF||
+'      KEY ( employee_';
+wwv_flow_imp.g_varchar2_table(11) := 'id )'||wwv_flow.LF||
+'      LABEL employee PROPERTIES ( commission_pct, department_id, email, employee_id, first_name';
+wwv_flow_imp.g_varchar2_table(12) := ', hire_date, job_id, last_name, manager_id, phone_number, salary, job_title, COUNTRY_ID )'||wwv_flow.LF||
 '  )'||wwv_flow.LF||
-'  EDGE TABLES ('||wwv_flow.LF||
-'    eba_graphviz_countries AS country_loc';
-wwv_flow_imp.g_varchar2_table(13) := 'ated_in'||wwv_flow.LF||
-'      SOURCE KEY ( country_id ) REFERENCES eba_graphviz_countries (country_id)'||wwv_flow.LF||
-'      DESTINA';
-wwv_flow_imp.g_varchar2_table(14) := 'TION KEY ( region_id ) REFERENCES eba_graphviz_regions (region_id)'||wwv_flow.LF||
+'  EDGE';
+wwv_flow_imp.g_varchar2_table(13) := ' TABLES ('||wwv_flow.LF||
+'    eba_graphviz_countries AS country_located_in'||wwv_flow.LF||
+'      SOURCE KEY ( country_id ) REFERENCE';
+wwv_flow_imp.g_varchar2_table(14) := 'S eba_graphviz_countries (country_id)'||wwv_flow.LF||
+'      DESTINATION KEY ( region_id ) REFERENCES eba_graphviz_re';
+wwv_flow_imp.g_varchar2_table(15) := 'gions (region_id)'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_grap';
-wwv_flow_imp.g_varchar2_table(15) := 'hviz_departments AS department_located_in'||wwv_flow.LF||
-'      SOURCE KEY ( department_id ) REFERENCES eba_graphviz';
-wwv_flow_imp.g_varchar2_table(16) := '_departments (department_id)'||wwv_flow.LF||
-'      DESTINATION KEY ( location_id ) REFERENCES eba_graphviz_locations';
-wwv_flow_imp.g_varchar2_table(17) := ' ( location_id )'||wwv_flow.LF||
+'    eba_graphviz_departments AS department_located_in'||wwv_flow.LF||
+'      S';
+wwv_flow_imp.g_varchar2_table(16) := 'OURCE KEY ( department_id ) REFERENCES eba_graphviz_departments (department_id)'||wwv_flow.LF||
+'      DESTINATION KE';
+wwv_flow_imp.g_varchar2_table(17) := 'Y ( location_id ) REFERENCES eba_graphviz_locations ( location_id )'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_graphviz_locations AS location_located_in'||wwv_flow.LF||
-'      SOURCE';
-wwv_flow_imp.g_varchar2_table(18) := ' KEY ( location_id ) REFERENCES eba_graphviz_locations ( location_id )'||wwv_flow.LF||
-'      DESTINATION KEY ( count';
-wwv_flow_imp.g_varchar2_table(19) := 'ry_id ) REFERENCES eba_graphviz_countries ( country_id )'||wwv_flow.LF||
+'    eba_gra';
+wwv_flow_imp.g_varchar2_table(18) := 'phviz_locations AS location_located_in'||wwv_flow.LF||
+'      SOURCE KEY ( location_id ) REFERENCES eba_graphviz_loca';
+wwv_flow_imp.g_varchar2_table(19) := 'tions ( location_id )'||wwv_flow.LF||
+'      DESTINATION KEY ( country_id ) REFERENCES eba_graphviz_countries ( count';
+wwv_flow_imp.g_varchar2_table(20) := 'ry_id )'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_graphviz_emplo';
-wwv_flow_imp.g_varchar2_table(20) := 'yees AS works_as'||wwv_flow.LF||
-'      SOURCE KEY ( employee_id ) REFERENCES EBA_GRAPHVIZ_EMPLOYEES_VIEW ( employee_';
-wwv_flow_imp.g_varchar2_table(21) := 'id )'||wwv_flow.LF||
-'      DESTINATION KEY ( job_id ) REFERENCES eba_graphviz_jobs ( job_id )'||wwv_flow.LF||
+'    eba_graphviz_employees AS works_as'||wwv_flow.LF||
+'      SOURCE KEY ( employee_id )';
+wwv_flow_imp.g_varchar2_table(21) := ' REFERENCES eba_graphviz_employees_view ( employee_id )'||wwv_flow.LF||
+'      DESTINATION KEY ( job_id ) REFERENCES ';
+wwv_flow_imp.g_varchar2_table(22) := 'eba_graphviz_jobs ( job_id )'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(22) := '   eba_graphviz_employees AS works_at'||wwv_flow.LF||
-'      SOURCE KEY ( employee_id ) REFERENCES EBA_GRAPHVIZ_EMPLO';
-wwv_flow_imp.g_varchar2_table(23) := 'YEES_VIEW  ( employee_id ) '||wwv_flow.LF||
-'      DESTINATION KEY ( department_id ) REFERENCES eba_graphviz_departme';
-wwv_flow_imp.g_varchar2_table(24) := 'nts ( department_id ) '||wwv_flow.LF||
+'    eba_graphviz_employees AS works_at'||wwv_flow.LF||
+'      SOURC';
+wwv_flow_imp.g_varchar2_table(23) := 'E KEY ( employee_id ) REFERENCES eba_graphviz_employees_view  ( employee_id ) '||wwv_flow.LF||
+'      DESTINATION KEY';
+wwv_flow_imp.g_varchar2_table(24) := ' ( department_id ) REFERENCES eba_graphviz_departments ( department_id ) '||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_graphviz_employees AS works_for'||wwv_flow.LF||
-'      SOURCE KEY';
-wwv_flow_imp.g_varchar2_table(25) := ' ( employee_id ) REFERENCES EBA_GRAPHVIZ_EMPLOYEES_VIEW ( employee_id )'||wwv_flow.LF||
-'      DESTINATION KEY ( mana';
-wwv_flow_imp.g_varchar2_table(26) := 'ger_id ) REFERENCES EBA_GRAPHVIZ_EMPLOYEES_VIEW  ( employee_id )'||wwv_flow.LF||
+'    e';
+wwv_flow_imp.g_varchar2_table(25) := 'ba_graphviz_employees AS works_for'||wwv_flow.LF||
+'      SOURCE KEY ( employee_id ) REFERENCES eba_graphviz_employee';
+wwv_flow_imp.g_varchar2_table(26) := 's_view ( employee_id )'||wwv_flow.LF||
+'      DESTINATION KEY ( manager_id ) REFERENCES eba_graphviz_employees_view  ';
+wwv_flow_imp.g_varchar2_table(27) := '( employee_id )'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_graphv';
-wwv_flow_imp.g_varchar2_table(27) := 'iz_job_history AS for_job KEY ( employee_id, start_date )'||wwv_flow.LF||
-'      SOURCE KEY ( employee_id, start_date';
-wwv_flow_imp.g_varchar2_table(28) := ' ) REFERENCES eba_graphviz_job_history ( employee_id, start_date )'||wwv_flow.LF||
-'      DESTINATION KEY ( job_id ) ';
-wwv_flow_imp.g_varchar2_table(29) := 'REFERENCES eba_graphviz_jobs ( job_id )'||wwv_flow.LF||
+'    eba_graphviz_job_history AS for_job KEY ( employee_id, star';
+wwv_flow_imp.g_varchar2_table(28) := 't_date )'||wwv_flow.LF||
+'      SOURCE KEY ( employee_id, start_date, end_date, job_id ) REFERENCES eba_graphviz_job_';
+wwv_flow_imp.g_varchar2_table(29) := 'history ( employee_id, start_date, end_date, job_id )'||wwv_flow.LF||
+'      DESTINATION KEY ( job_id ) REFERENCES eb';
+wwv_flow_imp.g_varchar2_table(30) := 'a_graphviz_jobs ( job_id )'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_graphviz_job_history AS for_dep';
-wwv_flow_imp.g_varchar2_table(30) := 'artment KEY ( employee_id, start_date )'||wwv_flow.LF||
-'      SOURCE KEY ( employee_id, start_date ) REFERENCES eba_';
-wwv_flow_imp.g_varchar2_table(31) := 'graphviz_job_history ( employee_id, start_date )'||wwv_flow.LF||
-'      DESTINATION KEY ( department_id ) REFERENCES ';
-wwv_flow_imp.g_varchar2_table(32) := 'eba_graphviz_departments ( department_id )'||wwv_flow.LF||
+'    eba_graphviz_job_history AS for_department KEY (';
+wwv_flow_imp.g_varchar2_table(31) := ' employee_id, start_date )'||wwv_flow.LF||
+'      SOURCE KEY ( employee_id, start_date, end_date, job_id ) REFERENCES';
+wwv_flow_imp.g_varchar2_table(32) := ' eba_graphviz_job_history ( employee_id, start_date, end_date, job_id )'||wwv_flow.LF||
+'      DESTINATION KEY ( depa';
+wwv_flow_imp.g_varchar2_table(33) := 'rtment_id ) REFERENCES eba_graphviz_departments ( department_id )'||wwv_flow.LF||
 '      NO PROPERTIES,'||wwv_flow.LF||
-'    eba_graphviz_job_history AS for_';
-wwv_flow_imp.g_varchar2_table(33) := 'employee KEY ( employee_id, start_date )'||wwv_flow.LF||
-'      SOURCE KEY ( employee_id, start_date ) REFERENCES eba';
-wwv_flow_imp.g_varchar2_table(34) := '_graphviz_job_history ( employee_id, start_date ) '||wwv_flow.LF||
-'      DESTINATION KEY ( employee_id ) REFERENCES ';
-wwv_flow_imp.g_varchar2_table(35) := 'EBA_GRAPHVIZ_EMPLOYEES_VIEW  ( employee_id )'||wwv_flow.LF||
+'    eba_graph';
+wwv_flow_imp.g_varchar2_table(34) := 'viz_job_history AS for_employee KEY ( employee_id, start_date )'||wwv_flow.LF||
+'      SOURCE KEY ( employee_id, star';
+wwv_flow_imp.g_varchar2_table(35) := 't_date, end_date, job_id ) REFERENCES eba_graphviz_job_history ( employee_id, start_date, end_date, ';
+wwv_flow_imp.g_varchar2_table(36) := 'job_id ) '||wwv_flow.LF||
+'      DESTINATION KEY ( employee_id ) REFERENCES eba_graphviz_employees_view  ( employee_i';
+wwv_flow_imp.g_varchar2_table(37) := 'd )'||wwv_flow.LF||
 '      NO PROPERTIES'||wwv_flow.LF||
-'  );'||wwv_flow.LF||
+'  ) OPTIONS(PG_VIEW)'''||wwv_flow.LF||
+') ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-' '||wwv_flow.LF||
-''||wwv_flow.LF||
-' CREATE OR REPLACE PROPERT';
-wwv_flow_imp.g_varchar2_table(36) := 'Y GRAPH "EBA_GRAPH_FLIGHTS"'||wwv_flow.LF||
+'    result := ORA_PGQL_TO_JSON('||wwv_flow.LF||
+' ''CREATE PROPERTY';
+wwv_flow_imp.g_varchar2_table(38) := ' GRAPH EBA_GRAPH_FLIGHTS'||wwv_flow.LF||
 '    VERTEX TABLES ('||wwv_flow.LF||
 '        "EBA_GRAPHVIZ_AIRPORTS"'||wwv_flow.LF||
-'            KEY ("ID';
-wwv_flow_imp.g_varchar2_table(37) := '")'||wwv_flow.LF||
-'            LABEL AIRPORT'||wwv_flow.LF||
-'            PROPERTIES ("NAME", "IATA", "LATITUDE" AS "latitude", "LONG';
-wwv_flow_imp.g_varchar2_table(38) := 'ITUDE" AS "longitude", "ALTITUDE")'||wwv_flow.LF||
+'            KEY ("ID")'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(39) := '            LABEL AIRPORT'||wwv_flow.LF||
+'            PROPERTIES ("NAME", "IATA", "LATITUDE" AS "latitude", "LONGITU';
+wwv_flow_imp.g_varchar2_table(40) := 'DE" AS "longitude", "ALTITUDE")'||wwv_flow.LF||
 '    )'||wwv_flow.LF||
 '    EDGE TABLES ('||wwv_flow.LF||
 '        "EBA_GRAPHVIZ_ROUTES"'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(39) := ' KEY ("ID")'||wwv_flow.LF||
+'            KE';
+wwv_flow_imp.g_varchar2_table(41) := 'Y ("ID")'||wwv_flow.LF||
 '            SOURCE KEY("ORIG_AIRPORT_ID") REFERENCES EBA_GRAPHVIZ_AIRPORTS ("ID")'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(40) := '      DESTINATION KEY("DEST_AIRPORT_ID") REFERENCES EBA_GRAPHVIZ_AIRPORTS ("ID")'||wwv_flow.LF||
-'            LABEL R';
-wwv_flow_imp.g_varchar2_table(41) := 'OUTE'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(42) := '   DESTINATION KEY("DEST_AIRPORT_ID") REFERENCES EBA_GRAPHVIZ_AIRPORTS ("ID")'||wwv_flow.LF||
+'            LABEL ROUT';
+wwv_flow_imp.g_varchar2_table(43) := 'E'||wwv_flow.LF||
 '            PROPERTIES ("ID", "AIRLINE", "DISTANCE")'||wwv_flow.LF||
-'    );';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(5684846114689828598)
-,p_install_id=>wwv_flow_imp.id(12883465078800669451)
-,p_name=>'create_property_graph_23'
-,p_sequence=>60
-,p_script_type=>'INSTALL'
-,p_condition_type=>'EXPRESSION'
-,p_condition=>'sys.dbms_db_version.version >= 23'
-,p_condition2=>'PLSQL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_required_helper_function_for_23ai_or_newer
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE OR REPLACE PACKAGE DBMS_GVT'||wwv_flow.LF||
-'  AUTHID CURRENT_USER IS'||wwv_flow.LF||
-' ---------------------------------------';
-wwv_flow_imp.g_varchar2_table(2) := '--------------------------------------'||wwv_flow.LF||
-' -- VERTEX_LATERAL_STRING - prepare vertex query string in LA';
-wwv_flow_imp.g_varchar2_table(3) := 'TERAL()'||wwv_flow.LF||
-' -----------------------------------------------------------------------------'||wwv_flow.LF||
-'  FUNCTION PR';
-wwv_flow_imp.g_varchar2_table(4) := 'OPERTIES_LATERAL_STRING_AS_CLOB ('||wwv_flow.LF||
-'    DB_TABLE_NAME_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    DB_OBJECT_OWNER_L';
-wwv_flow_imp.g_varchar2_table(5) := 'IST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    GRAPH_VIZ_TABLE_NAME IN VARCHAR2,'||wwv_flow.LF||
-'    VERTEX_ID_COL_NAME IN VARCHAR2,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(6) := '    GRAPHNAME IN VARCHAR2,'||wwv_flow.LF||
-'    GRAPHOWNER IN VARCHAR2,'||wwv_flow.LF||
-'    ELEMENT_TYPE IN VARCHAR2'||wwv_flow.LF||
-'  ) RETURN CLOB;';
-wwv_flow_imp.g_varchar2_table(7) := ''||wwv_flow.LF||
-''||wwv_flow.LF||
-'  FUNCTION GET_VERSION RETURN VARCHAR2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-' --------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(8) := '--------------------- '||wwv_flow.LF||
-' -- BUILD_JSON - prepare JSON result from vertex_id and edge_id tables'||wwv_flow.LF||
-' -----';
-wwv_flow_imp.g_varchar2_table(9) := '------------------------------------------------------------------------ '||wwv_flow.LF||
-'  FUNCTION BUILD_JSON_USIN';
-wwv_flow_imp.g_varchar2_table(10) := 'G_JSON_ARRAY('||wwv_flow.LF||
-'    VERTEX_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
-'    EDGE_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
-'    COUNTER NUMBER,'||wwv_flow.LF||
-'    GR';
-wwv_flow_imp.g_varchar2_table(11) := 'APHNAME VARCHAR2,'||wwv_flow.LF||
-'    GRAPHOWNER VARCHAR2'||wwv_flow.LF||
-') RETURN CLOB'||wwv_flow.LF||
-'  ACCESSIBLE BY (FUNCTION ORA_GRAPH_BUILD_JS';
-wwv_flow_imp.g_varchar2_table(12) := 'ON_USING_JSON_ARRAY);'||wwv_flow.LF||
-'  '||wwv_flow.LF||
-'END DBMS_GVT;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'-----------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(13) := '--------------------'||wwv_flow.LF||
-'-------------------------------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(14) := ''||wwv_flow.LF||
-'-- DBMS_GVT Package Specification'||wwv_flow.LF||
-'-----------------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(15) := '--------------'||wwv_flow.LF||
-'-------------------------------------------------------------------------------'||wwv_flow.LF||
-'CREAT';
-wwv_flow_imp.g_varchar2_table(16) := 'E OR REPLACE PACKAGE BODY DBMS_GVT IS'||wwv_flow.LF||
-'  M_VCSIZ_4K  CONSTANT PLS_INTEGER := 4000;'||wwv_flow.LF||
-' -----------------';
-wwv_flow_imp.g_varchar2_table(17) := '------------------------------------------------------------'||wwv_flow.LF||
-' -- VERTEX_LATERAL_STRING - prepare ver';
-wwv_flow_imp.g_varchar2_table(18) := 'tex query string in LATERAL()'||wwv_flow.LF||
-' ---------------------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(19) := '--------'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  FUNCTION GET_VERSION RETURN VARCHAR2 IS'||wwv_flow.LF||
-'  BEGIN'||wwv_flow.LF||
-'    RETURN ''26.3.0-RC3 (2026-06-08T19:39';
-wwv_flow_imp.g_varchar2_table(20) := ':43.674968270Z, build: b47291ffa)'';'||wwv_flow.LF||
-'  END GET_VERSION;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB';
-wwv_flow_imp.g_varchar2_table(21) := ' ('||wwv_flow.LF||
-'    DB_TABLE_NAME_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    DB_OBJECT_OWNER_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    G';
-wwv_flow_imp.g_varchar2_table(22) := 'RAPH_VIZ_TABLE_NAME IN VARCHAR2,'||wwv_flow.LF||
-'    VERTEX_ID_COL_NAME IN VARCHAR2,'||wwv_flow.LF||
-'    GRAPHNAME IN VARCHAR2,'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(23) := 'GRAPHOWNER IN VARCHAR2,'||wwv_flow.LF||
-'    ELEMENT_TYPE IN VARCHAR2'||wwv_flow.LF||
-'  ) RETURN CLOB IS'||wwv_flow.LF||
-'    LATERAL_QUERY_STRING    ';
-wwv_flow_imp.g_varchar2_table(24) := '           CLOB := '''';'||wwv_flow.LF||
-'    COLUMN_NAMES                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    OBJECT_NAMES';
-wwv_flow_imp.g_varchar2_table(25) := '                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    PROPERTY_NAMES                     SYS.ODCIVARCHAR2';
-wwv_flow_imp.g_varchar2_table(26) := 'LIST;'||wwv_flow.LF||
-'    TYPE STRING_LIST_TYPE IS'||wwv_flow.LF||
-'      TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY PLS_INTEGER;'||wwv_flow.LF||
-'    TYP';
-wwv_flow_imp.g_varchar2_table(27) := 'E VARCHARLIST_TABLE IS'||wwv_flow.LF||
-'      TABLE OF STRING_LIST_TYPE INDEX BY VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    TYPE STRIN';
-wwv_flow_imp.g_varchar2_table(28) := 'G_INDEX_BY_STRING IS'||wwv_flow.LF||
-'      TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY VARCHAR(M_VCSIZ_4K);'||wwv_flow.LF||
-'    ELEMENT_T';
-wwv_flow_imp.g_varchar2_table(29) := 'ABLE_COLUMN_NAME          VARCHARLIST_TABLE; '||wwv_flow.LF||
-'    ELEMENT_TABLE_PROPERTY_NAME        VARCHARLIST_TAB';
-wwv_flow_imp.g_varchar2_table(30) := 'LE; '||wwv_flow.LF||
-'    ELEMENT_TO_KEY_LIST_TABLE          VARCHARLIST_TABLE; '||wwv_flow.LF||
-'    COLUMN_EXPRESSION               ';
-wwv_flow_imp.g_varchar2_table(31) := '   VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    COLUMN_NAME                        VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    ELEMENTNAM';
-wwv_flow_imp.g_varchar2_table(32) := 'ES                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    KEY_LIST                           SYS.ODCIVARCHA';
-wwv_flow_imp.g_varchar2_table(33) := 'R2LIST;'||wwv_flow.LF||
-'    JSON_CONDITION_STRING              CLOB;'||wwv_flow.LF||
-'    ALL_QUERY_STRING                   CLOB := ';
-wwv_flow_imp.g_varchar2_table(34) := ''''';'||wwv_flow.LF||
-'    COLUMN_EXPRESSIONS                 SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    COLUMN_EXPRESSION_LIST         ';
-wwv_flow_imp.g_varchar2_table(35) := '    VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    P1                                 INT;'||wwv_flow.LF||
-'    P2                           ';
-wwv_flow_imp.g_varchar2_table(36) := '      INT;'||wwv_flow.LF||
-'    P3                                 INT;'||wwv_flow.LF||
-'    COLUMN_NAMES_FOR_EACH_ELEMENT       STRIN';
-wwv_flow_imp.g_varchar2_table(37) := 'G_LIST_TYPE;'||wwv_flow.LF||
-'    PROPERTY_NAMES_FOR_EACH_ELEMENT     STRING_LIST_TYPE;'||wwv_flow.LF||
-'    PROPERTY_NAMES_FOR_EACH_E';
-wwv_flow_imp.g_varchar2_table(38) := 'LEMENT_INDEXED_BY_STRING    STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT STRING_L';
-wwv_flow_imp.g_varchar2_table(39) := 'IST_TYPE;'||wwv_flow.LF||
-'    KEY_LIST_FOR_EACH_ELEMENT           STRING_LIST_TYPE;'||wwv_flow.LF||
-'    OBJECT_TO_ELEMENTS          ';
-wwv_flow_imp.g_varchar2_table(40) := '       VARCHARLIST_TABLE; '||wwv_flow.LF||
-'    ELEMENTS_FOR_EACH_OBJECT           STRING_LIST_TYPE;'||wwv_flow.LF||
-'    LABELS      ';
-wwv_flow_imp.g_varchar2_table(41) := '                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    LABELS_FOR_EACH_ELEMENT            STRING_LIST_TYPE';
-wwv_flow_imp.g_varchar2_table(42) := ';'||wwv_flow.LF||
-'    ELEMENT_TO_LABELS                  VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    LABELS_STRING                      C';
-wwv_flow_imp.g_varchar2_table(43) := 'LOB;'||wwv_flow.LF||
-'    EDGE_KEYS                          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_TAB_NAMES              ';
-wwv_flow_imp.g_varchar2_table(44) := '     SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_ELEMENT_NAMES               SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_K';
-wwv_flow_imp.g_varchar2_table(45) := 'EYS                        SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_OBJECT_NAMES                SYS.ODCIVARC';
-wwv_flow_imp.g_varchar2_table(46) := 'HAR2LIST;'||wwv_flow.LF||
-'    VERTEX_OBJECT_OWNERS               SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_TAB_NAMES           ';
-wwv_flow_imp.g_varchar2_table(47) := '          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    SRC_VERTEX_TAB_NAME_TABLE          STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    S';
-wwv_flow_imp.g_varchar2_table(48) := 'RC_VERTEX_OBJECT_NAME_TABLE       STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    SRC_VERTEX_OBJECT_OWNER_TABLE      STR';
-wwv_flow_imp.g_varchar2_table(49) := 'ING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    DEST_VERTEX_TAB_NAME_TABLE         STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    DEST_VERTEX_';
-wwv_flow_imp.g_varchar2_table(50) := 'OBJECT_NAME_TABLE      STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    DEST_VERTEX_OBJECT_OWNER_TABLE     STRING_INDEX_B';
-wwv_flow_imp.g_varchar2_table(51) := 'Y_STRING;'||wwv_flow.LF||
-'    EDGE_COL_NAME                      SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_COL_NAME          ';
-wwv_flow_imp.g_varchar2_table(52) := '          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_END_LIST                      SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDG';
-wwv_flow_imp.g_varchar2_table(53) := 'E_ELEMENT_NAMES                 SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    SRC_EDGE_COL_NAME_TABLE            VARCHAR';
-wwv_flow_imp.g_varchar2_table(54) := 'LIST_TABLE;'||wwv_flow.LF||
-'    SRC_VERTEX_COL_NAME_TABLE          VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    DEST_EDGE_COL_NAME_TABLE  ';
-wwv_flow_imp.g_varchar2_table(55) := '         VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    DEST_VERTEX_COL_NAME_TABLE         VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    EDGE_TO_KE';
-wwv_flow_imp.g_varchar2_table(56) := 'YS_TABLE                 VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    VERTEX_KEYS_TABLE                  VARCHARLIST_TABLE';
-wwv_flow_imp.g_varchar2_table(57) := ';'||wwv_flow.LF||
-'    SRC_JSON_STRING                    CLOB;'||wwv_flow.LF||
-'    DEST_JSON_STRING                   CLOB;'||wwv_flow.LF||
-'    SRC_';
-wwv_flow_imp.g_varchar2_table(58) := 'EDGE_COL_NAME_FOR_EACH_EDGE    STRING_LIST_TYPE;'||wwv_flow.LF||
-'    SRC_VERTEX_COL_NAME_FOR_EACH_EDGE  STRING_LIST_';
-wwv_flow_imp.g_varchar2_table(59) := 'TYPE;'||wwv_flow.LF||
-'    DEST_EDGE_COL_NAME_FOR_EACH_EDGE   STRING_LIST_TYPE;'||wwv_flow.LF||
-'    DEST_VERTEX_COL_NAME_FOR_EACH_EDG';
-wwv_flow_imp.g_varchar2_table(60) := 'E STRING_LIST_TYPE;'||wwv_flow.LF||
-'    EDGE_KEYS_FOR_EACH_EDGE            STRING_LIST_TYPE;'||wwv_flow.LF||
-'    VERTEX_KEYS_FOR_EAC';
-wwv_flow_imp.g_varchar2_table(61) := 'H_VERTEX        STRING_LIST_TYPE;'||wwv_flow.LF||
-'    ELEMENT_NAME                       VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    I';
-wwv_flow_imp.g_varchar2_table(62) := 'NNER_PROPS_LABELS_STRING          CLOB;'||wwv_flow.LF||
-'    EDGE_INNER_PROJECTION_STRING       CLOB;'||wwv_flow.LF||
-'    INNER_QUERY';
-wwv_flow_imp.g_varchar2_table(63) := '_STRING                 CLOB;'||wwv_flow.LF||
-'    OUTER_SELECT_STRING                CLOB;'||wwv_flow.LF||
-'    SRC_OUTER_JOIN_STRING';
-wwv_flow_imp.g_varchar2_table(64) := '              CLOB;'||wwv_flow.LF||
-'    DEST_OUTER_JOIN_STRING             CLOB;'||wwv_flow.LF||
-'    SRC_PROJECTED_COL_ALIAS        ';
-wwv_flow_imp.g_varchar2_table(65) := '    VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    DEST_PROJECTED_COL_ALIAS           VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  BEGIN'||wwv_flow.LF||
-'    I';
-wwv_flow_imp.g_varchar2_table(66) := 'F ELEMENT_TYPE = ''EDGE'' THEN'||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        DISTINCT VERTEX_TAB_NAME,'||wwv_flow.LF||
-'        OBJECT_NAME,'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(67) := '     EDGE_TAB_NAME,'||wwv_flow.LF||
-'        EDGE_END,'||wwv_flow.LF||
-'        ELEMENTS.OBJECT_OWNER BULK COLLECT INTO VERTEX_TAB_NAM';
-wwv_flow_imp.g_varchar2_table(68) := 'ES,'||wwv_flow.LF||
-'        VERTEX_OBJECT_NAMES,'||wwv_flow.LF||
-'        EDGE_TAB_NAMES,'||wwv_flow.LF||
-'        EDGE_END_LIST,'||wwv_flow.LF||
-'        VERTEX_OBJEC';
-wwv_flow_imp.g_varchar2_table(69) := 'T_OWNERS'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'        SYS.ALL_PG_EDGE_RELATIONSHIPS RELATIONSHIPS'||wwv_flow.LF||
-'        INNER JOIN SYS.ALL_P';
-wwv_flow_imp.g_varchar2_table(70) := 'G_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'        ON (RELATIONSHIPS.VERTEX_TAB_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'        AND RE';
-wwv_flow_imp.g_varchar2_table(71) := 'LATIONSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(72) := ' WHERE'||wwv_flow.LF||
-'        RELATIONSHIPS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'        AND ELEMENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(73) := 'FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF EDGE_END_LIST(IDX1) = ''SOURCE'' THEN'||wwv_flow.LF||
-'          SR';
-wwv_flow_imp.g_varchar2_table(74) := 'C_VERTEX_TAB_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_TAB_NAMES(IDX1);'||wwv_flow.LF||
-'          SRC_VERTEX_OBJECT';
-wwv_flow_imp.g_varchar2_table(75) := '_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_NAMES(IDX1);'||wwv_flow.LF||
-'          SRC_VERTEX_OBJECT_OWNER_TA';
-wwv_flow_imp.g_varchar2_table(76) := 'BLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_OWNERS(IDX1);'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          DEST_VERTEX_TAB_NAME';
-wwv_flow_imp.g_varchar2_table(77) := '_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_TAB_NAMES(IDX1);'||wwv_flow.LF||
-'          DEST_VERTEX_OBJECT_NAME_TABLE(EDGE';
-wwv_flow_imp.g_varchar2_table(78) := '_TAB_NAMES(IDX1)) := VERTEX_OBJECT_NAMES(IDX1);'||wwv_flow.LF||
-'          DEST_VERTEX_OBJECT_OWNER_TABLE(EDGE_TAB_NA';
-wwv_flow_imp.g_varchar2_table(79) := 'MES(IDX1)) := VERTEX_OBJECT_OWNERS(IDX1);'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        DIST';
-wwv_flow_imp.g_varchar2_table(80) := 'INCT EDGE_COL_NAME,'||wwv_flow.LF||
-'        VERTEX_COL_NAME,'||wwv_flow.LF||
-'        EDGE_TAB_NAME BULK COLLECT INTO EDGE_COL_NAME,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(81) := '        VERTEX_COL_NAME,'||wwv_flow.LF||
-'        EDGE_TAB_NAMES'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'        SYS.ALL_PG_EDGE_RELATIONSHIPS REL';
-wwv_flow_imp.g_varchar2_table(82) := 'ATIONSHIPS'||wwv_flow.LF||
-'        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'        ON (RELATIONSHIPS.VERTEX_TAB_NAME';
-wwv_flow_imp.g_varchar2_table(83) := ' = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
-'        AND RELA';
-wwv_flow_imp.g_varchar2_table(84) := 'TIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
-'      WHERE'||wwv_flow.LF||
-'        RELATIONSHIPS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'        A';
-wwv_flow_imp.g_varchar2_table(85) := 'ND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
-'        AND EDGE_END = ''SOURCE'''||wwv_flow.LF||
-'      ORDER BY'||wwv_flow.LF||
-'        EDGE_TAB_NAME;';
-wwv_flow_imp.g_varchar2_table(86) := ''||wwv_flow.LF||
-' '||wwv_flow.LF||
-'      FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF IDX1 = 1 THEN'||wwv_flow.LF||
-'          P1 := 1;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(87) := '    SRC_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          SRC_EDGE_COL_NAME_FOR_EACH_';
-wwv_flow_imp.g_varchar2_table(88) := 'EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'          SRC_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE';
-wwv_flow_imp.g_varchar2_table(89) := '();'||wwv_flow.LF||
-'          SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1';
-wwv_flow_imp.g_varchar2_table(90) := ';'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          IF EDGE_TAB_NAMES(IDX1) = EDGE_TAB_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            SRC_EDG';
-wwv_flow_imp.g_varchar2_table(91) := 'E_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P';
-wwv_flow_imp.g_varchar2_table(92) := '1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'          ELSE'||wwv_flow.LF||
-'            SRC_EDGE_COL_NAME_';
-wwv_flow_imp.g_varchar2_table(93) := 'TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := SRC_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_';
-wwv_flow_imp.g_varchar2_table(94) := 'TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := SRC_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'            P1 := 1;'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(95) := '   SRC_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'            SRC_EDGE_COL_NAME_FOR_EACH';
-wwv_flow_imp.g_varchar2_table(96) := '_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_T';
-wwv_flow_imp.g_varchar2_table(97) := 'YPE();'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'            P1 :=';
-wwv_flow_imp.g_varchar2_table(98) := ' P1 + 1;'||wwv_flow.LF||
-'          END IF;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        IF IDX1 = EDGE_TAB_NAMES.COUNT THEN'||wwv_flow.LF||
-'          SR';
-wwv_flow_imp.g_varchar2_table(99) := 'C_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := SRC_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'          SRC_VERTEX';
-wwv_flow_imp.g_varchar2_table(100) := '_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := SRC_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      EN';
-wwv_flow_imp.g_varchar2_table(101) := 'D LOOP;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        DISTINCT EDGE_COL_NAME,'||wwv_flow.LF||
-'        VERTEX_COL_NAME,'||wwv_flow.LF||
-'        EDGE_TAB_NAM';
-wwv_flow_imp.g_varchar2_table(102) := 'E BULK COLLECT INTO EDGE_COL_NAME,'||wwv_flow.LF||
-'        VERTEX_COL_NAME,'||wwv_flow.LF||
-'        EDGE_TAB_NAMES'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(103) := '  SYS.ALL_PG_EDGE_RELATIONSHIPS RELATIONSHIPS'||wwv_flow.LF||
-'        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(104) := '  ON (RELATIONSHIPS.VERTEX_TAB_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.GRAPH_NAME = E';
-wwv_flow_imp.g_varchar2_table(105) := 'LEMENTS.GRAPH_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
-'      WHERE'||wwv_flow.LF||
-'        RELATIONSHI';
-wwv_flow_imp.g_varchar2_table(106) := 'PS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'        AND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
-'        AND EDGE_END = ''DESTINATIO';
-wwv_flow_imp.g_varchar2_table(107) := 'N'''||wwv_flow.LF||
-'      ORDER BY'||wwv_flow.LF||
-'        EDGE_TAB_NAME;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF ';
-wwv_flow_imp.g_varchar2_table(108) := 'IDX1 = 1 THEN'||wwv_flow.LF||
-'          P1 := 1;'||wwv_flow.LF||
-'          DEST_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE(';
-wwv_flow_imp.g_varchar2_table(109) := ');'||wwv_flow.LF||
-'          DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'          DEST_VERTEX_COL_';
-wwv_flow_imp.g_varchar2_table(110) := 'NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          DEST_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VE';
-wwv_flow_imp.g_varchar2_table(111) := 'RTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          IF EDGE_TAB_NAMES(IDX1) = EDGE_T';
-wwv_flow_imp.g_varchar2_table(112) := 'AB_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(113) := '         DEST_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(114) := '          ELSE'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := DEST_EDGE_COL_NAME_';
-wwv_flow_imp.g_varchar2_table(115) := 'FOR_EACH_EDGE;'||wwv_flow.LF||
-'            DEST_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := DEST_VERTEX_COL_N';
-wwv_flow_imp.g_varchar2_table(116) := 'AME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'            P1 := 1;'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_L';
-wwv_flow_imp.g_varchar2_table(117) := 'IST_TYPE();'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'            DES';
-wwv_flow_imp.g_varchar2_table(118) := 'T_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'            DEST_VERTEX_COL_NAME_FOR_EACH';
-wwv_flow_imp.g_varchar2_table(119) := '_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'          END IF;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(120) := '     IF IDX1 = EDGE_TAB_NAMES.COUNT THEN'||wwv_flow.LF||
-'          DEST_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) :=';
-wwv_flow_imp.g_varchar2_table(121) := ' DEST_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'          DEST_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := DES';
-wwv_flow_imp.g_varchar2_table(122) := 'T_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END LOOP;'||wwv_flow.LF||
-'      '||wwv_flow.LF||
-'      SELECT                ';
-wwv_flow_imp.g_varchar2_table(123) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(124) := '                                                                                  '||wwv_flow.LF||
-'          KEYS.EL';
-wwv_flow_imp.g_varchar2_table(125) := 'EMENT_NAME,                                                                                         ';
-wwv_flow_imp.g_varchar2_table(126) := '                                                                                             '||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(127) := '    KEYS.COLUMN_NAME                                                                                ';
-wwv_flow_imp.g_varchar2_table(128) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(129) := '    '||wwv_flow.LF||
-'      BULK COLLECT INTO                                                                        ';
-wwv_flow_imp.g_varchar2_table(130) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(131) := '               '||wwv_flow.LF||
-'          VERTEX_ELEMENT_NAMES,                                                     ';
-wwv_flow_imp.g_varchar2_table(132) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(133) := '                          '||wwv_flow.LF||
-'          VERTEX_KEYS                                                    ';
-wwv_flow_imp.g_varchar2_table(134) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(135) := '                                     '||wwv_flow.LF||
-'      FROM                                                    ';
-wwv_flow_imp.g_varchar2_table(136) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(137) := '                                                '||wwv_flow.LF||
-'          SYS.ALL_PG_KEYS KEYS                     ';
-wwv_flow_imp.g_varchar2_table(138) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(139) := '                                                           '||wwv_flow.LF||
-'      INNER JOIN                        ';
-wwv_flow_imp.g_varchar2_table(140) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(141) := '                                                                      '||wwv_flow.LF||
-'          SYS.ALL_PG_ELEMENTS';
-wwv_flow_imp.g_varchar2_table(142) := ' ELEMENTS                                                                                           ';
-wwv_flow_imp.g_varchar2_table(143) := '                                                                                 '||wwv_flow.LF||
-'      ON          ';
-wwv_flow_imp.g_varchar2_table(144) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(145) := '                                                                                            '||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(146) := '   (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME                                                       ';
-wwv_flow_imp.g_varchar2_table(147) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(148) := '   '||wwv_flow.LF||
-'          AND KEYS.OWNER = ELEMENTS.OWNER                                                       ';
-wwv_flow_imp.g_varchar2_table(149) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(150) := '              '||wwv_flow.LF||
-'          AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                 ';
-wwv_flow_imp.g_varchar2_table(151) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(152) := '                         '||wwv_flow.LF||
-'      LEFT JOIN                                                           ';
-wwv_flow_imp.g_varchar2_table(153) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(154) := '                                    '||wwv_flow.LF||
-'          SYS.ALL_SYNONYMS s                                   ';
-wwv_flow_imp.g_varchar2_table(155) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(156) := '                                               '||wwv_flow.LF||
-'      ON                                            ';
-wwv_flow_imp.g_varchar2_table(157) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(158) := '                                                          '||wwv_flow.LF||
-'          s.SYNONYM_NAME = ELEMENTS.OBJEC';
-wwv_flow_imp.g_varchar2_table(159) := 'T_NAME                                                                                              ';
-wwv_flow_imp.g_varchar2_table(160) := '                                                                     '||wwv_flow.LF||
-'      INNER JOIN              ';
-wwv_flow_imp.g_varchar2_table(161) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(162) := '                                                                                '||wwv_flow.LF||
-'          SYS.ALL_T';
-wwv_flow_imp.g_varchar2_table(163) := 'AB_COLUMNS c                                                                                        ';
-wwv_flow_imp.g_varchar2_table(164) := '                                                                                           '||wwv_flow.LF||
-'      ON';
-wwv_flow_imp.g_varchar2_table(165) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(166) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(167) := '  '||wwv_flow.LF||
-'          c.OWNER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                               ';
-wwv_flow_imp.g_varchar2_table(168) := '                                                                                                  '||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(169) := '         AND c.TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                            ';
-wwv_flow_imp.g_varchar2_table(170) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(171) := '         '||wwv_flow.LF||
-'          AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                            ';
-wwv_flow_imp.g_varchar2_table(172) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(173) := '                    '||wwv_flow.LF||
-'      WHERE                                                                    ';
-wwv_flow_imp.g_varchar2_table(174) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(175) := '                               '||wwv_flow.LF||
-'          KEYS.GRAPH_NAME = GRAPHNAME                               ';
-wwv_flow_imp.g_varchar2_table(176) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(177) := '                                          '||wwv_flow.LF||
-'          AND KEYS.OWNER = GRAPHOWNER                    ';
-wwv_flow_imp.g_varchar2_table(178) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(179) := '                                                     '||wwv_flow.LF||
-'          AND ELEMENTS.ELEMENT_KIND = ''VERTEX''';
-wwv_flow_imp.g_varchar2_table(180) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(181) := '                                                                '||wwv_flow.LF||
-'      ORDER BY                     ';
-wwv_flow_imp.g_varchar2_table(182) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(183) := '                                                                           '||wwv_flow.LF||
-'          KEYS.ELEMENT_N';
-wwv_flow_imp.g_varchar2_table(184) := 'AME,                                                                                                ';
-wwv_flow_imp.g_varchar2_table(185) := '                                                                                      '||wwv_flow.LF||
-'          c.C';
-wwv_flow_imp.g_varchar2_table(186) := 'OLUMN_ID; '||wwv_flow.LF||
-' '||wwv_flow.LF||
-'      FOR IDX1 IN 1..VERTEX_ELEMENT_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF IDX1 = 1 THEN'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(187) := ' P1 := 1;'||wwv_flow.LF||
-'          VERTEX_KEYS_FOR_EACH_VERTEX := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          VERTEX_KEYS_FOR';
-wwv_flow_imp.g_varchar2_table(188) := '_EACH_VERTEX(P1) := VERTEX_KEYS(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          IF VERTEX_ELEM';
-wwv_flow_imp.g_varchar2_table(189) := 'ENT_NAMES(IDX1) = VERTEX_ELEMENT_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            VERTEX_KEYS_FOR_EACH_VERTEX(P1) :=';
-wwv_flow_imp.g_varchar2_table(190) := ' VERTEX_KEYS(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'          ELSE'||wwv_flow.LF||
-'            VERTEX_KEYS_TABLE(VERTEX_EL';
-wwv_flow_imp.g_varchar2_table(191) := 'EMENT_NAMES(IDX1 - 1)) := VERTEX_KEYS_FOR_EACH_VERTEX;'||wwv_flow.LF||
-'            P1 := 1;'||wwv_flow.LF||
-'            VERTEX_KEYS_';
-wwv_flow_imp.g_varchar2_table(192) := 'FOR_EACH_VERTEX := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'            VERTEX_KEYS_FOR_EACH_VERTEX(P1) := VERTEX_KEY';
-wwv_flow_imp.g_varchar2_table(193) := 'S(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'          END IF;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        IF IDX1 = VERTEX_ELEME';
-wwv_flow_imp.g_varchar2_table(194) := 'NT_NAMES.COUNT THEN'||wwv_flow.LF||
-'          VERTEX_KEYS_TABLE(VERTEX_ELEMENT_NAMES(IDX1)) := VERTEX_KEYS_FOR_EACH_';
-wwv_flow_imp.g_varchar2_table(195) := 'VERTEX;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END LOOP;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'      SELECT                                              ';
-wwv_flow_imp.g_varchar2_table(196) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(197) := '                                                    '||wwv_flow.LF||
-'          KEYS.ELEMENT_NAME,                   ';
-wwv_flow_imp.g_varchar2_table(198) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(199) := '                                                               '||wwv_flow.LF||
-'          KEYS.COLUMN_NAME          ';
-wwv_flow_imp.g_varchar2_table(200) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(201) := '                                                                          '||wwv_flow.LF||
-'      BULK COLLECT INTO  ';
-wwv_flow_imp.g_varchar2_table(202) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(203) := '                                                                                     '||wwv_flow.LF||
-'          EDGE';
-wwv_flow_imp.g_varchar2_table(204) := '_ELEMENT_NAMES,                                                                                     ';
-wwv_flow_imp.g_varchar2_table(205) := '                                                                                                '||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(206) := '       EDGE_KEYS                                                                                    ';
-wwv_flow_imp.g_varchar2_table(207) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(208) := '       '||wwv_flow.LF||
-'      FROM                                                                                  ';
-wwv_flow_imp.g_varchar2_table(209) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(210) := '                  '||wwv_flow.LF||
-'          SYS.ALL_PG_KEYS KEYS                                                   ';
-wwv_flow_imp.g_varchar2_table(211) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(212) := '                             '||wwv_flow.LF||
-'      INNER JOIN                                                      ';
-wwv_flow_imp.g_varchar2_table(213) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(214) := '                                        '||wwv_flow.LF||
-'          SYS.ALL_PG_ELEMENTS ELEMENTS                     ';
-wwv_flow_imp.g_varchar2_table(215) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(216) := '                                                   '||wwv_flow.LF||
-'      ON                                        ';
-wwv_flow_imp.g_varchar2_table(217) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(218) := '                                                              '||wwv_flow.LF||
-'          (ELEMENTS.ELEMENT_NAME = KE';
-wwv_flow_imp.g_varchar2_table(219) := 'YS.ELEMENT_NAME                                                                                     ';
-wwv_flow_imp.g_varchar2_table(220) := '                                                                         '||wwv_flow.LF||
-'          AND KEYS.OWNER =';
-wwv_flow_imp.g_varchar2_table(221) := ' ELEMENTS.OWNER                                                                                     ';
-wwv_flow_imp.g_varchar2_table(222) := '                                                                                    '||wwv_flow.LF||
-'          AND K';
-wwv_flow_imp.g_varchar2_table(223) := 'EYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                                               ';
-wwv_flow_imp.g_varchar2_table(224) := '                                                                                               '||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(225) := '  LEFT JOIN                                                                                         ';
-wwv_flow_imp.g_varchar2_table(226) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(227) := '      '||wwv_flow.LF||
-'          SYS.ALL_SYNONYMS s                                                                 ';
-wwv_flow_imp.g_varchar2_table(228) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(229) := '                 '||wwv_flow.LF||
-'      ON                                                                          ';
-wwv_flow_imp.g_varchar2_table(230) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(231) := '                            '||wwv_flow.LF||
-'          s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME                        ';
-wwv_flow_imp.g_varchar2_table(232) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(233) := '                                       '||wwv_flow.LF||
-'      INNER JOIN                                            ';
-wwv_flow_imp.g_varchar2_table(234) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(235) := '                                                  '||wwv_flow.LF||
-'          SYS.ALL_TAB_COLUMNS c                  ';
-wwv_flow_imp.g_varchar2_table(236) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(237) := '                                                             '||wwv_flow.LF||
-'      ON                              ';
-wwv_flow_imp.g_varchar2_table(238) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(239) := '                                                                        '||wwv_flow.LF||
-'          c.OWNER = COALESC';
-wwv_flow_imp.g_varchar2_table(240) := 'E(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                                                             ';
-wwv_flow_imp.g_varchar2_table(241) := '                                                                                   '||wwv_flow.LF||
-'          AND c.';
-wwv_flow_imp.g_varchar2_table(242) := 'TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                                           ';
-wwv_flow_imp.g_varchar2_table(243) := '                                                                                              '||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(244) := '     AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                                           ';
-wwv_flow_imp.g_varchar2_table(245) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(246) := '     '||wwv_flow.LF||
-'      WHERE                                                                                   ';
-wwv_flow_imp.g_varchar2_table(247) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(248) := '                '||wwv_flow.LF||
-'          KEYS.GRAPH_NAME = GRAPHNAME                                              ';
-wwv_flow_imp.g_varchar2_table(249) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(250) := '                           '||wwv_flow.LF||
-'          AND KEYS.OWNER = GRAPHOWNER                                   ';
-wwv_flow_imp.g_varchar2_table(251) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(252) := '                                      '||wwv_flow.LF||
-'          AND ELEMENTS.ELEMENT_KIND = ''EDGE''                 ';
-wwv_flow_imp.g_varchar2_table(253) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(254) := '                                                 '||wwv_flow.LF||
-'      ORDER BY                                    ';
-wwv_flow_imp.g_varchar2_table(255) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(256) := '                                                            '||wwv_flow.LF||
-'          KEYS.ELEMENT_NAME,           ';
-wwv_flow_imp.g_varchar2_table(257) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(258) := '                                                                       '||wwv_flow.LF||
-'          c.COLUMN_ID; '||wwv_flow.LF||
-' '||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(259) := '    FOR IDX1 IN 1..EDGE_ELEMENT_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF IDX1 = 1 THEN'||wwv_flow.LF||
-'          P1 := 1;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(260) := '   EDGE_KEYS_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          EDGE_KEYS_FOR_EACH_EDGE(P1) := EDGE_';
-wwv_flow_imp.g_varchar2_table(261) := 'KEYS(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          IF EDGE_ELEMENT_NAMES(IDX1) = EDGE_ELEMEN';
-wwv_flow_imp.g_varchar2_table(262) := 'T_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            EDGE_KEYS_FOR_EACH_EDGE(P1) := EDGE_KEYS(IDX1);'||wwv_flow.LF||
-'            P1 :=';
-wwv_flow_imp.g_varchar2_table(263) := ' P1 + 1;'||wwv_flow.LF||
-'          ELSE'||wwv_flow.LF||
-'            EDGE_TO_KEYS_TABLE(EDGE_ELEMENT_NAMES(IDX1 - 1)) := EDGE_KEYS_FO';
-wwv_flow_imp.g_varchar2_table(264) := 'R_EACH_EDGE;'||wwv_flow.LF||
-'            P1 := 1;'||wwv_flow.LF||
-'            EDGE_KEYS_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(265) := '         EDGE_KEYS_FOR_EACH_EDGE(P1) := EDGE_KEYS(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'          END IF;';
-wwv_flow_imp.g_varchar2_table(266) := ''||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        IF IDX1 = EDGE_ELEMENT_NAMES.COUNT THEN'||wwv_flow.LF||
-'          EDGE_TO_KEYS_TABLE(EDGE_';
-wwv_flow_imp.g_varchar2_table(267) := 'ELEMENT_NAMES(IDX1)) := EDGE_KEYS_FOR_EACH_EDGE;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END LOOP;'||wwv_flow.LF||
-'    END IF;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'    S';
-wwv_flow_imp.g_varchar2_table(268) := 'ELECT'||wwv_flow.LF||
-'      OBJECT_NAME,'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_NAME, '||wwv_flow.LF||
-'      ELEM_LABELS.LABEL_NAME,'||wwv_flow.LF||
-'      LABEL_PRO';
-wwv_flow_imp.g_varchar2_table(269) := 'PERTIES.PROPERTY_NAME,'||wwv_flow.LF||
-'      COLUMN_NAME,'||wwv_flow.LF||
-'      PROP_DEFINITIONS.COLUMN_EXPR '||wwv_flow.LF||
-'      BULK COLLECT INT';
-wwv_flow_imp.g_varchar2_table(270) := 'O OBJECT_NAMES,'||wwv_flow.LF||
-'      ELEMENTNAMES,'||wwv_flow.LF||
-'      LABELS,'||wwv_flow.LF||
-'      PROPERTY_NAMES,'||wwv_flow.LF||
-'      COLUMN_NAMES,'||wwv_flow.LF||
-'      CO';
-wwv_flow_imp.g_varchar2_table(271) := 'LUMN_EXPRESSIONS'||wwv_flow.LF||
-'    FROM'||wwv_flow.LF||
-'      SYS.ALL_PG_ELEMENTS         ELEMENTS'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_ELEM';
-wwv_flow_imp.g_varchar2_table(272) := 'ENT_LABELS ELEM_LABELS'||wwv_flow.LF||
-'      ON (ELEMENTS.ELEMENT_NAME = ELEM_LABELS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ELEMENTS';
-wwv_flow_imp.g_varchar2_table(273) := '.OWNER = ELEM_LABELS.OWNER'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = ELEM_LABELS.GRAPH_NAME)'||wwv_flow.LF||
-'      LEFT JOIN S';
-wwv_flow_imp.g_varchar2_table(274) := 'YS.ALL_PG_LABEL_PROPERTIES LABEL_PROPERTIES'||wwv_flow.LF||
-'      ON (ELEM_LABELS.LABEL_NAME = LABEL_PROPERTIES.LABE';
-wwv_flow_imp.g_varchar2_table(275) := 'L_NAME'||wwv_flow.LF||
-'      AND ELEM_LABELS.OWNER = LABEL_PROPERTIES.OWNER'||wwv_flow.LF||
-'      AND ELEM_LABELS.GRAPH_NAME = LABEL';
-wwv_flow_imp.g_varchar2_table(276) := '_PROPERTIES.GRAPH_NAME)'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_PROP_DEFINITIONS PROP_DEFINITIONS'||wwv_flow.LF||
-'      ON (PROP_';
-wwv_flow_imp.g_varchar2_table(277) := 'DEFINITIONS.PROPERTY_NAME = LABEL_PROPERTIES.PROPERTY_NAME'||wwv_flow.LF||
-'      AND PROP_DEFINITIONS.ELEMENT_NAME =';
-wwv_flow_imp.g_varchar2_table(278) := ' ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND PROP_DEFINITIONS.OWNER = ELEMENTS.OWNER'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NA';
-wwv_flow_imp.g_varchar2_table(279) := 'ME = PROP_DEFINITIONS.GRAPH_NAME)'||wwv_flow.LF||
-'    WHERE'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_KIND = ELEMENT_TYPE'||wwv_flow.LF||
-'      AND ELE';
-wwv_flow_imp.g_varchar2_table(280) := 'MENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'      AND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
-'    ORDER BY'||wwv_flow.LF||
-'      OBJECT_NAME,'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(281) := '     ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
-'      ELEM_LABELS.LABEL_NAME,'||wwv_flow.LF||
-'      LABEL_PROPERTIES.PROPERTY_NAME;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(282) := ' FOR IDX1 IN 1..OBJECT_NAMES.COUNT LOOP'||wwv_flow.LF||
-'      IF IDX1 = 1 OR OBJECT_NAMES(IDX1) != OBJECT_NAMES(IDX1';
-wwv_flow_imp.g_varchar2_table(283) := ' - 1) THEN'||wwv_flow.LF||
-'        IF IDX1 != 1 THEN'||wwv_flow.LF||
-'          OBJECT_TO_ELEMENTS(OBJECT_NAMES(IDX1 - 1)) := ELEMENT';
-wwv_flow_imp.g_varchar2_table(284) := 'S_FOR_EACH_OBJECT;'||wwv_flow.LF||
-'          ELEMENT_TABLE_COLUMN_NAME(ELEMENTNAMES(IDX1 - 1)) := COLUMN_NAMES_FOR_E';
-wwv_flow_imp.g_varchar2_table(285) := 'ACH_ELEMENT;'||wwv_flow.LF||
-'          ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(IDX1 - 1)) := PROPERTY_NAMES_FOR_EAC';
-wwv_flow_imp.g_varchar2_table(286) := 'H_ELEMENT;'||wwv_flow.LF||
-'          COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1 - 1)) := COLUMN_EXPRESSIONS_FOR_EACH_E';
-wwv_flow_imp.g_varchar2_table(287) := 'LEMENT;'||wwv_flow.LF||
-'          ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1 - 1)) := LABELS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        END ';
-wwv_flow_imp.g_varchar2_table(288) := 'IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        COLUMN_NAMES_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EAC';
-wwv_flow_imp.g_varchar2_table(289) := 'H_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.delet';
-wwv_flow_imp.g_varchar2_table(290) := 'e;'||wwv_flow.LF||
-'        LABELS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        ELEMENTS_FOR_EACH_OBJECT := NE';
-wwv_flow_imp.g_varchar2_table(291) := 'W STRING_LIST_TYPE();'||wwv_flow.LF||
-'        COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(292) := ' P1 := 1;'||wwv_flow.LF||
-'        P2 := 1;'||wwv_flow.LF||
-'        P3 := 1;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAM';
-wwv_flow_imp.g_varchar2_table(293) := 'ES(IDX1);'||wwv_flow.LF||
-'        IF PROPERTY_NAMES(IDX1) IS NOT NULL AND NOT PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXE';
-wwv_flow_imp.g_varchar2_table(294) := 'D_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT(P1) := PROPE';
-wwv_flow_imp.g_varchar2_table(295) := 'RTY_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING(PROPERTY_NAMES(IDX1)) :';
-wwv_flow_imp.g_varchar2_table(296) := '= PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(297) := ' COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := COLUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        ELEME';
-wwv_flow_imp.g_varchar2_table(298) := 'NTS_FOR_EACH_OBJECT(P2) := ELEMENTNAMES(IDX1);'||wwv_flow.LF||
-'        LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1); ';
-wwv_flow_imp.g_varchar2_table(299) := ''||wwv_flow.LF||
-'        P1 := P1 + 1;'||wwv_flow.LF||
-'        P2 := P2 + 1;'||wwv_flow.LF||
-'        P3 := P3 + 1;'||wwv_flow.LF||
-'      ELSIF ELEMENTNAMES(IDX1) = ';
-wwv_flow_imp.g_varchar2_table(300) := 'ELEMENTNAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        IF PROPERTY_NAMES(IDX1) IS NOT NULL AND PROPERTY_NAMES(IDX1) !=';
-wwv_flow_imp.g_varchar2_table(301) := ' PROPERTY_NAMES(IDX1-1) AND NOT PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NA';
-wwv_flow_imp.g_varchar2_table(302) := 'MES(IDX1)) THEN'||wwv_flow.LF||
-'          COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERT';
-wwv_flow_imp.g_varchar2_table(303) := 'Y_NAMES_FOR_EACH_ELEMENT(P1) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDE';
-wwv_flow_imp.g_varchar2_table(304) := 'XED_BY_STRING(PROPERTY_NAMES(IDX1)) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          COLUMN_EXPRESSIONS_FOR_EACH_E';
-wwv_flow_imp.g_varchar2_table(305) := 'LEMENT(P1) := COLUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'        IF LABELS(ID';
-wwv_flow_imp.g_varchar2_table(306) := 'X1) != LABELS_FOR_EACH_ELEMENT(P3 -1) THEN'||wwv_flow.LF||
-'          LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1);'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(307) := '        P3 := P3 + 1;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      ELSE        '||wwv_flow.LF||
-'        ELEMENTS_FOR_EACH_OBJECT(P2) := ELE';
-wwv_flow_imp.g_varchar2_table(308) := 'MENTNAMES(IDX1);'||wwv_flow.LF||
-'        P2 := P2 + 1;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        ELEMENT_TABLE_COLUMN_NAME(ELEMENTNAMES(IDX1 - 1)) :=';
-wwv_flow_imp.g_varchar2_table(309) := ' COLUMN_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(IDX1 - 1)) := PROPE';
-wwv_flow_imp.g_varchar2_table(310) := 'RTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1 - 1)) := COLUMN_EXPRESS';
-wwv_flow_imp.g_varchar2_table(311) := 'IONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1 - 1)) := LABELS_FOR_EACH_ELEMENT;';
-wwv_flow_imp.g_varchar2_table(312) := ''||wwv_flow.LF||
-'        COLUMN_NAMES_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EACH_EL';
-wwv_flow_imp.g_varchar2_table(313) := 'EMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.delete;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(314) := '       COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        LABELS_FOR_EACH_ELEMEN';
-wwv_flow_imp.g_varchar2_table(315) := 'T := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        P1 := 1;'||wwv_flow.LF||
-'        P3 := 1;'||wwv_flow.LF||
-'        IF  PROPERTY_NAMES(IDX1) IS N';
-wwv_flow_imp.g_varchar2_table(316) := 'OT NULL AND NOT PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(317) := '          COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH';
-wwv_flow_imp.g_varchar2_table(318) := '_ELEMENT(P1) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING(PR';
-wwv_flow_imp.g_varchar2_table(319) := 'OPERTY_NAMES(IDX1)) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := CO';
-wwv_flow_imp.g_varchar2_table(320) := 'LUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'        LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1);'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(321) := ' P1 := P1 + 1;'||wwv_flow.LF||
-'        P3 := P3 + 1;'||wwv_flow.LF||
-'      END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      IF IDX1 = OBJECT_NAMES.COUNT THEN'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(322) := 'OBJECT_TO_ELEMENTS(OBJECT_NAMES(IDX1)) := ELEMENTS_FOR_EACH_OBJECT;'||wwv_flow.LF||
-'        ELEMENT_TABLE_COLUMN_NAM';
-wwv_flow_imp.g_varchar2_table(323) := 'E(ELEMENTNAMES(IDX1)) := COLUMN_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TABLE_PROPERTY_NAME(ELEMENTN';
-wwv_flow_imp.g_varchar2_table(324) := 'AMES(IDX1)) := PROPERTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1)) :';
-wwv_flow_imp.g_varchar2_table(325) := '= COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1)) := LABELS_FOR_E';
-wwv_flow_imp.g_varchar2_table(326) := 'ACH_ELEMENT;'||wwv_flow.LF||
-'      END IF;'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    SELECT'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
-'      KEYS.COLUMN_';
-wwv_flow_imp.g_varchar2_table(327) := 'NAME BULK COLLECT INTO ELEMENTNAMES,'||wwv_flow.LF||
-'      KEY_LIST'||wwv_flow.LF||
-'    FROM'||wwv_flow.LF||
-'      SYS.ALL_PG_KEYS     KEYS'||wwv_flow.LF||
-'      IN';
-wwv_flow_imp.g_varchar2_table(328) := 'NER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'      ON (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ';
-wwv_flow_imp.g_varchar2_table(329) := 'KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
-'      AND KEYS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
-'    WHERE'||wwv_flow.LF||
-'      ELEMENT';
-wwv_flow_imp.g_varchar2_table(330) := '_KIND = ELEMENT_TYPE'||wwv_flow.LF||
-'      AND KEYS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'      AND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(331) := ' ORDER BY'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
-'      KEYS.COLUMN_NAME;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'    FOR IDX1 IN 1..ELEMENTNAMES.COU';
-wwv_flow_imp.g_varchar2_table(332) := 'NT LOOP'||wwv_flow.LF||
-'      IF IDX1 = 1 THEN'||wwv_flow.LF||
-'        KEY_LIST_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(333) := 'P1 := 1;'||wwv_flow.LF||
-'        KEY_LIST_FOR_EACH_ELEMENT(P1) := KEY_LIST(IDX1);'||wwv_flow.LF||
-'        P1 := P1 + 1;'||wwv_flow.LF||
-'      ELSE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(334) := '       IF ELEMENTNAMES(IDX1) = ELEMENTNAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'          KEY_LIST_FOR_EACH_ELEMENT(P1) :';
-wwv_flow_imp.g_varchar2_table(335) := '= KEY_LIST(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          ELEMENT_TO_KEY_LIST_TABLE(ELEMENTNA';
-wwv_flow_imp.g_varchar2_table(336) := 'MES(IDX1 - 1)) := KEY_LIST_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'          KEY_LIST_FOR_EACH_ELEMENT := NEW STRING_LIST_';
-wwv_flow_imp.g_varchar2_table(337) := 'TYPE();'||wwv_flow.LF||
-'          P1 := 1;'||wwv_flow.LF||
-'          KEY_LIST_FOR_EACH_ELEMENT(P1) := KEY_LIST(IDX1);'||wwv_flow.LF||
-'          P1 :';
-wwv_flow_imp.g_varchar2_table(338) := '= P1 + 1;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      IF IDX1 = ELEMENTNAMES.COUNT THEN'||wwv_flow.LF||
-'        ELEMENT_TO_';
-wwv_flow_imp.g_varchar2_table(339) := 'KEY_LIST_TABLE(ELEMENTNAMES(IDX1)) := KEY_LIST_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'      END IF;'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    FO';
-wwv_flow_imp.g_varchar2_table(340) := 'R IDX1 IN 1..DB_TABLE_NAME_LIST.COUNT LOOP'||wwv_flow.LF||
-'      FOR IDX6 IN 1..OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIS';
-wwv_flow_imp.g_varchar2_table(341) := 'T(IDX1)).COUNT LOOP'||wwv_flow.LF||
-'        ELEMENT_NAME := OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1))(IDX6);'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(342) := '    INNER_PROPS_LABELS_STRING := ''JSON_OBJECT('';        '||wwv_flow.LF||
-'        FOR IDX2 IN 1..DB_TABLE_NAME_LIST.C';
-wwv_flow_imp.g_varchar2_table(343) := 'OUNT LOOP'||wwv_flow.LF||
-'          IF IDX1 = IDX2 THEN'||wwv_flow.LF||
-'            FOR IDX4 IN 1..ELEMENT_TABLE_PROPERTY_NAME(ELEME';
-wwv_flow_imp.g_varchar2_table(344) := 'NT_NAME).COUNT LOOP'||wwv_flow.LF||
-'              COLUMN_NAME := ELEMENT_TABLE_COLUMN_NAME(ELEMENT_NAME)(IDX4);'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(345) := '          COLUMN_EXPRESSION := COLUMN_EXPRESSION_LIST(ELEMENT_NAME)(IDX4);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'              IF COLUMN_';
-wwv_flow_imp.g_varchar2_table(346) := 'EXPRESSION IS NULL THEN'||wwv_flow.LF||
-'                INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(347) := '                                        || ''q''''['''||wwv_flow.LF||
-'                                             || EL';
-wwv_flow_imp.g_varchar2_table(348) := 'EMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'                                             || '']'''''''||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(349) := '                                             || '' VALUE '''||wwv_flow.LF||
-'                                          ';
-wwv_flow_imp.g_varchar2_table(350) := '   || ''x."'''||wwv_flow.LF||
-'                                             || COLUMN_NAME'||wwv_flow.LF||
-'                            ';
-wwv_flow_imp.g_varchar2_table(351) := '                 || ''"'';'||wwv_flow.LF||
-'                IF (IDX4 = ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT)';
-wwv_flow_imp.g_varchar2_table(352) := ' THEN'||wwv_flow.LF||
-'                  INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                     ';
-wwv_flow_imp.g_varchar2_table(353) := '                          || '' '';'||wwv_flow.LF||
-'                ELSE'||wwv_flow.LF||
-'                  INNER_PROPS_LABELS_STRING :';
-wwv_flow_imp.g_varchar2_table(354) := '= INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                               || '', '';'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(355) := 'END IF;'||wwv_flow.LF||
-'              ELSE'||wwv_flow.LF||
-'                INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(356) := '                                           || ''q''''['''||wwv_flow.LF||
-'                                             ||';
-wwv_flow_imp.g_varchar2_table(357) := ' ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'                                             || '']''';
-wwv_flow_imp.g_varchar2_table(358) := ''''''||wwv_flow.LF||
-'                                             || '' VALUE '''||wwv_flow.LF||
-'                                       ';
-wwv_flow_imp.g_varchar2_table(359) := '      || COLUMN_EXPRESSION'||wwv_flow.LF||
-'                                             || '''';'||wwv_flow.LF||
-'                IF (I';
-wwv_flow_imp.g_varchar2_table(360) := 'DX4 != ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
-'                  INNER_PROPS_LABELS_ST';
-wwv_flow_imp.g_varchar2_table(361) := 'RING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                               || '', '';'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(362) := '      END IF;'||wwv_flow.LF||
-'              END IF;'||wwv_flow.LF||
-'            END LOOP;'||wwv_flow.LF||
-'          END IF;'||wwv_flow.LF||
-'        END LOOP;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(363) := '  '||wwv_flow.LF||
-'        INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                  ';
-wwv_flow_imp.g_varchar2_table(364) := '   || '' NULL ON NULL RETURNING JSON) AS properties '';'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'        LABELS_STRING := '''';'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(365) := 'FOR IDX4 IN 1..ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'          LABELS_STRING := LABELS_STRING'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(366) := '                          || ''q''''['''||wwv_flow.LF||
-'                           || ELEMENT_TO_LABELS(ELEMENT_NAME)(ID';
-wwv_flow_imp.g_varchar2_table(367) := 'X4)'||wwv_flow.LF||
-'                           || '']'''''';'||wwv_flow.LF||
-'          IF (IDX4 != ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT';
-wwv_flow_imp.g_varchar2_table(368) := ') THEN'||wwv_flow.LF||
-'            LABELS_STRING := LABELS_STRING'||wwv_flow.LF||
-'                             || '', '';'||wwv_flow.LF||
-'          EN';
-wwv_flow_imp.g_varchar2_table(369) := 'D IF;'||wwv_flow.LF||
-'        END LOOP;'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'        INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(370) := '                                 || '', JSON_ARRAY('''||wwv_flow.LF||
-'                                     || LABELS_S';
-wwv_flow_imp.g_varchar2_table(371) := 'TRING'||wwv_flow.LF||
-'                                     || '' returning JSON) AS labels'';'||wwv_flow.LF||
-'     '||wwv_flow.LF||
-'        JSON_CONDI';
-wwv_flow_imp.g_varchar2_table(372) := 'TION_STRING := '''';'||wwv_flow.LF||
-'        FOR IDX5 IN 1..ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(373) := '   '||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          JSON_CONDITION_STRING := JSON_CONDITION_STRING'||wwv_flow.LF||
-'                            ';
-wwv_flow_imp.g_varchar2_table(374) := '       || ''X."'''||wwv_flow.LF||
-'                                   || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5)'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(375) := '                                   || ''"= JSON_QUERY('''||wwv_flow.LF||
-'                                   || GRAPH_V';
-wwv_flow_imp.g_varchar2_table(376) := 'IZ_TABLE_NAME'||wwv_flow.LF||
-'                                   || ''.'''||wwv_flow.LF||
-'                                   || VERTEX';
-wwv_flow_imp.g_varchar2_table(377) := '_ID_COL_NAME'||wwv_flow.LF||
-'                                   || '', ''''$.KEY_VALUE."'''||wwv_flow.LF||
-'                             ';
-wwv_flow_imp.g_varchar2_table(378) := '      || REPLACE(REPLACE(ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5), '''''''', ''''''''''''), ''\'', ''\\'')'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(379) := '                                 || ''"'''' RETURNING JSON)'';'||wwv_flow.LF||
-'          IF (IDX5 != ELEMENT_TO_KEY_LIST';
-wwv_flow_imp.g_varchar2_table(380) := '_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
-'            JSON_CONDITION_STRING := JSON_CONDITION_STRING'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(381) := '                             || '' AND '';'||wwv_flow.LF||
-'          END IF;'||wwv_flow.LF||
-'        END LOOP;'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'        IF ELE';
-wwv_flow_imp.g_varchar2_table(382) := 'MENT_TYPE = ''EDGE'' THEN'||wwv_flow.LF||
-'          EDGE_INNER_PROJECTION_STRING := '''';'||wwv_flow.LF||
-'          FOR IDX4 IN 1..SRC_E';
-wwv_flow_imp.g_varchar2_table(383) := 'DGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'            IF SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COU';
-wwv_flow_imp.g_varchar2_table(384) := 'NT = 1 THEN'||wwv_flow.LF||
-'              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-'              SRC';
-wwv_flow_imp.g_varchar2_table(385) := '_PROJECTED_COL_ALIAS := ''__SRC_COL_'' || IDX4;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'            EDGE_INNER_PROJECTION_';
-wwv_flow_imp.g_varchar2_table(386) := 'STRING := EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
-'                                            || '', X."'''||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(387) := '                                      || SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(388) := '                             || ''" AS "'''||wwv_flow.LF||
-'                                            || SRC_PROJECTE';
-wwv_flow_imp.g_varchar2_table(389) := 'D_COL_ALIAS'||wwv_flow.LF||
-'                                            || ''"'';'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-'          FOR ID';
-wwv_flow_imp.g_varchar2_table(390) := 'X4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'            IF DEST_EDGE_COL_NAME_TABLE(E';
-wwv_flow_imp.g_varchar2_table(391) := 'LEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
-'              DEST_PROJECTED_COL_ALIAS := ''__DST_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(392) := '              DEST_PROJECTED_COL_ALIAS := ''__DST_COL_'' || IDX4;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'            EDGE';
-wwv_flow_imp.g_varchar2_table(393) := '_INNER_PROJECTION_STRING := EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
-'                                           ';
-wwv_flow_imp.g_varchar2_table(394) := ' || '', X."'''||wwv_flow.LF||
-'                                            || DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(ID';
-wwv_flow_imp.g_varchar2_table(395) := 'X4)'||wwv_flow.LF||
-'                                            || ''" AS "'''||wwv_flow.LF||
-'                                        ';
-wwv_flow_imp.g_varchar2_table(396) := '    || DEST_PROJECTED_COL_ALIAS'||wwv_flow.LF||
-'                                            || ''"'';'||wwv_flow.LF||
-'          END LO';
-wwv_flow_imp.g_varchar2_table(397) := 'OP;          '||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          INNER_QUERY_STRING := ''SELECT '''||wwv_flow.LF||
-'                                |';
-wwv_flow_imp.g_varchar2_table(398) := '| INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                || EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(399) := '                        || '' FROM "'''||wwv_flow.LF||
-'                                || DB_OBJECT_OWNER_LIST(IDX1)'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(400) := '                               || ''"."'''||wwv_flow.LF||
-'                                || DB_TABLE_NAME_LIST(IDX1)'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(401) := '                                || ''" X '''||wwv_flow.LF||
-'                                || ''WHERE JSON_VALUE("'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(402) := '                              || GRAPH_VIZ_TABLE_NAME'||wwv_flow.LF||
-'                                || ''"."'''||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(403) := '                           || VERTEX_ID_COL_NAME'||wwv_flow.LF||
-'                                || ''", ''''$.ELEM_TAB';
-wwv_flow_imp.g_varchar2_table(404) := 'LE'''') = q''''['''||wwv_flow.LF||
-'                                || ELEMENT_NAME'||wwv_flow.LF||
-'                                || '']''';
-wwv_flow_imp.g_varchar2_table(405) := ''' AND '''||wwv_flow.LF||
-'                                || JSON_CONDITION_STRING;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'          SRC_JSON_STRING := '''';'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(406) := '          FOR IDX2 IN 1..VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(407) := '       SRC_JSON_STRING := SRC_JSON_STRING'||wwv_flow.LF||
-'                               || ''q''''['''||wwv_flow.LF||
-'                 ';
-wwv_flow_imp.g_varchar2_table(408) := '              || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)'||wwv_flow.LF||
-'                  ';
-wwv_flow_imp.g_varchar2_table(409) := '             || '']'''' value src_table."'''||wwv_flow.LF||
-'                               || VERTEX_KEYS_TABLE(SRC_VERT';
-wwv_flow_imp.g_varchar2_table(410) := 'EX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)'||wwv_flow.LF||
-'                               || ''"'';'||wwv_flow.LF||
-'            IF (IDX2 !';
-wwv_flow_imp.g_varchar2_table(411) := '= VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN'||wwv_flow.LF||
-'              SRC_JSON_STRI';
-wwv_flow_imp.g_varchar2_table(412) := 'NG := SRC_JSON_STRING'||wwv_flow.LF||
-'                                 || '', '';'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'          END LO';
-wwv_flow_imp.g_varchar2_table(413) := 'OP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'          DEST_JSON_STRING := '''';'||wwv_flow.LF||
-'          FOR IDX3 IN 1..VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NA';
-wwv_flow_imp.g_varchar2_table(414) := 'ME_TABLE(ELEMENT_NAME)).COUNT LOOP'||wwv_flow.LF||
-'            DEST_JSON_STRING := DEST_JSON_STRING'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(415) := '                || ''q''''['''||wwv_flow.LF||
-'                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_';
-wwv_flow_imp.g_varchar2_table(416) := 'TABLE(ELEMENT_NAME))(IDX3)'||wwv_flow.LF||
-'                                || '']'''' value dst_table."'''||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(417) := '                  || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)'||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(418) := '                   || ''"'';'||wwv_flow.LF||
-'            IF (IDX3 != VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEM';
-wwv_flow_imp.g_varchar2_table(419) := 'ENT_NAME)).COUNT) THEN'||wwv_flow.LF||
-'              DEST_JSON_STRING := DEST_JSON_STRING'||wwv_flow.LF||
-'                          ';
-wwv_flow_imp.g_varchar2_table(420) := '        || '', '';'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          OUTER_SELECT_STRING :=';
-wwv_flow_imp.g_varchar2_table(421) := ' ''SELECT p.properties, p.labels, q''''['''||wwv_flow.LF||
-'                                 || SRC_VERTEX_TAB_NAME_TABLE';
-wwv_flow_imp.g_varchar2_table(422) := '(ELEMENT_NAME)'||wwv_flow.LF||
-'                                 || '']'''' || json_object('''||wwv_flow.LF||
-'                           ';
-wwv_flow_imp.g_varchar2_table(423) := '      || SRC_JSON_STRING'||wwv_flow.LF||
-'                                 || '') as source, q''''['''||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(424) := '              || DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'                                 || '']'''' |';
-wwv_flow_imp.g_varchar2_table(425) := '| json_object('''||wwv_flow.LF||
-'                                 || DEST_JSON_STRING'||wwv_flow.LF||
-'                               ';
-wwv_flow_imp.g_varchar2_table(426) := '  || '') as target '';               '||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          SRC_OUTER_JOIN_STRING := '''';'||wwv_flow.LF||
-'          FOR ';
-wwv_flow_imp.g_varchar2_table(427) := 'IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'            IF SRC_EDGE_COL_NAME_TABLE(E';
-wwv_flow_imp.g_varchar2_table(428) := 'LEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
-'              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(429) := '             SRC_PROJECTED_COL_ALIAS := ''__SRC_COL_'' || IDX4;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'            SRC_OU';
-wwv_flow_imp.g_varchar2_table(430) := 'TER_JOIN_STRING := SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                                     || ''p."'''||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(431) := '                        || SRC_PROJECTED_COL_ALIAS'||wwv_flow.LF||
-'                                     || ''" = src_';
-wwv_flow_imp.g_varchar2_table(432) := 'table."'''||wwv_flow.LF||
-'                                     || SRC_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(433) := '                                || ''"'';'||wwv_flow.LF||
-'            IF (IDX4 != SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME';
-wwv_flow_imp.g_varchar2_table(434) := ').COUNT) THEN'||wwv_flow.LF||
-'              SRC_OUTER_JOIN_STRING := SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                         ';
-wwv_flow_imp.g_varchar2_table(435) := '              || '' AND '';'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          DEST_OUTER_JO';
-wwv_flow_imp.g_varchar2_table(436) := 'IN_STRING := '''';'||wwv_flow.LF||
-'          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(437) := '    IF DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
-'              DEST_PROJECTED_COL_ALIAS ';
-wwv_flow_imp.g_varchar2_table(438) := ':= ''__DST_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-'              DEST_PROJECTED_COL_ALIAS := ''__DST_COL_'' || IDX4;'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(439) := '         END IF;'||wwv_flow.LF||
-'            DEST_OUTER_JOIN_STRING := DEST_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                      ';
-wwv_flow_imp.g_varchar2_table(440) := '                || ''p."'''||wwv_flow.LF||
-'                                      || DEST_PROJECTED_COL_ALIAS'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(441) := '                             || ''" = dst_table."'''||wwv_flow.LF||
-'                                      || DEST_VERT';
-wwv_flow_imp.g_varchar2_table(442) := 'EX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'                                      || ''"'';'||wwv_flow.LF||
-'            IF (';
-wwv_flow_imp.g_varchar2_table(443) := 'IDX4 != DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
-'              DEST_OUTER_JOIN_STRING := D';
-wwv_flow_imp.g_varchar2_table(444) := 'EST_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                                        || '' AND '';'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(445) := '    END LOOP;          '||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          LATERAL_QUERY_STRING := OUTER_SELECT_STRING'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(446) := '                       || ''FROM ('''||wwv_flow.LF||
-'                                  || INNER_QUERY_STRING'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(447) := '                         || '') p '''||wwv_flow.LF||
-'                                  || ''JOIN "'''||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(448) := '               || SRC_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'                                  || ''';
-wwv_flow_imp.g_varchar2_table(449) := '"."'''||wwv_flow.LF||
-'                                  || SRC_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(450) := '                   || ''" src_table ON ('''||wwv_flow.LF||
-'                                  || SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(451) := '                                  || '') '''||wwv_flow.LF||
-'                                  || ''JOIN "'''||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(452) := '                      || DEST_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'                              ';
-wwv_flow_imp.g_varchar2_table(453) := '    || ''"."'''||wwv_flow.LF||
-'                                  || DEST_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(454) := '                            || ''" dst_table ON ('''||wwv_flow.LF||
-'                                  || DEST_OUTER_JO';
-wwv_flow_imp.g_varchar2_table(455) := 'IN_STRING'||wwv_flow.LF||
-'                                  || '')'';'||wwv_flow.LF||
-'        ELSE                   '||wwv_flow.LF||
-'          INNER_';
-wwv_flow_imp.g_varchar2_table(456) := 'QUERY_STRING := ''SELECT '''||wwv_flow.LF||
-'                                || INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(457) := '                   || '' FROM "'''||wwv_flow.LF||
-'                                || DB_OBJECT_OWNER_LIST(IDX1)'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(458) := '                          || ''"."'''||wwv_flow.LF||
-'                                || DB_TABLE_NAME_LIST(IDX1)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(459) := '                           || ''" X '''||wwv_flow.LF||
-'                                || ''WHERE JSON_VALUE("'''||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(460) := '                         || GRAPH_VIZ_TABLE_NAME'||wwv_flow.LF||
-'                                || ''"."'''||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(461) := '                      || VERTEX_ID_COL_NAME'||wwv_flow.LF||
-'                                || ''", ''''$.ELEM_TABLE'''')';
-wwv_flow_imp.g_varchar2_table(462) := ' = q''''['''||wwv_flow.LF||
-'                                || ELEMENT_NAME'||wwv_flow.LF||
-'                                || '']'''' AND';
-wwv_flow_imp.g_varchar2_table(463) := ' '''||wwv_flow.LF||
-'                                || JSON_CONDITION_STRING;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'          LATERAL_QUERY_STRING := ''SEL';
-wwv_flow_imp.g_varchar2_table(464) := 'ECT p.properties, p.labels FROM ('''||wwv_flow.LF||
-'                                  || INNER_QUERY_STRING'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(465) := '                         || '') p'';'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        ALL_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(466) := '                         || LATERAL_QUERY_STRING'||wwv_flow.LF||
-'                            || '' '';'||wwv_flow.LF||
-'        IF (IDX';
-wwv_flow_imp.g_varchar2_table(467) := '1 = DB_TABLE_NAME_LIST.COUNT AND IDX6 = OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1)).COUNT) THEN'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(468) := '       ALL_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
-'                              || '' '';'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(469) := '     ALL_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
-'                              || ''UNION ALL '';'||wwv_flow.LF||
-'        END';
-wwv_flow_imp.g_varchar2_table(470) := ' IF;'||wwv_flow.LF||
-'      END LOOP;'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    RETURN ALL_QUERY_STRING;'||wwv_flow.LF||
-'  END PROPERTIES_LATERAL_STRING_AS_';
-wwv_flow_imp.g_varchar2_table(471) := 'CLOB;'||wwv_flow.LF||
-' -----------------------------------------------------------------------------'||wwv_flow.LF||
-' -- BUILD_JSON ';
-wwv_flow_imp.g_varchar2_table(472) := '- prepare JSON result from vertex_id and edge_id tables'||wwv_flow.LF||
-' -------------------------------------------';
-wwv_flow_imp.g_varchar2_table(473) := '----------------------------------'||wwv_flow.LF||
-' FUNCTION BUILD_JSON_USING_JSON_ARRAY('||wwv_flow.LF||
-'    VERTEX_TABLE JSON_ARRA';
-wwv_flow_imp.g_varchar2_table(474) := 'Y_T,'||wwv_flow.LF||
-'    EDGE_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
-'    COUNTER NUMBER,'||wwv_flow.LF||
-'    GRAPHNAME VARCHAR2,'||wwv_flow.LF||
-'    GRAPHOWNER VARCHAR';
-wwv_flow_imp.g_varchar2_table(475) := '2'||wwv_flow.LF||
-'  ) RETURN CLOB '||wwv_flow.LF||
-'    ACCESSIBLE BY (FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY)'||wwv_flow.LF||
-'    IS'||wwv_flow.LF||
-'    VER';
-wwv_flow_imp.g_varchar2_table(476) := 'TEX_UNDERLYING_DB_NAME_LIST          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_DB_TABLE_OBJECT_OWNER         ';
-wwv_flow_imp.g_varchar2_table(477) := '   SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_UNDERLYING_DB_NAME_LIST            SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_';
-wwv_flow_imp.g_varchar2_table(478) := 'DB_TABLE_OBJECT_OWNER              SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    QUERY_STRING                           ';
-wwv_flow_imp.g_varchar2_table(479) := ' CLOB;'||wwv_flow.LF||
-'    LATERALSTRING                           CLOB;'||wwv_flow.LF||
-'    SUB_QUERY_STRING                       ';
-wwv_flow_imp.g_varchar2_table(480) := ' CLOB;'||wwv_flow.LF||
-'    VERTEX                                  JSON;'||wwv_flow.LF||
-'    EDGE                                   ';
-wwv_flow_imp.g_varchar2_table(481) := ' JSON;'||wwv_flow.LF||
-'    JSON_FILE                               CLOB;'||wwv_flow.LF||
-'    DISTINCT_VERTEX_TABLE                  ';
-wwv_flow_imp.g_varchar2_table(482) := ' JSON;'||wwv_flow.LF||
-'    DISTINCT_EDGE_TABLE                     JSON;'||wwv_flow.LF||
-'    TEMP_JSON                              ';
-wwv_flow_imp.g_varchar2_table(483) := ' JSON;'||wwv_flow.LF||
-'  BEGIN '||wwv_flow.LF||
-'    SELECT'||wwv_flow.LF||
-'      DISTINCT ELEMENTS.OBJECT_NAME,'||wwv_flow.LF||
-'      ELEMENTS.OBJECT_OWNER BULK COL';
-wwv_flow_imp.g_varchar2_table(484) := 'LECT INTO VERTEX_UNDERLYING_DB_NAME_LIST,'||wwv_flow.LF||
-'      VERTEX_DB_TABLE_OBJECT_OWNER'||wwv_flow.LF||
-'    FROM'||wwv_flow.LF||
-'      SYS.ALL_';
-wwv_flow_imp.g_varchar2_table(485) := 'PG_ELEMENTS         ELEMENTS'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_ELEMENT_LABELS ELEM_LABELS'||wwv_flow.LF||
-'      ON (ELEMENT';
-wwv_flow_imp.g_varchar2_table(486) := 'S.ELEMENT_NAME = ELEM_LABELS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ELEMENTS.OWNER = ELEM_LABELS.OWNER'||wwv_flow.LF||
-'      AND ELE';
-wwv_flow_imp.g_varchar2_table(487) := 'MENTS.GRAPH_NAME = ELEM_LABELS.GRAPH_NAME )'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_LABEL_PROPERTIES LABEL_PROPER';
-wwv_flow_imp.g_varchar2_table(488) := 'TIES'||wwv_flow.LF||
-'      ON (ELEM_LABELS.LABEL_NAME = LABEL_PROPERTIES.LABEL_NAME'||wwv_flow.LF||
-'      AND ELEM_LABELS.OWNER = LA';
-wwv_flow_imp.g_varchar2_table(489) := 'BEL_PROPERTIES.OWNER'||wwv_flow.LF||
-'      AND ELEM_LABELS.GRAPH_NAME = LABEL_PROPERTIES.GRAPH_NAME)'||wwv_flow.LF||
-'      LEFT JOIN';
-wwv_flow_imp.g_varchar2_table(490) := ' SYS.ALL_PG_PROP_DEFINITIONS PROP_DEFINITIONS'||wwv_flow.LF||
-'      ON (PROP_DEFINITIONS.PROPERTY_NAME = LABEL_PROPE';
-wwv_flow_imp.g_varchar2_table(491) := 'RTIES.PROPERTY_NAME'||wwv_flow.LF||
-'      AND PROP_DEFINITIONS.ELEMENT_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND PROP_D';
-wwv_flow_imp.g_varchar2_table(492) := 'EFINITIONS.OWNER = ELEMENTS.OWNER'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = PROP_DEFINITIONS.GRAPH_NAME)'||wwv_flow.LF||
-'    W';
-wwv_flow_imp.g_varchar2_table(493) := 'HERE'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_KIND = ''VERTEX'''||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'      AND ELEM';
-wwv_flow_imp.g_varchar2_table(494) := 'ENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'    IF (VERTEX_TABLE.get_Size != 0) THEN'||wwv_flow.LF||
-'      TEMP_JSON := VERTEX_TABLE.';
-wwv_flow_imp.g_varchar2_table(495) := 'TO_JSON();'||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        JSON_ARRAYAGG(V_ID RETURNING JSON)'||wwv_flow.LF||
-'      INTO'||wwv_flow.LF||
-'        DISTINCT_VERTE';
-wwv_flow_imp.g_varchar2_table(496) := 'X_TABLE'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'        ('||wwv_flow.LF||
-'          SELECT DISTINCT'||wwv_flow.LF||
-'            V_ID'||wwv_flow.LF||
-'          FROM'||wwv_flow.LF||
-'            J';
-wwv_flow_imp.g_varchar2_table(497) := 'SON_TABLE ( TEMP_JSON, ''$[*]'''||wwv_flow.LF||
-'              COLUMNS ('||wwv_flow.LF||
-'                  V_ID JSON PATH ''$'''||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(498) := '     )'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'        );'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'      QUERY_STRING := ''WITH VERTICES AS ('';'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      LATERALS';
-wwv_flow_imp.g_varchar2_table(499) := 'TRING := DBMS_GVT.PROPERTIES_LATERAL_STRING_AS_CLOB(VERTEX_UNDERLYING_DB_NAME_LIST, VERTEX_DB_TABLE_';
-wwv_flow_imp.g_varchar2_table(500) := 'OBJECT_OWNER, ''VT'', ''V_ID'', GRAPHNAME, GRAPHOWNER, ''VERTEX'');'||wwv_flow.LF||
-'      SUB_QUERY_STRING := '''||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(501) := 'SELECT'||wwv_flow.LF||
-'            JSON_OBJECT (''''id'''' VALUE JSON_VALUE(VT.V_ID,'||wwv_flow.LF||
-'            ''''$.ELEM_TABLE'''') || JS';
-wwv_flow_imp.g_varchar2_table(502) := 'ON_QUERY(VT.V_ID,'||wwv_flow.LF||
-'            ''''$.KEY_VALUE''''),'||wwv_flow.LF||
-'            ''''properties'''' VALUE PROPERTIES_TABLE.PR';
-wwv_flow_imp.g_varchar2_table(503) := 'OPERTIES,'||wwv_flow.LF||
-'            ''''labels'''' VALUE PROPERTIES_TABLE.LABELS ABSENT ON NULL RETURNING JSON) AS VER';
-wwv_flow_imp.g_varchar2_table(504) := 'TEX'||wwv_flow.LF||
-'          FROM'||wwv_flow.LF||
-'            JSON_TABLE(:1  , ''''$[*]'''' COLUMNS(V_ID json path ''''$'''')) AS VT,'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(505) := '       LATERAL('''||wwv_flow.LF||
-'                          || LATERALSTRING'||wwv_flow.LF||
-'                          || '') PROPERTI';
-wwv_flow_imp.g_varchar2_table(506) := 'ES_TABLE '';'||wwv_flow.LF||
-'      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || SUB_QUERY_STRING;'||wwv_flow.LF||
-'      QUER';
-wwv_flow_imp.g_varchar2_table(507) := 'Y_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || '''||wwv_flow.LF||
-'        )'||wwv_flow.LF||
-'        SELECT'||wwv_flow.LF||
-'          JSON_ARRAYAGG';
-wwv_flow_imp.g_varchar2_table(508) := '(VERTEX RETURNING JSON)'||wwv_flow.LF||
-'        FROM'||wwv_flow.LF||
-'          VERTICES'';'||wwv_flow.LF||
-'      EXECUTE IMMEDIATE QUERY_STRING INTO ';
-wwv_flow_imp.g_varchar2_table(509) := 'VERTEX USING DISTINCT_VERTEX_TABLE;'||wwv_flow.LF||
-'    ELSE'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        JSON_ARRAY() INTO VERTEX;'||wwv_flow.LF||
-'    END';
-wwv_flow_imp.g_varchar2_table(510) := ' IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    SELECT'||wwv_flow.LF||
-'      DISTINCT ELEMENTS.OBJECT_NAME,'||wwv_flow.LF||
-'      ELEMENTS.OBJECT_OWNER BULK COLLECT INTO ';
-wwv_flow_imp.g_varchar2_table(511) := 'EDGE_UNDERLYING_DB_NAME_LIST,'||wwv_flow.LF||
-'      EDGE_DB_TABLE_OBJECT_OWNER'||wwv_flow.LF||
-'    FROM'||wwv_flow.LF||
-'      SYS.ALL_PG_ELEMENTS   ';
-wwv_flow_imp.g_varchar2_table(512) := '    ELEMENTS'||wwv_flow.LF||
-'      INNER JOIN SYS.ALL_PG_ELEMENT_LABELS ELEMENTS_LABELS'||wwv_flow.LF||
-'      ON (ELEMENTS.ELEMENT_N';
-wwv_flow_imp.g_varchar2_table(513) := 'AME = ELEMENTS_LABELS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = ELEMENTS_LABELS.GRAPH_NAME'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(514) := 'AND ELEMENTS.OWNER = ELEMENTS_LABELS.OWNER)'||wwv_flow.LF||
-'    WHERE'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_KIND = ''EDGE'''||wwv_flow.LF||
-'      AND';
-wwv_flow_imp.g_varchar2_table(515) := ' ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'      AND ELEMENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'    IF (EDGE_TABLE.get_Siz';
-wwv_flow_imp.g_varchar2_table(516) := 'e != 0) THEN'||wwv_flow.LF||
-'      TEMP_JSON := EDGE_TABLE.TO_JSON();'||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        JSON_ARRAYAGG(E_ID RETURN';
-wwv_flow_imp.g_varchar2_table(517) := 'ING JSON)'||wwv_flow.LF||
-'      INTO'||wwv_flow.LF||
-'        DISTINCT_EDGE_TABLE'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'        ('||wwv_flow.LF||
-'          SELECT DISTINCT'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(518) := '        E_ID'||wwv_flow.LF||
-'          FROM'||wwv_flow.LF||
-'            JSON_TABLE ( TEMP_JSON, ''$[*]'''||wwv_flow.LF||
-'              COLUMNS ('||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(519) := '             E_ID JSON PATH ''$'''||wwv_flow.LF||
-'              )'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'        );'||wwv_flow.LF||
-'      QUERY_STRING := ''WITH';
-wwv_flow_imp.g_varchar2_table(520) := ' EDGES AS ('||wwv_flow.LF||
-'            SELECT'||wwv_flow.LF||
-'              JSON_OBJECT(''''id'''' VALUE JSON_VALUE(ET.E_ID,'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(521) := '    ''''$.ELEM_TABLE'''') || JSON_QUERY(ET.E_ID,'||wwv_flow.LF||
-'              ''''$.KEY_VALUE''''),'||wwv_flow.LF||
-'              ''''source''';
-wwv_flow_imp.g_varchar2_table(522) := ''' value PROPERTIES_TABLE.SOURCE,'||wwv_flow.LF||
-'              ''''target'''' value PROPERTIES_TABLE.TARGET,'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(523) := '   ''''properties'''' VALUE PROPERTIES_TABLE.PROPERTIES,'||wwv_flow.LF||
-'              ''''labels'''' VALUE PROPERTIES_TABLE';
-wwv_flow_imp.g_varchar2_table(524) := '.LABELS ABSENT ON NULL RETURNING JSON ) AS EDGE'||wwv_flow.LF||
-'            FROM'||wwv_flow.LF||
-'              JSON_TABLE(:1  , ''''$[';
-wwv_flow_imp.g_varchar2_table(525) := '*]'''' COLUMNS(E_ID json path ''''$'''')) AS ET,'||wwv_flow.LF||
-'              LATERAL('';'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'      LATERALSTRING := DBMS_GV';
-wwv_flow_imp.g_varchar2_table(526) := 'T.PROPERTIES_LATERAL_STRING_AS_CLOB(EDGE_UNDERLYING_DB_NAME_LIST, EDGE_DB_TABLE_OBJECT_OWNER, ''ET'', ';
-wwv_flow_imp.g_varchar2_table(527) := '''E_ID'', GRAPHNAME, GRAPHOWNER, ''EDGE'');'||wwv_flow.LF||
-'      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || ';
-wwv_flow_imp.g_varchar2_table(528) := 'LATERALSTRING;'||wwv_flow.LF||
-'      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || '') PROPERTIES_TABLE) SELE';
-wwv_flow_imp.g_varchar2_table(529) := 'CT JSON_ARRAYAGG(EDGE RETURNING JSON) FROM EDGES'';'||wwv_flow.LF||
-'      EXECUTE IMMEDIATE QUERY_STRING INTO EDGE US';
-wwv_flow_imp.g_varchar2_table(530) := 'ING DISTINCT_EDGE_TABLE;'||wwv_flow.LF||
-'    ELSE'||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        JSON_ARRAY() INTO EDGE;'||wwv_flow.LF||
-'    END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    SELE';
-wwv_flow_imp.g_varchar2_table(531) := 'CT'||wwv_flow.LF||
-'      JSON_OBJECT(''vertices'' VALUE VERTEX,'||wwv_flow.LF||
-'      ''edges'' VALUE EDGE,'||wwv_flow.LF||
-'      ''numResults'' VALUE COU';
-wwv_flow_imp.g_varchar2_table(532) := 'NTER,'||wwv_flow.LF||
-'      ''graphOwner'' VALUE GRAPHOWNER,'||wwv_flow.LF||
-'      ''graphName'' VALUE GRAPHNAME RETURNING CLOB) INTO JS';
-wwv_flow_imp.g_varchar2_table(533) := 'ON_FILE'||wwv_flow.LF||
-'    FROM'||wwv_flow.LF||
-'      SYS.DUAL;'||wwv_flow.LF||
-'    RETURN JSON_FILE;'||wwv_flow.LF||
-'  END BUILD_JSON_USING_JSON_ARRAY;'||wwv_flow.LF||
-'END DBMS_G';
-wwv_flow_imp.g_varchar2_table(534) := 'VT;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'CREATE OR REPLACE FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY('||wwv_flow.LF||
-'   VERTEX_TABLE JSON_ARRAY_T';
-wwv_flow_imp.g_varchar2_table(535) := ','||wwv_flow.LF||
-'   EDGE_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
-'   COUNTER NUMBER,'||wwv_flow.LF||
-'   GRAPHNAME VARCHAR2,'||wwv_flow.LF||
-'   GRAPHOWNER VARCHAR2'||wwv_flow.LF||
-' ) RE';
-wwv_flow_imp.g_varchar2_table(536) := 'TURN CLOB IS'||wwv_flow.LF||
-' BEGIN'||wwv_flow.LF||
-'   RETURN DBMS_GVT.BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, COUNTER';
-wwv_flow_imp.g_varchar2_table(537) := ', GRAPHNAME, GRAPHOWNER);'||wwv_flow.LF||
-' END ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY;'||wwv_flow.LF||
-' /'||wwv_flow.LF||
-'/*'||wwv_flow.LF||
-'APEX can render JSON in ';
-wwv_flow_imp.g_varchar2_table(538) := 'the format {"vertices" : [...], "edges":[...]}'||wwv_flow.LF||
-'In this function, we build two query strings, one for';
-wwv_flow_imp.g_varchar2_table(539) := ' vertex and one for edge.'||wwv_flow.LF||
-'After we have query strings, we use dynamic sql to execute the quries and ';
-wwv_flow_imp.g_varchar2_table(540) := ''||wwv_flow.LF||
-'put the result in required json format.'||wwv_flow.LF||
-'*/'||wwv_flow.LF||
-'CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON ('||wwv_flow.LF||
-'  CURS';
-wwv_flow_imp.g_varchar2_table(541) := '_ID INTEGER,'||wwv_flow.LF||
-'  PAGE_START NUMBER DEFAULT 0,'||wwv_flow.LF||
-'  PAGE_SIZE NUMBER DEFAULT NULL'||wwv_flow.LF||
-') RETURN CLOB'||wwv_flow.LF||
-'  AUTHID C';
-wwv_flow_imp.g_varchar2_table(542) := 'URRENT_USER IS'||wwv_flow.LF||
-'  M_VCSIZ_4K                              CONSTANT PLS_INTEGER := 4000;'||wwv_flow.LF||
-'  JSON_FILE  ';
-wwv_flow_imp.g_varchar2_table(543) := '                             CLOB; --the returned result'||wwv_flow.LF||
-'  GRAPHNAME                               V';
-wwv_flow_imp.g_varchar2_table(544) := 'ARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  ELEMENT_NAME                            VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  GRAPHOWNER   ';
-wwv_flow_imp.g_varchar2_table(545) := '                           VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  -- Define a type for caching element information'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(546) := '  TYPE ELEMENT_REC IS RECORD ('||wwv_flow.LF||
-'    ELEMENT_NAME VARCHAR2(M_VCSIZ_4K),'||wwv_flow.LF||
-'    ELEMENT_KIND VARCHAR2(M_VC';
-wwv_flow_imp.g_varchar2_table(547) := 'SIZ_4K)'||wwv_flow.LF||
-'  );'||wwv_flow.LF||
-'  TYPE ELEMENT_TAB IS TABLE OF ELEMENT_REC;'||wwv_flow.LF||
-'  ELEMENT_CACHE                           E';
-wwv_flow_imp.g_varchar2_table(548) := 'LEMENT_TAB := ELEMENT_TAB();'||wwv_flow.LF||
-'  L_COLS                                  INTEGER;'||wwv_flow.LF||
-'  TAB_REC           ';
-wwv_flow_imp.g_varchar2_table(549) := '                      SYS.DBMS_SQL.DESC_TAB2;'||wwv_flow.LF||
-'  CUR                                     SYS_REFCURSO';
-wwv_flow_imp.g_varchar2_table(550) := 'R;'||wwv_flow.LF||
-'  L_FLAG                                  NUMBER;'||wwv_flow.LF||
-'  L_JSON                                  JSON;';
-wwv_flow_imp.g_varchar2_table(551) := ''||wwv_flow.LF||
-'  VERTEX_ID_COLUMN_LIST                   SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();'||wwv_flow.LF||
-'  EDGE_ID_COL';
-wwv_flow_imp.g_varchar2_table(552) := 'UMN_LIST                     SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();'||wwv_flow.LF||
-'  P1                       ';
-wwv_flow_imp.g_varchar2_table(553) := '               NUMBER := 0; -- rows rendered'||wwv_flow.LF||
-'  V1                                      NUMBER := 1;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(554) := '  E1                                      NUMBER := 1;'||wwv_flow.LF||
-'  VERTEX_TABLE                            JSO';
-wwv_flow_imp.g_varchar2_table(555) := 'N_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
-'  EDGE_TABLE                              JSON_ARRAY_T := JSON_ARRAY_T(';
-wwv_flow_imp.g_varchar2_table(556) := ');'||wwv_flow.LF||
-'  VERTEX_COL_NAMES                        JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
-'  EDGE_COL_NAMES       ';
-wwv_flow_imp.g_varchar2_table(557) := '                   JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
-'  L_HAVING_ELEMENT_ID                     BOOLEAN';
-wwv_flow_imp.g_varchar2_table(558) := ' := FALSE;'||wwv_flow.LF||
-'  COUNTER                                 NUMBER := 0; -- rows fetched'||wwv_flow.LF||
-'  L_JSON_OBJ      ';
-wwv_flow_imp.g_varchar2_table(559) := '                        JSON_OBJECT_T;'||wwv_flow.LF||
-'  isLastResultSet                         BOOLEAN := FALSE;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(560) := ' FETCH_ROWS_INTEGER                      INTEGER;'||wwv_flow.LF||
-'  MULTI_GRAPH_ERROR_MESSAGE               CONSTANT';
-wwv_flow_imp.g_varchar2_table(561) := ' VARCHAR2(M_VCSIZ_4K) := ''ora_sqlgraph_to_json only supports queries from a single graph. Please adj';
-wwv_flow_imp.g_varchar2_table(562) := 'ust the query accordingly.'';'||wwv_flow.LF||
-''||wwv_flow.LF||
-'BEGIN'||wwv_flow.LF||
-'  SYS.DBMS_SQL.DESCRIBE_COLUMNS2('||wwv_flow.LF||
-'    C => CURS_ID,'||wwv_flow.LF||
-'    COL_CNT ';
-wwv_flow_imp.g_varchar2_table(563) := '=> L_COLS,'||wwv_flow.LF||
-'    DESC_T => TAB_REC'||wwv_flow.LF||
-'  );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  FOR POS IN 1 .. L_COLS LOOP'||wwv_flow.LF||
-'    CASE TAB_REC (POS).COL_TYPE';
-wwv_flow_imp.g_varchar2_table(564) := ''||wwv_flow.LF||
-'      WHEN 119 THEN'||wwv_flow.LF||
-'        SYS.DBMS_SQL.DEFINE_COLUMN (CURS_ID, POS, L_JSON);'||wwv_flow.LF||
-'      ELSE'||wwv_flow.LF||
-'        N';
-wwv_flow_imp.g_varchar2_table(565) := 'ULL;'||wwv_flow.LF||
-'    END CASE;'||wwv_flow.LF||
-'  END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  LOOP'||wwv_flow.LF||
-'    FETCH_ROWS_INTEGER := SYS.DBMS_SQL.FETCH_ROWS(CURS_ID);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(566) := '   IF FETCH_ROWS_INTEGER > 0 THEN'||wwv_flow.LF||
-'      COUNTER := COUNTER + 1;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      IF (PAGE_START < 0'||wwv_flow.LF||
-'      OR P';
-wwv_flow_imp.g_varchar2_table(567) := 'AGE_SIZE <= 0) THEN'||wwv_flow.LF||
-'        RAISE_APPLICATION_ERROR(-20000, ''Please provide valid values for page_st';
-wwv_flow_imp.g_varchar2_table(568) := 'art and page_size parameter. page_start should be an integer equal to or greater than 0. page_size s';
-wwv_flow_imp.g_varchar2_table(569) := 'hould be an integer greater than 0.'');'||wwv_flow.LF||
-'      END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      IF ((COUNTER > PAGE_START'||wwv_flow.LF||
-'      AND COUN';
-wwv_flow_imp.g_varchar2_table(570) := 'TER <= PAGE_START + PAGE_SIZE)'||wwv_flow.LF||
-'      OR (PAGE_SIZE IS NULL) ) THEN'||wwv_flow.LF||
-'        IF P1 = 0 THEN'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(571) := 'FOR POS IN 1 .. L_COLS LOOP'||wwv_flow.LF||
-'            IF TAB_REC(POS).COL_TYPE = 119 THEN'||wwv_flow.LF||
-'              SYS.DBMS_S';
-wwv_flow_imp.g_varchar2_table(572) := 'QL.COLUMN_VALUE (CURS_ID, POS, L_JSON);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'              IF JSON_EXISTS(L_JSON, ''$.ELEM_TABLE'') AND JS';
-wwv_flow_imp.g_varchar2_table(573) := 'ON_EXISTS(L_JSON, ''$.GRAPH_OWNER'') AND JSON_EXISTS(L_JSON, ''$.GRAPH_NAME'') AND JSON_EXISTS(L_JSON, ''';
-wwv_flow_imp.g_varchar2_table(574) := '$.KEY_VALUE'') THEN'||wwv_flow.LF||
-'                L_HAVING_ELEMENT_ID := TRUE;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'                IF GRAPHNAME IS NUL';
-wwv_flow_imp.g_varchar2_table(575) := 'L AND GRAPHOWNER IS NULL THEN'||wwv_flow.LF||
-'                  GRAPHNAME := JSON_VALUE(L_JSON, ''$.GRAPH_NAME'');'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(576) := '               GRAPHOWNER := JSON_VALUE(L_JSON, ''$.GRAPH_OWNER'');'||wwv_flow.LF||
-'                  -- Populate the ';
-wwv_flow_imp.g_varchar2_table(577) := 'cache with all elements for this graph and owner'||wwv_flow.LF||
-'                  SELECT'||wwv_flow.LF||
-'                    ELEMEN';
-wwv_flow_imp.g_varchar2_table(578) := 'T_NAME,'||wwv_flow.LF||
-'                    ELEMENT_KIND'||wwv_flow.LF||
-'                  BULK COLLECT INTO ELEMENT_CACHE'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(579) := '         FROM'||wwv_flow.LF||
-'                    SYS.ALL_PG_ELEMENTS'||wwv_flow.LF||
-'                  WHERE'||wwv_flow.LF||
-'                    GR';
-wwv_flow_imp.g_varchar2_table(580) := 'APH_NAME = GRAPHNAME'||wwv_flow.LF||
-'                    AND OWNER = GRAPHOWNER;'||wwv_flow.LF||
-'                ELSE '||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(581) := '     IF GRAPHNAME != JSON_VALUE(L_JSON, ''$.GRAPH_NAME'') OR GRAPHOWNER != JSON_VALUE(L_JSON, ''$.GRAPH';
-wwv_flow_imp.g_varchar2_table(582) := '_OWNER'') THEN'||wwv_flow.LF||
-'                    RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(583) := '            END IF;'||wwv_flow.LF||
-'                END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'                -- Check if the element is in our store';
-wwv_flow_imp.g_varchar2_table(584) := 'd list'||wwv_flow.LF||
-'                ELEMENT_NAME := NULL;'||wwv_flow.LF||
-'                FOR i IN 1 .. ELEMENT_CACHE.COUNT LOOP'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(585) := '                  IF ELEMENT_CACHE(i).ELEMENT_NAME = JSON_VALUE(L_JSON, ''$.ELEM_TABLE'') THEN'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(586) := '             ELEMENT_NAME := ELEMENT_CACHE(i).ELEMENT_KIND;'||wwv_flow.LF||
-'                    EXIT;'||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(587) := '    END IF;'||wwv_flow.LF||
-'                END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'                IF ELEMENT_NAME IS NULL THEN'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(588) := '  -- If not found in cache, raise an error or handle accordingly'||wwv_flow.LF||
-'                  RAISE_APPLICATION';
-wwv_flow_imp.g_varchar2_table(589) := '_ERROR(-20000, ''Element '' || JSON_VALUE(L_JSON, ''$.ELEM_TABLE'') || '' not found in graph '' || GRAPHNA';
-wwv_flow_imp.g_varchar2_table(590) := 'ME);'||wwv_flow.LF||
-'                END IF;'||wwv_flow.LF||
-'                '||wwv_flow.LF||
-'                IF ELEMENT_NAME = ''VERTEX'' THEN'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(591) := '            VERTEX_ID_COLUMN_LIST.EXTEND;'||wwv_flow.LF||
-'                  VERTEX_ID_COLUMN_LIST(V1) := POS;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(592) := '            V1 := V1 + 1;'||wwv_flow.LF||
-'                  VERTEX_TABLE.APPEND(L_JSON);'||wwv_flow.LF||
-'                  VERTEX_CO';
-wwv_flow_imp.g_varchar2_table(593) := 'L_NAMES.APPEND(TAB_REC(POS).COL_NAME);'||wwv_flow.LF||
-'                ELSE'||wwv_flow.LF||
-'                  EDGE_ID_COLUMN_LIST.EX';
-wwv_flow_imp.g_varchar2_table(594) := 'TEND;'||wwv_flow.LF||
-'                  EDGE_ID_COLUMN_LIST(E1) := POS;'||wwv_flow.LF||
-'                  E1 := E1 + 1;'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(595) := '      EDGE_TABLE.APPEND(L_JSON);'||wwv_flow.LF||
-'                  EDGE_COL_NAMES.APPEND(TAB_REC(POS).COL_NAME);'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(596) := '             END IF;'||wwv_flow.LF||
-'              END IF;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(597) := '      IF GRAPHNAME != JSON_VALUE(L_JSON, ''$.GRAPH_NAME'') OR GRAPHOWNER != JSON_VALUE(L_JSON, ''$.GRAP';
-wwv_flow_imp.g_varchar2_table(598) := 'H_OWNER'') THEN'||wwv_flow.LF||
-'                    RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(599) := '     END IF;'||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          FOR I IN 1..VERTEX_ID_COLUMN_LIST.COUNT LOOP'||wwv_flow.LF||
-'            SYS.DBMS_';
-wwv_flow_imp.g_varchar2_table(600) := 'SQL.COLUMN_VALUE (CURS_ID, VERTEX_ID_COLUMN_LIST(I), L_JSON);'||wwv_flow.LF||
-'            VERTEX_TABLE.APPEND(L_JSON';
-wwv_flow_imp.g_varchar2_table(601) := ');'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'          FOR I IN 1..EDGE_ID_COLUMN_LIST.COUNT LOOP'||wwv_flow.LF||
-'            SYS.DBMS_SQ';
-wwv_flow_imp.g_varchar2_table(602) := 'L.COLUMN_VALUE (CURS_ID, EDGE_ID_COLUMN_LIST(I), L_JSON);'||wwv_flow.LF||
-'            EDGE_TABLE.APPEND(L_JSON);'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(603) := '       END LOOP;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        P1 := P1 + 1;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        IF ('||wwv_flow.LF||
-'          PAGE_SIZE IS NOT NUL';
-wwv_flow_imp.g_varchar2_table(604) := 'L'||wwv_flow.LF||
-'          AND P1 = PAGE_SIZE'||wwv_flow.LF||
-'        ) THEN'||wwv_flow.LF||
-'          EXIT;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END IF;'||wwv_flow.LF||
-'    ELSI';
-wwv_flow_imp.g_varchar2_table(605) := 'F FETCH_ROWS_INTEGER = 0 THEN'||wwv_flow.LF||
-'      isLastResultSet := TRUE;'||wwv_flow.LF||
-'      EXIT;'||wwv_flow.LF||
-'    END IF;'||wwv_flow.LF||
-'  END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(606) := 'IF NOT L_HAVING_ELEMENT_ID AND COUNTER != 0 THEN'||wwv_flow.LF||
-'    IF COUNTER < PAGE_START THEN'||wwv_flow.LF||
-'      RAISE_APPLIC';
-wwv_flow_imp.g_varchar2_table(607) := 'ATION_ERROR(-20000, ''page_start index exceeds the total number of rows returned. Please reset page_s';
-wwv_flow_imp.g_varchar2_table(608) := 'tart to a valid value within the range of available results.'');'||wwv_flow.LF||
-'    ELSIF COUNTER > PAGE_START THEN'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(609) := '      RAISE_APPLICATION_ERROR(-20000, ''Please add vertex_id/edge_id to the COLUMNS clause and projec';
-wwv_flow_imp.g_varchar2_table(610) := 't the corresponding column name in the SELECT clause.'');'||wwv_flow.LF||
-'    END IF;'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
-'    JSON_FILE := ORA_';
-wwv_flow_imp.g_varchar2_table(611) := 'GRAPH_BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, P1, GRAPHNAME, GRAPHOWNER);'||wwv_flow.LF||
-'    L_JSON_O';
-wwv_flow_imp.g_varchar2_table(612) := 'BJ := JSON_OBJECT_T(JSON_FILE);'||wwv_flow.LF||
-'    L_JSON_OBJ.PUT(''vertexIdColumnNames'', VERTEX_COL_NAMES);'||wwv_flow.LF||
-'    L_J';
-wwv_flow_imp.g_varchar2_table(613) := 'SON_OBJ.PUT(''edgeIdColumnNames'', EDGE_COL_NAMES);'||wwv_flow.LF||
-'    IF isLastResultSet OR PAGE_SIZE IS NULL THEN'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(614) := '     L_JSON_OBJ.PUT(''isLastResultSet'', TRUE);'||wwv_flow.LF||
-'    ELSE'||wwv_flow.LF||
-'      IF P1 < PAGE_SIZE THEN'||wwv_flow.LF||
-'        L_JSON_O';
-wwv_flow_imp.g_varchar2_table(615) := 'BJ.PUT(''isLastResultSet'', TRUE);'||wwv_flow.LF||
-'      ELSE'||wwv_flow.LF||
-'        L_JSON_OBJ.PUT(''isLastResultSet'', FALSE);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(616) := 'END IF;'||wwv_flow.LF||
-'    END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  RETURN L_JSON_OBJ.TO_CLOB();'||wwv_flow.LF||
-'END ORA_SQLGRAPH_TO_JSON;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'CREATE OR REPLACE FU';
-wwv_flow_imp.g_varchar2_table(617) := 'NCTION apex_sqlgraph_json ('||wwv_flow.LF||
-'   p_query      VARCHAR2,'||wwv_flow.LF||
-'   p_page_start NUMBER DEFAULT NULL,'||wwv_flow.LF||
-'   p_page';
-wwv_flow_imp.g_varchar2_table(618) := '_size  NUMBER DEFAULT NULL,'||wwv_flow.LF||
-'   p_bind_items VARCHAR2 DEFAULT NULL'||wwv_flow.LF||
-') RETURN CLOB IS'||wwv_flow.LF||
-'   l_incur    SYS';
-wwv_flow_imp.g_varchar2_table(619) := '_REFCURSOR;'||wwv_flow.LF||
-'   l_cur      NUMBER;'||wwv_flow.LF||
-'   l_retvalue CLOB;'||wwv_flow.LF||
-'   l_item     VARCHAR2(4000);'||wwv_flow.LF||
-'   l_cur_id   NU';
-wwv_flow_imp.g_varchar2_table(620) := 'MBER;'||wwv_flow.LF||
-'BEGIN'||wwv_flow.LF||
-'   l_cur := DBMS_SQL.OPEN_CURSOR;'||wwv_flow.LF||
-'   DBMS_SQL.PARSE('||wwv_flow.LF||
-'      l_cur,'||wwv_flow.LF||
-'      p_query,'||wwv_flow.LF||
-'      D';
-wwv_flow_imp.g_varchar2_table(621) := 'BMS_SQL.NATIVE'||wwv_flow.LF||
-'   );'||wwv_flow.LF||
-'   '||wwv_flow.LF||
-'   IF p_bind_items IS NOT NULL THEN'||wwv_flow.LF||
-'      FOR i IN 1..REGEXP_COUNT(p_bind_i';
-wwv_flow_imp.g_varchar2_table(622) := 'tems, '','') + 1 LOOP'||wwv_flow.LF||
-'         l_item := REGEXP_SUBSTR(p_bind_items, ''[^,]+'', 1, i);'||wwv_flow.LF||
-'         DBMS_SQL';
-wwv_flow_imp.g_varchar2_table(623) := '.BIND_VARIABLE('||wwv_flow.LF||
-'            l_cur,'||wwv_flow.LF||
-'            '':'' || l_item,'||wwv_flow.LF||
-'            V(l_item)'||wwv_flow.LF||
-'         );'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(624) := '  END LOOP;'||wwv_flow.LF||
-'   END IF;'||wwv_flow.LF||
-'   '||wwv_flow.LF||
-'   BEGIN'||wwv_flow.LF||
-'      l_cur_id := DBMS_SQL.EXECUTE(l_cur);'||wwv_flow.LF||
-'      l_retvalue := O';
-wwv_flow_imp.g_varchar2_table(625) := 'RA_SQLGRAPH_TO_JSON('||wwv_flow.LF||
-'         l_cur,'||wwv_flow.LF||
-'         p_page_start,'||wwv_flow.LF||
-'         p_page_size'||wwv_flow.LF||
-'      );'||wwv_flow.LF||
-'   EXCEPTI';
-wwv_flow_imp.g_varchar2_table(626) := 'ON'||wwv_flow.LF||
-'      WHEN OTHERS THEN'||wwv_flow.LF||
-'         DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
-'         IF SQLCODE = -1008 THEN'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(627) := '          RAISE_APPLICATION_ERROR(-20001, ''SQL error: ORA-01008: value for bind variable placeholder';
-wwv_flow_imp.g_varchar2_table(628) := ' was not provided. Please check the query and Page Items To Submit. Make sure that all bind variable';
-wwv_flow_imp.g_varchar2_table(629) := 's are added into Page Items to Submit.'');'||wwv_flow.LF||
-'         ELSE'||wwv_flow.LF||
-'            RAISE;'||wwv_flow.LF||
-'         END IF;'||wwv_flow.LF||
-'   END;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(630) := '   DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
-'   '||wwv_flow.LF||
-'   RETURN l_retvalue;'||wwv_flow.LF||
-'END apex_sqlgraph_json;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'CREATE OR REPLA';
-wwv_flow_imp.g_varchar2_table(631) := 'CE PROCEDURE get_graph_metadata_proc ('||wwv_flow.LF||
-'  p_graph_name  IN VARCHAR2,'||wwv_flow.LF||
-'  p_graph_owner IN VARCHAR2,'||wwv_flow.LF||
-'  p';
-wwv_flow_imp.g_varchar2_table(632) := '_metadata    OUT CLOB'||wwv_flow.LF||
-') AS'||wwv_flow.LF||
-'BEGIN'||wwv_flow.LF||
-'  SELECT'||wwv_flow.LF||
-'    JSON_OBJECT('||wwv_flow.LF||
-'      ''vertices'' VALUE('||wwv_flow.LF||
-'        SELECT JS';
-wwv_flow_imp.g_varchar2_table(633) := 'ON_ARRAYAGG('||wwv_flow.LF||
-'          JSON_OBJECT('||wwv_flow.LF||
-'            ''labels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYAGG(e';
-wwv_flow_imp.g_varchar2_table(634) := 'l.label_name)'||wwv_flow.LF||
-'                FROM sys.all_pg_element_labels el'||wwv_flow.LF||
-'               WHERE el.element_name';
-wwv_flow_imp.g_varchar2_table(635) := ' = e.element_name'||wwv_flow.LF||
-'                 AND el.graph_name = p_graph_name'||wwv_flow.LF||
-'                 AND el.owner = ';
-wwv_flow_imp.g_varchar2_table(636) := 'p_graph_owner'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'                      ''properties'' VALUE coalesce('||wwv_flow.LF||
-'              ('||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(637) := '            SELECT JSON_ARRAYAGG('||wwv_flow.LF||
-'                  JSON_OBJECT('||wwv_flow.LF||
-'                    ''name'' VALUE p.';
-wwv_flow_imp.g_varchar2_table(638) := 'property_name,'||wwv_flow.LF||
-'                              ''dataType'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(639) := '             WHEN p.data_type IN(''INTEGER'','||wwv_flow.LF||
-'                                            ''INT'','||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(640) := '                                       ''SMALLINT'','||wwv_flow.LF||
-'                                            ''DEC''';
-wwv_flow_imp.g_varchar2_table(641) := ','||wwv_flow.LF||
-'                                            ''DECIMAL'','||wwv_flow.LF||
-'                                           ';
-wwv_flow_imp.g_varchar2_table(642) := ' ''NUMERIC'','||wwv_flow.LF||
-'                                            ''DOUBLE PRECISION'','||wwv_flow.LF||
-'                        ';
-wwv_flow_imp.g_varchar2_table(643) := '                    ''FLOAT'','||wwv_flow.LF||
-'                                            ''REAL'','||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(644) := '                         ''NUMBER'','||wwv_flow.LF||
-'                                            ''BINARY_FLOAT'','||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(645) := '                                       ''BINARY_DOUBLE'') THEN'||wwv_flow.LF||
-'                          ''number'''||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(646) := '                    WHEN p.data_type IN(''TIMESTAMP'') THEN'||wwv_flow.LF||
-'                          ''timestamp'''||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(647) := '                    ELSE'||wwv_flow.LF||
-'                          ''string'''||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(648) := '                 ''limits'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'                        WHEN p.data_char_';
-wwv_flow_imp.g_varchar2_table(649) := 'length > 0 THEN'||wwv_flow.LF||
-'                          JSON_ARRAY(p.data_char_length)'||wwv_flow.LF||
-'                        ELS';
-wwv_flow_imp.g_varchar2_table(650) := 'E'||wwv_flow.LF||
-'                          JSON_ARRAY()'||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'                              ''m';
-wwv_flow_imp.g_varchar2_table(651) := 'andatory'' VALUE('||wwv_flow.LF||
-'                      SELECT CASE nullable'||wwv_flow.LF||
-'                        WHEN ''Y'' THEN'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(652) := '                        FALSE'||wwv_flow.LF||
-'                        WHEN ''N'' THEN'||wwv_flow.LF||
-'                          TRUE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(653) := '                            END'||wwv_flow.LF||
-'                        FROM sys.all_tab_columns col'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(654) := '        WHERE col.column_name = d.column_name'||wwv_flow.LF||
-'                         AND col.table_name = e.object';
-wwv_flow_imp.g_varchar2_table(655) := '_name'||wwv_flow.LF||
-'                         AND col.owner = e.object_owner'||wwv_flow.LF||
-'                    )'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(656) := '  )'||wwv_flow.LF||
-'                RETURNING CLOB)'||wwv_flow.LF||
-'                  FROM sys.all_pg_label_properties p'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(657) := '      INNER JOIN sys.all_pg_prop_definitions d'||wwv_flow.LF||
-'                ON(p.property_name = d.property_name'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(658) := '                   AND p.owner = d.owner'||wwv_flow.LF||
-'                   AND p.graph_name = d.graph_name)'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(659) := '          WHERE d.element_name = e.element_name'||wwv_flow.LF||
-'                   AND p.label_name = l.label_name'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(660) := '                  AND p.graph_name = p_graph_name'||wwv_flow.LF||
-'                   AND p.owner = p_graph_owner'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(661) := '           ),'||wwv_flow.LF||
-'              JSON_ARRAY(RETURNING CLOB)'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'          RETURNING CLOB)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(662) := '   RETURNING CLOB)'||wwv_flow.LF||
-'          FROM sys.all_pg_elements e'||wwv_flow.LF||
-'         INNER JOIN sys.all_pg_element_label';
-wwv_flow_imp.g_varchar2_table(663) := 's l'||wwv_flow.LF||
-'        ON(e.element_name = l.element_name'||wwv_flow.LF||
-'           AND e.graph_name = l.graph_name'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(664) := ' AND e.owner = l.owner)'||wwv_flow.LF||
-'         WHERE e.element_kind = ''VERTEX'''||wwv_flow.LF||
-'           AND e.graph_name = p_gra';
-wwv_flow_imp.g_varchar2_table(665) := 'ph_name'||wwv_flow.LF||
-'           AND e.owner = p_graph_owner'||wwv_flow.LF||
-'      ),'||wwv_flow.LF||
-'                ''edges'' VALUE('||wwv_flow.LF||
-'        SELEC';
-wwv_flow_imp.g_varchar2_table(666) := 'T JSON_ARRAYAGG('||wwv_flow.LF||
-'          JSON_OBJECT('||wwv_flow.LF||
-'            ''labels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYA';
-wwv_flow_imp.g_varchar2_table(667) := 'GG(el.label_name)'||wwv_flow.LF||
-'                FROM sys.all_pg_element_labels el'||wwv_flow.LF||
-'               WHERE el.element_';
-wwv_flow_imp.g_varchar2_table(668) := 'name = e.element_name'||wwv_flow.LF||
-'                 AND e.graph_name = p_graph_name'||wwv_flow.LF||
-'                 AND e.owner ';
-wwv_flow_imp.g_varchar2_table(669) := '= p_graph_owner'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'                      ''properties'' VALUE coalesce('||wwv_flow.LF||
-'              ('||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(670) := '              SELECT JSON_ARRAYAGG('||wwv_flow.LF||
-'                  JSON_OBJECT('||wwv_flow.LF||
-'                    ''name'' VALUE ';
-wwv_flow_imp.g_varchar2_table(671) := 'p.property_name,'||wwv_flow.LF||
-'                              ''dataType'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(672) := '               WHEN p.data_type IN(''INTEGER'','||wwv_flow.LF||
-'                                            ''INT'','||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(673) := '                                         ''SMALLINT'','||wwv_flow.LF||
-'                                            ''DE';
-wwv_flow_imp.g_varchar2_table(674) := 'C'','||wwv_flow.LF||
-'                                            ''DECIMAL'','||wwv_flow.LF||
-'                                         ';
-wwv_flow_imp.g_varchar2_table(675) := '   ''NUMERIC'','||wwv_flow.LF||
-'                                            ''DOUBLE PRECISION'','||wwv_flow.LF||
-'                      ';
-wwv_flow_imp.g_varchar2_table(676) := '                      ''FLOAT'','||wwv_flow.LF||
-'                                            ''REAL'','||wwv_flow.LF||
-'                 ';
-wwv_flow_imp.g_varchar2_table(677) := '                           ''NUMBER'','||wwv_flow.LF||
-'                                            ''BINARY_FLOAT'','||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(678) := '                                         ''BINARY_DOUBLE'') THEN'||wwv_flow.LF||
-'                          ''number'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(679) := '                      WHEN p.data_type IN(''TIMESTAMP'') THEN'||wwv_flow.LF||
-'                          ''timestamp'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(680) := '                      ELSE'||wwv_flow.LF||
-'                          ''string'''||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(681) := '                   ''limits'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'                        WHEN p.data_cha';
-wwv_flow_imp.g_varchar2_table(682) := 'r_length > 0 THEN'||wwv_flow.LF||
-'                          JSON_ARRAY(p.data_length)'||wwv_flow.LF||
-'                        ELSE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(683) := '                         JSON_ARRAY()'||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'                              ''mand';
-wwv_flow_imp.g_varchar2_table(684) := 'atory'' VALUE('||wwv_flow.LF||
-'                      SELECT CASE nullable'||wwv_flow.LF||
-'                        WHEN ''Y'' THEN'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(685) := '                     FALSE'||wwv_flow.LF||
-'                        WHEN ''N'' THEN'||wwv_flow.LF||
-'                          TRUE'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(686) := '                         END'||wwv_flow.LF||
-'                        FROM sys.all_tab_columns col'||wwv_flow.LF||
-'                  ';
-wwv_flow_imp.g_varchar2_table(687) := '     WHERE col.column_name = d.column_name'||wwv_flow.LF||
-'                         AND col.table_name = e.object_na';
-wwv_flow_imp.g_varchar2_table(688) := 'me'||wwv_flow.LF||
-'                         AND col.owner = e.object_owner'||wwv_flow.LF||
-'                    )'||wwv_flow.LF||
-'                  R';
-wwv_flow_imp.g_varchar2_table(689) := 'ETURNING CLOB)'||wwv_flow.LF||
-'                RETURNING CLOB)'||wwv_flow.LF||
-'                  FROM sys.all_pg_label_properties p'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(690) := '                 INNER JOIN sys.all_pg_prop_definitions d'||wwv_flow.LF||
-'                ON(p.property_name = d.pro';
-wwv_flow_imp.g_varchar2_table(691) := 'perty_name'||wwv_flow.LF||
-'                   AND p.owner = d.owner'||wwv_flow.LF||
-'                   AND p.graph_name = d.graph_na';
-wwv_flow_imp.g_varchar2_table(692) := 'me)'||wwv_flow.LF||
-'                 WHERE d.element_name = e.element_name'||wwv_flow.LF||
-'                   AND p.label_name = l.l';
-wwv_flow_imp.g_varchar2_table(693) := 'abel_name'||wwv_flow.LF||
-'                   AND p.graph_name = p_graph_name'||wwv_flow.LF||
-'                   AND p.owner = p_grap';
-wwv_flow_imp.g_varchar2_table(694) := 'h_owner'||wwv_flow.LF||
-'              ),'||wwv_flow.LF||
-'              JSON_ARRAY(RETURNING CLOB)'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(695) := '   ''sourceVertexLabels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYAGG(label_name)'||wwv_flow.LF||
-'                FROM('||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(696) := '                SELECT DISTINCT l.label_name AS label_name'||wwv_flow.LF||
-'                  FROM sys.all_pg_element';
-wwv_flow_imp.g_varchar2_table(697) := 's e2'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_element_labels l'||wwv_flow.LF||
-'                ON e2.element_name = l.';
-wwv_flow_imp.g_varchar2_table(698) := 'element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = l.graph_name'||wwv_flow.LF||
-'                   AND e2.owner = l';
-wwv_flow_imp.g_varchar2_table(699) := '.owner'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_edge_relationships r'||wwv_flow.LF||
-'                ON r.vertex_tab_n';
-wwv_flow_imp.g_varchar2_table(700) := 'ame = e2.element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = r.graph_name'||wwv_flow.LF||
-'                   AND e2.';
-wwv_flow_imp.g_varchar2_table(701) := 'owner = r.owner'||wwv_flow.LF||
-'                 WHERE e2.element_kind = ''VERTEX'''||wwv_flow.LF||
-'                   AND r.graph_nam';
-wwv_flow_imp.g_varchar2_table(702) := 'e = e.graph_name'||wwv_flow.LF||
-'                   AND r.edge_tab_name = e.element_name'||wwv_flow.LF||
-'                   AND edge';
-wwv_flow_imp.g_varchar2_table(703) := '_end = ''SOURCE'''||wwv_flow.LF||
-'              )'||wwv_flow.LF||
-'               FETCH FIRST 1 ROWS ONLY'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(704) := '        ''targetVertexLabels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYAGG(label_name)'||wwv_flow.LF||
-'                F';
-wwv_flow_imp.g_varchar2_table(705) := 'ROM('||wwv_flow.LF||
-'                SELECT DISTINCT l.label_name AS label_name'||wwv_flow.LF||
-'                  FROM sys.all_pg_el';
-wwv_flow_imp.g_varchar2_table(706) := 'ements e2'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_element_labels l'||wwv_flow.LF||
-'                ON e2.element_name';
-wwv_flow_imp.g_varchar2_table(707) := ' = l.element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = l.graph_name'||wwv_flow.LF||
-'                   AND e2.owne';
-wwv_flow_imp.g_varchar2_table(708) := 'r = l.owner'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_edge_relationships r'||wwv_flow.LF||
-'                ON r.vertex_';
-wwv_flow_imp.g_varchar2_table(709) := 'tab_name = e2.element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = r.graph_name'||wwv_flow.LF||
-'                   AN';
-wwv_flow_imp.g_varchar2_table(710) := 'D e2.owner = r.owner'||wwv_flow.LF||
-'                 WHERE e2.element_kind = ''VERTEX'''||wwv_flow.LF||
-'                   AND r.grap';
-wwv_flow_imp.g_varchar2_table(711) := 'h_name = e.graph_name'||wwv_flow.LF||
-'                   AND r.edge_tab_name = e.element_name'||wwv_flow.LF||
-'                   AND';
-wwv_flow_imp.g_varchar2_table(712) := ' edge_end = ''DESTINATION'''||wwv_flow.LF||
-'              )'||wwv_flow.LF||
-'               FETCH FIRST 1 ROWS ONLY'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(713) := '     RETURNING CLOB)'||wwv_flow.LF||
-'        RETURNING CLOB)'||wwv_flow.LF||
-'          FROM sys.all_pg_elements e'||wwv_flow.LF||
-'         INNER JOI';
-wwv_flow_imp.g_varchar2_table(714) := 'N sys.all_pg_element_labels l'||wwv_flow.LF||
-'        ON(e.element_name = l.element_name'||wwv_flow.LF||
-'           AND e.graph_name';
-wwv_flow_imp.g_varchar2_table(715) := ' = l.graph_name'||wwv_flow.LF||
-'           AND e.owner = l.owner)'||wwv_flow.LF||
-'         WHERE e.element_kind = ''EDGE'''||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(716) := 'AND e.graph_name = p_graph_name'||wwv_flow.LF||
-'           AND e.owner = p_graph_owner'||wwv_flow.LF||
-'      )'||wwv_flow.LF||
-'    RETURNING CLOB)'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(717) := '   INTO p_metadata'||wwv_flow.LF||
-'    FROM sys.dual;'||wwv_flow.LF||
-'END get_graph_metadata_proc;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'/*'||wwv_flow.LF||
-'  Dynamically compute disti';
-wwv_flow_imp.g_varchar2_table(718) := 'nct vertex and edge counts from a user-provided graph query,'||wwv_flow.LF||
-'  using provided JSON arrays of vertex ';
-wwv_flow_imp.g_varchar2_table(719) := 'and edge column names.'||wwv_flow.LF||
-'  If column names are NULL or empty, return 0 for the respective count.'||wwv_flow.LF||
-'*/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'/';
-wwv_flow_imp.g_varchar2_table(720) := '*'||wwv_flow.LF||
-'  Example usage:'||wwv_flow.LF||
-'  WITH my_table AS ('||wwv_flow.LF||
-'    SELECT JSON_HASH("ID_V") AS "ID_V",'||wwv_flow.LF||
-'           JSON_HASH';
-wwv_flow_imp.g_varchar2_table(721) := '("ID_D") AS "ID_D",'||wwv_flow.LF||
-'           JSON_HASH("ID_E") AS "ID_E"'||wwv_flow.LF||
-'    FROM ('||wwv_flow.LF||
-'      SELECT id_v, id_e, id_d'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(722) := '      FROM GRAPH_TABLE ('||wwv_flow.LF||
-'        eba_sample_graph'||wwv_flow.LF||
-'        MATCH (v)-[e]->(d)'||wwv_flow.LF||
-'        COLUMNS ('||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(723) := '     vertex_id(v) as id_v,'||wwv_flow.LF||
-'          edge_id(e) as id_e,'||wwv_flow.LF||
-'          vertex_id(d) as id_d'||wwv_flow.LF||
-'        )'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(724) := '    )'||wwv_flow.LF||
 '    )'||wwv_flow.LF||
-'  )'||wwv_flow.LF||
-'  SELECT JSON_OBJECT('||wwv_flow.LF||
-'    ''vertexCount'' VALUE ('||wwv_flow.LF||
-'      SELECT COUNT(DISTINCT vertex_i';
-wwv_flow_imp.g_varchar2_table(725) := 'd_colum)'||wwv_flow.LF||
-'      FROM my_table'||wwv_flow.LF||
-'      UNPIVOT (vertex_id_colum FOR vid IN ("ID_V", "ID_D"))'||wwv_flow.LF||
-'    ),'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(726) := '''edgeCount'' VALUE ('||wwv_flow.LF||
-'      SELECT COUNT(DISTINCT edge_id_colum)'||wwv_flow.LF||
-'      FROM my_table'||wwv_flow.LF||
-'      UNPIVOT (ed';
-wwv_flow_imp.g_varchar2_table(727) := 'ge_id_colum FOR eid IN ("ID_E"))'||wwv_flow.LF||
-'    )'||wwv_flow.LF||
-'  ) AS counts_json'||wwv_flow.LF||
-'  FROM DUAL;'||wwv_flow.LF||
-'*/'||wwv_flow.LF||
-'CREATE OR REPLACE FUNCTION';
-wwv_flow_imp.g_varchar2_table(728) := ' ORA_SQLGRAPH_GET_COUNTS_QUERY_BUILDER ('||wwv_flow.LF||
-'  p_query VARCHAR2,'||wwv_flow.LF||
-'  p_vertex_columns JSON,'||wwv_flow.LF||
-'  p_edge_colum';
-wwv_flow_imp.g_varchar2_table(729) := 'ns JSON'||wwv_flow.LF||
-') RETURN VARCHAR2 IS'||wwv_flow.LF||
-'  -- Variables for building dynamic SQL components'||wwv_flow.LF||
-'  l_select_clause VA';
-wwv_flow_imp.g_varchar2_table(730) := 'RCHAR2(32767) := '''';'||wwv_flow.LF||
-'  l_vertex_unpivot_list VARCHAR2(32767) := '''';'||wwv_flow.LF||
-'  l_edge_unpivot_list VARCHAR2(3';
-wwv_flow_imp.g_varchar2_table(731) := '2767) := '''';'||wwv_flow.LF||
-'  l_vertex_unpivot_clause VARCHAR2(32767) := '''';'||wwv_flow.LF||
-'  l_edge_unpivot_clause VARCHAR2(32767';
-wwv_flow_imp.g_varchar2_table(732) := ') := '''';'||wwv_flow.LF||
-'  l_vertex_count_sql VARCHAR2(32767) := ''0'';'||wwv_flow.LF||
-'  l_edge_count_sql VARCHAR2(32767) := ''0'';'||wwv_flow.LF||
-'  l';
-wwv_flow_imp.g_varchar2_table(733) := '_count_query VARCHAR2(32767);'||wwv_flow.LF||
-'  l_vertex_count NUMBER := 0;'||wwv_flow.LF||
-'  l_edge_count NUMBER := 0;'||wwv_flow.LF||
-'  l_vertex_a';
-wwv_flow_imp.g_varchar2_table(734) := 'rray JSON_ARRAY_T;'||wwv_flow.LF||
-'  l_edge_array JSON_ARRAY_T;'||wwv_flow.LF||
-'  l_col_name VARCHAR2(4000);'||wwv_flow.LF||
-'BEGIN'||wwv_flow.LF||
-'  -- Parse vertex';
-wwv_flow_imp.g_varchar2_table(735) := ' columns JSON if provided'||wwv_flow.LF||
-'  IF p_vertex_columns IS NOT NULL THEN'||wwv_flow.LF||
-'    BEGIN'||wwv_flow.LF||
-'      l_vertex_array := J';
-wwv_flow_imp.g_varchar2_table(736) := 'SON_ARRAY_T(p_vertex_columns);'||wwv_flow.LF||
-'      l_vertex_count := l_vertex_array.get_size();'||wwv_flow.LF||
-'    EXCEPTION'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(737) := '  WHEN OTHERS THEN'||wwv_flow.LF||
-'        RAISE_APPLICATION_ERROR(-20002, ''Invalid JSON for p_vertex_columns: '' || ';
-wwv_flow_imp.g_varchar2_table(738) := 'SQLERRM);'||wwv_flow.LF||
-'    END;'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
+'    OPTIONS(PG_VIEW)'''||wwv_flow.LF||
+') ;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Parse edge columns JSON if provided'||wwv_flow.LF||
-'  IF p_edge_columns IS NOT NU';
-wwv_flow_imp.g_varchar2_table(739) := 'LL THEN'||wwv_flow.LF||
-'    BEGIN'||wwv_flow.LF||
-'      l_edge_array := JSON_ARRAY_T(p_edge_columns);'||wwv_flow.LF||
-'      l_edge_count := l_edge_a';
-wwv_flow_imp.g_varchar2_table(740) := 'rray.get_size();'||wwv_flow.LF||
-'    EXCEPTION'||wwv_flow.LF||
-'      WHEN OTHERS THEN'||wwv_flow.LF||
-'        RAISE_APPLICATION_ERROR(-20003, ''Inval';
-wwv_flow_imp.g_varchar2_table(741) := 'id JSON for p_edge_columns: '' || SQLERRM);'||wwv_flow.LF||
-'    END;'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Early return query if no columns';
-wwv_flow_imp.g_varchar2_table(742) := ' provided for both vertices and edges'||wwv_flow.LF||
-'  IF l_vertex_count = 0 AND l_edge_count = 0 THEN'||wwv_flow.LF||
-'    RETURN ''';
-wwv_flow_imp.g_varchar2_table(743) := 'SELECT JSON_OBJECT(''''vertexCount'''' VALUE 0, ''''edgeCount'''' VALUE 0) AS counts_json FROM DUAL'';'||wwv_flow.LF||
-'  END ';
-wwv_flow_imp.g_varchar2_table(744) := 'IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Build SELECT clause and unpivot list for vertex columns'||wwv_flow.LF||
-'  IF l_vertex_count > 0 THEN'||wwv_flow.LF||
-'    F';
-wwv_flow_imp.g_varchar2_table(745) := 'OR i IN 0 .. l_vertex_count - 1 LOOP'||wwv_flow.LF||
-'      l_col_name := l_vertex_array.get_string(i);'||wwv_flow.LF||
-'      l_selec';
-wwv_flow_imp.g_varchar2_table(746) := 't_clause := l_select_clause || ''JSON_HASH('' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, FALSE) || '') AS ';
-wwv_flow_imp.g_varchar2_table(747) := ''' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '', '';'||wwv_flow.LF||
-'      l_vertex_unpivot_list := l_vertex_unp';
-wwv_flow_imp.g_varchar2_table(748) := 'ivot_list || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '','';'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-'    l_vertex_unpivot_l';
-wwv_flow_imp.g_varchar2_table(749) := 'ist := RTRIM(l_vertex_unpivot_list, '','');'||wwv_flow.LF||
-'    l_vertex_unpivot_clause := ''UNPIVOT (vertex_id_colum F';
-wwv_flow_imp.g_varchar2_table(750) := 'OR vid IN ('' || l_vertex_unpivot_list || ''))'';'||wwv_flow.LF||
-'    l_vertex_count_sql := ''SELECT COUNT(DISTINCT vert';
-wwv_flow_imp.g_varchar2_table(751) := 'ex_id_colum) FROM my_table '' || l_vertex_unpivot_clause;'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  -- Build SELECT clause and unp';
-wwv_flow_imp.g_varchar2_table(752) := 'ivot list for edge columns'||wwv_flow.LF||
-'  IF l_edge_count > 0 THEN'||wwv_flow.LF||
-'    FOR i IN 0 .. l_edge_count - 1 LOOP'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(753) := 'l_col_name := l_edge_array.get_string(i);'||wwv_flow.LF||
-'      l_select_clause := l_select_clause || ''JSON_HASH('' |';
-wwv_flow_imp.g_varchar2_table(754) := '| DBMS_ASSERT.ENQUOTE_NAME(l_col_name, FALSE) || '') AS '' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRU';
-wwv_flow_imp.g_varchar2_table(755) := 'E) || '', '';'||wwv_flow.LF||
-'      l_edge_unpivot_list := l_edge_unpivot_list || DBMS_ASSERT.ENQUOTE_NAME(l_col_name,';
-wwv_flow_imp.g_varchar2_table(756) := ' TRUE) || '','';'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-'    l_edge_unpivot_list := RTRIM(l_edge_unpivot_list, '','');'||wwv_flow.LF||
-'    l_edge_';
-wwv_flow_imp.g_varchar2_table(757) := 'unpivot_clause := ''UNPIVOT (edge_id_colum FOR eid IN ('' || l_edge_unpivot_list || ''))'';'||wwv_flow.LF||
-'    l_edge_c';
-wwv_flow_imp.g_varchar2_table(758) := 'ount_sql := ''SELECT COUNT(DISTINCT edge_id_colum) FROM my_table '' || l_edge_unpivot_clause;'||wwv_flow.LF||
-'  END IF';
-wwv_flow_imp.g_varchar2_table(759) := ';'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  -- Remove trailing comma from SELECT clause'||wwv_flow.LF||
-'  l_select_clause := RTRIM(l_select_clause, '', '');'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(760) := ''||wwv_flow.LF||
-'  -- Construct the full dynamic count query'||wwv_flow.LF||
-'  l_count_query := ''WITH my_table AS ( SELECT '' || l_se';
-wwv_flow_imp.g_varchar2_table(761) := 'lect_clause ||'||wwv_flow.LF||
-'                   '' FROM ( '' || p_query ||'||wwv_flow.LF||
-'                   '' ) )'' ||'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(762) := '       ''SELECT JSON_OBJECT( '' ||'||wwv_flow.LF||
-'                   ''''''vertexCount'''' VALUE ('' || l_vertex_count_sql ';
-wwv_flow_imp.g_varchar2_table(763) := '|| ''), '' ||'||wwv_flow.LF||
-'                   ''''''edgeCount'''' VALUE ('' || l_edge_count_sql || '') '' ||'||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(764) := '     '') AS counts_json '' ||'||wwv_flow.LF||
-'                   ''FROM DUAL'';'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  RETURN l_count_query;'||wwv_flow.LF||
-'END ORA_SQLGRAP';
-wwv_flow_imp.g_varchar2_table(765) := 'H_GET_COUNTS_QUERY_BUILDER;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'CREATE OR REPLACE FUNCTION APEX_SQLGRAPH_GET_COUNTS ('||wwv_flow.LF||
-'  p_query VARCH';
-wwv_flow_imp.g_varchar2_table(766) := 'AR2,'||wwv_flow.LF||
-'  p_vertex_columns JSON,'||wwv_flow.LF||
-'  p_edge_columns JSON,'||wwv_flow.LF||
-'  p_bind_items VARCHAR2 DEFAULT NULL'||wwv_flow.LF||
-') RETURN C';
-wwv_flow_imp.g_varchar2_table(767) := 'LOB IS'||wwv_flow.LF||
-'  l_count_query VARCHAR2(32767);'||wwv_flow.LF||
-'  l_result CLOB;'||wwv_flow.LF||
-'  l_cur NUMBER;'||wwv_flow.LF||
-'  l_cur_id NUMBER;'||wwv_flow.LF||
-'  l_item';
-wwv_flow_imp.g_varchar2_table(768) := ' VARCHAR2(4000);'||wwv_flow.LF||
-'BEGIN'||wwv_flow.LF||
-'  -- Validate required input'||wwv_flow.LF||
-'  IF p_query IS NULL THEN'||wwv_flow.LF||
-'    RAISE_APPLICATION_';
-wwv_flow_imp.g_varchar2_table(769) := 'ERROR(-20000, ''p_query must be provided.'');'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  l_count_query := ora_sqlgraph_get_counts_qu';
-wwv_flow_imp.g_varchar2_table(770) := 'ery_builder(p_query, p_vertex_columns, p_edge_columns);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  -- Execute the dynamic query using DBMS_S';
-wwv_flow_imp.g_varchar2_table(771) := 'QL to allow binding'||wwv_flow.LF||
-'  l_cur := DBMS_SQL.OPEN_CURSOR;'||wwv_flow.LF||
-'  DBMS_SQL.PARSE('||wwv_flow.LF||
-'    l_cur,'||wwv_flow.LF||
-'    l_count_query,';
-wwv_flow_imp.g_varchar2_table(772) := ''||wwv_flow.LF||
-'    DBMS_SQL.NATIVE'||wwv_flow.LF||
-'  );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  IF p_bind_items IS NOT NULL THEN'||wwv_flow.LF||
-'    FOR i IN 1..REGEXP_COUNT(p_bind_it';
-wwv_flow_imp.g_varchar2_table(773) := 'ems, '','') + 1 LOOP'||wwv_flow.LF||
-'      l_item := REGEXP_SUBSTR(p_bind_items, ''[^,]+'', 1, i);'||wwv_flow.LF||
-'      DBMS_SQL.BIND_V';
-wwv_flow_imp.g_varchar2_table(774) := 'ARIABLE('||wwv_flow.LF||
-'        l_cur,'||wwv_flow.LF||
-'        '':'' || l_item,'||wwv_flow.LF||
-'        V(l_item)'||wwv_flow.LF||
-'      );'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(775) := ' -- Define column and fetch the result'||wwv_flow.LF||
-'  DBMS_SQL.DEFINE_COLUMN(l_cur, 1, EMPTY_CLOB());'||wwv_flow.LF||
-'  l_cur_id ';
-wwv_flow_imp.g_varchar2_table(776) := ':= DBMS_SQL.EXECUTE(l_cur);'||wwv_flow.LF||
-'  IF DBMS_SQL.FETCH_ROWS(l_cur) > 0 THEN'||wwv_flow.LF||
-'    DBMS_SQL.COLUMN_VALUE(l_cur';
-wwv_flow_imp.g_varchar2_table(777) := ', 1, l_result);'||wwv_flow.LF||
-'  END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  RETURN l_result;'||wwv_flow.LF||
-'EXCEPTION'||wwv_flow.LF||
-'  WHEN OTHE';
-wwv_flow_imp.g_varchar2_table(778) := 'RS THEN'||wwv_flow.LF||
-'    RAISE_APPLICATION_ERROR(-20001, ''Error executing count query: '' || SQLERRM || '' Query: ''';
-wwv_flow_imp.g_varchar2_table(779) := ' || l_count_query);'||wwv_flow.LF||
-'END APEX_SQLGRAPH_GET_COUNTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
 '';
 wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(4160899997256598257)
-,p_install_id=>wwv_flow_imp.id(12883465078800669451)
-,p_name=>'required_helper_function_for_23ai_or_newer'
-,p_sequence=>70
+ p_id=>wwv_flow_imp.id(2168724596109048528)
+,p_install_id=>wwv_flow_imp.id(9365121926314479954)
+,p_name=>'create_property_graph_adb'
+,p_sequence=>40
 ,p_script_type=>'INSTALL'
-,p_condition_type=>'EXPRESSION'
-,p_condition=>'sys.dbms_db_version.version >= 23'
+,p_condition_type=>'FUNCTION_BODY'
+,p_condition=>'return SYS_CONTEXT(''USERENV'',''CLOUD_SERVICE'') IS NOT NULL AND sys.dbms_db_version.version = 19;'
 ,p_condition2=>'PLSQL'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
