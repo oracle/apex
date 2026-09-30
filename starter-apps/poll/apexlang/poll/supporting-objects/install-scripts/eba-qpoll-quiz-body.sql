@@ -48,7 +48,7 @@ begin
    end if;
 
    if trim(p_answer_01) is not null then
-      l_answers := trim(p_answer_01);
+      l_answers := l_answers || l_delim || trim(p_answer_01);
    end if;
    if trim(p_answer_02) is not null then
       l_answers := l_answers || l_delim || trim(p_answer_02);
@@ -84,7 +84,7 @@ begin
       l_answers := l_answers || l_delim || trim(p_answer_12);
    end if;
 
-   l_answers := l_delim || l_answers || l_delim;
+   l_answers := l_answers || l_delim;
 
    return l_answers;
 
