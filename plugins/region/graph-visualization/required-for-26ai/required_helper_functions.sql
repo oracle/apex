@@ -49,215 +49,129 @@ BEGIN
    RETURN l_retvalue;
 END apex_sqlgraph_json;
 /
+CREATE OR REPLACE FUNCTION get_graph_metadata (
+        p_graph_owner IN VARCHAR2,
+        p_graph_name  IN VARCHAR2
+    ) RETURN CLOB IS
+        v_metadata CLOB;
+    BEGIN
+        SELECT JSON_OBJECT(
+    'vertices' VALUE COALESCE((
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'labels' VALUE (
+                    SELECT JSON_ARRAYAGG(el.label_name)
+                    FROM sys.all_pg_element_labels el
+                    WHERE el.element_name = e.element_name AND el.graph_name = p_graph_name AND el.OWNER = p_graph_owner
+                ),
+                'properties' VALUE COALESCE((
+                    SELECT JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'name' VALUE p.property_name,
+                            'actualDataType' VALUE p.data_type,
+                            'dataType' VALUE CASE
+                                WHEN p.data_type IN ('INTEGER', 'INT', 'SMALLINT', 'DEC', 'DECIMAL', 'NUMERIC', 'DOUBLE PRECISION', 'FLOAT', 'REAL','NUMBER', 'BINARY_FLOAT', 'BINARY_DOUBLE') THEN 'number'
+                                WHEN p.data_type IN ('DATE') THEN 'date'
+                                WHEN p.data_type IN ('TIMESTAMP', 'TIMESTAMP WITH TIME ZONE', 'TIMESTAMP WITH LOCAL TIME ZONE') THEN 'timestamp'
+                                WHEN p.data_type IN ('JSON') THEN 'object'
+                                ELSE 'string'
+                            END,
+                            'limits' VALUE CASE
+                                WHEN p.DATA_CHAR_LENGTH > 0 THEN JSON_ARRAY(p.DATA_CHAR_LENGTH)
+                                ELSE JSON_ARRAY()
+                            END,
+                            'mandatory' VALUE (
+                                SELECT CASE NULLABLE
+                                    WHEN 'Y' THEN false
+                                    WHEN 'N' THEN true
+                                END
+                                FROM sys.all_tab_columns col WHERE col.column_name = d.column_name AND col.table_name = e.object_name AND col.owner = e.object_owner
+                            )
+                        ) returning clob
+                    )
+                    FROM sys.all_pg_label_properties p INNER JOIN sys.all_pg_prop_definitions d
+                    ON (p.property_name = d.property_name AND p.owner = d.owner AND p.graph_name = d.GRAPH_NAME)
+                    WHERE d.element_name = e.element_name and p.label_name = l.label_name AND p.graph_name = p_graph_name AND p.OWNER = p_graph_owner
+                ), JSON_ARRAY(returning clob)) RETURNING CLOB
+            ) RETURNING CLOB
+        )
+        FROM sys.all_pg_elements e INNER JOIN sys.all_pg_element_labels l ON (e.element_name = l.element_name AND e.graph_name = l.graph_name AND e.owner = l.owner) WHERE e.element_kind = 'VERTEX' AND e.graph_name = p_graph_name AND e.OWNER = p_graph_owner
+    ), JSON_ARRAY(returning clob)),
+    'edges' VALUE COALESCE((
+        SELECT JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'labels' VALUE (
+                    SELECT JSON_ARRAYAGG(el.label_name)
+                    FROM sys.all_pg_element_labels el
+                    WHERE el.element_name = e.element_name AND el.graph_name = p_graph_name AND el.OWNER = p_graph_owner
+                ),
+                'properties' VALUE COALESCE((
+                    SELECT JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'name' VALUE p.property_name,
+                            'actualDataType' VALUE p.data_type,
+                            'dataType' VALUE CASE
+                                WHEN p.data_type IN ('INTEGER', 'INT', 'SMALLINT', 'DEC', 'DECIMAL', 'NUMERIC', 'DOUBLE PRECISION', 'FLOAT', 'REAL','NUMBER', 'BINARY_FLOAT', 'BINARY_DOUBLE') THEN 'number'
+                                WHEN p.data_type IN ('DATE') THEN 'date'
+                                WHEN p.data_type IN ('TIMESTAMP', 'TIMESTAMP WITH TIME ZONE', 'TIMESTAMP WITH LOCAL TIME ZONE') THEN 'timestamp'
+                                WHEN p.data_type IN ('JSON') THEN 'object'
+                                ELSE 'string'
+                            END,
+                            'limits' VALUE CASE
+                                WHEN p.DATA_CHAR_LENGTH > 0 THEN JSON_ARRAY(p.data_length)
+                                ELSE JSON_ARRAY()
+                            END,
+                            'mandatory' VALUE (
+                                SELECT CASE NULLABLE
+                                    WHEN 'Y' THEN false
+                                    WHEN 'N' THEN true
+                                END
+                                FROM sys.all_tab_columns col WHERE col.column_name = d.column_name AND col.table_name = e.object_name AND col.owner = e.object_owner
+                            ) returning clob
+                        ) returning clob
+                    )
+                    FROM sys.all_pg_label_properties p INNER JOIN sys.all_pg_prop_definitions d
+                    ON (p.property_name = d.property_name AND p.owner = d.owner AND p.graph_name = d.GRAPH_NAME)
+                    WHERE d.element_name = e.element_name and p.label_name = l.label_name AND p.graph_name = p_graph_name AND p.OWNER = p_graph_owner
+                ), JSON_ARRAY(returning clob)),
+                'sourceVertexLabels' VALUE (
+                    SELECT JSON_ARRAYAGG(label_name) FROM (
+                        SELECT DISTINCT l.label_name as label_name
+                        FROM sys.all_pg_elements e2
+                        INNER JOIN sys.all_pg_element_labels l ON e2.element_name = l.element_name AND e2.GRAPH_NAME = l.GRAPH_NAME AND e2.OWNER = l.OWNER
+                        INNER JOIN sys.all_pg_edge_relationships r ON r.vertex_tab_name = e2.element_name AND e2.GRAPH_NAME = r.GRAPH_NAME AND e2.OWNER = r.OWNER
+                        WHERE e2.element_kind = 'VERTEX' AND r.graph_name = e.graph_name AND r.edge_tab_name = e.element_name AND edge_end = 'SOURCE'
+                    )
+                    FETCH FIRST 1 ROWS ONLY
+                ),
+                'targetVertexLabels' VALUE (
+                    SELECT JSON_ARRAYAGG(label_name) FROM (
+                        SELECT DISTINCT l.label_name as label_name
+                        FROM sys.all_pg_elements e2
+                        INNER JOIN sys.all_pg_element_labels l ON e2.element_name = l.element_name AND e2.GRAPH_NAME = l.GRAPH_NAME AND e2.OWNER = l.OWNER
+                        INNER JOIN sys.all_pg_edge_relationships r ON r.vertex_tab_name = e2.element_name AND e2.GRAPH_NAME = r.GRAPH_NAME AND e2.OWNER = r.OWNER
+                        WHERE e2.element_kind = 'VERTEX' AND r.graph_name = e.graph_name AND r.edge_tab_name = e.element_name AND edge_end = 'DESTINATION'
+                    )
+                    FETCH FIRST 1 ROWS ONLY
+                ) returning clob
+            ) returning clob
+        )
+        FROM sys.all_pg_elements e INNER JOIN sys.all_pg_element_labels l ON (e.element_name = l.element_name AND e.graph_name = l.graph_name AND e.owner = l.owner) WHERE e.element_kind = 'EDGE' AND e.graph_name = p_graph_name AND e.OWNER = p_graph_owner
+    ), JSON_ARRAY(returning clob)) RETURNING CLOB) INTO v_metadata FROM dual;
+    RETURN v_metadata;
+    END;
+/
+
 CREATE OR REPLACE PROCEDURE get_graph_metadata_proc (
   p_graph_name  IN VARCHAR2,
   p_graph_owner IN VARCHAR2,
   p_metadata    OUT CLOB
 ) AS
 BEGIN
-  SELECT
-    JSON_OBJECT(
-      'vertices' VALUE(
-        SELECT JSON_ARRAYAGG(
-          JSON_OBJECT(
-            'labels' VALUE(
-              SELECT JSON_ARRAYAGG(el.label_name)
-                FROM sys.all_pg_element_labels el
-               WHERE el.element_name = e.element_name
-                 AND el.graph_name = p_graph_name
-                 AND el.owner = p_graph_owner
-            ),
-                      'properties' VALUE coalesce(
-              (
-                SELECT JSON_ARRAYAGG(
-                  JSON_OBJECT(
-                    'name' VALUE p.property_name,
-                              'dataType' VALUE
-                      CASE
-                        WHEN p.data_type IN('INTEGER',
-                                            'INT',
-                                            'SMALLINT',
-                                            'DEC',
-                                            'DECIMAL',
-                                            'NUMERIC',
-                                            'DOUBLE PRECISION',
-                                            'FLOAT',
-                                            'REAL',
-                                            'NUMBER',
-                                            'BINARY_FLOAT',
-                                            'BINARY_DOUBLE') THEN
-                          'number'
-                        WHEN p.data_type IN('TIMESTAMP') THEN
-                          'timestamp'
-                        ELSE
-                          'string'
-                      END,
-                              'limits' VALUE
-                      CASE
-                        WHEN p.data_char_length > 0 THEN
-                          JSON_ARRAY(p.data_char_length)
-                        ELSE
-                          JSON_ARRAY()
-                      END,
-                              'mandatory' VALUE(
-                      SELECT CASE nullable
-                        WHEN 'Y' THEN
-                          FALSE
-                        WHEN 'N' THEN
-                          TRUE
-                             END
-                        FROM sys.all_tab_columns col
-                       WHERE col.column_name = d.column_name
-                         AND col.table_name = e.object_name
-                         AND col.owner = e.object_owner
-                    )
-                  )
-                RETURNING CLOB)
-                  FROM sys.all_pg_label_properties p
-                 INNER JOIN sys.all_pg_prop_definitions d
-                ON(p.property_name = d.property_name
-                   AND p.owner = d.owner
-                   AND p.graph_name = d.graph_name)
-                 WHERE d.element_name = e.element_name
-                   AND p.label_name = l.label_name
-                   AND p.graph_name = p_graph_name
-                   AND p.owner = p_graph_owner
-              ),
-              JSON_ARRAY(RETURNING CLOB)
-            )
-          RETURNING CLOB)
-        RETURNING CLOB)
-          FROM sys.all_pg_elements e
-         INNER JOIN sys.all_pg_element_labels l
-        ON(e.element_name = l.element_name
-           AND e.graph_name = l.graph_name
-           AND e.owner = l.owner)
-         WHERE e.element_kind = 'VERTEX'
-           AND e.graph_name = p_graph_name
-           AND e.owner = p_graph_owner
-      ),
-                'edges' VALUE(
-        SELECT JSON_ARRAYAGG(
-          JSON_OBJECT(
-            'labels' VALUE(
-              SELECT JSON_ARRAYAGG(el.label_name)
-                FROM sys.all_pg_element_labels el
-               WHERE el.element_name = e.element_name
-                 AND e.graph_name = p_graph_name
-                 AND e.owner = p_graph_owner
-            ),
-                      'properties' VALUE coalesce(
-              (
-                SELECT JSON_ARRAYAGG(
-                  JSON_OBJECT(
-                    'name' VALUE p.property_name,
-                              'dataType' VALUE
-                      CASE
-                        WHEN p.data_type IN('INTEGER',
-                                            'INT',
-                                            'SMALLINT',
-                                            'DEC',
-                                            'DECIMAL',
-                                            'NUMERIC',
-                                            'DOUBLE PRECISION',
-                                            'FLOAT',
-                                            'REAL',
-                                            'NUMBER',
-                                            'BINARY_FLOAT',
-                                            'BINARY_DOUBLE') THEN
-                          'number'
-                        WHEN p.data_type IN('TIMESTAMP') THEN
-                          'timestamp'
-                        ELSE
-                          'string'
-                      END,
-                              'limits' VALUE
-                      CASE
-                        WHEN p.data_char_length > 0 THEN
-                          JSON_ARRAY(p.data_length)
-                        ELSE
-                          JSON_ARRAY()
-                      END,
-                              'mandatory' VALUE(
-                      SELECT CASE nullable
-                        WHEN 'Y' THEN
-                          FALSE
-                        WHEN 'N' THEN
-                          TRUE
-                             END
-                        FROM sys.all_tab_columns col
-                       WHERE col.column_name = d.column_name
-                         AND col.table_name = e.object_name
-                         AND col.owner = e.object_owner
-                    )
-                  RETURNING CLOB)
-                RETURNING CLOB)
-                  FROM sys.all_pg_label_properties p
-                 INNER JOIN sys.all_pg_prop_definitions d
-                ON(p.property_name = d.property_name
-                   AND p.owner = d.owner
-                   AND p.graph_name = d.graph_name)
-                 WHERE d.element_name = e.element_name
-                   AND p.label_name = l.label_name
-                   AND p.graph_name = p_graph_name
-                   AND p.owner = p_graph_owner
-              ),
-              JSON_ARRAY(RETURNING CLOB)
-            ),
-                      'sourceVertexLabels' VALUE(
-              SELECT JSON_ARRAYAGG(label_name)
-                FROM(
-                SELECT DISTINCT l.label_name AS label_name
-                  FROM sys.all_pg_elements e2
-                 INNER JOIN sys.all_pg_element_labels l
-                ON e2.element_name = l.element_name
-                   AND e2.graph_name = l.graph_name
-                   AND e2.owner = l.owner
-                 INNER JOIN sys.all_pg_edge_relationships r
-                ON r.vertex_tab_name = e2.element_name
-                   AND e2.graph_name = r.graph_name
-                   AND e2.owner = r.owner
-                 WHERE e2.element_kind = 'VERTEX'
-                   AND r.graph_name = e.graph_name
-                   AND r.edge_tab_name = e.element_name
-                   AND edge_end = 'SOURCE'
-              )
-               FETCH FIRST 1 ROWS ONLY
-            ),
-                      'targetVertexLabels' VALUE(
-              SELECT JSON_ARRAYAGG(label_name)
-                FROM(
-                SELECT DISTINCT l.label_name AS label_name
-                  FROM sys.all_pg_elements e2
-                 INNER JOIN sys.all_pg_element_labels l
-                ON e2.element_name = l.element_name
-                   AND e2.graph_name = l.graph_name
-                   AND e2.owner = l.owner
-                 INNER JOIN sys.all_pg_edge_relationships r
-                ON r.vertex_tab_name = e2.element_name
-                   AND e2.graph_name = r.graph_name
-                   AND e2.owner = r.owner
-                 WHERE e2.element_kind = 'VERTEX'
-                   AND r.graph_name = e.graph_name
-                   AND r.edge_tab_name = e.element_name
-                   AND edge_end = 'DESTINATION'
-              )
-               FETCH FIRST 1 ROWS ONLY
-            )
-          RETURNING CLOB)
-        RETURNING CLOB)
-          FROM sys.all_pg_elements e
-         INNER JOIN sys.all_pg_element_labels l
-        ON(e.element_name = l.element_name
-           AND e.graph_name = l.graph_name
-           AND e.owner = l.owner)
-         WHERE e.element_kind = 'EDGE'
-           AND e.graph_name = p_graph_name
-           AND e.owner = p_graph_owner
-      )
-    RETURNING CLOB)
-    INTO p_metadata
-    FROM sys.dual;
+  p_metadata := get_graph_metadata(
+    p_graph_owner,
+    p_graph_name
+  );
 END get_graph_metadata_proc;
 /
 
