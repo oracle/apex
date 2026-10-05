@@ -29,7 +29,7 @@ whenever sqlerror exit sql.sqlcode rollback
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.4'
+,p_release=>'26.1.5'
 ,p_default_workspace_id=>7814253142834653
 ,p_default_application_id=>108
 ,p_default_id_offset=>0
@@ -43,7 +43,7 @@ prompt APPLICATION 108 - Sample Graph Visualizations - 26ai - 26.4.0
 -- Application Export:
 --   Application:     108
 --   Name:            Sample Graph Visualizations - 26ai - 26.4.0
---   Date and Time:   18:21 Wednesday September 23, 2026
+--   Date and Time:   20:25 Friday October 2, 2026
 --   Exported By:     TEST_RJ
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -74,7 +74,7 @@ prompt APPLICATION 108 - Sample Graph Visualizations - 26ai - 26.4.0
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          5
---   Version:         26.1.4
+--   Version:         26.1.5
 --   Instance ID:     7614243263570353
 --
 
@@ -129,11 +129,11 @@ wwv_imp_workspace.create_flow(
 ,p_tokenize_row_search=>'N'
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>'Sample Graph Visualizations'
-,p_last_updated_on=>wwv_flow_imp.dz('20260923182112Z')
+,p_last_updated_on=>wwv_flow_imp.dz('20261002202446Z')
 ,p_last_updated_by=>'TEST_RJ'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461307181726
-,p_version_scn=>'50666665344102'
+,p_version_scn=>'50754969047773'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -47743,7 +47743,8 @@ wwv_flow_imp_shared.create_install(
 ,p_deinstall_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 ,p_required_free_kb=>100
 ,p_required_sys_privs=>'CREATE PROCEDURE:CREATE TABLE:CREATE TRIGGER:CREATE VIEW'
-,p_last_updated_on=>wwv_flow_imp.dz('20260923181739Z')
+,p_last_updated_on=>wwv_flow_imp.dz('20261002202446Z')
+,p_last_updated_by=>'TEST_RJ'
 );
 end;
 /
@@ -48272,2404 +48273,2189 @@ wwv_flow_imp_shared.create_install_script(
 );
 end;
 /
-prompt --application/deployment/install/install_required_helper_function_for_23ai_or_newer
+prompt --application/deployment/install/install_required_helper_function_for_26ai_or_newer
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
 wwv_flow_imp.g_varchar2_table(1) := 'CREATE OR REPLACE PACKAGE DBMS_GVT'||wwv_flow.LF||
 '  AUTHID CURRENT_USER IS'||wwv_flow.LF||
-' ---------------------------------------';
-wwv_flow_imp.g_varchar2_table(2) := '--------------------------------------'||wwv_flow.LF||
-' -- VERTEX_LATERAL_STRING - prepare vertex query string in LA';
-wwv_flow_imp.g_varchar2_table(3) := 'TERAL()'||wwv_flow.LF||
+' -------------------------------------';
+wwv_flow_imp.g_varchar2_table(2) := '----------------------------------------'||wwv_flow.LF||
+' -- VERTEX_LATERAL_STRING - prepare vertex query string in';
+wwv_flow_imp.g_varchar2_table(3) := ' LATERAL()'||wwv_flow.LF||
 ' -----------------------------------------------------------------------------'||wwv_flow.LF||
-'  FUNCTION PR';
-wwv_flow_imp.g_varchar2_table(4) := 'OPERTIES_LATERAL_STRING_AS_CLOB ('||wwv_flow.LF||
+'  FUNCTI';
+wwv_flow_imp.g_varchar2_table(4) := 'ON PROPERTIES_LATERAL_STRING_AS_CLOB ('||wwv_flow.LF||
 '    DB_TABLE_NAME_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    DB_OBJECT_OWNER_L';
-wwv_flow_imp.g_varchar2_table(5) := 'IST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
+'    DB_OBJECT_';
+wwv_flow_imp.g_varchar2_table(5) := 'OWNER_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
 '    GRAPH_VIZ_TABLE_NAME IN VARCHAR2,'||wwv_flow.LF||
-'    VERTEX_ID_COL_NAME IN VARCHAR2,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(6) := '    GRAPHNAME IN VARCHAR2,'||wwv_flow.LF||
+'    VERTEX_ID_COL_NAME IN V';
+wwv_flow_imp.g_varchar2_table(6) := 'ARCHAR2,'||wwv_flow.LF||
+'    GRAPHNAME IN VARCHAR2,'||wwv_flow.LF||
 '    GRAPHOWNER IN VARCHAR2,'||wwv_flow.LF||
 '    ELEMENT_TYPE IN VARCHAR2'||wwv_flow.LF||
-'  ) RETURN CLOB;';
-wwv_flow_imp.g_varchar2_table(7) := ''||wwv_flow.LF||
+'  )';
+wwv_flow_imp.g_varchar2_table(7) := ' RETURN CLOB;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  FUNCTION GET_VERSION RETURN VARCHAR2;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-' --------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(8) := '--------------------- '||wwv_flow.LF||
-' -- BUILD_JSON - prepare JSON result from vertex_id and edge_id tables'||wwv_flow.LF||
-' -----';
-wwv_flow_imp.g_varchar2_table(9) := '------------------------------------------------------------------------ '||wwv_flow.LF||
-'  FUNCTION BUILD_JSON_USIN';
-wwv_flow_imp.g_varchar2_table(10) := 'G_JSON_ARRAY('||wwv_flow.LF||
+' ---------------------------------------';
+wwv_flow_imp.g_varchar2_table(8) := '-------------------------------------- '||wwv_flow.LF||
+' -- BUILD_JSON - prepare JSON result from vertex_id and edg';
+wwv_flow_imp.g_varchar2_table(9) := 'e_id tables'||wwv_flow.LF||
+' ----------------------------------------------------------------------------- '||wwv_flow.LF||
+'  FUNC';
+wwv_flow_imp.g_varchar2_table(10) := 'TION BUILD_JSON_USING_JSON_ARRAY('||wwv_flow.LF||
 '    VERTEX_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
 '    EDGE_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
-'    COUNTER NUMBER,'||wwv_flow.LF||
-'    GR';
-wwv_flow_imp.g_varchar2_table(11) := 'APHNAME VARCHAR2,'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(11) := ' COUNTER NUMBER,'||wwv_flow.LF||
+'    GRAPHNAME VARCHAR2,'||wwv_flow.LF||
 '    GRAPHOWNER VARCHAR2'||wwv_flow.LF||
 ') RETURN CLOB'||wwv_flow.LF||
-'  ACCESSIBLE BY (FUNCTION ORA_GRAPH_BUILD_JS';
-wwv_flow_imp.g_varchar2_table(12) := 'ON_USING_JSON_ARRAY);'||wwv_flow.LF||
+'  ACCESSIBLE BY (';
+wwv_flow_imp.g_varchar2_table(12) := 'FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY);'||wwv_flow.LF||
 '  '||wwv_flow.LF||
 'END DBMS_GVT;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
-'-----------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(13) := '--------------------'||wwv_flow.LF||
-'-------------------------------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(14) := ''||wwv_flow.LF||
+'----------------------------';
+wwv_flow_imp.g_varchar2_table(13) := '---------------------------------------------------'||wwv_flow.LF||
+'-----------------------------------------------';
+wwv_flow_imp.g_varchar2_table(14) := '--------------------------------'||wwv_flow.LF||
 '-- DBMS_GVT Package Specification'||wwv_flow.LF||
-'-----------------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(15) := '--------------'||wwv_flow.LF||
-'-------------------------------------------------------------------------------'||wwv_flow.LF||
-'CREAT';
-wwv_flow_imp.g_varchar2_table(16) := 'E OR REPLACE PACKAGE BODY DBMS_GVT IS'||wwv_flow.LF||
-'  M_VCSIZ_4K  CONSTANT PLS_INTEGER := 4000;'||wwv_flow.LF||
-' -----------------';
-wwv_flow_imp.g_varchar2_table(17) := '------------------------------------------------------------'||wwv_flow.LF||
-' -- VERTEX_LATERAL_STRING - prepare ver';
-wwv_flow_imp.g_varchar2_table(18) := 'tex query string in LATERAL()'||wwv_flow.LF||
-' ---------------------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(19) := '--------'||wwv_flow.LF||
+'-------------------------------';
+wwv_flow_imp.g_varchar2_table(15) := '------------------------------------------------'||wwv_flow.LF||
+'--------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(16) := '-----------------------------'||wwv_flow.LF||
+'CREATE OR REPLACE PACKAGE BODY DBMS_GVT IS'||wwv_flow.LF||
+'  M_VCSIZ_4K  CONSTANT PL';
+wwv_flow_imp.g_varchar2_table(17) := 'S_INTEGER := 4000;'||wwv_flow.LF||
+' -----------------------------------------------------------------------------'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(18) := ' -- VERTEX_LATERAL_STRING - prepare vertex query string in LATERAL()'||wwv_flow.LF||
+' -----------------------------';
+wwv_flow_imp.g_varchar2_table(19) := '------------------------------------------------'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  FUNCTION GET_VERSION RETURN VARCHAR2 IS'||wwv_flow.LF||
-'  BEGIN'||wwv_flow.LF||
-'    RETURN ''26.3.0-RC3 (2026-06-08T19:39';
-wwv_flow_imp.g_varchar2_table(20) := ':43.674968270Z, build: b47291ffa)'';'||wwv_flow.LF||
+'  BEG';
+wwv_flow_imp.g_varchar2_table(20) := 'IN'||wwv_flow.LF||
+'    RETURN ''26.4.0 (2026-09-22T20:31:18.288120722Z, build: abf4b9452)'';'||wwv_flow.LF||
 '  END GET_VERSION;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB';
-wwv_flow_imp.g_varchar2_table(21) := ' ('||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(21) := ' FUNCTION PROPERTIES_LATERAL_STRING_AS_CLOB ('||wwv_flow.LF||
 '    DB_TABLE_NAME_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    DB_OBJECT_OWNER_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
-'    G';
-wwv_flow_imp.g_varchar2_table(22) := 'RAPH_VIZ_TABLE_NAME IN VARCHAR2,'||wwv_flow.LF||
-'    VERTEX_ID_COL_NAME IN VARCHAR2,'||wwv_flow.LF||
+'    DB_';
+wwv_flow_imp.g_varchar2_table(22) := 'OBJECT_OWNER_LIST SYS.ODCIVARCHAR2LIST,'||wwv_flow.LF||
+'    GRAPH_VIZ_TABLE_NAME IN VARCHAR2,'||wwv_flow.LF||
+'    VERTEX_ID_COL_NA';
+wwv_flow_imp.g_varchar2_table(23) := 'ME IN VARCHAR2,'||wwv_flow.LF||
 '    GRAPHNAME IN VARCHAR2,'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(23) := 'GRAPHOWNER IN VARCHAR2,'||wwv_flow.LF||
-'    ELEMENT_TYPE IN VARCHAR2'||wwv_flow.LF||
+'    GRAPHOWNER IN VARCHAR2,'||wwv_flow.LF||
+'    ELEMENT_TYPE IN VARCHA';
+wwv_flow_imp.g_varchar2_table(24) := 'R2'||wwv_flow.LF||
 '  ) RETURN CLOB IS'||wwv_flow.LF||
-'    LATERAL_QUERY_STRING    ';
-wwv_flow_imp.g_varchar2_table(24) := '           CLOB := '''';'||wwv_flow.LF||
-'    COLUMN_NAMES                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    OBJECT_NAMES';
-wwv_flow_imp.g_varchar2_table(25) := '                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    PROPERTY_NAMES                     SYS.ODCIVARCHAR2';
-wwv_flow_imp.g_varchar2_table(26) := 'LIST;'||wwv_flow.LF||
+'    LATERAL_QUERY_STRING               CLOB := '''';'||wwv_flow.LF||
+'    COLUMN_NAMES        ';
+wwv_flow_imp.g_varchar2_table(25) := '               SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    OBJECT_NAMES                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(26) := '    PROPERTY_NAMES                     SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
 '    TYPE STRING_LIST_TYPE IS'||wwv_flow.LF||
-'      TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY PLS_INTEGER;'||wwv_flow.LF||
-'    TYP';
-wwv_flow_imp.g_varchar2_table(27) := 'E VARCHARLIST_TABLE IS'||wwv_flow.LF||
-'      TABLE OF STRING_LIST_TYPE INDEX BY VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    TYPE STRIN';
-wwv_flow_imp.g_varchar2_table(28) := 'G_INDEX_BY_STRING IS'||wwv_flow.LF||
-'      TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY VARCHAR(M_VCSIZ_4K);'||wwv_flow.LF||
-'    ELEMENT_T';
-wwv_flow_imp.g_varchar2_table(29) := 'ABLE_COLUMN_NAME          VARCHARLIST_TABLE; '||wwv_flow.LF||
-'    ELEMENT_TABLE_PROPERTY_NAME        VARCHARLIST_TAB';
-wwv_flow_imp.g_varchar2_table(30) := 'LE; '||wwv_flow.LF||
-'    ELEMENT_TO_KEY_LIST_TABLE          VARCHARLIST_TABLE; '||wwv_flow.LF||
-'    COLUMN_EXPRESSION               ';
-wwv_flow_imp.g_varchar2_table(31) := '   VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    COLUMN_NAME                        VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    ELEMENTNAM';
-wwv_flow_imp.g_varchar2_table(32) := 'ES                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    KEY_LIST                           SYS.ODCIVARCHA';
-wwv_flow_imp.g_varchar2_table(33) := 'R2LIST;'||wwv_flow.LF||
-'    JSON_CONDITION_STRING              CLOB;'||wwv_flow.LF||
-'    ALL_QUERY_STRING                   CLOB := ';
-wwv_flow_imp.g_varchar2_table(34) := ''''';'||wwv_flow.LF||
-'    COLUMN_EXPRESSIONS                 SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    COLUMN_EXPRESSION_LIST         ';
-wwv_flow_imp.g_varchar2_table(35) := '    VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    P1                                 INT;'||wwv_flow.LF||
-'    P2                           ';
-wwv_flow_imp.g_varchar2_table(36) := '      INT;'||wwv_flow.LF||
-'    P3                                 INT;'||wwv_flow.LF||
-'    COLUMN_NAMES_FOR_EACH_ELEMENT       STRIN';
-wwv_flow_imp.g_varchar2_table(37) := 'G_LIST_TYPE;'||wwv_flow.LF||
-'    PROPERTY_NAMES_FOR_EACH_ELEMENT     STRING_LIST_TYPE;'||wwv_flow.LF||
-'    PROPERTY_NAMES_FOR_EACH_E';
-wwv_flow_imp.g_varchar2_table(38) := 'LEMENT_INDEXED_BY_STRING    STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT STRING_L';
-wwv_flow_imp.g_varchar2_table(39) := 'IST_TYPE;'||wwv_flow.LF||
-'    KEY_LIST_FOR_EACH_ELEMENT           STRING_LIST_TYPE;'||wwv_flow.LF||
-'    OBJECT_TO_ELEMENTS          ';
-wwv_flow_imp.g_varchar2_table(40) := '       VARCHARLIST_TABLE; '||wwv_flow.LF||
+'      TA';
+wwv_flow_imp.g_varchar2_table(27) := 'BLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY PLS_INTEGER;'||wwv_flow.LF||
+'    TYPE VARCHARLIST_TABLE IS'||wwv_flow.LF||
+'      TABLE OF STR';
+wwv_flow_imp.g_varchar2_table(28) := 'ING_LIST_TYPE INDEX BY VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'    TYPE STRING_INDEX_BY_STRING IS'||wwv_flow.LF||
+'      TABLE OF VAR';
+wwv_flow_imp.g_varchar2_table(29) := 'CHAR2(M_VCSIZ_4K) INDEX BY VARCHAR(M_VCSIZ_4K);'||wwv_flow.LF||
+'    ELEMENT_TABLE_COLUMN_NAME          VARCHARLIST_';
+wwv_flow_imp.g_varchar2_table(30) := 'TABLE; '||wwv_flow.LF||
+'    ELEMENT_TABLE_PROPERTY_NAME        VARCHARLIST_TABLE; '||wwv_flow.LF||
+'    ELEMENT_TO_KEY_LIST_TABLE  ';
+wwv_flow_imp.g_varchar2_table(31) := '        VARCHARLIST_TABLE; '||wwv_flow.LF||
+'    COLUMN_EXPRESSION                  VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'    COLUM';
+wwv_flow_imp.g_varchar2_table(32) := 'N_NAME                        VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'    ELEMENTNAMES                       SYS.ODCI';
+wwv_flow_imp.g_varchar2_table(33) := 'VARCHAR2LIST;'||wwv_flow.LF||
+'    KEY_LIST                           SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    JSON_CONDITION_STRI';
+wwv_flow_imp.g_varchar2_table(34) := 'NG              CLOB;'||wwv_flow.LF||
+'    ALL_QUERY_STRING                   CLOB := '''';'||wwv_flow.LF||
+'    COLUMN_EXPRESSIONS   ';
+wwv_flow_imp.g_varchar2_table(35) := '              SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    COLUMN_EXPRESSION_LIST             VARCHARLIST_TABLE;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(36) := 'P1                                 INT;'||wwv_flow.LF||
+'    P2                                 INT;'||wwv_flow.LF||
+'    P3        ';
+wwv_flow_imp.g_varchar2_table(37) := '                         INT;'||wwv_flow.LF||
+'    COLUMN_NAMES_FOR_EACH_ELEMENT       STRING_LIST_TYPE;'||wwv_flow.LF||
+'    PROPER';
+wwv_flow_imp.g_varchar2_table(38) := 'TY_NAMES_FOR_EACH_ELEMENT     STRING_LIST_TYPE;'||wwv_flow.LF||
+'    PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRI';
+wwv_flow_imp.g_varchar2_table(39) := 'NG    STRING_INDEX_BY_STRING;'||wwv_flow.LF||
+'    COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT STRING_LIST_TYPE;'||wwv_flow.LF||
+'    KEY_LI';
+wwv_flow_imp.g_varchar2_table(40) := 'ST_FOR_EACH_ELEMENT           STRING_LIST_TYPE;'||wwv_flow.LF||
+'    OBJECT_TO_ELEMENTS                 VARCHARLIST_';
+wwv_flow_imp.g_varchar2_table(41) := 'TABLE; '||wwv_flow.LF||
 '    ELEMENTS_FOR_EACH_OBJECT           STRING_LIST_TYPE;'||wwv_flow.LF||
-'    LABELS      ';
-wwv_flow_imp.g_varchar2_table(41) := '                       SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    LABELS_FOR_EACH_ELEMENT            STRING_LIST_TYPE';
-wwv_flow_imp.g_varchar2_table(42) := ';'||wwv_flow.LF||
-'    ELEMENT_TO_LABELS                  VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    LABELS_STRING                      C';
-wwv_flow_imp.g_varchar2_table(43) := 'LOB;'||wwv_flow.LF||
-'    EDGE_KEYS                          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_TAB_NAMES              ';
-wwv_flow_imp.g_varchar2_table(44) := '     SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    LABELS                       ';
+wwv_flow_imp.g_varchar2_table(42) := '      SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    LABELS_FOR_EACH_ELEMENT            STRING_LIST_TYPE;'||wwv_flow.LF||
+'    ELEMENT_T';
+wwv_flow_imp.g_varchar2_table(43) := 'O_LABELS                  VARCHARLIST_TABLE;'||wwv_flow.LF||
+'    LABELS_STRING                      CLOB;'||wwv_flow.LF||
+'    EDGE';
+wwv_flow_imp.g_varchar2_table(44) := '_KEYS                          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    VERTEX_TAB_NAMES                   SYS.ODC';
+wwv_flow_imp.g_varchar2_table(45) := 'IVARCHAR2LIST;'||wwv_flow.LF||
 '    VERTEX_ELEMENT_NAMES               SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_K';
-wwv_flow_imp.g_varchar2_table(45) := 'EYS                        SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_OBJECT_NAMES                SYS.ODCIVARC';
-wwv_flow_imp.g_varchar2_table(46) := 'HAR2LIST;'||wwv_flow.LF||
+'    VERTEX_KEYS       ';
+wwv_flow_imp.g_varchar2_table(46) := '                 SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    VERTEX_OBJECT_NAMES                SYS.ODCIVARCHAR2LIST;';
+wwv_flow_imp.g_varchar2_table(47) := ''||wwv_flow.LF||
 '    VERTEX_OBJECT_OWNERS               SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_TAB_NAMES           ';
-wwv_flow_imp.g_varchar2_table(47) := '          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    EDGE_TAB_NAMES                  ';
+wwv_flow_imp.g_varchar2_table(48) := '   SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
 '    SRC_VERTEX_TAB_NAME_TABLE          STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    S';
-wwv_flow_imp.g_varchar2_table(48) := 'RC_VERTEX_OBJECT_NAME_TABLE       STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    SRC_VERTEX_OBJECT_OWNER_TABLE      STR';
-wwv_flow_imp.g_varchar2_table(49) := 'ING_INDEX_BY_STRING;'||wwv_flow.LF||
+'    SRC_VE';
+wwv_flow_imp.g_varchar2_table(49) := 'RTEX_OBJECT_NAME_TABLE       STRING_INDEX_BY_STRING;'||wwv_flow.LF||
+'    SRC_VERTEX_OBJECT_OWNER_TABLE      STRING_';
+wwv_flow_imp.g_varchar2_table(50) := 'INDEX_BY_STRING;'||wwv_flow.LF||
 '    DEST_VERTEX_TAB_NAME_TABLE         STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    DEST_VERTEX_';
-wwv_flow_imp.g_varchar2_table(50) := 'OBJECT_NAME_TABLE      STRING_INDEX_BY_STRING;'||wwv_flow.LF||
-'    DEST_VERTEX_OBJECT_OWNER_TABLE     STRING_INDEX_B';
-wwv_flow_imp.g_varchar2_table(51) := 'Y_STRING;'||wwv_flow.LF||
+'    DEST_VERTEX_OB';
+wwv_flow_imp.g_varchar2_table(51) := 'JECT_NAME_TABLE      STRING_INDEX_BY_STRING;'||wwv_flow.LF||
+'    DEST_VERTEX_OBJECT_OWNER_TABLE     STRING_INDEX_BY';
+wwv_flow_imp.g_varchar2_table(52) := '_STRING;'||wwv_flow.LF||
 '    EDGE_COL_NAME                      SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_COL_NAME          ';
-wwv_flow_imp.g_varchar2_table(52) := '          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    VERTEX_COL_NAME         ';
+wwv_flow_imp.g_varchar2_table(53) := '           SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
 '    EDGE_END_LIST                      SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDG';
-wwv_flow_imp.g_varchar2_table(53) := 'E_ELEMENT_NAMES                 SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    SRC_EDGE_COL_NAME_TABLE            VARCHAR';
-wwv_flow_imp.g_varchar2_table(54) := 'LIST_TABLE;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(54) := 'EDGE_ELEMENT_NAMES                 SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    SRC_EDGE_COL_NAME_TABLE            VAR';
+wwv_flow_imp.g_varchar2_table(55) := 'CHARLIST_TABLE;'||wwv_flow.LF||
 '    SRC_VERTEX_COL_NAME_TABLE          VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    DEST_EDGE_COL_NAME_TABLE  ';
-wwv_flow_imp.g_varchar2_table(55) := '         VARCHARLIST_TABLE;'||wwv_flow.LF||
+'    DEST_EDGE_COL_NAME_T';
+wwv_flow_imp.g_varchar2_table(56) := 'ABLE           VARCHARLIST_TABLE;'||wwv_flow.LF||
 '    DEST_VERTEX_COL_NAME_TABLE         VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    EDGE_TO_KE';
-wwv_flow_imp.g_varchar2_table(56) := 'YS_TABLE                 VARCHARLIST_TABLE;'||wwv_flow.LF||
-'    VERTEX_KEYS_TABLE                  VARCHARLIST_TABLE';
-wwv_flow_imp.g_varchar2_table(57) := ';'||wwv_flow.LF||
+'    ED';
+wwv_flow_imp.g_varchar2_table(57) := 'GE_TO_KEYS_TABLE                 VARCHARLIST_TABLE;'||wwv_flow.LF||
+'    VERTEX_KEYS_TABLE                  VARCHARL';
+wwv_flow_imp.g_varchar2_table(58) := 'IST_TABLE;'||wwv_flow.LF||
 '    SRC_JSON_STRING                    CLOB;'||wwv_flow.LF||
-'    DEST_JSON_STRING                   CLOB;'||wwv_flow.LF||
-'    SRC_';
-wwv_flow_imp.g_varchar2_table(58) := 'EDGE_COL_NAME_FOR_EACH_EDGE    STRING_LIST_TYPE;'||wwv_flow.LF||
-'    SRC_VERTEX_COL_NAME_FOR_EACH_EDGE  STRING_LIST_';
-wwv_flow_imp.g_varchar2_table(59) := 'TYPE;'||wwv_flow.LF||
+'    DEST_JSON_STRING                   CLO';
+wwv_flow_imp.g_varchar2_table(59) := 'B;'||wwv_flow.LF||
+'    SRC_EDGE_COL_NAME_FOR_EACH_EDGE    STRING_LIST_TYPE;'||wwv_flow.LF||
+'    SRC_VERTEX_COL_NAME_FOR_EACH_EDGE ';
+wwv_flow_imp.g_varchar2_table(60) := ' STRING_LIST_TYPE;'||wwv_flow.LF||
 '    DEST_EDGE_COL_NAME_FOR_EACH_EDGE   STRING_LIST_TYPE;'||wwv_flow.LF||
-'    DEST_VERTEX_COL_NAME_FOR_EACH_EDG';
-wwv_flow_imp.g_varchar2_table(60) := 'E STRING_LIST_TYPE;'||wwv_flow.LF||
+'    DEST_VERTEX_COL_NA';
+wwv_flow_imp.g_varchar2_table(61) := 'ME_FOR_EACH_EDGE STRING_LIST_TYPE;'||wwv_flow.LF||
 '    EDGE_KEYS_FOR_EACH_EDGE            STRING_LIST_TYPE;'||wwv_flow.LF||
-'    VERTEX_KEYS_FOR_EAC';
-wwv_flow_imp.g_varchar2_table(61) := 'H_VERTEX        STRING_LIST_TYPE;'||wwv_flow.LF||
-'    ELEMENT_NAME                       VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    I';
-wwv_flow_imp.g_varchar2_table(62) := 'NNER_PROPS_LABELS_STRING          CLOB;'||wwv_flow.LF||
-'    EDGE_INNER_PROJECTION_STRING       CLOB;'||wwv_flow.LF||
-'    INNER_QUERY';
-wwv_flow_imp.g_varchar2_table(63) := '_STRING                 CLOB;'||wwv_flow.LF||
+'    VE';
+wwv_flow_imp.g_varchar2_table(62) := 'RTEX_KEYS_FOR_EACH_VERTEX        STRING_LIST_TYPE;'||wwv_flow.LF||
+'    ELEMENT_NAME                       VARCHAR2(';
+wwv_flow_imp.g_varchar2_table(63) := 'M_VCSIZ_4K);'||wwv_flow.LF||
+'    INNER_PROPS_LABELS_STRING          CLOB;'||wwv_flow.LF||
+'    EDGE_INNER_PROJECTION_STRING       C';
+wwv_flow_imp.g_varchar2_table(64) := 'LOB;'||wwv_flow.LF||
+'    INNER_QUERY_STRING                 CLOB;'||wwv_flow.LF||
 '    OUTER_SELECT_STRING                CLOB;'||wwv_flow.LF||
-'    SRC_OUTER_JOIN_STRING';
-wwv_flow_imp.g_varchar2_table(64) := '              CLOB;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(65) := '  SRC_OUTER_JOIN_STRING              CLOB;'||wwv_flow.LF||
 '    DEST_OUTER_JOIN_STRING             CLOB;'||wwv_flow.LF||
-'    SRC_PROJECTED_COL_ALIAS        ';
-wwv_flow_imp.g_varchar2_table(65) := '    VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'    DEST_PROJECTED_COL_ALIAS           VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'    SRC_PR';
+wwv_flow_imp.g_varchar2_table(66) := 'OJECTED_COL_ALIAS            VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'    DEST_PROJECTED_COL_ALIAS           VARCHAR2(';
+wwv_flow_imp.g_varchar2_table(67) := 'M_VCSIZ_4K);'||wwv_flow.LF||
 '  BEGIN'||wwv_flow.LF||
-'    I';
-wwv_flow_imp.g_varchar2_table(66) := 'F ELEMENT_TYPE = ''EDGE'' THEN'||wwv_flow.LF||
+'    IF ELEMENT_TYPE = ''EDGE'' THEN'||wwv_flow.LF||
 '      SELECT'||wwv_flow.LF||
-'        DISTINCT VERTEX_TAB_NAME,'||wwv_flow.LF||
+'        DISTINCT VERTEX_TAB_';
+wwv_flow_imp.g_varchar2_table(68) := 'NAME,'||wwv_flow.LF||
 '        OBJECT_NAME,'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(67) := '     EDGE_TAB_NAME,'||wwv_flow.LF||
+'        EDGE_TAB_NAME,'||wwv_flow.LF||
 '        EDGE_END,'||wwv_flow.LF||
-'        ELEMENTS.OBJECT_OWNER BULK COLLECT INTO VERTEX_TAB_NAM';
-wwv_flow_imp.g_varchar2_table(68) := 'ES,'||wwv_flow.LF||
+'        ELEMENTS.OBJECT_OWNE';
+wwv_flow_imp.g_varchar2_table(69) := 'R BULK COLLECT INTO VERTEX_TAB_NAMES,'||wwv_flow.LF||
 '        VERTEX_OBJECT_NAMES,'||wwv_flow.LF||
 '        EDGE_TAB_NAMES,'||wwv_flow.LF||
-'        EDGE_END_LIST,'||wwv_flow.LF||
-'        VERTEX_OBJEC';
-wwv_flow_imp.g_varchar2_table(69) := 'T_OWNERS'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(70) := '  EDGE_END_LIST,'||wwv_flow.LF||
+'        VERTEX_OBJECT_OWNERS'||wwv_flow.LF||
 '      FROM'||wwv_flow.LF||
-'        SYS.ALL_PG_EDGE_RELATIONSHIPS RELATIONSHIPS'||wwv_flow.LF||
-'        INNER JOIN SYS.ALL_P';
-wwv_flow_imp.g_varchar2_table(70) := 'G_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'        ON (RELATIONSHIPS.VERTEX_TAB_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'        AND RE';
-wwv_flow_imp.g_varchar2_table(71) := 'LATIONSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(72) := ' WHERE'||wwv_flow.LF||
+'        SYS.ALL_PG_EDGE_RELATIONSHIPS RE';
+wwv_flow_imp.g_varchar2_table(71) := 'LATIONSHIPS'||wwv_flow.LF||
+'        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
+'        ON (RELATIONSHIPS.VERTEX_TAB_N';
+wwv_flow_imp.g_varchar2_table(72) := 'AME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
+'        AND RELATIONSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
+'        AND';
+wwv_flow_imp.g_varchar2_table(73) := ' RELATIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
+'      WHERE'||wwv_flow.LF||
 '        RELATIONSHIPS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'        AND ELEMENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(74) := '       AND ELEMENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(73) := 'FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF EDGE_END_LIST(IDX1) = ''SOURCE'' THEN'||wwv_flow.LF||
-'          SR';
-wwv_flow_imp.g_varchar2_table(74) := 'C_VERTEX_TAB_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_TAB_NAMES(IDX1);'||wwv_flow.LF||
-'          SRC_VERTEX_OBJECT';
-wwv_flow_imp.g_varchar2_table(75) := '_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_NAMES(IDX1);'||wwv_flow.LF||
-'          SRC_VERTEX_OBJECT_OWNER_TA';
-wwv_flow_imp.g_varchar2_table(76) := 'BLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_OWNERS(IDX1);'||wwv_flow.LF||
+'     FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
+'        I';
+wwv_flow_imp.g_varchar2_table(75) := 'F EDGE_END_LIST(IDX1) = ''SOURCE'' THEN'||wwv_flow.LF||
+'          SRC_VERTEX_TAB_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := ';
+wwv_flow_imp.g_varchar2_table(76) := 'VERTEX_TAB_NAMES(IDX1);'||wwv_flow.LF||
+'          SRC_VERTEX_OBJECT_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJE';
+wwv_flow_imp.g_varchar2_table(77) := 'CT_NAMES(IDX1);'||wwv_flow.LF||
+'          SRC_VERTEX_OBJECT_OWNER_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_OWNE';
+wwv_flow_imp.g_varchar2_table(78) := 'RS(IDX1);'||wwv_flow.LF||
 '        ELSE'||wwv_flow.LF||
-'          DEST_VERTEX_TAB_NAME';
-wwv_flow_imp.g_varchar2_table(77) := '_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_TAB_NAMES(IDX1);'||wwv_flow.LF||
-'          DEST_VERTEX_OBJECT_NAME_TABLE(EDGE';
-wwv_flow_imp.g_varchar2_table(78) := '_TAB_NAMES(IDX1)) := VERTEX_OBJECT_NAMES(IDX1);'||wwv_flow.LF||
-'          DEST_VERTEX_OBJECT_OWNER_TABLE(EDGE_TAB_NA';
-wwv_flow_imp.g_varchar2_table(79) := 'MES(IDX1)) := VERTEX_OBJECT_OWNERS(IDX1);'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
+'          DEST_VERTEX_TAB_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_TAB_NA';
+wwv_flow_imp.g_varchar2_table(79) := 'MES(IDX1);'||wwv_flow.LF||
+'          DEST_VERTEX_OBJECT_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_NAMES(IDX';
+wwv_flow_imp.g_varchar2_table(80) := '1);'||wwv_flow.LF||
+'          DEST_VERTEX_OBJECT_OWNER_TABLE(EDGE_TAB_NAMES(IDX1)) := VERTEX_OBJECT_OWNERS(IDX1);'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(81) := '        END IF;'||wwv_flow.LF||
 '      END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '      SELECT'||wwv_flow.LF||
-'        DIST';
-wwv_flow_imp.g_varchar2_table(80) := 'INCT EDGE_COL_NAME,'||wwv_flow.LF||
-'        VERTEX_COL_NAME,'||wwv_flow.LF||
+'        DISTINCT EDGE_COL_NAME,'||wwv_flow.LF||
+'        VERTEX_CO';
+wwv_flow_imp.g_varchar2_table(82) := 'L_NAME,'||wwv_flow.LF||
 '        EDGE_TAB_NAME BULK COLLECT INTO EDGE_COL_NAME,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(81) := '        VERTEX_COL_NAME,'||wwv_flow.LF||
-'        EDGE_TAB_NAMES'||wwv_flow.LF||
+'        VERTEX_COL_NAME,'||wwv_flow.LF||
+'        E';
+wwv_flow_imp.g_varchar2_table(83) := 'DGE_TAB_NAMES'||wwv_flow.LF||
 '      FROM'||wwv_flow.LF||
-'        SYS.ALL_PG_EDGE_RELATIONSHIPS REL';
-wwv_flow_imp.g_varchar2_table(82) := 'ATIONSHIPS'||wwv_flow.LF||
-'        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'        ON (RELATIONSHIPS.VERTEX_TAB_NAME';
-wwv_flow_imp.g_varchar2_table(83) := ' = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
-'        AND RELA';
-wwv_flow_imp.g_varchar2_table(84) := 'TIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
+'        SYS.ALL_PG_EDGE_RELATIONSHIPS RELATIONSHIPS'||wwv_flow.LF||
+'        INNER JOIN S';
+wwv_flow_imp.g_varchar2_table(84) := 'YS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
+'        ON (RELATIONSHIPS.VERTEX_TAB_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(85) := '    AND RELATIONSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
+'        AND RELATIONSHIPS.OWNER = ELEMENTS.O';
+wwv_flow_imp.g_varchar2_table(86) := 'WNER)'||wwv_flow.LF||
 '      WHERE'||wwv_flow.LF||
 '        RELATIONSHIPS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'        A';
-wwv_flow_imp.g_varchar2_table(85) := 'ND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
+'        AND ELEMENTS.OWNER = GRAPH';
+wwv_flow_imp.g_varchar2_table(87) := 'OWNER'||wwv_flow.LF||
 '        AND EDGE_END = ''SOURCE'''||wwv_flow.LF||
 '      ORDER BY'||wwv_flow.LF||
-'        EDGE_TAB_NAME;';
-wwv_flow_imp.g_varchar2_table(86) := ''||wwv_flow.LF||
+'        EDGE_TAB_NAME;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'      FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
+'      FOR IDX1 IN';
+wwv_flow_imp.g_varchar2_table(88) := ' 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
 '        IF IDX1 = 1 THEN'||wwv_flow.LF||
 '          P1 := 1;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(87) := '    SRC_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          SRC_EDGE_COL_NAME_FOR_EACH_';
-wwv_flow_imp.g_varchar2_table(88) := 'EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'          SRC_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE';
-wwv_flow_imp.g_varchar2_table(89) := '();'||wwv_flow.LF||
-'          SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1';
-wwv_flow_imp.g_varchar2_table(90) := ';'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
+'          SRC_EDGE_COL_';
+wwv_flow_imp.g_varchar2_table(89) := 'NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'          SRC_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE';
+wwv_flow_imp.g_varchar2_table(90) := '_COL_NAME(IDX1);'||wwv_flow.LF||
+'          SRC_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'          ';
+wwv_flow_imp.g_varchar2_table(91) := 'SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
+'          P1 := P1 + 1;'||wwv_flow.LF||
+'        EL';
+wwv_flow_imp.g_varchar2_table(92) := 'SE'||wwv_flow.LF||
 '          IF EDGE_TAB_NAMES(IDX1) = EDGE_TAB_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            SRC_EDG';
-wwv_flow_imp.g_varchar2_table(91) := 'E_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P';
-wwv_flow_imp.g_varchar2_table(92) := '1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
+'            SRC_EDGE_COL_NAME';
+wwv_flow_imp.g_varchar2_table(93) := '_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
+'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VER';
+wwv_flow_imp.g_varchar2_table(94) := 'TEX_COL_NAME(IDX1);'||wwv_flow.LF||
 '            P1 := P1 + 1;'||wwv_flow.LF||
 '          ELSE'||wwv_flow.LF||
-'            SRC_EDGE_COL_NAME_';
-wwv_flow_imp.g_varchar2_table(93) := 'TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := SRC_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_';
-wwv_flow_imp.g_varchar2_table(94) := 'TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := SRC_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'            SRC_EDGE_COL_NAME_TABLE(';
+wwv_flow_imp.g_varchar2_table(95) := 'EDGE_TAB_NAMES(IDX1 - 1)) := SRC_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'            SRC_VERTEX_COL_NAME_TABLE';
+wwv_flow_imp.g_varchar2_table(96) := '(EDGE_TAB_NAMES(IDX1 - 1)) := SRC_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
 '            P1 := 1;'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(95) := '   SRC_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'            SRC_EDGE_COL_NAME_FOR_EACH';
-wwv_flow_imp.g_varchar2_table(96) := '_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_T';
-wwv_flow_imp.g_varchar2_table(97) := 'YPE();'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(97) := 'SRC_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'            SRC_EDGE_COL_NAME_FOR_EACH_E';
+wwv_flow_imp.g_varchar2_table(98) := 'DGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
+'            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TY';
+wwv_flow_imp.g_varchar2_table(99) := 'PE();'||wwv_flow.LF||
 '            SRC_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'            P1 :=';
-wwv_flow_imp.g_varchar2_table(98) := ' P1 + 1;'||wwv_flow.LF||
+'            P1 :';
+wwv_flow_imp.g_varchar2_table(100) := '= P1 + 1;'||wwv_flow.LF||
 '          END IF;'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '        IF IDX1 = EDGE_TAB_NAMES.COUNT THEN'||wwv_flow.LF||
-'          SR';
-wwv_flow_imp.g_varchar2_table(99) := 'C_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := SRC_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'          SRC_VERTEX';
-wwv_flow_imp.g_varchar2_table(100) := '_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := SRC_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      EN';
-wwv_flow_imp.g_varchar2_table(101) := 'D LOOP;'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(101) := '    SRC_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := SRC_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'          SRC';
+wwv_flow_imp.g_varchar2_table(102) := '_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := SRC_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'        END IF;';
+wwv_flow_imp.g_varchar2_table(103) := ''||wwv_flow.LF||
+'      END LOOP;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
 '      SELECT'||wwv_flow.LF||
 '        DISTINCT EDGE_COL_NAME,'||wwv_flow.LF||
 '        VERTEX_COL_NAME,'||wwv_flow.LF||
-'        EDGE_TAB_NAM';
-wwv_flow_imp.g_varchar2_table(102) := 'E BULK COLLECT INTO EDGE_COL_NAME,'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(104) := '  EDGE_TAB_NAME BULK COLLECT INTO EDGE_COL_NAME,'||wwv_flow.LF||
 '        VERTEX_COL_NAME,'||wwv_flow.LF||
 '        EDGE_TAB_NAMES'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(103) := '  SYS.ALL_PG_EDGE_RELATIONSHIPS RELATIONSHIPS'||wwv_flow.LF||
-'        INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(104) := '  ON (RELATIONSHIPS.VERTEX_TAB_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'        AND RELATIONSHIPS.GRAPH_NAME = E';
-wwv_flow_imp.g_varchar2_table(105) := 'LEMENTS.GRAPH_NAME'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(105) := '      FROM'||wwv_flow.LF||
+'        SYS.ALL_PG_EDGE_RELATIONSHIPS RELATIONSHIPS'||wwv_flow.LF||
+'        INNER JOIN SYS.ALL_PG_ELEME';
+wwv_flow_imp.g_varchar2_table(106) := 'NTS ELEMENTS'||wwv_flow.LF||
+'        ON (RELATIONSHIPS.VERTEX_TAB_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
+'        AND RELATIO';
+wwv_flow_imp.g_varchar2_table(107) := 'NSHIPS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
 '        AND RELATIONSHIPS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
-'      WHERE'||wwv_flow.LF||
-'        RELATIONSHI';
-wwv_flow_imp.g_varchar2_table(106) := 'PS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
+'      WH';
+wwv_flow_imp.g_varchar2_table(108) := 'ERE'||wwv_flow.LF||
+'        RELATIONSHIPS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
 '        AND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
-'        AND EDGE_END = ''DESTINATIO';
-wwv_flow_imp.g_varchar2_table(107) := 'N'''||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(109) := 'AND EDGE_END = ''DESTINATION'''||wwv_flow.LF||
 '      ORDER BY'||wwv_flow.LF||
 '        EDGE_TAB_NAME;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'      FOR IDX1 IN 1..EDGE_TAB_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF ';
-wwv_flow_imp.g_varchar2_table(108) := 'IDX1 = 1 THEN'||wwv_flow.LF||
+'      FOR IDX1 IN 1..EDGE_TA';
+wwv_flow_imp.g_varchar2_table(110) := 'B_NAMES.COUNT LOOP'||wwv_flow.LF||
+'        IF IDX1 = 1 THEN'||wwv_flow.LF||
 '          P1 := 1;'||wwv_flow.LF||
-'          DEST_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE(';
-wwv_flow_imp.g_varchar2_table(109) := ');'||wwv_flow.LF||
-'          DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'          DEST_VERTEX_COL_';
-wwv_flow_imp.g_varchar2_table(110) := 'NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          DEST_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VE';
-wwv_flow_imp.g_varchar2_table(111) := 'RTEX_COL_NAME(IDX1);'||wwv_flow.LF||
+'          DEST_EDGE_COL_NAME_FOR_E';
+wwv_flow_imp.g_varchar2_table(111) := 'ACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'          DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME';
+wwv_flow_imp.g_varchar2_table(112) := '(IDX1);'||wwv_flow.LF||
+'          DEST_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'          DEST_VER';
+wwv_flow_imp.g_varchar2_table(113) := 'TEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
 '          P1 := P1 + 1;'||wwv_flow.LF||
 '        ELSE'||wwv_flow.LF||
-'          IF EDGE_TAB_NAMES(IDX1) = EDGE_T';
-wwv_flow_imp.g_varchar2_table(112) := 'AB_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
 '   ';
-wwv_flow_imp.g_varchar2_table(113) := '         DEST_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(114) := '       IF EDGE_TAB_NAMES(IDX1) = EDGE_TAB_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
+'            DEST_EDGE_COL_NAME_FOR_E';
+wwv_flow_imp.g_varchar2_table(115) := 'ACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
+'            DEST_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_C';
+wwv_flow_imp.g_varchar2_table(116) := 'OL_NAME(IDX1);'||wwv_flow.LF||
 '            P1 := P1 + 1;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(114) := '          ELSE'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := DEST_EDGE_COL_NAME_';
-wwv_flow_imp.g_varchar2_table(115) := 'FOR_EACH_EDGE;'||wwv_flow.LF||
-'            DEST_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1 - 1)) := DEST_VERTEX_COL_N';
-wwv_flow_imp.g_varchar2_table(116) := 'AME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'          ELSE'||wwv_flow.LF||
+'            DEST_EDGE_COL_NAME_TABLE(EDGE';
+wwv_flow_imp.g_varchar2_table(117) := '_TAB_NAMES(IDX1 - 1)) := DEST_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'            DEST_VERTEX_COL_NAME_TABLE(E';
+wwv_flow_imp.g_varchar2_table(118) := 'DGE_TAB_NAMES(IDX1 - 1)) := DEST_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
 '            P1 := 1;'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_L';
-wwv_flow_imp.g_varchar2_table(117) := 'IST_TYPE();'||wwv_flow.LF||
-'            DEST_EDGE_COL_NAME_FOR_EACH_EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
-'            DES';
-wwv_flow_imp.g_varchar2_table(118) := 'T_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'            DEST_VERTEX_COL_NAME_FOR_EACH';
-wwv_flow_imp.g_varchar2_table(119) := '_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
+'            D';
+wwv_flow_imp.g_varchar2_table(119) := 'EST_EDGE_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'            DEST_EDGE_COL_NAME_FOR_EACH_';
+wwv_flow_imp.g_varchar2_table(120) := 'EDGE(P1) := EDGE_COL_NAME(IDX1);'||wwv_flow.LF||
+'            DEST_VERTEX_COL_NAME_FOR_EACH_EDGE := NEW STRING_LIST_';
+wwv_flow_imp.g_varchar2_table(121) := 'TYPE();'||wwv_flow.LF||
+'            DEST_VERTEX_COL_NAME_FOR_EACH_EDGE(P1) := VERTEX_COL_NAME(IDX1);'||wwv_flow.LF||
+'            P';
+wwv_flow_imp.g_varchar2_table(122) := '1 := P1 + 1;'||wwv_flow.LF||
 '          END IF;'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
+'        IF IDX1 = EDGE_TAB_NAMES.COUNT THEN'||wwv_flow.LF||
 '   ';
-wwv_flow_imp.g_varchar2_table(120) := '     IF IDX1 = EDGE_TAB_NAMES.COUNT THEN'||wwv_flow.LF||
-'          DEST_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) :=';
-wwv_flow_imp.g_varchar2_table(121) := ' DEST_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'          DEST_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := DES';
-wwv_flow_imp.g_varchar2_table(122) := 'T_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(123) := '       DEST_EDGE_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := DEST_EDGE_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(124) := '  DEST_VERTEX_COL_NAME_TABLE(EDGE_TAB_NAMES(IDX1)) := DEST_VERTEX_COL_NAME_FOR_EACH_EDGE;'||wwv_flow.LF||
+'        E';
+wwv_flow_imp.g_varchar2_table(125) := 'ND IF;'||wwv_flow.LF||
 '      END LOOP;'||wwv_flow.LF||
 '      '||wwv_flow.LF||
-'      SELECT                ';
-wwv_flow_imp.g_varchar2_table(123) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(124) := '                                                                                  '||wwv_flow.LF||
-'          KEYS.EL';
-wwv_flow_imp.g_varchar2_table(125) := 'EMENT_NAME,                                                                                         ';
-wwv_flow_imp.g_varchar2_table(126) := '                                                                                             '||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(127) := '    KEYS.COLUMN_NAME                                                                                ';
+'      SELECT                                                       ';
+wwv_flow_imp.g_varchar2_table(126) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(127) := '                                           '||wwv_flow.LF||
+'          KEYS.ELEMENT_NAME,                           ';
 wwv_flow_imp.g_varchar2_table(128) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(129) := '    '||wwv_flow.LF||
-'      BULK COLLECT INTO                                                                        ';
+wwv_flow_imp.g_varchar2_table(129) := '                                                       '||wwv_flow.LF||
+'          KEYS.COLUMN_NAME                 ';
 wwv_flow_imp.g_varchar2_table(130) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(131) := '               '||wwv_flow.LF||
-'          VERTEX_ELEMENT_NAMES,                                                     ';
+wwv_flow_imp.g_varchar2_table(131) := '                                                                   '||wwv_flow.LF||
+'      BULK COLLECT INTO        ';
 wwv_flow_imp.g_varchar2_table(132) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(133) := '                          '||wwv_flow.LF||
-'          VERTEX_KEYS                                                    ';
-wwv_flow_imp.g_varchar2_table(134) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(135) := '                                     '||wwv_flow.LF||
-'      FROM                                                    ';
-wwv_flow_imp.g_varchar2_table(136) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(137) := '                                                '||wwv_flow.LF||
-'          SYS.ALL_PG_KEYS KEYS                     ';
-wwv_flow_imp.g_varchar2_table(138) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(139) := '                                                           '||wwv_flow.LF||
-'      INNER JOIN                        ';
-wwv_flow_imp.g_varchar2_table(140) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(141) := '                                                                      '||wwv_flow.LF||
-'          SYS.ALL_PG_ELEMENTS';
-wwv_flow_imp.g_varchar2_table(142) := ' ELEMENTS                                                                                           ';
-wwv_flow_imp.g_varchar2_table(143) := '                                                                                 '||wwv_flow.LF||
-'      ON          ';
-wwv_flow_imp.g_varchar2_table(144) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(145) := '                                                                                            '||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(133) := '                                                                               '||wwv_flow.LF||
+'          VERTEX_EL';
+wwv_flow_imp.g_varchar2_table(134) := 'EMENT_NAMES,                                                                                        ';
+wwv_flow_imp.g_varchar2_table(135) := '                                                                                           '||wwv_flow.LF||
 '       ';
-wwv_flow_imp.g_varchar2_table(146) := '   (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME                                                       ';
+wwv_flow_imp.g_varchar2_table(136) := '   VERTEX_KEYS                                                                                      ';
+wwv_flow_imp.g_varchar2_table(137) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(138) := '   '||wwv_flow.LF||
+'      FROM                                                                                     ';
+wwv_flow_imp.g_varchar2_table(139) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(140) := '               '||wwv_flow.LF||
+'          SYS.ALL_PG_KEYS KEYS                                                     ';
+wwv_flow_imp.g_varchar2_table(141) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(142) := '                           '||wwv_flow.LF||
+'      INNER JOIN                                                       ';
+wwv_flow_imp.g_varchar2_table(143) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(144) := '                                       '||wwv_flow.LF||
+'          SYS.ALL_PG_ELEMENTS ELEMENTS                     ';
+wwv_flow_imp.g_varchar2_table(145) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(146) := '                                                   '||wwv_flow.LF||
+'      ON                                       ';
 wwv_flow_imp.g_varchar2_table(147) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(148) := '   '||wwv_flow.LF||
-'          AND KEYS.OWNER = ELEMENTS.OWNER                                                       ';
-wwv_flow_imp.g_varchar2_table(149) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(150) := '              '||wwv_flow.LF||
-'          AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                 ';
-wwv_flow_imp.g_varchar2_table(151) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(152) := '                         '||wwv_flow.LF||
-'      LEFT JOIN                                                           ';
-wwv_flow_imp.g_varchar2_table(153) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(154) := '                                    '||wwv_flow.LF||
-'          SYS.ALL_SYNONYMS s                                   ';
-wwv_flow_imp.g_varchar2_table(155) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(156) := '                                               '||wwv_flow.LF||
-'      ON                                            ';
-wwv_flow_imp.g_varchar2_table(157) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(158) := '                                                          '||wwv_flow.LF||
-'          s.SYNONYM_NAME = ELEMENTS.OBJEC';
-wwv_flow_imp.g_varchar2_table(159) := 'T_NAME                                                                                              ';
-wwv_flow_imp.g_varchar2_table(160) := '                                                                     '||wwv_flow.LF||
-'      INNER JOIN              ';
-wwv_flow_imp.g_varchar2_table(161) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(162) := '                                                                                '||wwv_flow.LF||
-'          SYS.ALL_T';
-wwv_flow_imp.g_varchar2_table(163) := 'AB_COLUMNS c                                                                                        ';
-wwv_flow_imp.g_varchar2_table(164) := '                                                                                           '||wwv_flow.LF||
-'      ON';
-wwv_flow_imp.g_varchar2_table(165) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(148) := '                                                               '||wwv_flow.LF||
+'          (ELEMENTS.ELEMENT_NAME = ';
+wwv_flow_imp.g_varchar2_table(149) := 'KEYS.ELEMENT_NAME                                                                                   ';
+wwv_flow_imp.g_varchar2_table(150) := '                                                                           '||wwv_flow.LF||
+'          AND KEYS.OWNE';
+wwv_flow_imp.g_varchar2_table(151) := 'R = ELEMENTS.OWNER                                                                                  ';
+wwv_flow_imp.g_varchar2_table(152) := '                                                                                       '||wwv_flow.LF||
+'          A';
+wwv_flow_imp.g_varchar2_table(153) := 'ND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                                           ';
+wwv_flow_imp.g_varchar2_table(154) := '                                                                                                   ';
+wwv_flow_imp.g_varchar2_table(155) := ''||wwv_flow.LF||
+'      LEFT JOIN                                                                                    ';
+wwv_flow_imp.g_varchar2_table(156) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(157) := '           '||wwv_flow.LF||
+'          SYS.ALL_SYNONYMS s                                                           ';
+wwv_flow_imp.g_varchar2_table(158) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(159) := '                       '||wwv_flow.LF||
+'      ON                                                                   ';
+wwv_flow_imp.g_varchar2_table(160) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(161) := '                                   '||wwv_flow.LF||
+'          s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME                ';
+wwv_flow_imp.g_varchar2_table(162) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(163) := '                                               '||wwv_flow.LF||
+'      INNER JOIN                                   ';
+wwv_flow_imp.g_varchar2_table(164) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(165) := '                                                           '||wwv_flow.LF||
+'          SYS.ALL_TAB_COLUMNS c        ';
 wwv_flow_imp.g_varchar2_table(166) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(167) := '  '||wwv_flow.LF||
-'          c.OWNER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                               ';
-wwv_flow_imp.g_varchar2_table(168) := '                                                                                                  '||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(169) := '         AND c.TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                            ';
-wwv_flow_imp.g_varchar2_table(170) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(171) := '         '||wwv_flow.LF||
-'          AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                            ';
-wwv_flow_imp.g_varchar2_table(172) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(173) := '                    '||wwv_flow.LF||
-'      WHERE                                                                    ';
-wwv_flow_imp.g_varchar2_table(174) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(175) := '                               '||wwv_flow.LF||
-'          KEYS.GRAPH_NAME = GRAPHNAME                               ';
-wwv_flow_imp.g_varchar2_table(176) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(177) := '                                          '||wwv_flow.LF||
-'          AND KEYS.OWNER = GRAPHOWNER                    ';
-wwv_flow_imp.g_varchar2_table(178) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(179) := '                                                     '||wwv_flow.LF||
-'          AND ELEMENTS.ELEMENT_KIND = ''VERTEX''';
-wwv_flow_imp.g_varchar2_table(180) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(181) := '                                                                '||wwv_flow.LF||
-'      ORDER BY                     ';
-wwv_flow_imp.g_varchar2_table(182) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(183) := '                                                                           '||wwv_flow.LF||
-'          KEYS.ELEMENT_N';
-wwv_flow_imp.g_varchar2_table(184) := 'AME,                                                                                                ';
-wwv_flow_imp.g_varchar2_table(185) := '                                                                                      '||wwv_flow.LF||
-'          c.C';
-wwv_flow_imp.g_varchar2_table(186) := 'OLUMN_ID; '||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(167) := '                                                                       '||wwv_flow.LF||
+'      ON                   ';
+wwv_flow_imp.g_varchar2_table(168) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(169) := '                                                                                   '||wwv_flow.LF||
+'          c.OWN';
+wwv_flow_imp.g_varchar2_table(170) := 'ER = COALESCE(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                                                 ';
+wwv_flow_imp.g_varchar2_table(171) := '                                                                                '||wwv_flow.LF||
+'          AND c.TA';
+wwv_flow_imp.g_varchar2_table(172) := 'BLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                                             ';
+wwv_flow_imp.g_varchar2_table(173) := '                                                                                            '||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(174) := '    AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                                            ';
+wwv_flow_imp.g_varchar2_table(175) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(176) := '    '||wwv_flow.LF||
+'      WHERE                                                                                   ';
+wwv_flow_imp.g_varchar2_table(177) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(178) := '                '||wwv_flow.LF||
+'          KEYS.GRAPH_NAME = GRAPHNAME                                             ';
+wwv_flow_imp.g_varchar2_table(179) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(180) := '                            '||wwv_flow.LF||
+'          AND KEYS.OWNER = GRAPHOWNER                                 ';
+wwv_flow_imp.g_varchar2_table(181) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(182) := '                                        '||wwv_flow.LF||
+'          AND ELEMENTS.ELEMENT_KIND = ''VERTEX''            ';
+wwv_flow_imp.g_varchar2_table(183) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(184) := '                                                    '||wwv_flow.LF||
+'      ORDER BY                                ';
+wwv_flow_imp.g_varchar2_table(185) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(186) := '                                                                '||wwv_flow.LF||
+'          KEYS.ELEMENT_NAME,      ';
+wwv_flow_imp.g_varchar2_table(187) := '                                                                                                    ';
+wwv_flow_imp.g_varchar2_table(188) := '                                                                            '||wwv_flow.LF||
+'          c.COLUMN_ID;';
+wwv_flow_imp.g_varchar2_table(189) := ' '||wwv_flow.LF||
 ' '||wwv_flow.LF||
 '      FOR IDX1 IN 1..VERTEX_ELEMENT_NAMES.COUNT LOOP'||wwv_flow.LF||
 '        IF IDX1 = 1 THEN'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(187) := ' P1 := 1;'||wwv_flow.LF||
+'          P1 :';
+wwv_flow_imp.g_varchar2_table(190) := '= 1;'||wwv_flow.LF||
 '          VERTEX_KEYS_FOR_EACH_VERTEX := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          VERTEX_KEYS_FOR';
-wwv_flow_imp.g_varchar2_table(188) := '_EACH_VERTEX(P1) := VERTEX_KEYS(IDX1);'||wwv_flow.LF||
+'          VERTEX_KEYS_FOR_EA';
+wwv_flow_imp.g_varchar2_table(191) := 'CH_VERTEX(P1) := VERTEX_KEYS(IDX1);'||wwv_flow.LF||
 '          P1 := P1 + 1;'||wwv_flow.LF||
 '        ELSE'||wwv_flow.LF||
 '          IF VERTEX_ELEM';
-wwv_flow_imp.g_varchar2_table(189) := 'ENT_NAMES(IDX1) = VERTEX_ELEMENT_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            VERTEX_KEYS_FOR_EACH_VERTEX(P1) :=';
-wwv_flow_imp.g_varchar2_table(190) := ' VERTEX_KEYS(IDX1);'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(192) := 'ENT_NAMES(IDX1) = VERTEX_ELEMENT_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
+'            VERTEX_KEYS_FOR_EACH_VERTEX(P1) :';
+wwv_flow_imp.g_varchar2_table(193) := '= VERTEX_KEYS(IDX1);'||wwv_flow.LF||
 '            P1 := P1 + 1;'||wwv_flow.LF||
 '          ELSE'||wwv_flow.LF||
-'            VERTEX_KEYS_TABLE(VERTEX_EL';
-wwv_flow_imp.g_varchar2_table(191) := 'EMENT_NAMES(IDX1 - 1)) := VERTEX_KEYS_FOR_EACH_VERTEX;'||wwv_flow.LF||
+'            VERTEX_KEYS_TABLE(VERTE';
+wwv_flow_imp.g_varchar2_table(194) := 'X_ELEMENT_NAMES(IDX1 - 1)) := VERTEX_KEYS_FOR_EACH_VERTEX;'||wwv_flow.LF||
 '            P1 := 1;'||wwv_flow.LF||
-'            VERTEX_KEYS_';
-wwv_flow_imp.g_varchar2_table(192) := 'FOR_EACH_VERTEX := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'            VERTEX_KEYS_FOR_EACH_VERTEX(P1) := VERTEX_KEY';
-wwv_flow_imp.g_varchar2_table(193) := 'S(IDX1);'||wwv_flow.LF||
+'            VERTEX';
+wwv_flow_imp.g_varchar2_table(195) := '_KEYS_FOR_EACH_VERTEX := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'            VERTEX_KEYS_FOR_EACH_VERTEX(P1) := VER';
+wwv_flow_imp.g_varchar2_table(196) := 'TEX_KEYS(IDX1);'||wwv_flow.LF||
 '            P1 := P1 + 1;'||wwv_flow.LF||
 '          END IF;'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'        IF IDX1 = VERTEX_ELEME';
-wwv_flow_imp.g_varchar2_table(194) := 'NT_NAMES.COUNT THEN'||wwv_flow.LF||
-'          VERTEX_KEYS_TABLE(VERTEX_ELEMENT_NAMES(IDX1)) := VERTEX_KEYS_FOR_EACH_';
-wwv_flow_imp.g_varchar2_table(195) := 'VERTEX;'||wwv_flow.LF||
+'        IF IDX1 = ';
+wwv_flow_imp.g_varchar2_table(197) := 'VERTEX_ELEMENT_NAMES.COUNT THEN'||wwv_flow.LF||
+'          VERTEX_KEYS_TABLE(VERTEX_ELEMENT_NAMES(IDX1)) := VERTEX_K';
+wwv_flow_imp.g_varchar2_table(198) := 'EYS_FOR_EACH_VERTEX;'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 '      END LOOP;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'      SELECT                                              ';
-wwv_flow_imp.g_varchar2_table(196) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(197) := '                                                    '||wwv_flow.LF||
-'          KEYS.ELEMENT_NAME,                   ';
-wwv_flow_imp.g_varchar2_table(198) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(199) := '                                                               '||wwv_flow.LF||
-'          KEYS.COLUMN_NAME          ';
-wwv_flow_imp.g_varchar2_table(200) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(201) := '                                                                          '||wwv_flow.LF||
-'      BULK COLLECT INTO  ';
-wwv_flow_imp.g_varchar2_table(202) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(203) := '                                                                                     '||wwv_flow.LF||
-'          EDGE';
-wwv_flow_imp.g_varchar2_table(204) := '_ELEMENT_NAMES,                                                                                     ';
-wwv_flow_imp.g_varchar2_table(205) := '                                                                                                '||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(206) := '       EDGE_KEYS                                                                                    ';
-wwv_flow_imp.g_varchar2_table(207) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(208) := '       '||wwv_flow.LF||
-'      FROM                                                                                  ';
-wwv_flow_imp.g_varchar2_table(209) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(210) := '                  '||wwv_flow.LF||
-'          SYS.ALL_PG_KEYS KEYS                                                   ';
-wwv_flow_imp.g_varchar2_table(211) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(212) := '                             '||wwv_flow.LF||
-'      INNER JOIN                                                      ';
-wwv_flow_imp.g_varchar2_table(213) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(214) := '                                        '||wwv_flow.LF||
-'          SYS.ALL_PG_ELEMENTS ELEMENTS                     ';
-wwv_flow_imp.g_varchar2_table(215) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(216) := '                                                   '||wwv_flow.LF||
-'      ON                                        ';
-wwv_flow_imp.g_varchar2_table(217) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(218) := '                                                              '||wwv_flow.LF||
-'          (ELEMENTS.ELEMENT_NAME = KE';
-wwv_flow_imp.g_varchar2_table(219) := 'YS.ELEMENT_NAME                                                                                     ';
-wwv_flow_imp.g_varchar2_table(220) := '                                                                         '||wwv_flow.LF||
-'          AND KEYS.OWNER =';
-wwv_flow_imp.g_varchar2_table(221) := ' ELEMENTS.OWNER                                                                                     ';
-wwv_flow_imp.g_varchar2_table(222) := '                                                                                    '||wwv_flow.LF||
-'          AND K';
-wwv_flow_imp.g_varchar2_table(223) := 'EYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME)                                                               ';
-wwv_flow_imp.g_varchar2_table(224) := '                                                                                               '||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(225) := '  LEFT JOIN                                                                                         ';
-wwv_flow_imp.g_varchar2_table(226) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(227) := '      '||wwv_flow.LF||
-'          SYS.ALL_SYNONYMS s                                                                 ';
-wwv_flow_imp.g_varchar2_table(228) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(229) := '                 '||wwv_flow.LF||
-'      ON                                                                          ';
-wwv_flow_imp.g_varchar2_table(230) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(231) := '                            '||wwv_flow.LF||
-'          s.SYNONYM_NAME = ELEMENTS.OBJECT_NAME                        ';
-wwv_flow_imp.g_varchar2_table(232) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(233) := '                                       '||wwv_flow.LF||
-'      INNER JOIN                                            ';
-wwv_flow_imp.g_varchar2_table(234) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(235) := '                                                  '||wwv_flow.LF||
-'          SYS.ALL_TAB_COLUMNS c                  ';
-wwv_flow_imp.g_varchar2_table(236) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(237) := '                                                             '||wwv_flow.LF||
-'      ON                              ';
-wwv_flow_imp.g_varchar2_table(238) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(239) := '                                                                        '||wwv_flow.LF||
-'          c.OWNER = COALESC';
-wwv_flow_imp.g_varchar2_table(240) := 'E(s.TABLE_OWNER, ELEMENTS.OBJECT_OWNER)                                                             ';
-wwv_flow_imp.g_varchar2_table(241) := '                                                                                   '||wwv_flow.LF||
-'          AND c.';
-wwv_flow_imp.g_varchar2_table(242) := 'TABLE_NAME = COALESCE(s.TABLE_NAME, ELEMENTS.OBJECT_NAME)                                           ';
-wwv_flow_imp.g_varchar2_table(243) := '                                                                                              '||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(244) := '     AND c.COLUMN_NAME = KEYS.COLUMN_NAME                                                           ';
-wwv_flow_imp.g_varchar2_table(245) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(246) := '     '||wwv_flow.LF||
-'      WHERE                                                                                   ';
-wwv_flow_imp.g_varchar2_table(247) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(248) := '                '||wwv_flow.LF||
-'          KEYS.GRAPH_NAME = GRAPHNAME                                              ';
-wwv_flow_imp.g_varchar2_table(249) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(250) := '                           '||wwv_flow.LF||
-'          AND KEYS.OWNER = GRAPHOWNER                                   ';
-wwv_flow_imp.g_varchar2_table(251) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(252) := '                                      '||wwv_flow.LF||
-'          AND ELEMENTS.ELEMENT_KIND = ''EDGE''                 ';
-wwv_flow_imp.g_varchar2_table(253) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(254) := '                                                 '||wwv_flow.LF||
-'      ORDER BY                                    ';
-wwv_flow_imp.g_varchar2_table(255) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(256) := '                                                            '||wwv_flow.LF||
-'          KEYS.ELEMENT_NAME,           ';
-wwv_flow_imp.g_varchar2_table(257) := '                                                                                                    ';
-wwv_flow_imp.g_varchar2_table(258) := '                                                                       '||wwv_flow.LF||
-'          c.COLUMN_ID; '||wwv_flow.LF||
-' '||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(259) := '    FOR IDX1 IN 1..EDGE_ELEMENT_NAMES.COUNT LOOP'||wwv_flow.LF||
-'        IF IDX1 = 1 THEN'||wwv_flow.LF||
-'          P1 := 1;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(260) := '   EDGE_KEYS_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'          EDGE_KEYS_FOR_EACH_EDGE(P1) := EDGE_';
-wwv_flow_imp.g_varchar2_table(261) := 'KEYS(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
-'          IF EDGE_ELEMENT_NAMES(IDX1) = EDGE_ELEMEN';
-wwv_flow_imp.g_varchar2_table(262) := 'T_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'            EDGE_KEYS_FOR_EACH_EDGE(P1) := EDGE_KEYS(IDX1);'||wwv_flow.LF||
-'            P1 :=';
-wwv_flow_imp.g_varchar2_table(263) := ' P1 + 1;'||wwv_flow.LF||
-'          ELSE'||wwv_flow.LF||
-'            EDGE_TO_KEYS_TABLE(EDGE_ELEMENT_NAMES(IDX1 - 1)) := EDGE_KEYS_FO';
-wwv_flow_imp.g_varchar2_table(264) := 'R_EACH_EDGE;'||wwv_flow.LF||
-'            P1 := 1;'||wwv_flow.LF||
-'            EDGE_KEYS_FOR_EACH_EDGE := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(265) := '         EDGE_KEYS_FOR_EACH_EDGE(P1) := EDGE_KEYS(IDX1);'||wwv_flow.LF||
-'            P1 := P1 + 1;'||wwv_flow.LF||
-'          END IF;';
-wwv_flow_imp.g_varchar2_table(266) := ''||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        IF IDX1 = EDGE_ELEMENT_NAMES.COUNT THEN'||wwv_flow.LF||
-'          EDGE_TO_KEYS_TABLE(EDGE_';
-wwv_flow_imp.g_varchar2_table(267) := 'ELEMENT_NAMES(IDX1)) := EDGE_KEYS_FOR_EACH_EDGE;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'      END LOOP;'||wwv_flow.LF||
 '    END IF;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'    S';
-wwv_flow_imp.g_varchar2_table(268) := 'ELECT'||wwv_flow.LF||
-'      OBJECT_NAME,'||wwv_flow.LF||
+'    SELECT'||wwv_flow.LF||
+'      OBJECT_';
+wwv_flow_imp.g_varchar2_table(199) := 'NAME,'||wwv_flow.LF||
 '      ELEMENTS.ELEMENT_NAME, '||wwv_flow.LF||
 '      ELEM_LABELS.LABEL_NAME,'||wwv_flow.LF||
-'      LABEL_PRO';
-wwv_flow_imp.g_varchar2_table(269) := 'PERTIES.PROPERTY_NAME,'||wwv_flow.LF||
+'      LABEL_PROPERTIES.PROPERTY';
+wwv_flow_imp.g_varchar2_table(200) := '_NAME,'||wwv_flow.LF||
 '      COLUMN_NAME,'||wwv_flow.LF||
 '      PROP_DEFINITIONS.COLUMN_EXPR '||wwv_flow.LF||
-'      BULK COLLECT INT';
-wwv_flow_imp.g_varchar2_table(270) := 'O OBJECT_NAMES,'||wwv_flow.LF||
+'      BULK COLLECT INTO OBJECT_NAME';
+wwv_flow_imp.g_varchar2_table(201) := 'S,'||wwv_flow.LF||
 '      ELEMENTNAMES,'||wwv_flow.LF||
 '      LABELS,'||wwv_flow.LF||
 '      PROPERTY_NAMES,'||wwv_flow.LF||
 '      COLUMN_NAMES,'||wwv_flow.LF||
-'      CO';
-wwv_flow_imp.g_varchar2_table(271) := 'LUMN_EXPRESSIONS'||wwv_flow.LF||
+'      COLUMN_EXP';
+wwv_flow_imp.g_varchar2_table(202) := 'RESSIONS'||wwv_flow.LF||
 '    FROM'||wwv_flow.LF||
 '      SYS.ALL_PG_ELEMENTS         ELEMENTS'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_ELEM';
-wwv_flow_imp.g_varchar2_table(272) := 'ENT_LABELS ELEM_LABELS'||wwv_flow.LF||
+'      LEFT JOIN SYS.ALL_PG_ELEMENT_L';
+wwv_flow_imp.g_varchar2_table(203) := 'ABELS ELEM_LABELS'||wwv_flow.LF||
 '      ON (ELEMENTS.ELEMENT_NAME = ELEM_LABELS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ELEMENTS';
-wwv_flow_imp.g_varchar2_table(273) := '.OWNER = ELEM_LABELS.OWNER'||wwv_flow.LF||
+'      AND ELEMENTS.OW';
+wwv_flow_imp.g_varchar2_table(204) := 'NER = ELEM_LABELS.OWNER'||wwv_flow.LF||
 '      AND ELEMENTS.GRAPH_NAME = ELEM_LABELS.GRAPH_NAME)'||wwv_flow.LF||
-'      LEFT JOIN S';
-wwv_flow_imp.g_varchar2_table(274) := 'YS.ALL_PG_LABEL_PROPERTIES LABEL_PROPERTIES'||wwv_flow.LF||
+'      LEFT JOIN SY';
+wwv_flow_imp.g_varchar2_table(205) := 'S.ALL_PG_LABEL_PROPERTIES LABEL_PROPERTIES'||wwv_flow.LF||
 '      ON (ELEM_LABELS.LABEL_NAME = LABEL_PROPERTIES.LABE';
-wwv_flow_imp.g_varchar2_table(275) := 'L_NAME'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(206) := 'L_NAME'||wwv_flow.LF||
 '      AND ELEM_LABELS.OWNER = LABEL_PROPERTIES.OWNER'||wwv_flow.LF||
-'      AND ELEM_LABELS.GRAPH_NAME = LABEL';
-wwv_flow_imp.g_varchar2_table(276) := '_PROPERTIES.GRAPH_NAME)'||wwv_flow.LF||
+'      AND ELEM_LABELS.GRAPH_NAME = LAB';
+wwv_flow_imp.g_varchar2_table(207) := 'EL_PROPERTIES.GRAPH_NAME)'||wwv_flow.LF||
 '      LEFT JOIN SYS.ALL_PG_PROP_DEFINITIONS PROP_DEFINITIONS'||wwv_flow.LF||
-'      ON (PROP_';
-wwv_flow_imp.g_varchar2_table(277) := 'DEFINITIONS.PROPERTY_NAME = LABEL_PROPERTIES.PROPERTY_NAME'||wwv_flow.LF||
-'      AND PROP_DEFINITIONS.ELEMENT_NAME =';
-wwv_flow_imp.g_varchar2_table(278) := ' ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
+'      ON (P';
+wwv_flow_imp.g_varchar2_table(208) := 'ROP_DEFINITIONS.PROPERTY_NAME = LABEL_PROPERTIES.PROPERTY_NAME'||wwv_flow.LF||
+'      AND PROP_DEFINITIONS.ELEMENT_N';
+wwv_flow_imp.g_varchar2_table(209) := 'AME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
 '      AND PROP_DEFINITIONS.OWNER = ELEMENTS.OWNER'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NA';
-wwv_flow_imp.g_varchar2_table(279) := 'ME = PROP_DEFINITIONS.GRAPH_NAME)'||wwv_flow.LF||
+'      AND ELEMENTS.G';
+wwv_flow_imp.g_varchar2_table(210) := 'RAPH_NAME = PROP_DEFINITIONS.GRAPH_NAME)'||wwv_flow.LF||
 '    WHERE'||wwv_flow.LF||
 '      ELEMENTS.ELEMENT_KIND = ELEMENT_TYPE'||wwv_flow.LF||
-'      AND ELE';
-wwv_flow_imp.g_varchar2_table(280) := 'MENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(211) := '   AND ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
 '      AND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
 '    ORDER BY'||wwv_flow.LF||
-'      OBJECT_NAME,'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(281) := '     ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
+'      O';
+wwv_flow_imp.g_varchar2_table(212) := 'BJECT_NAME,'||wwv_flow.LF||
+'      ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
 '      ELEM_LABELS.LABEL_NAME,'||wwv_flow.LF||
-'      LABEL_PROPERTIES.PROPERTY_NAME;'||wwv_flow.LF||
+'      LABEL_PROPERTIES.PRO';
+wwv_flow_imp.g_varchar2_table(213) := 'PERTY_NAME;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(282) := ' FOR IDX1 IN 1..OBJECT_NAMES.COUNT LOOP'||wwv_flow.LF||
-'      IF IDX1 = 1 OR OBJECT_NAMES(IDX1) != OBJECT_NAMES(IDX1';
-wwv_flow_imp.g_varchar2_table(283) := ' - 1) THEN'||wwv_flow.LF||
+'    FOR IDX1 IN 1..OBJECT_NAMES.COUNT LOOP'||wwv_flow.LF||
+'      IF IDX1 = 1 OR OBJECT_NAMES(IDX1) !';
+wwv_flow_imp.g_varchar2_table(214) := '= OBJECT_NAMES(IDX1 - 1) THEN'||wwv_flow.LF||
 '        IF IDX1 != 1 THEN'||wwv_flow.LF||
-'          OBJECT_TO_ELEMENTS(OBJECT_NAMES(IDX1 - 1)) := ELEMENT';
-wwv_flow_imp.g_varchar2_table(284) := 'S_FOR_EACH_OBJECT;'||wwv_flow.LF||
-'          ELEMENT_TABLE_COLUMN_NAME(ELEMENTNAMES(IDX1 - 1)) := COLUMN_NAMES_FOR_E';
-wwv_flow_imp.g_varchar2_table(285) := 'ACH_ELEMENT;'||wwv_flow.LF||
-'          ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(IDX1 - 1)) := PROPERTY_NAMES_FOR_EAC';
-wwv_flow_imp.g_varchar2_table(286) := 'H_ELEMENT;'||wwv_flow.LF||
-'          COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1 - 1)) := COLUMN_EXPRESSIONS_FOR_EACH_E';
-wwv_flow_imp.g_varchar2_table(287) := 'LEMENT;'||wwv_flow.LF||
-'          ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1 - 1)) := LABELS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        END ';
-wwv_flow_imp.g_varchar2_table(288) := 'IF;'||wwv_flow.LF||
+'          OBJECT_TO_ELEMENTS(OBJECT_NAMES(';
+wwv_flow_imp.g_varchar2_table(215) := 'IDX1 - 1)) := ELEMENTS_FOR_EACH_OBJECT;'||wwv_flow.LF||
+'          ELEMENT_TABLE_COLUMN_NAME(ELEMENTNAMES(IDX1 - 1))';
+wwv_flow_imp.g_varchar2_table(216) := ' := COLUMN_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'          ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(IDX1 - 1)) :=';
+wwv_flow_imp.g_varchar2_table(217) := ' PROPERTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'          COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1 - 1)) := COLUM';
+wwv_flow_imp.g_varchar2_table(218) := 'N_EXPRESSIONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'          ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1 - 1)) := LABELS_FOR_E';
+wwv_flow_imp.g_varchar2_table(219) := 'ACH_ELEMENT;'||wwv_flow.LF||
+'        END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '        COLUMN_NAMES_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EAC';
-wwv_flow_imp.g_varchar2_table(289) := 'H_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.delet';
-wwv_flow_imp.g_varchar2_table(290) := 'e;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(220) := '       PROPERTY_NAMES_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        PROPERTY_NAMES_FOR_EACH_E';
+wwv_flow_imp.g_varchar2_table(221) := 'LEMENT_INDEXED_BY_STRING.delete;'||wwv_flow.LF||
 '        LABELS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        ELEMENTS_FOR_EACH_OBJECT := NE';
-wwv_flow_imp.g_varchar2_table(291) := 'W STRING_LIST_TYPE();'||wwv_flow.LF||
-'        COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(292) := ' P1 := 1;'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(222) := '  ELEMENTS_FOR_EACH_OBJECT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT :';
+wwv_flow_imp.g_varchar2_table(223) := '= NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        P1 := 1;'||wwv_flow.LF||
 '        P2 := 1;'||wwv_flow.LF||
 '        P3 := 1;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'        COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAM';
-wwv_flow_imp.g_varchar2_table(293) := 'ES(IDX1);'||wwv_flow.LF||
-'        IF PROPERTY_NAMES(IDX1) IS NOT NULL AND NOT PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXE';
-wwv_flow_imp.g_varchar2_table(294) := 'D_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT(P1) := PROPE';
-wwv_flow_imp.g_varchar2_table(295) := 'RTY_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING(PROPERTY_NAMES(IDX1)) :';
-wwv_flow_imp.g_varchar2_table(296) := '= PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(297) := ' COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := COLUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
+'        COLUMN_NA';
+wwv_flow_imp.g_varchar2_table(224) := 'MES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
+'        IF PROPERTY_NAMES(IDX1) IS NOT NULL AND NOT';
+wwv_flow_imp.g_varchar2_table(225) := ' PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
+'          PROP';
+wwv_flow_imp.g_varchar2_table(226) := 'ERTY_NAMES_FOR_EACH_ELEMENT(P1) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
+'          PROPERTY_NAMES_FOR_EACH_ELEMENT_';
+wwv_flow_imp.g_varchar2_table(227) := 'INDEXED_BY_STRING(PROPERTY_NAMES(IDX1)) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
+'          COLUMN_NAMES_FOR_EACH_EL';
+wwv_flow_imp.g_varchar2_table(228) := 'EMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
+'          COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := COLUMN_EXPRES';
+wwv_flow_imp.g_varchar2_table(229) := 'SIONS(IDX1);'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'        ELEME';
-wwv_flow_imp.g_varchar2_table(298) := 'NTS_FOR_EACH_OBJECT(P2) := ELEMENTNAMES(IDX1);'||wwv_flow.LF||
-'        LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1); ';
-wwv_flow_imp.g_varchar2_table(299) := ''||wwv_flow.LF||
+'        ELEMENTS_FOR_EACH_OBJECT(P2) := ELEMENTNAMES(IDX1);'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(230) := '  LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1); '||wwv_flow.LF||
 '        P1 := P1 + 1;'||wwv_flow.LF||
 '        P2 := P2 + 1;'||wwv_flow.LF||
-'        P3 := P3 + 1;'||wwv_flow.LF||
-'      ELSIF ELEMENTNAMES(IDX1) = ';
-wwv_flow_imp.g_varchar2_table(300) := 'ELEMENTNAMES(IDX1 - 1) THEN'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(231) := '   P3 := P3 + 1;'||wwv_flow.LF||
+'      ELSIF ELEMENTNAMES(IDX1) = ELEMENTNAMES(IDX1 - 1) THEN'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'        IF PROPERTY_NAMES(IDX1) IS NOT NULL AND PROPERTY_NAMES(IDX1) !=';
-wwv_flow_imp.g_varchar2_table(301) := ' PROPERTY_NAMES(IDX1-1) AND NOT PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NA';
-wwv_flow_imp.g_varchar2_table(302) := 'MES(IDX1)) THEN'||wwv_flow.LF||
-'          COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERT';
-wwv_flow_imp.g_varchar2_table(303) := 'Y_NAMES_FOR_EACH_ELEMENT(P1) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDE';
-wwv_flow_imp.g_varchar2_table(304) := 'XED_BY_STRING(PROPERTY_NAMES(IDX1)) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          COLUMN_EXPRESSIONS_FOR_EACH_E';
-wwv_flow_imp.g_varchar2_table(305) := 'LEMENT(P1) := COLUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
-'          P1 := P1 + 1;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
-'        IF LABELS(ID';
-wwv_flow_imp.g_varchar2_table(306) := 'X1) != LABELS_FOR_EACH_ELEMENT(P3 -1) THEN'||wwv_flow.LF||
-'          LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1);'||wwv_flow.LF||
+'        IF PROPERT';
+wwv_flow_imp.g_varchar2_table(232) := 'Y_NAMES(IDX1) IS NOT NULL AND PROPERTY_NAMES(IDX1) != PROPERTY_NAMES(IDX1-1) AND NOT PROPERTY_NAMES_';
+wwv_flow_imp.g_varchar2_table(233) := 'FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
+'          COLUMN_NAMES_FOR_EAC';
+wwv_flow_imp.g_varchar2_table(234) := 'H_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
+'          PROPERTY_NAMES_FOR_EACH_ELEMENT(P1) := PROPERTY_NAME';
+wwv_flow_imp.g_varchar2_table(235) := 'S(IDX1);'||wwv_flow.LF||
+'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING(PROPERTY_NAMES(IDX1)) := PROPE';
+wwv_flow_imp.g_varchar2_table(236) := 'RTY_NAMES(IDX1);'||wwv_flow.LF||
+'          COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := COLUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
 '  ';
-wwv_flow_imp.g_varchar2_table(307) := '        P3 := P3 + 1;'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(237) := '        P1 := P1 + 1;'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
+'        IF LABELS(IDX1) != LABELS_FOR_EACH_ELEMENT(P3 -1) TH';
+wwv_flow_imp.g_varchar2_table(238) := 'EN'||wwv_flow.LF||
+'          LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1);'||wwv_flow.LF||
+'          P3 := P3 + 1;'||wwv_flow.LF||
+'        END IF;';
+wwv_flow_imp.g_varchar2_table(239) := ''||wwv_flow.LF||
 '      ELSE        '||wwv_flow.LF||
-'        ELEMENTS_FOR_EACH_OBJECT(P2) := ELE';
-wwv_flow_imp.g_varchar2_table(308) := 'MENTNAMES(IDX1);'||wwv_flow.LF||
-'        P2 := P2 + 1;'||wwv_flow.LF||
+'        ELEMENTS_FOR_EACH_OBJECT(P2) := ELEMENTNAMES(IDX1);'||wwv_flow.LF||
+'        P2 := P2 ';
+wwv_flow_imp.g_varchar2_table(240) := '+ 1;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'        ELEMENT_TABLE_COLUMN_NAME(ELEMENTNAMES(IDX1 - 1)) :=';
-wwv_flow_imp.g_varchar2_table(309) := ' COLUMN_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(IDX1 - 1)) := PROPE';
-wwv_flow_imp.g_varchar2_table(310) := 'RTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1 - 1)) := COLUMN_EXPRESS';
-wwv_flow_imp.g_varchar2_table(311) := 'IONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1 - 1)) := LABELS_FOR_EACH_ELEMENT;';
-wwv_flow_imp.g_varchar2_table(312) := ''||wwv_flow.LF||
-'        COLUMN_NAMES_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        PROPERTY_NAMES_FOR_EACH_EL';
-wwv_flow_imp.g_varchar2_table(313) := 'EMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        ELEMENT_TABLE_COLUMN_NAME(ELEMENTNAMES(IDX1 - 1)) := COLUMN_NAMES_FOR_EACH_ELEMENT;';
+wwv_flow_imp.g_varchar2_table(241) := ''||wwv_flow.LF||
+'        ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(IDX1 - 1)) := PROPERTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(242) := '      COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1 - 1)) := COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(243) := '  ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1 - 1)) := LABELS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'        COLUMN_NAMES_FOR_EA';
+wwv_flow_imp.g_varchar2_table(244) := 'CH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        PROPERTY_NAMES_FOR_EACH_ELEMENT := NEW STRING_LIST_TY';
+wwv_flow_imp.g_varchar2_table(245) := 'PE();'||wwv_flow.LF||
 '        PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.delete;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(314) := '       COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        LABELS_FOR_EACH_ELEMEN';
-wwv_flow_imp.g_varchar2_table(315) := 'T := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        COLUMN_EXPRESSIONS';
+wwv_flow_imp.g_varchar2_table(246) := '_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
+'        LABELS_FOR_EACH_ELEMENT := NEW STRING_LIST_TYP';
+wwv_flow_imp.g_varchar2_table(247) := 'E();'||wwv_flow.LF||
 '        P1 := 1;'||wwv_flow.LF||
 '        P3 := 1;'||wwv_flow.LF||
-'        IF  PROPERTY_NAMES(IDX1) IS N';
-wwv_flow_imp.g_varchar2_table(316) := 'OT NULL AND NOT PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(317) := '          COLUMN_NAMES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH';
-wwv_flow_imp.g_varchar2_table(318) := '_ELEMENT(P1) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING(PR';
-wwv_flow_imp.g_varchar2_table(319) := 'OPERTY_NAMES(IDX1)) := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
-'          COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := CO';
-wwv_flow_imp.g_varchar2_table(320) := 'LUMN_EXPRESSIONS(IDX1);'||wwv_flow.LF||
+'        IF  PROPERTY_NAMES(IDX1) IS NOT NULL AND NOT PROPE';
+wwv_flow_imp.g_varchar2_table(248) := 'RTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING.EXISTS(PROPERTY_NAMES(IDX1)) THEN'||wwv_flow.LF||
+'          COLUMN_NAM';
+wwv_flow_imp.g_varchar2_table(249) := 'ES_FOR_EACH_ELEMENT(P1) := COLUMN_NAMES(IDX1);'||wwv_flow.LF||
+'          PROPERTY_NAMES_FOR_EACH_ELEMENT(P1) := PRO';
+wwv_flow_imp.g_varchar2_table(250) := 'PERTY_NAMES(IDX1);'||wwv_flow.LF||
+'          PROPERTY_NAMES_FOR_EACH_ELEMENT_INDEXED_BY_STRING(PROPERTY_NAMES(IDX1)';
+wwv_flow_imp.g_varchar2_table(251) := ') := PROPERTY_NAMES(IDX1);'||wwv_flow.LF||
+'          COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT(P1) := COLUMN_EXPRESSIONS(';
+wwv_flow_imp.g_varchar2_table(252) := 'IDX1);'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 '        LABELS_FOR_EACH_ELEMENT(P3) := LABELS(IDX1);'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(321) := ' P1 := P1 + 1;'||wwv_flow.LF||
+'        P1 := P1 + 1;';
+wwv_flow_imp.g_varchar2_table(253) := ''||wwv_flow.LF||
 '        P3 := P3 + 1;'||wwv_flow.LF||
 '      END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '      IF IDX1 = OBJECT_NAMES.COUNT THEN'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(322) := 'OBJECT_TO_ELEMENTS(OBJECT_NAMES(IDX1)) := ELEMENTS_FOR_EACH_OBJECT;'||wwv_flow.LF||
-'        ELEMENT_TABLE_COLUMN_NAM';
-wwv_flow_imp.g_varchar2_table(323) := 'E(ELEMENTNAMES(IDX1)) := COLUMN_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TABLE_PROPERTY_NAME(ELEMENTN';
-wwv_flow_imp.g_varchar2_table(324) := 'AMES(IDX1)) := PROPERTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1)) :';
-wwv_flow_imp.g_varchar2_table(325) := '= COLUMN_EXPRESSIONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'        ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1)) := LABELS_FOR_E';
-wwv_flow_imp.g_varchar2_table(326) := 'ACH_ELEMENT;'||wwv_flow.LF||
+'        OBJECT_TO';
+wwv_flow_imp.g_varchar2_table(254) := '_ELEMENTS(OBJECT_NAMES(IDX1)) := ELEMENTS_FOR_EACH_OBJECT;'||wwv_flow.LF||
+'        ELEMENT_TABLE_COLUMN_NAME(ELEMEN';
+wwv_flow_imp.g_varchar2_table(255) := 'TNAMES(IDX1)) := COLUMN_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'        ELEMENT_TABLE_PROPERTY_NAME(ELEMENTNAMES(ID';
+wwv_flow_imp.g_varchar2_table(256) := 'X1)) := PROPERTY_NAMES_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'        COLUMN_EXPRESSION_LIST(ELEMENTNAMES(IDX1)) := COLU';
+wwv_flow_imp.g_varchar2_table(257) := 'MN_EXPRESSIONS_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'        ELEMENT_TO_LABELS(ELEMENTNAMES(IDX1)) := LABELS_FOR_EACH_E';
+wwv_flow_imp.g_varchar2_table(258) := 'LEMENT;'||wwv_flow.LF||
 '      END IF;'||wwv_flow.LF||
 '    END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '    SELECT'||wwv_flow.LF||
 '      ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
-'      KEYS.COLUMN_';
-wwv_flow_imp.g_varchar2_table(327) := 'NAME BULK COLLECT INTO ELEMENTNAMES,'||wwv_flow.LF||
+'      KEYS.COLUMN';
+wwv_flow_imp.g_varchar2_table(259) := '_NAME BULK COLLECT INTO ELEMENTNAMES,'||wwv_flow.LF||
 '      KEY_LIST'||wwv_flow.LF||
 '    FROM'||wwv_flow.LF||
 '      SYS.ALL_PG_KEYS     KEYS'||wwv_flow.LF||
-'      IN';
-wwv_flow_imp.g_varchar2_table(328) := 'NER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(260) := '   INNER JOIN SYS.ALL_PG_ELEMENTS ELEMENTS'||wwv_flow.LF||
 '      ON (ELEMENTS.ELEMENT_NAME = KEYS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ';
-wwv_flow_imp.g_varchar2_table(329) := 'KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(261) := '   AND KEYS.GRAPH_NAME = ELEMENTS.GRAPH_NAME'||wwv_flow.LF||
 '      AND KEYS.OWNER = ELEMENTS.OWNER)'||wwv_flow.LF||
 '    WHERE'||wwv_flow.LF||
-'      ELEMENT';
-wwv_flow_imp.g_varchar2_table(330) := '_KIND = ELEMENT_TYPE'||wwv_flow.LF||
-'      AND KEYS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'      AND ELEMENTS.OWNER = GRAPHOWNER'||wwv_flow.LF||
 '   ';
-wwv_flow_imp.g_varchar2_table(331) := ' ORDER BY'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(262) := '   ELEMENT_KIND = ELEMENT_TYPE'||wwv_flow.LF||
+'      AND KEYS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
+'      AND ELEMENTS.OWNER = GR';
+wwv_flow_imp.g_varchar2_table(263) := 'APHOWNER'||wwv_flow.LF||
+'    ORDER BY'||wwv_flow.LF||
 '      ELEMENTS.ELEMENT_NAME,'||wwv_flow.LF||
 '      KEYS.COLUMN_NAME;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'    FOR IDX1 IN 1..ELEMENTNAMES.COU';
-wwv_flow_imp.g_varchar2_table(332) := 'NT LOOP'||wwv_flow.LF||
+'    FOR IDX1 IN 1.';
+wwv_flow_imp.g_varchar2_table(264) := '.ELEMENTNAMES.COUNT LOOP'||wwv_flow.LF||
 '      IF IDX1 = 1 THEN'||wwv_flow.LF||
-'        KEY_LIST_FOR_EACH_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(333) := 'P1 := 1;'||wwv_flow.LF||
+'        KEY_LIST_FOR_EACH_ELEMENT := NEW STRING_LI';
+wwv_flow_imp.g_varchar2_table(265) := 'ST_TYPE();'||wwv_flow.LF||
+'        P1 := 1;'||wwv_flow.LF||
 '        KEY_LIST_FOR_EACH_ELEMENT(P1) := KEY_LIST(IDX1);'||wwv_flow.LF||
-'        P1 := P1 + 1;'||wwv_flow.LF||
+'        P1 :';
+wwv_flow_imp.g_varchar2_table(266) := '= P1 + 1;'||wwv_flow.LF||
 '      ELSE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(334) := '       IF ELEMENTNAMES(IDX1) = ELEMENTNAMES(IDX1 - 1) THEN'||wwv_flow.LF||
-'          KEY_LIST_FOR_EACH_ELEMENT(P1) :';
-wwv_flow_imp.g_varchar2_table(335) := '= KEY_LIST(IDX1);'||wwv_flow.LF||
+'        IF ELEMENTNAMES(IDX1) = ELEMENTNAMES(IDX1 - 1) THEN'||wwv_flow.LF||
+'          KEY_LI';
+wwv_flow_imp.g_varchar2_table(267) := 'ST_FOR_EACH_ELEMENT(P1) := KEY_LIST(IDX1);'||wwv_flow.LF||
 '          P1 := P1 + 1;'||wwv_flow.LF||
 '        ELSE'||wwv_flow.LF||
-'          ELEMENT_TO_KEY_LIST_TABLE(ELEMENTNA';
-wwv_flow_imp.g_varchar2_table(336) := 'MES(IDX1 - 1)) := KEY_LIST_FOR_EACH_ELEMENT;'||wwv_flow.LF||
-'          KEY_LIST_FOR_EACH_ELEMENT := NEW STRING_LIST_';
-wwv_flow_imp.g_varchar2_table(337) := 'TYPE();'||wwv_flow.LF||
+'          ELEMENT';
+wwv_flow_imp.g_varchar2_table(268) := '_TO_KEY_LIST_TABLE(ELEMENTNAMES(IDX1 - 1)) := KEY_LIST_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'          KEY_LIST_FOR_EAC';
+wwv_flow_imp.g_varchar2_table(269) := 'H_ELEMENT := NEW STRING_LIST_TYPE();'||wwv_flow.LF||
 '          P1 := 1;'||wwv_flow.LF||
-'          KEY_LIST_FOR_EACH_ELEMENT(P1) := KEY_LIST(IDX1);'||wwv_flow.LF||
-'          P1 :';
-wwv_flow_imp.g_varchar2_table(338) := '= P1 + 1;'||wwv_flow.LF||
+'          KEY_LIST_FOR_EACH_ELEMENT(P1) :=';
+wwv_flow_imp.g_varchar2_table(270) := ' KEY_LIST(IDX1);'||wwv_flow.LF||
+'          P1 := P1 + 1;'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 '      END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'      IF IDX1 = ELEMENTNAMES.COUNT THEN'||wwv_flow.LF||
-'        ELEMENT_TO_';
-wwv_flow_imp.g_varchar2_table(339) := 'KEY_LIST_TABLE(ELEMENTNAMES(IDX1)) := KEY_LIST_FOR_EACH_ELEMENT;'||wwv_flow.LF||
+'      IF IDX1 = ELEMENT';
+wwv_flow_imp.g_varchar2_table(271) := 'NAMES.COUNT THEN'||wwv_flow.LF||
+'        ELEMENT_TO_KEY_LIST_TABLE(ELEMENTNAMES(IDX1)) := KEY_LIST_FOR_EACH_ELEMENT';
+wwv_flow_imp.g_varchar2_table(272) := ';'||wwv_flow.LF||
 '      END IF;'||wwv_flow.LF||
 '    END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'    FO';
-wwv_flow_imp.g_varchar2_table(340) := 'R IDX1 IN 1..DB_TABLE_NAME_LIST.COUNT LOOP'||wwv_flow.LF||
-'      FOR IDX6 IN 1..OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIS';
-wwv_flow_imp.g_varchar2_table(341) := 'T(IDX1)).COUNT LOOP'||wwv_flow.LF||
-'        ELEMENT_NAME := OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1))(IDX6);'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(342) := '    INNER_PROPS_LABELS_STRING := ''JSON_OBJECT('';        '||wwv_flow.LF||
-'        FOR IDX2 IN 1..DB_TABLE_NAME_LIST.C';
-wwv_flow_imp.g_varchar2_table(343) := 'OUNT LOOP'||wwv_flow.LF||
+'    FOR IDX1 IN 1..DB_TABLE_NAME_LIST.COUNT LOOP'||wwv_flow.LF||
+'      FOR IDX6 ';
+wwv_flow_imp.g_varchar2_table(273) := 'IN 1..OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1)).COUNT LOOP'||wwv_flow.LF||
+'        ELEMENT_NAME := OBJECT_TO_ELE';
+wwv_flow_imp.g_varchar2_table(274) := 'MENTS(DB_TABLE_NAME_LIST(IDX1))(IDX6);'||wwv_flow.LF||
+'        INNER_PROPS_LABELS_STRING := ''JSON_OBJECT('';        ';
+wwv_flow_imp.g_varchar2_table(275) := ''||wwv_flow.LF||
+'        FOR IDX2 IN 1..DB_TABLE_NAME_LIST.COUNT LOOP'||wwv_flow.LF||
 '          IF IDX1 = IDX2 THEN'||wwv_flow.LF||
-'            FOR IDX4 IN 1..ELEMENT_TABLE_PROPERTY_NAME(ELEME';
-wwv_flow_imp.g_varchar2_table(344) := 'NT_NAME).COUNT LOOP'||wwv_flow.LF||
-'              COLUMN_NAME := ELEMENT_TABLE_COLUMN_NAME(ELEMENT_NAME)(IDX4);'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(345) := '          COLUMN_EXPRESSION := COLUMN_EXPRESSION_LIST(ELEMENT_NAME)(IDX4);'||wwv_flow.LF||
+'            F';
+wwv_flow_imp.g_varchar2_table(276) := 'OR IDX4 IN 1..ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
+'              COLUMN_NAME := ELE';
+wwv_flow_imp.g_varchar2_table(277) := 'MENT_TABLE_COLUMN_NAME(ELEMENT_NAME)(IDX4);'||wwv_flow.LF||
+'              COLUMN_EXPRESSION := COLUMN_EXPRESSION_LI';
+wwv_flow_imp.g_varchar2_table(278) := 'ST(ELEMENT_NAME)(IDX4);'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'              IF COLUMN_';
-wwv_flow_imp.g_varchar2_table(346) := 'EXPRESSION IS NULL THEN'||wwv_flow.LF||
-'                INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(347) := '                                        || ''q''''['''||wwv_flow.LF||
-'                                             || EL';
-wwv_flow_imp.g_varchar2_table(348) := 'EMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
+'              IF COLUMN_EXPRESSION IS NULL THEN'||wwv_flow.LF||
+'                INNER_PR';
+wwv_flow_imp.g_varchar2_table(279) := 'OPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                                             || ''q''''';
+wwv_flow_imp.g_varchar2_table(280) := '['''||wwv_flow.LF||
+'                                             || ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)';
+wwv_flow_imp.g_varchar2_table(281) := ''||wwv_flow.LF||
 '                                             || '']'''''''||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(349) := '                                             || '' VALUE '''||wwv_flow.LF||
-'                                          ';
-wwv_flow_imp.g_varchar2_table(350) := '   || ''x."'''||wwv_flow.LF||
-'                                             || COLUMN_NAME'||wwv_flow.LF||
-'                            ';
-wwv_flow_imp.g_varchar2_table(351) := '                 || ''"'';'||wwv_flow.LF||
-'                IF (IDX4 = ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT)';
-wwv_flow_imp.g_varchar2_table(352) := ' THEN'||wwv_flow.LF||
+'                                            ';
+wwv_flow_imp.g_varchar2_table(282) := ' || '' VALUE '''||wwv_flow.LF||
+'                                             || ''x."'''||wwv_flow.LF||
+'                              ';
+wwv_flow_imp.g_varchar2_table(283) := '               || COLUMN_NAME'||wwv_flow.LF||
+'                                             || ''"'';'||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(284) := ' IF (IDX4 = ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
+'                  INNER_PROPS_LAB';
+wwv_flow_imp.g_varchar2_table(285) := 'ELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                                               || '' '';'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(286) := '             ELSE'||wwv_flow.LF||
 '                  INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                     ';
-wwv_flow_imp.g_varchar2_table(353) := '                          || '' '';'||wwv_flow.LF||
-'                ELSE'||wwv_flow.LF||
-'                  INNER_PROPS_LABELS_STRING :';
-wwv_flow_imp.g_varchar2_table(354) := '= INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                               || '', '';'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(355) := 'END IF;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(287) := '                                        || '', '';'||wwv_flow.LF||
+'                END IF;'||wwv_flow.LF||
 '              ELSE'||wwv_flow.LF||
-'                INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(356) := '                                           || ''q''''['''||wwv_flow.LF||
-'                                             ||';
-wwv_flow_imp.g_varchar2_table(357) := ' ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'                                             || '']''';
-wwv_flow_imp.g_varchar2_table(358) := ''''''||wwv_flow.LF||
-'                                             || '' VALUE '''||wwv_flow.LF||
-'                                       ';
-wwv_flow_imp.g_varchar2_table(359) := '      || COLUMN_EXPRESSION'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(288) := '           INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                                 ';
+wwv_flow_imp.g_varchar2_table(289) := '            || ''q''''['''||wwv_flow.LF||
+'                                             || ELEMENT_TABLE_PROPERTY_NAME(E';
+wwv_flow_imp.g_varchar2_table(290) := 'LEMENT_NAME)(IDX4)'||wwv_flow.LF||
+'                                             || '']'''''''||wwv_flow.LF||
+'                         ';
+wwv_flow_imp.g_varchar2_table(291) := '                    || '' VALUE '''||wwv_flow.LF||
+'                                             || COLUMN_EXPRESSION';
+wwv_flow_imp.g_varchar2_table(292) := ''||wwv_flow.LF||
 '                                             || '''';'||wwv_flow.LF||
-'                IF (I';
-wwv_flow_imp.g_varchar2_table(360) := 'DX4 != ELEMENT_TABLE_PROPERTY_NAME(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
-'                  INNER_PROPS_LABELS_ST';
-wwv_flow_imp.g_varchar2_table(361) := 'RING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                IF (IDX4 != ELEMENT_TABLE_PROP';
+wwv_flow_imp.g_varchar2_table(293) := 'ERTY_NAME(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
+'                  INNER_PROPS_LABELS_STRING := INNER_PROPS_LABE';
+wwv_flow_imp.g_varchar2_table(294) := 'LS_STRING'||wwv_flow.LF||
 '                                               || '', '';'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(362) := '      END IF;'||wwv_flow.LF||
-'              END IF;'||wwv_flow.LF||
+'                END IF;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(295) := '       END IF;'||wwv_flow.LF||
 '            END LOOP;'||wwv_flow.LF||
 '          END IF;'||wwv_flow.LF||
 '        END LOOP;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(363) := '  '||wwv_flow.LF||
-'        INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                  ';
-wwv_flow_imp.g_varchar2_table(364) := '   || '' NULL ON NULL RETURNING JSON) AS properties '';'||wwv_flow.LF||
+'        '||wwv_flow.LF||
+'        INNER';
+wwv_flow_imp.g_varchar2_table(296) := '_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                                     || '' NULL ON';
+wwv_flow_imp.g_varchar2_table(297) := ' NULL RETURNING JSON) AS properties '';'||wwv_flow.LF||
 '        '||wwv_flow.LF||
 '        LABELS_STRING := '''';'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(365) := 'FOR IDX4 IN 1..ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
+'        FOR IDX4 IN ';
+wwv_flow_imp.g_varchar2_table(298) := '1..ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
 '          LABELS_STRING := LABELS_STRING'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(366) := '                          || ''q''''['''||wwv_flow.LF||
-'                           || ELEMENT_TO_LABELS(ELEMENT_NAME)(ID';
-wwv_flow_imp.g_varchar2_table(367) := 'X4)'||wwv_flow.LF||
-'                           || '']'''''';'||wwv_flow.LF||
-'          IF (IDX4 != ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT';
-wwv_flow_imp.g_varchar2_table(368) := ') THEN'||wwv_flow.LF||
+'           ';
+wwv_flow_imp.g_varchar2_table(299) := '                || ''q''''['''||wwv_flow.LF||
+'                           || ELEMENT_TO_LABELS(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(300) := '                       || '']'''''';'||wwv_flow.LF||
+'          IF (IDX4 != ELEMENT_TO_LABELS(ELEMENT_NAME).COUNT) THEN';
+wwv_flow_imp.g_varchar2_table(301) := ''||wwv_flow.LF||
 '            LABELS_STRING := LABELS_STRING'||wwv_flow.LF||
 '                             || '', '';'||wwv_flow.LF||
-'          EN';
-wwv_flow_imp.g_varchar2_table(369) := 'D IF;'||wwv_flow.LF||
+'          END IF';
+wwv_flow_imp.g_varchar2_table(302) := ';'||wwv_flow.LF||
 '        END LOOP;'||wwv_flow.LF||
 '        '||wwv_flow.LF||
 '        INNER_PROPS_LABELS_STRING := INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
 '    ';
-wwv_flow_imp.g_varchar2_table(370) := '                                 || '', JSON_ARRAY('''||wwv_flow.LF||
-'                                     || LABELS_S';
-wwv_flow_imp.g_varchar2_table(371) := 'TRING'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(303) := '                                 || '', JSON_ARRAY('''||wwv_flow.LF||
+'                                     || LABELS_';
+wwv_flow_imp.g_varchar2_table(304) := 'STRING'||wwv_flow.LF||
 '                                     || '' returning JSON) AS labels'';'||wwv_flow.LF||
 '     '||wwv_flow.LF||
-'        JSON_CONDI';
-wwv_flow_imp.g_varchar2_table(372) := 'TION_STRING := '''';'||wwv_flow.LF||
+'        JSON_C';
+wwv_flow_imp.g_varchar2_table(305) := 'ONDITION_STRING := '''';'||wwv_flow.LF||
 '        FOR IDX5 IN 1..ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(373) := '   '||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(306) := '         '||wwv_flow.LF||
 '          '||wwv_flow.LF||
 '          JSON_CONDITION_STRING := JSON_CONDITION_STRING'||wwv_flow.LF||
-'                            ';
-wwv_flow_imp.g_varchar2_table(374) := '       || ''X."'''||wwv_flow.LF||
-'                                   || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5)'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(375) := '                                   || ''"= JSON_QUERY('''||wwv_flow.LF||
-'                                   || GRAPH_V';
-wwv_flow_imp.g_varchar2_table(376) := 'IZ_TABLE_NAME'||wwv_flow.LF||
+'                   ';
+wwv_flow_imp.g_varchar2_table(307) := '                || ''X."'''||wwv_flow.LF||
+'                                   || ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NA';
+wwv_flow_imp.g_varchar2_table(308) := 'ME)(IDX5)'||wwv_flow.LF||
+'                                   || ''"= JSON_QUERY('''||wwv_flow.LF||
+'                                 ';
+wwv_flow_imp.g_varchar2_table(309) := '  || GRAPH_VIZ_TABLE_NAME'||wwv_flow.LF||
 '                                   || ''.'''||wwv_flow.LF||
-'                                   || VERTEX';
-wwv_flow_imp.g_varchar2_table(377) := '_ID_COL_NAME'||wwv_flow.LF||
+'                              ';
+wwv_flow_imp.g_varchar2_table(310) := '     || VERTEX_ID_COL_NAME'||wwv_flow.LF||
 '                                   || '', ''''$.KEY_VALUE."'''||wwv_flow.LF||
-'                             ';
-wwv_flow_imp.g_varchar2_table(378) := '      || REPLACE(REPLACE(ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5), '''''''', ''''''''''''), ''\'', ''\\'')'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(379) := '                                 || ''"'''' RETURNING JSON)'';'||wwv_flow.LF||
-'          IF (IDX5 != ELEMENT_TO_KEY_LIST';
-wwv_flow_imp.g_varchar2_table(380) := '_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
-'            JSON_CONDITION_STRING := JSON_CONDITION_STRING'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(381) := '                             || '' AND '';'||wwv_flow.LF||
+'             ';
+wwv_flow_imp.g_varchar2_table(311) := '                      || REPLACE(REPLACE(ELEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME)(IDX5), '''''''', ''''''''''''';
+wwv_flow_imp.g_varchar2_table(312) := '), ''\'', ''\\'')'||wwv_flow.LF||
+'                                   || ''"'''' RETURNING JSON)'';'||wwv_flow.LF||
+'          IF (IDX5 != E';
+wwv_flow_imp.g_varchar2_table(313) := 'LEMENT_TO_KEY_LIST_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
+'            JSON_CONDITION_STRING := JSON_CONDIT';
+wwv_flow_imp.g_varchar2_table(314) := 'ION_STRING'||wwv_flow.LF||
+'                                     || '' AND '';'||wwv_flow.LF||
 '          END IF;'||wwv_flow.LF||
 '        END LOOP;'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'        IF ELE';
-wwv_flow_imp.g_varchar2_table(382) := 'MENT_TYPE = ''EDGE'' THEN'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(315) := '        '||wwv_flow.LF||
+'        IF ELEMENT_TYPE = ''EDGE'' THEN'||wwv_flow.LF||
 '          EDGE_INNER_PROJECTION_STRING := '''';'||wwv_flow.LF||
-'          FOR IDX4 IN 1..SRC_E';
-wwv_flow_imp.g_varchar2_table(383) := 'DGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'            IF SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COU';
-wwv_flow_imp.g_varchar2_table(384) := 'NT = 1 THEN'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(316) := '      FOR IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
+'            IF SRC_EDGE_COL_N';
+wwv_flow_imp.g_varchar2_table(317) := 'AME_TABLE(ELEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
 '              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-'              SRC';
-wwv_flow_imp.g_varchar2_table(385) := '_PROJECTED_COL_ALIAS := ''__SRC_COL_'' || IDX4;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'            EDGE_INNER_PROJECTION_';
-wwv_flow_imp.g_varchar2_table(386) := 'STRING := EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
-'                                            || '', X."'''||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(387) := '                                      || SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(388) := '                             || ''" AS "'''||wwv_flow.LF||
-'                                            || SRC_PROJECTE';
-wwv_flow_imp.g_varchar2_table(389) := 'D_COL_ALIAS'||wwv_flow.LF||
-'                                            || ''"'';'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-'          FOR ID';
-wwv_flow_imp.g_varchar2_table(390) := 'X4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'            IF DEST_EDGE_COL_NAME_TABLE(E';
-wwv_flow_imp.g_varchar2_table(391) := 'LEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
-'              DEST_PROJECTED_COL_ALIAS := ''__DST_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(392) := '              DEST_PROJECTED_COL_ALIAS := ''__DST_COL_'' || IDX4;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'            EDGE';
-wwv_flow_imp.g_varchar2_table(393) := '_INNER_PROJECTION_STRING := EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
-'                                           ';
-wwv_flow_imp.g_varchar2_table(394) := ' || '', X."'''||wwv_flow.LF||
-'                                            || DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(ID';
-wwv_flow_imp.g_varchar2_table(395) := 'X4)'||wwv_flow.LF||
-'                                            || ''" AS "'''||wwv_flow.LF||
-'                                        ';
-wwv_flow_imp.g_varchar2_table(396) := '    || DEST_PROJECTED_COL_ALIAS'||wwv_flow.LF||
-'                                            || ''"'';'||wwv_flow.LF||
-'          END LO';
-wwv_flow_imp.g_varchar2_table(397) := 'OP;          '||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          INNER_QUERY_STRING := ''SELECT '''||wwv_flow.LF||
-'                                |';
-wwv_flow_imp.g_varchar2_table(398) := '| INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'                                || EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(399) := '                        || '' FROM "'''||wwv_flow.LF||
-'                                || DB_OBJECT_OWNER_LIST(IDX1)'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(400) := '                               || ''"."'''||wwv_flow.LF||
-'                                || DB_TABLE_NAME_LIST(IDX1)'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(401) := '                                || ''" X '''||wwv_flow.LF||
-'                                || ''WHERE JSON_VALUE("'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(402) := '                              || GRAPH_VIZ_TABLE_NAME'||wwv_flow.LF||
-'                                || ''"."'''||wwv_flow.LF||
 '     ';
-wwv_flow_imp.g_varchar2_table(403) := '                           || VERTEX_ID_COL_NAME'||wwv_flow.LF||
-'                                || ''", ''''$.ELEM_TAB';
-wwv_flow_imp.g_varchar2_table(404) := 'LE'''') = q''''['''||wwv_flow.LF||
-'                                || ELEMENT_NAME'||wwv_flow.LF||
-'                                || '']''';
-wwv_flow_imp.g_varchar2_table(405) := ''' AND '''||wwv_flow.LF||
-'                                || JSON_CONDITION_STRING;'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(318) := '       ELSE'||wwv_flow.LF||
+'              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL_'' || IDX4;'||wwv_flow.LF||
+'            END IF;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(319) := '          EDGE_INNER_PROJECTION_STRING := EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
+'                            ';
+wwv_flow_imp.g_varchar2_table(320) := '                || '', X."'''||wwv_flow.LF||
+'                                            || SRC_EDGE_COL_NAME_TABLE(E';
+wwv_flow_imp.g_varchar2_table(321) := 'LEMENT_NAME)(IDX4)'||wwv_flow.LF||
+'                                            || ''" AS "'''||wwv_flow.LF||
+'                       ';
+wwv_flow_imp.g_varchar2_table(322) := '                     || SRC_PROJECTED_COL_ALIAS'||wwv_flow.LF||
+'                                            || ''"'';';
+wwv_flow_imp.g_varchar2_table(323) := ''||wwv_flow.LF||
+'          END LOOP;'||wwv_flow.LF||
+'          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(324) := '           IF DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
+'              DEST_PROJECTED_CO';
+wwv_flow_imp.g_varchar2_table(325) := 'L_ALIAS := ''__DST_COL'';'||wwv_flow.LF||
+'            ELSE'||wwv_flow.LF||
+'              DEST_PROJECTED_COL_ALIAS := ''__DST_COL_'' ||';
+wwv_flow_imp.g_varchar2_table(326) := ' IDX4;'||wwv_flow.LF||
+'            END IF;'||wwv_flow.LF||
+'            EDGE_INNER_PROJECTION_STRING := EDGE_INNER_PROJECTION_STRIN';
+wwv_flow_imp.g_varchar2_table(327) := 'G'||wwv_flow.LF||
+'                                            || '', X."'''||wwv_flow.LF||
+'                                         ';
+wwv_flow_imp.g_varchar2_table(328) := '   || DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
+'                                            || ''';
+wwv_flow_imp.g_varchar2_table(329) := '" AS "'''||wwv_flow.LF||
+'                                            || DEST_PROJECTED_COL_ALIAS'||wwv_flow.LF||
+'                  ';
+wwv_flow_imp.g_varchar2_table(330) := '                          || ''"'';'||wwv_flow.LF||
+'          END LOOP;          '||wwv_flow.LF||
+'          '||wwv_flow.LF||
+'          INNER_QUERY_';
+wwv_flow_imp.g_varchar2_table(331) := 'STRING := ''SELECT '''||wwv_flow.LF||
+'                                || INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                 ';
+wwv_flow_imp.g_varchar2_table(332) := '               || EDGE_INNER_PROJECTION_STRING'||wwv_flow.LF||
+'                                || '' FROM "'''||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(333) := '                          || DB_OBJECT_OWNER_LIST(IDX1)'||wwv_flow.LF||
+'                                || ''"."'''||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(334) := '                               || DB_TABLE_NAME_LIST(IDX1)'||wwv_flow.LF||
+'                                || ''" X ';
+wwv_flow_imp.g_varchar2_table(335) := ''''||wwv_flow.LF||
+'                                || ''WHERE JSON_VALUE("'''||wwv_flow.LF||
+'                                || GRAPH';
+wwv_flow_imp.g_varchar2_table(336) := '_VIZ_TABLE_NAME'||wwv_flow.LF||
+'                                || ''"."'''||wwv_flow.LF||
+'                                || VERTEX';
+wwv_flow_imp.g_varchar2_table(337) := '_ID_COL_NAME'||wwv_flow.LF||
+'                                || ''", ''''$.ELEM_TABLE'''') = q''''['''||wwv_flow.LF||
+'                    ';
+wwv_flow_imp.g_varchar2_table(338) := '            || ELEMENT_NAME'||wwv_flow.LF||
+'                                || '']'''' AND '''||wwv_flow.LF||
+'                        ';
+wwv_flow_imp.g_varchar2_table(339) := '        || JSON_CONDITION_STRING;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '          SRC_JSON_STRING := '''';'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(406) := '          FOR IDX2 IN 1..VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(407) := '       SRC_JSON_STRING := SRC_JSON_STRING'||wwv_flow.LF||
+'          FOR IDX2 IN 1..VERT';
+wwv_flow_imp.g_varchar2_table(340) := 'EX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT LOOP'||wwv_flow.LF||
+'            SRC_JSON_STRING := SR';
+wwv_flow_imp.g_varchar2_table(341) := 'C_JSON_STRING'||wwv_flow.LF||
 '                               || ''q''''['''||wwv_flow.LF||
-'                 ';
-wwv_flow_imp.g_varchar2_table(408) := '              || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)'||wwv_flow.LF||
-'                  ';
-wwv_flow_imp.g_varchar2_table(409) := '             || '']'''' value src_table."'''||wwv_flow.LF||
-'                               || VERTEX_KEYS_TABLE(SRC_VERT';
-wwv_flow_imp.g_varchar2_table(410) := 'EX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)'||wwv_flow.LF||
+'                               || VERTEX_KE';
+wwv_flow_imp.g_varchar2_table(342) := 'YS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX2)'||wwv_flow.LF||
+'                               || '']'''' valu';
+wwv_flow_imp.g_varchar2_table(343) := 'e src_table."'''||wwv_flow.LF||
+'                               || VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMEN';
+wwv_flow_imp.g_varchar2_table(344) := 'T_NAME))(IDX2)'||wwv_flow.LF||
 '                               || ''"'';'||wwv_flow.LF||
-'            IF (IDX2 !';
-wwv_flow_imp.g_varchar2_table(411) := '= VERTEX_KEYS_TABLE(SRC_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN'||wwv_flow.LF||
-'              SRC_JSON_STRI';
-wwv_flow_imp.g_varchar2_table(412) := 'NG := SRC_JSON_STRING'||wwv_flow.LF||
+'            IF (IDX2 != VERTEX_KEYS_TABLE(SR';
+wwv_flow_imp.g_varchar2_table(345) := 'C_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)).COUNT) THEN'||wwv_flow.LF||
+'              SRC_JSON_STRING := SRC_JSON_STRING';
+wwv_flow_imp.g_varchar2_table(346) := ''||wwv_flow.LF||
 '                                 || '', '';'||wwv_flow.LF||
 '            END IF;'||wwv_flow.LF||
-'          END LO';
-wwv_flow_imp.g_varchar2_table(413) := 'OP;'||wwv_flow.LF||
+'          END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'          DEST_JSON_STRING := '''';'||wwv_flow.LF||
-'          FOR IDX3 IN 1..VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NA';
-wwv_flow_imp.g_varchar2_table(414) := 'ME_TABLE(ELEMENT_NAME)).COUNT LOOP'||wwv_flow.LF||
+'          D';
+wwv_flow_imp.g_varchar2_table(347) := 'EST_JSON_STRING := '''';'||wwv_flow.LF||
+'          FOR IDX3 IN 1..VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMEN';
+wwv_flow_imp.g_varchar2_table(348) := 'T_NAME)).COUNT LOOP'||wwv_flow.LF||
 '            DEST_JSON_STRING := DEST_JSON_STRING'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(415) := '                || ''q''''['''||wwv_flow.LF||
-'                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_';
-wwv_flow_imp.g_varchar2_table(416) := 'TABLE(ELEMENT_NAME))(IDX3)'||wwv_flow.LF||
+'                             ';
+wwv_flow_imp.g_varchar2_table(349) := '   || ''q''''['''||wwv_flow.LF||
+'                                || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMEN';
+wwv_flow_imp.g_varchar2_table(350) := 'T_NAME))(IDX3)'||wwv_flow.LF||
 '                                || '']'''' value dst_table."'''||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(417) := '                  || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)'||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(418) := '                   || ''"'';'||wwv_flow.LF||
-'            IF (IDX3 != VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEM';
-wwv_flow_imp.g_varchar2_table(419) := 'ENT_NAME)).COUNT) THEN'||wwv_flow.LF||
+'                        ';
+wwv_flow_imp.g_varchar2_table(351) := '        || VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME))(IDX3)'||wwv_flow.LF||
+'                      ';
+wwv_flow_imp.g_varchar2_table(352) := '          || ''"'';'||wwv_flow.LF||
+'            IF (IDX3 != VERTEX_KEYS_TABLE(DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME';
+wwv_flow_imp.g_varchar2_table(353) := ')).COUNT) THEN'||wwv_flow.LF||
 '              DEST_JSON_STRING := DEST_JSON_STRING'||wwv_flow.LF||
-'                          ';
-wwv_flow_imp.g_varchar2_table(420) := '        || '', '';'||wwv_flow.LF||
+'                                ';
+wwv_flow_imp.g_varchar2_table(354) := '  || '', '';'||wwv_flow.LF||
 '            END IF;'||wwv_flow.LF||
 '          END LOOP;'||wwv_flow.LF||
 '          '||wwv_flow.LF||
-'          OUTER_SELECT_STRING :=';
-wwv_flow_imp.g_varchar2_table(421) := ' ''SELECT p.properties, p.labels, q''''['''||wwv_flow.LF||
-'                                 || SRC_VERTEX_TAB_NAME_TABLE';
-wwv_flow_imp.g_varchar2_table(422) := '(ELEMENT_NAME)'||wwv_flow.LF||
+'          OUTER_SELECT_STRING := ''';
+wwv_flow_imp.g_varchar2_table(355) := 'SELECT p.properties, p.labels, q''''['''||wwv_flow.LF||
+'                                 || SRC_VERTEX_TAB_NAME_TABLE(';
+wwv_flow_imp.g_varchar2_table(356) := 'ELEMENT_NAME)'||wwv_flow.LF||
 '                                 || '']'''' || json_object('''||wwv_flow.LF||
-'                           ';
-wwv_flow_imp.g_varchar2_table(423) := '      || SRC_JSON_STRING'||wwv_flow.LF||
+'                          ';
+wwv_flow_imp.g_varchar2_table(357) := '       || SRC_JSON_STRING'||wwv_flow.LF||
 '                                 || '') as source, q''''['''||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(424) := '              || DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'                                 || '']'''' |';
-wwv_flow_imp.g_varchar2_table(425) := '| json_object('''||wwv_flow.LF||
+'                ';
+wwv_flow_imp.g_varchar2_table(358) := '                 || DEST_VERTEX_TAB_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
+'                                 || '']';
+wwv_flow_imp.g_varchar2_table(359) := ''''' || json_object('''||wwv_flow.LF||
 '                                 || DEST_JSON_STRING'||wwv_flow.LF||
-'                               ';
-wwv_flow_imp.g_varchar2_table(426) := '  || '') as target '';               '||wwv_flow.LF||
+'                         ';
+wwv_flow_imp.g_varchar2_table(360) := '        || '') as target '';               '||wwv_flow.LF||
 '          '||wwv_flow.LF||
 '          SRC_OUTER_JOIN_STRING := '''';'||wwv_flow.LF||
-'          FOR ';
-wwv_flow_imp.g_varchar2_table(427) := 'IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
-'            IF SRC_EDGE_COL_NAME_TABLE(E';
-wwv_flow_imp.g_varchar2_table(428) := 'LEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
-'              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL'';'||wwv_flow.LF||
-'            ELSE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(429) := '             SRC_PROJECTED_COL_ALIAS := ''__SRC_COL_'' || IDX4;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'            SRC_OU';
-wwv_flow_imp.g_varchar2_table(430) := 'TER_JOIN_STRING := SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                                     || ''p."'''||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(431) := '                        || SRC_PROJECTED_COL_ALIAS'||wwv_flow.LF||
-'                                     || ''" = src_';
-wwv_flow_imp.g_varchar2_table(432) := 'table."'''||wwv_flow.LF||
-'                                     || SRC_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
 '     ';
-wwv_flow_imp.g_varchar2_table(433) := '                                || ''"'';'||wwv_flow.LF||
-'            IF (IDX4 != SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME';
-wwv_flow_imp.g_varchar2_table(434) := ').COUNT) THEN'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(361) := '     FOR IDX4 IN 1..SRC_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
+'            IF SRC_EDGE_COL_NA';
+wwv_flow_imp.g_varchar2_table(362) := 'ME_TABLE(ELEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
+'              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL'';'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(363) := '      ELSE'||wwv_flow.LF||
+'              SRC_PROJECTED_COL_ALIAS := ''__SRC_COL_'' || IDX4;'||wwv_flow.LF||
+'            END IF;'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(364) := '         SRC_OUTER_JOIN_STRING := SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
+'                                     || ''p.';
+wwv_flow_imp.g_varchar2_table(365) := '"'''||wwv_flow.LF||
+'                                     || SRC_PROJECTED_COL_ALIAS'||wwv_flow.LF||
+'                               ';
+wwv_flow_imp.g_varchar2_table(366) := '      || ''" = src_table."'''||wwv_flow.LF||
+'                                     || SRC_VERTEX_COL_NAME_TABLE(ELEMEN';
+wwv_flow_imp.g_varchar2_table(367) := 'T_NAME)(IDX4)'||wwv_flow.LF||
+'                                     || ''"'';'||wwv_flow.LF||
+'            IF (IDX4 != SRC_EDGE_COL_NA';
+wwv_flow_imp.g_varchar2_table(368) := 'ME_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
 '              SRC_OUTER_JOIN_STRING := SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                         ';
-wwv_flow_imp.g_varchar2_table(435) := '              || '' AND '';'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(369) := '                                     || '' AND '';'||wwv_flow.LF||
 '            END IF;'||wwv_flow.LF||
 '          END LOOP;'||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          DEST_OUTER_JO';
-wwv_flow_imp.g_varchar2_table(436) := 'IN_STRING := '''';'||wwv_flow.LF||
-'          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT LOOP'||wwv_flow.LF||
 '        ';
-wwv_flow_imp.g_varchar2_table(437) := '    IF DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
-'              DEST_PROJECTED_COL_ALIAS ';
-wwv_flow_imp.g_varchar2_table(438) := ':= ''__DST_COL'';'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(370) := '  '||wwv_flow.LF||
+'          DEST_OUTER_JOIN_STRING := '''';'||wwv_flow.LF||
+'          FOR IDX4 IN 1..DEST_EDGE_COL_NAME_TABLE(ELEME';
+wwv_flow_imp.g_varchar2_table(371) := 'NT_NAME).COUNT LOOP'||wwv_flow.LF||
+'            IF DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT = 1 THEN'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(372) := '     DEST_PROJECTED_COL_ALIAS := ''__DST_COL'';'||wwv_flow.LF||
 '            ELSE'||wwv_flow.LF||
-'              DEST_PROJECTED_COL_ALIAS := ''__DST_COL_'' || IDX4;'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(439) := '         END IF;'||wwv_flow.LF||
-'            DEST_OUTER_JOIN_STRING := DEST_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                      ';
-wwv_flow_imp.g_varchar2_table(440) := '                || ''p."'''||wwv_flow.LF||
-'                                      || DEST_PROJECTED_COL_ALIAS'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(441) := '                             || ''" = dst_table."'''||wwv_flow.LF||
-'                                      || DEST_VERT';
-wwv_flow_imp.g_varchar2_table(442) := 'EX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
-'                                      || ''"'';'||wwv_flow.LF||
-'            IF (';
-wwv_flow_imp.g_varchar2_table(443) := 'IDX4 != DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
-'              DEST_OUTER_JOIN_STRING := D';
-wwv_flow_imp.g_varchar2_table(444) := 'EST_OUTER_JOIN_STRING'||wwv_flow.LF||
-'                                        || '' AND '';'||wwv_flow.LF||
+'              DEST_PROJECTED_COL_AL';
+wwv_flow_imp.g_varchar2_table(373) := 'IAS := ''__DST_COL_'' || IDX4;'||wwv_flow.LF||
 '            END IF;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(445) := '    END LOOP;          '||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          LATERAL_QUERY_STRING := OUTER_SELECT_STRING'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(446) := '                       || ''FROM ('''||wwv_flow.LF||
-'                                  || INNER_QUERY_STRING'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(447) := '                         || '') p '''||wwv_flow.LF||
-'                                  || ''JOIN "'''||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(448) := '               || SRC_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'                                  || ''';
-wwv_flow_imp.g_varchar2_table(449) := '"."'''||wwv_flow.LF||
-'                                  || SRC_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(450) := '                   || ''" src_table ON ('''||wwv_flow.LF||
-'                                  || SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(451) := '                                  || '') '''||wwv_flow.LF||
-'                                  || ''JOIN "'''||wwv_flow.LF||
+'            DEST_OUTER_JOIN_STRING := DEST_OUTER_';
+wwv_flow_imp.g_varchar2_table(374) := 'JOIN_STRING'||wwv_flow.LF||
+'                                      || ''p."'''||wwv_flow.LF||
+'                                      |';
+wwv_flow_imp.g_varchar2_table(375) := '| DEST_PROJECTED_COL_ALIAS'||wwv_flow.LF||
+'                                      || ''" = dst_table."'''||wwv_flow.LF||
 '            ';
-wwv_flow_imp.g_varchar2_table(452) := '                      || DEST_VERTEX_OBJECT_OWNER_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'                              ';
-wwv_flow_imp.g_varchar2_table(453) := '    || ''"."'''||wwv_flow.LF||
-'                                  || DEST_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(454) := '                            || ''" dst_table ON ('''||wwv_flow.LF||
-'                                  || DEST_OUTER_JO';
-wwv_flow_imp.g_varchar2_table(455) := 'IN_STRING'||wwv_flow.LF||
-'                                  || '')'';'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(376) := '                          || DEST_VERTEX_COL_NAME_TABLE(ELEMENT_NAME)(IDX4)'||wwv_flow.LF||
+'                       ';
+wwv_flow_imp.g_varchar2_table(377) := '               || ''"'';'||wwv_flow.LF||
+'            IF (IDX4 != DEST_EDGE_COL_NAME_TABLE(ELEMENT_NAME).COUNT) THEN'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(378) := '              DEST_OUTER_JOIN_STRING := DEST_OUTER_JOIN_STRING'||wwv_flow.LF||
+'                                    ';
+wwv_flow_imp.g_varchar2_table(379) := '    || '' AND '';'||wwv_flow.LF||
+'            END IF;'||wwv_flow.LF||
+'          END LOOP;          '||wwv_flow.LF||
+'          '||wwv_flow.LF||
+'          LATERAL_Q';
+wwv_flow_imp.g_varchar2_table(380) := 'UERY_STRING := OUTER_SELECT_STRING'||wwv_flow.LF||
+'                                  || ''FROM ('''||wwv_flow.LF||
+'                 ';
+wwv_flow_imp.g_varchar2_table(381) := '                 || INNER_QUERY_STRING'||wwv_flow.LF||
+'                                  || '') p '''||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(382) := '                   || ''JOIN "'''||wwv_flow.LF||
+'                                  || SRC_VERTEX_OBJECT_OWNER_TABLE(E';
+wwv_flow_imp.g_varchar2_table(383) := 'LEMENT_NAME)'||wwv_flow.LF||
+'                                  || ''"."'''||wwv_flow.LF||
+'                                  || SRC_V';
+wwv_flow_imp.g_varchar2_table(384) := 'ERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
+'                                  || ''" src_table ON ('''||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(385) := '                              || SRC_OUTER_JOIN_STRING'||wwv_flow.LF||
+'                                  || '') '''||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(386) := '                                 || ''JOIN "'''||wwv_flow.LF||
+'                                  || DEST_VERTEX_OBJEC';
+wwv_flow_imp.g_varchar2_table(387) := 'T_OWNER_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
+'                                  || ''"."'''||wwv_flow.LF||
+'                           ';
+wwv_flow_imp.g_varchar2_table(388) := '       || DEST_VERTEX_OBJECT_NAME_TABLE(ELEMENT_NAME)'||wwv_flow.LF||
+'                                  || ''" dst_t';
+wwv_flow_imp.g_varchar2_table(389) := 'able ON ('''||wwv_flow.LF||
+'                                  || DEST_OUTER_JOIN_STRING'||wwv_flow.LF||
+'                           ';
+wwv_flow_imp.g_varchar2_table(390) := '       || '')'';'||wwv_flow.LF||
 '        ELSE                   '||wwv_flow.LF||
-'          INNER_';
-wwv_flow_imp.g_varchar2_table(456) := 'QUERY_STRING := ''SELECT '''||wwv_flow.LF||
-'                                || INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(457) := '                   || '' FROM "'''||wwv_flow.LF||
-'                                || DB_OBJECT_OWNER_LIST(IDX1)'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(458) := '                          || ''"."'''||wwv_flow.LF||
+'          INNER_QUERY_STRING := ''SELECT '''||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(391) := '                        || INNER_PROPS_LABELS_STRING'||wwv_flow.LF||
+'                                || '' FROM "'''||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(392) := '                                || DB_OBJECT_OWNER_LIST(IDX1)'||wwv_flow.LF||
+'                                || ''"';
+wwv_flow_imp.g_varchar2_table(393) := '."'''||wwv_flow.LF||
 '                                || DB_TABLE_NAME_LIST(IDX1)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(459) := '                           || ''" X '''||wwv_flow.LF||
+'                                ||';
+wwv_flow_imp.g_varchar2_table(394) := ' ''" X '''||wwv_flow.LF||
 '                                || ''WHERE JSON_VALUE("'''||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(460) := '                         || GRAPH_VIZ_TABLE_NAME'||wwv_flow.LF||
+'                                ||';
+wwv_flow_imp.g_varchar2_table(395) := ' GRAPH_VIZ_TABLE_NAME'||wwv_flow.LF||
 '                                || ''"."'''||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(461) := '                      || VERTEX_ID_COL_NAME'||wwv_flow.LF||
-'                                || ''", ''''$.ELEM_TABLE'''')';
-wwv_flow_imp.g_varchar2_table(462) := ' = q''''['''||wwv_flow.LF||
-'                                || ELEMENT_NAME'||wwv_flow.LF||
-'                                || '']'''' AND';
-wwv_flow_imp.g_varchar2_table(463) := ' '''||wwv_flow.LF||
-'                                || JSON_CONDITION_STRING;'||wwv_flow.LF||
+'                                || ';
+wwv_flow_imp.g_varchar2_table(396) := 'VERTEX_ID_COL_NAME'||wwv_flow.LF||
+'                                || ''", ''''$.ELEM_TABLE'''') = q''''['''||wwv_flow.LF||
+'              ';
+wwv_flow_imp.g_varchar2_table(397) := '                  || ELEMENT_NAME'||wwv_flow.LF||
+'                                || '']'''' AND '''||wwv_flow.LF||
+'                  ';
+wwv_flow_imp.g_varchar2_table(398) := '              || JSON_CONDITION_STRING;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'          LATERAL_QUERY_STRING := ''SEL';
-wwv_flow_imp.g_varchar2_table(464) := 'ECT p.properties, p.labels FROM ('''||wwv_flow.LF||
+'          LATERAL_QUERY_STRING := ''SELECT p.properties, p';
+wwv_flow_imp.g_varchar2_table(399) := '.labels FROM ('''||wwv_flow.LF||
 '                                  || INNER_QUERY_STRING'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(465) := '                         || '') p'';'||wwv_flow.LF||
+'                          ';
+wwv_flow_imp.g_varchar2_table(400) := '        || '') p'';'||wwv_flow.LF||
 '        END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '        ALL_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(466) := '                         || LATERAL_QUERY_STRING'||wwv_flow.LF||
+'                ';
+wwv_flow_imp.g_varchar2_table(401) := '            || LATERAL_QUERY_STRING'||wwv_flow.LF||
 '                            || '' '';'||wwv_flow.LF||
-'        IF (IDX';
-wwv_flow_imp.g_varchar2_table(467) := '1 = DB_TABLE_NAME_LIST.COUNT AND IDX6 = OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1)).COUNT) THEN'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(468) := '       ALL_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
+'        IF (IDX1 = DB_TABL';
+wwv_flow_imp.g_varchar2_table(402) := 'E_NAME_LIST.COUNT AND IDX6 = OBJECT_TO_ELEMENTS(DB_TABLE_NAME_LIST(IDX1)).COUNT) THEN'||wwv_flow.LF||
+'          ALL';
+wwv_flow_imp.g_varchar2_table(403) := '_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
 '                              || '' '';'||wwv_flow.LF||
 '        ELSE'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(469) := '     ALL_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
+'          AL';
+wwv_flow_imp.g_varchar2_table(404) := 'L_QUERY_STRING := ALL_QUERY_STRING'||wwv_flow.LF||
 '                              || ''UNION ALL '';'||wwv_flow.LF||
-'        END';
-wwv_flow_imp.g_varchar2_table(470) := ' IF;'||wwv_flow.LF||
+'        END IF;';
+wwv_flow_imp.g_varchar2_table(405) := ''||wwv_flow.LF||
 '      END LOOP;'||wwv_flow.LF||
 '    END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '    RETURN ALL_QUERY_STRING;'||wwv_flow.LF||
 '  END PROPERTIES_LATERAL_STRING_AS_';
-wwv_flow_imp.g_varchar2_table(471) := 'CLOB;'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(406) := 'CLOB;'||wwv_flow.LF||
 ' -----------------------------------------------------------------------------'||wwv_flow.LF||
-' -- BUILD_JSON ';
-wwv_flow_imp.g_varchar2_table(472) := '- prepare JSON result from vertex_id and edge_id tables'||wwv_flow.LF||
-' -------------------------------------------';
-wwv_flow_imp.g_varchar2_table(473) := '----------------------------------'||wwv_flow.LF||
+' -- BUILD_JSO';
+wwv_flow_imp.g_varchar2_table(407) := 'N - prepare JSON result from vertex_id and edge_id tables'||wwv_flow.LF||
+' ----------------------------------------';
+wwv_flow_imp.g_varchar2_table(408) := '-------------------------------------'||wwv_flow.LF||
 ' FUNCTION BUILD_JSON_USING_JSON_ARRAY('||wwv_flow.LF||
-'    VERTEX_TABLE JSON_ARRA';
-wwv_flow_imp.g_varchar2_table(474) := 'Y_T,'||wwv_flow.LF||
+'    VERTEX_TABLE JSON';
+wwv_flow_imp.g_varchar2_table(409) := '_ARRAY_T,'||wwv_flow.LF||
 '    EDGE_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
 '    COUNTER NUMBER,'||wwv_flow.LF||
 '    GRAPHNAME VARCHAR2,'||wwv_flow.LF||
-'    GRAPHOWNER VARCHAR';
-wwv_flow_imp.g_varchar2_table(475) := '2'||wwv_flow.LF||
+'    GRAPHOWNE';
+wwv_flow_imp.g_varchar2_table(410) := 'R VARCHAR2'||wwv_flow.LF||
 '  ) RETURN CLOB '||wwv_flow.LF||
 '    ACCESSIBLE BY (FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY)'||wwv_flow.LF||
-'    IS'||wwv_flow.LF||
-'    VER';
-wwv_flow_imp.g_varchar2_table(476) := 'TEX_UNDERLYING_DB_NAME_LIST          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    VERTEX_DB_TABLE_OBJECT_OWNER         ';
-wwv_flow_imp.g_varchar2_table(477) := '   SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_UNDERLYING_DB_NAME_LIST            SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    EDGE_';
-wwv_flow_imp.g_varchar2_table(478) := 'DB_TABLE_OBJECT_OWNER              SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
-'    QUERY_STRING                           ';
-wwv_flow_imp.g_varchar2_table(479) := ' CLOB;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(411) := '  IS'||wwv_flow.LF||
+'    VERTEX_UNDERLYING_DB_NAME_LIST          SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    VERTEX_DB_TABLE_OBJECT_';
+wwv_flow_imp.g_varchar2_table(412) := 'OWNER            SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    EDGE_UNDERLYING_DB_NAME_LIST            SYS.ODCIVARCHAR2';
+wwv_flow_imp.g_varchar2_table(413) := 'LIST;'||wwv_flow.LF||
+'    EDGE_DB_TABLE_OBJECT_OWNER              SYS.ODCIVARCHAR2LIST;'||wwv_flow.LF||
+'    QUERY_STRING          ';
+wwv_flow_imp.g_varchar2_table(414) := '                  CLOB;'||wwv_flow.LF||
 '    LATERALSTRING                           CLOB;'||wwv_flow.LF||
-'    SUB_QUERY_STRING                       ';
-wwv_flow_imp.g_varchar2_table(480) := ' CLOB;'||wwv_flow.LF||
+'    SUB_QUERY_STRING    ';
+wwv_flow_imp.g_varchar2_table(415) := '                    CLOB;'||wwv_flow.LF||
 '    VERTEX                                  JSON;'||wwv_flow.LF||
-'    EDGE                                   ';
-wwv_flow_imp.g_varchar2_table(481) := ' JSON;'||wwv_flow.LF||
+'    EDGE              ';
+wwv_flow_imp.g_varchar2_table(416) := '                      JSON;'||wwv_flow.LF||
 '    JSON_FILE                               CLOB;'||wwv_flow.LF||
-'    DISTINCT_VERTEX_TABLE                  ';
-wwv_flow_imp.g_varchar2_table(482) := ' JSON;'||wwv_flow.LF||
+'    DISTINCT_VERTEX_';
+wwv_flow_imp.g_varchar2_table(417) := 'TABLE                   JSON;'||wwv_flow.LF||
 '    DISTINCT_EDGE_TABLE                     JSON;'||wwv_flow.LF||
-'    TEMP_JSON                              ';
-wwv_flow_imp.g_varchar2_table(483) := ' JSON;'||wwv_flow.LF||
+'    TEMP_JSON     ';
+wwv_flow_imp.g_varchar2_table(418) := '                          JSON;'||wwv_flow.LF||
 '  BEGIN '||wwv_flow.LF||
 '    SELECT'||wwv_flow.LF||
 '      DISTINCT ELEMENTS.OBJECT_NAME,'||wwv_flow.LF||
-'      ELEMENTS.OBJECT_OWNER BULK COL';
-wwv_flow_imp.g_varchar2_table(484) := 'LECT INTO VERTEX_UNDERLYING_DB_NAME_LIST,'||wwv_flow.LF||
-'      VERTEX_DB_TABLE_OBJECT_OWNER'||wwv_flow.LF||
+'      E';
+wwv_flow_imp.g_varchar2_table(419) := 'LEMENTS.OBJECT_OWNER BULK COLLECT INTO VERTEX_UNDERLYING_DB_NAME_LIST,'||wwv_flow.LF||
+'      VERTEX_DB_TABLE_OBJECT';
+wwv_flow_imp.g_varchar2_table(420) := '_OWNER'||wwv_flow.LF||
 '    FROM'||wwv_flow.LF||
-'      SYS.ALL_';
-wwv_flow_imp.g_varchar2_table(485) := 'PG_ELEMENTS         ELEMENTS'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_ELEMENT_LABELS ELEM_LABELS'||wwv_flow.LF||
-'      ON (ELEMENT';
-wwv_flow_imp.g_varchar2_table(486) := 'S.ELEMENT_NAME = ELEM_LABELS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ELEMENTS.OWNER = ELEM_LABELS.OWNER'||wwv_flow.LF||
-'      AND ELE';
-wwv_flow_imp.g_varchar2_table(487) := 'MENTS.GRAPH_NAME = ELEM_LABELS.GRAPH_NAME )'||wwv_flow.LF||
-'      LEFT JOIN SYS.ALL_PG_LABEL_PROPERTIES LABEL_PROPER';
-wwv_flow_imp.g_varchar2_table(488) := 'TIES'||wwv_flow.LF||
-'      ON (ELEM_LABELS.LABEL_NAME = LABEL_PROPERTIES.LABEL_NAME'||wwv_flow.LF||
-'      AND ELEM_LABELS.OWNER = LA';
-wwv_flow_imp.g_varchar2_table(489) := 'BEL_PROPERTIES.OWNER'||wwv_flow.LF||
-'      AND ELEM_LABELS.GRAPH_NAME = LABEL_PROPERTIES.GRAPH_NAME)'||wwv_flow.LF||
-'      LEFT JOIN';
-wwv_flow_imp.g_varchar2_table(490) := ' SYS.ALL_PG_PROP_DEFINITIONS PROP_DEFINITIONS'||wwv_flow.LF||
-'      ON (PROP_DEFINITIONS.PROPERTY_NAME = LABEL_PROPE';
-wwv_flow_imp.g_varchar2_table(491) := 'RTIES.PROPERTY_NAME'||wwv_flow.LF||
-'      AND PROP_DEFINITIONS.ELEMENT_NAME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND PROP_D';
-wwv_flow_imp.g_varchar2_table(492) := 'EFINITIONS.OWNER = ELEMENTS.OWNER'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = PROP_DEFINITIONS.GRAPH_NAME)'||wwv_flow.LF||
-'    W';
-wwv_flow_imp.g_varchar2_table(493) := 'HERE'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_KIND = ''VERTEX'''||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
-'      AND ELEM';
-wwv_flow_imp.g_varchar2_table(494) := 'ENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
-' '||wwv_flow.LF||
-'    IF (VERTEX_TABLE.get_Size != 0) THEN'||wwv_flow.LF||
-'      TEMP_JSON := VERTEX_TABLE.';
-wwv_flow_imp.g_varchar2_table(495) := 'TO_JSON();'||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        JSON_ARRAYAGG(V_ID RETURNING JSON)'||wwv_flow.LF||
-'      INTO'||wwv_flow.LF||
-'        DISTINCT_VERTE';
-wwv_flow_imp.g_varchar2_table(496) := 'X_TABLE'||wwv_flow.LF||
-'      FROM'||wwv_flow.LF||
-'        ('||wwv_flow.LF||
-'          SELECT DISTINCT'||wwv_flow.LF||
-'            V_ID'||wwv_flow.LF||
-'          FROM'||wwv_flow.LF||
-'            J';
-wwv_flow_imp.g_varchar2_table(497) := 'SON_TABLE ( TEMP_JSON, ''$[*]'''||wwv_flow.LF||
-'              COLUMNS ('||wwv_flow.LF||
-'                  V_ID JSON PATH ''$'''||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(498) := '     )'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'        );'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'      QUERY_STRING := ''WITH VERTICES AS ('';'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      LATERALS';
-wwv_flow_imp.g_varchar2_table(499) := 'TRING := DBMS_GVT.PROPERTIES_LATERAL_STRING_AS_CLOB(VERTEX_UNDERLYING_DB_NAME_LIST, VERTEX_DB_TABLE_';
-wwv_flow_imp.g_varchar2_table(500) := 'OBJECT_OWNER, ''VT'', ''V_ID'', GRAPHNAME, GRAPHOWNER, ''VERTEX'');'||wwv_flow.LF||
-'      SUB_QUERY_STRING := '''||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(501) := 'SELECT'||wwv_flow.LF||
-'            JSON_OBJECT (''''id'''' VALUE JSON_VALUE(VT.V_ID,'||wwv_flow.LF||
-'            ''''$.ELEM_TABLE'''') || JS';
-wwv_flow_imp.g_varchar2_table(502) := 'ON_QUERY(VT.V_ID,'||wwv_flow.LF||
-'            ''''$.KEY_VALUE''''),'||wwv_flow.LF||
-'            ''''properties'''' VALUE PROPERTIES_TABLE.PR';
-wwv_flow_imp.g_varchar2_table(503) := 'OPERTIES,'||wwv_flow.LF||
-'            ''''labels'''' VALUE PROPERTIES_TABLE.LABELS ABSENT ON NULL RETURNING JSON) AS VER';
-wwv_flow_imp.g_varchar2_table(504) := 'TEX'||wwv_flow.LF||
-'          FROM'||wwv_flow.LF||
-'            JSON_TABLE(:1  , ''''$[*]'''' COLUMNS(V_ID json path ''''$'''')) AS VT,'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(505) := '       LATERAL('''||wwv_flow.LF||
-'                          || LATERALSTRING'||wwv_flow.LF||
-'                          || '') PROPERTI';
-wwv_flow_imp.g_varchar2_table(506) := 'ES_TABLE '';'||wwv_flow.LF||
-'      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || SUB_QUERY_STRING;'||wwv_flow.LF||
-'      QUER';
-wwv_flow_imp.g_varchar2_table(507) := 'Y_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || '''||wwv_flow.LF||
-'        )'||wwv_flow.LF||
-'        SELECT'||wwv_flow.LF||
-'          JSON_ARRAYAGG';
-wwv_flow_imp.g_varchar2_table(508) := '(VERTEX RETURNING JSON)'||wwv_flow.LF||
-'        FROM'||wwv_flow.LF||
-'          VERTICES'';'||wwv_flow.LF||
-'      EXECUTE IMMEDIATE QUERY_STRING INTO ';
-wwv_flow_imp.g_varchar2_table(509) := 'VERTEX USING DISTINCT_VERTEX_TABLE;'||wwv_flow.LF||
-'    ELSE'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      SELECT'||wwv_flow.LF||
-'        JSON_ARRAY() INTO VERTEX;'||wwv_flow.LF||
-'    END';
-wwv_flow_imp.g_varchar2_table(510) := ' IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    SELECT'||wwv_flow.LF||
-'      DISTINCT ELEMENTS.OBJECT_NAME,'||wwv_flow.LF||
-'      ELEMENTS.OBJECT_OWNER BULK COLLECT INTO ';
-wwv_flow_imp.g_varchar2_table(511) := 'EDGE_UNDERLYING_DB_NAME_LIST,'||wwv_flow.LF||
-'      EDGE_DB_TABLE_OBJECT_OWNER'||wwv_flow.LF||
-'    FROM'||wwv_flow.LF||
-'      SYS.ALL_PG_ELEMENTS   ';
-wwv_flow_imp.g_varchar2_table(512) := '    ELEMENTS'||wwv_flow.LF||
-'      INNER JOIN SYS.ALL_PG_ELEMENT_LABELS ELEMENTS_LABELS'||wwv_flow.LF||
-'      ON (ELEMENTS.ELEMENT_N';
-wwv_flow_imp.g_varchar2_table(513) := 'AME = ELEMENTS_LABELS.ELEMENT_NAME'||wwv_flow.LF||
-'      AND ELEMENTS.GRAPH_NAME = ELEMENTS_LABELS.GRAPH_NAME'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(514) := 'AND ELEMENTS.OWNER = ELEMENTS_LABELS.OWNER)'||wwv_flow.LF||
+'      SYS.ALL_PG_ELEMENTS         ELEMENTS'||wwv_flow.LF||
+'      LEFT JOIN SYS.ALL_PG_ELEMENT_LAB';
+wwv_flow_imp.g_varchar2_table(421) := 'ELS ELEM_LABELS'||wwv_flow.LF||
+'      ON (ELEMENTS.ELEMENT_NAME = ELEM_LABELS.ELEMENT_NAME'||wwv_flow.LF||
+'      AND ELEMENTS.OWNE';
+wwv_flow_imp.g_varchar2_table(422) := 'R = ELEM_LABELS.OWNER'||wwv_flow.LF||
+'      AND ELEMENTS.GRAPH_NAME = ELEM_LABELS.GRAPH_NAME )'||wwv_flow.LF||
+'      LEFT JOIN SYS';
+wwv_flow_imp.g_varchar2_table(423) := '.ALL_PG_LABEL_PROPERTIES LABEL_PROPERTIES'||wwv_flow.LF||
+'      ON (ELEM_LABELS.LABEL_NAME = LABEL_PROPERTIES.LABEL';
+wwv_flow_imp.g_varchar2_table(424) := '_NAME'||wwv_flow.LF||
+'      AND ELEM_LABELS.OWNER = LABEL_PROPERTIES.OWNER'||wwv_flow.LF||
+'      AND ELEM_LABELS.GRAPH_NAME = LABE';
+wwv_flow_imp.g_varchar2_table(425) := 'L_PROPERTIES.GRAPH_NAME)'||wwv_flow.LF||
+'      LEFT JOIN SYS.ALL_PG_PROP_DEFINITIONS PROP_DEFINITIONS'||wwv_flow.LF||
+'      ON (PR';
+wwv_flow_imp.g_varchar2_table(426) := 'OP_DEFINITIONS.PROPERTY_NAME = LABEL_PROPERTIES.PROPERTY_NAME'||wwv_flow.LF||
+'      AND PROP_DEFINITIONS.ELEMENT_NA';
+wwv_flow_imp.g_varchar2_table(427) := 'ME = ELEMENTS.ELEMENT_NAME'||wwv_flow.LF||
+'      AND PROP_DEFINITIONS.OWNER = ELEMENTS.OWNER'||wwv_flow.LF||
+'      AND ELEMENTS.GR';
+wwv_flow_imp.g_varchar2_table(428) := 'APH_NAME = PROP_DEFINITIONS.GRAPH_NAME)'||wwv_flow.LF||
 '    WHERE'||wwv_flow.LF||
-'      ELEMENTS.ELEMENT_KIND = ''EDGE'''||wwv_flow.LF||
-'      AND';
-wwv_flow_imp.g_varchar2_table(515) := ' ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
+'      ELEMENTS.ELEMENT_KIND = ''VERTEX'''||wwv_flow.LF||
+'      AN';
+wwv_flow_imp.g_varchar2_table(429) := 'D ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
 '      AND ELEMENTS.OWNER = GRAPHOWNER;'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'    IF (EDGE_TABLE.get_Siz';
-wwv_flow_imp.g_varchar2_table(516) := 'e != 0) THEN'||wwv_flow.LF||
-'      TEMP_JSON := EDGE_TABLE.TO_JSON();'||wwv_flow.LF||
+'    IF (VERTEX_TABLE.g';
+wwv_flow_imp.g_varchar2_table(430) := 'et_Size != 0) THEN'||wwv_flow.LF||
+'      TEMP_JSON := VERTEX_TABLE.TO_JSON();'||wwv_flow.LF||
 '      SELECT'||wwv_flow.LF||
-'        JSON_ARRAYAGG(E_ID RETURN';
-wwv_flow_imp.g_varchar2_table(517) := 'ING JSON)'||wwv_flow.LF||
+'        JSON_ARRAYAGG(';
+wwv_flow_imp.g_varchar2_table(431) := 'V_ID RETURNING JSON)'||wwv_flow.LF||
 '      INTO'||wwv_flow.LF||
-'        DISTINCT_EDGE_TABLE'||wwv_flow.LF||
+'        DISTINCT_VERTEX_TABLE'||wwv_flow.LF||
 '      FROM'||wwv_flow.LF||
 '        ('||wwv_flow.LF||
-'          SELECT DISTINCT'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(518) := '        E_ID'||wwv_flow.LF||
+'          SE';
+wwv_flow_imp.g_varchar2_table(432) := 'LECT DISTINCT'||wwv_flow.LF||
+'            V_ID'||wwv_flow.LF||
 '          FROM'||wwv_flow.LF||
 '            JSON_TABLE ( TEMP_JSON, ''$[*]'''||wwv_flow.LF||
-'              COLUMNS ('||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(519) := '             E_ID JSON PATH ''$'''||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(433) := '       COLUMNS ('||wwv_flow.LF||
+'                  V_ID JSON PATH ''$'''||wwv_flow.LF||
 '              )'||wwv_flow.LF||
 '            )'||wwv_flow.LF||
 '        );'||wwv_flow.LF||
-'      QUERY_STRING := ''WITH';
-wwv_flow_imp.g_varchar2_table(520) := ' EDGES AS ('||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(434) := '        '||wwv_flow.LF||
+'      QUERY_STRING := ''WITH VERTICES AS ('';'||wwv_flow.LF||
+''||wwv_flow.LF||
+'      LATERALSTRING := DBMS_GVT.PROPERTIES_';
+wwv_flow_imp.g_varchar2_table(435) := 'LATERAL_STRING_AS_CLOB(VERTEX_UNDERLYING_DB_NAME_LIST, VERTEX_DB_TABLE_OBJECT_OWNER, ''VT'', ''V_ID'', G';
+wwv_flow_imp.g_varchar2_table(436) := 'RAPHNAME, GRAPHOWNER, ''VERTEX'');'||wwv_flow.LF||
+'      SUB_QUERY_STRING := '''||wwv_flow.LF||
+'          SELECT'||wwv_flow.LF||
+'            JSON_OB';
+wwv_flow_imp.g_varchar2_table(437) := 'JECT (''''id'''' VALUE JSON_VALUE(VT.V_ID, ''''$.ELEM_TABLE'''') || JSON_QUERY(VT.V_ID, ''''$.KEY_VALUE''''),'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(438) := '           ''''original_id'''' VALUE VT.V_ID,'||wwv_flow.LF||
+'            ''''properties'''' VALUE PROPERTIES_TABLE.PROPERT';
+wwv_flow_imp.g_varchar2_table(439) := 'IES,'||wwv_flow.LF||
+'            ''''labels'''' VALUE PROPERTIES_TABLE.LABELS ABSENT ON NULL RETURNING JSON) AS VERTEX';
+wwv_flow_imp.g_varchar2_table(440) := ''||wwv_flow.LF||
+'          FROM'||wwv_flow.LF||
+'            JSON_TABLE(:1  , ''''$[*]'''' COLUMNS(V_ID json path ''''$'''')) AS VT,'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(441) := '      LATERAL('''||wwv_flow.LF||
+'                          || LATERALSTRING'||wwv_flow.LF||
+'                          || '') PROPERT';
+wwv_flow_imp.g_varchar2_table(442) := 'IES_TABLE '';'||wwv_flow.LF||
+'      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
+'                      || SUB_QUERY_STRING;'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(443) := 'QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
+'                      || '''||wwv_flow.LF||
+'        )'||wwv_flow.LF||
+'        SELECT'||wwv_flow.LF||
+'          JSON_';
+wwv_flow_imp.g_varchar2_table(444) := 'ARRAYAGG(VERTEX RETURNING JSON)'||wwv_flow.LF||
+'        FROM'||wwv_flow.LF||
+'          VERTICES'';'||wwv_flow.LF||
+'      EXECUTE IMMEDIATE QUERY_S';
+wwv_flow_imp.g_varchar2_table(445) := 'TRING INTO VERTEX USING DISTINCT_VERTEX_TABLE;'||wwv_flow.LF||
+'    ELSE'||wwv_flow.LF||
+''||wwv_flow.LF||
+'      SELECT'||wwv_flow.LF||
+'        JSON_ARRAY() INTO ';
+wwv_flow_imp.g_varchar2_table(446) := 'VERTEX;'||wwv_flow.LF||
+'    END IF;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    SELECT'||wwv_flow.LF||
+'      DISTINCT ELEMENTS.OBJECT_NAME,'||wwv_flow.LF||
+'      ELEMENTS.OBJECT_OWNE';
+wwv_flow_imp.g_varchar2_table(447) := 'R BULK COLLECT INTO EDGE_UNDERLYING_DB_NAME_LIST,'||wwv_flow.LF||
+'      EDGE_DB_TABLE_OBJECT_OWNER'||wwv_flow.LF||
+'    FROM'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(448) := ' SYS.ALL_PG_ELEMENTS       ELEMENTS'||wwv_flow.LF||
+'      INNER JOIN SYS.ALL_PG_ELEMENT_LABELS ELEMENTS_LABELS'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(449) := '   ON (ELEMENTS.ELEMENT_NAME = ELEMENTS_LABELS.ELEMENT_NAME'||wwv_flow.LF||
+'      AND ELEMENTS.GRAPH_NAME = ELEMENT';
+wwv_flow_imp.g_varchar2_table(450) := 'S_LABELS.GRAPH_NAME'||wwv_flow.LF||
+'      AND ELEMENTS.OWNER = ELEMENTS_LABELS.OWNER)'||wwv_flow.LF||
+'    WHERE'||wwv_flow.LF||
+'      ELEMENTS.EL';
+wwv_flow_imp.g_varchar2_table(451) := 'EMENT_KIND = ''EDGE'''||wwv_flow.LF||
+'      AND ELEMENTS.GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
+'      AND ELEMENTS.OWNER = GRAPHOWNE';
+wwv_flow_imp.g_varchar2_table(452) := 'R;'||wwv_flow.LF||
+' '||wwv_flow.LF||
+'    IF (EDGE_TABLE.get_Size != 0) THEN'||wwv_flow.LF||
+'      TEMP_JSON := EDGE_TABLE.TO_JSON();'||wwv_flow.LF||
+'      SELEC';
+wwv_flow_imp.g_varchar2_table(453) := 'T'||wwv_flow.LF||
+'        JSON_ARRAYAGG(E_ID RETURNING JSON)'||wwv_flow.LF||
+'      INTO'||wwv_flow.LF||
+'        DISTINCT_EDGE_TABLE'||wwv_flow.LF||
+'      FROM'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(454) := '        ('||wwv_flow.LF||
+'          SELECT DISTINCT'||wwv_flow.LF||
+'            E_ID'||wwv_flow.LF||
+'          FROM'||wwv_flow.LF||
+'            JSON_TABLE ( TEM';
+wwv_flow_imp.g_varchar2_table(455) := 'P_JSON, ''$[*]'''||wwv_flow.LF||
+'              COLUMNS ('||wwv_flow.LF||
+'                  E_ID JSON PATH ''$'''||wwv_flow.LF||
+'              )'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(456) := '        )'||wwv_flow.LF||
+'        );'||wwv_flow.LF||
+'      QUERY_STRING := ''WITH EDGES AS ('||wwv_flow.LF||
 '            SELECT'||wwv_flow.LF||
-'              JSON_OBJECT(''''id'''' VALUE JSON_VALUE(ET.E_ID,'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(521) := '    ''''$.ELEM_TABLE'''') || JSON_QUERY(ET.E_ID,'||wwv_flow.LF||
-'              ''''$.KEY_VALUE''''),'||wwv_flow.LF||
-'              ''''source''';
-wwv_flow_imp.g_varchar2_table(522) := ''' value PROPERTIES_TABLE.SOURCE,'||wwv_flow.LF||
+'              JSO';
+wwv_flow_imp.g_varchar2_table(457) := 'N_OBJECT(''''id'''' VALUE JSON_VALUE(ET.E_ID, ''''$.ELEM_TABLE'''') || JSON_QUERY(ET.E_ID, ''''$.KEY_VALUE''''),';
+wwv_flow_imp.g_varchar2_table(458) := ''||wwv_flow.LF||
+'              ''''original_id'''' VALUE ET.E_ID,'||wwv_flow.LF||
+'              ''''source'''' value PROPERTIES_TABLE.SOUR';
+wwv_flow_imp.g_varchar2_table(459) := 'CE,'||wwv_flow.LF||
 '              ''''target'''' value PROPERTIES_TABLE.TARGET,'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(523) := '   ''''properties'''' VALUE PROPERTIES_TABLE.PROPERTIES,'||wwv_flow.LF||
-'              ''''labels'''' VALUE PROPERTIES_TABLE';
-wwv_flow_imp.g_varchar2_table(524) := '.LABELS ABSENT ON NULL RETURNING JSON ) AS EDGE'||wwv_flow.LF||
+'              ''''properties'''' VALUE PRO';
+wwv_flow_imp.g_varchar2_table(460) := 'PERTIES_TABLE.PROPERTIES,'||wwv_flow.LF||
+'              ''''labels'''' VALUE PROPERTIES_TABLE.LABELS ABSENT ON NULL RET';
+wwv_flow_imp.g_varchar2_table(461) := 'URNING JSON ) AS EDGE'||wwv_flow.LF||
 '            FROM'||wwv_flow.LF||
-'              JSON_TABLE(:1  , ''''$[';
-wwv_flow_imp.g_varchar2_table(525) := '*]'''' COLUMNS(E_ID json path ''''$'''')) AS ET,'||wwv_flow.LF||
+'              JSON_TABLE(:1  , ''''$[*]'''' COLUMNS(E_ID json p';
+wwv_flow_imp.g_varchar2_table(462) := 'ath ''''$'''')) AS ET,'||wwv_flow.LF||
 '              LATERAL('';'||wwv_flow.LF||
 ' '||wwv_flow.LF||
-'      LATERALSTRING := DBMS_GV';
-wwv_flow_imp.g_varchar2_table(526) := 'T.PROPERTIES_LATERAL_STRING_AS_CLOB(EDGE_UNDERLYING_DB_NAME_LIST, EDGE_DB_TABLE_OBJECT_OWNER, ''ET'', ';
-wwv_flow_imp.g_varchar2_table(527) := '''E_ID'', GRAPHNAME, GRAPHOWNER, ''EDGE'');'||wwv_flow.LF||
+'      LATERALSTRING := DBMS_GVT.PROPERTIES_LATERAL_';
+wwv_flow_imp.g_varchar2_table(463) := 'STRING_AS_CLOB(EDGE_UNDERLYING_DB_NAME_LIST, EDGE_DB_TABLE_OBJECT_OWNER, ''ET'', ''E_ID'', GRAPHNAME, GR';
+wwv_flow_imp.g_varchar2_table(464) := 'APHOWNER, ''EDGE'');'||wwv_flow.LF||
 '      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || ';
-wwv_flow_imp.g_varchar2_table(528) := 'LATERALSTRING;'||wwv_flow.LF||
-'      QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
-'                      || '') PROPERTIES_TABLE) SELE';
-wwv_flow_imp.g_varchar2_table(529) := 'CT JSON_ARRAYAGG(EDGE RETURNING JSON) FROM EDGES'';'||wwv_flow.LF||
-'      EXECUTE IMMEDIATE QUERY_STRING INTO EDGE US';
-wwv_flow_imp.g_varchar2_table(530) := 'ING DISTINCT_EDGE_TABLE;'||wwv_flow.LF||
+'                      || LATERALSTRING;'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(465) := '   QUERY_STRING := QUERY_STRING'||wwv_flow.LF||
+'                      || '') PROPERTIES_TABLE) SELECT JSON_ARRAYAGG(';
+wwv_flow_imp.g_varchar2_table(466) := 'EDGE RETURNING JSON) FROM EDGES'';'||wwv_flow.LF||
+'      EXECUTE IMMEDIATE QUERY_STRING INTO EDGE USING DISTINCT_EDG';
+wwv_flow_imp.g_varchar2_table(467) := 'E_TABLE;'||wwv_flow.LF||
 '    ELSE'||wwv_flow.LF||
 '      SELECT'||wwv_flow.LF||
 '        JSON_ARRAY() INTO EDGE;'||wwv_flow.LF||
 '    END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'    SELE';
-wwv_flow_imp.g_varchar2_table(531) := 'CT'||wwv_flow.LF||
-'      JSON_OBJECT(''vertices'' VALUE VERTEX,'||wwv_flow.LF||
+'    SELECT'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(468) := 'JSON_OBJECT(''vertices'' VALUE VERTEX,'||wwv_flow.LF||
 '      ''edges'' VALUE EDGE,'||wwv_flow.LF||
-'      ''numResults'' VALUE COU';
-wwv_flow_imp.g_varchar2_table(532) := 'NTER,'||wwv_flow.LF||
-'      ''graphOwner'' VALUE GRAPHOWNER,'||wwv_flow.LF||
-'      ''graphName'' VALUE GRAPHNAME RETURNING CLOB) INTO JS';
-wwv_flow_imp.g_varchar2_table(533) := 'ON_FILE'||wwv_flow.LF||
+'      ''numResults'' VALUE COUNTER,'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(469) := '      ''graphOwner'' VALUE GRAPHOWNER,'||wwv_flow.LF||
+'      ''graphName'' VALUE GRAPHNAME RETURNING CLOB) INTO JSON_FI';
+wwv_flow_imp.g_varchar2_table(470) := 'LE'||wwv_flow.LF||
 '    FROM'||wwv_flow.LF||
 '      SYS.DUAL;'||wwv_flow.LF||
 '    RETURN JSON_FILE;'||wwv_flow.LF||
 '  END BUILD_JSON_USING_JSON_ARRAY;'||wwv_flow.LF||
 'END DBMS_G';
-wwv_flow_imp.g_varchar2_table(534) := 'VT;'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(471) := 'VT;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
+''||wwv_flow.LF||
 'CREATE OR REPLACE FUNCTION ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY('||wwv_flow.LF||
-'   VERTEX_TABLE JSON_ARRAY_T';
-wwv_flow_imp.g_varchar2_table(535) := ','||wwv_flow.LF||
+'   VERTEX_TABLE JSON_AR';
+wwv_flow_imp.g_varchar2_table(472) := 'RAY_T,'||wwv_flow.LF||
 '   EDGE_TABLE JSON_ARRAY_T,'||wwv_flow.LF||
 '   COUNTER NUMBER,'||wwv_flow.LF||
 '   GRAPHNAME VARCHAR2,'||wwv_flow.LF||
-'   GRAPHOWNER VARCHAR2'||wwv_flow.LF||
-' ) RE';
-wwv_flow_imp.g_varchar2_table(536) := 'TURN CLOB IS'||wwv_flow.LF||
+'   GRAPHOWNER VARCH';
+wwv_flow_imp.g_varchar2_table(473) := 'AR2'||wwv_flow.LF||
+' ) RETURN CLOB IS'||wwv_flow.LF||
 ' BEGIN'||wwv_flow.LF||
-'   RETURN DBMS_GVT.BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, COUNTER';
-wwv_flow_imp.g_varchar2_table(537) := ', GRAPHNAME, GRAPHOWNER);'||wwv_flow.LF||
+'   RETURN DBMS_GVT.BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TA';
+wwv_flow_imp.g_varchar2_table(474) := 'BLE, COUNTER, GRAPHNAME, GRAPHOWNER);'||wwv_flow.LF||
 ' END ORA_GRAPH_BUILD_JSON_USING_JSON_ARRAY;'||wwv_flow.LF||
 ' /'||wwv_flow.LF||
 '/*'||wwv_flow.LF||
-'APEX can render JSON in ';
-wwv_flow_imp.g_varchar2_table(538) := 'the format {"vertices" : [...], "edges":[...]}'||wwv_flow.LF||
-'In this function, we build two query strings, one for';
-wwv_flow_imp.g_varchar2_table(539) := ' vertex and one for edge.'||wwv_flow.LF||
-'After we have query strings, we use dynamic sql to execute the quries and ';
-wwv_flow_imp.g_varchar2_table(540) := ''||wwv_flow.LF||
+'APEX can';
+wwv_flow_imp.g_varchar2_table(475) := ' render JSON in the format {"vertices" : [...], "edges":[...]}'||wwv_flow.LF||
+'In this function, we build two query';
+wwv_flow_imp.g_varchar2_table(476) := ' strings, one for vertex and one for edge.'||wwv_flow.LF||
+'After we have query strings, we use dynamic sql to execu';
+wwv_flow_imp.g_varchar2_table(477) := 'te the quries and '||wwv_flow.LF||
 'put the result in required json format.'||wwv_flow.LF||
 '*/'||wwv_flow.LF||
-'CREATE OR REPLACE FUNCTION ORA_SQLGRAPH_TO_JSON ('||wwv_flow.LF||
-'  CURS';
-wwv_flow_imp.g_varchar2_table(541) := '_ID INTEGER,'||wwv_flow.LF||
+'CREATE OR REPLACE FUNCTION ORA_SQLG';
+wwv_flow_imp.g_varchar2_table(478) := 'RAPH_TO_JSON ('||wwv_flow.LF||
+'  CURS_ID INTEGER,'||wwv_flow.LF||
 '  PAGE_START NUMBER DEFAULT 0,'||wwv_flow.LF||
-'  PAGE_SIZE NUMBER DEFAULT NULL'||wwv_flow.LF||
+'  PAGE_SIZE NUMBER DEFAULT NULL';
+wwv_flow_imp.g_varchar2_table(479) := ''||wwv_flow.LF||
 ') RETURN CLOB'||wwv_flow.LF||
-'  AUTHID C';
-wwv_flow_imp.g_varchar2_table(542) := 'URRENT_USER IS'||wwv_flow.LF||
-'  M_VCSIZ_4K                              CONSTANT PLS_INTEGER := 4000;'||wwv_flow.LF||
-'  JSON_FILE  ';
-wwv_flow_imp.g_varchar2_table(543) := '                             CLOB; --the returned result'||wwv_flow.LF||
-'  GRAPHNAME                               V';
-wwv_flow_imp.g_varchar2_table(544) := 'ARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  ELEMENT_NAME                            VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  GRAPHOWNER   ';
-wwv_flow_imp.g_varchar2_table(545) := '                           VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
-'  -- Define a type for caching element information'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(546) := '  TYPE ELEMENT_REC IS RECORD ('||wwv_flow.LF||
-'    ELEMENT_NAME VARCHAR2(M_VCSIZ_4K),'||wwv_flow.LF||
-'    ELEMENT_KIND VARCHAR2(M_VC';
-wwv_flow_imp.g_varchar2_table(547) := 'SIZ_4K)'||wwv_flow.LF||
+'  AUTHID CURRENT_USER IS'||wwv_flow.LF||
+'  M_VCSIZ_4K                              CONSTANT PLS_INT';
+wwv_flow_imp.g_varchar2_table(480) := 'EGER := 4000;'||wwv_flow.LF||
+'  JSON_FILE                               CLOB; --the returned result'||wwv_flow.LF||
+'  GRAPHNAME   ';
+wwv_flow_imp.g_varchar2_table(481) := '                            VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'  ELEMENT_NAME                            VARCHAR';
+wwv_flow_imp.g_varchar2_table(482) := '2(M_VCSIZ_4K);'||wwv_flow.LF||
+'  GRAPHOWNER                              VARCHAR2(M_VCSIZ_4K);'||wwv_flow.LF||
+'  -- Define a type ';
+wwv_flow_imp.g_varchar2_table(483) := 'for caching element information'||wwv_flow.LF||
+'  TYPE ELEMENT_REC IS RECORD ('||wwv_flow.LF||
+'    ELEMENT_NAME VARCHAR2(M_VCSIZ_4';
+wwv_flow_imp.g_varchar2_table(484) := 'K),'||wwv_flow.LF||
+'    ELEMENT_KIND VARCHAR2(M_VCSIZ_4K)'||wwv_flow.LF||
 '  );'||wwv_flow.LF||
 '  TYPE ELEMENT_TAB IS TABLE OF ELEMENT_REC;'||wwv_flow.LF||
-'  ELEMENT_CACHE                           E';
-wwv_flow_imp.g_varchar2_table(548) := 'LEMENT_TAB := ELEMENT_TAB();'||wwv_flow.LF||
-'  L_COLS                                  INTEGER;'||wwv_flow.LF||
-'  TAB_REC           ';
-wwv_flow_imp.g_varchar2_table(549) := '                      SYS.DBMS_SQL.DESC_TAB2;'||wwv_flow.LF||
-'  CUR                                     SYS_REFCURSO';
-wwv_flow_imp.g_varchar2_table(550) := 'R;'||wwv_flow.LF||
+'  ELE';
+wwv_flow_imp.g_varchar2_table(485) := 'MENT_CACHE                           ELEMENT_TAB := ELEMENT_TAB();'||wwv_flow.LF||
+'  L_COLS                        ';
+wwv_flow_imp.g_varchar2_table(486) := '          INTEGER;'||wwv_flow.LF||
+'  TAB_REC                                 SYS.DBMS_SQL.DESC_TAB2;'||wwv_flow.LF||
+'  CUR        ';
+wwv_flow_imp.g_varchar2_table(487) := '                             SYS_REFCURSOR;'||wwv_flow.LF||
 '  L_FLAG                                  NUMBER;'||wwv_flow.LF||
-'  L_JSON                                  JSON;';
-wwv_flow_imp.g_varchar2_table(551) := ''||wwv_flow.LF||
-'  VERTEX_ID_COLUMN_LIST                   SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();'||wwv_flow.LF||
-'  EDGE_ID_COL';
-wwv_flow_imp.g_varchar2_table(552) := 'UMN_LIST                     SYS.ODCINUMBERLIST := SYS.ODCINUMBERLIST();'||wwv_flow.LF||
-'  P1                       ';
-wwv_flow_imp.g_varchar2_table(553) := '               NUMBER := 0; -- rows rendered'||wwv_flow.LF||
-'  V1                                      NUMBER := 1;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(554) := '  E1                                      NUMBER := 1;'||wwv_flow.LF||
-'  VERTEX_TABLE                            JSO';
-wwv_flow_imp.g_varchar2_table(555) := 'N_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
-'  EDGE_TABLE                              JSON_ARRAY_T := JSON_ARRAY_T(';
-wwv_flow_imp.g_varchar2_table(556) := ');'||wwv_flow.LF||
-'  VERTEX_COL_NAMES                        JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
-'  EDGE_COL_NAMES       ';
-wwv_flow_imp.g_varchar2_table(557) := '                   JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
-'  L_HAVING_ELEMENT_ID                     BOOLEAN';
-wwv_flow_imp.g_varchar2_table(558) := ' := FALSE;'||wwv_flow.LF||
-'  COUNTER                                 NUMBER := 0; -- rows fetched'||wwv_flow.LF||
-'  L_JSON_OBJ      ';
-wwv_flow_imp.g_varchar2_table(559) := '                        JSON_OBJECT_T;'||wwv_flow.LF||
-'  isLastResultSet                         BOOLEAN := FALSE;'||wwv_flow.LF||
+'  L_';
+wwv_flow_imp.g_varchar2_table(488) := 'JSON                                  JSON;'||wwv_flow.LF||
+'  TYPE JSON_ARRAY_TAB IS TABLE OF JSON_ARRAY_T INDEX BY';
+wwv_flow_imp.g_varchar2_table(489) := ' PLS_INTEGER;'||wwv_flow.LF||
+'  TYPE ELEMENT_KIND_BY_COLUMN_TAB IS TABLE OF VARCHAR2(M_VCSIZ_4K) INDEX BY PLS_INTEG';
+wwv_flow_imp.g_varchar2_table(490) := 'ER;'||wwv_flow.LF||
+'  COLUMN_VALUES                           JSON_ARRAY_TAB;'||wwv_flow.LF||
+'  ELEMENT_KIND_BY_COLUMN            ';
+wwv_flow_imp.g_varchar2_table(491) := '      ELEMENT_KIND_BY_COLUMN_TAB;'||wwv_flow.LF||
+'  P1                                      NUMBER := 0; -- rows re';
+wwv_flow_imp.g_varchar2_table(492) := 'ndered'||wwv_flow.LF||
+'  VERTEX_TABLE                            JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
+'  EDGE_TABLE     ';
+wwv_flow_imp.g_varchar2_table(493) := '                         JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
+'  VERTEX_COL_NAMES                        ';
+wwv_flow_imp.g_varchar2_table(494) := 'JSON_ARRAY_T := JSON_ARRAY_T();'||wwv_flow.LF||
+'  EDGE_COL_NAMES                          JSON_ARRAY_T := JSON_ARRA';
+wwv_flow_imp.g_varchar2_table(495) := 'Y_T();'||wwv_flow.LF||
+'  L_HAVING_ELEMENT_ID                     BOOLEAN := FALSE;'||wwv_flow.LF||
+'  COUNTER                      ';
+wwv_flow_imp.g_varchar2_table(496) := '           NUMBER := 0; -- rows fetched'||wwv_flow.LF||
+'  L_JSON_OBJ                              JSON_OBJECT_T;'||wwv_flow.LF||
 ' ';
-wwv_flow_imp.g_varchar2_table(560) := ' FETCH_ROWS_INTEGER                      INTEGER;'||wwv_flow.LF||
-'  MULTI_GRAPH_ERROR_MESSAGE               CONSTANT';
-wwv_flow_imp.g_varchar2_table(561) := ' VARCHAR2(M_VCSIZ_4K) := ''ora_sqlgraph_to_json only supports queries from a single graph. Please adj';
-wwv_flow_imp.g_varchar2_table(562) := 'ust the query accordingly.'';'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(497) := ' isLastResultSet                         BOOLEAN := FALSE;'||wwv_flow.LF||
+'  FETCH_ROWS_INTEGER                    ';
+wwv_flow_imp.g_varchar2_table(498) := '  INTEGER;'||wwv_flow.LF||
+'  L_RENDER_ROW                            BOOLEAN;'||wwv_flow.LF||
+'  MULTI_GRAPH_ERROR_MESSAGE         ';
+wwv_flow_imp.g_varchar2_table(499) := '      CONSTANT VARCHAR2(M_VCSIZ_4K) := ''ora_sqlgraph_to_json only supports queries from a single gra';
+wwv_flow_imp.g_varchar2_table(500) := 'ph. Please adjust the query accordingly.'';'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
 '  SYS.DBMS_SQL.DESCRIBE_COLUMNS2('||wwv_flow.LF||
-'    C => CURS_ID,'||wwv_flow.LF||
-'    COL_CNT ';
-wwv_flow_imp.g_varchar2_table(563) := '=> L_COLS,'||wwv_flow.LF||
+'    C => CUR';
+wwv_flow_imp.g_varchar2_table(501) := 'S_ID,'||wwv_flow.LF||
+'    COL_CNT => L_COLS,'||wwv_flow.LF||
 '    DESC_T => TAB_REC'||wwv_flow.LF||
 '  );'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  FOR POS IN 1 .. L_COLS LOOP'||wwv_flow.LF||
-'    CASE TAB_REC (POS).COL_TYPE';
-wwv_flow_imp.g_varchar2_table(564) := ''||wwv_flow.LF||
+'    CAS';
+wwv_flow_imp.g_varchar2_table(502) := 'E TAB_REC (POS).COL_TYPE'||wwv_flow.LF||
 '      WHEN 119 THEN'||wwv_flow.LF||
-'        SYS.DBMS_SQL.DEFINE_COLUMN (CURS_ID, POS, L_JSON);'||wwv_flow.LF||
+'        SYS.DBMS_SQL.DEFINE_COLUMN (CURS_ID, POS, L_J';
+wwv_flow_imp.g_varchar2_table(503) := 'SON);'||wwv_flow.LF||
+'        COLUMN_VALUES(POS) := JSON_ARRAY_T();'||wwv_flow.LF||
 '      ELSE'||wwv_flow.LF||
-'        N';
-wwv_flow_imp.g_varchar2_table(565) := 'ULL;'||wwv_flow.LF||
+'        NULL;'||wwv_flow.LF||
 '    END CASE;'||wwv_flow.LF||
-'  END LOOP;'||wwv_flow.LF||
+'  EN';
+wwv_flow_imp.g_varchar2_table(504) := 'D LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  LOOP'||wwv_flow.LF||
 '    FETCH_ROWS_INTEGER := SYS.DBMS_SQL.FETCH_ROWS(CURS_ID);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(566) := '   IF FETCH_ROWS_INTEGER > 0 THEN'||wwv_flow.LF||
+'    IF FETCH_ROWS_IN';
+wwv_flow_imp.g_varchar2_table(505) := 'TEGER > 0 THEN'||wwv_flow.LF||
 '      COUNTER := COUNTER + 1;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '      IF (PAGE_START < 0'||wwv_flow.LF||
-'      OR P';
-wwv_flow_imp.g_varchar2_table(567) := 'AGE_SIZE <= 0) THEN'||wwv_flow.LF||
-'        RAISE_APPLICATION_ERROR(-20000, ''Please provide valid values for page_st';
-wwv_flow_imp.g_varchar2_table(568) := 'art and page_size parameter. page_start should be an integer equal to or greater than 0. page_size s';
-wwv_flow_imp.g_varchar2_table(569) := 'hould be an integer greater than 0.'');'||wwv_flow.LF||
+'      OR PAGE_SIZE <= 0) ';
+wwv_flow_imp.g_varchar2_table(506) := 'THEN'||wwv_flow.LF||
+'        RAISE_APPLICATION_ERROR(-20000, ''Please provide valid values for page_start and page_s';
+wwv_flow_imp.g_varchar2_table(507) := 'ize parameter. page_start should be an integer equal to or greater than 0. page_size should be an in';
+wwv_flow_imp.g_varchar2_table(508) := 'teger greater than 0.'');'||wwv_flow.LF||
 '      END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'      IF ((COUNTER > PAGE_START'||wwv_flow.LF||
-'      AND COUN';
-wwv_flow_imp.g_varchar2_table(570) := 'TER <= PAGE_START + PAGE_SIZE)'||wwv_flow.LF||
-'      OR (PAGE_SIZE IS NULL) ) THEN'||wwv_flow.LF||
-'        IF P1 = 0 THEN'||wwv_flow.LF||
+'      L_RENDER_ROW := ((COUNTER > PAGE_START'||wwv_flow.LF||
+'      AND C';
+wwv_flow_imp.g_varchar2_table(509) := 'OUNTER <= PAGE_START + PAGE_SIZE)'||wwv_flow.LF||
+'      OR (PAGE_SIZE IS NULL));'||wwv_flow.LF||
+''||wwv_flow.LF||
+'      FOR POS IN 1 .. L_COLS LO';
+wwv_flow_imp.g_varchar2_table(510) := 'OP'||wwv_flow.LF||
+'        IF TAB_REC(POS).COL_TYPE = 119 THEN'||wwv_flow.LF||
+'          SYS.DBMS_SQL.COLUMN_VALUE (CURS_ID, POS, ';
+wwv_flow_imp.g_varchar2_table(511) := 'L_JSON);'||wwv_flow.LF||
+'          IF L_RENDER_ROW THEN'||wwv_flow.LF||
+'            COLUMN_VALUES(POS).APPEND(L_JSON);'||wwv_flow.LF||
 '          ';
-wwv_flow_imp.g_varchar2_table(571) := 'FOR POS IN 1 .. L_COLS LOOP'||wwv_flow.LF||
-'            IF TAB_REC(POS).COL_TYPE = 119 THEN'||wwv_flow.LF||
-'              SYS.DBMS_S';
-wwv_flow_imp.g_varchar2_table(572) := 'QL.COLUMN_VALUE (CURS_ID, POS, L_JSON);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'              IF JSON_EXISTS(L_JSON, ''$.ELEM_TABLE'') AND JS';
-wwv_flow_imp.g_varchar2_table(573) := 'ON_EXISTS(L_JSON, ''$.GRAPH_OWNER'') AND JSON_EXISTS(L_JSON, ''$.GRAPH_NAME'') AND JSON_EXISTS(L_JSON, ''';
-wwv_flow_imp.g_varchar2_table(574) := '$.KEY_VALUE'') THEN'||wwv_flow.LF||
-'                L_HAVING_ELEMENT_ID := TRUE;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'                IF GRAPHNAME IS NUL';
-wwv_flow_imp.g_varchar2_table(575) := 'L AND GRAPHOWNER IS NULL THEN'||wwv_flow.LF||
-'                  GRAPHNAME := JSON_VALUE(L_JSON, ''$.GRAPH_NAME'');'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(576) := '               GRAPHOWNER := JSON_VALUE(L_JSON, ''$.GRAPH_OWNER'');'||wwv_flow.LF||
-'                  -- Populate the ';
-wwv_flow_imp.g_varchar2_table(577) := 'cache with all elements for this graph and owner'||wwv_flow.LF||
-'                  SELECT'||wwv_flow.LF||
-'                    ELEMEN';
-wwv_flow_imp.g_varchar2_table(578) := 'T_NAME,'||wwv_flow.LF||
-'                    ELEMENT_KIND'||wwv_flow.LF||
-'                  BULK COLLECT INTO ELEMENT_CACHE'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(579) := '         FROM'||wwv_flow.LF||
-'                    SYS.ALL_PG_ELEMENTS'||wwv_flow.LF||
-'                  WHERE'||wwv_flow.LF||
-'                    GR';
-wwv_flow_imp.g_varchar2_table(580) := 'APH_NAME = GRAPHNAME'||wwv_flow.LF||
-'                    AND OWNER = GRAPHOWNER;'||wwv_flow.LF||
-'                ELSE '||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(581) := '     IF GRAPHNAME != JSON_VALUE(L_JSON, ''$.GRAPH_NAME'') OR GRAPHOWNER != JSON_VALUE(L_JSON, ''$.GRAPH';
-wwv_flow_imp.g_varchar2_table(582) := '_OWNER'') THEN'||wwv_flow.LF||
-'                    RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(583) := '            END IF;'||wwv_flow.LF||
-'                END IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'                -- Check if the element is in our store';
-wwv_flow_imp.g_varchar2_table(584) := 'd list'||wwv_flow.LF||
-'                ELEMENT_NAME := NULL;'||wwv_flow.LF||
-'                FOR i IN 1 .. ELEMENT_CACHE.COUNT LOOP'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(585) := '                  IF ELEMENT_CACHE(i).ELEMENT_NAME = JSON_VALUE(L_JSON, ''$.ELEM_TABLE'') THEN'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(512) := 'END IF;'||wwv_flow.LF||
+'          IF L_JSON IS NOT NULL'||wwv_flow.LF||
+'          AND JSON_EXISTS(L_JSON, ''$.ELEM_TABLE'')'||wwv_flow.LF||
 '       ';
-wwv_flow_imp.g_varchar2_table(586) := '             ELEMENT_NAME := ELEMENT_CACHE(i).ELEMENT_KIND;'||wwv_flow.LF||
-'                    EXIT;'||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(587) := '    END IF;'||wwv_flow.LF||
-'                END LOOP;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'                IF ELEMENT_NAME IS NULL THEN'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(588) := '  -- If not found in cache, raise an error or handle accordingly'||wwv_flow.LF||
-'                  RAISE_APPLICATION';
-wwv_flow_imp.g_varchar2_table(589) := '_ERROR(-20000, ''Element '' || JSON_VALUE(L_JSON, ''$.ELEM_TABLE'') || '' not found in graph '' || GRAPHNA';
-wwv_flow_imp.g_varchar2_table(590) := 'ME);'||wwv_flow.LF||
-'                END IF;'||wwv_flow.LF||
-'                '||wwv_flow.LF||
-'                IF ELEMENT_NAME = ''VERTEX'' THEN'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(591) := '            VERTEX_ID_COLUMN_LIST.EXTEND;'||wwv_flow.LF||
-'                  VERTEX_ID_COLUMN_LIST(V1) := POS;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(592) := '            V1 := V1 + 1;'||wwv_flow.LF||
-'                  VERTEX_TABLE.APPEND(L_JSON);'||wwv_flow.LF||
-'                  VERTEX_CO';
-wwv_flow_imp.g_varchar2_table(593) := 'L_NAMES.APPEND(TAB_REC(POS).COL_NAME);'||wwv_flow.LF||
-'                ELSE'||wwv_flow.LF||
-'                  EDGE_ID_COLUMN_LIST.EX';
-wwv_flow_imp.g_varchar2_table(594) := 'TEND;'||wwv_flow.LF||
-'                  EDGE_ID_COLUMN_LIST(E1) := POS;'||wwv_flow.LF||
-'                  E1 := E1 + 1;'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(595) := '      EDGE_TABLE.APPEND(L_JSON);'||wwv_flow.LF||
-'                  EDGE_COL_NAMES.APPEND(TAB_REC(POS).COL_NAME);'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(596) := '             END IF;'||wwv_flow.LF||
-'              END IF;'||wwv_flow.LF||
-'            END IF;'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
-'        ELSE'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(513) := '   AND JSON_EXISTS(L_JSON, ''$.GRAPH_OWNER'')'||wwv_flow.LF||
+'          AND JSON_EXISTS(L_JSON, ''$.GRAPH_NAME'')'||wwv_flow.LF||
 '    ';
-wwv_flow_imp.g_varchar2_table(597) := '      IF GRAPHNAME != JSON_VALUE(L_JSON, ''$.GRAPH_NAME'') OR GRAPHOWNER != JSON_VALUE(L_JSON, ''$.GRAP';
-wwv_flow_imp.g_varchar2_table(598) := 'H_OWNER'') THEN'||wwv_flow.LF||
-'                    RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(599) := '     END IF;'||wwv_flow.LF||
-'          '||wwv_flow.LF||
-'          FOR I IN 1..VERTEX_ID_COLUMN_LIST.COUNT LOOP'||wwv_flow.LF||
-'            SYS.DBMS_';
-wwv_flow_imp.g_varchar2_table(600) := 'SQL.COLUMN_VALUE (CURS_ID, VERTEX_ID_COLUMN_LIST(I), L_JSON);'||wwv_flow.LF||
-'            VERTEX_TABLE.APPEND(L_JSON';
-wwv_flow_imp.g_varchar2_table(601) := ');'||wwv_flow.LF||
-'          END LOOP;'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(514) := '      AND JSON_EXISTS(L_JSON, ''$.KEY_VALUE'') THEN'||wwv_flow.LF||
+'            L_HAVING_ELEMENT_ID := TRUE;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(515) := '     IF GRAPHNAME IS NULL AND GRAPHOWNER IS NULL THEN'||wwv_flow.LF||
+'              GRAPHNAME := JSON_VALUE(L_JSON,';
+wwv_flow_imp.g_varchar2_table(516) := ' ''$.GRAPH_NAME'');'||wwv_flow.LF||
+'              GRAPHOWNER := JSON_VALUE(L_JSON, ''$.GRAPH_OWNER'');'||wwv_flow.LF||
+'              S';
+wwv_flow_imp.g_varchar2_table(517) := 'ELECT'||wwv_flow.LF||
+'                ELEMENT_NAME,'||wwv_flow.LF||
+'                ELEMENT_KIND'||wwv_flow.LF||
+'              BULK COLLECT INTO ';
+wwv_flow_imp.g_varchar2_table(518) := 'ELEMENT_CACHE'||wwv_flow.LF||
+'              FROM'||wwv_flow.LF||
+'                SYS.ALL_PG_ELEMENTS'||wwv_flow.LF||
+'              WHERE'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(519) := '         GRAPH_NAME = GRAPHNAME'||wwv_flow.LF||
+'                AND OWNER = GRAPHOWNER;'||wwv_flow.LF||
+'            ELSIF GRAPHNAM';
+wwv_flow_imp.g_varchar2_table(520) := 'E != JSON_VALUE(L_JSON, ''$.GRAPH_NAME'')'||wwv_flow.LF||
+'              OR GRAPHOWNER != JSON_VALUE(L_JSON, ''$.GRAPH_';
+wwv_flow_imp.g_varchar2_table(521) := 'OWNER'') THEN'||wwv_flow.LF||
+'              RAISE_APPLICATION_ERROR(-20000, MULTI_GRAPH_ERROR_MESSAGE);'||wwv_flow.LF||
+'           ';
+wwv_flow_imp.g_varchar2_table(522) := ' END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'          FOR I IN 1..EDGE_ID_COLUMN_LIST.COUNT LOOP'||wwv_flow.LF||
-'            SYS.DBMS_SQ';
-wwv_flow_imp.g_varchar2_table(602) := 'L.COLUMN_VALUE (CURS_ID, EDGE_ID_COLUMN_LIST(I), L_JSON);'||wwv_flow.LF||
-'            EDGE_TABLE.APPEND(L_JSON);'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(603) := '       END LOOP;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
+'            ELEMENT_NAME := NULL;'||wwv_flow.LF||
+'            FOR I IN 1 .. ELEMENT_CACHE.COUNT LOOP'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(523) := '             IF ELEMENT_CACHE(I).ELEMENT_NAME = JSON_VALUE(L_JSON, ''$.ELEM_TABLE'') THEN'||wwv_flow.LF||
+'           ';
+wwv_flow_imp.g_varchar2_table(524) := '     ELEMENT_NAME := ELEMENT_CACHE(I).ELEMENT_KIND;'||wwv_flow.LF||
+'                EXIT;'||wwv_flow.LF||
+'              END IF;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(525) := '           END LOOP;'||wwv_flow.LF||
+'            IF ELEMENT_NAME IS NULL THEN'||wwv_flow.LF||
+'              RAISE_APPLICATION_ERRO';
+wwv_flow_imp.g_varchar2_table(526) := 'R(-20000, ''Element '' || JSON_VALUE(L_JSON, ''$.ELEM_TABLE'') || '' not found in graph '' || GRAPHNAME);';
+wwv_flow_imp.g_varchar2_table(527) := ''||wwv_flow.LF||
+'            END IF;'||wwv_flow.LF||
+'            ELEMENT_KIND_BY_COLUMN(POS) := ELEMENT_NAME;'||wwv_flow.LF||
+'          END IF;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(528) := '       END IF;'||wwv_flow.LF||
+'      END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
+'      IF L_RENDER_ROW THEN'||wwv_flow.LF||
 '        P1 := P1 + 1;'||wwv_flow.LF||
-''||wwv_flow.LF||
 '        IF ('||wwv_flow.LF||
-'          PAGE_SIZE IS NOT NUL';
-wwv_flow_imp.g_varchar2_table(604) := 'L'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(529) := '          PAGE_SIZE IS NOT NULL'||wwv_flow.LF||
 '          AND P1 = PAGE_SIZE'||wwv_flow.LF||
 '        ) THEN'||wwv_flow.LF||
 '          EXIT;'||wwv_flow.LF||
-'        END IF;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(530) := '    END IF;'||wwv_flow.LF||
 '      END IF;'||wwv_flow.LF||
-'    ELSI';
-wwv_flow_imp.g_varchar2_table(605) := 'F FETCH_ROWS_INTEGER = 0 THEN'||wwv_flow.LF||
+'    ELSIF FETCH_ROWS_INTEGER = 0 THEN'||wwv_flow.LF||
 '      isLastResultSet := TRUE;'||wwv_flow.LF||
-'      EXIT;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(531) := '     EXIT;'||wwv_flow.LF||
 '    END IF;'||wwv_flow.LF||
 '  END LOOP;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(606) := 'IF NOT L_HAVING_ELEMENT_ID AND COUNTER != 0 THEN'||wwv_flow.LF||
-'    IF COUNTER < PAGE_START THEN'||wwv_flow.LF||
-'      RAISE_APPLIC';
-wwv_flow_imp.g_varchar2_table(607) := 'ATION_ERROR(-20000, ''page_start index exceeds the total number of rows returned. Please reset page_s';
-wwv_flow_imp.g_varchar2_table(608) := 'tart to a valid value within the range of available results.'');'||wwv_flow.LF||
-'    ELSIF COUNTER > PAGE_START THEN'||wwv_flow.LF||
+'  IF COUNTER < PAGE_START THEN'||wwv_flow.LF||
+'    RAISE_APPLICATION_ERROR(';
+wwv_flow_imp.g_varchar2_table(532) := '-20000, ''page_start index exceeds the total number of rows returned. Please reset page_start to a va';
+wwv_flow_imp.g_varchar2_table(533) := 'lid value within the range of available results.'');'||wwv_flow.LF||
+'  END IF;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'  FOR POS IN 1 .. L_COLS LOOP'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(534) := ' IF ELEMENT_KIND_BY_COLUMN.EXISTS(POS) THEN'||wwv_flow.LF||
+'      IF ELEMENT_KIND_BY_COLUMN(POS) = ''VERTEX'' THEN'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(535) := '       VERTEX_COL_NAMES.APPEND(TAB_REC(POS).COL_NAME);'||wwv_flow.LF||
+'      ELSE'||wwv_flow.LF||
+'        EDGE_COL_NAMES.APPEND(TA';
+wwv_flow_imp.g_varchar2_table(536) := 'B_REC(POS).COL_NAME);'||wwv_flow.LF||
+'      END IF;'||wwv_flow.LF||
+'    END IF;'||wwv_flow.LF||
+'  END LOOP;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'  IF P1 > 0 THEN'||wwv_flow.LF||
+'    FOR ROW_INDE';
+wwv_flow_imp.g_varchar2_table(537) := 'X IN 0 .. P1 - 1 LOOP'||wwv_flow.LF||
+'      FOR POS IN 1 .. L_COLS LOOP'||wwv_flow.LF||
+'        IF ELEMENT_KIND_BY_COLUMN.EXISTS(P';
+wwv_flow_imp.g_varchar2_table(538) := 'OS) THEN'||wwv_flow.LF||
+'          IF ELEMENT_KIND_BY_COLUMN(POS) = ''VERTEX'' THEN'||wwv_flow.LF||
+'            VERTEX_TABLE.APPEND(';
+wwv_flow_imp.g_varchar2_table(539) := 'COLUMN_VALUES(POS).GET(ROW_INDEX));'||wwv_flow.LF||
+'          ELSE'||wwv_flow.LF||
+'            EDGE_TABLE.APPEND(COLUMN_VALUES(POS';
+wwv_flow_imp.g_varchar2_table(540) := ').GET(ROW_INDEX));'||wwv_flow.LF||
+'          END IF;'||wwv_flow.LF||
+'        END IF;'||wwv_flow.LF||
+'      END LOOP;'||wwv_flow.LF||
+'    END LOOP;'||wwv_flow.LF||
+'  END IF;'||wwv_flow.LF||
 '';
-wwv_flow_imp.g_varchar2_table(609) := '      RAISE_APPLICATION_ERROR(-20000, ''Please add vertex_id/edge_id to the COLUMNS clause and projec';
-wwv_flow_imp.g_varchar2_table(610) := 't the corresponding column name in the SELECT clause.'');'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(541) := ''||wwv_flow.LF||
+'  IF NOT L_HAVING_ELEMENT_ID AND COUNTER != 0 THEN'||wwv_flow.LF||
+'    IF COUNTER > PAGE_START THEN'||wwv_flow.LF||
+'      RAISE_A';
+wwv_flow_imp.g_varchar2_table(542) := 'PPLICATION_ERROR(-20000, ''Please add vertex_id/edge_id to the COLUMNS clause and project the corresp';
+wwv_flow_imp.g_varchar2_table(543) := 'onding column name in the SELECT clause.'');'||wwv_flow.LF||
 '    END IF;'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
-'    JSON_FILE := ORA_';
-wwv_flow_imp.g_varchar2_table(611) := 'GRAPH_BUILD_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, P1, GRAPHNAME, GRAPHOWNER);'||wwv_flow.LF||
-'    L_JSON_O';
-wwv_flow_imp.g_varchar2_table(612) := 'BJ := JSON_OBJECT_T(JSON_FILE);'||wwv_flow.LF||
+'    JSON_FILE := ORA_GRAPH_BUIL';
+wwv_flow_imp.g_varchar2_table(544) := 'D_JSON_USING_JSON_ARRAY(VERTEX_TABLE, EDGE_TABLE, P1, GRAPHNAME, GRAPHOWNER);'||wwv_flow.LF||
+'    L_JSON_OBJ := JSO';
+wwv_flow_imp.g_varchar2_table(545) := 'N_OBJECT_T(JSON_FILE);'||wwv_flow.LF||
 '    L_JSON_OBJ.PUT(''vertexIdColumnNames'', VERTEX_COL_NAMES);'||wwv_flow.LF||
-'    L_J';
-wwv_flow_imp.g_varchar2_table(613) := 'SON_OBJ.PUT(''edgeIdColumnNames'', EDGE_COL_NAMES);'||wwv_flow.LF||
+'    L_JSON_OBJ';
+wwv_flow_imp.g_varchar2_table(546) := '.PUT(''edgeIdColumnNames'', EDGE_COL_NAMES);'||wwv_flow.LF||
 '    IF isLastResultSet OR PAGE_SIZE IS NULL THEN'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(614) := '     L_JSON_OBJ.PUT(''isLastResultSet'', TRUE);'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(547) := 'L_JSON_OBJ.PUT(''isLastResultSet'', TRUE);'||wwv_flow.LF||
 '    ELSE'||wwv_flow.LF||
 '      IF P1 < PAGE_SIZE THEN'||wwv_flow.LF||
-'        L_JSON_O';
-wwv_flow_imp.g_varchar2_table(615) := 'BJ.PUT(''isLastResultSet'', TRUE);'||wwv_flow.LF||
+'        L_JSON_OBJ';
+wwv_flow_imp.g_varchar2_table(548) := '.PUT(''isLastResultSet'', TRUE);'||wwv_flow.LF||
 '      ELSE'||wwv_flow.LF||
 '        L_JSON_OBJ.PUT(''isLastResultSet'', FALSE);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(616) := 'END IF;'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(549) := ' END IF;'||wwv_flow.LF||
 '    END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  RETURN L_JSON_OBJ.TO_CLOB();'||wwv_flow.LF||
 'END ORA_SQLGRAPH_TO_JSON;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
-'CREATE OR REPLACE FU';
-wwv_flow_imp.g_varchar2_table(617) := 'NCTION apex_sqlgraph_json ('||wwv_flow.LF||
+'CREATE OR REP';
+wwv_flow_imp.g_varchar2_table(550) := 'LACE FUNCTION apex_sqlgraph_json ('||wwv_flow.LF||
 '   p_query      VARCHAR2,'||wwv_flow.LF||
-'   p_page_start NUMBER DEFAULT NULL,'||wwv_flow.LF||
-'   p_page';
-wwv_flow_imp.g_varchar2_table(618) := '_size  NUMBER DEFAULT NULL,'||wwv_flow.LF||
+'   p_page_start NUMBER DEFAULT NULL,';
+wwv_flow_imp.g_varchar2_table(551) := ''||wwv_flow.LF||
+'   p_page_size  NUMBER DEFAULT NULL,'||wwv_flow.LF||
 '   p_bind_items VARCHAR2 DEFAULT NULL'||wwv_flow.LF||
 ') RETURN CLOB IS'||wwv_flow.LF||
-'   l_incur    SYS';
-wwv_flow_imp.g_varchar2_table(619) := '_REFCURSOR;'||wwv_flow.LF||
+'   l';
+wwv_flow_imp.g_varchar2_table(552) := '_incur    SYS_REFCURSOR;'||wwv_flow.LF||
 '   l_cur      NUMBER;'||wwv_flow.LF||
 '   l_retvalue CLOB;'||wwv_flow.LF||
-'   l_item     VARCHAR2(4000);'||wwv_flow.LF||
-'   l_cur_id   NU';
-wwv_flow_imp.g_varchar2_table(620) := 'MBER;'||wwv_flow.LF||
+'   l_item     VARCHAR2(4000);';
+wwv_flow_imp.g_varchar2_table(553) := ''||wwv_flow.LF||
+'   l_cur_id   NUMBER;'||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
 '   l_cur := DBMS_SQL.OPEN_CURSOR;'||wwv_flow.LF||
 '   DBMS_SQL.PARSE('||wwv_flow.LF||
 '      l_cur,'||wwv_flow.LF||
-'      p_query,'||wwv_flow.LF||
-'      D';
-wwv_flow_imp.g_varchar2_table(621) := 'BMS_SQL.NATIVE'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(554) := '      p_query,'||wwv_flow.LF||
+'      DBMS_SQL.NATIVE'||wwv_flow.LF||
 '   );'||wwv_flow.LF||
 '   '||wwv_flow.LF||
 '   IF p_bind_items IS NOT NULL THEN'||wwv_flow.LF||
-'      FOR i IN 1..REGEXP_COUNT(p_bind_i';
-wwv_flow_imp.g_varchar2_table(622) := 'tems, '','') + 1 LOOP'||wwv_flow.LF||
-'         l_item := REGEXP_SUBSTR(p_bind_items, ''[^,]+'', 1, i);'||wwv_flow.LF||
-'         DBMS_SQL';
-wwv_flow_imp.g_varchar2_table(623) := '.BIND_VARIABLE('||wwv_flow.LF||
+'      FOR i ';
+wwv_flow_imp.g_varchar2_table(555) := 'IN 1..REGEXP_COUNT(p_bind_items, '','') + 1 LOOP'||wwv_flow.LF||
+'         l_item := REGEXP_SUBSTR(p_bind_items, ''[^,]';
+wwv_flow_imp.g_varchar2_table(556) := '+'', 1, i);'||wwv_flow.LF||
+'         DBMS_SQL.BIND_VARIABLE('||wwv_flow.LF||
 '            l_cur,'||wwv_flow.LF||
 '            '':'' || l_item,'||wwv_flow.LF||
-'            V(l_item)'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(557) := '      V(l_item)'||wwv_flow.LF||
 '         );'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(624) := '  END LOOP;'||wwv_flow.LF||
+'      END LOOP;'||wwv_flow.LF||
 '   END IF;'||wwv_flow.LF||
 '   '||wwv_flow.LF||
 '   BEGIN'||wwv_flow.LF||
-'      l_cur_id := DBMS_SQL.EXECUTE(l_cur);'||wwv_flow.LF||
-'      l_retvalue := O';
-wwv_flow_imp.g_varchar2_table(625) := 'RA_SQLGRAPH_TO_JSON('||wwv_flow.LF||
+'      l_cur_id := DBMS_SQL';
+wwv_flow_imp.g_varchar2_table(558) := '.EXECUTE(l_cur);'||wwv_flow.LF||
+'      l_retvalue := ORA_SQLGRAPH_TO_JSON('||wwv_flow.LF||
 '         l_cur,'||wwv_flow.LF||
-'         p_page_start,'||wwv_flow.LF||
+'         p_page_start,';
+wwv_flow_imp.g_varchar2_table(559) := ''||wwv_flow.LF||
 '         p_page_size'||wwv_flow.LF||
 '      );'||wwv_flow.LF||
-'   EXCEPTI';
-wwv_flow_imp.g_varchar2_table(626) := 'ON'||wwv_flow.LF||
+'   EXCEPTION'||wwv_flow.LF||
 '      WHEN OTHERS THEN'||wwv_flow.LF||
-'         DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
+'         DBMS_SQL.CLOSE_CURS';
+wwv_flow_imp.g_varchar2_table(560) := 'OR(l_cur);'||wwv_flow.LF||
 '         IF SQLCODE = -1008 THEN'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(627) := '          RAISE_APPLICATION_ERROR(-20001, ''SQL error: ORA-01008: value for bind variable placeholder';
-wwv_flow_imp.g_varchar2_table(628) := ' was not provided. Please check the query and Page Items To Submit. Make sure that all bind variable';
-wwv_flow_imp.g_varchar2_table(629) := 's are added into Page Items to Submit.'');'||wwv_flow.LF||
-'         ELSE'||wwv_flow.LF||
+'            RAISE_APPLICATION_ERROR(-20001, ''SQL error';
+wwv_flow_imp.g_varchar2_table(561) := ': ORA-01008: value for bind variable placeholder was not provided. Please check the query and Page I';
+wwv_flow_imp.g_varchar2_table(562) := 'tems To Submit. Make sure that all bind variables are added into Page Items to Submit.'');'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(563) := 'ELSE'||wwv_flow.LF||
 '            RAISE;'||wwv_flow.LF||
 '         END IF;'||wwv_flow.LF||
 '   END;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(630) := '   DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
+'   DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
 '   '||wwv_flow.LF||
-'   RETURN l_retvalue;'||wwv_flow.LF||
+'   RETUR';
+wwv_flow_imp.g_varchar2_table(564) := 'N l_retvalue;'||wwv_flow.LF||
 'END apex_sqlgraph_json;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
-'CREATE OR REPLA';
-wwv_flow_imp.g_varchar2_table(631) := 'CE PROCEDURE get_graph_metadata_proc ('||wwv_flow.LF||
+'CREATE OR REPLACE FUNCTION get_graph_metadata ('||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(565) := 'p_graph_owner IN VARCHAR2,'||wwv_flow.LF||
+'        p_graph_name  IN VARCHAR2'||wwv_flow.LF||
+'    ) RETURN CLOB IS'||wwv_flow.LF||
+'        v_metad';
+wwv_flow_imp.g_varchar2_table(566) := 'ata CLOB;'||wwv_flow.LF||
+'    BEGIN'||wwv_flow.LF||
+'        SELECT JSON_OBJECT('||wwv_flow.LF||
+'    ''vertices'' VALUE COALESCE(('||wwv_flow.LF||
+'        SELECT J';
+wwv_flow_imp.g_varchar2_table(567) := 'SON_ARRAYAGG('||wwv_flow.LF||
+'            JSON_OBJECT('||wwv_flow.LF||
+'                ''labels'' VALUE ('||wwv_flow.LF||
+'                    SELEC';
+wwv_flow_imp.g_varchar2_table(568) := 'T JSON_ARRAYAGG(el.label_name)'||wwv_flow.LF||
+'                    FROM sys.all_pg_element_labels el'||wwv_flow.LF||
+'             ';
+wwv_flow_imp.g_varchar2_table(569) := '       WHERE el.element_name = e.element_name AND el.graph_name = p_graph_name AND el.OWNER = p_grap';
+wwv_flow_imp.g_varchar2_table(570) := 'h_owner'||wwv_flow.LF||
+'                ),'||wwv_flow.LF||
+'                ''properties'' VALUE COALESCE(('||wwv_flow.LF||
+'                    SELE';
+wwv_flow_imp.g_varchar2_table(571) := 'CT JSON_ARRAYAGG('||wwv_flow.LF||
+'                        JSON_OBJECT('||wwv_flow.LF||
+'                            ''name'' VALUE p.';
+wwv_flow_imp.g_varchar2_table(572) := 'property_name,'||wwv_flow.LF||
+'                            ''actualDataType'' VALUE p.data_type,'||wwv_flow.LF||
+'                   ';
+wwv_flow_imp.g_varchar2_table(573) := '         ''dataType'' VALUE CASE'||wwv_flow.LF||
+'                                WHEN p.data_type IN (''INTEGER'', ''INT';
+wwv_flow_imp.g_varchar2_table(574) := ''', ''SMALLINT'', ''DEC'', ''DECIMAL'', ''NUMERIC'', ''DOUBLE PRECISION'', ''FLOAT'', ''REAL'',''NUMBER'', ''BINARY_FL';
+wwv_flow_imp.g_varchar2_table(575) := 'OAT'', ''BINARY_DOUBLE'') THEN ''number'''||wwv_flow.LF||
+'                                WHEN p.data_type IN (''DATE'') T';
+wwv_flow_imp.g_varchar2_table(576) := 'HEN ''date'''||wwv_flow.LF||
+'                                WHEN p.data_type IN (''TIMESTAMP'', ''TIMESTAMP WITH TIME Z';
+wwv_flow_imp.g_varchar2_table(577) := 'ONE'', ''TIMESTAMP WITH LOCAL TIME ZONE'') THEN ''timestamp'''||wwv_flow.LF||
+'                                WHEN p.dat';
+wwv_flow_imp.g_varchar2_table(578) := 'a_type IN (''JSON'') THEN ''object'''||wwv_flow.LF||
+'                                ELSE ''string'''||wwv_flow.LF||
+'                   ';
+wwv_flow_imp.g_varchar2_table(579) := '         END,'||wwv_flow.LF||
+'                            ''limits'' VALUE CASE'||wwv_flow.LF||
+'                                WHEN';
+wwv_flow_imp.g_varchar2_table(580) := ' p.DATA_CHAR_LENGTH > 0 THEN JSON_ARRAY(p.DATA_CHAR_LENGTH)'||wwv_flow.LF||
+'                                ELSE JS';
+wwv_flow_imp.g_varchar2_table(581) := 'ON_ARRAY()'||wwv_flow.LF||
+'                            END,'||wwv_flow.LF||
+'                            ''mandatory'' VALUE ('||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(582) := '                           SELECT CASE NULLABLE'||wwv_flow.LF||
+'                                    WHEN ''Y'' THEN f';
+wwv_flow_imp.g_varchar2_table(583) := 'alse'||wwv_flow.LF||
+'                                    WHEN ''N'' THEN true'||wwv_flow.LF||
+'                                END'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(584) := '                               FROM sys.all_tab_columns col WHERE col.column_name = d.column_name AN';
+wwv_flow_imp.g_varchar2_table(585) := 'D col.table_name = e.object_name AND col.owner = e.object_owner'||wwv_flow.LF||
+'                            )'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(586) := '                    ) returning clob'||wwv_flow.LF||
+'                    )'||wwv_flow.LF||
+'                    FROM sys.all_pg_lab';
+wwv_flow_imp.g_varchar2_table(587) := 'el_properties p INNER JOIN sys.all_pg_prop_definitions d'||wwv_flow.LF||
+'                    ON (p.property_name = ';
+wwv_flow_imp.g_varchar2_table(588) := 'd.property_name AND p.owner = d.owner AND p.graph_name = d.GRAPH_NAME)'||wwv_flow.LF||
+'                    WHERE d.';
+wwv_flow_imp.g_varchar2_table(589) := 'element_name = e.element_name and p.label_name = l.label_name AND p.graph_name = p_graph_name AND p.';
+wwv_flow_imp.g_varchar2_table(590) := 'OWNER = p_graph_owner'||wwv_flow.LF||
+'                ), JSON_ARRAY(returning clob)) RETURNING CLOB'||wwv_flow.LF||
+'            ) ';
+wwv_flow_imp.g_varchar2_table(591) := 'RETURNING CLOB'||wwv_flow.LF||
+'        )'||wwv_flow.LF||
+'        FROM sys.all_pg_elements e INNER JOIN sys.all_pg_element_labels l';
+wwv_flow_imp.g_varchar2_table(592) := ' ON (e.element_name = l.element_name AND e.graph_name = l.graph_name AND e.owner = l.owner) WHERE e.';
+wwv_flow_imp.g_varchar2_table(593) := 'element_kind = ''VERTEX'' AND e.graph_name = p_graph_name AND e.OWNER = p_graph_owner'||wwv_flow.LF||
+'    ), JSON_ARR';
+wwv_flow_imp.g_varchar2_table(594) := 'AY(returning clob)),'||wwv_flow.LF||
+'    ''edges'' VALUE COALESCE(('||wwv_flow.LF||
+'        SELECT JSON_ARRAYAGG('||wwv_flow.LF||
+'            JSON_';
+wwv_flow_imp.g_varchar2_table(595) := 'OBJECT('||wwv_flow.LF||
+'                ''labels'' VALUE ('||wwv_flow.LF||
+'                    SELECT JSON_ARRAYAGG(el.label_name)'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(596) := '                    FROM sys.all_pg_element_labels el'||wwv_flow.LF||
+'                    WHERE el.element_name = e';
+wwv_flow_imp.g_varchar2_table(597) := '.element_name AND el.graph_name = p_graph_name AND el.OWNER = p_graph_owner'||wwv_flow.LF||
+'                ),'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(598) := '             ''properties'' VALUE COALESCE(('||wwv_flow.LF||
+'                    SELECT JSON_ARRAYAGG('||wwv_flow.LF||
+'             ';
+wwv_flow_imp.g_varchar2_table(599) := '           JSON_OBJECT('||wwv_flow.LF||
+'                            ''name'' VALUE p.property_name,'||wwv_flow.LF||
+'                ';
+wwv_flow_imp.g_varchar2_table(600) := '            ''actualDataType'' VALUE p.data_type,'||wwv_flow.LF||
+'                            ''dataType'' VALUE CASE'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(601) := '                                WHEN p.data_type IN (''INTEGER'', ''INT'', ''SMALLINT'', ''DEC'', ''DECIMAL'',';
+wwv_flow_imp.g_varchar2_table(602) := ' ''NUMERIC'', ''DOUBLE PRECISION'', ''FLOAT'', ''REAL'',''NUMBER'', ''BINARY_FLOAT'', ''BINARY_DOUBLE'') THEN ''num';
+wwv_flow_imp.g_varchar2_table(603) := 'ber'''||wwv_flow.LF||
+'                                WHEN p.data_type IN (''DATE'') THEN ''date'''||wwv_flow.LF||
+'                    ';
+wwv_flow_imp.g_varchar2_table(604) := '            WHEN p.data_type IN (''TIMESTAMP'', ''TIMESTAMP WITH TIME ZONE'', ''TIMESTAMP WITH LOCAL TIME';
+wwv_flow_imp.g_varchar2_table(605) := ' ZONE'') THEN ''timestamp'''||wwv_flow.LF||
+'                                WHEN p.data_type IN (''JSON'') THEN ''object''';
+wwv_flow_imp.g_varchar2_table(606) := ''||wwv_flow.LF||
+'                                ELSE ''string'''||wwv_flow.LF||
+'                            END,'||wwv_flow.LF||
+'                 ';
+wwv_flow_imp.g_varchar2_table(607) := '           ''limits'' VALUE CASE'||wwv_flow.LF||
+'                                WHEN p.DATA_CHAR_LENGTH > 0 THEN JSO';
+wwv_flow_imp.g_varchar2_table(608) := 'N_ARRAY(p.data_length)'||wwv_flow.LF||
+'                                ELSE JSON_ARRAY()'||wwv_flow.LF||
+'                         ';
+wwv_flow_imp.g_varchar2_table(609) := '   END,'||wwv_flow.LF||
+'                            ''mandatory'' VALUE ('||wwv_flow.LF||
+'                                SELECT CAS';
+wwv_flow_imp.g_varchar2_table(610) := 'E NULLABLE'||wwv_flow.LF||
+'                                    WHEN ''Y'' THEN false'||wwv_flow.LF||
+'                               ';
+wwv_flow_imp.g_varchar2_table(611) := '     WHEN ''N'' THEN true'||wwv_flow.LF||
+'                                END'||wwv_flow.LF||
+'                                FROM s';
+wwv_flow_imp.g_varchar2_table(612) := 'ys.all_tab_columns col WHERE col.column_name = d.column_name AND col.table_name = e.object_name AND ';
+wwv_flow_imp.g_varchar2_table(613) := 'col.owner = e.object_owner'||wwv_flow.LF||
+'                            ) returning clob'||wwv_flow.LF||
+'                        ) ';
+wwv_flow_imp.g_varchar2_table(614) := 'returning clob'||wwv_flow.LF||
+'                    )'||wwv_flow.LF||
+'                    FROM sys.all_pg_label_properties p INNER ';
+wwv_flow_imp.g_varchar2_table(615) := 'JOIN sys.all_pg_prop_definitions d'||wwv_flow.LF||
+'                    ON (p.property_name = d.property_name AND p.';
+wwv_flow_imp.g_varchar2_table(616) := 'owner = d.owner AND p.graph_name = d.GRAPH_NAME)'||wwv_flow.LF||
+'                    WHERE d.element_name = e.eleme';
+wwv_flow_imp.g_varchar2_table(617) := 'nt_name and p.label_name = l.label_name AND p.graph_name = p_graph_name AND p.OWNER = p_graph_owner';
+wwv_flow_imp.g_varchar2_table(618) := ''||wwv_flow.LF||
+'                ), JSON_ARRAY(returning clob)),'||wwv_flow.LF||
+'                ''sourceVertexLabels'' VALUE ('||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(619) := '                SELECT JSON_ARRAYAGG(label_name) FROM ('||wwv_flow.LF||
+'                        SELECT DISTINCT l.l';
+wwv_flow_imp.g_varchar2_table(620) := 'abel_name as label_name'||wwv_flow.LF||
+'                        FROM sys.all_pg_elements e2'||wwv_flow.LF||
+'                      ';
+wwv_flow_imp.g_varchar2_table(621) := '  INNER JOIN sys.all_pg_element_labels l ON e2.element_name = l.element_name AND e2.GRAPH_NAME = l.G';
+wwv_flow_imp.g_varchar2_table(622) := 'RAPH_NAME AND e2.OWNER = l.OWNER'||wwv_flow.LF||
+'                        INNER JOIN sys.all_pg_edge_relationships r';
+wwv_flow_imp.g_varchar2_table(623) := ' ON r.vertex_tab_name = e2.element_name AND e2.GRAPH_NAME = r.GRAPH_NAME AND e2.OWNER = r.OWNER'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(624) := '                     WHERE e2.element_kind = ''VERTEX'' AND r.graph_name = e.graph_name AND r.edge_tab';
+wwv_flow_imp.g_varchar2_table(625) := '_name = e.element_name AND edge_end = ''SOURCE'''||wwv_flow.LF||
+'                    )'||wwv_flow.LF||
+'                    FETCH FIR';
+wwv_flow_imp.g_varchar2_table(626) := 'ST 1 ROWS ONLY'||wwv_flow.LF||
+'                ),'||wwv_flow.LF||
+'                ''targetVertexLabels'' VALUE ('||wwv_flow.LF||
+'                  ';
+wwv_flow_imp.g_varchar2_table(627) := '  SELECT JSON_ARRAYAGG(label_name) FROM ('||wwv_flow.LF||
+'                        SELECT DISTINCT l.label_name as l';
+wwv_flow_imp.g_varchar2_table(628) := 'abel_name'||wwv_flow.LF||
+'                        FROM sys.all_pg_elements e2'||wwv_flow.LF||
+'                        INNER JOIN s';
+wwv_flow_imp.g_varchar2_table(629) := 'ys.all_pg_element_labels l ON e2.element_name = l.element_name AND e2.GRAPH_NAME = l.GRAPH_NAME AND ';
+wwv_flow_imp.g_varchar2_table(630) := 'e2.OWNER = l.OWNER'||wwv_flow.LF||
+'                        INNER JOIN sys.all_pg_edge_relationships r ON r.vertex_t';
+wwv_flow_imp.g_varchar2_table(631) := 'ab_name = e2.element_name AND e2.GRAPH_NAME = r.GRAPH_NAME AND e2.OWNER = r.OWNER'||wwv_flow.LF||
+'                 ';
+wwv_flow_imp.g_varchar2_table(632) := '       WHERE e2.element_kind = ''VERTEX'' AND r.graph_name = e.graph_name AND r.edge_tab_name = e.elem';
+wwv_flow_imp.g_varchar2_table(633) := 'ent_name AND edge_end = ''DESTINATION'''||wwv_flow.LF||
+'                    )'||wwv_flow.LF||
+'                    FETCH FIRST 1 ROWS';
+wwv_flow_imp.g_varchar2_table(634) := ' ONLY'||wwv_flow.LF||
+'                ) returning clob'||wwv_flow.LF||
+'            ) returning clob'||wwv_flow.LF||
+'        )'||wwv_flow.LF||
+'        FROM sys.a';
+wwv_flow_imp.g_varchar2_table(635) := 'll_pg_elements e INNER JOIN sys.all_pg_element_labels l ON (e.element_name = l.element_name AND e.gr';
+wwv_flow_imp.g_varchar2_table(636) := 'aph_name = l.graph_name AND e.owner = l.owner) WHERE e.element_kind = ''EDGE'' AND e.graph_name = p_gr';
+wwv_flow_imp.g_varchar2_table(637) := 'aph_name AND e.OWNER = p_graph_owner'||wwv_flow.LF||
+'    ), JSON_ARRAY(returning clob)) RETURNING CLOB) INTO v_meta';
+wwv_flow_imp.g_varchar2_table(638) := 'data FROM dual;'||wwv_flow.LF||
+'    RETURN v_metadata;'||wwv_flow.LF||
+'    END;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'CREATE OR REPLACE PROCEDURE get_graph_metada';
+wwv_flow_imp.g_varchar2_table(639) := 'ta_proc ('||wwv_flow.LF||
 '  p_graph_name  IN VARCHAR2,'||wwv_flow.LF||
 '  p_graph_owner IN VARCHAR2,'||wwv_flow.LF||
-'  p';
-wwv_flow_imp.g_varchar2_table(632) := '_metadata    OUT CLOB'||wwv_flow.LF||
-') AS'||wwv_flow.LF||
+'  p_metadata    OUT CLOB'||wwv_flow.LF||
+') A';
+wwv_flow_imp.g_varchar2_table(640) := 'S'||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
-'  SELECT'||wwv_flow.LF||
-'    JSON_OBJECT('||wwv_flow.LF||
-'      ''vertices'' VALUE('||wwv_flow.LF||
-'        SELECT JS';
-wwv_flow_imp.g_varchar2_table(633) := 'ON_ARRAYAGG('||wwv_flow.LF||
-'          JSON_OBJECT('||wwv_flow.LF||
-'            ''labels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYAGG(e';
-wwv_flow_imp.g_varchar2_table(634) := 'l.label_name)'||wwv_flow.LF||
-'                FROM sys.all_pg_element_labels el'||wwv_flow.LF||
-'               WHERE el.element_name';
-wwv_flow_imp.g_varchar2_table(635) := ' = e.element_name'||wwv_flow.LF||
-'                 AND el.graph_name = p_graph_name'||wwv_flow.LF||
-'                 AND el.owner = ';
-wwv_flow_imp.g_varchar2_table(636) := 'p_graph_owner'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'                      ''properties'' VALUE coalesce('||wwv_flow.LF||
-'              ('||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(637) := '            SELECT JSON_ARRAYAGG('||wwv_flow.LF||
-'                  JSON_OBJECT('||wwv_flow.LF||
-'                    ''name'' VALUE p.';
-wwv_flow_imp.g_varchar2_table(638) := 'property_name,'||wwv_flow.LF||
-'                              ''dataType'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(639) := '             WHEN p.data_type IN(''INTEGER'','||wwv_flow.LF||
-'                                            ''INT'','||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(640) := '                                       ''SMALLINT'','||wwv_flow.LF||
-'                                            ''DEC''';
-wwv_flow_imp.g_varchar2_table(641) := ','||wwv_flow.LF||
-'                                            ''DECIMAL'','||wwv_flow.LF||
-'                                           ';
-wwv_flow_imp.g_varchar2_table(642) := ' ''NUMERIC'','||wwv_flow.LF||
-'                                            ''DOUBLE PRECISION'','||wwv_flow.LF||
-'                        ';
-wwv_flow_imp.g_varchar2_table(643) := '                    ''FLOAT'','||wwv_flow.LF||
-'                                            ''REAL'','||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(644) := '                         ''NUMBER'','||wwv_flow.LF||
-'                                            ''BINARY_FLOAT'','||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(645) := '                                       ''BINARY_DOUBLE'') THEN'||wwv_flow.LF||
-'                          ''number'''||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(646) := '                    WHEN p.data_type IN(''TIMESTAMP'') THEN'||wwv_flow.LF||
-'                          ''timestamp'''||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(647) := '                    ELSE'||wwv_flow.LF||
-'                          ''string'''||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(648) := '                 ''limits'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'                        WHEN p.data_char_';
-wwv_flow_imp.g_varchar2_table(649) := 'length > 0 THEN'||wwv_flow.LF||
-'                          JSON_ARRAY(p.data_char_length)'||wwv_flow.LF||
-'                        ELS';
-wwv_flow_imp.g_varchar2_table(650) := 'E'||wwv_flow.LF||
-'                          JSON_ARRAY()'||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'                              ''m';
-wwv_flow_imp.g_varchar2_table(651) := 'andatory'' VALUE('||wwv_flow.LF||
-'                      SELECT CASE nullable'||wwv_flow.LF||
-'                        WHEN ''Y'' THEN'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(652) := '                        FALSE'||wwv_flow.LF||
-'                        WHEN ''N'' THEN'||wwv_flow.LF||
-'                          TRUE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(653) := '                            END'||wwv_flow.LF||
-'                        FROM sys.all_tab_columns col'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(654) := '        WHERE col.column_name = d.column_name'||wwv_flow.LF||
-'                         AND col.table_name = e.object';
-wwv_flow_imp.g_varchar2_table(655) := '_name'||wwv_flow.LF||
-'                         AND col.owner = e.object_owner'||wwv_flow.LF||
-'                    )'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(656) := '  )'||wwv_flow.LF||
-'                RETURNING CLOB)'||wwv_flow.LF||
-'                  FROM sys.all_pg_label_properties p'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(657) := '      INNER JOIN sys.all_pg_prop_definitions d'||wwv_flow.LF||
-'                ON(p.property_name = d.property_name'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(658) := '                   AND p.owner = d.owner'||wwv_flow.LF||
-'                   AND p.graph_name = d.graph_name)'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(659) := '          WHERE d.element_name = e.element_name'||wwv_flow.LF||
-'                   AND p.label_name = l.label_name'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(660) := '                  AND p.graph_name = p_graph_name'||wwv_flow.LF||
-'                   AND p.owner = p_graph_owner'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(661) := '           ),'||wwv_flow.LF||
-'              JSON_ARRAY(RETURNING CLOB)'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'          RETURNING CLOB)'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(662) := '   RETURNING CLOB)'||wwv_flow.LF||
-'          FROM sys.all_pg_elements e'||wwv_flow.LF||
-'         INNER JOIN sys.all_pg_element_label';
-wwv_flow_imp.g_varchar2_table(663) := 's l'||wwv_flow.LF||
-'        ON(e.element_name = l.element_name'||wwv_flow.LF||
-'           AND e.graph_name = l.graph_name'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(664) := ' AND e.owner = l.owner)'||wwv_flow.LF||
-'         WHERE e.element_kind = ''VERTEX'''||wwv_flow.LF||
-'           AND e.graph_name = p_gra';
-wwv_flow_imp.g_varchar2_table(665) := 'ph_name'||wwv_flow.LF||
-'           AND e.owner = p_graph_owner'||wwv_flow.LF||
-'      ),'||wwv_flow.LF||
-'                ''edges'' VALUE('||wwv_flow.LF||
-'        SELEC';
-wwv_flow_imp.g_varchar2_table(666) := 'T JSON_ARRAYAGG('||wwv_flow.LF||
-'          JSON_OBJECT('||wwv_flow.LF||
-'            ''labels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYA';
-wwv_flow_imp.g_varchar2_table(667) := 'GG(el.label_name)'||wwv_flow.LF||
-'                FROM sys.all_pg_element_labels el'||wwv_flow.LF||
-'               WHERE el.element_';
-wwv_flow_imp.g_varchar2_table(668) := 'name = e.element_name'||wwv_flow.LF||
-'                 AND e.graph_name = p_graph_name'||wwv_flow.LF||
-'                 AND e.owner ';
-wwv_flow_imp.g_varchar2_table(669) := '= p_graph_owner'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'                      ''properties'' VALUE coalesce('||wwv_flow.LF||
-'              ('||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(670) := '              SELECT JSON_ARRAYAGG('||wwv_flow.LF||
-'                  JSON_OBJECT('||wwv_flow.LF||
-'                    ''name'' VALUE ';
-wwv_flow_imp.g_varchar2_table(671) := 'p.property_name,'||wwv_flow.LF||
-'                              ''dataType'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(672) := '               WHEN p.data_type IN(''INTEGER'','||wwv_flow.LF||
-'                                            ''INT'','||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(673) := '                                         ''SMALLINT'','||wwv_flow.LF||
-'                                            ''DE';
-wwv_flow_imp.g_varchar2_table(674) := 'C'','||wwv_flow.LF||
-'                                            ''DECIMAL'','||wwv_flow.LF||
-'                                         ';
-wwv_flow_imp.g_varchar2_table(675) := '   ''NUMERIC'','||wwv_flow.LF||
-'                                            ''DOUBLE PRECISION'','||wwv_flow.LF||
-'                      ';
-wwv_flow_imp.g_varchar2_table(676) := '                      ''FLOAT'','||wwv_flow.LF||
-'                                            ''REAL'','||wwv_flow.LF||
-'                 ';
-wwv_flow_imp.g_varchar2_table(677) := '                           ''NUMBER'','||wwv_flow.LF||
-'                                            ''BINARY_FLOAT'','||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(678) := '                                         ''BINARY_DOUBLE'') THEN'||wwv_flow.LF||
-'                          ''number'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(679) := '                      WHEN p.data_type IN(''TIMESTAMP'') THEN'||wwv_flow.LF||
-'                          ''timestamp'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(680) := '                      ELSE'||wwv_flow.LF||
-'                          ''string'''||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(681) := '                   ''limits'' VALUE'||wwv_flow.LF||
-'                      CASE'||wwv_flow.LF||
-'                        WHEN p.data_cha';
-wwv_flow_imp.g_varchar2_table(682) := 'r_length > 0 THEN'||wwv_flow.LF||
-'                          JSON_ARRAY(p.data_length)'||wwv_flow.LF||
-'                        ELSE'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(683) := '                         JSON_ARRAY()'||wwv_flow.LF||
-'                      END,'||wwv_flow.LF||
-'                              ''mand';
-wwv_flow_imp.g_varchar2_table(684) := 'atory'' VALUE('||wwv_flow.LF||
-'                      SELECT CASE nullable'||wwv_flow.LF||
-'                        WHEN ''Y'' THEN'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(685) := '                     FALSE'||wwv_flow.LF||
-'                        WHEN ''N'' THEN'||wwv_flow.LF||
-'                          TRUE'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(686) := '                         END'||wwv_flow.LF||
-'                        FROM sys.all_tab_columns col'||wwv_flow.LF||
-'                  ';
-wwv_flow_imp.g_varchar2_table(687) := '     WHERE col.column_name = d.column_name'||wwv_flow.LF||
-'                         AND col.table_name = e.object_na';
-wwv_flow_imp.g_varchar2_table(688) := 'me'||wwv_flow.LF||
-'                         AND col.owner = e.object_owner'||wwv_flow.LF||
-'                    )'||wwv_flow.LF||
-'                  R';
-wwv_flow_imp.g_varchar2_table(689) := 'ETURNING CLOB)'||wwv_flow.LF||
-'                RETURNING CLOB)'||wwv_flow.LF||
-'                  FROM sys.all_pg_label_properties p'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(690) := '                 INNER JOIN sys.all_pg_prop_definitions d'||wwv_flow.LF||
-'                ON(p.property_name = d.pro';
-wwv_flow_imp.g_varchar2_table(691) := 'perty_name'||wwv_flow.LF||
-'                   AND p.owner = d.owner'||wwv_flow.LF||
-'                   AND p.graph_name = d.graph_na';
-wwv_flow_imp.g_varchar2_table(692) := 'me)'||wwv_flow.LF||
-'                 WHERE d.element_name = e.element_name'||wwv_flow.LF||
-'                   AND p.label_name = l.l';
-wwv_flow_imp.g_varchar2_table(693) := 'abel_name'||wwv_flow.LF||
-'                   AND p.graph_name = p_graph_name'||wwv_flow.LF||
-'                   AND p.owner = p_grap';
-wwv_flow_imp.g_varchar2_table(694) := 'h_owner'||wwv_flow.LF||
-'              ),'||wwv_flow.LF||
-'              JSON_ARRAY(RETURNING CLOB)'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'                   ';
-wwv_flow_imp.g_varchar2_table(695) := '   ''sourceVertexLabels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYAGG(label_name)'||wwv_flow.LF||
-'                FROM('||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(696) := '                SELECT DISTINCT l.label_name AS label_name'||wwv_flow.LF||
-'                  FROM sys.all_pg_element';
-wwv_flow_imp.g_varchar2_table(697) := 's e2'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_element_labels l'||wwv_flow.LF||
-'                ON e2.element_name = l.';
-wwv_flow_imp.g_varchar2_table(698) := 'element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = l.graph_name'||wwv_flow.LF||
-'                   AND e2.owner = l';
-wwv_flow_imp.g_varchar2_table(699) := '.owner'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_edge_relationships r'||wwv_flow.LF||
-'                ON r.vertex_tab_n';
-wwv_flow_imp.g_varchar2_table(700) := 'ame = e2.element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = r.graph_name'||wwv_flow.LF||
-'                   AND e2.';
-wwv_flow_imp.g_varchar2_table(701) := 'owner = r.owner'||wwv_flow.LF||
-'                 WHERE e2.element_kind = ''VERTEX'''||wwv_flow.LF||
-'                   AND r.graph_nam';
-wwv_flow_imp.g_varchar2_table(702) := 'e = e.graph_name'||wwv_flow.LF||
-'                   AND r.edge_tab_name = e.element_name'||wwv_flow.LF||
-'                   AND edge';
-wwv_flow_imp.g_varchar2_table(703) := '_end = ''SOURCE'''||wwv_flow.LF||
-'              )'||wwv_flow.LF||
-'               FETCH FIRST 1 ROWS ONLY'||wwv_flow.LF||
-'            ),'||wwv_flow.LF||
-'              ';
-wwv_flow_imp.g_varchar2_table(704) := '        ''targetVertexLabels'' VALUE('||wwv_flow.LF||
-'              SELECT JSON_ARRAYAGG(label_name)'||wwv_flow.LF||
-'                F';
-wwv_flow_imp.g_varchar2_table(705) := 'ROM('||wwv_flow.LF||
-'                SELECT DISTINCT l.label_name AS label_name'||wwv_flow.LF||
-'                  FROM sys.all_pg_el';
-wwv_flow_imp.g_varchar2_table(706) := 'ements e2'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_element_labels l'||wwv_flow.LF||
-'                ON e2.element_name';
-wwv_flow_imp.g_varchar2_table(707) := ' = l.element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = l.graph_name'||wwv_flow.LF||
-'                   AND e2.owne';
-wwv_flow_imp.g_varchar2_table(708) := 'r = l.owner'||wwv_flow.LF||
-'                 INNER JOIN sys.all_pg_edge_relationships r'||wwv_flow.LF||
-'                ON r.vertex_';
-wwv_flow_imp.g_varchar2_table(709) := 'tab_name = e2.element_name'||wwv_flow.LF||
-'                   AND e2.graph_name = r.graph_name'||wwv_flow.LF||
-'                   AN';
-wwv_flow_imp.g_varchar2_table(710) := 'D e2.owner = r.owner'||wwv_flow.LF||
-'                 WHERE e2.element_kind = ''VERTEX'''||wwv_flow.LF||
-'                   AND r.grap';
-wwv_flow_imp.g_varchar2_table(711) := 'h_name = e.graph_name'||wwv_flow.LF||
-'                   AND r.edge_tab_name = e.element_name'||wwv_flow.LF||
-'                   AND';
-wwv_flow_imp.g_varchar2_table(712) := ' edge_end = ''DESTINATION'''||wwv_flow.LF||
-'              )'||wwv_flow.LF||
-'               FETCH FIRST 1 ROWS ONLY'||wwv_flow.LF||
-'            )'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(713) := '     RETURNING CLOB)'||wwv_flow.LF||
-'        RETURNING CLOB)'||wwv_flow.LF||
-'          FROM sys.all_pg_elements e'||wwv_flow.LF||
-'         INNER JOI';
-wwv_flow_imp.g_varchar2_table(714) := 'N sys.all_pg_element_labels l'||wwv_flow.LF||
-'        ON(e.element_name = l.element_name'||wwv_flow.LF||
-'           AND e.graph_name';
-wwv_flow_imp.g_varchar2_table(715) := ' = l.graph_name'||wwv_flow.LF||
-'           AND e.owner = l.owner)'||wwv_flow.LF||
-'         WHERE e.element_kind = ''EDGE'''||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(716) := 'AND e.graph_name = p_graph_name'||wwv_flow.LF||
-'           AND e.owner = p_graph_owner'||wwv_flow.LF||
-'      )'||wwv_flow.LF||
-'    RETURNING CLOB)'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(717) := '   INTO p_metadata'||wwv_flow.LF||
-'    FROM sys.dual;'||wwv_flow.LF||
-'END get_graph_metadata_proc;'||wwv_flow.LF||
+'  p_metadata := get_graph_metadata('||wwv_flow.LF||
+'    p_graph_owner,'||wwv_flow.LF||
+'    p_graph_name'||wwv_flow.LF||
+'  );'||wwv_flow.LF||
+'END get_g';
+wwv_flow_imp.g_varchar2_table(641) := 'raph_metadata_proc;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '/*'||wwv_flow.LF||
-'  Dynamically compute disti';
-wwv_flow_imp.g_varchar2_table(718) := 'nct vertex and edge counts from a user-provided graph query,'||wwv_flow.LF||
-'  using provided JSON arrays of vertex ';
-wwv_flow_imp.g_varchar2_table(719) := 'and edge column names.'||wwv_flow.LF||
-'  If column names are NULL or empty, return 0 for the respective count.'||wwv_flow.LF||
+'  Dynamically compute distinct vertex and edge counts from a user-prov';
+wwv_flow_imp.g_varchar2_table(642) := 'ided graph query,'||wwv_flow.LF||
+'  using provided JSON arrays of vertex and edge column names.'||wwv_flow.LF||
+'  If column names ';
+wwv_flow_imp.g_varchar2_table(643) := 'are NULL or empty, return 0 for the respective count.'||wwv_flow.LF||
 '*/'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'/';
-wwv_flow_imp.g_varchar2_table(720) := '*'||wwv_flow.LF||
+'/*'||wwv_flow.LF||
 '  Example usage:'||wwv_flow.LF||
-'  WITH my_table AS ('||wwv_flow.LF||
+'  WITH my_table A';
+wwv_flow_imp.g_varchar2_table(644) := 'S ('||wwv_flow.LF||
 '    SELECT JSON_HASH("ID_V") AS "ID_V",'||wwv_flow.LF||
-'           JSON_HASH';
-wwv_flow_imp.g_varchar2_table(721) := '("ID_D") AS "ID_D",'||wwv_flow.LF||
-'           JSON_HASH("ID_E") AS "ID_E"'||wwv_flow.LF||
+'           JSON_HASH("ID_D") AS "ID_D",'||wwv_flow.LF||
+'           JS';
+wwv_flow_imp.g_varchar2_table(645) := 'ON_HASH("ID_E") AS "ID_E"'||wwv_flow.LF||
 '    FROM ('||wwv_flow.LF||
 '      SELECT id_v, id_e, id_d'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(722) := '      FROM GRAPH_TABLE ('||wwv_flow.LF||
-'        eba_sample_graph'||wwv_flow.LF||
+'      FROM GRAPH_TABLE ('||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(646) := '    eba_sample_graph'||wwv_flow.LF||
 '        MATCH (v)-[e]->(d)'||wwv_flow.LF||
 '        COLUMNS ('||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(723) := '     vertex_id(v) as id_v,'||wwv_flow.LF||
+'          vertex_id(v) as id_v,';
+wwv_flow_imp.g_varchar2_table(647) := ''||wwv_flow.LF||
 '          edge_id(e) as id_e,'||wwv_flow.LF||
 '          vertex_id(d) as id_d'||wwv_flow.LF||
 '        )'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(724) := '    )'||wwv_flow.LF||
+'      )'||wwv_flow.LF||
 '    )'||wwv_flow.LF||
 '  )'||wwv_flow.LF||
-'  SELECT JSON_OBJECT('||wwv_flow.LF||
+'  S';
+wwv_flow_imp.g_varchar2_table(648) := 'ELECT JSON_OBJECT('||wwv_flow.LF||
 '    ''vertexCount'' VALUE ('||wwv_flow.LF||
-'      SELECT COUNT(DISTINCT vertex_i';
-wwv_flow_imp.g_varchar2_table(725) := 'd_colum)'||wwv_flow.LF||
-'      FROM my_table'||wwv_flow.LF||
+'      SELECT COUNT(DISTINCT vertex_id_colum)'||wwv_flow.LF||
+'      F';
+wwv_flow_imp.g_varchar2_table(649) := 'ROM my_table'||wwv_flow.LF||
 '      UNPIVOT (vertex_id_colum FOR vid IN ("ID_V", "ID_D"))'||wwv_flow.LF||
 '    ),'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(726) := '''edgeCount'' VALUE ('||wwv_flow.LF||
+'    ''edgeCount'' V';
+wwv_flow_imp.g_varchar2_table(650) := 'ALUE ('||wwv_flow.LF||
 '      SELECT COUNT(DISTINCT edge_id_colum)'||wwv_flow.LF||
 '      FROM my_table'||wwv_flow.LF||
-'      UNPIVOT (ed';
-wwv_flow_imp.g_varchar2_table(727) := 'ge_id_colum FOR eid IN ("ID_E"))'||wwv_flow.LF||
+'      UNPIVOT (edge_id_colu';
+wwv_flow_imp.g_varchar2_table(651) := 'm FOR eid IN ("ID_E"))'||wwv_flow.LF||
 '    )'||wwv_flow.LF||
 '  ) AS counts_json'||wwv_flow.LF||
 '  FROM DUAL;'||wwv_flow.LF||
 '*/'||wwv_flow.LF||
-'CREATE OR REPLACE FUNCTION';
-wwv_flow_imp.g_varchar2_table(728) := ' ORA_SQLGRAPH_GET_COUNTS_QUERY_BUILDER ('||wwv_flow.LF||
+'CREATE OR REPLACE FUNCTION ORA_';
+wwv_flow_imp.g_varchar2_table(652) := 'SQLGRAPH_GET_COUNTS_QUERY_BUILDER ('||wwv_flow.LF||
 '  p_query VARCHAR2,'||wwv_flow.LF||
 '  p_vertex_columns JSON,'||wwv_flow.LF||
-'  p_edge_colum';
-wwv_flow_imp.g_varchar2_table(729) := 'ns JSON'||wwv_flow.LF||
+'  p_edge_columns';
+wwv_flow_imp.g_varchar2_table(653) := ' JSON'||wwv_flow.LF||
 ') RETURN VARCHAR2 IS'||wwv_flow.LF||
 '  -- Variables for building dynamic SQL components'||wwv_flow.LF||
-'  l_select_clause VA';
-wwv_flow_imp.g_varchar2_table(730) := 'RCHAR2(32767) := '''';'||wwv_flow.LF||
+'  l_select_clause V';
+wwv_flow_imp.g_varchar2_table(654) := 'ARCHAR2(32767) := '''';'||wwv_flow.LF||
 '  l_vertex_unpivot_list VARCHAR2(32767) := '''';'||wwv_flow.LF||
-'  l_edge_unpivot_list VARCHAR2(3';
-wwv_flow_imp.g_varchar2_table(731) := '2767) := '''';'||wwv_flow.LF||
+'  l_edge_unpivot_list VARCHAR';
+wwv_flow_imp.g_varchar2_table(655) := '2(32767) := '''';'||wwv_flow.LF||
 '  l_vertex_unpivot_clause VARCHAR2(32767) := '''';'||wwv_flow.LF||
-'  l_edge_unpivot_clause VARCHAR2(32767';
-wwv_flow_imp.g_varchar2_table(732) := ') := '''';'||wwv_flow.LF||
+'  l_edge_unpivot_clause VARCHAR2(';
+wwv_flow_imp.g_varchar2_table(656) := '32767) := '''';'||wwv_flow.LF||
 '  l_vertex_count_sql VARCHAR2(32767) := ''0'';'||wwv_flow.LF||
-'  l_edge_count_sql VARCHAR2(32767) := ''0'';'||wwv_flow.LF||
-'  l';
-wwv_flow_imp.g_varchar2_table(733) := '_count_query VARCHAR2(32767);'||wwv_flow.LF||
+'  l_edge_count_sql VARCHAR2(32767) := ''';
+wwv_flow_imp.g_varchar2_table(657) := '0'';'||wwv_flow.LF||
+'  l_count_query VARCHAR2(32767);'||wwv_flow.LF||
 '  l_vertex_count NUMBER := 0;'||wwv_flow.LF||
 '  l_edge_count NUMBER := 0;'||wwv_flow.LF||
-'  l_vertex_a';
-wwv_flow_imp.g_varchar2_table(734) := 'rray JSON_ARRAY_T;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(658) := ' l_vertex_array JSON_ARRAY_T;'||wwv_flow.LF||
 '  l_edge_array JSON_ARRAY_T;'||wwv_flow.LF||
 '  l_col_name VARCHAR2(4000);'||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
-'  -- Parse vertex';
-wwv_flow_imp.g_varchar2_table(735) := ' columns JSON if provided'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(659) := '-- Parse vertex columns JSON if provided'||wwv_flow.LF||
 '  IF p_vertex_columns IS NOT NULL THEN'||wwv_flow.LF||
 '    BEGIN'||wwv_flow.LF||
-'      l_vertex_array := J';
-wwv_flow_imp.g_varchar2_table(736) := 'SON_ARRAY_T(p_vertex_columns);'||wwv_flow.LF||
-'      l_vertex_count := l_vertex_array.get_size();'||wwv_flow.LF||
+'      l';
+wwv_flow_imp.g_varchar2_table(660) := '_vertex_array := JSON_ARRAY_T(p_vertex_columns);'||wwv_flow.LF||
+'      l_vertex_count := l_vertex_array.get_size();';
+wwv_flow_imp.g_varchar2_table(661) := ''||wwv_flow.LF||
 '    EXCEPTION'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(737) := '  WHEN OTHERS THEN'||wwv_flow.LF||
-'        RAISE_APPLICATION_ERROR(-20002, ''Invalid JSON for p_vertex_columns: '' || ';
-wwv_flow_imp.g_varchar2_table(738) := 'SQLERRM);'||wwv_flow.LF||
+'      WHEN OTHERS THEN'||wwv_flow.LF||
+'        RAISE_APPLICATION_ERROR(-20002, ''Invalid JSON for p';
+wwv_flow_imp.g_varchar2_table(662) := '_vertex_columns: '' || SQLERRM);'||wwv_flow.LF||
 '    END;'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  -- Parse edge columns JSON if provided'||wwv_flow.LF||
-'  IF p_edge_columns IS NOT NU';
-wwv_flow_imp.g_varchar2_table(739) := 'LL THEN'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(663) := 'IF p_edge_columns IS NOT NULL THEN'||wwv_flow.LF||
 '    BEGIN'||wwv_flow.LF||
 '      l_edge_array := JSON_ARRAY_T(p_edge_columns);'||wwv_flow.LF||
-'      l_edge_count := l_edge_a';
-wwv_flow_imp.g_varchar2_table(740) := 'rray.get_size();'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(664) := '      l_edge_count := l_edge_array.get_size();'||wwv_flow.LF||
 '    EXCEPTION'||wwv_flow.LF||
 '      WHEN OTHERS THEN'||wwv_flow.LF||
-'        RAISE_APPLICATION_ERROR(-20003, ''Inval';
-wwv_flow_imp.g_varchar2_table(741) := 'id JSON for p_edge_columns: '' || SQLERRM);'||wwv_flow.LF||
+'        RAISE';
+wwv_flow_imp.g_varchar2_table(665) := '_APPLICATION_ERROR(-20003, ''Invalid JSON for p_edge_columns: '' || SQLERRM);'||wwv_flow.LF||
 '    END;'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Early return query if no columns';
-wwv_flow_imp.g_varchar2_table(742) := ' provided for both vertices and edges'||wwv_flow.LF||
-'  IF l_vertex_count = 0 AND l_edge_count = 0 THEN'||wwv_flow.LF||
-'    RETURN ''';
-wwv_flow_imp.g_varchar2_table(743) := 'SELECT JSON_OBJECT(''''vertexCount'''' VALUE 0, ''''edgeCount'''' VALUE 0) AS counts_json FROM DUAL'';'||wwv_flow.LF||
-'  END ';
-wwv_flow_imp.g_varchar2_table(744) := 'IF;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'  -- Build SELECT clause and unpivot list for vertex columns'||wwv_flow.LF||
-'  IF l_vertex_count > 0 THEN'||wwv_flow.LF||
-'    F';
-wwv_flow_imp.g_varchar2_table(745) := 'OR i IN 0 .. l_vertex_count - 1 LOOP'||wwv_flow.LF||
-'      l_col_name := l_vertex_array.get_string(i);'||wwv_flow.LF||
-'      l_selec';
-wwv_flow_imp.g_varchar2_table(746) := 't_clause := l_select_clause || ''JSON_HASH('' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, FALSE) || '') AS ';
-wwv_flow_imp.g_varchar2_table(747) := ''' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '', '';'||wwv_flow.LF||
-'      l_vertex_unpivot_list := l_vertex_unp';
-wwv_flow_imp.g_varchar2_table(748) := 'ivot_list || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '','';'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
-'    l_vertex_unpivot_l';
-wwv_flow_imp.g_varchar2_table(749) := 'ist := RTRIM(l_vertex_unpivot_list, '','');'||wwv_flow.LF||
-'    l_vertex_unpivot_clause := ''UNPIVOT (vertex_id_colum F';
-wwv_flow_imp.g_varchar2_table(750) := 'OR vid IN ('' || l_vertex_unpivot_list || ''))'';'||wwv_flow.LF||
-'    l_vertex_count_sql := ''SELECT COUNT(DISTINCT vert';
-wwv_flow_imp.g_varchar2_table(751) := 'ex_id_colum) FROM my_table '' || l_vertex_unpivot_clause;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(666) := '  -- Early return query if no columns provided for both vertices and edges'||wwv_flow.LF||
+'  IF l_vertex_count = 0 ';
+wwv_flow_imp.g_varchar2_table(667) := 'AND l_edge_count = 0 THEN'||wwv_flow.LF||
+'    RETURN ''SELECT JSON_OBJECT(''''vertexCount'''' VALUE 0, ''''edgeCount'''' VAL';
+wwv_flow_imp.g_varchar2_table(668) := 'UE 0) AS counts_json FROM DUAL'';'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Build SELECT clause and unp';
-wwv_flow_imp.g_varchar2_table(752) := 'ivot list for edge columns'||wwv_flow.LF||
-'  IF l_edge_count > 0 THEN'||wwv_flow.LF||
-'    FOR i IN 0 .. l_edge_count - 1 LOOP'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(753) := 'l_col_name := l_edge_array.get_string(i);'||wwv_flow.LF||
-'      l_select_clause := l_select_clause || ''JSON_HASH('' |';
-wwv_flow_imp.g_varchar2_table(754) := '| DBMS_ASSERT.ENQUOTE_NAME(l_col_name, FALSE) || '') AS '' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRU';
-wwv_flow_imp.g_varchar2_table(755) := 'E) || '', '';'||wwv_flow.LF||
-'      l_edge_unpivot_list := l_edge_unpivot_list || DBMS_ASSERT.ENQUOTE_NAME(l_col_name,';
-wwv_flow_imp.g_varchar2_table(756) := ' TRUE) || '','';'||wwv_flow.LF||
+'  -- Build SELECT clause and unpivot list for vertex ';
+wwv_flow_imp.g_varchar2_table(669) := 'columns'||wwv_flow.LF||
+'  IF l_vertex_count > 0 THEN'||wwv_flow.LF||
+'    FOR i IN 0 .. l_vertex_count - 1 LOOP'||wwv_flow.LF||
+'      l_col_name :';
+wwv_flow_imp.g_varchar2_table(670) := '= l_vertex_array.get_string(i);'||wwv_flow.LF||
+'      l_select_clause := l_select_clause || ''JSON_HASH('' || DBMS_AS';
+wwv_flow_imp.g_varchar2_table(671) := 'SERT.ENQUOTE_NAME(l_col_name, FALSE) || '') AS '' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '', ';
+wwv_flow_imp.g_varchar2_table(672) := ''';'||wwv_flow.LF||
+'      l_vertex_unpivot_list := l_vertex_unpivot_list || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRU';
+wwv_flow_imp.g_varchar2_table(673) := 'E) || '','';'||wwv_flow.LF||
 '    END LOOP;'||wwv_flow.LF||
-'    l_edge_unpivot_list := RTRIM(l_edge_unpivot_list, '','');'||wwv_flow.LF||
-'    l_edge_';
-wwv_flow_imp.g_varchar2_table(757) := 'unpivot_clause := ''UNPIVOT (edge_id_colum FOR eid IN ('' || l_edge_unpivot_list || ''))'';'||wwv_flow.LF||
-'    l_edge_c';
-wwv_flow_imp.g_varchar2_table(758) := 'ount_sql := ''SELECT COUNT(DISTINCT edge_id_colum) FROM my_table '' || l_edge_unpivot_clause;'||wwv_flow.LF||
-'  END IF';
-wwv_flow_imp.g_varchar2_table(759) := ';'||wwv_flow.LF||
+'    l_vertex_unpivot_list := RTRIM(l_vertex_unpivot_list, '','');'||wwv_flow.LF||
+'    l_ve';
+wwv_flow_imp.g_varchar2_table(674) := 'rtex_unpivot_clause := ''UNPIVOT (vertex_id_colum FOR vid IN ('' || l_vertex_unpivot_list || ''))'';'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(675) := '  l_vertex_count_sql := ''SELECT COUNT(DISTINCT vertex_id_colum) FROM my_table '' || l_vertex_unpivot_';
+wwv_flow_imp.g_varchar2_table(676) := 'clause;'||wwv_flow.LF||
+'  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Remove trailing comma from SELECT clause'||wwv_flow.LF||
-'  l_select_clause := RTRIM(l_select_clause, '', '');'||wwv_flow.LF||
+'  -- Build SELECT clause and unpivot list for edge columns'||wwv_flow.LF||
+'  IF l_edge_count ';
+wwv_flow_imp.g_varchar2_table(677) := '> 0 THEN'||wwv_flow.LF||
+'    FOR i IN 0 .. l_edge_count - 1 LOOP'||wwv_flow.LF||
+'      l_col_name := l_edge_array.get_string(i);'||wwv_flow.LF||
 '';
-wwv_flow_imp.g_varchar2_table(760) := ''||wwv_flow.LF||
-'  -- Construct the full dynamic count query'||wwv_flow.LF||
-'  l_count_query := ''WITH my_table AS ( SELECT '' || l_se';
-wwv_flow_imp.g_varchar2_table(761) := 'lect_clause ||'||wwv_flow.LF||
-'                   '' FROM ( '' || p_query ||'||wwv_flow.LF||
-'                   '' ) )'' ||'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(762) := '       ''SELECT JSON_OBJECT( '' ||'||wwv_flow.LF||
-'                   ''''''vertexCount'''' VALUE ('' || l_vertex_count_sql ';
-wwv_flow_imp.g_varchar2_table(763) := '|| ''), '' ||'||wwv_flow.LF||
-'                   ''''''edgeCount'''' VALUE ('' || l_edge_count_sql || '') '' ||'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(678) := '      l_select_clause := l_select_clause || ''JSON_HASH('' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, FAL';
+wwv_flow_imp.g_varchar2_table(679) := 'SE) || '') AS '' || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '', '';'||wwv_flow.LF||
+'      l_edge_unpivot_list := ';
+wwv_flow_imp.g_varchar2_table(680) := 'l_edge_unpivot_list || DBMS_ASSERT.ENQUOTE_NAME(l_col_name, TRUE) || '','';'||wwv_flow.LF||
+'    END LOOP;'||wwv_flow.LF||
+'    l_edge';
+wwv_flow_imp.g_varchar2_table(681) := '_unpivot_list := RTRIM(l_edge_unpivot_list, '','');'||wwv_flow.LF||
+'    l_edge_unpivot_clause := ''UNPIVOT (edge_id_co';
+wwv_flow_imp.g_varchar2_table(682) := 'lum FOR eid IN ('' || l_edge_unpivot_list || ''))'';'||wwv_flow.LF||
+'    l_edge_count_sql := ''SELECT COUNT(DISTINCT ed';
+wwv_flow_imp.g_varchar2_table(683) := 'ge_id_colum) FROM my_table '' || l_edge_unpivot_clause;'||wwv_flow.LF||
+'  END IF;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'  -- Remove trailing comma from';
+wwv_flow_imp.g_varchar2_table(684) := ' SELECT clause'||wwv_flow.LF||
+'  l_select_clause := RTRIM(l_select_clause, '', '');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'  -- Construct the full dynami';
+wwv_flow_imp.g_varchar2_table(685) := 'c count query'||wwv_flow.LF||
+'  l_count_query := ''WITH my_table AS ( SELECT '' || l_select_clause ||'||wwv_flow.LF||
 '              ';
-wwv_flow_imp.g_varchar2_table(764) := '     '') AS counts_json '' ||'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(686) := '     '' FROM ( '' || p_query ||'||wwv_flow.LF||
+'                   '' ) )'' ||'||wwv_flow.LF||
+'                   ''SELECT JSON_OBJECT(';
+wwv_flow_imp.g_varchar2_table(687) := ' '' ||'||wwv_flow.LF||
+'                   ''''''vertexCount'''' VALUE ('' || l_vertex_count_sql || ''), '' ||'||wwv_flow.LF||
+'             ';
+wwv_flow_imp.g_varchar2_table(688) := '      ''''''edgeCount'''' VALUE ('' || l_edge_count_sql || '') '' ||'||wwv_flow.LF||
+'                   '') AS counts_json ''';
+wwv_flow_imp.g_varchar2_table(689) := ' ||'||wwv_flow.LF||
 '                   ''FROM DUAL'';'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  RETURN l_count_query;'||wwv_flow.LF||
-'END ORA_SQLGRAP';
-wwv_flow_imp.g_varchar2_table(765) := 'H_GET_COUNTS_QUERY_BUILDER;'||wwv_flow.LF||
+'END ORA_SQLGRAPH_GET_COUNTS_QUERY_B';
+wwv_flow_imp.g_varchar2_table(690) := 'UILDER;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'CREATE OR REPLACE FUNCTION APEX_SQLGRAPH_GET_COUNTS ('||wwv_flow.LF||
-'  p_query VARCH';
-wwv_flow_imp.g_varchar2_table(766) := 'AR2,'||wwv_flow.LF||
-'  p_vertex_columns JSON,'||wwv_flow.LF||
+'  p_query VARCHAR2,'||wwv_flow.LF||
+'  p_vertex';
+wwv_flow_imp.g_varchar2_table(691) := '_columns JSON,'||wwv_flow.LF||
 '  p_edge_columns JSON,'||wwv_flow.LF||
 '  p_bind_items VARCHAR2 DEFAULT NULL'||wwv_flow.LF||
-') RETURN C';
-wwv_flow_imp.g_varchar2_table(767) := 'LOB IS'||wwv_flow.LF||
-'  l_count_query VARCHAR2(32767);'||wwv_flow.LF||
+') RETURN CLOB IS'||wwv_flow.LF||
+'  l_';
+wwv_flow_imp.g_varchar2_table(692) := 'count_query VARCHAR2(32767);'||wwv_flow.LF||
 '  l_result CLOB;'||wwv_flow.LF||
 '  l_cur NUMBER;'||wwv_flow.LF||
 '  l_cur_id NUMBER;'||wwv_flow.LF||
-'  l_item';
-wwv_flow_imp.g_varchar2_table(768) := ' VARCHAR2(4000);'||wwv_flow.LF||
+'  l_item VARCHA';
+wwv_flow_imp.g_varchar2_table(693) := 'R2(4000);'||wwv_flow.LF||
 'BEGIN'||wwv_flow.LF||
 '  -- Validate required input'||wwv_flow.LF||
 '  IF p_query IS NULL THEN'||wwv_flow.LF||
-'    RAISE_APPLICATION_';
-wwv_flow_imp.g_varchar2_table(769) := 'ERROR(-20000, ''p_query must be provided.'');'||wwv_flow.LF||
+'    RAISE_APPLICATION_ERR';
+wwv_flow_imp.g_varchar2_table(694) := 'OR(-20000, ''p_query must be provided.'');'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  l_count_query := ora_sqlgraph_get_counts_qu';
-wwv_flow_imp.g_varchar2_table(770) := 'ery_builder(p_query, p_vertex_columns, p_edge_columns);'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(695) := 'ery_builder(p_query, p_vertex_columns, p_edge_columns);'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  -- Execute the dynamic query using DBMS_S';
-wwv_flow_imp.g_varchar2_table(771) := 'QL to allow binding'||wwv_flow.LF||
+'  -- Execute the dynamic query using DBMS';
+wwv_flow_imp.g_varchar2_table(696) := '_SQL to allow binding'||wwv_flow.LF||
 '  l_cur := DBMS_SQL.OPEN_CURSOR;'||wwv_flow.LF||
 '  DBMS_SQL.PARSE('||wwv_flow.LF||
 '    l_cur,'||wwv_flow.LF||
-'    l_count_query,';
-wwv_flow_imp.g_varchar2_table(772) := ''||wwv_flow.LF||
+'    l_count_';
+wwv_flow_imp.g_varchar2_table(697) := 'query,'||wwv_flow.LF||
 '    DBMS_SQL.NATIVE'||wwv_flow.LF||
 '  );'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  IF p_bind_items IS NOT NULL THEN'||wwv_flow.LF||
-'    FOR i IN 1..REGEXP_COUNT(p_bind_it';
-wwv_flow_imp.g_varchar2_table(773) := 'ems, '','') + 1 LOOP'||wwv_flow.LF||
+'    FOR i IN 1..REGEXP_COUN';
+wwv_flow_imp.g_varchar2_table(698) := 'T(p_bind_items, '','') + 1 LOOP'||wwv_flow.LF||
 '      l_item := REGEXP_SUBSTR(p_bind_items, ''[^,]+'', 1, i);'||wwv_flow.LF||
-'      DBMS_SQL.BIND_V';
-wwv_flow_imp.g_varchar2_table(774) := 'ARIABLE('||wwv_flow.LF||
+'      DB';
+wwv_flow_imp.g_varchar2_table(699) := 'MS_SQL.BIND_VARIABLE('||wwv_flow.LF||
 '        l_cur,'||wwv_flow.LF||
 '        '':'' || l_item,'||wwv_flow.LF||
 '        V(l_item)'||wwv_flow.LF||
 '      );'||wwv_flow.LF||
-'    END LOOP;'||wwv_flow.LF||
+'    END ';
+wwv_flow_imp.g_varchar2_table(700) := 'LOOP;'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(775) := ' -- Define column and fetch the result'||wwv_flow.LF||
-'  DBMS_SQL.DEFINE_COLUMN(l_cur, 1, EMPTY_CLOB());'||wwv_flow.LF||
-'  l_cur_id ';
-wwv_flow_imp.g_varchar2_table(776) := ':= DBMS_SQL.EXECUTE(l_cur);'||wwv_flow.LF||
+'  -- Define column and fetch the result'||wwv_flow.LF||
+'  DBMS_SQL.DEFINE_COLUMN(l_cur, 1, EMPT';
+wwv_flow_imp.g_varchar2_table(701) := 'Y_CLOB());'||wwv_flow.LF||
+'  l_cur_id := DBMS_SQL.EXECUTE(l_cur);'||wwv_flow.LF||
 '  IF DBMS_SQL.FETCH_ROWS(l_cur) > 0 THEN'||wwv_flow.LF||
-'    DBMS_SQL.COLUMN_VALUE(l_cur';
-wwv_flow_imp.g_varchar2_table(777) := ', 1, l_result);'||wwv_flow.LF||
+'    DB';
+wwv_flow_imp.g_varchar2_table(702) := 'MS_SQL.COLUMN_VALUE(l_cur, 1, l_result);'||wwv_flow.LF||
 '  END IF;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '  DBMS_SQL.CLOSE_CURSOR(l_cur);'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'  RETURN l_result;'||wwv_flow.LF||
+'  RETURN l';
+wwv_flow_imp.g_varchar2_table(703) := '_result;'||wwv_flow.LF||
 'EXCEPTION'||wwv_flow.LF||
-'  WHEN OTHE';
-wwv_flow_imp.g_varchar2_table(778) := 'RS THEN'||wwv_flow.LF||
-'    RAISE_APPLICATION_ERROR(-20001, ''Error executing count query: '' || SQLERRM || '' Query: ''';
-wwv_flow_imp.g_varchar2_table(779) := ' || l_count_query);'||wwv_flow.LF||
+'  WHEN OTHERS THEN'||wwv_flow.LF||
+'    RAISE_APPLICATION_ERROR(-20001, ''Error executing count ';
+wwv_flow_imp.g_varchar2_table(704) := 'query: '' || SQLERRM || '' Query: '' || l_count_query);'||wwv_flow.LF||
 'END APEX_SQLGRAPH_GET_COUNTS;'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 '';
 wwv_flow_imp_shared.create_install_script(
  p_id=>wwv_flow_imp.id(4160899997256598257)
 ,p_install_id=>wwv_flow_imp.id(12883465078800669451)
-,p_name=>'required_helper_function_for_23ai_or_newer'
+,p_name=>'required_helper_function_for_26ai_or_newer'
 ,p_sequence=>70
 ,p_script_type=>'INSTALL'
 ,p_condition_type=>'EXPRESSION'
 ,p_condition=>'sys.dbms_db_version.version >= 23'
 ,p_condition2=>'PLSQL'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+,p_updated_on=>wwv_flow_imp.dz('20261002202446Z')
+,p_updated_by=>'TEST_RJ'
 );
 end;
 /
