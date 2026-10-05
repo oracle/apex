@@ -1678,7 +1678,7 @@ page 50 (
                               if l_question_type = 'CHECKBOX' then
                                  l_delim := substr(l_correct_answer,1,1);
                                  if trim(a01) is not null then
-                                    l_answers := trim(a01);
+                                    l_answers := l_answers || l_delim || trim(a01);
                                  end if;
                                  if trim(a02) is not null then
                                     l_answers := l_answers || l_delim || trim(a02);
@@ -1713,7 +1713,7 @@ page 50 (
                                  if trim(a12) is not null then
                                     l_answers := l_answers || l_delim || trim(a12);
                                  end if;
-                                 l_answers := l_delim || l_answers || l_delim;
+                                 l_answers := l_answers || l_delim;
                 
                                  if lower(l_answers) = lower(l_correct_answer) then
                                     l_correct_yn := 'Y';
@@ -2199,4 +2199,3 @@ page 50 (
     )
 
 )
-

@@ -22501,7 +22501,7 @@ wwv_flow_imp_page.create_page_process(
 '              if l_question_type = ''CHECKBOX'' then',
 '                 l_delim := substr(l_correct_answer,1,1);',
 '                 if trim(a01) is not null then',
-'                    l_answers := trim(a01);',
+'                    l_answers := l_answers || l_delim || trim(a01);',
 '                 end if;',
 '                 if trim(a02) is not null then',
 '                    l_answers := l_answers || l_delim || trim(a02);',
@@ -22536,7 +22536,7 @@ wwv_flow_imp_page.create_page_process(
 '                 if trim(a12) is not null then',
 '                    l_answers := l_answers || l_delim || trim(a12);',
 '                 end if;',
-'                 l_answers := l_delim || l_answers || l_delim;',
+'                 l_answers := l_answers || l_delim;',
 '',
 '                 if lower(l_answers) = lower(l_correct_answer) then',
 '                    l_correct_yn := ''Y'';',
@@ -48357,7 +48357,7 @@ wwv_flow_imp.g_varchar2_table(14) := 'l_delim := ''a'';'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '   if trim(p';
 wwv_flow_imp.g_varchar2_table(15) := '_answer_01) is not null then'||wwv_flow.LF||
-'      l_answers := trim(p_answer_01);'||wwv_flow.LF||
+'      l_answers := l_answers || l_delim || trim(p_answer_01);'||wwv_flow.LF||
 '   end if;'||wwv_flow.LF||
 '   if trim(p_answer_02';
 wwv_flow_imp.g_varchar2_table(16) := ') is not null then'||wwv_flow.LF||
@@ -48406,7 +48406,7 @@ wwv_flow_imp.g_varchar2_table(27) := 'r_11);'||wwv_flow.LF||
 wwv_flow_imp.g_varchar2_table(28) := '| trim(p_answer_12);'||wwv_flow.LF||
 '   end if;'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'   l_answers := l_delim || l_answers || l_delim;'||wwv_flow.LF||
+'   l_answers := l_answers || l_delim;'||wwv_flow.LF||
 ''||wwv_flow.LF||
 '   return l_answe';
 wwv_flow_imp.g_varchar2_table(29) := 'rs;'||wwv_flow.LF||
