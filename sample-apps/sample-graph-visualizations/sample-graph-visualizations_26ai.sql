@@ -88,7 +88,7 @@ begin
 wwv_imp_workspace.create_flow(
  p_id=>wwv_flow.g_flow_id
 ,p_owner=>nvl(wwv_flow_application_install.get_schema,'WKSP_TEST')
-,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Graph Visualizations - 26ai - 26.4.0 - RJ ONLY - don''t touch')
+,p_name=>nvl(wwv_flow_application_install.get_application_name,'Sample Graph Visualizations - 26ai')
 ,p_alias=>nvl(wwv_flow_application_install.get_application_alias,'SAMPLE-GRAPH-VISUALIZATIONS-26AI')
 ,p_application_group=>wwv_flow_imp.id(17179702084305725062)
 ,p_application_group_name=>'Graphviz samples'
